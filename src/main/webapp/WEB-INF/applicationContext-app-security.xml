@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+The main security configuration is in applicationContext-security.xml in the 
+security module.
+ -->
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.1.xsd">
+
+	<global-method-security secured-annotations="enabled">
+		<!--
+			AspectJ pointcut expression that locates our "post" method and
+			applies security that way <protect-pointcut expression="execution(*
+			bigbank.*Service.post*(..))" access="ROLE_TELLER"/>
+		-->
+	</global-method-security>
+	
+	<http>
+		<!--
+			Disable web URI authorization, as we're using
+			<global-method-security> and have @Secured the services layer instead
+			<intercept-url pattern="/listAccounts.html"
+			access="IS_AUTHENTICATED_REMEMBERED" /> <intercept-url
+			pattern="/post.html" access="ROLE_TELLER" />
+		-->
+		<intercept-url pattern="/login.jsp" filters="none" />
+		<intercept-url pattern="/public/**" filters="none" />
+		<intercept-url pattern="/images/**" access="ROLE_ADMIN" />
+		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
+		<intercept-url pattern="/**" access="ROLE_USER" />
+		<!--
+			<intercept-url pattern="/secure/extreme/**"
+			access="ROLE_SUPERVISOR"/>
+		-->
+		<!--
+			<intercept-url pattern="/secure/**"
+			access="IS_AUTHENTICATED_REMEMBERED" />
+		-->
+		<!--
+			Uncomment to enable X509 client authentication support <x509 />
+		-->
+
+<!--         All of this is unnecessary if auto-config="true"-->
+		<form-login login-page="/login.jsp"
+			authentication-failure-url="/login.jsp?login_error=1" />
+		<logout logout-success-url="/index.jsp" />
+		<anonymous />
+		<http-basic />
+		<logout />
+		<remember-me />
+		<!--
+			Uncomment to limit the number of sessions a user can have
+			<concurrent-session-control max-sessions="1"
+			exception-if-maximum-exceeded="true"/>
+		-->
+	</http>
+	
+	
+</beans:beans>
