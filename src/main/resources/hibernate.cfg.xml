@@ -5,15 +5,10 @@
 <hibernate-configuration>
     <session-factory name="sessionFactory">
         <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
-        <property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property>
-        <property name="hibernate.connection.url">jdbc:hsqldb:mem:petsdb</property>
+        <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>
+        <property name="hibernate.connection.url">jdbc:derby:C:/dev/_db/gollum</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
-        <!-- <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property> -->
-        <property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
-        <mapping resource="spring/petstore/core/dao/hibernate/Category.hbm.xml" />
-        <!-- <mapping resource="spring/petstore/core/dao/hibernate/Order.hbm.xml" /> -->
-        <mapping resource="spring/petstore/core/dao/hibernate/Item.hbm.xml" />
-        <!-- <mapping resource="spring/petstore/core/dao/hibernate/OrderLine.hbm.xml" /> -->
+        <property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>
     </session-factory>
 </hibernate-configuration>
