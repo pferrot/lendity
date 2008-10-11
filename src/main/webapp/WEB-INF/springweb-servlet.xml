@@ -7,6 +7,11 @@
 	-->
 	<bean id="simpleUrlMapping"
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+        	<list>
+            	<ref bean="openSessionInViewInterceptor"/>
+        	</list>
+        </property>
 		<property name="mappings">
 			<props>
 				<prop key="/home.htm">homePageCo</prop>
@@ -14,6 +19,14 @@
 			</props>
 		</property>
 	</bean>
+	
+	<!-- 
+	Allows hibernate lazy loading in the web layer.
+	 -->
+	<bean name="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
 	<bean id="homePageCo" class="com.pferrot.home.HomePageController">
 		<property name="personDao"><ref bean="personDao"/></property>
 	</bean>

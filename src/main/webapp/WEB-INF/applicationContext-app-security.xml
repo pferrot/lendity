@@ -48,7 +48,7 @@ security module.
 		<anonymous />
 		<http-basic />
 		<logout />
-		<remember-me />
+		<remember-me user-service-ref="security.customUserDetailsService"/>
 		<!--
 			Uncomment to limit the number of sessions a user can have
 			<concurrent-session-control max-sessions="1"

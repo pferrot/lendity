@@ -51,7 +51,7 @@ public class HomePageController extends AbstractController
 		else if (hour > 12 )
 			greeting = "Afternoon";
 		
-		Person person = personDao.findPerson(new Integer(1));
+		Person person = personDao.findPerson(new Long(4));
 		System.out.println("Person: " + person);
 		if (person != null) {
 			System.out.println("First name: " + person.getFirstName());

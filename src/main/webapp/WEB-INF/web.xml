@@ -12,7 +12,6 @@
 		<param-value> 
 		    /WEB-INF/applicationContext.xml
 			/WEB-INF/applicationContext-app-security.xml
-			classpath:applicationContext-core.xml
 			classpath:applicationContext-security.xml</param-value>
 	</context-param>
 	<context-param>

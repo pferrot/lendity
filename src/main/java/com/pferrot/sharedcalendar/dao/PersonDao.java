@@ -4,9 +4,9 @@ import com.pferrot.sharedcalendar.model.Person;
 
 public interface PersonDao {
 	
-	Integer createPerson(Person person);
+	Long createPerson(Person person);
 	
-	Person findPerson(Integer personId);
+	Person findPerson(Long personId);
 	
 	void updatePerson(Person person);
 	

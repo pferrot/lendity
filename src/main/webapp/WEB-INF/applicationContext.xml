@@ -19,19 +19,20 @@
 		</property>
 	</bean>
 	
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+	<bean id="transactionManager" name="security.transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref local="sessionFactory"/>
+		</property>
+	</bean>
+	
+	<bean id="sessionFactory" name="security.sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
 		<property name="dataSource">
 			<ref bean="dataSource"/>
 		</property>		
-<!--		<property name="configLocation" value="classpath:hibernate.cfg.xml" />-->
-		<property name="mappingResources">
-			<value>com/pferrot/sharedcalendar/dao/hibernate/Person.hbm.xml</value>
+		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="configurationClass">
+			<value>org.hibernate.cfg.AnnotationConfiguration</value>
 		</property>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.DerbyDialect</prop>
-			</props>
-		</property>		
 	</bean>
 	
 	<bean id="hibernateInterceptor" class="org.springframework.orm.hibernate3.HibernateInterceptor">
@@ -40,8 +41,25 @@
 		</property>
 	</bean> 
 	
-	<bean id="personDao" class="com.pferrot.sharedcalendar.dao.hibernate.PersonDaoHibernateImpl">
+	<bean id="personDaoTarget" class="com.pferrot.sharedcalendar.dao.hibernate.PersonDaoHibernateImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
+	<bean id="personDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target">
+			<ref local="personDaoTarget"/>
+		</property>
+		<property name="proxyInterfaces">
+           <value>com.pferrot.sharedcalendar.dao.PersonDao</value>
+         </property>		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>		
 	
 </beans>
