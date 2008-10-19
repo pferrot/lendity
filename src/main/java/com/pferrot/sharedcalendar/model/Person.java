@@ -7,7 +7,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.pferrot.security.model.User;
 
 @Entity
 @Table(name = "PERSONS")
@@ -17,11 +21,18 @@ public class Person implements Serializable {
 	@Column(name = "ID")
     private Long id;
 	
-	@Column(name = "FIRST_NAME")
+	@Column(name = "FIRST_NAME", nullable = false, length = 255)
     private String firstName;
 	
-	@Column(name = "LAST_NAME")
+	@Column(name = "LAST_NAME", nullable = false, length = 255)
     private String lastName;
+	
+	@Column(name = "EMAIL", length = 255)
+	private String email;
+	
+	@OneToOne(targetEntity = com.pferrot.security.model.User.class)
+	@JoinColumn(name = "USER_ID", nullable = false)
+	private User user;
 
     public Person() {
     }
@@ -53,6 +64,22 @@ public class Person implements Serializable {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 }
 
 
