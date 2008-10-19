@@ -18,6 +18,15 @@
 		<param-name>log4jConfigLocation</param-name>
 		<param-value>/WEB-INF/classes/log4j.properties</param-value>
 	</context-param>
+<!--	  	<context-param>-->
+<!--	    <description>Comma separated list of URIs of (additional) faces config files.-->
+<!--	            (e.g. /WEB-INF/my-config.xml)-->
+<!--	            See JSF 1.0 PRD2, 10.3.2-->
+<!--	            Attention: You do not need to put /WEB-INF/faces-config.xml in here.-->
+<!--	    </description>-->
+<!--	    <param-name>javax.faces.CONFIG_FILES</param-name>-->
+<!--	    <param-value>/WEB-INF/examples-config.xml,/WEB-INF/testSuite-config.xml</param-value>-->
+<!--  	</context-param>	-->
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -55,7 +64,20 @@
 		<servlet-name>springweb</servlet-name>
 		<url-pattern>*.htm</url-pattern>
 	</servlet-mapping>
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.faces</url-pattern>
+    </servlet-mapping>	
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/error.jsp</location>
+	</error-page>	
 </web-app>
