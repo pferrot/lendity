@@ -2,18 +2,19 @@
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
-<HEAD><TITLE>Success</TITLE>
+<HEAD><TITLE>Validate?</TITLE>
 </HEAD>
 <BODY>
 <CENTER>
 <TABLE BORDER=5>
-  <TR><TH CLASS="TITLE">Success</TH></TR>
+  <TR><TH CLASS="TITLE">Validate?</TH></TR>
 </TABLE>
-<H2>You have registered successfully.</H2>
 
 <f:view>
 <h:form>
 <h:outputText value="#{registrationBean.username}"/><br/>
+<h:commandButton value="Validate !" action="validate"/><br/>
+<h:commandButton value="Back !" action="back"/>
 
 </h:form>
 </f:view>

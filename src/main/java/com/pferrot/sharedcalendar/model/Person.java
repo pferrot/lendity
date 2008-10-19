@@ -3,6 +3,7 @@ package com.pferrot.sharedcalendar.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,7 +31,8 @@ public class Person implements Serializable {
 	@Column(name = "EMAIL", length = 255)
 	private String email;
 	
-	@OneToOne(targetEntity = com.pferrot.security.model.User.class)
+	@OneToOne(targetEntity = com.pferrot.security.model.User.class,
+			  cascade = {CascadeType.PERSIST})
 	@JoinColumn(name = "USER_ID", nullable = false)
 	private User user;
 

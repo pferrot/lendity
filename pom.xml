@@ -24,13 +24,13 @@
 		    <groupId>org.apache.myfaces.core</groupId>
 		    <artifactId>myfaces-api</artifactId>
 		    <version>1.2.4</version>
-		    <scope>runtime</scope>
+		    <scope>compile</scope>
 		</dependency> 
 		<dependency>
 		    <groupId>org.apache.myfaces.core</groupId>
 		    <artifactId>myfaces-impl</artifactId>
 		    <version>1.2.4</version>
-		    <scope>runtime</scope>
+		    <scope>compile</scope>
 		</dependency> 				
 		<dependency>
 		    <groupId>org.slf4j</groupId>

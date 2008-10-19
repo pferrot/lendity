@@ -7,6 +7,7 @@ public interface PersonDao {
 	Long createPerson(Person person);
 	
 	Person findPerson(Long personId);
+	Person findPersonFromUsername(String username);
 	
 	void updatePerson(Person person);
 	

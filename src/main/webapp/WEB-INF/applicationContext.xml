@@ -60,6 +60,11 @@
 				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
 			</props>
 		</property>
-	</bean>		
+	</bean>
+	
+	<bean id="registrationService" class="com.pferrot.sharedcalendar.register.RegistrationService">
+		<property name="userDao" ref="security.userDao"/>
+		<property name="personDao" ref="personDao"/>	
+	</bean>	
 	
 </beans>
