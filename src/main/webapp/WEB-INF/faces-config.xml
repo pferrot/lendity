@@ -14,42 +14,50 @@ TODO: dtd is 1.1? why not 1.2?
 			org.springframework.web.jsf.DelegatingVariableResolver 
 		</variable-resolver>
 	</application>
-	
 	<managed-bean>
 		<description>Registration Bean</description>
 		<managed-bean-name>registrationBean</managed-bean-name>
-		<managed-bean-class>
-			com.pferrot.sharedcalendar.register.jsf.RegistrationBean 
-		</managed-bean-class>
+		<managed-bean-class>com.pferrot.sharedcalendar.register.jsf.RegistrationBean</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 		<managed-property>
 			<property-name>registrationService</property-name>
 			<value>#{registrationService}</value>
-		</managed-property>		
+		</managed-property>
+		<managed-property>
+			<property-name>renderManager</property-name>
+			<value>#{renderManager}</value>
+		</managed-property>
 	</managed-bean>
 	
+	<managed-bean>
+		<managed-bean-name>renderManager</managed-bean-name>
+		<managed-bean-class>com.icesoft.faces.async.render.RenderManager</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+	
+	
 	<navigation-rule>
-		<from-view-id>/registration.jsp</from-view-id>
+		<from-view-id>/registration.jspx</from-view-id>
 		<navigation-case>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/registration_validation.jsp</to-view-id>
+			<to-view-id>/registration_validation.jspx</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/registration_validation.jsp</from-view-id>
+		<from-view-id>/registration_validation.jspx</from-view-id>
 		<navigation-case>
 			<from-outcome>validate</from-outcome>
-			<to-view-id>/registration_confirmation.jsp</to-view-id>
+			<to-view-id>/registration_confirmation.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>back</from-outcome>
-			<to-view-id>/registration.jsp</to-view-id>
+			<to-view-id>/registration.jspx</to-view-id>
 		</navigation-case>		
 	</navigation-rule>
 		
 	<navigation-rule>
-		<from-view-id>/registration_confirmation.jsp</from-view-id>
+		<from-view-id>/registration_confirmation.jspx</from-view-id>
 	</navigation-rule>
 		
 <!--  <navigation-rule>-->

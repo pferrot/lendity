@@ -1,15 +1,32 @@
 package com.pferrot.sharedcalendar.register.jsf;
 
+import org.apache.commons.logging.Log;
+
+import org.apache.commons.logging.LogFactory;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 
+import com.icesoft.faces.async.render.IntervalRenderer;
+import com.icesoft.faces.async.render.RenderManager;
+import com.icesoft.faces.async.render.Renderable;
+import com.icesoft.faces.context.DisposableBean;
+import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
+import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
+import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.pferrot.sharedcalendar.register.RegistrationService;
 
-public class RegistrationBean {
+public class RegistrationBean implements Renderable, DisposableBean {
+	
+	private final static Log log = LogFactory.getLog(RegistrationBean.class);
+	
+	private final static int renderInterval = 1000;
 	
 	private RegistrationService registrationService;
+	private PersistentFacesState state;	 
+	private IntervalRenderer clock;
 	
 	private String username;
 	private String password;
@@ -18,6 +35,12 @@ public class RegistrationBean {
 	private String lastName;
 	private String email;
 	
+	
+	public RegistrationBean() {
+		super();
+		state = PersistentFacesState.getInstance();
+	}
+
 	public RegistrationService getRegistrationService() {
 		return registrationService;
 	}
@@ -114,9 +137,52 @@ public class RegistrationBean {
 			//message = CoffeeBreakBean.loadErrorMessage(context, CoffeeBreakBean.CB_RESOURCE_BUNDLE_NAME, "EMailError");
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
-	}	
+	}
+
+	public PersistentFacesState getState() {
+		return state;
+	}
+
+	public void renderingException(RenderingException renderingException) {
+		if (log. isDebugEnabled()) {			 
+			log.debug("Rendering exception:  " + renderingException);
+		}	 
+		if (renderingException instanceof FatalRenderingException) { 
+			performCleanup();	 
+		}		
+	}
+
+	protected boolean performCleanup() {
+		try {
+			if (clock != null) {	
+				clock.remove(this);
+				if (clock.isEmpty() ) { 
+					clock.dispose();
+				}
+				clock = null;
+			}
+			return true;
+		} 
+		catch (Exception failedCleanup) {
+			if (log.isErrorEnabled()) {
+				log.error("Failed to cleanup a clock bean", failedCleanup);
+			}
+		}
+		return false;
+	}
 	
-	
-	
+	public void setRenderManager(RenderManager renderManager) {
+		clock = renderManager.getIntervalRenderer("clock"); 
+		clock.setInterval(renderInterval); 
+		clock.add(this);  
+		clock.requestRender();
+	}
+
+	public void dispose() throws Exception {
+        if (log.isInfoEnabled()) {        	 
+            log.info("Dispose RegistrationBean for a user - cleaning up"); 
+        } 
+        performCleanup();		
+	}
 
 }

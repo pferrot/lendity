@@ -18,6 +18,24 @@
 		<param-name>log4jConfigLocation</param-name>
 		<param-value>/WEB-INF/classes/log4j.properties</param-value>
 	</context-param>
+	<!-- 
+	For IceFaces
+	 -->
+	<context-param>
+		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+		<param-value>.jspx</param-value>
+	</context-param>
+	<context-param>
+		<param-name>com.icesoft.faces.synchronousUpdate</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>com.icesoft.faces.concurrentDOMViews</param-name>
+		<param-value>true</param-value> 
+	</context-param>
+	
+	
+	
 <!--	  	<context-param>-->
 <!--	    <description>Comma separated list of URIs of (additional) faces config files.-->
 <!--	            (e.g. /WEB-INF/my-config.xml)-->
@@ -54,6 +72,18 @@
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
+	<!-- 
+	Only required if the following error occurs at Tomcat startup:
+	"SEVERE: ICEfaces could not initialize JavaServer Faces. Please check that the JSF .jar files are installed correctly."
+	 -->
+<!--	<listener>-->
+<!--		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>-->
+<!--	</listener>-->
+	<listener>
+		<listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
+	</listener>
+
+	
 	<servlet>
 		<description>Spring MVC Dispatcher Servlet</description>
 		<servlet-name>springweb</servlet-name>
@@ -72,7 +102,34 @@
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.faces</url-pattern>
-    </servlet-mapping>	
+    </servlet-mapping>
+    <!-- 
+    IceFaces stuff.
+     -->
+	<servlet>
+		<servlet-name>Persistent Faces Servlet</servlet-name>
+		<servlet-class> com.icesoft.faces.webapp.xmlhttp.PersistentFacesServlet 
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Persistent Faces Servlet</servlet-name>
+		<url-pattern>*.iface</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Persistent Faces Servlet</servlet-name>
+		<url-pattern>/xmlhttp/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Blocking Servlet</servlet-name>
+		<servlet-class>com.icesoft.faces.webapp.xmlhttp.BlockingServlet</servlet-class>
+		<load-on-startup> 1 </load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Blocking Servlet</servlet-name>
+		<url-pattern>/block/*</url-pattern>
+	</servlet-mapping>		
+    
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>

@@ -1,0 +1,15 @@
+<f:view xmlns:f="http://java.sun.com/jsf/core"  
+        xmlns:h="http://java.sun.com/jsf/html">
+<HTML>
+<HEAD><TITLE>Confirmation</TITLE>
+</HEAD>
+<BODY>
+<CENTER>
+<TABLE BORDER="5">
+  <TR><TH CLASS="TITLE">Confirmation</TH></TR>
+</TABLE>
+
+DONE !
+
+</CENTER></BODY></HTML>
+</f:view>
