@@ -18,15 +18,18 @@ import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.pferrot.sharedcalendar.register.RegistrationService;
 
-public class RegistrationBean implements Renderable, DisposableBean {
+public class RegistrationBean 
+// Renderable is NOT necessary in sync mode.
+//implements Renderable, DisposableBean 
+{
 	
 	private final static Log log = LogFactory.getLog(RegistrationBean.class);
 	
 	private final static int renderInterval = 1000;
 	
 	private RegistrationService registrationService;
-	private PersistentFacesState state;	 
-	private IntervalRenderer clock;
+//	private PersistentFacesState state;	 
+//	private IntervalRenderer clock;
 	
 	private String username;
 	private String password;
@@ -38,7 +41,7 @@ public class RegistrationBean implements Renderable, DisposableBean {
 	
 	public RegistrationBean() {
 		super();
-		state = PersistentFacesState.getInstance();
+//		state = PersistentFacesState.getInstance();
 	}
 
 	public RegistrationService getRegistrationService() {
@@ -139,50 +142,50 @@ public class RegistrationBean implements Renderable, DisposableBean {
 		}
 	}
 
-	public PersistentFacesState getState() {
-		return state;
-	}
+//	public PersistentFacesState getState() {
+//		return state;
+//	}
 
-	public void renderingException(RenderingException renderingException) {
-		if (log. isDebugEnabled()) {			 
-			log.debug("Rendering exception:  " + renderingException);
-		}	 
-		if (renderingException instanceof FatalRenderingException) { 
-			performCleanup();	 
-		}		
-	}
+//	public void renderingException(RenderingException renderingException) {
+//		if (log. isDebugEnabled()) {			 
+//			log.debug("Rendering exception:  " + renderingException);
+//		}	 
+//		if (renderingException instanceof FatalRenderingException) { 
+//			performCleanup();	 
+//		}		
+//	}
 
-	protected boolean performCleanup() {
-		try {
-			if (clock != null) {	
-				clock.remove(this);
-				if (clock.isEmpty() ) { 
-					clock.dispose();
-				}
-				clock = null;
-			}
-			return true;
-		} 
-		catch (Exception failedCleanup) {
-			if (log.isErrorEnabled()) {
-				log.error("Failed to cleanup a clock bean", failedCleanup);
-			}
-		}
-		return false;
-	}
+//	protected boolean performCleanup() {
+//		try {
+//			if (clock != null) {	
+//				clock.remove(this);
+//				if (clock.isEmpty() ) { 
+//					clock.dispose();
+//				}
+//				clock = null;
+//			}
+//			return true;
+//		} 
+//		catch (Exception failedCleanup) {
+//			if (log.isErrorEnabled()) {
+//				log.error("Failed to cleanup a clock bean", failedCleanup);
+//			}
+//		}
+//		return false;
+//	}
 	
-	public void setRenderManager(RenderManager renderManager) {
-		clock = renderManager.getIntervalRenderer("clock"); 
-		clock.setInterval(renderInterval); 
-		clock.add(this);  
-		clock.requestRender();
-	}
+//	public void setRenderManager(RenderManager renderManager) {
+//		clock = renderManager.getIntervalRenderer("clock"); 
+//		clock.setInterval(renderInterval); 
+//		clock.add(this);  
+//		clock.requestRender();
+//	}
 
-	public void dispose() throws Exception {
-        if (log.isInfoEnabled()) {        	 
-            log.info("Dispose RegistrationBean for a user - cleaning up"); 
-        } 
-        performCleanup();		
-	}
+//	public void dispose() throws Exception {
+//        if (log.isInfoEnabled()) {        	 
+//            log.info("Dispose RegistrationBean for a user - cleaning up"); 
+//        } 
+//        performCleanup();		
+//	}
 
 }

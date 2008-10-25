@@ -1,37 +1,57 @@
 <f:view xmlns:f="http://java.sun.com/jsf/core"  
         xmlns:h="http://java.sun.com/jsf/html"
 		xmlns:ice="http://www.icesoft.com/icefaces/component">
-<HTML>
-<HEAD><TITLE>New Account Registration</TITLE>
-</HEAD>
-<BODY>
-<CENTER>
-<TABLE BORDER="5">
-  <TR><TH CLASS="TITLE">New Account Registration</TH></TR>
-</TABLE>
-<ice:form>
-<h:message showSummary="true" showDetail="false" style="color: red;" for="username"></h:message>
-<h:message showSummary="true" showDetail="false" style="color: red;" for="password"></h:message>
-<h:message showSummary="true" showDetail="false" style="color: red;" for="passwordRepeat"></h:message>
-<h:message showSummary="true" showDetail="false" style="color: red;" for="firstName"></h:message>
-<h:message showSummary="true" showDetail="false" style="color: red;" for="lastName"></h:message>
-<h:message showSummary="true" showDetail="false" style="color: red;" for="email"></h:message>
+<ice:outputDeclaration doctypeRoot="HTML"
+                       doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
+                       doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>		
+<html>
+<head>
+<title>New Account Registration</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+<ice:outputStyle href="./css/custom/custom.css"/>
+</head>
 
-Username: 
-<ice:inputText id="username" value="#{registrationBean.username}" required="true" validator="#{registrationBean.validateUsername}">
+<body>
+
+<center>
+<table border="5">
+  <tr><th>New Account Registration</th></tr>
+</table>
+
+<ice:form>
+
+Username:<br/>
+<ice:message showSummary="true" showDetail="false" style="color: red;" for="username"></ice:message><br/>
+<ice:inputText id="username" value="#{registrationBean.username}" required="true" validator="#{registrationBean.validateUsername}" onblur="iceSubmitPartial(form,this,event);">
 <!--	<ice:effect effectType="appear"/>-->
-</ice:inputText>
+</ice:inputText><br/>
+
+Password:<br/>
+<ice:message showSummary="true" showDetail="false" style="color: red;" for="password"></ice:message><br/>
+<ice:inputSecret id="password" value="#{registrationBean.password}" required="true" /><br/>
+
+Password repeat:<br/>
+<ice:message showSummary="true" showDetail="false" style="color: red;" for="passwordRepeat"></ice:message><br/>
+<ice:inputSecret id="passwordRepeat" value="#{registrationBean.passwordRepeat}" required="true" /><br/>
+
+First name:<br/>
+<ice:message showSummary="true" showDetail="false" style="color: red;" for="firstName"></ice:message><br/>
+<ice:inputText id="firstName" value="#{registrationBean.firstName}" required="true" /><br/>
+
+Last name:<br/>
+<ice:message showSummary="true" showDetail="false" style="color: red;" for="lastName"></ice:message><br/>
+<ice:inputText id="lastName" value="#{registrationBean.lastName}" required="true" /><br/>
+
+Email:<br/>
+<ice:message showSummary="true" showDetail="false" style="color: red;" for="email"></ice:message><br/>
+<ice:inputText id="email" value="#{registrationBean.email}" required="true" validator="#{registrationBean.validateEmail}">
+</ice:inputText><br/>
+
 <br/>
-Password: <h:inputSecret id="password" value="#{registrationBean.password}" required="true" /><br/>
-Password repeat: <h:inputSecret id="passwordRepeat" value="#{registrationBean.passwordRepeat}" required="true">
-</h:inputSecret>
-<br/>
-First name: <h:inputText id="firstName" value="#{registrationBean.firstName}" required="true"/><br/>
-Last name: <h:inputText id="lastName" value="#{registrationBean.lastName}" required="true"/><br/>
-Email: <h:inputText id="email" value="#{registrationBean.email}" required="true" >
-</h:inputText>
-<br/>
-  <h:commandButton value="Sign Me Up!" action="#{registrationBean.submit}"/><br/>
+
+<ice:commandButton value="Sign Me Up!" action="#{registrationBean.submit}"/><br/>
 </ice:form>
-</CENTER></BODY></HTML>
+</center>
+</body>
+</html>
 </f:view>

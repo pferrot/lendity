@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	version="2.5">
+<?xml version="1.0"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<!-- 
+Using web-app 2.3 in order to user ICEfaces with JSF 1.2. See ICEfacesDeveloperGuide.pdf, "Using ICEfaces with JSF 1.2".
+ -->
+<web-app>
 	<display-name>Shared Calendar</display-name>
 	<!--
 		- Location of the XML file that defines the root application context -
@@ -27,7 +29,7 @@
 	</context-param>
 	<context-param>
 		<param-name>com.icesoft.faces.synchronousUpdate</param-name>
-		<param-value>false</param-value>
+		<param-value>true</param-value>
 	</context-param>
 	<context-param>
 		<param-name>com.icesoft.faces.concurrentDOMViews</param-name>
@@ -84,34 +86,43 @@
 	</listener>
 
 	
-	<servlet>
-		<description>Spring MVC Dispatcher Servlet</description>
+	<servlet>		
 		<servlet-name>springweb</servlet-name>
+		<description>Spring MVC Dispatcher Servlet</description>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
-	<servlet-mapping>
-		<servlet-name>springweb</servlet-name>
-		<url-pattern>*.htm</url-pattern>
-	</servlet-mapping>
+    <!-- 
+    IceFaces stuff.
+     -->	
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+	<servlet>
+		<servlet-name>Persistent Faces Servlet</servlet-name>
+		<servlet-class>com.icesoft.faces.webapp.xmlhttp.PersistentFacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>Blocking Servlet</servlet-name>
+		<servlet-class>com.icesoft.faces.webapp.xmlhttp.BlockingServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>springweb</servlet-name>
+		<url-pattern>*.htm</url-pattern>
+	</servlet-mapping>
+	
+    <!-- 
+    IceFaces stuff.
+     -->		    
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.faces</url-pattern>
     </servlet-mapping>
-    <!-- 
-    IceFaces stuff.
-     -->
-	<servlet>
-		<servlet-name>Persistent Faces Servlet</servlet-name>
-		<servlet-class> com.icesoft.faces.webapp.xmlhttp.PersistentFacesServlet 
-		</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
 	<servlet-mapping>
 		<servlet-name>Persistent Faces Servlet</servlet-name>
 		<url-pattern>*.iface</url-pattern>
@@ -120,11 +131,6 @@
 		<servlet-name>Persistent Faces Servlet</servlet-name>
 		<url-pattern>/xmlhttp/*</url-pattern>
 	</servlet-mapping>
-	<servlet>
-		<servlet-name>Blocking Servlet</servlet-name>
-		<servlet-class>com.icesoft.faces.webapp.xmlhttp.BlockingServlet</servlet-class>
-		<load-on-startup> 1 </load-on-startup>
-	</servlet>
 	<servlet-mapping>
 		<servlet-name>Blocking Servlet</servlet-name>
 		<url-pattern>/block/*</url-pattern>
@@ -133,8 +139,10 @@
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
+	
 	<error-page>
 		<error-code>500</error-code>
 		<location>/error.jsp</location>
-	</error-page>	
+	</error-page>
+		
 </web-app>

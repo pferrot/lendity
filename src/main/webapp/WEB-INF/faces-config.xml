@@ -3,7 +3,7 @@
   "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
   "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
 <!-- 
-TODO: dtd is 1.1? why not 1.2?
+Using faces-config 1.1 in order to user ICEfaces with JSF 1.2. See ICEfacesDeveloperGuide.pdf, "Using ICEfaces with JSF 1.2".
  -->
 <faces-config>
 	<!-- 
@@ -23,19 +23,22 @@ TODO: dtd is 1.1? why not 1.2?
 			<property-name>registrationService</property-name>
 			<value>#{registrationService}</value>
 		</managed-property>
+		<!-- 
 		<managed-property>
 			<property-name>renderManager</property-name>
 			<value>#{renderManager}</value>
 		</managed-property>
+		-->
 	</managed-bean>
 	
+	<!-- 
 	<managed-bean>
 		<managed-bean-name>renderManager</managed-bean-name>
 		<managed-bean-class>com.icesoft.faces.async.render.RenderManager</managed-bean-class>
 		<managed-bean-scope>application</managed-bean-scope>
-	</managed-bean>
-	
-	
+	</managed-bean>	
+	 -->
+	 
 	<navigation-rule>
 		<from-view-id>/registration.jspx</from-view-id>
 		<navigation-case>
