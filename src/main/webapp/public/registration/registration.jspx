@@ -8,7 +8,7 @@
 <head>
 <title>New Account Registration</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
-<ice:outputStyle href="./css/custom/custom.css"/>
+<ice:outputStyle href="./public/css/custom/custom.css"/>
 </head>
 
 <body>
@@ -22,34 +22,34 @@
 
 Username:<br/>
 <ice:message showSummary="true" showDetail="false" style="color: red;" for="username"></ice:message><br/>
-<ice:inputText id="username" value="#{registrationBean.username}" required="true" validator="#{registrationBean.validateUsername}" onblur="iceSubmitPartial(form,this,event);">
+<ice:inputText id="username" value="#{registrationStep1.username}" required="true" validator="#{registrationStep1.validateUsername}" onblur="iceSubmitPartial(form,this,event);">
 <!--	<ice:effect effectType="appear"/>-->
 </ice:inputText><br/>
 
 Password:<br/>
 <ice:message showSummary="true" showDetail="false" style="color: red;" for="password"></ice:message><br/>
-<ice:inputSecret id="password" value="#{registrationBean.password}" required="true" /><br/>
+<ice:inputSecret id="password" value="#{registrationStep1.password}" required="true" /><br/>
 
 Password repeat:<br/>
 <ice:message showSummary="true" showDetail="false" style="color: red;" for="passwordRepeat"></ice:message><br/>
-<ice:inputSecret id="passwordRepeat" value="#{registrationBean.passwordRepeat}" required="true" /><br/>
+<ice:inputSecret id="passwordRepeat" value="#{registrationStep1.passwordRepeat}" required="true" /><br/>
 
 First name:<br/>
 <ice:message showSummary="true" showDetail="false" style="color: red;" for="firstName"></ice:message><br/>
-<ice:inputText id="firstName" value="#{registrationBean.firstName}" required="true" /><br/>
+<ice:inputText id="firstName" value="#{registrationStep1.firstName}" required="true" /><br/>
 
 Last name:<br/>
 <ice:message showSummary="true" showDetail="false" style="color: red;" for="lastName"></ice:message><br/>
-<ice:inputText id="lastName" value="#{registrationBean.lastName}" required="true" /><br/>
+<ice:inputText id="lastName" value="#{registrationStep1.lastName}" required="true" /><br/>
 
 Email:<br/>
 <ice:message showSummary="true" showDetail="false" style="color: red;" for="email"></ice:message><br/>
-<ice:inputText id="email" value="#{registrationBean.email}" required="true" validator="#{registrationBean.validateEmail}">
+<ice:inputText id="email" value="#{registrationStep1.email}" required="true" validator="#{registrationStep1.validateEmail}">
 </ice:inputText><br/>
 
 <br/>
 
-<ice:commandButton value="Sign Me Up!" action="#{registrationBean.submit}"/><br/>
+<ice:commandButton value="Sign Me Up!" action="#{registrationStep1.submit}"/><br/>
 </ice:form>
 </center>
 </body>

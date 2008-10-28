@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:orchestra="http://myfaces.apache.org/orchestra"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	                    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	                    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+	                    http://myfaces.apache.org/orchestra http://myfaces.apache.org/orchestra/orchestra.xsd">
 	
 	<bean id="dataSource" name="core.dataSource,security.dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
@@ -44,6 +49,7 @@
 	<bean id="personDaoTarget" class="com.pferrot.sharedcalendar.dao.hibernate.PersonDaoHibernateImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
+	
 	<bean id="personDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="transactionManager"/>
 		<property name="target">
@@ -62,9 +68,80 @@
 		</property>
 	</bean>
 	
-	<bean id="registrationService" class="com.pferrot.sharedcalendar.register.RegistrationService">
+	<bean id="registrationService" class="com.pferrot.sharedcalendar.registration.RegistrationService">
 		<property name="userDao" ref="security.userDao"/>
 		<property name="personDao" ref="personDao"/>	
+	</bean>
+	
+	<bean id="registrationStep1" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationStep1"
+	      scope="request">
+		<property name="registrationViewController" ref="registrationViewController"/>
+		<property name="registrationService" ref="registrationService"/>
+	</bean>
+	
+	<bean id="registrationViewController" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationViewController"
+	      scope="conversation.manual" orchestra:conversationName="registration">
 	</bean>	
+	
+	
+	<!-- 
+	Orchestra stuff...
+	 -->
+	<import resource="classpath*:/META-INF/spring-orchestra-init.xml"/>
+	
+    <!-- register our custom spring scope -->
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+		<property name="scopes">
+			<map>
+				<entry key="conversation.manual">
+					<bean class="org.apache.myfaces.orchestra.conversation.spring.SpringConversationScope">
+						<property name="timeout" value="35" />
+						<property name="advices">
+							<list>
+								<ref bean="persistentContextConversationInterceptor" />
+							</list>
+						</property>
+					</bean>
+				</entry>
+				<entry key="conversation.flash">
+					<bean class="org.apache.myfaces.orchestra.conversation.spring.SpringConversationScope">
+						<property name="advices">
+							<list>
+								<ref bean="persistentContextConversationInterceptor" />
+							</list>
+						</property>
+						<property name="lifetime" value="flash" />
+					</bean>
+				</entry>
+				<entry key="conversation.viewController">
+					<bean class="org.apache.myfaces.orchestra.viewController.spring.SpringViewControllerScope">
+						<property name="advices">
+							<list>
+								<ref bean="persistentContextConversationInterceptor" />
+							</list>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>	
+    
+	<bean id="persistentContextConversationInterceptor" class="org.apache.myfaces.orchestra.conversation.spring.PersistenceContextConversationInterceptor">
+		<property name="persistenceContextFactory" ref="persistentContextFactory" />
+	</bean>    
+    
+    <!-- 
+    <tx:annotation-driven/>
+     -->
+     
+    <bean id="persistentContextFactory" class="com.pferrot.orchestra.hibernate.HibernatePersistenceContextFactory">
+		<property name="entityManagerFactory" ref="sessionFactory"/>
+    </bean>
+    
+<!--	<bean id="managedDataSource" class="org.apache.myfaces.orchestra.connectionManager.ConnectionManagerDataSource">-->
+<!--    	<property name="dataSource" ref="dataSource"/>-->
+<!--    </bean>    -->
+
+	 
 	
 </beans>

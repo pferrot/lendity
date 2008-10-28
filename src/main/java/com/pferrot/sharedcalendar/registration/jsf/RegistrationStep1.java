@@ -1,4 +1,4 @@
-package com.pferrot.sharedcalendar.register.jsf;
+package com.pferrot.sharedcalendar.registration.jsf;
 
 import org.apache.commons.logging.Log;
 
@@ -16,17 +16,19 @@ import com.icesoft.faces.context.DisposableBean;
 import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
-import com.pferrot.sharedcalendar.register.RegistrationService;
+import com.pferrot.sharedcalendar.registration.RegistrationService;
 
-public class RegistrationBean 
+public class RegistrationStep1
 // Renderable is NOT necessary in sync mode.
 //implements Renderable, DisposableBean 
 {
 	
-	private final static Log log = LogFactory.getLog(RegistrationBean.class);
+	
+	private final static Log log = LogFactory.getLog(RegistrationStep1.class);
 	
 	private final static int renderInterval = 1000;
 	
+	private RegistrationViewController registrationViewController;
 	private RegistrationService registrationService;
 //	private PersistentFacesState state;	 
 //	private IntervalRenderer clock;
@@ -39,9 +41,18 @@ public class RegistrationBean
 	private String email;
 	
 	
-	public RegistrationBean() {
+	public RegistrationStep1() {
 		super();
 //		state = PersistentFacesState.getInstance();
+	}
+	
+	public RegistrationViewController getRegistrationViewController() {
+		return registrationViewController;
+	}
+
+	public void setRegistrationViewController(
+			RegistrationViewController registrationViewController) {
+		this.registrationViewController = registrationViewController;
 	}
 
 	public RegistrationService getRegistrationService() {

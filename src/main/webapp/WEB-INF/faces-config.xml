@@ -14,22 +14,22 @@ Using faces-config 1.1 in order to user ICEfaces with JSF 1.2. See ICEfacesDevel
 			org.springframework.web.jsf.DelegatingVariableResolver 
 		</variable-resolver>
 	</application>
-	<managed-bean>
-		<description>Registration Bean</description>
-		<managed-bean-name>registrationBean</managed-bean-name>
-		<managed-bean-class>com.pferrot.sharedcalendar.register.jsf.RegistrationBean</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
-		<managed-property>
-			<property-name>registrationService</property-name>
-			<value>#{registrationService}</value>
-		</managed-property>
+<!--	<managed-bean>-->
+<!--		<description>Registration Bean</description>-->
+<!--		<managed-bean-name>registrationBean</managed-bean-name>-->
+<!--		<managed-bean-class>com.pferrot.sharedcalendar.registration.jsf.RegistrationBean</managed-bean-class>-->
+<!--		<managed-bean-scope>request</managed-bean-scope>-->
+<!--		<managed-property>-->
+<!--			<property-name>registrationService</property-name>-->
+<!--			<value>#{registrationService}</value>-->
+<!--		</managed-property>-->
 		<!-- 
 		<managed-property>
 			<property-name>renderManager</property-name>
 			<value>#{renderManager}</value>
 		</managed-property>
 		-->
-	</managed-bean>
+<!--	</managed-bean>-->
 	
 	<!-- 
 	<managed-bean>
@@ -39,39 +39,33 @@ Using faces-config 1.1 in order to user ICEfaces with JSF 1.2. See ICEfacesDevel
 	</managed-bean>	
 	 -->
 	 
+	<!-- 
+	********************************************************************
+	REGISTRATION
+	********************************************************************
+	-->
 	<navigation-rule>
-		<from-view-id>/registration.jspx</from-view-id>
+		<from-view-id>/public/registration/registration.jspx</from-view-id>
 		<navigation-case>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/registration_validation.jspx</to-view-id>
+			<to-view-id>/public/registration/registration_2.jspx</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/registration_validation.jspx</from-view-id>
+		<from-view-id>/public/registration/registration_2.jspx</from-view-id>
 		<navigation-case>
 			<from-outcome>validate</from-outcome>
-			<to-view-id>/registration_confirmation.jspx</to-view-id>
+			<to-view-id>/public/registration/registration_3.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>back</from-outcome>
-			<to-view-id>/registration.jspx</to-view-id>
+			<to-view-id>/public/registration/registration.jspx</to-view-id>
 		</navigation-case>		
 	</navigation-rule>
 		
 	<navigation-rule>
-		<from-view-id>/registration_confirmation.jspx</from-view-id>
+		<from-view-id>/public/registration/registration_3.jspx</from-view-id>
 	</navigation-rule>
-		
-<!--  <navigation-rule>-->
-<!--    <from-view-id>/signup.jsp</from-view-id>-->
-<!--    <navigation-case>-->
-<!--      <from-outcome>accepted</from-outcome>-->
-<!--      <to-view-id>/WEB-INF/results/accepted.jsp</to-view-id>-->
-<!--    </navigation-case>-->
-<!--    <navigation-case>-->
-<!--      <from-outcome>rejected</from-outcome>-->
-<!--      <to-view-id>/WEB-INF/results/rejected.jsp</to-view-id>-->
-<!--    </navigation-case>-->
-<!--  </navigation-rule>	-->
+
 </faces-config>

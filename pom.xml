@@ -32,32 +32,41 @@
 		    <version>1.2.4</version>
 		    <scope>compile</scope>
 		</dependency> 	
-<!--		<dependency>-->
-<!--		    <groupId>org.apache.myfaces.orchestra</groupId>-->
-<!--		    <artifactId>myfaces-orchestra-core</artifactId>-->
-<!--		    <version>1.2</version>-->
-<!--		    <scope>compile</scope>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--		    <groupId>org.apache.myfaces.orchestra</groupId>-->
-<!--		    <artifactId>myfaces-orchestra-core15</artifactId>-->
-<!--		    <version>1.0</version>-->
-<!--		    <scope>compile</scope>-->
-	<!--		</dependency>					-->
+		<dependency>
+		    <groupId>org.apache.myfaces.orchestra</groupId>
+		    <artifactId>myfaces-orchestra-core</artifactId>
+		    <version>1.2</version>
+		    <scope>compile</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.myfaces.orchestra</groupId>
+		    <artifactId>myfaces-orchestra-core15</artifactId>
+		    <version>1.0</version>
+		    <scope>compile</scope>
+		</dependency>
+		<!-- 
+		Required by myfaces-orchestra-core15
+		 -->
+		<dependency>
+		    <groupId>commons-el</groupId>
+		    <artifactId>commons-el</artifactId>
+		    <version>1.0</version>
+		    <scope>runtime</scope>
+		</dependency> 
 		<dependency>
 			<groupId>org.icefaces</groupId>
 			<artifactId>icefaces</artifactId>
 			<version>1.7.2</version>
 			<scope>compile</scope>
-			<exclusions>
+<!--			<exclusions>-->
 				<!-- 
 				Provided with Tomcat.
 				 -->
-				<exclusion>
-					<groupId>javax.el</groupId>
-					<artifactId>el-api</artifactId>
-				</exclusion>
-			</exclusions>
+<!--				<exclusion>-->
+<!--					<groupId>javax.el</groupId>-->
+<!--					<artifactId>el-api</artifactId>-->
+<!--				</exclusion>-->
+<!--			</exclusions>-->
 		</dependency>
 		<dependency>
 			<groupId>org.icefaces</groupId>

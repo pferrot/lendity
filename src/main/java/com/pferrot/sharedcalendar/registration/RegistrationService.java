@@ -1,4 +1,4 @@
-package com.pferrot.sharedcalendar.register;
+package com.pferrot.sharedcalendar.registration;
 
 import com.pferrot.security.dao.UserDao;
 import com.pferrot.security.model.User;
