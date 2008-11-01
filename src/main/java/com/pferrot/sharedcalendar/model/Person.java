@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+
 import com.pferrot.security.model.User;
 
 @Entity
@@ -34,6 +36,7 @@ public class Person implements Serializable {
 	@OneToOne(targetEntity = com.pferrot.security.model.User.class,
 			  cascade = {CascadeType.PERSIST})
 	@JoinColumn(name = "USER_ID", nullable = false)
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	private User user;
 
     public Person() {

@@ -1,22 +1,43 @@
-<f:view xmlns:f="http://java.sun.com/jsf/core"  
-        xmlns:h="http://java.sun.com/jsf/html">
-<HTML>
-<HEAD><TITLE>Validate?</TITLE>
-</HEAD>
-<BODY>
-<CENTER>
-<TABLE BORDER="5">
-  <TR><TH CLASS="TITLE">Validate?</TH></TR>
-</TABLE>
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<h:form>
-<h:outputText value="#{registrationBean.username}"/><br/>
-<h:commandButton value="Validate !" action="validate"/><br/>
-<h:commandButton value="Back !" action="back"/>
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="New Account Registration - Step 2" />
+	<ui:param name="contentHeader" value="New Account Registration - Step 2" />
 
-</h:form>
+	<ui:define name="content">
 
-</CENTER>
-</BODY>
-</HTML>
-</f:view>
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+			<ui:define name="pageName">
+            	#{contentHeader}
+          	</ui:define>
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
+				<f:view>
+					<center>
+
+					<ice:form>
+
+Username:<br />
+						<ice:outputText value="#{registrationViewController.username}" />
+						<br />
+
+						<ice:commandButton value="Back!"	action="#{registrationStep2.back}" />
+						<ice:commandButton value="Confirm!"	action="#{registrationStep2.confirm}" />
+						<br />
+					</ice:form></center>
+				</f:view>
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

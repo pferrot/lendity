@@ -1,15 +1,40 @@
-<f:view xmlns:f="http://java.sun.com/jsf/core"  
-        xmlns:h="http://java.sun.com/jsf/html">
-<HTML>
-<HEAD><TITLE>Confirmation</TITLE>
-</HEAD>
-<BODY>
-<CENTER>
-<TABLE BORDER="5">
-  <TR><TH CLASS="TITLE">Confirmation</TH></TR>
-</TABLE>
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-DONE !
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="New Account Registration - Step 3" />
+	<ui:param name="contentHeader" value="New Account Registration - Step 3" />
 
-</CENTER></BODY></HTML>
-</f:view>
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+			<ui:define name="pageName">
+            	#{contentHeader}
+          	</ui:define>
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
+				<f:view>
+					<center>
+
+					<ice:form>
+
+Username: <ice:outputText value="#{registrationViewController.username}" /> has been created...
+
+					</ice:form>
+
+					</center>
+				</f:view>
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

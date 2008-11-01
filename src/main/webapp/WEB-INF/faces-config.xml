@@ -6,13 +6,20 @@
 Using faces-config 1.1 in order to user ICEfaces with JSF 1.2. See ICEfacesDeveloperGuide.pdf, "Using ICEfaces with JSF 1.2".
  -->
 <faces-config>
-	<!-- 
-	Make it possible to access spring beans.
-	 -->
+	
 	<application>
+		<!-- 
+		Make it possible to access spring beans.
+		 -->
 		<variable-resolver>
 			org.springframework.web.jsf.DelegatingVariableResolver 
 		</variable-resolver>
+		<!-- 
+		To use facelets.
+		 -->
+		<view-handler>
+			com.icesoft.faces.facelets.D2DFaceletViewHandler
+		</view-handler>
 	</application>
 <!--	<managed-bean>-->
 <!--		<description>Registration Bean</description>-->
@@ -55,7 +62,7 @@ Using faces-config 1.1 in order to user ICEfaces with JSF 1.2. See ICEfacesDevel
 	<navigation-rule>
 		<from-view-id>/public/registration/registration_2.jspx</from-view-id>
 		<navigation-case>
-			<from-outcome>validate</from-outcome>
+			<from-outcome>confirm</from-outcome>
 			<to-view-id>/public/registration/registration_3.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>

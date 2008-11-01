@@ -70,7 +70,9 @@
 	
 	<bean id="registrationService" class="com.pferrot.sharedcalendar.registration.RegistrationService">
 		<property name="userDao" ref="security.userDao"/>
-		<property name="personDao" ref="personDao"/>	
+		<property name="roleDao" ref="security.roleDao"/>
+		<property name="personDao" ref="personDao"/>
+		<property name="passwordEncoder" ref="security.passwordEncoder"/>	
 	</bean>
 	
 	<bean id="registrationStep1" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationStep1"
@@ -79,8 +81,21 @@
 		<property name="registrationService" ref="registrationService"/>
 	</bean>
 	
+	<bean id="registrationStep2" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationStep2"
+	      scope="request">
+		<property name="registrationViewController" ref="registrationViewController"/>
+		<property name="registrationService" ref="registrationService"/>
+	</bean>
+	
+	<bean id="registrationStep3" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationStep3"
+	      scope="request">
+		<property name="registrationViewController" ref="registrationViewController"/>
+		<property name="registrationService" ref="registrationService"/>
+	</bean>		
+	
 	<bean id="registrationViewController" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationViewController"
 	      scope="conversation.manual" orchestra:conversationName="registration">
+	      <property name="registrationService" ref="registrationService"/>
 	</bean>	
 	
 	

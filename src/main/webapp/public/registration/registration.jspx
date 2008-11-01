@@ -1,57 +1,74 @@
-<f:view xmlns:f="http://java.sun.com/jsf/core"  
-        xmlns:h="http://java.sun.com/jsf/html"
-		xmlns:ice="http://www.icesoft.com/icefaces/component">
-<ice:outputDeclaration doctypeRoot="HTML"
-                       doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
-                       doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>		
-<html>
-<head>
-<title>New Account Registration</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
-<ice:outputStyle href="./public/css/custom/custom.css"/>
-</head>
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<body>
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="New Account Registration - Step 1" />
+	<ui:param name="contentHeader" value="New Account Registration - Step 1" />
 
-<center>
-<table border="5">
-  <tr><th>New Account Registration</th></tr>
-</table>
+	<ui:define name="content">
 
-<ice:form>
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
 
-Username:<br/>
-<ice:message showSummary="true" showDetail="false" style="color: red;" for="username"></ice:message><br/>
-<ice:inputText id="username" value="#{registrationStep1.username}" required="true" validator="#{registrationStep1.validateUsername}" onblur="iceSubmitPartial(form,this,event);">
-<!--	<ice:effect effectType="appear"/>-->
-</ice:inputText><br/>
+			<!-- header content here  -->
+			<ui:define name="pageName">
+            	#{contentHeader}
+          	</ui:define>
 
-Password:<br/>
-<ice:message showSummary="true" showDetail="false" style="color: red;" for="password"></ice:message><br/>
-<ice:inputSecret id="password" value="#{registrationStep1.password}" required="true" /><br/>
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
+				<f:view>
+					<center>
 
-Password repeat:<br/>
-<ice:message showSummary="true" showDetail="false" style="color: red;" for="passwordRepeat"></ice:message><br/>
-<ice:inputSecret id="passwordRepeat" value="#{registrationStep1.passwordRepeat}" required="true" /><br/>
+					<ice:form>
 
-First name:<br/>
-<ice:message showSummary="true" showDetail="false" style="color: red;" for="firstName"></ice:message><br/>
-<ice:inputText id="firstName" value="#{registrationStep1.firstName}" required="true" /><br/>
+Username:<br />
+						<ice:message showSummary="true" showDetail="false"
+							style="color: red;" for="username"></ice:message>
+						<br />
+						<ice:inputText id="username" value="#{registrationViewController.username}"
+							required="true" validator="#{registrationStep1.validateUsername}"
+							onblur="iceSubmitPartial(form,this,event);">
+						</ice:inputText>
+						<br />
 
-Last name:<br/>
-<ice:message showSummary="true" showDetail="false" style="color: red;" for="lastName"></ice:message><br/>
-<ice:inputText id="lastName" value="#{registrationStep1.lastName}" required="true" /><br/>
+First name:<br />
+						<ice:message showSummary="true" showDetail="false"
+							style="color: red;" for="firstName"></ice:message>
+						<br />
+						<ice:inputText id="firstName"
+							value="#{registrationViewController.firstName}" required="true" />
+						<br />
 
-Email:<br/>
-<ice:message showSummary="true" showDetail="false" style="color: red;" for="email"></ice:message><br/>
-<ice:inputText id="email" value="#{registrationStep1.email}" required="true" validator="#{registrationStep1.validateEmail}">
-</ice:inputText><br/>
+Last name:<br />
+						<ice:message showSummary="true" showDetail="false"
+							style="color: red;" for="lastName"></ice:message>
+						<br />
+						<ice:inputText id="lastName" value="#{registrationViewController.lastName}"
+							required="true" />
+						<br />
 
-<br/>
+Email:<br />
+						<ice:message showSummary="true" showDetail="false"
+							style="color: red;" for="email"></ice:message>
+						<br />
+						<ice:inputText id="email" value="#{registrationViewController.email}"
+							required="true" validator="#{registrationStep1.validateEmail}">
+						</ice:inputText>
+						<br />
 
-<ice:commandButton value="Sign Me Up!" action="#{registrationStep1.submit}"/><br/>
-</ice:form>
-</center>
-</body>
-</html>
-</f:view>
+						<br />
+
+						<ice:commandButton value="Sign Me Up!"	action="#{registrationStep1.submit}" />
+						<br />
+					</ice:form></center>
+				</f:view>
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
