@@ -1,6 +1,8 @@
 package com.pferrot.sharedcalendar.registration;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -8,6 +10,8 @@ import org.springframework.security.providers.encoding.Md5PasswordEncoder;
 import org.springframework.security.providers.encoding.MessageDigestPasswordEncoder;
 
 import com.icesoft.faces.webapp.command.SetCookie;
+import com.pferrot.emailsender.Consts;
+import com.pferrot.emailsender.manager.MailManager;
 import com.pferrot.security.dao.RoleDao;
 import com.pferrot.security.dao.UserDao;
 import com.pferrot.security.model.Role;
@@ -25,6 +29,11 @@ public class RegistrationService {
 	private UserDao userDao;
 	private RoleDao roleDao;
 	private MessageDigestPasswordEncoder passwordEncoder;
+	private MailManager mailManager;
+	
+	public void setMailManager(MailManager mailManager) {
+		this.mailManager = mailManager;
+	}
 	
 	public void setPersonDao(PersonDao personDao) {
 		this.personDao = personDao;
@@ -92,7 +101,20 @@ public class RegistrationService {
 		}
 		person.getUser().setPassword(md5EncodedPassword);
 		
-		// TODO: send email.
+		// Send email.
+		Map objects = new HashMap();
+		objects.put("firstName", person.getFirstName());
+		objects.put("username", person.getUser().getUsername());
+		objects.put("password", rawPassword);
+	
+		Map to = new HashMap();
+		to.put(person.getEmail(), person.getEmail());
+		
+		// TODO: localization
+		mailManager.send(Consts.DEFAULT_SENDER_ADDRESS, Consts.DEFAULT_SENDER_NAME,
+				to, null, null, "Your registration on sharedcalendar.com", objects, 
+				"com/pferrot/sharedcalendar/registration/emailtemplate/en");		
+		
 		
 		
 		// This will also create the user.

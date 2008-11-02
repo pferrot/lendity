@@ -1,0 +1,15 @@
+Hello $firstName,<br/><br/>
+
+Your account for http://www.sharedcalendar.com has been successfully created.<br/><br/>
+
+Use the following information to login:<br/><br/>
+
+
+Username: <b>$username</b><br/>
+Password: <b>$password</b><br/><br/>
+
+If you do not login in the next 30 days, you account will be deleted.<br/><br/>
+
+Thank you for joining,<br/><br/>
+
+sharedcalendar.com

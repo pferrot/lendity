@@ -14,7 +14,9 @@ Using web-app 2.3 in order to user ICEfaces with JSF 1.2. See ICEfacesDeveloperG
 		<param-value> 
 		    /WEB-INF/applicationContext.xml
 			/WEB-INF/applicationContext-app-security.xml
-			classpath:applicationContext-security.xml</param-value>
+			/WEB-INF/applicationContext-app-email-sender.xml
+			classpath:applicationContext-security.xml
+			classpath:applicationContext-email-sender.xml</param-value>
 	</context-param>
 	<context-param>
 		<param-name>log4jConfigLocation</param-name>

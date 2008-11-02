@@ -72,7 +72,8 @@
 		<property name="userDao" ref="security.userDao"/>
 		<property name="roleDao" ref="security.roleDao"/>
 		<property name="personDao" ref="personDao"/>
-		<property name="passwordEncoder" ref="security.passwordEncoder"/>	
+		<property name="passwordEncoder" ref="security.passwordEncoder"/>
+		<property name="mailManager" ref="emailSender.mailManager"/>
 	</bean>
 	
 	<bean id="registrationStep1" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationStep1"
