@@ -125,13 +125,25 @@ Using web-app 2.3 in order to user ICEfaces with JSF 1.2. See ICEfacesDeveloperG
 		<listener-class>org.apache.myfaces.orchestra.conversation.servlet.ConversationManagerSessionListener</listener-class>
 	</listener>	 
 
-	
+	<!-- 
 	<servlet>		
 		<servlet-name>springweb</servlet-name>
 		<description>Spring MVC Dispatcher Servlet</description>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
+	 -->
+	 
+	<!-- 
+	TODO: never in production !!!
+	 -->
+	<servlet>		
+		<servlet-name>initialdata</servlet-name>
+		<description>Servlet to create initial data in the DB</description>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+		
     <!-- 
     ICEfaces stuff.
      -->	
@@ -152,7 +164,7 @@ Using web-app 2.3 in order to user ICEfaces with JSF 1.2. See ICEfacesDeveloperG
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>springweb</servlet-name>
+		<servlet-name>initialdata</servlet-name>
 		<url-pattern>*.htm</url-pattern>
 	</servlet-mapping>
 	

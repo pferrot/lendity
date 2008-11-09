@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -38,6 +39,10 @@ public class Person implements Serializable {
 	@JoinColumn(name = "USER_ID", nullable = false)
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	private User user;
+	
+	@ManyToOne(targetEntity = com.pferrot.sharedcalendar.model.Gender.class)
+	@JoinColumn(name = "GENDER_ID", nullable = false)
+	private Gender gender;
 
     public Person() {
     }
@@ -84,6 +89,14 @@ public class Person implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 }
 

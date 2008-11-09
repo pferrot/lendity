@@ -6,8 +6,8 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="New Account Registration - Step 1" />
-	<ui:param name="contentHeader" value="New Account Registration - Step 1" />
+	<ui:param name="pageTitle" value="#{messages.registration_pageTitle}" />
+	<ui:param name="contentHeader" value="#{messages.registration_contentHeader}" />
 
 	<ui:define name="content">
 
@@ -26,7 +26,7 @@
 
 					<ice:form>
 
-Username:<br />
+<ice:outputText value="#{messages.user_username}"/>:<br />
 						<ice:message showSummary="true" showDetail="false"
 							style="color: red;" for="username"></ice:message>
 						<br />
@@ -36,7 +36,16 @@ Username:<br />
 						</ice:inputText>
 						<br />
 
-First name:<br />
+<ice:outputText value="#{messages['person_gender']}"/>:<br />
+						<ice:message showSummary="true" showDetail="false"
+							style="color: red;" for="gender"></ice:message>
+						<br />
+						<ice:selectOneMenu value="#{registrationViewController.gender}" required="true">
+							<f:selectItems value="#{registrationViewController.gendersSelectItems}"/>
+						</ice:selectOneMenu>
+						<br />
+
+<ice:outputText value="#{messages['person_firstName']}"/>:<br />
 						<ice:message showSummary="true" showDetail="false"
 							style="color: red;" for="firstName"></ice:message>
 						<br />
@@ -44,7 +53,7 @@ First name:<br />
 							value="#{registrationViewController.firstName}" required="true" />
 						<br />
 
-Last name:<br />
+<ice:outputText value="#{messages.person_lastName}"/>:<br />
 						<ice:message showSummary="true" showDetail="false"
 							style="color: red;" for="lastName"></ice:message>
 						<br />
@@ -52,7 +61,7 @@ Last name:<br />
 							required="true" />
 						<br />
 
-Email:<br />
+<ice:outputText value="#{messages.person_email}"/>:<br />
 						<ice:message showSummary="true" showDetail="false"
 							style="color: red;" for="email"></ice:message>
 						<br />
@@ -63,7 +72,7 @@ Email:<br />
 
 						<br />
 
-						<ice:commandButton value="Sign Me Up!"	action="#{registrationStep1.submit}" />
+						<ice:commandButton value="#{messages.registration_submit}" action="#{registrationStep1.submit}" />
 						<br />
 					</ice:form></center>
 				</f:view>

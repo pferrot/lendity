@@ -2,6 +2,7 @@ package com.pferrot.sharedcalendar.registration;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -17,7 +18,10 @@ import com.pferrot.security.dao.UserDao;
 import com.pferrot.security.model.Role;
 import com.pferrot.security.model.User;
 import com.pferrot.security.passwordgenerator.PasswordGenerator;
+import com.pferrot.sharedcalendar.dao.ListValueDao;
 import com.pferrot.sharedcalendar.dao.PersonDao;
+import com.pferrot.sharedcalendar.model.Gender;
+import com.pferrot.sharedcalendar.model.OrderedListValue;
 import com.pferrot.sharedcalendar.model.Person;
 import com.pferrot.sharedcalendar.registration.jsf.RegistrationStep2;
 
@@ -28,6 +32,7 @@ public class RegistrationService {
 	private PersonDao personDao;
 	private UserDao userDao;
 	private RoleDao roleDao;
+	private ListValueDao listValueDao;
 	private MessageDigestPasswordEncoder passwordEncoder;
 	private MailManager mailManager;
 	
@@ -38,6 +43,10 @@ public class RegistrationService {
 	public void setPersonDao(PersonDao personDao) {
 		this.personDao = personDao;
 	}
+	
+	public void setListValueDao(ListValueDao listValueDao) {
+		this.listValueDao = listValueDao;
+	}	
 	
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
@@ -122,6 +131,11 @@ public class RegistrationService {
 		roleDao.updateRole(userRole);
 		
 		return personId;
+		
+	}
+	
+	public List<OrderedListValue> getGenders() {
+		return listValueDao.findOrderedListValue(Gender.class);
 		
 	}
 	

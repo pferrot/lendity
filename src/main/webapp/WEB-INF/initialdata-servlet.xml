@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+
+	<bean id="simpleUrlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+        	<list>
+            	<ref bean="openSessionInViewInterceptor"/>
+        	</list>
+        </property>
+		<property name="mappings">
+			<props>
+				<prop key="/public/initialdata/initialdata.htm">initialDataController</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 
+	Allows hibernate lazy loading in the web layer.
+	 -->
+	<bean name="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="initialDataController" class="com.pferrot.sharedcalendar.initialdata.InitialDataController">
+		<property name="initialData"><ref bean="initialData"/></property>
+	</bean>
+	
+<!--<bean id="homePageCo" class="org.springframework.aop.framework.ProxyFactoryBean">-->
+<!--<property name="target"><ref bean="homePageCoTarget"/></property>-->
+<!--<property name="proxyInterfaces">-->
+<!--<value>com.acompany.BusinessObject</value>-->
+<!--</property>-->
+<!--<property name="interceptorNames">-->
+<!--<list>-->
+<!--<value>hibernateInterceptor</value>-->
+<!--</list>-->
+<!--</property>-->
+<!--</bean> 	-->
+	
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/initialdata/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+</beans>

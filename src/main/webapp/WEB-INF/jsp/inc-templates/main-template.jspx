@@ -6,9 +6,10 @@
 <ice:outputDeclaration doctypeRoot="HTML"
                        doctypePublic="-//W3C//DTD XHTML 1.0 Strict//EN"
                        doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
+<f:loadBundle basename="messages" var="messages"/>
 <head>
     <!-- page title param passed in by param -->
-    <title>ICEfaces Facelets Tutorial - #{pageTitle}</title>
+    <title>#{messages.mainTitle} - #{pageTitle}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="Content-Language" content="en" />
     <meta http-equiv="imagetoolbar" content="no" />

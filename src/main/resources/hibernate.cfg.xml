@@ -15,5 +15,9 @@
         <mapping class="com.pferrot.sharedcalendar.model.Person"/>
         <mapping class="com.pferrot.security.model.Role"/>
         <mapping class="com.pferrot.security.model.User"/>
+        
+        <mapping class="com.pferrot.sharedcalendar.model.ListValue"/>
+        <mapping class="com.pferrot.sharedcalendar.model.OrderedListValue"/>
+        <mapping class="com.pferrot.sharedcalendar.model.Gender"/>
     </session-factory>
 </hibernate-configuration>
