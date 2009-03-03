@@ -1,10 +1,6 @@
 <div xmlns="http://www.w3.org/1999/xhtml"
      xmlns:ui="http://java.sun.com/jsf/facelets" >
-    <div class="main-header" >
-        <h3><ui:insert name="pageName"/></h3>
-   </div>
-    <div class="page-container-header">
-        <ui:insert name="pageContent"/>
-    </div>
+    <div class="contentHeader" ><ui:insert name="pageName"/></div>
+    <div class="contentContent"><ui:insert name="pageContent"/></div>
 </div>
 

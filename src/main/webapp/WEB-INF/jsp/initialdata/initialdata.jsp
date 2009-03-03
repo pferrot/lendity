@@ -18,7 +18,7 @@ if (e == null) {
 else {
 %>
 	An exception occurred:<br/><br/>
-	<%=e.getStackTrace().toString()%>
+	<%=e.getMessage()%>
 <%
 }
 %>

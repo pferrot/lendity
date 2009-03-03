@@ -7,10 +7,8 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.security.providers.encoding.Md5PasswordEncoder;
 import org.springframework.security.providers.encoding.MessageDigestPasswordEncoder;
 
-import com.icesoft.faces.webapp.command.SetCookie;
 import com.pferrot.emailsender.Consts;
 import com.pferrot.emailsender.manager.MailManager;
 import com.pferrot.security.dao.RoleDao;
@@ -23,7 +21,6 @@ import com.pferrot.sharedcalendar.dao.PersonDao;
 import com.pferrot.sharedcalendar.model.Gender;
 import com.pferrot.sharedcalendar.model.OrderedListValue;
 import com.pferrot.sharedcalendar.model.Person;
-import com.pferrot.sharedcalendar.registration.jsf.RegistrationStep2;
 
 public class RegistrationService {
 	
@@ -50,7 +47,7 @@ public class RegistrationService {
 	
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
-	}	
+	}
 	
 	public void setRoleDao(RoleDao roleDao) {
 		this.roleDao = roleDao;
@@ -125,10 +122,8 @@ public class RegistrationService {
 				"com/pferrot/sharedcalendar/registration/emailtemplate/en");		
 		
 		
-		
 		// This will also create the user.
 		Long personId = personDao.createPerson(person);
-		roleDao.updateRole(userRole);
 		
 		return personId;
 		
@@ -137,6 +132,10 @@ public class RegistrationService {
 	public List<OrderedListValue> getGenders() {
 		return listValueDao.findOrderedListValue(Gender.class);
 		
+	}
+
+	public Gender findGender(Long id) {
+		return (Gender)listValueDao.findListValue(id);
 	}
 	
 	

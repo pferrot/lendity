@@ -43,8 +43,15 @@ public class Person implements Serializable {
 	@ManyToOne(targetEntity = com.pferrot.sharedcalendar.model.Gender.class)
 	@JoinColumn(name = "GENDER_ID", nullable = false)
 	private Gender gender;
+	
+	@OneToOne(targetEntity = com.pferrot.sharedcalendar.model.Address.class,
+			  cascade = {CascadeType.PERSIST})
+	@JoinColumn(name = "ADDRESS_ID", nullable = false)
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+	private Address address;	
 
     public Person() {
+    	super();
     }
 
     public Person(Long id, String firstName, String lastName) {
@@ -98,6 +105,14 @@ public class Person implements Serializable {
 	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}	
 }
 
 

@@ -1,8 +1,9 @@
 package com.pferrot.sharedcalendar.registration.jsf;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
@@ -13,7 +14,6 @@ import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.security.model.User;
 import com.pferrot.sharedcalendar.model.Gender;
-import com.pferrot.sharedcalendar.model.OrderedListValue;
 import com.pferrot.sharedcalendar.model.Person;
 import com.pferrot.sharedcalendar.registration.RegistrationService;
 import com.pferrot.sharedcalendar.utils.UiUtils;
@@ -26,6 +26,7 @@ public class RegistrationViewController
 	
 	private String username;
 	private Gender gender;
+	private Long genderId;
 	private List<SelectItem> gendersSelectItems;
 	private String firstName;
 	private String lastName;
@@ -65,6 +66,14 @@ public class RegistrationViewController
 		this.gender = gender;
 	}
 
+	public Long getGenderId() {
+		return genderId;
+	}
+
+	public void setGenderId(Long genderId) {
+		this.genderId = genderId;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -91,14 +100,10 @@ public class RegistrationViewController
 	
 	public List<SelectItem> getGendersSelectItems() {
 		if (gendersSelectItems == null) {
-			gendersSelectItems = new ArrayList<SelectItem>();
-			// Default value.
-			gendersSelectItems.add(UiUtils.getPleaseSelectSelectItem());
-			List<OrderedListValue> gendersDB = registrationService.getGenders();
-			for (OrderedListValue gender: gendersDB) {
-				// TODO: label
-				gendersSelectItems.add(new SelectItem(gender, gender.getLabelCode()));
-			}
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			gendersSelectItems = UiUtils.getSelectItemsForOrderedListValue(registrationService.getGenders(), locale);
+			// Add "Please select..." first.
+			gendersSelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
 		}		
 		return gendersSelectItems;	
 	}
@@ -108,7 +113,7 @@ public class RegistrationViewController
 		user.setUsername(getUsername());
 	
 		Person person = new Person();
-		person.setGender(getGender());
+		person.setGender(registrationService.findGender(getGenderId()));
 		person.setFirstName(getFirstName());
 		person.setLastName(getLastName());
 		person.setEmail(getEmail());

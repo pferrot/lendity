@@ -14,9 +14,7 @@
 		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
 
 			<!-- header content here  -->
-			<ui:define name="pageName">
-            	#{contentHeader}
-          	</ui:define>
+			<ui:define name="pageName">#{contentHeader}</ui:define>
 
 			<!-- insert content here -->
 			<ui:define name="pageContent">
@@ -40,7 +38,7 @@
 						<ice:message showSummary="true" showDetail="false"
 							style="color: red;" for="gender"></ice:message>
 						<br />
-						<ice:selectOneMenu value="#{registrationViewController.gender}" required="true">
+						<ice:selectOneMenu id="gender" value="#{registrationViewController.gender}" required="true">
 							<f:selectItems value="#{registrationViewController.gendersSelectItems}"/>
 						</ice:selectOneMenu>
 						<br />

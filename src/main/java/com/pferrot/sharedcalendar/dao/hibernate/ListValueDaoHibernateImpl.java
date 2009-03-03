@@ -12,33 +12,37 @@ import com.pferrot.sharedcalendar.model.OrderedListValue;
 
 public class ListValueDaoHibernateImpl extends HibernateDaoSupport implements ListValueDao {
 
-	public Long createListValue(ListValue listValue) {
+	public Long createListValue(final ListValue listValue) {
 		return (Long)getHibernateTemplate().save(listValue);
 	}
 
-	public void deleteListValue(ListValue listValue) {
+	public void deleteListValue(final ListValue listValue) {
 		getHibernateTemplate().delete(listValue);
 	}
 
-	public void updateListValue(ListValue listValue) {
+	public void updateListValue(final ListValue listValue) {
 		getHibernateTemplate().update(listValue);
 	}
 
-	public ListValue findListValue(Long listValueId) {
-		return (ListValue)getHibernateTemplate().load(ListValue.class, listValueId);
+	public ListValue findListValue(final Long id) {
+		return (ListValue)getHibernateTemplate().load(ListValue.class, id);
 	}
 
-	public List<ListValue> findListValue(Class clazz) {
+	public List<ListValue> findListValue(final Class clazz) {
 		return getHibernateTemplate().loadAll(clazz);
 	}
 	
-	public List<OrderedListValue> findOrderedListValue(Class clazz) {
+	public List<OrderedListValue> findOrderedListValue(final Class clazz) {
 		List<OrderedListValue> list = getHibernateTemplate().find("from " + clazz.getName() + " olv order by position asc");
 		return list;
 	}
 
-	public Gender findGender(String labelCode) {
-		List<Gender> list = getHibernateTemplate().find("from Gender gender where gender.labelCode = ?", labelCode);
+	public Gender findGender(final String labelCode) {
+		return (Gender)findListValue(labelCode);
+	}
+
+	public ListValue findListValue(final String labelCode) {
+		List<ListValue> list = getHibernateTemplate().find("from ListValue lv where lv.labelCode = ?", labelCode);
 		if (list == null ||
 			list.isEmpty()) {
 			return null;
@@ -47,7 +51,7 @@ public class ListValueDaoHibernateImpl extends HibernateDaoSupport implements Li
 			return list.get(0);
 		}
 		else {
-			throw new DataIntegrityViolationException("More that one gender with label code'" + labelCode + "'");
+			throw new DataIntegrityViolationException("More that one list value with label code '" + labelCode + "'");
 		}
 	}
 }

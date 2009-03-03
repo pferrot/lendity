@@ -18,15 +18,13 @@
 	<ice:outputStyle href="/public/css/custom/custom.css"/>
 </head>
 <body>
-<div id="header">
-	<ui:include src="/WEB-INF/jsp/inc-content/header.jspx"/>
-</div>
-<div id="menu">
-	Menu...
-</div>
+<center>
+<div id="containerDiv">
+<div id="header"><ui:include src="/WEB-INF/jsp/inc-content/header.jspx"/></div>
+<div id="menu">Menu...</div>
 <div id="content"><ui:insert name="content">Default Content</ui:insert></div>
-<div id="footer">
-	<ui:include src="/WEB-INF/jsp/inc-content/footer.jspx"/>
+<div id="footer"><ui:include src="/WEB-INF/jsp/inc-content/footer.jspx"/></div>
 </div>
+</center>
 </body>
 </html>

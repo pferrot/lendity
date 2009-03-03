@@ -12,12 +12,16 @@
 <!--        <property name="hibernate.hbm2ddl.auto">create</property>-->
         <property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>
         
-        <mapping class="com.pferrot.sharedcalendar.model.Person"/>
+        
         <mapping class="com.pferrot.security.model.Role"/>
         <mapping class="com.pferrot.security.model.User"/>
         
+        <mapping class="com.pferrot.sharedcalendar.model.Address"/>
+        <mapping class="com.pferrot.sharedcalendar.model.Country"/>
+        <mapping class="com.pferrot.sharedcalendar.model.Gender"/>
         <mapping class="com.pferrot.sharedcalendar.model.ListValue"/>
         <mapping class="com.pferrot.sharedcalendar.model.OrderedListValue"/>
-        <mapping class="com.pferrot.sharedcalendar.model.Gender"/>
+        <mapping class="com.pferrot.sharedcalendar.model.TimeZone"/>
+        <mapping class="com.pferrot.sharedcalendar.model.Person"/>
     </session-factory>
 </hibernate-configuration>

@@ -10,7 +10,9 @@ public interface ListValueDao {
 	
 	Long createListValue(ListValue listValue);
 	
-	ListValue findListValue(Long listValueId);
+	ListValue findListValue(Long id);
+	
+	ListValue findListValue(String labelCode);
 	
 	List<ListValue> findListValue(Class clazz);
 	
@@ -21,10 +23,10 @@ public interface ListValueDao {
 	 * @return
 	 */
 	List<OrderedListValue> findOrderedListValue(Class clazz);
-	
-	Gender findGender(String labelCode);
 		
 	void updateListValue(ListValue listValue);
 	
 	void deleteListValue(ListValue listValue);
+	
+	Gender findGender(String labelCode);
 }

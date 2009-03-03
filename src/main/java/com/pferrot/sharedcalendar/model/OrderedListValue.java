@@ -6,7 +6,8 @@ import javax.persistence.Entity;
 @Entity
 public abstract class OrderedListValue extends ListValue {
 	
-	@Column(name = "POSITION", nullable = false)	
+	// POSITION is nullable otherwise exception when creating a ListValue (parent class).
+	@Column(name = "POSITION", nullable = true)	
 	private Integer position;
 	
 	public OrderedListValue() {
