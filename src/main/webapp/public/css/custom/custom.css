@@ -62,7 +62,7 @@ div#header {
 
 div#menu {
 	width: 900px;
-	height: 50px;
+	height: 250px;
 }
 
 div#content {
@@ -72,4 +72,31 @@ div#content {
 div#footer {
 	width: 900px;
 	height: 50px;
+}
+
+div#menuContainer {
+  width: 100%;
+  height: 100%;
+  background-color: #dddddd;  
+}
+
+div#menu1Header {
+  width: 150px;
+  height: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: red;
+  z-index: 1;
+  
+}
+
+div#menu1Content {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 150px;
+  height: 200px;
+  background-color: yellow;
+  display: none;
+  z-index: 10;
 }

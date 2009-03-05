@@ -16,12 +16,21 @@
     <meta name="keywords" content="" />
     <meta name="description" content="" />
 	<ice:outputStyle href="/public/css/custom/custom.css"/>
+	
+	<script type="text/javascript" src="/shared_calendar/public/javascript/jquery/jquery-1.3.2.js"></script>
+	<script type="text/javascript">
+	  jQuery.noConflict();
+	</script>
+	
 </head>
 <body>
 <center>
+          <div id="menu1Content">
+        Content
+      </div>   
 <div id="containerDiv">
 <div id="header"><ui:include src="/WEB-INF/jsp/inc-content/header.jspx"/></div>
-<div id="menu">Menu...</div>
+<div id="menu"><ui:include src="/WEB-INF/jsp/inc-content/menu.jspx"/></div>
 <div id="content"><ui:insert name="content">Default Content</ui:insert></div>
 <div id="footer"><ui:include src="/WEB-INF/jsp/inc-content/footer.jspx"/></div>
 </div>
