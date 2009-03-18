@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
@@ -18,20 +19,47 @@
 	<ice:outputStyle href="/public/css/custom/custom.css"/>
 	
 	<script type="text/javascript" src="/shared_calendar/public/javascript/jquery/jquery-1.3.2.js"></script>
+	<script type="text/javascript" src="/shared_calendar/public/javascript/jquery/jquery-ui-1.7.custom.min.js"></script>
 	<script type="text/javascript">
-	  jQuery.noConflict();
+	  var $j = jQuery.noConflict();
 	</script>
+  
+  <script type="text/javascript">
+    $j(document).ready(function() {
+        $j(":input").focus(function () {
+            $j(this).addClass("selected");
+        });
+        $j(":input").blur(function () {
+            $j(this).removeClass("selected");
+        });                  
+    });
+  </script>  
+	
+  <script type="text/javascript">
+    $j(document).ready(function() {
+        $j(":text:first").focus();
+    });  
+  </script>	
 	
 </head>
 <body>
-<center>
-          <div id="menu1Content">
-        Content
-      </div>   
+<center>   
 <div id="containerDiv">
-<div id="header"><ui:include src="/WEB-INF/jsp/inc-content/header.jspx"/></div>
 <div id="menu"><ui:include src="/WEB-INF/jsp/inc-content/menu.jspx"/></div>
-<div id="content"><ui:insert name="content">Default Content</ui:insert></div>
+
+<div id="header"><ui:include src="/WEB-INF/jsp/inc-content/header.jspx"/></div>
+
+<div id="content">
+  <div id="content_tl"></div>
+  <div id="content_tr"></div>
+  <div id="content_bl"></div>
+  <div id="content_br"></div>
+  <div id="content_bottom"></div>
+  <ui:insert name="content">Default Content</ui:insert>
+</div>
+
+
+
 <div id="footer"><ui:include src="/WEB-INF/jsp/inc-content/footer.jspx"/></div>
 </div>
 </center>

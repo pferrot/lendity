@@ -1,50 +1,30 @@
 <div xmlns="http://www.w3.org/1999/xhtml"
      xmlns:ice="http://www.icesoft.com/icefaces/component">
-         <ice:outputText>
-             ICEfaces Facelets Tutorial
-         </ice:outputText>
          
-         
-         
-<script type="text/javascript">
-jQuery(document).ready(function() {
-
-    
-    
-    jQuery("#menu1Header").mouseover( function() {
-        var headerOffset = jQuery("#menu1Header").offset();
-        var headerWidth = jQuery("#menu1Header").width();
-        var headerHeight = jQuery("#menu1Header").outerHeight();
-        
-        jQuery("#menu1Content").css("top", headerOffset.top + headerHeight);  
-        jQuery("#menu1Content").css("left", headerOffset.left);
-        
-        jQuery("#menu1Content").fadeIn("slow");
-    });
-    
-    jQuery("#menu1Header").mouseout( function() {
-        var headerOffset = jQuery("#menu1Header").offset();
-        var headerWidth = jQuery("#menu1Header").width();
-        var headerHeight = jQuery("#menu1Header").outerHeight();
-        
-        jQuery("#menu1Content").css("top", headerOffset.top + headerHeight);  
-        jQuery("#menu1Content").css("left", headerOffset.left);
-        
-        jQuery("#menu1Content").fadeOut("slow");       
-    });         
-    
-    
-});
-</script>          
+<script type="text/javascript" src="/shared_calendar/public/javascript/menu.js"></script>    
   
+  <div id="menu_bl"></div>
+  <div id="menu_br"></div>
   <div id="menuContainer">
-    <div id="menu1Identifier"></div>
-    <div id="menu1">
-      <div id="menu1Header">
-        <a href="#" id="menu1Action">Menu 1</a>
+    <div id="menu1" class="menuContainer2">
+      <div id="menu1Header" class="menuHeader">Menu 1</div>
+      <div id="menu1Content" class="menuContent">
+        <div class="menuEntry"><a class="menuLink" href="http://www.bluewin.ch">bluewin.ch</a></div>
+        <div class="menuEntry">entry 2</div>
+        <div class="menuEntry">entry 3</div>
+        <div class="menuEntry">entry 4</div>
       </div>
-
     </div>
+    <div id="menu2" class="menuContainer2">      
+      <div id="menu2Header" class="menuHeader">Menu 2</div>
+      <div id="menu2Content" class="menuContent">
+        <div class="menuEntry"><a class="menuLink" href="http://www.bluewin.ch">bluewin.ch</a></div>
+        <div class="menuEntry">entry 2</div>
+      </div>
+    </div>
+    <div id="menuLogin" class="menuContainer2">      
+      <div id="menu3Header" class="menuHeader"><a href="../.." class="menuHeaderLink">Login</a></div>
+    </div>    
   </div>
   
   
