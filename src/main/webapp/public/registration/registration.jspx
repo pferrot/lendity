@@ -38,7 +38,7 @@
 						<ice:message showSummary="true" showDetail="false"
 							style="color: red;" for="gender"></ice:message>
 						<br />
-						<ice:selectOneMenu id="gender" value="#{registrationViewController.gender}" required="true">
+						<ice:selectOneMenu id="gender" value="#{registrationViewController.genderId}" required="true">
 							<f:selectItems value="#{registrationViewController.gendersSelectItems}"/>
 						</ice:selectOneMenu>
 						<br />

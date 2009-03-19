@@ -21,7 +21,7 @@ import com.pferrot.sharedcalendar.dao.PersonDao;
 import com.pferrot.sharedcalendar.model.Gender;
 import com.pferrot.sharedcalendar.model.OrderedListValue;
 import com.pferrot.sharedcalendar.model.Person;
-
+import com.pferrot.emailsender.jms.EmailToSendProducer;
 public class RegistrationService {
 	
 	private final static Log log = LogFactory.getLog(RegistrationService.class);
@@ -31,8 +31,13 @@ public class RegistrationService {
 	private RoleDao roleDao;
 	private ListValueDao listValueDao;
 	private MessageDigestPasswordEncoder passwordEncoder;
-	private MailManager mailManager;
+	private MailManager mailManager;	
+	private EmailToSendProducer emailToSendProducer;
 	
+	public void setEmailToSendProducer(EmailToSendProducer emailToSendProducer) {
+		this.emailToSendProducer = emailToSendProducer;
+	}
+
 	public void setMailManager(MailManager mailManager) {
 		this.mailManager = mailManager;
 	}
@@ -112,21 +117,19 @@ public class RegistrationService {
 		objects.put("firstName", person.getFirstName());
 		objects.put("username", person.getUser().getUsername());
 		objects.put("password", rawPassword);
-	
-		Map to = new HashMap();
-		to.put(person.getEmail(), person.getEmail());
 		
 		// TODO: localization
-		mailManager.send(Consts.DEFAULT_SENDER_ADDRESS, Consts.DEFAULT_SENDER_NAME,
-				to, null, null, "Your registration on sharedcalendar.com", objects, 
-				"com/pferrot/sharedcalendar/registration/emailtemplate/en");		
+		final String velocityTemplateLocation = "com/pferrot/sharedcalendar/registration/emailtemplate/en";
+		final String bodyText = mailManager.getText(objects, velocityTemplateLocation);
+		final String bodyHtml = mailManager.getHtml(objects, velocityTemplateLocation);
 		
+		emailToSendProducer.sendMessage(Consts.DEFAULT_SENDER_NAME, Consts.DEFAULT_SENDER_ADDRESS, 
+				person.getEmail(), "Your registration on sharedcalendar.com", bodyText, bodyHtml);
 		
 		// This will also create the user.
 		Long personId = personDao.createPerson(person);
 		
-		return personId;
-		
+		return personId;		
 	}
 	
 	public List<OrderedListValue> getGenders() {

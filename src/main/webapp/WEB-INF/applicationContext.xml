@@ -106,6 +106,7 @@
 		<property name="listValueDao" ref="listValueDao"/>
 		<property name="passwordEncoder" ref="security.passwordEncoder"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
+		<property name="emailToSendProducer" ref="emailSender.emailToSendProducer"/>
 	</bean>
 	
 	<bean id="registrationStep1" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationStep1"

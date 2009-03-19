@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 public class Gender extends OrderedListValue {
 	
 	public static final String MALE_LABEL_CODE = "gender_male";
-	public static final String FEMALE_LABEL_CODE = "female_male";
+	public static final String FEMALE_LABEL_CODE = "gender_female";
 	
 	public Gender() {
 		super();
