@@ -5,12 +5,24 @@
 <hibernate-configuration>
     <session-factory name="sessionFactory">
         <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
-        <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>
-        <property name="hibernate.connection.url">jdbc:derby:C:/dev/_db/gollum</property>
+        
+<!--        <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>-->
+<!--        <property name="hibernate.connection.url">jdbc:derby:C:/dev/_db/gollum</property>-->
+<!--        <property name="hibernate.show_sql">true</property>-->
+<!--        <property name="hibernate.hbm2ddl.auto">create-drop</property>-->
+<!--        <property name="hibernate.hbm2ddl.auto">create</property>-->
+<!--        <property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>-->
+        
+        
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/sharedcalendar</property>
+		<property name="connection.username">pferrot</property>
+		<property name="connection.password">klop</property>
+        
         <property name="hibernate.show_sql">true</property>
 <!--        <property name="hibernate.hbm2ddl.auto">create-drop</property>-->
 <!--        <property name="hibernate.hbm2ddl.auto">create</property>-->
-        <property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>        
         
         
         <mapping class="com.pferrot.security.model.Role"/>
