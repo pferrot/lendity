@@ -2,6 +2,7 @@ package com.pferrot.sharedcalendar.registration.jsf;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pferrot.security.model.User;
 import com.pferrot.sharedcalendar.model.Person;

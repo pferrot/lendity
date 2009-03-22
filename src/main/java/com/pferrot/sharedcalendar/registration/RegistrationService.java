@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.mail.MailPreparationException;
 import org.springframework.security.providers.encoding.MessageDigestPasswordEncoder;
 
 import com.pferrot.emailsender.Consts;
@@ -21,7 +22,7 @@ import com.pferrot.sharedcalendar.dao.PersonDao;
 import com.pferrot.sharedcalendar.model.Gender;
 import com.pferrot.sharedcalendar.model.OrderedListValue;
 import com.pferrot.sharedcalendar.model.Person;
-import com.pferrot.emailsender.jms.EmailToSendProducer;
+
 public class RegistrationService {
 	
 	private final static Log log = LogFactory.getLog(RegistrationService.class);
@@ -31,12 +32,7 @@ public class RegistrationService {
 	private RoleDao roleDao;
 	private ListValueDao listValueDao;
 	private MessageDigestPasswordEncoder passwordEncoder;
-	private MailManager mailManager;	
-	private EmailToSendProducer emailToSendProducer;
-	
-	public void setEmailToSendProducer(EmailToSendProducer emailToSendProducer) {
-		this.emailToSendProducer = emailToSendProducer;
-	}
+	private MailManager mailManager;
 
 	public void setMailManager(MailManager mailManager) {
 		this.mailManager = mailManager;
@@ -83,7 +79,7 @@ public class RegistrationService {
 	 * - generate a random password
 	 * - create the User in the DB
 	 * - create the Person in the DB
-	 * - send an email with the password
+	 * - create a JMS message to send an email with the password
 	 * 
 	 * @param person
 	 * @return
@@ -111,23 +107,30 @@ public class RegistrationService {
 					"': '" + rawPassword + "' ('" + md5EncodedPassword + "')");
 		}
 		person.getUser().setPassword(md5EncodedPassword);
+
+		// This will also create the user.
+		Long personId = personDao.createPerson(person);
 		
-		// Send email.
-		Map objects = new HashMap();
+		// Send email (will actually create a JMS message, i.e. it is async).
+		Map<String, String> objects = new HashMap<String, String>();
 		objects.put("firstName", person.getFirstName());
 		objects.put("username", person.getUser().getUsername());
 		objects.put("password", rawPassword);
 		
 		// TODO: localization
 		final String velocityTemplateLocation = "com/pferrot/sharedcalendar/registration/emailtemplate/en";
-		final String bodyText = mailManager.getText(objects, velocityTemplateLocation);
-		final String bodyHtml = mailManager.getHtml(objects, velocityTemplateLocation);
 		
-		emailToSendProducer.sendMessage(Consts.DEFAULT_SENDER_NAME, Consts.DEFAULT_SENDER_ADDRESS, 
-				person.getEmail(), "Your registration on sharedcalendar.com", bodyText, bodyHtml);
+		Map<String, String> to = new HashMap<String, String>();
+		to.put(person.getEmail(), person.getEmail());
 		
-		// This will also create the user.
-		Long personId = personDao.createPerson(person);
+		mailManager.send(Consts.DEFAULT_SENDER_NAME, 
+				         Consts.DEFAULT_SENDER_ADDRESS,
+				         to,
+				         null, 
+				         null,
+				         "Your registration on sharedcalendar.com",
+				         objects, 
+				         velocityTemplateLocation);		
 		
 		return personId;		
 	}

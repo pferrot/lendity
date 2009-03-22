@@ -13,6 +13,7 @@ import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.security.model.User;
+import com.pferrot.sharedcalendar.model.Address;
 import com.pferrot.sharedcalendar.model.Gender;
 import com.pferrot.sharedcalendar.model.Person;
 import com.pferrot.sharedcalendar.registration.RegistrationService;
@@ -117,7 +118,10 @@ public class RegistrationViewController
 		person.setFirstName(getFirstName());
 		person.setLastName(getLastName());
 		person.setEmail(getEmail());
-		person.setUser(user);		
+		person.setUser(user);
+		
+		// TODO: user is not asked to enter his address during registration.
+		person.setAddress(new Address());		
 		
 		registrationService.createUser(person);		
 	}
