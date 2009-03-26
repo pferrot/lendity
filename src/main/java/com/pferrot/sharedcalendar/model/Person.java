@@ -2,6 +2,8 @@ package com.pferrot.sharedcalendar.model;
 // Generated 10 oct. 2008 00:01:18 by Hibernate Tools 3.2.0.b9
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -36,13 +39,16 @@ public class Person implements Serializable {
 	
 	@OneToOne(targetEntity = com.pferrot.security.model.User.class,
 			  cascade = {CascadeType.PERSIST})
-	@JoinColumn(name = "USER_ID", nullable = false)
+	@JoinColumn(name = "USER_ID", nullable = true)
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	private User user;
 	
 	@ManyToOne(targetEntity = com.pferrot.sharedcalendar.model.Gender.class)
 	@JoinColumn(name = "GENDER_ID", nullable = false)
 	private Gender gender;
+	
+	@ManyToMany(targetEntity = com.pferrot.sharedcalendar.model.PersonSpeciality.class)
+	private Set<PersonSpeciality> specialities = new HashSet<PersonSpeciality>();		
 	
 	@OneToOne(targetEntity = com.pferrot.sharedcalendar.model.Address.class,
 			  cascade = {CascadeType.PERSIST})
@@ -112,6 +118,14 @@ public class Person implements Serializable {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	public Set<PersonSpeciality> getSpecialities() {
+		return specialities;
+	}
+
+	public void setSpecialities(Set<PersonSpeciality> specialities) {
+		this.specialities = specialities;
 	}	
 }
 
