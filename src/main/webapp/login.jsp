@@ -24,7 +24,7 @@
       </font>
     </c:if>
 
-    <form name="f" action="<c:url value='j_spring_security_check'/>" method="POST">
+    <form name="f" action="<c:url value='http://localhost:8080/shared_calendar/j_spring_security_check'/>" method="POST">
       <table>
         <tr><td>User:</td><td><input type='text' name='j_username' value='<c:if test="${not empty param.login_error}"><c:out value="${SPRING_SECURITY_LAST_USERNAME}"/></c:if>'/></td></tr>
         <tr><td>Password:</td><td><input type='password' name='j_password'></td></tr>

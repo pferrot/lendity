@@ -10,6 +10,8 @@ import com.pferrot.sharedcalendar.model.ListValue;
 public class MovieCategory extends ListValue {
 	
 	public static final String ACTION_LABEL_CODE = "movie_category_action";
+	public static final String FICTION_LABEL_CODE = "movie_category_fiction";
+	public static final String ADVENTURE_LABEL_CODE = "movie_category_adventure";
 	
 	public MovieCategory() {
 		super();

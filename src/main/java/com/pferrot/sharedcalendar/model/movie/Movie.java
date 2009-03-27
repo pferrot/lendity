@@ -17,8 +17,10 @@ import javax.persistence.Table;
 
 import com.pferrot.security.model.User;
 import com.pferrot.sharedcalendar.model.Ownable;
-import com.pferrot.sharedcalendar.model.OwnerHistory;
+import com.pferrot.sharedcalendar.model.OwnerHistoryEntry;
 import com.pferrot.sharedcalendar.model.Person;
+import com.pferrot.sharedcalendar.model.WaitListAware;
+import com.pferrot.sharedcalendar.model.WaitListEntry;
 
 /**
  * @author Patrice
@@ -26,7 +28,7 @@ import com.pferrot.sharedcalendar.model.Person;
  */
 @Entity
 @Table(name = "MOVIES")
-public class Movie implements Serializable, Ownable {
+public class Movie implements Serializable, Ownable, WaitListAware {
 
 	@Id @GeneratedValue
 	@Column(name = "ID")
@@ -43,6 +45,10 @@ public class Movie implements Serializable, Ownable {
 	
 	@Column(name = "DURATION", nullable = true)
     private Integer duration;
+	
+	@OneToOne(targetEntity = com.pferrot.security.model.User.class)
+	@JoinColumn(name = "USER_ID", nullable = false)
+	private User owner;
 	
 	@ManyToMany(targetEntity = com.pferrot.sharedcalendar.model.movie.MovieCategory.class)
 	private Set<MovieCategory> categories = new HashSet<MovieCategory>();
@@ -62,13 +68,11 @@ public class Movie implements Serializable, Ownable {
 	@ManyToMany(targetEntity = com.pferrot.sharedcalendar.model.Person.class)
 	private Set<Person> directors = new HashSet<Person>();	
 	
-	@OneToOne(targetEntity = com.pferrot.security.model.User.class)
-	@JoinColumn(name = "USER_ID", nullable = false)
-	private User owner;
+	@OneToMany(mappedBy = "ownable", targetEntity = com.pferrot.sharedcalendar.model.OwnerHistoryEntry.class)
+	private Set<OwnerHistoryEntry> ownerHistoryEntries = new HashSet<OwnerHistoryEntry>();
 	
-	@OneToMany(mappedBy = "ownable", targetEntity = com.pferrot.sharedcalendar.model.OwnerHistory.class)
-	private Set<OwnerHistory> ownerHistories = new HashSet<OwnerHistory>();
-	
+	@OneToMany(mappedBy = "waitListAware", targetEntity = com.pferrot.sharedcalendar.model.WaitListEntry.class)
+	private Set<WaitListEntry> waitListEntries = new HashSet<WaitListEntry>();	
 	
     public Movie() {
     	super();
@@ -170,13 +174,22 @@ public class Movie implements Serializable, Ownable {
 		this.owner = owner;
 	}
 
-	public Set<OwnerHistory> getOwnerHistories() {
-		return ownerHistories;
+	public Set<OwnerHistoryEntry> getOwnerHistoryEntries() {
+		return ownerHistoryEntries;
 	}
 
-	public void setOwnerHistories(Set<OwnerHistory> ownerHistories) {
-		this.ownerHistories = ownerHistories;
+	public void setOwnerHistoryEntries(Set<OwnerHistoryEntry> ownerHistoryEntries) {
+		this.ownerHistoryEntries = ownerHistoryEntries;
 	}
+
+	public Set<WaitListEntry> getWaitListEntries() {
+		return waitListEntries;
+	}
+
+	public void setWaitListEntries(Set<WaitListEntry> waitListEntries) {
+		this.waitListEntries = waitListEntries;
+	}
+	
 }
 
 

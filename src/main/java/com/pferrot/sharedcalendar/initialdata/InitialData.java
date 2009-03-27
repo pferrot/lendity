@@ -15,6 +15,11 @@ import com.pferrot.sharedcalendar.model.Address;
 import com.pferrot.sharedcalendar.model.Country;
 import com.pferrot.sharedcalendar.model.Gender;
 import com.pferrot.sharedcalendar.model.Person;
+import com.pferrot.sharedcalendar.model.PersonSpeciality;
+import com.pferrot.sharedcalendar.model.movie.MovieCategory;
+import com.pferrot.sharedcalendar.model.movie.MovieFormat;
+import com.pferrot.sharedcalendar.model.movie.MovieLanguage;
+import com.pferrot.sharedcalendar.model.movie.MovieSubtitle;
 
 /**
  * Creates initial data necessary for the application (list values, user roles,...).
@@ -61,7 +66,14 @@ public class InitialData {
 		createCountries();
 		createRoles();
 		createGenders();
+		
+		createPersonSpecialities();
 		createPersonsAndUsers();
+		
+		createMovieCategories();
+		createMovieFormats();
+		createMovieLanguages();
+		createMovieSubtitles();
 	}
 
 	/**
@@ -95,21 +107,11 @@ public class InitialData {
 	
 	private void createPersonsAndUsers() {
 		
-		Person person = new Person();
-		
-		person.setFirstName("Patrice");
-		person.setLastName("Ferrot");
-		person.setEmail("patrice.ferrot@gmail.com");
-		
-		Address address = new Address();
-		address.setAddress1("Châtelard 1");
-		address.setZip(1400);
-		address.setCity("Yverdon-les-Bains");
-		address.setCountry((Country)listValueDao.findListValue(Country.SWITZERLAND_LABEL_CODE));
-		person.setAddress(address);
-		
-		Gender maleGender = listValueDao.findGender(Gender.MALE_LABEL_CODE);
-		person.setGender(maleGender);
+		// Create Patrice Ferrot, admin user.
+		Person person = getNewPerson("Patrice", "Ferrot", "patrice.ferrot@gmail.com",
+				"Châtelard 1", 1400, "Yverdon-les-Bains",
+				(Country)listValueDao.findListValue(Country.SWITZERLAND_LABEL_CODE),
+				listValueDao.findGender(Gender.MALE_LABEL_CODE));
 		
 		User user = new User();
 		user.setUsername("pferrot");
@@ -124,6 +126,45 @@ public class InitialData {
 		person.setUser(user);
 		
 		personDao.createPerson(person);
+		
+		// Create Angelina Jolie...
+		person = getNewPerson("Angelina", "Jolie", null,
+				null, null, null,
+				(Country)listValueDao.findListValue(Country.USA_LABEL_CODE),
+				listValueDao.findGender(Gender.FEMALE_LABEL_CODE));
+		
+		person.addSpeciality((PersonSpeciality)listValueDao.findListValue(PersonSpeciality.ACTOR_LABEL_CODE));
+		personDao.createPerson(person);
+
+		// Create Francis Ford Coppola...
+		person = getNewPerson("Francis Ford", "Coppola", null,
+				null, null, null,
+				(Country)listValueDao.findListValue(Country.USA_LABEL_CODE),
+				listValueDao.findGender(Gender.MALE_LABEL_CODE));
+		
+		person.addSpeciality((PersonSpeciality)listValueDao.findListValue(PersonSpeciality.DIRECTOR_LABEL_CODE));
+		personDao.createPerson(person);
+	}
+	
+	private static Person getNewPerson(final String firstName, final String lastName, final String email, final String address1,
+			final Integer zip, final String city, final Country country, final Gender gender) {
+		
+		final Person person = new Person();
+		
+		person.setFirstName(firstName);
+		person.setLastName(lastName);
+		person.setEmail(email);
+		
+		Address address = new Address();
+		address.setAddress1(address1);
+		address.setZip(zip);
+		address.setCity(city);
+		address.setCountry(country);
+		person.setAddress(address);
+		
+		person.setGender(gender);
+		
+		return person;
 	}
 	
 	// TODO
@@ -138,5 +179,41 @@ public class InitialData {
 		
 		country = new Country(Country.USA_LABEL_CODE);
 		listValueDao.createListValue(country);		
-	}	
+	}
+	
+	private void createPersonSpecialities() {
+		PersonSpeciality speciality = new PersonSpeciality(PersonSpeciality.ACTOR_LABEL_CODE);
+		listValueDao.createListValue(speciality);
+		
+		speciality = new PersonSpeciality(PersonSpeciality.DIRECTOR_LABEL_CODE);
+		listValueDao.createListValue(speciality);
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	// MOVIES	
+	private void createMovieCategories() {
+		MovieCategory category = new MovieCategory(MovieCategory.ACTION_LABEL_CODE);
+		listValueDao.createListValue(category);
+		
+		category = new MovieCategory(MovieCategory.ADVENTURE_LABEL_CODE);
+		listValueDao.createListValue(category);
+		
+		category = new MovieCategory(MovieCategory.FICTION_LABEL_CODE);
+		listValueDao.createListValue(category);	
+	}
+	
+	private void createMovieFormats() {
+		MovieFormat format = new MovieFormat(MovieFormat.DVD_ZONE_2_LABEL_CODE);
+		listValueDao.createListValue(format);
+	}
+	
+	private void createMovieLanguages() {
+		MovieLanguage language = new MovieLanguage(MovieLanguage.ENGLISH_LABEL_CODE);
+		listValueDao.createListValue(language);
+	}
+
+	private void createMovieSubtitles() {
+		MovieSubtitle subtitle = new MovieSubtitle(MovieSubtitle.ENGLISH_LABEL_CODE);
+		listValueDao.createListValue(subtitle);
+	}
 }

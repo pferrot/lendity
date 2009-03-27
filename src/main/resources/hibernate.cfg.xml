@@ -20,7 +20,7 @@
 		<property name="connection.password">klop</property>
         
         <property name="hibernate.show_sql">true</property>
-<!--        <property name="hibernate.hbm2ddl.auto">create-drop</property>-->
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
 <!--        <property name="hibernate.hbm2ddl.auto">create</property>-->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>        
         
@@ -33,7 +33,17 @@
         <mapping class="com.pferrot.sharedcalendar.model.Gender"/>
         <mapping class="com.pferrot.sharedcalendar.model.ListValue"/>
         <mapping class="com.pferrot.sharedcalendar.model.OrderedListValue"/>
-        <mapping class="com.pferrot.sharedcalendar.model.TimeZone"/>
         <mapping class="com.pferrot.sharedcalendar.model.Person"/>
+        <mapping class="com.pferrot.sharedcalendar.model.PersonSpeciality"/>
+        
+        <mapping class="com.pferrot.sharedcalendar.model.OwnerHistoryEntry"/>
+        <mapping class="com.pferrot.sharedcalendar.model.WaitListEntry"/>
+        
+        <mapping class="com.pferrot.sharedcalendar.model.movie.Movie"/>
+        <mapping class="com.pferrot.sharedcalendar.model.movie.MovieCategory"/>
+        <mapping class="com.pferrot.sharedcalendar.model.movie.MovieFormat"/>
+        <mapping class="com.pferrot.sharedcalendar.model.movie.MovieSubtitle"/>
+        <mapping class="com.pferrot.sharedcalendar.model.movie.MovieLanguage"/>
+        
     </session-factory>
 </hibernate-configuration>

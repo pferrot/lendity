@@ -3,28 +3,21 @@ package com.pferrot.sharedcalendar.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-
-import com.pferrot.security.model.Role;
 import com.pferrot.security.model.User;
 
 @Entity
-@Table(name = "OWNER_HISTORIES")
-public class OwnerHistory implements Serializable {
+@Table(name = "WAIT_LIST_ENTRIES")
+public class WaitListEntry implements Serializable {
 
 	@Id @GeneratedValue
 	@Column(name = "ID")
@@ -34,18 +27,15 @@ public class OwnerHistory implements Serializable {
 	@JoinColumn(name = "USER_ID", nullable = false)
 	private User owner;
 	
-	@ManyToOne(targetEntity = com.pferrot.sharedcalendar.model.Ownable.class)
-	@JoinColumn(name = "OWNABLE_ID", nullable = false)
-	private Ownable ownable;	
+	@ManyToOne(targetEntity = com.pferrot.sharedcalendar.model.movie.Movie.class)
+	@JoinColumn(name = "WAIT_LIST_AWARE_ID", nullable = false)
+	private WaitListAware waitListAware;	
 	
-	@Column(name = "START_DATE", nullable = false)
-	private Date startDate;
-	
-	@Column(name = "END_DATE")
-	private Date endDate;
+	@Column(name = "REQUEST_DATE", nullable = false)
+	private Date requestDate;
 	
 	
-    public OwnerHistory() {
+    public WaitListEntry() {
     	super();
     }
    
@@ -65,28 +55,20 @@ public class OwnerHistory implements Serializable {
 		this.owner = owner;
 	}
 
-	public Date getStartDate() {
-		return startDate;
+	public Date getRequestDate() {
+		return requestDate;
 	}
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	public void setRequestDate(Date requestDate) {
+		this.requestDate = requestDate;
 	}
 
-	public Date getEndDate() {
-		return endDate;
+	public WaitListAware getWaitListAware() {
+		return waitListAware;
 	}
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-
-	public Ownable getOwnable() {
-		return ownable;
-	}
-
-	public void setOwnable(Ownable ownable) {
-		this.ownable = ownable;
+	public void setWaitListAware(WaitListAware waitListAware) {
+		this.waitListAware = waitListAware;
 	}
 }
 

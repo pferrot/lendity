@@ -44,12 +44,13 @@ security module.
 		-->
 
 <!--         All of this is unnecessary if auto-config="true"-->
-		<form-login login-page="/login.jsp"
-			authentication-failure-url="/login.jsp?login_error=1" />
+		<form-login login-page="/login.jsp" 
+			authentication-failure-url="/login.jsp?login_error=1"/>
 		<logout logout-success-url="/index.jsp" />
 		<anonymous />
 		<http-basic />
 		<logout />
+
 		<remember-me user-service-ref="security.customUserDetailsService"/>
 		<!--
 			Uncomment to limit the number of sessions a user can have

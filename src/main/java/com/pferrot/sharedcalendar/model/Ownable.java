@@ -9,7 +9,7 @@ public interface Ownable {
 	User getOwner();
 	void setOwner(User owner);
 
-	Set<OwnerHistory> getOwnerHistories();
-	void setOwnerHistories(Set<OwnerHistory> ownerHistories);
+	Set<OwnerHistoryEntry> getOwnerHistoryEntries();
+	void setOwnerHistoryEntries(Set<OwnerHistoryEntry> ownerHistoryEntries);
 
 }

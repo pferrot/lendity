@@ -18,6 +18,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 
+import com.pferrot.security.model.Role;
 import com.pferrot.security.model.User;
 
 @Entity
@@ -126,6 +127,13 @@ public class Person implements Serializable {
 
 	public void setSpecialities(Set<PersonSpeciality> specialities) {
 		this.specialities = specialities;
+	}
+
+	public void addSpeciality(PersonSpeciality speciality) {
+		if (speciality == null) {
+			throw new IllegalArgumentException("'speciality' parameter must not be null");
+		}
+		specialities.add(speciality);
 	}	
 }
 
