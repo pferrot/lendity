@@ -3,20 +3,12 @@ package com.pferrot.sharedcalendar.model;
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "ADDRESSES")
+@Embeddable
 public class Address implements Serializable {
-
-	@Id @GeneratedValue
-	@Column(name = "ID")
-    private Long id;
 	
 	@Column(name = "ADDRESS_1", length = 255)
     private String address1;
@@ -43,14 +35,6 @@ public class Address implements Serializable {
 	
 	public Address() {
 		super();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getAddress1() {
@@ -108,7 +92,4 @@ public class Address implements Serializable {
 	public void setCountry(Country country) {
 		this.country = country;
 	}
-	
-	
-	
 }

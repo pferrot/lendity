@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,7 +19,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 
-import com.pferrot.security.model.Role;
 import com.pferrot.security.model.User;
 
 @Entity
@@ -51,10 +51,7 @@ public class Person implements Serializable {
 	@ManyToMany(targetEntity = com.pferrot.sharedcalendar.model.PersonSpeciality.class)
 	private Set<PersonSpeciality> specialities = new HashSet<PersonSpeciality>();		
 	
-	@OneToOne(targetEntity = com.pferrot.sharedcalendar.model.Address.class,
-			  cascade = {CascadeType.PERSIST})
-	@JoinColumn(name = "ADDRESS_ID", nullable = false)
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+	@Embedded
 	private Address address;	
 
     public Person() {

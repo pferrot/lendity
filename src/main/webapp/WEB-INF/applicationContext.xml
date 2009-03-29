@@ -14,6 +14,7 @@
 		<property name="roleDao" ref="security.roleDao"/>
 		<property name="personDao" ref="personDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
+		<property name="movieDao" ref="movieDao"/>
 		<property name="passwordEncoder" ref="security.passwordEncoder"/>
 	</bean>
 	
@@ -93,7 +94,7 @@
 				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
 			</props>
 		</property>
-	</bean>	
+	</bean>
 	
 	<bean id="personDaoTarget" class="com.pferrot.sharedcalendar.dao.hibernate.PersonDaoHibernateImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
@@ -116,6 +117,28 @@
 			</props>
 		</property>
 	</bean>
+	
+	<bean id="movieDaoTarget" class="com.pferrot.sharedcalendar.dao.hibernate.MovieDaoHibernateImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	
+	<bean id="movieDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target">
+			<ref local="movieDaoTarget"/>
+		</property>
+		<property name="proxyInterfaces">
+           <value>com.pferrot.sharedcalendar.dao.MovieDao</value>
+         </property>		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>	
 	
 	<bean id="baseTransactionProxy"	class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean" abstract="true">
 		<property name="transactionManager" ref="transactionManager" />

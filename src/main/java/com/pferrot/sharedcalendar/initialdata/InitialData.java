@@ -1,6 +1,10 @@
 package com.pferrot.sharedcalendar.initialdata;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.security.providers.encoding.MessageDigestPasswordEncoder;
@@ -10,16 +14,19 @@ import com.pferrot.security.dao.UserDao;
 import com.pferrot.security.model.Role;
 import com.pferrot.security.model.User;
 import com.pferrot.sharedcalendar.dao.ListValueDao;
+import com.pferrot.sharedcalendar.dao.MovieDao;
 import com.pferrot.sharedcalendar.dao.PersonDao;
 import com.pferrot.sharedcalendar.model.Address;
 import com.pferrot.sharedcalendar.model.Country;
 import com.pferrot.sharedcalendar.model.Gender;
+import com.pferrot.sharedcalendar.model.Language;
+import com.pferrot.sharedcalendar.model.OwnerHistoryEntry;
 import com.pferrot.sharedcalendar.model.Person;
 import com.pferrot.sharedcalendar.model.PersonSpeciality;
+import com.pferrot.sharedcalendar.model.movie.Movie;
 import com.pferrot.sharedcalendar.model.movie.MovieCategory;
 import com.pferrot.sharedcalendar.model.movie.MovieFormat;
-import com.pferrot.sharedcalendar.model.movie.MovieLanguage;
-import com.pferrot.sharedcalendar.model.movie.MovieSubtitle;
+import com.pferrot.sharedcalendar.model.movie.MovieInstance;
 
 /**
  * Creates initial data necessary for the application (list values, user roles,...).
@@ -35,7 +42,12 @@ public class InitialData {
 	private UserDao userDao;
 	private PersonDao personDao;
 	private ListValueDao listValueDao;
+	private MovieDao movieDao;
 	private MessageDigestPasswordEncoder passwordEncoder;
+	
+	private Long jeffBridgesId;
+	private Long joelCoenId;
+	private Long ethanCoenId;
 	
 	
 	public void setRoleDao(RoleDao roleDao) {
@@ -50,6 +62,10 @@ public class InitialData {
 		this.personDao = personDao;
 	}
 
+	public void setMovieDao(MovieDao movieDao) {
+		this.movieDao = movieDao;
+	}
+
 	public void setListValueDao(ListValueDao listValueDao) {
 		this.listValueDao = listValueDao;
 	}
@@ -62,7 +78,6 @@ public class InitialData {
 		if (!isEmptyDB()) {
 			throw new PermissionDeniedDataAccessException("DB is not empty...cannot initialize data.", null);
 		}
-		createTimeZones();
 		createCountries();
 		createRoles();
 		createGenders();
@@ -72,8 +87,8 @@ public class InitialData {
 		
 		createMovieCategories();
 		createMovieFormats();
-		createMovieLanguages();
-		createMovieSubtitles();
+		createLanguages();
+		createMovies();
 	}
 
 	/**
@@ -136,6 +151,15 @@ public class InitialData {
 		person.addSpeciality((PersonSpeciality)listValueDao.findListValue(PersonSpeciality.ACTOR_LABEL_CODE));
 		personDao.createPerson(person);
 
+		// Create Jeff Bridges...
+		person = getNewPerson("Jeff", "Bridges", null,
+				null, null, null,
+				(Country)listValueDao.findListValue(Country.USA_LABEL_CODE),
+				listValueDao.findGender(Gender.MALE_LABEL_CODE));
+		
+		person.addSpeciality((PersonSpeciality)listValueDao.findListValue(PersonSpeciality.ACTOR_LABEL_CODE));
+		jeffBridgesId = personDao.createPerson(person);
+
 		// Create Francis Ford Coppola...
 		person = getNewPerson("Francis Ford", "Coppola", null,
 				null, null, null,
@@ -144,6 +168,24 @@ public class InitialData {
 		
 		person.addSpeciality((PersonSpeciality)listValueDao.findListValue(PersonSpeciality.DIRECTOR_LABEL_CODE));
 		personDao.createPerson(person);
+		
+		// Create Francis Joel Coen...
+		person = getNewPerson("Joel", "Coen", null,
+				null, null, null,
+				(Country)listValueDao.findListValue(Country.USA_LABEL_CODE),
+				listValueDao.findGender(Gender.MALE_LABEL_CODE));
+		
+		person.addSpeciality((PersonSpeciality)listValueDao.findListValue(PersonSpeciality.DIRECTOR_LABEL_CODE));
+		joelCoenId = personDao.createPerson(person);
+		
+		// Create Francis Ethan Coen...
+		person = getNewPerson("Ethan", "Coen", null,
+				null, null, null,
+				(Country)listValueDao.findListValue(Country.USA_LABEL_CODE),
+				listValueDao.findGender(Gender.MALE_LABEL_CODE));
+		
+		person.addSpeciality((PersonSpeciality)listValueDao.findListValue(PersonSpeciality.DIRECTOR_LABEL_CODE));
+		ethanCoenId = personDao.createPerson(person);		
 	}
 	
 	private static Person getNewPerson(final String firstName, final String lastName, final String email, final String address1,
@@ -165,11 +207,6 @@ public class InitialData {
 		person.setGender(gender);
 		
 		return person;
-	}
-	
-	// TODO
-	private void createTimeZones() {
-
 	}
 
 	// TODO
@@ -199,6 +236,9 @@ public class InitialData {
 		listValueDao.createListValue(category);
 		
 		category = new MovieCategory(MovieCategory.FICTION_LABEL_CODE);
+		listValueDao.createListValue(category);
+		
+		category = new MovieCategory(MovieCategory.COMEDY_LABEL_CODE);
 		listValueDao.createListValue(category);	
 	}
 	
@@ -207,13 +247,64 @@ public class InitialData {
 		listValueDao.createListValue(format);
 	}
 	
-	private void createMovieLanguages() {
-		MovieLanguage language = new MovieLanguage(MovieLanguage.ENGLISH_LABEL_CODE);
+	private void createLanguages() {
+		Language language = new Language(Language.ENGLISH_LABEL_CODE);
+		listValueDao.createListValue(language);
+		
+		language = new Language(Language.FRENCH_LABEL_CODE);
 		listValueDao.createListValue(language);
 	}
+	
+	private void createMovies() {
+		// Create Movie.
+		Movie movie = new Movie();
+		movie.setTitle((Language)listValueDao.findListValue(Language.FRENCH_LABEL_CODE), "The Big Lebowski");
+		movie.setDescription((Language)listValueDao.findListValue(Language.FRENCH_LABEL_CODE), "Blabla blabla le dude blablabla tadadada...");
+		
+		Set<Person> actors = new HashSet<Person>();
+		actors.add(personDao.findPerson(jeffBridgesId));
+		movie.setActors(actors);
 
-	private void createMovieSubtitles() {
-		MovieSubtitle subtitle = new MovieSubtitle(MovieSubtitle.ENGLISH_LABEL_CODE);
-		listValueDao.createListValue(subtitle);
-	}
+		Set<Person> directors = new HashSet<Person>();
+		directors.add(personDao.findPerson(joelCoenId));
+		directors.add(personDao.findPerson(ethanCoenId));
+		movie.setDirectors(directors);
+		
+		Set<MovieCategory> categories = new HashSet<MovieCategory>();
+		categories.add((MovieCategory)listValueDao.findListValue(MovieCategory.COMEDY_LABEL_CODE));
+		movie.setCategories(categories);
+		
+		movie.setDuration(117);
+		movie.setYear(1998);
+		
+		movieDao.createMovie(movie);
+		
+		// Create MovieInstance.
+		MovieInstance movieInstance = new MovieInstance();		
+		movieInstance.setMovie(movie);
+		
+		User user = userDao.findUser("pferrot");
+		movieInstance.setOwner(user);
+		
+		OwnerHistoryEntry ownerHistoryEntry = new OwnerHistoryEntry();
+		ownerHistoryEntry.setStartDate(new Date());
+		ownerHistoryEntry.setOwnable(movieInstance);
+		ownerHistoryEntry.setOwner(user);		
+		List<OwnerHistoryEntry> ownerHistoryEntries = new ArrayList<OwnerHistoryEntry>();
+		ownerHistoryEntries.add(ownerHistoryEntry);		
+		movieInstance.setOwnerHistoryEntries(ownerHistoryEntries);
+		
+		movieInstance.setFormat((MovieFormat)listValueDao.findListValue(MovieFormat.DVD_ZONE_2_LABEL_CODE));
+		
+		Set<Language> languages = new HashSet<Language>();
+		languages.add((Language)listValueDao.findListValue(Language.ENGLISH_LABEL_CODE));
+		movieInstance.setLanguages(languages);
+		
+		Set<Language> subtitles = new HashSet<Language>();
+		subtitles.add((Language)listValueDao.findListValue(Language.ENGLISH_LABEL_CODE));
+		subtitles.add((Language)listValueDao.findListValue(Language.FRENCH_LABEL_CODE));
+		movieInstance.setSubtitles(subtitles);
+
+		movieDao.createMovieInstance(movieInstance);
+	}	
 }

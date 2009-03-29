@@ -2,7 +2,9 @@ package com.pferrot.sharedcalendar.model.movie;
 // Generated 10 oct. 2008 00:01:18 by Hibernate Tools 3.2.0.b9
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -10,17 +12,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.pferrot.security.model.User;
-import com.pferrot.sharedcalendar.model.Ownable;
-import com.pferrot.sharedcalendar.model.OwnerHistoryEntry;
+import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.annotations.MapKeyManyToMany;
+
+import com.pferrot.sharedcalendar.model.Language;
 import com.pferrot.sharedcalendar.model.Person;
-import com.pferrot.sharedcalendar.model.WaitListAware;
-import com.pferrot.sharedcalendar.model.WaitListEntry;
 
 /**
  * @author Patrice
@@ -28,17 +29,23 @@ import com.pferrot.sharedcalendar.model.WaitListEntry;
  */
 @Entity
 @Table(name = "MOVIES")
-public class Movie implements Serializable, Ownable, WaitListAware {
+public class Movie implements Serializable {
 
 	@Id @GeneratedValue
 	@Column(name = "ID")
     private Long id;
 	
-	@Column(name = "TITLE", nullable = false, length = 50)
-    private String title;
+	@CollectionOfElements(targetElement = String.class)
+	@JoinTable(name = "MOVIES_TITLES",
+			joinColumns = @JoinColumn(name = "MOVIE_ID"))
+	@MapKeyManyToMany(targetEntity = Language.class)
+	private Map<Language, String> titles = new HashMap<Language, String>();
 	
-	@Column(name = "DESCRIPTION", nullable = true, length = 255)
-    private String description;
+	@CollectionOfElements(targetElement = String.class)
+	@JoinTable(name = "MOVIES_DESCRIPTIONS",
+			joinColumns = @JoinColumn(name = "MOVIE_ID"))
+	@MapKeyManyToMany(targetEntity = Language.class)
+	private Map<Language, String> descriptions = new HashMap<Language, String>();
 	
 	@Column(name = "YEAR", nullable = true)
     private Integer year;
@@ -46,33 +53,23 @@ public class Movie implements Serializable, Ownable, WaitListAware {
 	@Column(name = "DURATION", nullable = true)
     private Integer duration;
 	
-	@OneToOne(targetEntity = com.pferrot.security.model.User.class)
-	@JoinColumn(name = "USER_ID", nullable = false)
-	private User owner;
-	
-	@ManyToMany(targetEntity = com.pferrot.sharedcalendar.model.movie.MovieCategory.class)
+	@ManyToMany(targetEntity = MovieCategory.class)
 	private Set<MovieCategory> categories = new HashSet<MovieCategory>();
 	
-	@ManyToMany(targetEntity = com.pferrot.sharedcalendar.model.movie.MovieFormat.class)
-	private Set<MovieFormat> formats = new HashSet<MovieFormat>();
-	
-	@ManyToMany(targetEntity = com.pferrot.sharedcalendar.model.movie.MovieLanguage.class)
-	private Set<MovieLanguage> languages = new HashSet<MovieLanguage>();
-	
-	@ManyToMany(targetEntity = com.pferrot.sharedcalendar.model.movie.MovieSubtitle.class)
-	private Set<MovieSubtitle> subtitles = new HashSet<MovieSubtitle>();
-	
-	@ManyToMany(targetEntity = com.pferrot.sharedcalendar.model.Person.class)
+	@ManyToMany(targetEntity = Person.class)
+	@JoinTable(name = "MOVIES_ACTORS",
+			joinColumns = @JoinColumn(name = "MOVIE_ID"),
+			inverseJoinColumns = @JoinColumn(name = "PERSON_ID"))	
 	private Set<Person> actors = new HashSet<Person>();
 	
-	@ManyToMany(targetEntity = com.pferrot.sharedcalendar.model.Person.class)
-	private Set<Person> directors = new HashSet<Person>();	
+	@ManyToMany(targetEntity = Person.class)
+	@JoinTable(name = "MOVIES_DIRECTORS",
+			joinColumns = @JoinColumn(name = "MOVIE_ID"),
+			inverseJoinColumns = @JoinColumn(name = "PERSON_ID"))
+	private Set<Person> directors = new HashSet<Person>();
 	
-	@OneToMany(mappedBy = "ownable", targetEntity = com.pferrot.sharedcalendar.model.OwnerHistoryEntry.class)
-	private Set<OwnerHistoryEntry> ownerHistoryEntries = new HashSet<OwnerHistoryEntry>();
-	
-	@OneToMany(mappedBy = "waitListAware", targetEntity = com.pferrot.sharedcalendar.model.WaitListEntry.class)
-	private Set<WaitListEntry> waitListEntries = new HashSet<WaitListEntry>();	
+	@OneToMany(mappedBy = "movie", targetEntity = MovieInstance.class)
+	private Set<MovieInstance> movieInstances = new HashSet<MovieInstance>();
 	
     public Movie() {
     	super();
@@ -86,20 +83,36 @@ public class Movie implements Serializable, Ownable, WaitListAware {
         this.id = id;
     }
 
-	public String getTitle() {
-		return title;
+	public Map<Language, String> getTitles() {
+		return titles;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setTitles(Map<Language, String> titles) {
+		this.titles = titles;
+	}
+	
+	public void setTitle(Language language, String title) {
+		titles.put(language, title);
+	}
+	
+	public String getTitle(Language language) {
+		return titles.get(language);
 	}
 
-	public String getDescription() {
-		return description;
+	public Map<Language, String> getDescriptions() {
+		return descriptions;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescriptions(Map<Language, String> descriptions) {
+		this.descriptions = descriptions;
+	}
+
+	public void setDescription(Language language, String title) {
+		descriptions.put(language, title);
+	}
+	
+	public String getDescription(Language description) {
+		return descriptions.get(description);
 	}
 
 	public Integer getYear() {
@@ -126,30 +139,6 @@ public class Movie implements Serializable, Ownable, WaitListAware {
 		this.categories = categories;
 	}
 
-	public Set<MovieFormat> getFormats() {
-		return formats;
-	}
-
-	public void setFormats(Set<MovieFormat> formats) {
-		this.formats = formats;
-	}
-
-	public Set<MovieLanguage> getLanguages() {
-		return languages;
-	}
-
-	public void setLanguages(Set<MovieLanguage> languages) {
-		this.languages = languages;
-	}
-
-	public Set<MovieSubtitle> getSubtitles() {
-		return subtitles;
-	}
-
-	public void setSubtitles(Set<MovieSubtitle> subtitles) {
-		this.subtitles = subtitles;
-	}
-
 	public Set<Person> getActors() {
 		return actors;
 	}
@@ -166,30 +155,13 @@ public class Movie implements Serializable, Ownable, WaitListAware {
 		this.directors = directors;
 	}
 
-	public User getOwner() {
-		return owner;
+	public Set<MovieInstance> getMovieInstances() {
+		return movieInstances;
 	}
 
-	public void setOwner(User owner) {
-		this.owner = owner;
+	public void setMovieInstances(Set<MovieInstance> movieInstances) {
+		this.movieInstances = movieInstances;
 	}
-
-	public Set<OwnerHistoryEntry> getOwnerHistoryEntries() {
-		return ownerHistoryEntries;
-	}
-
-	public void setOwnerHistoryEntries(Set<OwnerHistoryEntry> ownerHistoryEntries) {
-		this.ownerHistoryEntries = ownerHistoryEntries;
-	}
-
-	public Set<WaitListEntry> getWaitListEntries() {
-		return waitListEntries;
-	}
-
-	public void setWaitListEntries(Set<WaitListEntry> waitListEntries) {
-		this.waitListEntries = waitListEntries;
-	}
-	
 }
 
 
