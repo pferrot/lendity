@@ -7,6 +7,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import com.pferrot.security.model.User;
 import com.pferrot.sharedcalendar.dao.MovieDao;
 import com.pferrot.sharedcalendar.model.ListValue;
 import com.pferrot.sharedcalendar.model.movie.Movie;
@@ -37,7 +38,7 @@ public class MovieDaoHibernateImpl extends HibernateDaoSupport implements MovieD
 			throw new IllegalArgumentException("'title' parameter must not be null or empty");
 		}
 		final String titleLower = title.trim().toLowerCase();
-		return getHibernateTemplate(). find("from Movie m where lower(m.title) like '%" + titleLower + "%'");
+		return getHibernateTemplate().find("from Movie m where lower(m.title) like '%" + titleLower + "%'");
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////
@@ -56,5 +57,35 @@ public class MovieDaoHibernateImpl extends HibernateDaoSupport implements MovieD
 	
 	public MovieInstance findMovieInstance(Long movieInstanceId) {
 		return (MovieInstance)getHibernateTemplate().load(MovieInstance.class, movieInstanceId);
+	}
+
+	public List<MovieInstance> findMovieInstancesBorrowedAnytimeByUser(User user) {
+		if (user == null) {
+			throw new IllegalArgumentException("'user' parameter must not be null");
+		}
+		return getHibernateTemplate().find("select mi from MovieInstance mi inner join mi.borrowerHistoryEntries bhe " +
+				"where bhe.borrower = ?", user);
+	}
+
+	public List<MovieInstance> findMovieInstancesBorrowedNowByUser(User user) {
+		if (user == null) {
+			throw new IllegalArgumentException("'user' parameter must not be null");
+		}		
+		return getHibernateTemplate().find("from MovieInstance mi where mi.borrower = ?", user);
+	}
+
+	public List<MovieInstance> findMovieInstancesOwnedByUser(User user) {
+		if (user == null) {
+			throw new IllegalArgumentException("'user' parameter must not be null");
+		}		
+		return getHibernateTemplate().find("from MovieInstance mi where mi.owner = ?", user);
+	}
+
+	public List<MovieInstance> findMovieInstancesWantedByUser(User user) {
+		if (user == null) {
+			throw new IllegalArgumentException("'user' parameter must not be null");
+		}		
+		return getHibernateTemplate().find("select mi from MovieInstance mi inner join mi.waitListEntries wle " +
+				"where wle.user = ?", user);
 	}	
 }

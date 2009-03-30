@@ -25,7 +25,7 @@ public class WaitListEntry implements Serializable {
 	
 	@OneToOne(targetEntity = com.pferrot.security.model.User.class)
 	@JoinColumn(name = "USER_ID", nullable = false)
-	private User owner;
+	private User user;
 	
 	@ManyToOne(targetEntity = com.pferrot.sharedcalendar.model.movie.Movie.class)
 	@JoinColumn(name = "WAIT_LIST_AWARE_ID", nullable = false)
@@ -47,12 +47,12 @@ public class WaitListEntry implements Serializable {
         this.id = id;
     }
 
-	public User getOwner() {
-		return owner;
+	public User getUser() {
+		return user;
 	}
 
-	public void setOwner(User owner) {
-		this.owner = owner;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Date getRequestDate() {

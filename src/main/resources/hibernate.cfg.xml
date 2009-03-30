@@ -38,6 +38,7 @@
         <mapping class="com.pferrot.sharedcalendar.model.Language"/>
         
         <mapping class="com.pferrot.sharedcalendar.model.OwnerHistoryEntry"/>
+        <mapping class="com.pferrot.sharedcalendar.model.BorrowerHistoryEntry"/>
         <mapping class="com.pferrot.sharedcalendar.model.WaitListEntry"/>
         
         <mapping class="com.pferrot.sharedcalendar.model.movie.Movie"/>

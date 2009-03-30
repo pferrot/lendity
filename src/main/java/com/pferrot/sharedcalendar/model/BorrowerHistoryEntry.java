@@ -3,21 +3,28 @@ package com.pferrot.sharedcalendar.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+
+import com.pferrot.security.model.Role;
 import com.pferrot.security.model.User;
 
 @Entity
-@Table(name = "OWNER_HISTORY_ENTRIES")
-public class OwnerHistoryEntry implements Serializable {
+@Table(name = "BORROWER_HISTORY_ENTRIES")
+public class BorrowerHistoryEntry implements Serializable {
 
 	@Id @GeneratedValue
 	@Column(name = "ID")
@@ -25,11 +32,11 @@ public class OwnerHistoryEntry implements Serializable {
 	
 	@OneToOne(targetEntity = com.pferrot.security.model.User.class)
 	@JoinColumn(name = "USER_ID", nullable = false)
-	private User owner;
+	private User borrower;
 	
 	@ManyToOne(targetEntity = com.pferrot.sharedcalendar.model.movie.Movie.class)
-	@JoinColumn(name = "OWNABLE_ID", nullable = false)
-	private Ownable ownable;	
+	@JoinColumn(name = "BORROWABLE_ID", nullable = false)
+	private Borrowable borrowable;	
 	
 	@Column(name = "START_DATE", nullable = false)
 	private Date startDate;
@@ -38,7 +45,7 @@ public class OwnerHistoryEntry implements Serializable {
 	private Date endDate;
 	
 	
-    public OwnerHistoryEntry() {
+    public BorrowerHistoryEntry() {
     	super();
     }
    
@@ -50,12 +57,12 @@ public class OwnerHistoryEntry implements Serializable {
         this.id = id;
     }
 
-	public User getOwner() {
-		return owner;
+	public User getBorrower() {
+		return borrower;
 	}
 
-	public void setOwner(User owner) {
-		this.owner = owner;
+	public void setBorrower(User borrower) {
+		this.borrower = borrower;
 	}
 
 	public Date getStartDate() {
@@ -74,12 +81,12 @@ public class OwnerHistoryEntry implements Serializable {
 		this.endDate = endDate;
 	}
 
-	public Ownable getOwnable() {
-		return ownable;
+	public Borrowable getBorrowable() {
+		return borrowable;
 	}
 
-	public void setOwnable(Ownable ownable) {
-		this.ownable = ownable;
+	public void setBorrowable(Borrowable borrowable) {
+		this.borrowable = borrowable;
 	}
 }
 

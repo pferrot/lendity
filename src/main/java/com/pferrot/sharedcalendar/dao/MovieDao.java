@@ -2,6 +2,7 @@ package com.pferrot.sharedcalendar.dao;
 
 import java.util.List;
 
+import com.pferrot.security.model.User;
 import com.pferrot.sharedcalendar.model.movie.Movie;
 import com.pferrot.sharedcalendar.model.movie.MovieInstance;
 
@@ -13,7 +14,7 @@ public interface MovieDao {
 	
 	Movie findMovie(Long movieId);
 	
-	// Return all movies containing 
+	// Return all movies containing title.
 	List<Movie> findMoviesByTitle(String title);
 	
 	void updateMovie(Movie movie);
@@ -26,6 +27,18 @@ public interface MovieDao {
 	Long createMovieInstance(MovieInstance movieInstance);
 	
 	MovieInstance findMovieInstance(Long movieInstanceId);
+	
+	// All movies where owner = user.
+	List<MovieInstance> findMovieInstancesOwnedByUser(User user);
+	
+	// All movies where borrower = user.
+	List<MovieInstance> findMovieInstancesBorrowedNowByUser(User user);
+	
+	// All movies that the user borrowed at some point.
+	List<MovieInstance> findMovieInstancesBorrowedAnytimeByUser(User user);
+	
+	// All movies where the user is in the wait list.
+	List<MovieInstance> findMovieInstancesWantedByUser(User user);
 	
 	void updateMovieInstance(MovieInstance movieInstance);
 	

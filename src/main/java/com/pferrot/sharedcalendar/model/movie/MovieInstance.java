@@ -24,6 +24,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 
 import com.pferrot.security.model.User;
+import com.pferrot.sharedcalendar.model.Borrowable;
+import com.pferrot.sharedcalendar.model.BorrowerHistoryEntry;
 import com.pferrot.sharedcalendar.model.Language;
 import com.pferrot.sharedcalendar.model.Ownable;
 import com.pferrot.sharedcalendar.model.OwnerHistoryEntry;
@@ -36,7 +38,7 @@ import com.pferrot.sharedcalendar.model.WaitListEntry;
  */
 @Entity
 @Table(name = "MOVIE_INSTANCES")
-public class MovieInstance implements Serializable, Ownable, WaitListAware {
+public class MovieInstance implements Serializable, Ownable, Borrowable, WaitListAware {
 
 	@Id @GeneratedValue
 	@Column(name = "ID")
@@ -59,14 +61,24 @@ public class MovieInstance implements Serializable, Ownable, WaitListAware {
 	private Set<Language> subtitles = new HashSet<Language>();
 	
 	@OneToOne(targetEntity = com.pferrot.security.model.User.class)
-	@JoinColumn(name = "USER_ID", nullable = false)
+	@JoinColumn(name = "OWNER_ID", nullable = false)
 	private User owner;
 	
 	@OneToMany(mappedBy = "ownable", targetEntity = OwnerHistoryEntry.class,
 			   cascade = {CascadeType.PERSIST})
 	@OrderBy(value = "startDate DESC")
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})	
-	private List<OwnerHistoryEntry> ownerHistoryEntries = new ArrayList<OwnerHistoryEntry>();
+	private List<OwnerHistoryEntry> ownerHistoryEntries = new ArrayList<OwnerHistoryEntry>();	
+
+	@OneToOne(targetEntity = com.pferrot.security.model.User.class)
+	@JoinColumn(name = "BORROWER_ID", nullable = true)
+	private User borrower;
+	
+	@OneToMany(mappedBy = "borrowable", targetEntity = BorrowerHistoryEntry.class,
+			   cascade = {CascadeType.PERSIST})
+	@OrderBy(value = "startDate DESC")
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})	
+	private List<BorrowerHistoryEntry> borrowerHistoryEntries = new ArrayList<BorrowerHistoryEntry>();
 	
 	@OneToMany(mappedBy = "waitListAware", targetEntity = WaitListEntry.class,
 			   cascade = {CascadeType.PERSIST})
@@ -120,7 +132,7 @@ public class MovieInstance implements Serializable, Ownable, WaitListAware {
 
 	public void setOwner(User owner) {
 		this.owner = owner;
-	}
+	}	
 
 	public List<OwnerHistoryEntry> getOwnerHistoryEntries() {
 		return ownerHistoryEntries;
@@ -128,6 +140,22 @@ public class MovieInstance implements Serializable, Ownable, WaitListAware {
 
 	public void setOwnerHistoryEntries(List<OwnerHistoryEntry> ownerHistoryEntries) {
 		this.ownerHistoryEntries = ownerHistoryEntries;
+	}
+
+	public User getBorrower() {
+		return borrower;
+	}
+
+	public void setBorrower(User borrower) {
+		this.borrower = borrower;
+	}
+
+	public List<BorrowerHistoryEntry> getBorrowerHistoryEntries() {
+		return borrowerHistoryEntries;
+	}
+
+	public void setBorrowerHistoryEntries(List<BorrowerHistoryEntry> borrowerHistoryEntries) {
+		this.borrowerHistoryEntries = borrowerHistoryEntries;
 	}
 
 	public List<WaitListEntry> getWaitListEntries() {

@@ -1,6 +1,7 @@
 package com.pferrot.sharedcalendar.initialdata;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +18,7 @@ import com.pferrot.sharedcalendar.dao.ListValueDao;
 import com.pferrot.sharedcalendar.dao.MovieDao;
 import com.pferrot.sharedcalendar.dao.PersonDao;
 import com.pferrot.sharedcalendar.model.Address;
+import com.pferrot.sharedcalendar.model.BorrowerHistoryEntry;
 import com.pferrot.sharedcalendar.model.Country;
 import com.pferrot.sharedcalendar.model.Gender;
 import com.pferrot.sharedcalendar.model.Language;
@@ -284,15 +286,29 @@ public class InitialData {
 		movieInstance.setMovie(movie);
 		
 		User user = userDao.findUser("pferrot");
+
+		final Calendar christmas2008 = Calendar.getInstance();
+		christmas2008.set(2008, 11, 25);
+
 		movieInstance.setOwner(user);
-		
 		OwnerHistoryEntry ownerHistoryEntry = new OwnerHistoryEntry();
-		ownerHistoryEntry.setStartDate(new Date());
+		ownerHistoryEntry.setStartDate(christmas2008.getTime());
 		ownerHistoryEntry.setOwnable(movieInstance);
 		ownerHistoryEntry.setOwner(user);		
 		List<OwnerHistoryEntry> ownerHistoryEntries = new ArrayList<OwnerHistoryEntry>();
 		ownerHistoryEntries.add(ownerHistoryEntry);		
 		movieInstance.setOwnerHistoryEntries(ownerHistoryEntries);
+		
+		// User borrowed his own movie...just for test.
+		BorrowerHistoryEntry borrowerHistoryEntry = new BorrowerHistoryEntry();
+		borrowerHistoryEntry.setStartDate(christmas2008.getTime());
+		borrowerHistoryEntry.setEndDate(new Date());
+		borrowerHistoryEntry.setBorrowable(movieInstance);
+		borrowerHistoryEntry.setBorrower(user);		
+		List<BorrowerHistoryEntry> borrowerHistoryEntries = new ArrayList<BorrowerHistoryEntry>();
+		borrowerHistoryEntries.add(borrowerHistoryEntry);		
+		movieInstance.setBorrowerHistoryEntries(borrowerHistoryEntries);
+		
 		
 		movieInstance.setFormat((MovieFormat)listValueDao.findListValue(MovieFormat.DVD_ZONE_2_LABEL_CODE));
 		
