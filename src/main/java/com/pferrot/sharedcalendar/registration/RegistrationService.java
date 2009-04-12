@@ -7,9 +7,9 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.mail.MailPreparationException;
 import org.springframework.security.providers.encoding.MessageDigestPasswordEncoder;
 
+import com.pferrot.core.CoreUtils;
 import com.pferrot.emailsender.Consts;
 import com.pferrot.emailsender.manager.MailManager;
 import com.pferrot.security.dao.RoleDao;
@@ -64,12 +64,10 @@ public class RegistrationService {
 	 * @param username
 	 * @return
 	 */
-	public boolean isUsernameAvailable(final String username) {
-		if (username == null) {
-			throw new IllegalArgumentException("Parameter 'username' must not be null");
-		}
+	public boolean isUsernameAvailable(final String pUsername) {
+		CoreUtils.assertNotEmptyStringParameter(pUsername, "pUsername");
 		
-		User user = userDao.findUser(username);
+		User user = userDao.findUser(pUsername);
 		
 		return user == null;
 	}
@@ -84,44 +82,40 @@ public class RegistrationService {
 	 * @param person
 	 * @return
 	 */
-	public Long createUser(final Person person) {
-		if (person == null) {
-			throw new IllegalArgumentException("Parameter 'person' must not be null");
-		}
-		else if (person.getUser() == null) {
-			throw new IllegalArgumentException("The 'person' parameter must contain a new user object");
-		}
+	public Long createUser(final Person pPerson) {
+		CoreUtils.assertNotNullParameter(pPerson, "pPerson");
+		CoreUtils.assertNotNullParameter(pPerson.getUser(), "pPerson.user");
 		
-		person.getUser().setCreationDate(new Date());
-		person.getUser().setEnabled(Boolean.TRUE);
+		pPerson.getUser().setCreationDate(new Date());
+		pPerson.getUser().setEnabled(Boolean.TRUE);
 		
 		Role userRole = roleDao.findRole(Role.USER_ROLE_NAME);
 		
 		// This convenience method also adds the user on the role.
-		person.getUser().addRole(userRole);		
+		pPerson.getUser().addRole(userRole);		
 		
 		final String rawPassword = PasswordGenerator.getNewPassword();		
 		final String md5EncodedPassword = passwordEncoder.encodePassword(rawPassword, null);
 		if (log.isDebugEnabled()) {
-			log.debug("Generated password for user '" + person.getUser().getUsername() + 
+			log.debug("Generated password for user '" + pPerson.getUser().getUsername() + 
 					"': '" + rawPassword + "' ('" + md5EncodedPassword + "')");
 		}
-		person.getUser().setPassword(md5EncodedPassword);
+		pPerson.getUser().setPassword(md5EncodedPassword);
 
 		// This will also create the user.
-		Long personId = personDao.createPerson(person);
+		Long personId = personDao.createPerson(pPerson);
 		
 		// Send email (will actually create a JMS message, i.e. it is async).
 		Map<String, String> objects = new HashMap<String, String>();
-		objects.put("firstName", person.getFirstName());
-		objects.put("username", person.getUser().getUsername());
+		objects.put("firstName", pPerson.getFirstName());
+		objects.put("username", pPerson.getUser().getUsername());
 		objects.put("password", rawPassword);
 		
 		// TODO: localization
 		final String velocityTemplateLocation = "com/pferrot/sharedcalendar/registration/emailtemplate/en";
 		
 		Map<String, String> to = new HashMap<String, String>();
-		to.put(person.getEmail(), person.getEmail());
+		to.put(pPerson.getEmail(), pPerson.getEmail());
 		
 		mailManager.send(Consts.DEFAULT_SENDER_NAME, 
 				         Consts.DEFAULT_SENDER_ADDRESS,

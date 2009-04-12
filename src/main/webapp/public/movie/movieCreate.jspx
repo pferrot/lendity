@@ -1,0 +1,78 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="Movie Create" />
+	<ui:param name="contentHeader" value="Movie Create" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+			<ui:define name="pageName">
+            	#{contentHeader}
+          	</ui:define>
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
+				<f:view>
+					<center>
+
+					<ice:form>
+
+Titre:<br />
+						<ice:message showSummary="true" showDetail="false"
+							style="color: red;" for="title"></ice:message>
+						<br />
+						<ice:inputText id="title" value="#{movieCreateViewController.title}"
+							required="true">
+						</ice:inputText>
+						<br />
+
+Description:<br />
+						<ice:message showSummary="true" showDetail="false"
+							style="color: red;" for="description"></ice:message>
+						<br />
+						<ice:inputTextarea id="description" value="#{movieCreateViewController.description}">
+						</ice:inputTextarea>
+						<br />
+
+Duree:<br />
+						<ice:message showSummary="true" showDetail="false"
+							style="color: red;" for="duration"></ice:message>
+						<br />
+						<ice:inputText id="duration" value="#{movieCreateViewController.duration}"
+							required="false">
+							<f:validateLongRange minimum="0" maximum="1000"></f:validateLongRange>
+						</ice:inputText>
+						<br />
+						
+Annee:<br />
+						<ice:message showSummary="true" showDetail="false"
+							style="color: red;" for="year"></ice:message>
+						<br />
+						<ice:inputText id="year" value="#{movieCreateViewController.year}"
+							required="false">
+							<f:validator validatorId="movieYearValidator"/>
+						</ice:inputText>
+						<br />										
+
+
+						<ice:commandLink value="Alleeeeeeeez !" action="#{movieCreateStep1.submit}">
+						  <f:param name="movieId" value="#{movieCreateStep1.newMovieId}"/>
+						</ice:commandLink>
+						<br />
+					</ice:form></center>
+				</f:view>
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

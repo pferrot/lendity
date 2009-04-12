@@ -12,6 +12,8 @@ public class Language extends ListValue {
 	public static final String ENGLISH_LABEL_CODE = "language_english";
 	public static final String FRENCH_LABEL_CODE = "language_french";
 	
+	public static final String DEFAULT_LABEL_CODE = FRENCH_LABEL_CODE;
+	
 	public Language() {
 		super();
 	}

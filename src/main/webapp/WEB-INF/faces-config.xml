@@ -20,11 +20,16 @@ Using faces-config 1.1 in order to user ICEfaces with JSF 1.2. See ICEfacesDevel
 		<view-handler>
 			com.icesoft.faces.facelets.D2DFaceletViewHandler
 		</view-handler>
-		
+		 <!--
+		<view-handler>
+			com.pferrot.jsf.viewhandler.CustomViewHandler
+		</view-handler>
+		-->
+			 
 		<message-bundle>messages</message-bundle>
 		<locale-config>
-			<default-locale>en</default-locale>
-			<supported-locale>fr</supported-locale>
+			<default-locale>fr</default-locale>
+			<supported-locale>en</supported-locale>
 		</locale-config>		
 	</application>
 <!--	<managed-bean>-->
@@ -81,4 +86,41 @@ Using faces-config 1.1 in order to user ICEfaces with JSF 1.2. See ICEfacesDevel
 		<from-view-id>/public/registration/registration_3.jspx</from-view-id>
 	</navigation-rule>
 
+	<!-- 
+	********************************************************************
+	MOVIE OVERVIEW
+	********************************************************************
+	-->
+	<navigation-rule>
+		<from-view-id>/public/movie/movieOverview.jspx</from-view-id>
+	</navigation-rule>
+	
+	<!-- 
+	********************************************************************
+	MOVIE CREATE
+	********************************************************************
+	-->	
+	<navigation-rule>
+		<from-view-id>/public/movie/movieCreate.jspx</from-view-id>			
+	</navigation-rule>
+	
+	<!-- 
+	********************************************************************
+	MOVIES LIST
+	********************************************************************
+	-->
+	<navigation-rule>
+		<from-view-id>/public/movie/moviesList.jspx</from-view-id>
+	</navigation-rule>
+
+	<!-- 
+	********************************************************************
+	VALIDATORS
+	********************************************************************	
+	 -->	
+    <validator>
+        <validator-id>movieYearValidator</validator-id>
+        <validator-class>com.pferrot.sharedcalendar.movie.jsf.validator.MovieYearValidator</validator-class>
+    </validator>
+	
 </faces-config>

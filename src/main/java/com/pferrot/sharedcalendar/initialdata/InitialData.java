@@ -17,6 +17,7 @@ import com.pferrot.security.model.User;
 import com.pferrot.sharedcalendar.dao.ListValueDao;
 import com.pferrot.sharedcalendar.dao.MovieDao;
 import com.pferrot.sharedcalendar.dao.PersonDao;
+import com.pferrot.sharedcalendar.i18n.I18nConsts;
 import com.pferrot.sharedcalendar.model.Address;
 import com.pferrot.sharedcalendar.model.BorrowerHistoryEntry;
 import com.pferrot.sharedcalendar.model.Country;
@@ -260,8 +261,8 @@ public class InitialData {
 	private void createMovies() {
 		// Create Movie.
 		Movie movie = new Movie();
-		movie.setTitle((Language)listValueDao.findListValue(Language.FRENCH_LABEL_CODE), "The Big Lebowski");
-		movie.setDescription((Language)listValueDao.findListValue(Language.FRENCH_LABEL_CODE), "Blabla blabla le dude blablabla tadadada...");
+		movie.setTitle(I18nConsts.FR_LANGUAGE, "The Big Lebowski");
+		movie.setDescription(I18nConsts.FR_LANGUAGE, "Blabla blabla le dude blablabla tadadada...");
 		
 		Set<Person> actors = new HashSet<Person>();
 		actors.add(personDao.findPerson(jeffBridgesId));

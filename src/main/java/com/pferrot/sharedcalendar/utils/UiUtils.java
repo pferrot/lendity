@@ -7,12 +7,17 @@ import java.util.TreeSet;
 
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.pferrot.sharedcalendar.i18n.I18nUtils;
 import com.pferrot.sharedcalendar.i18n.SelectItemComparator;
 import com.pferrot.sharedcalendar.model.ListValue;
 import com.pferrot.sharedcalendar.model.OrderedListValue;
 
 public class UiUtils {
+	
+	private final static Log log = LogFactory.getLog(UiUtils.class);
 	
 	public static SelectItem getPleaseSelectSelectItem(final Locale locale) {
 		final String label = I18nUtils.getMessageResourceString("ui_please_select", locale);
@@ -42,6 +47,5 @@ public class UiUtils {
 			throw new RuntimeException("Not implemented yet...");
 		}
 		return null;
-	}	
-
+	}
 }

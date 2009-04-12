@@ -17,6 +17,8 @@ public interface MovieDao {
 	// Return all movies containing title.
 	List<Movie> findMoviesByTitle(String title);
 	
+	List<Movie> findAllMovies();
+	
 	void updateMovie(Movie movie);
 	
 	void deleteMovie(Movie movie);

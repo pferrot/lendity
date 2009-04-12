@@ -18,9 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CollectionOfElements;
-import org.hibernate.annotations.MapKeyManyToMany;
+import org.hibernate.annotations.MapKey;
 
-import com.pferrot.sharedcalendar.model.Language;
 import com.pferrot.sharedcalendar.model.Person;
 
 /**
@@ -38,14 +37,14 @@ public class Movie implements Serializable {
 	@CollectionOfElements(targetElement = String.class)
 	@JoinTable(name = "MOVIES_TITLES",
 			joinColumns = @JoinColumn(name = "MOVIE_ID"))
-	@MapKeyManyToMany(targetEntity = Language.class)
-	private Map<Language, String> titles = new HashMap<Language, String>();
+	@MapKey(targetElement = String.class)
+	private Map<String, String> titles = new HashMap<String, String>();
 	
 	@CollectionOfElements(targetElement = String.class)
 	@JoinTable(name = "MOVIES_DESCRIPTIONS",
 			joinColumns = @JoinColumn(name = "MOVIE_ID"))
-	@MapKeyManyToMany(targetEntity = Language.class)
-	private Map<Language, String> descriptions = new HashMap<Language, String>();
+	@MapKey(targetElement = String.class)
+	private Map<String, String> descriptions = new HashMap<String, String>();
 	
 	@Column(name = "YEAR", nullable = true)
     private Integer year;
@@ -82,36 +81,36 @@ public class Movie implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-	public Map<Language, String> getTitles() {
+	
+	public Map<String, String> getTitles() {
 		return titles;
 	}
 
-	public void setTitles(Map<Language, String> titles) {
+	public void setTitles(Map<String, String> titles) {
 		this.titles = titles;
 	}
-	
-	public void setTitle(Language language, String title) {
+
+	public void setTitle(String language, String title) {
 		titles.put(language, title);
 	}
 	
-	public String getTitle(Language language) {
+	public String getTitle(String language) {
 		return titles.get(language);
 	}
 
-	public Map<Language, String> getDescriptions() {
+	public Map<String, String> getDescriptions() {
 		return descriptions;
 	}
 
-	public void setDescriptions(Map<Language, String> descriptions) {
+	public void setDescriptions(Map<String, String> descriptions) {
 		this.descriptions = descriptions;
 	}
 
-	public void setDescription(Language language, String title) {
+	public void setDescription(String language, String title) {
 		descriptions.put(language, title);
 	}
 	
-	public String getDescription(Language description) {
+	public String getDescription(String description) {
 		return descriptions.get(description);
 	}
 

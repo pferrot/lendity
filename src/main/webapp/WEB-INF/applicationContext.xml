@@ -118,28 +118,6 @@
 		</property>
 	</bean>
 	
-	<bean id="movieDaoTarget" class="com.pferrot.sharedcalendar.dao.hibernate.MovieDaoHibernateImpl">
-		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
-	</bean>
-	
-	<bean id="movieDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager"/>
-		<property name="target">
-			<ref local="movieDaoTarget"/>
-		</property>
-		<property name="proxyInterfaces">
-           <value>com.pferrot.sharedcalendar.dao.MovieDao</value>
-         </property>		
-		<property name="transactionAttributes">
-			<props>
-				<prop key="delete*">PROPAGATION_REQUIRED</prop>
-				<prop key="update*">PROPAGATION_REQUIRED</prop>
-				<prop key="create*">PROPAGATION_REQUIRED</prop>
-				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
-			</props>
-		</property>
-	</bean>	
-	
 	<bean id="baseTransactionProxy"	class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean" abstract="true">
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="transactionAttributes">
@@ -151,6 +129,11 @@
 			</props>
 		</property>
 	</bean>
+	
+	<!-- 
+	========================================================================================================================
+	REGISTRATION - start
+	 -->
 	
 	<bean id="registrationService" parent="baseTransactionProxy">
 		<property name="target" ref="registrationServiceTarget" />
@@ -186,8 +169,81 @@
 	<bean id="registrationViewController" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationViewController"
 	      scope="conversation.manual" orchestra:conversationName="registration">
 	      <property name="registrationService" ref="registrationService"/>
+	</bean>
+	
+	<!-- 
+	REGISTRATION - end
+	========================================================================================================================
+	 -->
+	 
+	<!-- 
+	========================================================================================================================
+	MOVIE - start
+	 -->
+	 
+	<bean id="movieDaoTarget" class="com.pferrot.sharedcalendar.dao.hibernate.MovieDaoHibernateImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	
+	<bean id="movieDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target">
+			<ref local="movieDaoTarget"/>
+		</property>
+		<property name="proxyInterfaces">
+           <value>com.pferrot.sharedcalendar.dao.MovieDao</value>
+         </property>		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>	
+		
+	<bean id="movieService" parent="baseTransactionProxy">
+		<property name="target" ref="movieServiceTarget" />
+	</bean>
+		
+	<bean id="movieServiceTarget" class="com.pferrot.sharedcalendar.movie.MovieService">
+		<property name="movieDao" ref="movieDao"/>
+		<property name="listValueDao" ref="listValueDao"/>
+	</bean>
+	
+	<bean id="movieOverviewStep1" 
+	      class="com.pferrot.sharedcalendar.movie.jsf.MovieOverviewStep1"
+	      scope="request">
+		<property name="movieOverviewViewController" ref="movieOverviewViewController"/>
+
 	</bean>	
 	
+	<bean id="movieOverviewViewController" class="com.pferrot.sharedcalendar.movie.jsf.MovieOverviewViewController"
+	      scope="conversation.manual" orchestra:conversationName="movieOverview">
+	      <property name="movieService" ref="movieService"/>
+	</bean>
+	
+	<bean id="movieCreateStep1" 
+	      class="com.pferrot.sharedcalendar.movie.jsf.MovieCreateStep1"
+	      scope="request">
+		<property name="movieCreateViewController" ref="movieCreateViewController"/>
+	</bean>	
+	
+	<bean id="movieCreateViewController" class="com.pferrot.sharedcalendar.movie.jsf.MovieCreateViewController"
+	      scope="conversation.manual" orchestra:conversationName="movieCreate">
+	      <property name="movieService" ref="movieService"/>
+	</bean>
+	
+	<bean id="moviesListViewController" class="com.pferrot.sharedcalendar.movie.jsf.MoviesListViewController"
+	      scope="conversation.manual" orchestra:conversationName="moviesList">
+	      <property name="movieService" ref="movieService"/>
+	</bean>		
+	
+	<!-- 
+	MOVIE - end
+	========================================================================================================================
+	 -->		 	
 	
 	<!-- 
 	Orchestra stuff...

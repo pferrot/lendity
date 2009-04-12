@@ -19,6 +19,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 
+import com.pferrot.core.CoreUtils;
 import com.pferrot.security.model.User;
 
 @Entity
@@ -126,11 +127,9 @@ public class Person implements Serializable {
 		this.specialities = specialities;
 	}
 
-	public void addSpeciality(PersonSpeciality speciality) {
-		if (speciality == null) {
-			throw new IllegalArgumentException("'speciality' parameter must not be null");
-		}
-		specialities.add(speciality);
+	public void addSpeciality(final PersonSpeciality pSpeciality) {
+		CoreUtils.assertNotNullParameter(pSpeciality, "pSpeciality");
+		specialities.add(pSpeciality);
 	}	
 }
 
