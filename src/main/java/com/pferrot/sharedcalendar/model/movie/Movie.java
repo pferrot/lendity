@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.MapKey;
 
+import com.pferrot.sharedcalendar.i18n.I18nConsts;
 import com.pferrot.sharedcalendar.model.Person;
 
 /**
@@ -33,6 +34,11 @@ public class Movie implements Serializable {
 	@Id @GeneratedValue
 	@Column(name = "ID")
     private Long id;
+	
+	// TODO: Added this field to make it easy to retrieve movies ordered
+	// by title. Not sure how to do with the "titles" map below.
+	@Column(name = "TITLE", nullable = false, length = 255)
+	private String title;
 	
 	@CollectionOfElements(targetElement = String.class)
 	@JoinTable(name = "MOVIES_TITLES",
@@ -80,21 +86,32 @@ public class Movie implements Serializable {
     
     public void setId(Long id) {
         this.id = id;
-    }
+    }    
 	
-	public Map<String, String> getTitles() {
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+		// See comment on "title" field above.
+		setTitle(I18nConsts.DEFAULT_LANGUAGE, title);
+	}
+
+	// Private methods, see comment on "title" field above. 
+	private Map<String, String> getTitles() {
 		return titles;
 	}
 
-	public void setTitles(Map<String, String> titles) {
+	private void setTitles(Map<String, String> titles) {
 		this.titles = titles;
 	}
 
-	public void setTitle(String language, String title) {
+	private void setTitle(String language, String title) {
 		titles.put(language, title);
 	}
 	
-	public String getTitle(String language) {
+	private String getTitle(String language) {
 		return titles.get(language);
 	}
 

@@ -28,7 +28,7 @@
 						<ice:message showSummary="true" showDetail="false"
 							style="color: red;" for="username"></ice:message>
 						<br />
-						<ice:inputText id="username" value="#{registrationViewController.username}"
+						<ice:inputText id="username" value="#{registrationController.username}"
 							required="true" validator="#{registrationStep1.validateUsername}"
 							onblur="iceSubmitPartial(form,this,event);">
 						</ice:inputText>
@@ -38,8 +38,8 @@
 						<ice:message showSummary="true" showDetail="false"
 							style="color: red;" for="gender"></ice:message>
 						<br />
-						<ice:selectOneMenu id="gender" value="#{registrationViewController.genderId}" required="true">
-							<f:selectItems value="#{registrationViewController.gendersSelectItems}"/>
+						<ice:selectOneMenu id="gender" value="#{registrationController.genderId}" required="true">
+							<f:selectItems value="#{registrationController.gendersSelectItems}"/>
 						</ice:selectOneMenu>
 						<br />
 
@@ -48,14 +48,14 @@
 							style="color: red;" for="firstName"></ice:message>
 						<br />
 						<ice:inputText id="firstName"
-							value="#{registrationViewController.firstName}" required="true" />
+							value="#{registrationController.firstName}" required="true" />
 						<br />
 
 <ice:outputText value="#{messages.person_lastName}"/>:<br />
 						<ice:message showSummary="true" showDetail="false"
 							style="color: red;" for="lastName"></ice:message>
 						<br />
-						<ice:inputText id="lastName" value="#{registrationViewController.lastName}"
+						<ice:inputText id="lastName" value="#{registrationController.lastName}"
 							required="true" />
 						<br />
 
@@ -63,7 +63,7 @@
 						<ice:message showSummary="true" showDetail="false"
 							style="color: red;" for="email"></ice:message>
 						<br />
-						<ice:inputText id="email" value="#{registrationViewController.email}"
+						<ice:inputText id="email" value="#{registrationController.email}"
 							required="true" validator="#{registrationStep1.validateEmail}">
 						</ice:inputText>
 						<br />

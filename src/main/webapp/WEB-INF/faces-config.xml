@@ -111,7 +111,48 @@ Using faces-config 1.1 in order to user ICEfaces with JSF 1.2. See ICEfacesDevel
 	-->
 	<navigation-rule>
 		<from-view-id>/public/movie/moviesList.jspx</from-view-id>
+		<navigation-case>
+			<from-outcome>nextPage</from-outcome>
+			<to-view-id>/public/movie/moviesList.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>previousPage</from-outcome>
+			<to-view-id>/public/movie/moviesList.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>searchByTitle</from-outcome>
+			<to-view-id>/public/movie/moviesList.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>clearSearchByTitle</from-outcome>
+			<to-view-id>/public/movie/moviesList.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>movieOverview</from-outcome>
+			<to-view-id>/public/movie/movieOverview.jspx</to-view-id>
+		</navigation-case>		
 	</navigation-rule>
+	
+	<!-- 
+	********************************************************************
+	MY MOVIES LIST
+	********************************************************************
+	-->
+	<navigation-rule>
+		<from-view-id>/public/movie/myMoviesList.jspx</from-view-id>
+		<navigation-case>
+			<from-outcome>nextPage</from-outcome>
+			<to-view-id>/public/movie/myMoviesList.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>previousPage</from-outcome>
+			<to-view-id>/public/movie/myMoviesList.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>movieOverview</from-outcome>
+			<to-view-id>/public/movie/movieOverview.jspx</to-view-id>
+		</navigation-case>		
+	</navigation-rule>	
 
 	<!-- 
 	********************************************************************

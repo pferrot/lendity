@@ -27,7 +27,7 @@
 					<ice:form>
 
 Username:<br />
-						<ice:outputText value="#{registrationViewController.username}" />
+						<ice:outputText value="#{registrationController.username}" />
 						<br />
 
 						<ice:commandButton value="Back!"	action="#{registrationStep2.back}" />

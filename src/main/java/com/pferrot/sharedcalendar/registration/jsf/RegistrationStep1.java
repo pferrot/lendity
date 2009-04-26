@@ -3,6 +3,10 @@ package com.pferrot.sharedcalendar.registration.jsf;
 import org.apache.commons.logging.Log;
 
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.orchestra.conversation.Conversation;
+import org.apache.myfaces.orchestra.conversation.ConversationUtils;
+import org.apache.myfaces.orchestra.viewController.annotations.InitView;
+import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -18,6 +22,7 @@ import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.pferrot.sharedcalendar.registration.RegistrationService;
 
+@ViewController(viewIds={"/public/registration/registration.jspx"})
 public class RegistrationStep1
 // Renderable is NOT necessary in sync mode.
 //implements Renderable, DisposableBean 
@@ -27,7 +32,7 @@ public class RegistrationStep1
 	
 //	private final static int renderInterval = 1000;
 	
-	private RegistrationViewController registrationViewController;
+	private RegistrationController registrationController;
 	private RegistrationService registrationService;
 //	private PersistentFacesState state;	 
 //	private IntervalRenderer clock;
@@ -38,13 +43,18 @@ public class RegistrationStep1
 //		state = PersistentFacesState.getInstance();
 	}
 	
-	public RegistrationViewController getRegistrationViewController() {
-		return registrationViewController;
+	@InitView
+	public void initView() {
+//		ConversationUtils.ensureConversationRedirect("registration", "/public/registration/registration.jspx");
+	}	
+	
+	public RegistrationController getRegistrationController() {
+		return registrationController;
 	}
 
-	public void setRegistrationViewController(
-			RegistrationViewController registrationViewController) {
-		this.registrationViewController = registrationViewController;
+	public void setRegistrationController(
+			RegistrationController registrationController) {
+		this.registrationController = registrationController;
 	}
 
 	public RegistrationService getRegistrationService() {

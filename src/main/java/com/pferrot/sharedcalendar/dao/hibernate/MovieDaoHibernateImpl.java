@@ -2,6 +2,11 @@ package com.pferrot.sharedcalendar.dao.hibernate;
 
 import java.util.List;
 
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.pferrot.core.CoreUtils;
@@ -30,23 +35,62 @@ public class MovieDaoHibernateImpl extends HibernateDaoSupport implements MovieD
 		return (Movie)getHibernateTemplate().load(Movie.class, movieId);
 	}
 
-	public List<Movie> findMoviesByTitle(final String pTitle) {
+	public List<Movie> findMoviesByTitle(final String pTitle, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotEmptyStringParameter(pTitle, "pTitle");
 		final String titleLower = pTitle.trim().toLowerCase();
-		return getHibernateTemplate().find("from Movie m where lower(m.title) like '%" + titleLower + "%'");
+		DetachedCriteria critera = DetachedCriteria.forClass(Movie.class).
+			add(Restrictions.ilike("title", pTitle, MatchMode.ANYWHERE)).
+			addOrder(Order.asc("title").ignoreCase());
+		return getHibernateTemplate().findByCriteria(critera, pFirstResult, pMaxResults);
+	}
+	
+	public List<Movie> findMoviesByTitle(final String pTitle) {
+		return findMoviesByTitle(pTitle, 0, 0);
+	}	
+	
+	public List<Movie> findMovies(final int pFirstResult, final int pMaxResults) {
+		DetachedCriteria critera = DetachedCriteria.forClass(Movie.class).
+			addOrder(Order.asc("title").ignoreCase());
+		return getHibernateTemplate().findByCriteria(critera, pFirstResult, pMaxResults);
 	}
 	
 	public List<Movie> findAllMovies() {
-		return getHibernateTemplate().find("from Movie m");
+		return findMovies(0, 0);
 	}
-	
-	// TODO
-	public List<Movie> findAllMoviesOrderedByTitle(final String pLanguage) {
-		CoreUtils.assertNotEmptyStringParameter(pLanguage, "pLanguage");
+
+	public List<Movie> findMoviesOwnedByUser(final User pUser, final int pFirstResult, final int pMaxResults) {
+		CoreUtils.assertNotNullParameter(pUser, "pUser");
+		return findMoviesOwnedByUser(pUser.getUsername());
+	}
+
+	public List<Movie> findMoviesOwnedByUser(final String pUsername, final int pFirstResult, final int pMaxResults) {
+		CoreUtils.assertNotNullParameter(pUsername, "pUsername");
 		
-		return getHibernateTemplate().find("select m from Movie m inner join m.titles titles " +
-				"where titles.borrower = ?", pUser);
-	}	
+		DetachedCriteria critera = DetachedCriteria.forClass(Movie.class).
+			addOrder(Order.asc("title").ignoreCase()).
+			createCriteria("movieInstances", "mi", CriteriaSpecification.INNER_JOIN).
+			createCriteria("owner", CriteriaSpecification.INNER_JOIN).
+			add(Restrictions.eq("username", pUsername));
+		
+		return getHibernateTemplate().findByCriteria(critera, 0, 0);
+//		return getHibernateTemplate().find("select m from Movie m join m.movieInstances mi where mi.owner.username = ? order by lower(m.title) asc", pUsername);
+	}
+
+	public List<Movie> findMoviesBorrowedByUser(final User pUser, final int pFirstResult, final int pMaxResults) {
+		CoreUtils.assertNotNullParameter(pUser, "pUser");
+		return findMoviesBorrowedByUser(pUser.getUsername());
+	}
+
+	public List<Movie> findMoviesBorrowedByUser(final String pUsername, final int pFirstResult, final int pMaxResults) {
+		CoreUtils.assertNotNullParameter(pUsername, "pUsername");
+		DetachedCriteria critera = DetachedCriteria.forClass(Movie.class).
+			addOrder(Order.asc("title").ignoreCase()).
+			createCriteria("movieInstances", "mi", CriteriaSpecification.INNER_JOIN).
+			createCriteria("owner", CriteriaSpecification.INNER_JOIN).
+			add(Restrictions.eq("username", pUsername));
+		
+		return getHibernateTemplate().findByCriteria(critera, 0, 0);
+	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////
 	// MovieInstance

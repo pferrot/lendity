@@ -150,24 +150,24 @@
 	
 	<bean id="registrationStep1" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationStep1"
 	      scope="request">
-		<property name="registrationViewController" ref="registrationViewController"/>
+		<property name="registrationController" ref="registrationController"/>
 		<property name="registrationService" ref="registrationService"/>
 	</bean>
 	
 	<bean id="registrationStep2" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationStep2"
 	      scope="request">
-		<property name="registrationViewController" ref="registrationViewController"/>
+		<property name="registrationController" ref="registrationController"/>
 		<property name="registrationService" ref="registrationService"/>
 	</bean>
 	
 	<bean id="registrationStep3" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationStep3"
 	      scope="request">
-		<property name="registrationViewController" ref="registrationViewController"/>
+		<property name="registrationController" ref="registrationController"/>
 		<property name="registrationService" ref="registrationService"/>
 	</bean>		
 	
-	<bean id="registrationViewController" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationViewController"
-	      scope="conversation.manual" orchestra:conversationName="registration">
+	<bean id="registrationController" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationController"
+	      scope="conversation.access" orchestra:conversationName="registration">
 	      <property name="registrationService" ref="registrationService"/>
 	</bean>
 	
@@ -220,7 +220,7 @@
 	</bean>	
 	
 	<bean id="movieOverviewViewController" class="com.pferrot.sharedcalendar.movie.jsf.MovieOverviewViewController"
-	      scope="conversation.manual" orchestra:conversationName="movieOverview">
+	      scope="conversation.access" orchestra:conversationName="movieOverview">
 	      <property name="movieService" ref="movieService"/>
 	</bean>
 	
@@ -231,14 +231,19 @@
 	</bean>	
 	
 	<bean id="movieCreateViewController" class="com.pferrot.sharedcalendar.movie.jsf.MovieCreateViewController"
-	      scope="conversation.manual" orchestra:conversationName="movieCreate">
+	      scope="conversation.access" orchestra:conversationName="movieCreate">
 	      <property name="movieService" ref="movieService"/>
 	</bean>
 	
-	<bean id="moviesListViewController" class="com.pferrot.sharedcalendar.movie.jsf.MoviesListViewController"
-	      scope="conversation.manual" orchestra:conversationName="moviesList">
+	<bean id="moviesListController" class="com.pferrot.sharedcalendar.movie.jsf.MoviesListController"
+	      scope="conversation.access" orchestra:conversationName="moviesList">
 	      <property name="movieService" ref="movieService"/>
-	</bean>		
+	</bean>
+	
+	<bean id="myMoviesListController" class="com.pferrot.sharedcalendar.movie.jsf.MyMoviesListController"
+	      scope="conversation.access" orchestra:conversationName="myMoviesList">
+	      <property name="movieService" ref="movieService"/>
+	</bean>	
 	
 	<!-- 
 	MOVIE - end
@@ -256,22 +261,24 @@
 			<map>
 				<entry key="conversation.manual">
 					<bean class="org.apache.myfaces.orchestra.conversation.spring.SpringConversationScope">
-						<property name="timeout" value="35" />
+						<property name="timeout" value="30" />
 						<property name="advices">
 							<list>
 								<ref bean="persistentContextConversationInterceptor" />
 							</list>
 						</property>
+						<property name="lifetime" value="manual" />
 					</bean>
-				</entry>
-				<entry key="conversation.flash">
+				</entry>			
+				<entry key="conversation.access">
 					<bean class="org.apache.myfaces.orchestra.conversation.spring.SpringConversationScope">
+						<property name="timeout" value="30" />
 						<property name="advices">
 							<list>
 								<ref bean="persistentContextConversationInterceptor" />
 							</list>
 						</property>
-						<property name="lifetime" value="flash" />
+						<property name="lifetime" value="access" />
 					</bean>
 				</entry>
 				<entry key="conversation.viewController">

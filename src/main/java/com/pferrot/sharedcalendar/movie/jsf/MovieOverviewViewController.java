@@ -43,6 +43,6 @@ public class MovieOverviewViewController
 	}
 	
 	public String getMovieTitle() {
-		return I18nUtils.getLocalizedText(movieService.findMovie(movieId).getTitles());
+		return movieService.findMovie(movieId).getTitle();
 	}
 }

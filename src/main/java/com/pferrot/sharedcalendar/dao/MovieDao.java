@@ -16,8 +16,17 @@ public interface MovieDao {
 	
 	// Return all movies containing title.
 	List<Movie> findMoviesByTitle(String title);
+	List<Movie> findMoviesByTitle(String title, int pFirstResult, int pMaxResults);
 	
 	List<Movie> findAllMovies();
+	
+	List<Movie> findMovies(int pFirstResult, int pMaxResults);
+	
+	List<Movie> findMoviesOwnedByUser(final User pUser, int pFirstResult, int pMaxResults);
+	List<Movie> findMoviesOwnedByUser(final String pUsername, int pFirstResult, int pMaxResults);
+
+	List<Movie> findMoviesBorrowedByUser(final User pUser, int pFirstResult, int pMaxResults);
+	List<Movie> findMoviesBorrowedByUser(final String pUsername, int pFirstResult, int pMaxResults);
 	
 	void updateMovie(Movie movie);
 	

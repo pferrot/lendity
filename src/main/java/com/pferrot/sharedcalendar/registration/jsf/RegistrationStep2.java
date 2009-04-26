@@ -2,36 +2,38 @@ package com.pferrot.sharedcalendar.registration.jsf;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.transaction.annotation.Transactional;
+import org.apache.myfaces.orchestra.conversation.ConversationUtils;
+import org.apache.myfaces.orchestra.viewController.annotations.InitView;
+import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
-import com.pferrot.security.model.User;
-import com.pferrot.sharedcalendar.model.Person;
 import com.pferrot.sharedcalendar.registration.RegistrationService;
 
+@ViewController(viewIds={"/public/registration/registration_2.jspx"})
 public class RegistrationStep2
 // Renderable is NOT necessary in sync mode.
 //implements Renderable, DisposableBean 
 {
-	
-	
 	private final static Log log = LogFactory.getLog(RegistrationStep2.class);
 	
-	private RegistrationViewController registrationViewController;
+	private RegistrationController registrationController;
 	private RegistrationService registrationService;
-
-	
 	
 	public RegistrationStep2() {
 		super();
 	}
 	
-	public RegistrationViewController getRegistrationViewController() {
-		return registrationViewController;
+	@InitView
+	public void initView() {
+		ConversationUtils.ensureConversationRedirect("registration", "/public/registration/registration.iface");
+	}	
+	
+	public RegistrationController getRegistrationController() {
+		return registrationController;
 	}
 
-	public void setRegistrationViewController(
-			RegistrationViewController registrationViewController) {
-		this.registrationViewController = registrationViewController;
+	public void setRegistrationController(
+			RegistrationController registrationController) {
+		this.registrationController = registrationController;
 	}
 
 	public RegistrationService getRegistrationService() {
@@ -45,8 +47,8 @@ public class RegistrationStep2
 	public String confirm() {
 		try {
 			// Must be done in the view controller so that we do not get a LazyInitializationException.
-			// (RegistrationViewController is in the correct scope to not get the exception, see application-context.xml)
-			getRegistrationViewController().createUser();
+			// (RegistrationController is in the correct scope to not get the exception, see application-context.xml)
+			getRegistrationController().createUser();
 			
 			// Validation is done by methods below.
 			return "confirm";

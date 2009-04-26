@@ -8,9 +8,6 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.orchestra.conversation.ConversationUtils;
-import org.apache.myfaces.orchestra.viewController.annotations.InitView;
-import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.security.model.User;
 import com.pferrot.sharedcalendar.model.Address;
@@ -19,11 +16,9 @@ import com.pferrot.sharedcalendar.model.Person;
 import com.pferrot.sharedcalendar.registration.RegistrationService;
 import com.pferrot.sharedcalendar.utils.UiUtils;
 
-@ViewController(viewIds={"/public/registration/registration.jspx", "/public/registration/registration_2.jspx", "/public/registration/registration_3.jspx"})
-public class RegistrationViewController
-	//implements org.apache.myfaces.orchestra.viewController.ViewController
-{
-	private final static Log log = LogFactory.getLog(RegistrationViewController.class);
+public class RegistrationController {
+	
+	private final static Log log = LogFactory.getLog(RegistrationController.class);
 	
 	private String username;
 	private Gender gender;
@@ -33,19 +28,6 @@ public class RegistrationViewController
 	private String lastName;
 	private String email;	
 	private RegistrationService registrationService;
-
-	@InitView
-	public void initView() {
-		ConversationUtils.ensureConversationRedirect("registration", "/public/registration/registration.iface");
-	}
-
-//	@PreProcess
-//	public void preProcess() {		
-//	}
-//
-//	@PreRenderView
-//	public void preRenderView() {		
-//	}
 
 	public void setRegistrationService(RegistrationService registrationService) {
 		this.registrationService = registrationService;

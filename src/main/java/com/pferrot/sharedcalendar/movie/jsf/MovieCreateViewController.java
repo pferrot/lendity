@@ -76,7 +76,7 @@ public class MovieCreateViewController
 	public Long createMovie() {
 		Movie movie = new Movie();
 		
-		movie.setTitle(I18nUtils.getLocalAsString(), getTitle());
+		movie.setTitle(getTitle());
 		movie.setDescription(I18nUtils.getLocalAsString(), getDescription());
 		movie.setYear(getYear());
 		movie.setDuration(getDuration());

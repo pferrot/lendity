@@ -44,6 +44,10 @@ public class MovieInstance implements Serializable, Ownable, Borrowable, WaitLis
 	@Column(name = "ID")
     private Long id;
 	
+	@Column(name = "LOCKED", nullable = false)
+	private Boolean locked = Boolean.FALSE;
+	
+	
 	@ManyToOne(targetEntity = MovieFormat.class)
 	@JoinColumn(name = "MOVIE_FORMAT_ID")
 	private MovieFormat format;
@@ -100,7 +104,24 @@ public class MovieInstance implements Serializable, Ownable, Borrowable, WaitLis
     
     public void setId(Long id) {
         this.id = id;
-    }
+    }    
+
+	public Boolean getLocked() {
+		return locked;
+	}
+
+	public void setLocked(Boolean locked) {
+		this.locked = locked;
+	}
+	
+	public boolean isLocked() {
+		return getLocked().booleanValue();
+	}
+	
+	// Returns true if the movie is currently borrowed by someone.
+	public boolean isBorrowed() {
+		return getBorrower() != null;		
+	}
 
 	public MovieFormat getFormat() {
 		return format;

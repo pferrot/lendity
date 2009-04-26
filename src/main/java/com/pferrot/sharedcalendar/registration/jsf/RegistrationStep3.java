@@ -2,33 +2,38 @@ package com.pferrot.sharedcalendar.registration.jsf;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.orchestra.conversation.ConversationUtils;
+import org.apache.myfaces.orchestra.viewController.annotations.InitView;
+import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.sharedcalendar.registration.RegistrationService;
 
+@ViewController(viewIds={"/public/registration/registration_3.jspx"})
 public class RegistrationStep3
 // Renderable is NOT necessary in sync mode.
 //implements Renderable, DisposableBean 
 {
-	
-	
 	private final static Log log = LogFactory.getLog(RegistrationStep3.class);
 	
-	private RegistrationViewController registrationViewController;
+	private RegistrationController registrationController;
 	private RegistrationService registrationService;
 
-	
-	
 	public RegistrationStep3() {
 		super();
 	}
+
+	@InitView
+	public void initView() {
+		ConversationUtils.ensureConversationRedirect("registration", "/public/registration/registration.iface");
+	}	
 	
-	public RegistrationViewController getRegistrationViewController() {
-		return registrationViewController;
+	public RegistrationController getRegistrationController() {
+		return registrationController;
 	}
 
-	public void setRegistrationViewController(
-			RegistrationViewController registrationViewController) {
-		this.registrationViewController = registrationViewController;
+	public void setRegistrationController(
+			RegistrationController registrationController) {
+		this.registrationController = registrationController;
 	}
 
 	public RegistrationService getRegistrationService() {

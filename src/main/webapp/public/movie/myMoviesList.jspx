@@ -7,8 +7,8 @@
     xmlns:c="http://java.sun.com/jstl/core_rt">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="Movies List" />
-	<ui:param name="contentHeader" value="Movies List" />
+	<ui:param name="pageTitle" value="My Movies List" />
+	<ui:param name="contentHeader" value="My Movies List" />
 
 	<ui:define name="content">
 
@@ -25,15 +25,7 @@
 				<f:view>
 					<center>
 
-<ice:form>
-	<ice:inputText id="movieSearchString" value="#{moviesListController.movieSearchString}"/>
-	<br/>
-	<ice:commandButton value="#{messages.search}" action="#{moviesListController.searchByTitle}" />
-	<ice:commandButton value="#{messages.clearSearch}" action="#{moviesListController.clearSearchByTitle}" />
-</ice:form>
-<br/>
-
-<ice:dataTable value="#{moviesListController.moviesList}" binding="#{moviesListController.moviesTable}" var="movie">
+<ice:dataTable value="#{myMoviesListController.moviesList}" binding="#{myMoviesListController.moviesTable}" var="movie">
 
 	<ice:column>
         <f:facet name="header">
@@ -56,14 +48,14 @@
         <f:facet name="header">
             <ice:outputText value="TOTAL NB COPIES" />
         </f:facet>
-		<h:outputText value="#{moviesListController.nbInstances}" />
+		<h:outputText value="#{myMoviesListController.nbInstances}" />
     </ice:column>
 
 	<ice:column>
         <f:facet name="header">
             <ice:outputText value="AVAILABLE NB COPIES" />
         </f:facet>
-		<h:outputText value="#{moviesListController.nbAvailableInstances}" />
+		<h:outputText value="#{myMoviesListController.nbAvailableInstances}" />
     </ice:column>
 
 </ice:dataTable>
@@ -71,8 +63,8 @@
 <br/>
 
 <ice:form>
-    <ice:commandLink rendered="#{moviesListController.previousPage}" value="#{messages.previousPage}" action="#{moviesListController.previousPage}"/>
-    <ice:commandLink rendered="#{moviesListController.nextPage}" value="#{messages.nextPage}" action="#{moviesListController.nextPage}"/>
+    <ice:commandLink rendered="#{myMoviesListController.previousPage}" value="#{messages.previousPage}" action="#{myMoviesListController.previousPage}"/>
+    <ice:commandLink rendered="#{myMoviesListController.nextPage}" value="#{messages.nextPage}" action="#{myMoviesListController.nextPage}"/>
 </ice:form>
 
 					</center>

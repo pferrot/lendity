@@ -261,7 +261,7 @@ public class InitialData {
 	private void createMovies() {
 		// Create Movie.
 		Movie movie = new Movie();
-		movie.setTitle(I18nConsts.FR_LANGUAGE, "The Big Lebowski");
+		movie.setTitle("The Big Lebowski");
 		movie.setDescription(I18nConsts.FR_LANGUAGE, "Blabla blabla le dude blablabla tadadada...");
 		
 		Set<Person> actors = new HashSet<Person>();

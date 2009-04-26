@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.security.model.User;
 import com.pferrot.sharedcalendar.dao.ListValueDao;
 import com.pferrot.sharedcalendar.dao.MovieDao;
 import com.pferrot.sharedcalendar.model.Language;
@@ -36,6 +37,18 @@ public class MovieService {
 	public List<Movie> findAllMovies() {
 		return movieDao.findAllMovies();
 	}
+	
+	public List<Movie> findMovies(final int pFirstResult, final int pMaxResults) {
+		return movieDao.findMovies(pFirstResult, pMaxResults);
+	}
+	
+	public List<Movie> findMoviesByTitle(final String pTitle, final int pFirstResult, final int pMaxResults) {
+		return movieDao.findMoviesByTitle(pTitle, pFirstResult, pMaxResults);
+	}
+	
+	public List<Movie> findMoviesOwnedByUsername(final String pUsername, final int pFirstResult, final int pMaxResults) {
+		return movieDao.findMoviesOwnedByUser(pUsername, pFirstResult, pMaxResults);
+	}	
 	
 	public Long createMovie(final Movie movie) {
 		return movieDao.createMovie(movie);
