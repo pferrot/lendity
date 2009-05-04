@@ -3,11 +3,12 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	xmlns:ice="http://www.icesoft.com/icefaces/component"
+	xmlns:o="http://myfaces.apache.org/orchestra">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="Movie Create" />
-	<ui:param name="contentHeader" value="Movie Create" />
+	<ui:param name="pageTitle" value="Movie Add" />
+	<ui:param name="contentHeader" value="Movie Add" />
 
 	<ui:define name="content">
 
@@ -30,7 +31,7 @@ Titre:<br />
 						<ice:message showSummary="true" showDetail="false"
 							style="color: red;" for="title"></ice:message>
 						<br />
-						<ice:inputText id="title" value="#{movieCreateViewController.title}"
+						<ice:inputText id="title" value="#{movieEditController.title}"
 							required="true">
 						</ice:inputText>
 						<br />
@@ -39,7 +40,7 @@ Description:<br />
 						<ice:message showSummary="true" showDetail="false"
 							style="color: red;" for="description"></ice:message>
 						<br />
-						<ice:inputTextarea id="description" value="#{movieCreateViewController.description}">
+						<ice:inputTextarea id="description" value="#{movieEditController.description}">
 						</ice:inputTextarea>
 						<br />
 
@@ -47,7 +48,7 @@ Duree:<br />
 						<ice:message showSummary="true" showDetail="false"
 							style="color: red;" for="duration"></ice:message>
 						<br />
-						<ice:inputText id="duration" value="#{movieCreateViewController.duration}"
+						<ice:inputText id="duration" value="#{movieEditController.duration}"
 							required="false">
 							<f:validateLongRange minimum="0" maximum="1000"></f:validateLongRange>
 						</ice:inputText>
@@ -57,16 +58,20 @@ Annee:<br />
 						<ice:message showSummary="true" showDetail="false"
 							style="color: red;" for="year"></ice:message>
 						<br />
-						<ice:inputText id="year" value="#{movieCreateViewController.year}"
+						<ice:inputText id="year" value="#{movieEditController.year}"
 							required="false">
 							<f:validator validatorId="movieYearValidator"/>
 						</ice:inputText>
 						<br />										
-
-
-						<ice:commandLink value="Alleeeeeeeez !" action="#{movieCreateStep1.submit}">
-						  <f:param name="movieId" value="#{movieCreateStep1.newMovieId}"/>
-						</ice:commandLink>
+						
+						<br />
+						<o:separateConversationContext>
+							<ice:outputLink value="#{movieEditController.movieOverviewHref}">
+            					<ice:outputText value="#{messages.cancel}"/>
+	         				</ice:outputLink>
+						</o:separateConversationContext>
+						<br />
+						<ice:commandButton value="#{messages.save}" action="#{movieEditController.submit}" />
 						<br />
 					</ice:form></center>
 				</f:view>

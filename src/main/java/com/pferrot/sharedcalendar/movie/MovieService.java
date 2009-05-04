@@ -53,5 +53,9 @@ public class MovieService {
 	public Long createMovie(final Movie movie) {
 		return movieDao.createMovie(movie);
 	}
+
+	public void updateMovie(final Movie movie) {
+		movieDao.updateMovie(movie);
+	}
 	
 }

@@ -4,25 +4,16 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.orchestra.conversation.ConversationUtils;
-import org.apache.myfaces.orchestra.viewController.annotations.InitView;
-import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.sharedcalendar.model.movie.Movie;
 import com.pferrot.sharedcalendar.movie.MovieConsts;
 
-@ViewController(viewIds={"/public/movie/moviesList.jspx"})
 public class MoviesListController extends AbstractMoviesListController {
 	
 	private final static Log log = LogFactory.getLog(MoviesListController.class);
-	
+
 	private String movieSearchString = null;
 	
-	@InitView
-	public void initView() {
-		ConversationUtils.ensureConversationRedirect("moviesList", "/public/movie/moviesList.iface");
-	}
-
 	@Override
 	public List<Movie> getMoviesListInternal() {		
 		// Is there a search string specified?
@@ -34,8 +25,8 @@ public class MoviesListController extends AbstractMoviesListController {
 			// + 1 so that we can know whether there is a next page or not.
 			return getMovieService().findMovies(getFirstResultIndex(), MovieConsts.NB_MOVIES_PER_PAGE + 1);
 		}
-	}
-	
+	}	
+
 	public String getMovieSearchString() {
 		return movieSearchString;
 	}

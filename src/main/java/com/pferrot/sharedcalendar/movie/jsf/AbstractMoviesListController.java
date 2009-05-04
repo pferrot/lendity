@@ -6,10 +6,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
+import com.pferrot.sharedcalendar.PagesURL;
 import com.pferrot.sharedcalendar.model.movie.Movie;
 import com.pferrot.sharedcalendar.model.movie.MovieInstance;
 import com.pferrot.sharedcalendar.movie.MovieConsts;
 import com.pferrot.sharedcalendar.movie.MovieService;
+import com.pferrot.sharedcalendar.movie.MovieUtils;
+import com.pferrot.sharedcalendar.utils.JsfUtils;
 
 public abstract class AbstractMoviesListController {
 	private final static Log log = LogFactory.getLog(AbstractMoviesListController.class);
@@ -94,8 +97,9 @@ public abstract class AbstractMoviesListController {
 		return "previousPage";
 	}
 	
-	public String movieOverview() {
+	public String getMovieOverviewHref() {
 		final Movie movie = (Movie)moviesTable.getRowData();
-		return "movieOverview";
-	}
+		
+		return MovieUtils.getMovieOverviewPageUrl(movie.getId().toString());
+	}	
 }

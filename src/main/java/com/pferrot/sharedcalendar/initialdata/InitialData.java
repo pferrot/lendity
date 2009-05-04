@@ -133,7 +133,7 @@ public class InitialData {
 		
 		User user = new User();
 		user.setUsername("pferrot");
-		user.setPassword(passwordEncoder.encodePassword("patrice", null));
+		user.setPassword(passwordEncoder.encodePassword("pferrot", null));
 		user.setEnabled(Boolean.TRUE);
 		user.setCreationDate(new Date());
 		Role userRole = roleDao.findRole(Role.USER_ROLE_NAME);

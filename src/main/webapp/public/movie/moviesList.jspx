@@ -4,7 +4,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ice="http://www.icesoft.com/icefaces/component"
-    xmlns:c="http://java.sun.com/jstl/core_rt">
+    xmlns:c="http://java.sun.com/jstl/core_rt"
+	xmlns:o="http://myfaces.apache.org/orchestra">
 
 	<!-- params for page titles-->
 	<ui:param name="pageTitle" value="Movies List" />
@@ -46,24 +47,25 @@
         <f:facet name="header">
             <ice:outputText value="TITLE" />
         </f:facet>
-        <!-- 
-        <h:outputText value="#{moviesListController.movieTitle}" />
-         -->
-		<h:outputText value="#{movie.title}" />
+		<o:separateConversationContext>
+        	<ice:outputLink value="#{moviesListController.movieOverviewHref}">
+            	<ice:outputText value="#{movie.title}" />
+        	</ice:outputLink>
+		</o:separateConversationContext>
     </ice:column>
 
 	<ice:column>
         <f:facet name="header">
             <ice:outputText value="TOTAL NB COPIES" />
         </f:facet>
-		<h:outputText value="#{moviesListController.nbInstances}" />
+		<ice:outputText value="#{moviesListController.nbInstances}" />
     </ice:column>
 
 	<ice:column>
         <f:facet name="header">
             <ice:outputText value="AVAILABLE NB COPIES" />
         </f:facet>
-		<h:outputText value="#{moviesListController.nbAvailableInstances}" />
+		<ice:outputText value="#{moviesListController.nbAvailableInstances}" />
     </ice:column>
 
 </ice:dataTable>

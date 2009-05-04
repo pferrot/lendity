@@ -97,12 +97,21 @@ Using faces-config 1.1 in order to user ICEfaces with JSF 1.2. See ICEfacesDevel
 	
 	<!-- 
 	********************************************************************
-	MOVIE CREATE
+	MOVIE ADD
 	********************************************************************
 	-->	
 	<navigation-rule>
-		<from-view-id>/public/movie/movieCreate.jspx</from-view-id>			
+		<from-view-id>/auth/movie/movieAdd.jspx</from-view-id>			
 	</navigation-rule>
+	
+	<!-- 
+	********************************************************************
+	MOVIE EDIT
+	********************************************************************
+	-->	
+	<navigation-rule>
+		<from-view-id>/auth/movie/movieEdit.jspx</from-view-id>			
+	</navigation-rule>	
 	
 	<!-- 
 	********************************************************************
@@ -126,11 +135,7 @@ Using faces-config 1.1 in order to user ICEfaces with JSF 1.2. See ICEfacesDevel
 		<navigation-case>
 			<from-outcome>clearSearchByTitle</from-outcome>
 			<to-view-id>/public/movie/moviesList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>movieOverview</from-outcome>
-			<to-view-id>/public/movie/movieOverview.jspx</to-view-id>
-		</navigation-case>		
+		</navigation-case>	
 	</navigation-rule>
 	
 	<!-- 
@@ -139,20 +144,59 @@ Using faces-config 1.1 in order to user ICEfaces with JSF 1.2. See ICEfacesDevel
 	********************************************************************
 	-->
 	<navigation-rule>
-		<from-view-id>/public/movie/myMoviesList.jspx</from-view-id>
+		<from-view-id>/auth/movie/myMoviesList.jspx</from-view-id>
 		<navigation-case>
 			<from-outcome>nextPage</from-outcome>
-			<to-view-id>/public/movie/myMoviesList.jspx</to-view-id>
+			<to-view-id>/auth/movie/myMoviesList.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>previousPage</from-outcome>
-			<to-view-id>/public/movie/myMoviesList.jspx</to-view-id>
+			<to-view-id>/auth/movie/myMoviesList.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>movieOverview</from-outcome>
 			<to-view-id>/public/movie/movieOverview.jspx</to-view-id>
 		</navigation-case>		
 	</navigation-rule>	
+	
+	<!-- 
+	********************************************************************
+	MOVIE INSTANCE OVERVIEW
+	********************************************************************
+	-->
+	<navigation-rule>
+		<from-view-id>/auth/movie/movieInstanceOverview.jspx</from-view-id>
+		<navigation-case>
+			<from-outcome>edit</from-outcome>
+			<to-view-id>/auth/movie/movieInstanceEdit.jspx</to-view-id>
+		</navigation-case>		
+	</navigation-rule>
+
+	<!-- 
+	********************************************************************
+	MOVIE INSTANCE EDIT
+	********************************************************************
+	-->
+	<navigation-rule>
+		<from-view-id>/auth/movie/movieInstanceEdit.jspx</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/auth/movie/movieInstanceOverview.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>			
+		
+	<!-- 
+	********************************************************************
+	MOVIE INSTANCE ADD
+	********************************************************************
+	-->
+	<navigation-rule>
+		<from-view-id>/auth/movie/movieInstanceAdd.jspx</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/auth/movie/movieInstanceOverview.jspx</to-view-id>
+		</navigation-case>		
+	</navigation-rule>		
 
 	<!-- 
 	********************************************************************

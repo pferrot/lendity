@@ -3,7 +3,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	xmlns:ice="http://www.icesoft.com/icefaces/component"
+	xmlns:o="http://myfaces.apache.org/orchestra">
 
 	<!-- params for page titles-->
 	<ui:param name="pageTitle" value="Movie Overview" />
@@ -27,11 +28,19 @@
 					<ice:form>
 
 Movie:<br />
-						<ice:outputText value="#{movieOverviewViewController.movieTitle}" />
+						<ice:outputText value="#{movieOverviewController.movieTitle}" />
 						<br />
 
 						<br />
 					</ice:form></center>
+
+					<br/>
+					<o:separateConversationContext>
+						<ice:outputLink value="#{movieOverviewController.movieEditHref}">
+	            			<ice:outputText value="#{messages.movie_edit}"/>
+	         			</ice:outputLink>
+					</o:separateConversationContext>
+					<br/>
 				</f:view>
 			</ui:define>
 		</ui:decorate>

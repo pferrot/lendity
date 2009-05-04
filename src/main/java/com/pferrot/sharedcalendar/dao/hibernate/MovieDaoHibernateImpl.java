@@ -60,7 +60,7 @@ public class MovieDaoHibernateImpl extends HibernateDaoSupport implements MovieD
 
 	public List<Movie> findMoviesOwnedByUser(final User pUser, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNullParameter(pUser, "pUser");
-		return findMoviesOwnedByUser(pUser.getUsername());
+		return findMoviesOwnedByUser(pUser.getUsername(), pFirstResult, pMaxResults);
 	}
 
 	public List<Movie> findMoviesOwnedByUser(final String pUsername, final int pFirstResult, final int pMaxResults) {
@@ -72,24 +72,26 @@ public class MovieDaoHibernateImpl extends HibernateDaoSupport implements MovieD
 			createCriteria("owner", CriteriaSpecification.INNER_JOIN).
 			add(Restrictions.eq("username", pUsername));
 		
-		return getHibernateTemplate().findByCriteria(critera, 0, 0);
+		return getHibernateTemplate().findByCriteria(critera, pFirstResult, pMaxResults);
 //		return getHibernateTemplate().find("select m from Movie m join m.movieInstances mi where mi.owner.username = ? order by lower(m.title) asc", pUsername);
 	}
 
 	public List<Movie> findMoviesBorrowedByUser(final User pUser, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNullParameter(pUser, "pUser");
-		return findMoviesBorrowedByUser(pUser.getUsername());
+		
+		return findMoviesBorrowedByUser(pUser.getUsername(), pFirstResult, pMaxResults);
 	}
 
 	public List<Movie> findMoviesBorrowedByUser(final String pUsername, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNullParameter(pUsername, "pUsername");
+		
 		DetachedCriteria critera = DetachedCriteria.forClass(Movie.class).
 			addOrder(Order.asc("title").ignoreCase()).
 			createCriteria("movieInstances", "mi", CriteriaSpecification.INNER_JOIN).
 			createCriteria("owner", CriteriaSpecification.INNER_JOIN).
 			add(Restrictions.eq("username", pUsername));
 		
-		return getHibernateTemplate().findByCriteria(critera, 0, 0);
+		return getHibernateTemplate().findByCriteria(critera, pFirstResult, pMaxResults);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////

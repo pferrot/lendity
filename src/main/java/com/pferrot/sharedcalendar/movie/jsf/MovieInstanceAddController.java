@@ -10,24 +10,17 @@ import com.pferrot.sharedcalendar.i18n.I18nUtils;
 import com.pferrot.sharedcalendar.movie.MovieService;
 import com.pferrot.sharedcalendar.utils.JsfUtils;
 
-@ViewController(viewIds={"/public/movie/movieOverview.jspx"})
-public class MovieOverviewViewController
+@ViewController(viewIds={"/auth/movie/movieInstanceAdd.jspx"})
+public class MovieInstanceAddController
 	//implements org.apache.myfaces.orchestra.viewController.ViewController
 {
-	private final static Log log = LogFactory.getLog(MovieOverviewViewController.class);
-	public static String MOVIE_ID_PARAMETER_NAME = "movieId";
+	private final static Log log = LogFactory.getLog(MovieInstanceAddController.class);
 	
 	private MovieService movieService;
-	private Long movieId;
 	
 	@InitView
 	public void initView() {
-		ConversationUtils.ensureConversationRedirect("movieOverview", "/public/movie/movieOverview.iface");
-		final String movieIdString = JsfUtils.getRequestParameter(MOVIE_ID_PARAMETER_NAME);
-		if (movieIdString == null) {
-			throw new RuntimeException("No 'movieId' parameter specified.");
-		}
-		movieId = Long.parseLong(movieIdString);		
+		ConversationUtils.ensureConversationRedirect("movieInstanceAdd", "/auth/movie/movieInstanceAdd.iface");
 	}
 
 //	@PreProcess
@@ -40,9 +33,5 @@ public class MovieOverviewViewController
 
 	public void setMovieService(MovieService movieService) {
 		this.movieService = movieService;
-	}
-	
-	public String getMovieTitle() {
-		return movieService.findMovie(movieId).getTitle();
 	}
 }

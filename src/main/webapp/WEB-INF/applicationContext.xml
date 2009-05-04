@@ -212,39 +212,45 @@
 		<property name="listValueDao" ref="listValueDao"/>
 	</bean>
 	
-	<bean id="movieOverviewStep1" 
-	      class="com.pferrot.sharedcalendar.movie.jsf.MovieOverviewStep1"
-	      scope="request">
-		<property name="movieOverviewViewController" ref="movieOverviewViewController"/>
-
-	</bean>	
-	
-	<bean id="movieOverviewViewController" class="com.pferrot.sharedcalendar.movie.jsf.MovieOverviewViewController"
-	      scope="conversation.access" orchestra:conversationName="movieOverview">
+	<bean id="movieOverviewController" class="com.pferrot.sharedcalendar.movie.jsf.MovieOverviewController"
+	      scope="conversation.access">
 	      <property name="movieService" ref="movieService"/>
 	</bean>
 	
-	<bean id="movieCreateStep1" 
-	      class="com.pferrot.sharedcalendar.movie.jsf.MovieCreateStep1"
-	      scope="request">
-		<property name="movieCreateViewController" ref="movieCreateViewController"/>
-	</bean>	
+	<bean id="movieAddController" class="com.pferrot.sharedcalendar.movie.jsf.MovieAddController"
+	      scope="conversation.access">
+	      <property name="movieService" ref="movieService"/>
+	</bean>
 	
-	<bean id="movieCreateViewController" class="com.pferrot.sharedcalendar.movie.jsf.MovieCreateViewController"
-	      scope="conversation.access" orchestra:conversationName="movieCreate">
+	<bean id="movieEditController" class="com.pferrot.sharedcalendar.movie.jsf.MovieEditController"
+	      scope="conversation.access">
 	      <property name="movieService" ref="movieService"/>
 	</bean>
 	
 	<bean id="moviesListController" class="com.pferrot.sharedcalendar.movie.jsf.MoviesListController"
-	      scope="conversation.access" orchestra:conversationName="moviesList">
+	      scope="conversation.access">
 	      <property name="movieService" ref="movieService"/>
 	</bean>
 	
 	<bean id="myMoviesListController" class="com.pferrot.sharedcalendar.movie.jsf.MyMoviesListController"
-	      scope="conversation.access" orchestra:conversationName="myMoviesList">
+	      scope="conversation.access">
 	      <property name="movieService" ref="movieService"/>
 	</bean>	
 	
+	<bean id="movieInstanceOverviewController" class="com.pferrot.sharedcalendar.movie.jsf.MovieInstanceOverviewController"
+	      scope="conversation.access" orchestra:conversationName="movieInstanceOverview">
+	      <property name="movieService" ref="movieService"/>
+	</bean>
+
+	<bean id="movieInstanceAddController" class="com.pferrot.sharedcalendar.movie.jsf.MovieInstanceAddController"
+	      scope="conversation.access" orchestra:conversationName="movieInstanceAdd">
+	      <property name="movieService" ref="movieService"/>
+	</bean>
+
+	<bean id="movieInstanceEditController" class="com.pferrot.sharedcalendar.movie.jsf.MovieInstanceEditController"
+	      scope="conversation.access" orchestra:conversationName="movieInstanceEdit">
+	      <property name="movieService" ref="movieService"/>
+	</bean>			
 	<!-- 
 	MOVIE - end
 	========================================================================================================================
