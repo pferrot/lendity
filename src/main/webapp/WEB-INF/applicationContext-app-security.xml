@@ -28,8 +28,7 @@ security module.
 		<intercept-url pattern="/public/**" filters="none" />
 		<intercept-url pattern="/xmlhttp/**" filters="none" /> <!-- ICEfaces -->
 		<intercept-url pattern="/block/**" filters="none" /> <!-- ICEfaces -->
-		<intercept-url pattern="/images/**" access="ROLE_ADMIN" />
-		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
+		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />		
 		<intercept-url pattern="/**" access="ROLE_USER" />
 		<!--
 			<intercept-url pattern="/secure/extreme/**"

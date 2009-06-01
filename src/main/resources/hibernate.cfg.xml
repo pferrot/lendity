@@ -12,7 +12,7 @@
 <!--        <property name="hibernate.hbm2ddl.auto">create-drop</property>-->
 <!--        <property name="hibernate.hbm2ddl.auto">create</property>-->
 <!--        <property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>-->
-        
+	        
         
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/sharedcalendar</property>
@@ -45,6 +45,8 @@
         <mapping class="com.pferrot.sharedcalendar.model.movie.MovieInstance"/>
         <mapping class="com.pferrot.sharedcalendar.model.movie.MovieCategory"/>
         <mapping class="com.pferrot.sharedcalendar.model.movie.MovieFormat"/>
+        
+        <mapping class="com.pferrot.envers.model.UserRevisionEntity"/>
         
     </session-factory>
 </hibernate-configuration>

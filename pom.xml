@@ -163,17 +163,35 @@
 		
 		<dependency>
 		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate</artifactId>
-		    <version>3.2.6.ga</version>
-		    <scope>runtime</scope>
+		    <artifactId>hibernate-core</artifactId>
+		    <version>3.3.1.GA</version>
+		    <scope>compile</scope>
 		</dependency>
 		<dependency>
 		    <groupId>org.hibernate</groupId>
 		    <artifactId>hibernate-annotations</artifactId>
 		    <version>3.4.0.GA</version>
 		    <scope>compile</scope>
-		</dependency>		
-		
+		</dependency>
+		<!-- 
+		<dependency>
+			<groupId>org.jboss.envers</groupId>
+			<artifactId>jboss-envers</artifactId>
+			<version>1.2.0.GA-hibernate-3.3</version>
+			<scope>compile</scope>
+		</dependency>
+		 -->
+		 <!-- 
+		 Had to modify Envers source code due to http://opensource.atlassian.com/projects/hibernate/browse/HHH-3706
+		  -->
+		<!--  
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-envers</artifactId>
+			<version>3.5.0-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>			
+		-->
 		<!-- 		
 		<dependency>
 		    <groupId>org.springframework</groupId>
@@ -240,6 +258,70 @@
 		</developer>
 	</developers>
 	<build>
+		<plugins>
+			<!-- 
+			See http://unmaintainable.wordpress.com/2007/06/30/generating-ddl-scripts-with-maven/
+			 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>process-classes</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<tasks>
+								<ant antfile="src/main/ant/build.xml" inheritRefs="true">
+									<target name="schemaexport" />
+								</ant>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-tools</artifactId>
+						<version>3.2.3.GA</version>
+					</dependency>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-entitymanager</artifactId>
+						<version>3.3.1.ga</version>
+					</dependency>
+					
+					<!--  
+					<dependency>
+						<groupId>org.jboss.envers</groupId>
+						<artifactId>jboss-envers</artifactId>
+						<version>1.2.0.GA-hibernate-3.3</version>
+					</dependency>
+					 -->
+					 
+					 
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-envers</artifactId>
+						<version>3.5.0-SNAPSHOT</version>
+					</dependency>
+					<dependency>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-log4j12</artifactId>
+						<version>1.5.6</version>
+					</dependency>
+					
+					
+					<dependency>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+						<version>1.2.14</version>
+					</dependency>
+				</dependencies>
+			</plugin>	
+		</plugins>
 		<pluginManagement>
 			<plugins>		
 				<plugin>
@@ -306,6 +388,7 @@
 <!--						<warDirectory>C:\dev\apache-tomcat-6.0.18\webapps\shared_calendar</warDirectory>-->
 <!--					</configuration>-->
 <!--				</plugin>								-->
+
 			</plugins>
 		</pluginManagement>
 		<extensions>

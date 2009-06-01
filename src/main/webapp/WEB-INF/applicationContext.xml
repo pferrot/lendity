@@ -49,8 +49,7 @@
 		<property name="password">
 			<value>klop</value>
 		</property>
-	</bean>
-	
+	</bean>	
 	 
 	<bean id="transactionManager" name="security.transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory">
@@ -58,6 +57,8 @@
 		</property>
 	</bean>
 	
+	<bean id="auditEventListener" class="org.hibernate.envers.event.AuditEventListener" />
+
 	<bean id="sessionFactory" name="security.sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
 		<property name="dataSource">
 			<ref bean="dataSource"/>
@@ -65,6 +66,28 @@
 		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
 		<property name="configurationClass">
 			<value>org.hibernate.cfg.AnnotationConfiguration</value>
+		</property>
+		<property name="eventListeners">
+			<map>
+				<entry key="post-insert">
+					<ref local="auditEventListener" />
+				</entry>
+				<entry key="post-update">
+					<ref local="auditEventListener" />
+				</entry>
+				<entry key="post-delete">
+					<ref local="auditEventListener" />
+				</entry>
+				<entry key="pre-collection-update">
+					<ref local="auditEventListener" />
+				</entry>
+				<entry key="pre-collection-remove">
+					<ref local="auditEventListener" />
+				</entry>
+				<entry key="post-collection-recreate">
+					<ref local="auditEventListener" />
+				</entry>																				
+			</map>
 		</property>
 	</bean>
 	

@@ -16,9 +16,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.MapKey;
+import org.hibernate.envers.Audited;
 
 import com.pferrot.sharedcalendar.i18n.I18nConsts;
 import com.pferrot.sharedcalendar.model.Person;
@@ -38,24 +40,29 @@ public class Movie implements Serializable {
 	// TODO: Added this field to make it easy to retrieve movies ordered
 	// by title. Not sure how to do with the "titles" map below.
 	@Column(name = "TITLE", nullable = false, length = 255)
+	@Audited
 	private String title;
 	
 	@CollectionOfElements(targetElement = String.class)
 	@JoinTable(name = "MOVIES_TITLES",
 			joinColumns = @JoinColumn(name = "MOVIE_ID"))
 	@MapKey(targetElement = String.class)
+	@Audited
 	private Map<String, String> titles = new HashMap<String, String>();
 	
 	@CollectionOfElements(targetElement = String.class)
 	@JoinTable(name = "MOVIES_DESCRIPTIONS",
 			joinColumns = @JoinColumn(name = "MOVIE_ID"))
 	@MapKey(targetElement = String.class)
+	@Audited
 	private Map<String, String> descriptions = new HashMap<String, String>();
 	
 	@Column(name = "YEAR", nullable = true)
+	@Audited
     private Integer year;
 	
 	@Column(name = "DURATION", nullable = true)
+	@Audited
     private Integer duration;
 	
 	@ManyToMany(targetEntity = MovieCategory.class)
@@ -64,7 +71,7 @@ public class Movie implements Serializable {
 	@ManyToMany(targetEntity = Person.class)
 	@JoinTable(name = "MOVIES_ACTORS",
 			joinColumns = @JoinColumn(name = "MOVIE_ID"),
-			inverseJoinColumns = @JoinColumn(name = "PERSON_ID"))	
+			inverseJoinColumns = @JoinColumn(name = "PERSON_ID"))
 	private Set<Person> actors = new HashSet<Person>();
 	
 	@ManyToMany(targetEntity = Person.class)
@@ -75,6 +82,10 @@ public class Movie implements Serializable {
 	
 	@OneToMany(mappedBy = "movie", targetEntity = MovieInstance.class)
 	private Set<MovieInstance> movieInstances = new HashSet<MovieInstance>();
+	
+	@Version
+	@Column(name = "OBJ_VERSION")
+	private int version;	
 	
     public Movie() {
     	super();

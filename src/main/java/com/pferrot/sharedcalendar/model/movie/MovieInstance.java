@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.hibernate.annotations.Cascade;
 
@@ -93,6 +94,10 @@ public class MovieInstance implements Serializable, Ownable, Borrowable, WaitLis
 	@ManyToOne(targetEntity = Movie.class)
 	@JoinColumn(name = "MOVIE_ID")
 	private Movie movie;
+	
+	@Version
+	@Column(name = "OBJ_VERSION")
+	private int version;	
 	
     public MovieInstance() {
     	super();
