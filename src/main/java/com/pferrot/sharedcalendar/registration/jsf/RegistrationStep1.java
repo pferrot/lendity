@@ -1,52 +1,25 @@
 package com.pferrot.sharedcalendar.registration.jsf;
 
-import org.apache.commons.logging.Log;
-
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.orchestra.conversation.Conversation;
-import org.apache.myfaces.orchestra.conversation.ConversationUtils;
-import org.apache.myfaces.orchestra.viewController.annotations.InitView;
-import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 
-import com.icesoft.faces.async.render.IntervalRenderer;
-import com.icesoft.faces.async.render.RenderManager;
-import com.icesoft.faces.async.render.Renderable;
-import com.icesoft.faces.context.DisposableBean;
-import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
-import com.icesoft.faces.webapp.xmlhttp.RenderingException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.pferrot.sharedcalendar.registration.RegistrationService;
 
-@ViewController(viewIds={"/public/registration/registration.jspx"})
-public class RegistrationStep1
-// Renderable is NOT necessary in sync mode.
-//implements Renderable, DisposableBean 
-{
+public class RegistrationStep1 {
 	
 	private final static Log log = LogFactory.getLog(RegistrationStep1.class);
 	
-//	private final static int renderInterval = 1000;
-	
 	private RegistrationController registrationController;
 	private RegistrationService registrationService;
-//	private PersistentFacesState state;	 
-//	private IntervalRenderer clock;
-
 	
 	public RegistrationStep1() {
 		super();
-//		state = PersistentFacesState.getInstance();
 	}
-	
-	@InitView
-	public void initView() {
-//		ConversationUtils.ensureConversationRedirect("registration", "/public/registration/registration.jspx");
-	}	
 	
 	public RegistrationController getRegistrationController() {
 		return registrationController;

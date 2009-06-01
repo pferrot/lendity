@@ -2,17 +2,16 @@ package com.pferrot.sharedcalendar.movie.jsf;
 
 import java.util.List;
 
+import javax.faces.component.html.HtmlDataTable;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.icesoft.faces.component.ext.HtmlDataTable;
-import com.pferrot.sharedcalendar.PagesURL;
 import com.pferrot.sharedcalendar.model.movie.Movie;
 import com.pferrot.sharedcalendar.model.movie.MovieInstance;
 import com.pferrot.sharedcalendar.movie.MovieConsts;
 import com.pferrot.sharedcalendar.movie.MovieService;
 import com.pferrot.sharedcalendar.movie.MovieUtils;
-import com.pferrot.sharedcalendar.utils.JsfUtils;
 
 public abstract class AbstractMoviesListController {
 	private final static Log log = LogFactory.getLog(AbstractMoviesListController.class);

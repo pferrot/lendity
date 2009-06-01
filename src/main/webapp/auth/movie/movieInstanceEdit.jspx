@@ -3,7 +3,6 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ice="http://www.icesoft.com/icefaces/component"
     xmlns:c="http://java.sun.com/jstl/core_rt">
 
 	<!-- params for page titles-->
@@ -25,33 +24,33 @@
 				<f:view>
 					<center>
 
-<ice:dataTable value="#{myMoviesListController.moviesList}" binding="#{myMoviesListController.moviesTable}" var="movie">
+<h:dataTable value="#{myMoviesListController.moviesList}" binding="#{myMoviesListController.moviesTable}" var="movie">
 
-	<ice:column>
+	<h:column>
         <f:facet name="header">
-            <ice:outputText value="ID" />
+            <h:outputText value="ID" />
         </f:facet>
-        <ice:outputText value="#{movie.id}" />
-    </ice:column>
+        <h:outputText value="#{movie.id}" />
+    </h:column>
 
-	<ice:column>
+	<h:column>
         <f:facet name="header">
-            <ice:outputText value="TITLE" />
+            <h:outputText value="TITLE" />
         </f:facet>
         <!-- 
         <h:outputText value="#{moviesListController.movieTitle}" />
          -->
 		<h:outputText value="#{movie.title}" />
-    </ice:column>
+    </h:column>
 
-</ice:dataTable>
+</h:dataTable>
 
 <br/>
 
-<ice:form>
-    <ice:commandLink rendered="#{myMoviesListController.previousPage}" value="#{messages.previousPage}" action="#{myMoviesListController.previousPage}"/>
-    <ice:commandLink rendered="#{myMoviesListController.nextPage}" value="#{messages.nextPage}" action="#{myMoviesListController.nextPage}"/>
-</ice:form>
+<h:form>
+    <h:commandLink rendered="#{myMoviesListController.previousPage}" value="#{messages.previousPage}" action="#{myMoviesListController.previousPage}"/>
+    <h:commandLink rendered="#{myMoviesListController.nextPage}" value="#{messages.nextPage}" action="#{myMoviesListController.nextPage}"/>
+</h:form>
 
 					</center>
 				</f:view>

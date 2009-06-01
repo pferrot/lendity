@@ -2,8 +2,7 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	xmlns:h="http://java.sun.com/jsf/html">
 
 	<!-- params for page titles-->
 	<ui:param name="pageTitle" value="#{messages.registration_pageTitle}" />
@@ -22,57 +21,56 @@
 				<f:view>
 					<center>
 
-					<ice:form>
+					<h:form>
 
-<ice:outputText value="#{messages.user_username}"/>:<br />
-						<ice:message showSummary="true" showDetail="false"
-							style="color: red;" for="username"></ice:message>
+<h:outputText value="#{messages.user_username}"/>:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="username"></h:message>
 						<br />
-						<ice:inputText id="username" value="#{registrationController.username}"
-							required="true" validator="#{registrationStep1.validateUsername}"
-							onblur="iceSubmitPartial(form,this,event);">
-						</ice:inputText>
+						<h:inputText id="username" value="#{registrationController.username}"
+							required="true" validator="#{registrationStep1.validateUsername}">
+						</h:inputText>
 						<br />
 
-<ice:outputText value="#{messages['person_gender']}"/>:<br />
-						<ice:message showSummary="true" showDetail="false"
-							style="color: red;" for="gender"></ice:message>
+<h:outputText value="#{messages['person_gender']}"/>:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="gender"></h:message>
 						<br />
-						<ice:selectOneMenu id="gender" value="#{registrationController.genderId}" required="true">
+						<h:selectOneMenu id="gender" value="#{registrationController.genderId}" required="true">
 							<f:selectItems value="#{registrationController.gendersSelectItems}"/>
-						</ice:selectOneMenu>
+						</h:selectOneMenu>
 						<br />
 
-<ice:outputText value="#{messages['person_firstName']}"/>:<br />
-						<ice:message showSummary="true" showDetail="false"
-							style="color: red;" for="firstName"></ice:message>
+<h:outputText value="#{messages['person_firstName']}"/>:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="firstName"></h:message>
 						<br />
-						<ice:inputText id="firstName"
+						<h:inputText id="firstName"
 							value="#{registrationController.firstName}" required="true" />
 						<br />
 
-<ice:outputText value="#{messages.person_lastName}"/>:<br />
-						<ice:message showSummary="true" showDetail="false"
-							style="color: red;" for="lastName"></ice:message>
+<h:outputText value="#{messages.person_lastName}"/>:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="lastName"></h:message>
 						<br />
-						<ice:inputText id="lastName" value="#{registrationController.lastName}"
+						<h:inputText id="lastName" value="#{registrationController.lastName}"
 							required="true" />
 						<br />
 
-<ice:outputText value="#{messages.person_email}"/>:<br />
-						<ice:message showSummary="true" showDetail="false"
-							style="color: red;" for="email"></ice:message>
+<h:outputText value="#{messages.person_email}"/>:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="email"></h:message>
 						<br />
-						<ice:inputText id="email" value="#{registrationController.email}"
+						<h:inputText id="email" value="#{registrationController.email}"
 							required="true" validator="#{registrationStep1.validateEmail}">
-						</ice:inputText>
+						</h:inputText>
 						<br />
 
 						<br />
 
-						<ice:commandButton value="#{messages.registration_submit}" action="#{registrationStep1.submit}" />
+						<h:commandButton value="#{messages.registration_submit}" action="#{registrationStep1.submit}" />
 						<br />
-					</ice:form></center>
+					</h:form></center>
 				</f:view>
 			</ui:define>
 		</ui:decorate>

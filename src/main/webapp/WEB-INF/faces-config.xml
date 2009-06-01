@@ -2,9 +2,6 @@
 <!DOCTYPE faces-config PUBLIC
   "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
   "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
-<!-- 
-Using faces-config 1.1 in order to user ICEfaces with JSF 1.2. See ICEfacesDeveloperGuide.pdf, "Using ICEfaces with JSF 1.2".
- -->
 <faces-config>
 	
 	<application>
@@ -14,17 +11,10 @@ Using faces-config 1.1 in order to user ICEfaces with JSF 1.2. See ICEfacesDevel
 		<variable-resolver>
 			org.springframework.web.jsf.DelegatingVariableResolver 
 		</variable-resolver>
-		<!-- 
-		To use facelets.
-		 -->
+		
 		<view-handler>
-			com.icesoft.faces.facelets.D2DFaceletViewHandler
+			com.sun.facelets.FaceletViewHandler
 		</view-handler>
-		 <!--
-		<view-handler>
-			com.pferrot.jsf.viewhandler.CustomViewHandler
-		</view-handler>
-		-->
 			 
 		<message-bundle>messages</message-bundle>
 		<locale-config>
@@ -48,14 +38,6 @@ Using faces-config 1.1 in order to user ICEfaces with JSF 1.2. See ICEfacesDevel
 		</managed-property>
 		-->
 <!--	</managed-bean>-->
-	
-	<!-- 
-	<managed-bean>
-		<managed-bean-name>renderManager</managed-bean-name>
-		<managed-bean-class>com.icesoft.faces.async.render.RenderManager</managed-bean-class>
-		<managed-bean-scope>application</managed-bean-scope>
-	</managed-bean>	
-	 -->
 	 
 	<!-- 
 	********************************************************************

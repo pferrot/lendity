@@ -1,5 +1,5 @@
 <div xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:ice="http://www.icesoft.com/icefaces/component">
+     xmlns:h="http://java.sun.com/jsf/html">
          
 <script type="text/javascript" src="/shared_calendar/public/javascript/menu.js"></script>    
   

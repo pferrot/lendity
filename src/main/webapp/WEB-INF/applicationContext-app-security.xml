@@ -26,8 +26,6 @@ security module.
 		-->
 		<intercept-url pattern="/login.jsp" filters="none" />
 		<intercept-url pattern="/public/**" filters="none" />
-		<intercept-url pattern="/xmlhttp/**" filters="none" /> <!-- ICEfaces -->
-		<intercept-url pattern="/block/**" filters="none" /> <!-- ICEfaces -->
 		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />		
 		<intercept-url pattern="/**" access="ROLE_USER" />
 		<!--

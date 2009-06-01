@@ -9,10 +9,8 @@ import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import com.pferrot.sharedcalendar.registration.RegistrationService;
 
 @ViewController(viewIds={"/public/registration/registration_2.jspx"})
-public class RegistrationStep2
-// Renderable is NOT necessary in sync mode.
-//implements Renderable, DisposableBean 
-{
+public class RegistrationStep2 {
+	
 	private final static Log log = LogFactory.getLog(RegistrationStep2.class);
 	
 	private RegistrationController registrationController;
@@ -24,7 +22,7 @@ public class RegistrationStep2
 	
 	@InitView
 	public void initView() {
-		ConversationUtils.ensureConversationRedirect("registration", "/public/registration/registration.iface");
+		ConversationUtils.ensureConversationRedirect("registration", "/public/registration/registration.faces");
 	}	
 	
 	public RegistrationController getRegistrationController() {

@@ -2,8 +2,7 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	xmlns:h="http://java.sun.com/jsf/html">
 
 	<!-- params for page titles-->
 	<ui:param name="pageTitle" value="New Account Registration - Step 2" />
@@ -24,16 +23,16 @@
 				<f:view>
 					<center>
 
-					<ice:form>
+					<h:form>
 
 Username:<br />
-						<ice:outputText value="#{registrationController.username}" />
+						<h:outputText value="#{registrationController.username}" />
 						<br />
 
-						<ice:commandButton value="Back!"	action="#{registrationStep2.back}" />
-						<ice:commandButton value="Confirm!"	action="#{registrationStep2.confirm}" />
+						<h:commandButton value="Back!"	action="#{registrationStep2.back}" />
+						<h:commandButton value="Confirm!"	action="#{registrationStep2.confirm}" />
 						<br />
-					</ice:form></center>
+					</h:form></center>
 				</f:view>
 			</ui:define>
 		</ui:decorate>

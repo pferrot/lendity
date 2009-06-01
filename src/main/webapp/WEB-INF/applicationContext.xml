@@ -261,17 +261,17 @@
 	</bean>	
 	
 	<bean id="movieInstanceOverviewController" class="com.pferrot.sharedcalendar.movie.jsf.MovieInstanceOverviewController"
-	      scope="conversation.access" orchestra:conversationName="movieInstanceOverview">
+	      scope="conversation.access">
 	      <property name="movieService" ref="movieService"/>
 	</bean>
 
 	<bean id="movieInstanceAddController" class="com.pferrot.sharedcalendar.movie.jsf.MovieInstanceAddController"
-	      scope="conversation.access" orchestra:conversationName="movieInstanceAdd">
+	      scope="conversation.access">
 	      <property name="movieService" ref="movieService"/>
 	</bean>
 
 	<bean id="movieInstanceEditController" class="com.pferrot.sharedcalendar.movie.jsf.MovieInstanceEditController"
-	      scope="conversation.access" orchestra:conversationName="movieInstanceEdit">
+	      scope="conversation.access">
 	      <property name="movieService" ref="movieService"/>
 	</bean>			
 	<!-- 

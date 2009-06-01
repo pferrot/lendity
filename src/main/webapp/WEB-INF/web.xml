@@ -1,8 +1,5 @@
 <?xml version="1.0"?>
 <!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
-<!-- 
-Using web-app 2.3 in order to user ICEfaces with JSF 1.2. See ICEfacesDeveloperGuide.pdf, "Using ICEfaces with JSF 1.2".
- -->
 <web-app>
 	<display-name>Shared Calendar</display-name>
 	<!--
@@ -22,20 +19,10 @@ Using web-app 2.3 in order to user ICEfaces with JSF 1.2. See ICEfacesDeveloperG
 		<param-name>log4jConfigLocation</param-name>
 		<param-value>/WEB-INF/classes/log4j.properties</param-value>
 	</context-param>
-	<!-- 
-	For IceFaces
-	 -->
+
 	<context-param>
 		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
 		<param-value>.jspx</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.synchronousUpdate</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.concurrentDOMViews</param-name>
-		<param-value>true</param-value> 
 	</context-param>
 	
 	
@@ -53,14 +40,6 @@ Using web-app 2.3 in order to user ICEfaces with JSF 1.2. See ICEfacesDeveloperG
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
-	<!-- 
-	Work around to make orchestra work with ICEfaces.
-	http://www.icefaces.org/JForum/posts/list/7638.page 
-	 -->
-	<filter>
-		<filter-name>requestParameterProvider</filter-name>
-		<filter-class>org.apache.myfaces.orchestra.requestParameterProvider.RequestParameterServletFilter</filter-class>
-	</filter>
 	<filter>
 		<filter-name>conversationFilter</filter-name>
 		<filter-class>org.apache.myfaces.orchestra.conversation.jsf.filter.OrchestraServletFilter</filter-class>
@@ -72,10 +51,6 @@ Using web-app 2.3 in order to user ICEfaces with JSF 1.2. See ICEfacesDeveloperG
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>requestParameterProvider</filter-name>
-		<servlet-name>Persistent Faces Servlet</servlet-name><!-- <url-pattern>*.faces</url-pattern> -->
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>conversationFilter</filter-name>
@@ -106,16 +81,6 @@ Using web-app 2.3 in order to user ICEfaces with JSF 1.2. See ICEfacesDeveloperG
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
 	<!-- 
-	Only required if the following error occurs at Tomcat startup:
-	"SEVERE: ICEfaces could not initialize JavaServer Faces. Please check that the JSF .jar files are installed correctly."
-	 -->
-<!--	<listener>-->
-<!--		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>-->
-<!--	</listener>-->
-	<listener>
-		<listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
-	</listener>
-	<!-- 
 	Orchestra stuff...
 	 -->
 	<listener>
@@ -144,57 +109,29 @@ Using web-app 2.3 in order to user ICEfaces with JSF 1.2. See ICEfacesDeveloperG
 		<load-on-startup>2</load-on-startup>
 	</servlet>
 		
-    <!-- 
-    ICEfaces stuff.
-     -->	
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-	<servlet>
-		<servlet-name>Persistent Faces Servlet</servlet-name>
-		<servlet-class>com.icesoft.faces.webapp.xmlhttp.PersistentFacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet>
-		<servlet-name>Blocking Servlet</servlet-name>
-		<servlet-class>com.icesoft.faces.webapp.xmlhttp.BlockingServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>initialdata</servlet-name>
 		<url-pattern>*.htm</url-pattern>
 	</servlet-mapping>
-	
-    <!-- 
-    IceFaces stuff.
-     -->		    
+	    
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.faces</url-pattern>
     </servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Persistent Faces Servlet</servlet-name>
-		<url-pattern>*.iface</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Persistent Faces Servlet</servlet-name>
-		<url-pattern>/xmlhttp/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Blocking Servlet</servlet-name>
-		<url-pattern>/block/*</url-pattern>
-	</servlet-mapping>		
-    
+
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 	
 	<error-page>
-		<error-code>500</error-code>
-		<location>/error.jsp</location>
+		<error-code>404</error-code>
+		<location>/public/error/error_404.jsp</location>
 	</error-page>
 		
 </web-app>

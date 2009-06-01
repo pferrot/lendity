@@ -3,7 +3,6 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ice="http://www.icesoft.com/icefaces/component"
 	xmlns:o="http://myfaces.apache.org/orchestra">
 
 	<!-- params for page titles-->
@@ -25,55 +24,55 @@
 				<f:view>
 					<center>
 
-					<ice:form>
+					<h:form>
 
 Titre:<br />
-						<ice:message showSummary="true" showDetail="false"
-							style="color: red;" for="title"></ice:message>
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="title"></h:message>
 						<br />
-						<ice:inputText id="title" value="#{movieAddController.title}"
+						<h:inputText id="title" value="#{movieAddController.title}"
 							required="true">
-						</ice:inputText>
+						</h:inputText>
 						<br />
 
 Description:<br />
-						<ice:message showSummary="true" showDetail="false"
-							style="color: red;" for="description"></ice:message>
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="description"></h:message>
 						<br />
-						<ice:inputTextarea id="description" value="#{movieAddController.description}">
-						</ice:inputTextarea>
+						<h:inputTextarea id="description" value="#{movieAddController.description}">
+						</h:inputTextarea>
 						<br />
 
 Duree:<br />
-						<ice:message showSummary="true" showDetail="false"
-							style="color: red;" for="duration"></ice:message>
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="duration"></h:message>
 						<br />
-						<ice:inputText id="duration" value="#{movieAddController.duration}"
+						<h:inputText id="duration" value="#{movieAddController.duration}"
 							required="false">
 							<f:validateLongRange minimum="0" maximum="1000"></f:validateLongRange>
-						</ice:inputText>
+						</h:inputText>
 						<br />
 						
 Annee:<br />
-						<ice:message showSummary="true" showDetail="false"
-							style="color: red;" for="year"></ice:message>
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="year"></h:message>
 						<br />
-						<ice:inputText id="year" value="#{movieAddController.year}"
+						<h:inputText id="year" value="#{movieAddController.year}"
 							required="false">
 							<f:validator validatorId="movieYearValidator"/>
-						</ice:inputText>
+						</h:inputText>
 						<br />										
 						
 						<br />
 						<o:separateConversationContext>
-							<ice:outputLink value="#{movieAddController.moviesListHref}">
-            					<ice:outputText value="#{messages.cancel}"/>
-	         				</ice:outputLink>
+							<h:outputLink value="#{movieAddController.moviesListHref}">
+            					<h:outputText value="#{messages.cancel}"/>
+	         				</h:outputLink>
 						</o:separateConversationContext>
 						<br />
-						<ice:commandButton value="Alleeeeeeeez !" action="#{movieAddController.submit}" />
+						<h:commandButton value="Alleeeeeeeez !" action="#{movieAddController.submit}" />
 						<br />
-					</ice:form></center>
+					</h:form></center>
 				</f:view>
 			</ui:define>
 		</ui:decorate>

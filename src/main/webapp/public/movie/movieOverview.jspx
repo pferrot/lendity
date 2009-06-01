@@ -3,7 +3,6 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ice="http://www.icesoft.com/icefaces/component"
 	xmlns:o="http://myfaces.apache.org/orchestra">
 
 	<!-- params for page titles-->
@@ -25,20 +24,20 @@
 				<f:view>
 					<center>
 
-					<ice:form>
+					<h:form>
 
 Movie:<br />
-						<ice:outputText value="#{movieOverviewController.movieTitle}" />
+						<h:outputText value="#{movieOverviewController.movieTitle}" />
 						<br />
 
 						<br />
-					</ice:form></center>
+					</h:form></center>
 
 					<br/>
 					<o:separateConversationContext>
-						<ice:outputLink value="#{movieOverviewController.movieEditHref}">
-	            			<ice:outputText value="#{messages.movie_edit}"/>
-	         			</ice:outputLink>
+						<h:outputLink value="#{movieOverviewController.movieEditHref}">
+	            			<h:outputText value="#{messages.movie_edit}"/>
+	         			</h:outputLink>
 					</o:separateConversationContext>
 					<br/>
 				</f:view>
