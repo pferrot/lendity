@@ -20,6 +20,7 @@ import com.pferrot.sharedcalendar.dao.PersonDao;
 import com.pferrot.sharedcalendar.i18n.I18nConsts;
 import com.pferrot.sharedcalendar.model.Address;
 import com.pferrot.sharedcalendar.model.BorrowerHistoryEntry;
+import com.pferrot.sharedcalendar.model.ConnectionRequestResponse;
 import com.pferrot.sharedcalendar.model.Country;
 import com.pferrot.sharedcalendar.model.Gender;
 import com.pferrot.sharedcalendar.model.Language;
@@ -227,6 +228,17 @@ public class InitialData {
 		
 		speciality = new PersonSpeciality(PersonSpeciality.DIRECTOR_LABEL_CODE);
 		listValueDao.createListValue(speciality);
+	}
+	
+	private void createConnectionRequestResponse() {
+		ConnectionRequestResponse crr = new ConnectionRequestResponse(ConnectionRequestResponse.ACCEPT_LABEL_CODE, new Integer(1));
+		listValueDao.createListValue(crr);
+		
+		crr = new ConnectionRequestResponse(ConnectionRequestResponse.REFUSE_LABEL_CODE, new Integer(2));
+		listValueDao.createListValue(crr);
+		
+		crr = new ConnectionRequestResponse(ConnectionRequestResponse.BAN_LABEL_CODE, new Integer(3));
+		listValueDao.createListValue(crr);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////

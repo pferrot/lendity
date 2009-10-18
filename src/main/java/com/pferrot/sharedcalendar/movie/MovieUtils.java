@@ -13,7 +13,7 @@ public class MovieUtils {
 	 * @return
 	 */
 	public static String getMovieOverviewPageUrl(final String pMovieId) {
-		CoreUtils.assertNotNullParameter(pMovieId, "pMovieId");
+		CoreUtils.assertNotNull(pMovieId);
 		
 		return JsfUtils.getFullUrl(PagesURL.MOVIE_OVERVIEW, PagesURL.MOVIE_OVERVIEW_PARAM_MOVIE_ID, pMovieId);
 	}
@@ -24,7 +24,7 @@ public class MovieUtils {
 	 * @return
 	 */
 	public static String getMovieEditPageUrl(final String pMovieId) {
-		CoreUtils.assertNotNullParameter(pMovieId, "pMovieId");
+		CoreUtils.assertNotNull(pMovieId);
 		
 		return JsfUtils.getFullUrl(PagesURL.MOVIE_EDIT, PagesURL.MOVIE_EDIT_PARAM_MOVIE_ID, pMovieId);
 	}

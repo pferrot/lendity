@@ -29,5 +29,19 @@ public interface PagesURL {
 	String REGISTRATION = "/public/registration/registration.faces";
 	
 	// REGISTRATION - end
+	/////////////////////////////////////////////////////////////////////////
+	
+	/////////////////////////////////////////////////////////////////////////
+	// PERSON - start	
+	
+	String PERSONS_LIST = "/auth/person/personsList.faces";
+	
+	String PERSON_OVERVIEW = "/auth/person/personOverview.faces";
+	String PERSON_OVERVIEW_PARAM_PERSON_ID = "personID";
+	
+	String PERSON_EDIT = "/auth/person/personEdit.faces";
+	String PERSON_EDIT_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;	
+	
+	// PERSON - end
 	/////////////////////////////////////////////////////////////////////////	
 }

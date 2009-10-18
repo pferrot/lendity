@@ -119,28 +119,6 @@
 		</property>
 	</bean>
 	
-	<bean id="personDaoTarget" class="com.pferrot.sharedcalendar.dao.hibernate.PersonDaoHibernateImpl">
-		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
-	</bean>
-	
-	<bean id="personDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager"/>
-		<property name="target">
-			<ref local="personDaoTarget"/>
-		</property>
-		<property name="proxyInterfaces">
-           <value>com.pferrot.sharedcalendar.dao.PersonDao</value>
-         </property>		
-		<property name="transactionAttributes">
-			<props>
-				<prop key="delete*">PROPAGATION_REQUIRED</prop>
-				<prop key="update*">PROPAGATION_REQUIRED</prop>
-				<prop key="create*">PROPAGATION_REQUIRED</prop>
-				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
-			</props>
-		</property>
-	</bean>
-	
 	<bean id="baseTransactionProxy"	class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean" abstract="true">
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="transactionAttributes">
@@ -201,8 +179,117 @@
 	 
 	<!-- 
 	========================================================================================================================
-	MOVIE - start
+	PERSON - start
 	 -->
+	 
+	<bean id="personDaoTarget" class="com.pferrot.sharedcalendar.dao.hibernate.PersonDaoHibernateImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	
+	<bean id="personDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target">
+			<ref local="personDaoTarget"/>
+		</property>
+		<property name="proxyInterfaces">
+           <value>com.pferrot.sharedcalendar.dao.PersonDao</value>
+         </property>		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="personService" parent="baseTransactionProxy">
+		<property name="target" ref="personServiceTarget" />
+	</bean>
+	
+	<bean id="personServiceTarget" class="com.pferrot.sharedcalendar.person.PersonService">
+		<property name="personDao" ref="personDao"/>
+	</bean>
+	
+	<bean id="personsListController" class="com.pferrot.sharedcalendar.person.jsf.PersonsListController"
+	      scope="conversation.access">
+	      <property name="personService" ref="personService"/>
+	</bean>
+	
+	<bean id="personOverviewController" class="com.pferrot.sharedcalendar.person.jsf.PersonOverviewController"
+	      scope="conversation.access">
+	      <property name="personService" ref="personService"/>
+	</bean>
+	
+	<bean id="personAddController" class="com.pferrot.sharedcalendar.person.jsf.PersonAddController"
+	      scope="conversation.access">
+	      <property name="personService" ref="personService"/>
+	</bean>
+	
+	<bean id="personEditController" class="com.pferrot.sharedcalendar.person.jsf.PersonEditController"
+	      scope="conversation.access">
+	      <property name="personService" ref="personService"/>
+	</bean>	
+	
+	<!-- 
+	PERSON - end
+	========================================================================================================================
+	 -->
+
+	<!-- 
+	========================================================================================================================
+	CONNECTION REQUEST - start
+	 -->
+	 
+	<bean id="connectionRequestDaoTarget" class="com.pferrot.sharedcalendar.dao.hibernate.ConnectionRequestDaoHibernateImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	
+	<bean id="connectionRequestDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target">
+			<ref local="connectionRequestDaoTarget"/>
+		</property>
+		<property name="proxyInterfaces">
+           <value>com.pferrot.sharedcalendar.dao.ConnectionRequestDao</value>
+         </property>		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="connectionRequestService" parent="baseTransactionProxy">
+		<property name="target" ref="connectionRequestServiceTarget" />
+	</bean>
+	
+	<bean id="connectionRequestServiceTarget" class="com.pferrot.sharedcalendar.connectionrequest.ConnectionRequestService">
+		<property name="connectionRequestDao" ref="connectionRequestDao"/>
+		<property name="listValueDao" ref="listValueDao"/>
+		<property name="personDao" ref="personDao"/>
+		<property name="mailManager" ref="emailSender.mailManager"/>
+	</bean>
+
+<!--	
+	<bean id="personsListController" class="com.pferrot.sharedcalendar.person.jsf.PersonsListController"
+	      scope="conversation.access">
+	      <property name="personService" ref="personService"/>
+	</bean>	
+-->	
+	<!-- 
+	CONNECTION REQUEST - end
+	========================================================================================================================
+	 -->
+	 	 
+	<!-- 
+	========================================================================================================================
+	MOVIE - start
+	 --> 
 	 
 	<bean id="movieDaoTarget" class="com.pferrot.sharedcalendar.dao.hibernate.MovieDaoHibernateImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
@@ -273,7 +360,8 @@
 	<bean id="movieInstanceEditController" class="com.pferrot.sharedcalendar.movie.jsf.MovieInstanceEditController"
 	      scope="conversation.access">
 	      <property name="movieService" ref="movieService"/>
-	</bean>			
+	</bean>	
+			
 	<!-- 
 	MOVIE - end
 	========================================================================================================================

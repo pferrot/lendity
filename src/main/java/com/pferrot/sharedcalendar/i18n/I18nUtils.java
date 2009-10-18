@@ -63,7 +63,7 @@ public class I18nUtils {
 	 * @return
 	 */
 	public static String getLocalizedText(final Map<String, String> pTextMap) {
-		CoreUtils.assertNotNullParameter(pTextMap, "pTextMap");
+		CoreUtils.assertNotNull(pTextMap);
 		String lang = getLocalAsString();
 		String result = null;
 		

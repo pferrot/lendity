@@ -26,14 +26,14 @@
 					<center>
 
 <h:form>
-	<h:inputText id="movieSearchString" value="#{moviesListController.movieSearchString}"/>
+	<h:inputText id="searchString" value="#{moviesListController.searchString}"/>
 	<br/>
-	<h:commandButton value="#{messages.search}" action="#{moviesListController.searchByTitle}" />
-	<h:commandButton value="#{messages.clearSearch}" action="#{moviesListController.clearSearchByTitle}" />
+	<h:commandButton value="#{messages.search}" action="#{moviesListController.search}" />
+	<h:commandButton value="#{messages.clearSearch}" action="#{moviesListController.clearSearch}" />
 </h:form>
 <br/>
 
-<h:dataTable value="#{moviesListController.moviesList}" binding="#{moviesListController.moviesTable}" var="movie">
+<h:dataTable value="#{moviesListController.list}" binding="#{moviesListController.table}" var="movie">
 
 	<h:column>
         <f:facet name="header">

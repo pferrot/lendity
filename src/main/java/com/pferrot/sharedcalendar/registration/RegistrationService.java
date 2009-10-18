@@ -65,7 +65,7 @@ public class RegistrationService {
 	 * @return
 	 */
 	public boolean isUsernameAvailable(final String pUsername) {
-		CoreUtils.assertNotEmptyStringParameter(pUsername, "pUsername");
+		CoreUtils.assertNotNullOrEmptyString(pUsername);
 		
 		User user = userDao.findUser(pUsername);
 		
@@ -83,8 +83,8 @@ public class RegistrationService {
 	 * @return
 	 */
 	public Long createUser(final Person pPerson) {
-		CoreUtils.assertNotNullParameter(pPerson, "pPerson");
-		CoreUtils.assertNotNullParameter(pPerson.getUser(), "pPerson.user");
+		CoreUtils.assertNotNull(pPerson);
+		CoreUtils.assertNotNull(pPerson.getUser());
 		
 		pPerson.getUser().setCreationDate(new Date());
 		pPerson.getUser().setEnabled(Boolean.TRUE);
@@ -112,7 +112,7 @@ public class RegistrationService {
 		objects.put("password", rawPassword);
 		
 		// TODO: localization
-		final String velocityTemplateLocation = "com/pferrot/sharedcalendar/registration/emailtemplate/en";
+		final String velocityTemplateLocation = "com/pferrot/sharedcalendar/emailtemplate/registration/logindetails/en";
 		
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(pPerson.getEmail(), pPerson.getEmail());

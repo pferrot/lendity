@@ -61,6 +61,7 @@
 		</dependency> 
 		<!-- 
 		slf4j-api 1.4.2 from hibernate-entitymanager 3.4.0.GA makes problem
+		TODO: is that still needed?
 		 -->
 		<dependency>
 		    <groupId>org.slf4j</groupId>
@@ -128,34 +129,21 @@
 		<dependency>
 		    <groupId>org.hibernate</groupId>
 		    <artifactId>hibernate-core</artifactId>
-		    <version>3.3.1.GA</version>
+		    <version>3.5.0.Beta-1</version>
 		    <scope>compile</scope>
 		</dependency>
 		<dependency>
 		    <groupId>org.hibernate</groupId>
 		    <artifactId>hibernate-annotations</artifactId>
-		    <version>3.4.0.GA</version>
+		    <version>3.5.0.Beta-1</version>
 		    <scope>compile</scope>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>org.jboss.envers</groupId>
-			<artifactId>jboss-envers</artifactId>
-			<version>1.2.0.GA-hibernate-3.3</version>
-			<scope>compile</scope>
-		</dependency>
-		 -->
-		 <!-- 
-		 Had to modify Envers source code due to http://opensource.atlassian.com/projects/hibernate/browse/HHH-3706
-		  -->
-		<!--  
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-envers</artifactId>
-			<version>3.5.0-SNAPSHOT</version>
+			<version>3.5.0.Beta-1</version>
 			<scope>compile</scope>
 		</dependency>			
-		-->
 		<!-- 		
 		<dependency>
 		    <groupId>org.springframework</groupId>
@@ -163,7 +151,8 @@
 		    <version>2.0-m4</version>
 		    <scope>runtime</scope>
 		</dependency>	
-		-->	 
+		-->			
+		
 		<!--
 			Force using version 2.5.5. and not the one spring-security-code 2.0.3
 			depends on
@@ -261,21 +250,11 @@
 						<groupId>org.hibernate</groupId>
 						<artifactId>hibernate-entitymanager</artifactId>
 						<version>3.3.1.ga</version>
-					</dependency>
-					
-					<!--  
-					<dependency>
-						<groupId>org.jboss.envers</groupId>
-						<artifactId>jboss-envers</artifactId>
-						<version>1.2.0.GA-hibernate-3.3</version>
-					</dependency>
-					 -->
-					 
-					 
+					</dependency>					 
 					<dependency>
 						<groupId>org.hibernate</groupId>
 						<artifactId>hibernate-envers</artifactId>
-						<version>3.5.0-SNAPSHOT</version>
+						<version>3.5.0.Beta-1</version>
 					</dependency>
 					<dependency>
 						<groupId>org.slf4j</groupId>

@@ -36,7 +36,7 @@ public class MovieDaoHibernateImpl extends HibernateDaoSupport implements MovieD
 	}
 
 	public List<Movie> findMoviesByTitle(final String pTitle, final int pFirstResult, final int pMaxResults) {
-		CoreUtils.assertNotEmptyStringParameter(pTitle, "pTitle");
+		CoreUtils.assertNotNullOrEmptyString(pTitle);
 		final String titleLower = pTitle.trim().toLowerCase();
 		DetachedCriteria critera = DetachedCriteria.forClass(Movie.class).
 			add(Restrictions.ilike("title", pTitle, MatchMode.ANYWHERE)).
@@ -59,12 +59,12 @@ public class MovieDaoHibernateImpl extends HibernateDaoSupport implements MovieD
 	}
 
 	public List<Movie> findMoviesOwnedByUser(final User pUser, final int pFirstResult, final int pMaxResults) {
-		CoreUtils.assertNotNullParameter(pUser, "pUser");
+		CoreUtils.assertNotNull(pUser);
 		return findMoviesOwnedByUser(pUser.getUsername(), pFirstResult, pMaxResults);
 	}
 
 	public List<Movie> findMoviesOwnedByUser(final String pUsername, final int pFirstResult, final int pMaxResults) {
-		CoreUtils.assertNotNullParameter(pUsername, "pUsername");
+		CoreUtils.assertNotNullOrEmptyString(pUsername);
 		
 		DetachedCriteria critera = DetachedCriteria.forClass(Movie.class).
 			addOrder(Order.asc("title").ignoreCase()).
@@ -77,13 +77,13 @@ public class MovieDaoHibernateImpl extends HibernateDaoSupport implements MovieD
 	}
 
 	public List<Movie> findMoviesBorrowedByUser(final User pUser, final int pFirstResult, final int pMaxResults) {
-		CoreUtils.assertNotNullParameter(pUser, "pUser");
+		CoreUtils.assertNotNull(pUser);
 		
 		return findMoviesBorrowedByUser(pUser.getUsername(), pFirstResult, pMaxResults);
 	}
 
 	public List<Movie> findMoviesBorrowedByUser(final String pUsername, final int pFirstResult, final int pMaxResults) {
-		CoreUtils.assertNotNullParameter(pUsername, "pUsername");
+		CoreUtils.assertNotNullOrEmptyString(pUsername);
 		
 		DetachedCriteria critera = DetachedCriteria.forClass(Movie.class).
 			addOrder(Order.asc("title").ignoreCase()).
@@ -113,23 +113,23 @@ public class MovieDaoHibernateImpl extends HibernateDaoSupport implements MovieD
 	}
 
 	public List<MovieInstance> findMovieInstancesBorrowedAnytimeByUser(final User pUser) {
-		CoreUtils.assertNotNullParameter(pUser, "pUser");
+		CoreUtils.assertNotNull(pUser);
 		return getHibernateTemplate().find("select mi from MovieInstance mi inner join mi.borrowerHistoryEntries bhe " +
 				"where bhe.borrower = ?", pUser);
 	}
 
 	public List<MovieInstance> findMovieInstancesBorrowedNowByUser(final User pUser) {
-		CoreUtils.assertNotNullParameter(pUser, "pUser");	
+		CoreUtils.assertNotNull(pUser);	
 		return getHibernateTemplate().find("from MovieInstance mi where mi.borrower = ?", pUser);
 	}
 
 	public List<MovieInstance> findMovieInstancesOwnedByUser(final User pUser) {
-		CoreUtils.assertNotNullParameter(pUser, "pUser");		
+		CoreUtils.assertNotNull(pUser);		
 		return getHibernateTemplate().find("from MovieInstance mi where mi.owner = ?", pUser);
 	}
 
 	public List<MovieInstance> findMovieInstancesWantedByUser(final User pUser) {
-		CoreUtils.assertNotNullParameter(pUser, "pUser");	
+		CoreUtils.assertNotNull(pUser);	
 		return getHibernateTemplate().find("select mi from MovieInstance mi inner join mi.waitListEntries wle " +
 				"where wle.user = ?", pUser);
 	}

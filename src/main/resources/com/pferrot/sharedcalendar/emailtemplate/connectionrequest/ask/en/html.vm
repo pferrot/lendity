@@ -1,0 +1,11 @@
+Hello $connectionFirstName,<br/><br/>
+
+$requesterFirstName $requesterLastName wants to add you to his/her network.<br/><br/>
+
+Please follow the link below to confirm/deny pending connection requests:<br/><br/>
+
+<a href="TODO">TODO</a><br/><br/>
+
+Thank you,<br/><br/>
+
+sharedcalendar.com

@@ -6,7 +6,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.security.SecurityUtils;
-import com.pferrot.sharedcalendar.model.movie.Movie;
 import com.pferrot.sharedcalendar.movie.MovieConsts;
 
 public class MyMoviesListController extends AbstractMoviesListController {
@@ -14,7 +13,7 @@ public class MyMoviesListController extends AbstractMoviesListController {
 	private final static Log log = LogFactory.getLog(MyMoviesListController.class);
 
 	@Override
-	public List<Movie> getMoviesListInternal() {
+	public List getListInternal() {
 		return getMovieService().findMoviesOwnedByUsername(SecurityUtils.getCurrentUsername(), getFirstResultIndex(), MovieConsts.NB_MOVIES_PER_PAGE + 1);
 	}
 }
