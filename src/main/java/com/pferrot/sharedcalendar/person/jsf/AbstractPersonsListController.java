@@ -1,10 +1,9 @@
 package com.pferrot.sharedcalendar.person.jsf;
 
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.sharedcalendar.connectionrequest.ConnectionRequestService;
 import com.pferrot.sharedcalendar.jsf.list.AbstractListController;
 import com.pferrot.sharedcalendar.model.Person;
 import com.pferrot.sharedcalendar.person.PersonConsts;
@@ -15,6 +14,7 @@ public abstract class AbstractPersonsListController extends AbstractListControll
 	private final static Log log = LogFactory.getLog(AbstractPersonsListController.class);
 	
 	private PersonService personService;
+	private ConnectionRequestService connectionRequestService;
 	
 	public void setPersonService(final PersonService pPersonService) {
 		this.personService = pPersonService;
@@ -22,6 +22,14 @@ public abstract class AbstractPersonsListController extends AbstractListControll
 	
 	public PersonService getPersonService() {
 		return personService;
+	}
+
+	public ConnectionRequestService getConnectionRequestService() {
+		return connectionRequestService;
+	}
+
+	public void setConnectionRequestService(final ConnectionRequestService pConnectionRequestService) {
+		this.connectionRequestService = pConnectionRequestService;
 	}
 
 	@Override

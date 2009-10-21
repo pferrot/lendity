@@ -200,6 +200,10 @@
 			<to-view-id>/auth/person/personsList.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>requestConnection</from-outcome>
+			<to-view-id>/auth/person/personsList.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>search</from-outcome>
 			<to-view-id>/auth/person/personsList.jspx</to-view-id>
 		</navigation-case>

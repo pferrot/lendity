@@ -174,13 +174,11 @@ public class Person implements Serializable {
 	public void addBannedPerson(final Person pPerson) {
 		CoreUtils.assertNotNull(pPerson);
 		bannedPersons.add(pPerson);
-		pPerson.getBannedPersons().add(this);
 	}
 		
 	public void removeBannedPerson(final Person pPerson) {
 		CoreUtils.assertNotNull(pPerson);
 		bannedPersons.remove(pPerson);
-		pPerson.getBannedPersons().remove(this);
 	}	
 }
 

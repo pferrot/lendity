@@ -52,6 +52,15 @@
         	</h:outputLink>
 		</o:separateConversationContext>
     </h:column>
+    
+	<h:column>
+        <f:facet name="header">
+            <h:outputText value="REQUEST CONNECTION" />
+        </f:facet>
+		<o:separateConversationContext>
+			<h:commandButton action="#{personsListController.requestConnection}" value="#{personsListController.requestConnectionLabel}"/>
+		</o:separateConversationContext>
+    </h:column>    
 
 </h:dataTable>
 

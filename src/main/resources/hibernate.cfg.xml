@@ -46,6 +46,9 @@
         <mapping class="com.pferrot.sharedcalendar.model.movie.MovieCategory"/>
         <mapping class="com.pferrot.sharedcalendar.model.movie.MovieFormat"/>
         
+        <mapping class="com.pferrot.sharedcalendar.model.ConnectionRequest"/>
+        <mapping class="com.pferrot.sharedcalendar.model.ConnectionRequestResponse"/>
+        
         <mapping class="com.pferrot.envers.model.UserRevisionEntity"/>
         
     </session-factory>

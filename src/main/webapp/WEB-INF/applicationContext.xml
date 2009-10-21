@@ -215,6 +215,7 @@
 	<bean id="personsListController" class="com.pferrot.sharedcalendar.person.jsf.PersonsListController"
 	      scope="conversation.access">
 	      <property name="personService" ref="personService"/>
+	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
 	
 	<bean id="personOverviewController" class="com.pferrot.sharedcalendar.person.jsf.PersonOverviewController"

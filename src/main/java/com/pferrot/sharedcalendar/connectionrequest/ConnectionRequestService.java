@@ -68,10 +68,22 @@ public class ConnectionRequestService {
 			// Only users can request.
 			CoreUtils.assertNotNull(pRequester.getUser());
 			
+			if (pConnection.getId().equals(pRequester.getId())) {
+				throw new ConnectionRequestException("Requester must be different from connection (i.e. cannot have yourself as a connection).");
+			}
+			
+			// Check that requester is not banned by connection.
+			if (pConnection.getBannedPersons().contains(pRequester)) {
+				throw new ConnectionRequestException("Requester '" + pRequester.getId() + "' is banned by connection '" + pConnection.getId() + "'.");
+			}
+			
 			final ConnectionRequest connectionRequest = new ConnectionRequest();
 			connectionRequest.setConnection(pConnection);
 			connectionRequest.setRequester(pRequester);
 			connectionRequest.setRequestDate(new Date());
+			
+			assertRequesterIsCurrentUser(connectionRequest);
+			
 			Long connectionRequestId = connectionRequestDao.createConnectionRequest(connectionRequest);
 				
 			// Send email (will actually create a JMS message, i.e. it is async).
@@ -102,39 +114,59 @@ public class ConnectionRequestService {
 		}
 	}
 	
-	public void denyConnectionRequest(final Long pConnectionRequestId) throws ConnectionRequestException {
+	public Long createConnectionRequestFromCurrentUser(final Person pConnection) throws ConnectionRequestException {
+		final User currentUser = SecurityUtils.getCurrentUser();
+		CoreUtils.assertNotNull(currentUser);
+		final Person currentUserPerson = personDao.findPersonFromUser(currentUser);
+		CoreUtils.assertNotNull(currentUserPerson);
+		
+		return createConnectionRequest(pConnection, currentUserPerson);
+	}
+	
+	/**
+	 * The connection is simply refused.
+	 * An email is send to the requester to let him know about that.
+	 * 
+	 * @param pConnectionRequestId
+	 * @throws ConnectionRequestException
+	 */
+	public void refuseConnectionRequest(final Long pConnectionRequestId) throws ConnectionRequestException {
 		try {
 			CoreUtils.assertNotNull(pConnectionRequestId);
 			final ConnectionRequest connectionRequest = connectionRequestDao.findConnectionRequest(pConnectionRequestId);
-			assertConnectionIsCurrentUser(connectionRequest);
 			
-			final Person connection = connectionRequest.getConnection();
-			if (connectionRequest.getResponse() != null) {
-				throw new ConnectionRequestException("Connection request with ID '" + pConnectionRequestId.toString() + "' already has a response.");
-			}
-			connectionRequest.setResponse((ConnectionRequestResponse)listValueDao.findListValue(ConnectionRequestResponse.REFUSE_LABEL_CODE));
-			connectionRequest.setResponseDate(new Date());
+			setConnectionRequestResponse(connectionRequest, (ConnectionRequestResponse)listValueDao.findListValue(ConnectionRequestResponse.REFUSE_LABEL_CODE));
+			
+			sendResponseEmail(connectionRequest, "sharedcalendar.com: your connection request has been rejected", "com/pferrot/sharedcalendar/emailtemplate/connectionrequest/refuse/en");
+		}
+		catch (ConnectionRequestException e) {
+			throw e;
+		}
+		catch (Exception e) {
+			throw new ConnectionRequestException(e);
+		}		
+	}
 
-			// Send email (will actually create a JMS message, i.e. it is async).
-			Map<String, String> objects = new HashMap<String, String>();
-			objects.put("requesterFirstName", connectionRequest.getRequester().getFirstName());
-			objects.put("connectionFirstName", connectionRequest.getConnection().getFirstName());
-			objects.put("connectionLastName", connectionRequest.getConnection().getLastName());
+	/**
+	 * The connection is refused and the requester is banned by the connection.
+	 * An email is send to the requester to let him know about that.
+	 * 
+	 * @param pConnectionRequestId
+	 * @throws ConnectionRequestException
+	 */
+	public void banConnectionRequest(final Long pConnectionRequestId) throws ConnectionRequestException {
+		try {
+			CoreUtils.assertNotNull(pConnectionRequestId);
+			final ConnectionRequest connectionRequest = connectionRequestDao.findConnectionRequest(pConnectionRequestId);
 			
-			// TODO: localization
-			final String velocityTemplateLocation = "com/pferrot/sharedcalendar/emailtemplate/connectionrequest/deny/en";
+			setConnectionRequestResponse(connectionRequest, (ConnectionRequestResponse)listValueDao.findListValue(ConnectionRequestResponse.BAN_LABEL_CODE));
 			
-			Map<String, String> to = new HashMap<String, String>();
-			to.put(connectionRequest.getRequester().getEmail(), connectionRequest.getRequester().getEmail());
+			// Ban connection.
+			connectionRequest.getConnection().addBannedPerson(connectionRequest.getRequester());
 			
-			mailManager.send(Consts.DEFAULT_SENDER_NAME, 
-					         Consts.DEFAULT_SENDER_ADDRESS,
-					         to,
-					         null, 
-					         null,
-					         "sharedcalendar.com: your connection request was rejected",
-					         objects, 
-					         velocityTemplateLocation);		
+			sendResponseEmail(connectionRequest,
+					"sharedcalendar.com: your connection request has been rejected and you were banned",
+					"com/pferrot/sharedcalendar/emailtemplate/connectionrequest/ban/en");
 		}
 		catch (ConnectionRequestException e) {
 			throw e;
@@ -144,12 +176,26 @@ public class ConnectionRequestService {
 		}		
 	}
 	
+	/**
+	 * The connection is accepted, both the requester and the connection are not connection of each other. 
+	 * An email is send to the requester to let him know about that.
+	 * 
+	 * @param pConnectionRequestId
+	 * @throws ConnectionRequestException
+	 */
 	public void acceptConnectionRequest(final Long pConnectionRequestId) throws ConnectionRequestException {
 		try {
 			CoreUtils.assertNotNull(pConnectionRequestId);
 			final ConnectionRequest connectionRequest = connectionRequestDao.findConnectionRequest(pConnectionRequestId);
-			assertConnectionIsCurrentUser(connectionRequest);
-			// TODO
+
+			setConnectionRequestResponse(connectionRequest, (ConnectionRequestResponse)listValueDao.findListValue(ConnectionRequestResponse.ACCEPT_LABEL_CODE));
+			
+			// Add connection.
+			connectionRequest.getRequester().addConnection(connectionRequest.getConnection());
+			
+			sendResponseEmail(connectionRequest,
+					"sharedcalendar.com: your connection request has been accepted",
+					"com/pferrot/sharedcalendar/emailtemplate/connectionrequest/accept/en");
 		}
 		catch (ConnectionRequestException e) {
 			throw e;
@@ -157,6 +203,40 @@ public class ConnectionRequestService {
 		catch (Exception e) {
 			throw new ConnectionRequestException(e);
 		}			
+	}
+	
+	private void setConnectionRequestResponse(final ConnectionRequest pConnectionRequest, final ConnectionRequestResponse pConnectionRequestResponse) throws ConnectionRequestException {
+		CoreUtils.assertNotNull(pConnectionRequest);
+		CoreUtils.assertNotNull(pConnectionRequestResponse);
+		
+		assertConnectionIsCurrentUser(pConnectionRequest);
+		
+		final Person connection = pConnectionRequest.getConnection();
+		if (pConnectionRequest.getResponse() != null) {
+			throw new ConnectionRequestException("Connection request with ID '" + pConnectionRequest.getId().toString() + "' already has a response.");
+		}
+		pConnectionRequest.setResponse(pConnectionRequestResponse);
+		pConnectionRequest.setResponseDate(new Date());
+	}
+	
+	private void sendResponseEmail(final ConnectionRequest pConnectionRequest, final String pEmailSubject, final String pTemplateLocation) {
+		// Send email (will actually create a JMS message, i.e. it is async).
+		Map<String, String> objects = new HashMap<String, String>();
+		objects.put("requesterFirstName", pConnectionRequest.getRequester().getFirstName());
+		objects.put("connectionFirstName", pConnectionRequest.getConnection().getFirstName());
+		objects.put("connectionLastName", pConnectionRequest.getConnection().getLastName());
+		
+		Map<String, String> to = new HashMap<String, String>();
+		to.put(pConnectionRequest.getRequester().getEmail(), pConnectionRequest.getRequester().getEmail());
+		
+		mailManager.send(Consts.DEFAULT_SENDER_NAME, 
+				         Consts.DEFAULT_SENDER_ADDRESS,
+				         to,
+				         null, 
+				         null,
+				         pEmailSubject,
+				         objects, 
+				         pTemplateLocation);			
 	}
 	
 	private void assertRequesterIsCurrentUser(final ConnectionRequest pConnectionRequest) throws ConnectionRequestException {
