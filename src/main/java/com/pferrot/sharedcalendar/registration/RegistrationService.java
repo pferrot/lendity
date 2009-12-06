@@ -94,13 +94,15 @@ public class RegistrationService {
 		// This convenience method also adds the user on the role.
 		pPerson.getUser().addRole(userRole);		
 		
-		final String rawPassword = PasswordGenerator.getNewPassword();		
-		final String md5EncodedPassword = passwordEncoder.encodePassword(rawPassword, null);
-		if (log.isDebugEnabled()) {
-			log.debug("Generated password for user '" + pPerson.getUser().getUsername() + 
-					"': '" + rawPassword + "' ('" + md5EncodedPassword + "')");
-		}
-		pPerson.getUser().setPassword(md5EncodedPassword);
+		final String rawPassword = PasswordGenerator.getNewPassword();
+		// If encoding the password, do not forget to update applicationContext-security.xml in the security module.
+//		final String md5EncodedPassword = passwordEncoder.encodePassword(rawPassword, null);
+//		if (log.isDebugEnabled()) {
+//			log.debug("Generated password for user '" + pPerson.getUser().getUsername() + 
+//					"': '" + rawPassword + "' ('" + md5EncodedPassword + "')");
+//		}
+//		pPerson.getUser().setPassword(md5EncodedPassword);
+		pPerson.getUser().setPassword(rawPassword);
 
 		// This will also create the user.
 		Long personId = personDao.createPerson(pPerson);

@@ -22,13 +22,13 @@
 					<center>
 
 					<h:form>
-
-<h:outputText value="#{messages.user_username}"/>:<br />
+						
+<h:outputText value="#{messages.person_email}"/>:<br />
 						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="username"></h:message>
+							style="color: red;" for="email"></h:message>
 						<br />
-						<h:inputText id="username" value="#{registrationController.username}"
-							required="true" validator="#{registrationStep1.validateUsername}">
+						<h:inputText id="email" value="#{registrationController.email}"
+							required="true" validator="#{registrationStep1.validateEmail}">
 						</h:inputText>
 						<br />
 
@@ -57,14 +57,6 @@
 							required="true" />
 						<br />
 
-<h:outputText value="#{messages.person_email}"/>:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="email"></h:message>
-						<br />
-						<h:inputText id="email" value="#{registrationController.email}"
-							required="true" validator="#{registrationStep1.validateEmail}">
-						</h:inputText>
-						<br />
 
 						<br />
 

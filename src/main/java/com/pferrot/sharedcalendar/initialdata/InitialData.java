@@ -133,8 +133,9 @@ public class InitialData {
 				listValueDao.findGender(Gender.MALE_LABEL_CODE));
 		
 		User user = new User();
-		user.setUsername("pferrot");
-		user.setPassword(passwordEncoder.encodePassword("pferrot", null));
+		user.setUsername("patrice.ferrot@gmail.com");
+//		user.setPassword(passwordEncoder.encodePassword("pferrot", null));
+		user.setPassword("pf");
 		user.setEnabled(Boolean.TRUE);
 		user.setCreationDate(new Date());
 		Role userRole = roleDao.findRole(Role.USER_ROLE_NAME);
@@ -298,7 +299,7 @@ public class InitialData {
 		MovieInstance movieInstance = new MovieInstance();		
 		movieInstance.setMovie(movie);
 		
-		User user = userDao.findUser("pferrot");
+		User user = userDao.findUser("patrice.ferrot@gmail.com");
 
 		final Calendar christmas2008 = Calendar.getInstance();
 		christmas2008.set(2008, 11, 25);

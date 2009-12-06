@@ -56,15 +56,10 @@ public class RegistrationStep1 {
 			//message = CoffeeBreakBean.loadErrorMessage(context, CoffeeBreakBean.CB_RESOURCE_BUNDLE_NAME, "EMailError");
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
-	}
-	
-	public void validateUsername(FacesContext context, UIComponent toValidate, Object value) {
-		String message = "";
-		String username = (String) value;
-		if (!registrationService.isUsernameAvailable(username)) {
+		else if (!registrationService.isUsernameAvailable(email)) {
 			((UIInput)toValidate).setValid(false);
 			// TODO
-			message = "Username already used";
+			message = "User with that email already exists";
 			//message = CoffeeBreakBean.loadErrorMessage(context, CoffeeBreakBean.CB_RESOURCE_BUNDLE_NAME, "EMailError");
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}

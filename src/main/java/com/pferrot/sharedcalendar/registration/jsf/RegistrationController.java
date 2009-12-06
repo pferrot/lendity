@@ -20,7 +20,6 @@ public class RegistrationController {
 	
 	private final static Log log = LogFactory.getLog(RegistrationController.class);
 	
-	private String username;
 	private Gender gender;
 	private Long genderId;
 	private List<SelectItem> gendersSelectItems;
@@ -32,14 +31,6 @@ public class RegistrationController {
 	public void setRegistrationService(RegistrationService registrationService) {
 		this.registrationService = registrationService;
 	}
-	
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}	
 
 	public Gender getGender() {
 		return gender;
@@ -93,7 +84,7 @@ public class RegistrationController {
 	
 	public void createUser() {
 		User user = new User();
-		user.setUsername(getUsername());
+		user.setUsername(getEmail());
 	
 		Person person = new Person();
 		person.setGender(registrationService.findGender(getGenderId()));
