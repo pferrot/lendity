@@ -37,15 +37,13 @@ public class UiUtils {
 	
 	public static List<SelectItem> getSelectItemsForListValue(final List<ListValue> list,
 															  final Locale locale) {
-		final TreeSet<SelectItem> result = new TreeSet<SelectItem>(new SelectItemComparator());
+		final TreeSet<SelectItem> treeSet = new TreeSet<SelectItem>(new SelectItemComparator());
 		for (ListValue lv: list) {
 			final SelectItem selectItem = new SelectItem(lv.getId(), I18nUtils.getMessageResourceString(lv.getLabelCode(), locale));
-			result.add(selectItem);
+			treeSet.add(selectItem);
 		}
-		// TODO
-		if (1 == 1) {
-			throw new RuntimeException("Not implemented yet...");
-		}
-		return null;
+		final List result = new ArrayList<SelectItem>();
+		result.addAll(treeSet);
+		return result; 
 	}
 }

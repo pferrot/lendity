@@ -19,7 +19,9 @@ import com.pferrot.security.model.User;
 import com.pferrot.security.passwordgenerator.PasswordGenerator;
 import com.pferrot.sharedcalendar.dao.ListValueDao;
 import com.pferrot.sharedcalendar.dao.PersonDao;
+import com.pferrot.sharedcalendar.model.Country;
 import com.pferrot.sharedcalendar.model.Gender;
+import com.pferrot.sharedcalendar.model.ListValue;
 import com.pferrot.sharedcalendar.model.OrderedListValue;
 import com.pferrot.sharedcalendar.model.Person;
 
@@ -94,7 +96,7 @@ public class RegistrationService {
 		// This convenience method also adds the user on the role.
 		pPerson.getUser().addRole(userRole);		
 		
-		final String rawPassword = PasswordGenerator.getNewPassword();
+//		final String rawPassword = PasswordGenerator.getNewPassword();
 		// If encoding the password, do not forget to update applicationContext-security.xml in the security module.
 //		final String md5EncodedPassword = passwordEncoder.encodePassword(rawPassword, null);
 //		if (log.isDebugEnabled()) {
@@ -102,7 +104,7 @@ public class RegistrationService {
 //					"': '" + rawPassword + "' ('" + md5EncodedPassword + "')");
 //		}
 //		pPerson.getUser().setPassword(md5EncodedPassword);
-		pPerson.getUser().setPassword(rawPassword);
+//		pPerson.getUser().setPassword(rawPassword);
 
 		// This will also create the user.
 		Long personId = personDao.createPerson(pPerson);
@@ -111,7 +113,7 @@ public class RegistrationService {
 		Map<String, String> objects = new HashMap<String, String>();
 		objects.put("firstName", pPerson.getFirstName());
 		objects.put("username", pPerson.getUser().getUsername());
-		objects.put("password", rawPassword);
+		objects.put("password", pPerson.getUser().getPassword());
 		
 		// TODO: localization
 		final String velocityTemplateLocation = "com/pferrot/sharedcalendar/emailtemplate/registration/logindetails/en";
@@ -133,11 +135,22 @@ public class RegistrationService {
 	
 	public List<OrderedListValue> getGenders() {
 		return listValueDao.findOrderedListValue(Gender.class);
-		
 	}
 
 	public Gender findGender(Long id) {
 		return (Gender)listValueDao.findListValue(id);
+	}
+
+	public List<ListValue> getCountries() {
+		return listValueDao.findListValue(Country.class);
+	}
+
+	public Country findCountry(Long id) {
+		return (Country)listValueDao.findListValue(id);
+	}
+
+	public Country findCountry(String labelCode) {
+		return (Country)listValueDao.findListValue(labelCode);
 	}
 	
 	

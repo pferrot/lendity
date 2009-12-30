@@ -43,6 +43,18 @@ public class Person implements Serializable {
 	@Audited
 	private String email;
 	
+	@Column(name = "PHONE_HOME", length = 100)
+	@Audited
+	private String phoneHome;
+	
+	@Column(name = "PHONE_MOBILE", length = 100)
+	@Audited
+	private String phoneMobile;
+
+	@Column(name = "PHONE_PROFESSIONAL", length = 100)
+	@Audited
+	private String phoneProfessional;
+	
 	@OneToOne(targetEntity = com.pferrot.security.model.User.class,
 			  cascade = {CascadeType.PERSIST})
 	@JoinColumn(name = "USER_ID", nullable = true)
@@ -104,6 +116,30 @@ public class Person implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPhoneHome() {
+		return phoneHome;
+	}
+
+	public void setPhoneHome(String phoneHome) {
+		this.phoneHome = phoneHome;
+	}
+
+	public String getPhoneMobile() {
+		return phoneMobile;
+	}
+
+	public void setPhoneMobile(String phoneMobile) {
+		this.phoneMobile = phoneMobile;
+	}
+
+	public String getPhoneProfessional() {
+		return phoneProfessional;
+	}
+
+	public void setPhoneProfessional(String phoneProfessional) {
+		this.phoneProfessional = phoneProfessional;
 	}
 
 	public User getUser() {

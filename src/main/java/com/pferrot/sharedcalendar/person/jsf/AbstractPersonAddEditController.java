@@ -24,19 +24,11 @@ public abstract class AbstractPersonAddEditController {
 	public abstract Long processPerson();
 	
 	public String submit() {
-		try {
-			Long personId = processPerson();
-			
-			JsfUtils.redirect(PagesURL.PERSON_OVERVIEW, PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID, personId.toString());
+		Long personId = processPerson();
 		
-			// As a redirect is used, this is actually useless.
-			return null;
-		}
-		catch (Exception e) {
-			if (log.isErrorEnabled()) {
-				log.error(e);
-			}
-			return "error";
-		}
+		JsfUtils.redirect(PagesURL.PERSON_OVERVIEW, PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID, personId.toString());
+	
+		// As a redirect is used, this is actually useless.
+		return null;
 	}	
 }

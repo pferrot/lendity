@@ -43,20 +43,12 @@ public class RegistrationStep2 {
 	}
 
 	public String confirm() {
-		try {
-			// Must be done in the view controller so that we do not get a LazyInitializationException.
-			// (RegistrationController is in the correct scope to not get the exception, see application-context.xml)
-			getRegistrationController().createUser();
-			
-			// Validation is done by methods below.
-			return "confirm";
-		}
-		catch (Exception e) {
-			if (log.isErrorEnabled()) {
-				log.error(e);
-			}
-			return "error";
-		}
+		// Must be done in the view controller so that we do not get a LazyInitializationException.
+		// (RegistrationController is in the correct scope to not get the exception, see application-context.xml)
+		getRegistrationController().createUser();
+		
+		// Validation is done by methods below.
+		return "confirm";
 	}
 	
 	public String back() {

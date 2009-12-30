@@ -27,16 +27,38 @@
 						<h:message showSummary="true" showDetail="false"
 							style="color: red;" for="email"></h:message>
 						<br />
-						<h:inputText id="email" value="#{registrationController.email}"
-							required="true" validator="#{registrationStep1.validateEmail}">
+						<h:inputText id="email"
+						    value="#{registrationController.email}" required="true"
+						    validator="#{registrationStep1.validateEmail}" maxlength="255">
 						</h:inputText>
+						<br />
+
+<h:outputText value="#{messages.user_password}"/>:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="password"></h:message>
+						<br />
+						<h:inputSecret id="password"
+						    value="#{registrationController.password}" required="true"
+						    validator="#{registrationStep1.validatePassword}" maxlength="30">
+						</h:inputSecret>
+						<br />
+						
+<h:outputText value="#{messages.user_passwordRepeat}"/>:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="passwordRepeat"></h:message>
+						<br />
+						<h:inputSecret id="passwordRepeat"
+						    value="#{registrationController.passwordRepeat}" required="true"
+						    validator="#{registrationStep1.validatePasswordRepeat}" maxlength="30">
+						</h:inputSecret>
 						<br />
 
 <h:outputText value="#{messages['person_gender']}"/>:<br />
 						<h:message showSummary="true" showDetail="false"
 							style="color: red;" for="gender"></h:message>
 						<br />
-						<h:selectOneMenu id="gender" value="#{registrationController.genderId}" required="true">
+						<h:selectOneMenu id="gender" 
+						    value="#{registrationController.genderId}" required="true">
 							<f:selectItems value="#{registrationController.gendersSelectItems}"/>
 						</h:selectOneMenu>
 						<br />
@@ -46,17 +68,81 @@
 							style="color: red;" for="firstName"></h:message>
 						<br />
 						<h:inputText id="firstName"
-							value="#{registrationController.firstName}" required="true" />
+							value="#{registrationController.firstName}" required="true" maxlength="255"/>
 						<br />
 
 <h:outputText value="#{messages.person_lastName}"/>:<br />
 						<h:message showSummary="true" showDetail="false"
 							style="color: red;" for="lastName"></h:message>
 						<br />
-						<h:inputText id="lastName" value="#{registrationController.lastName}"
-							required="true" />
+						<h:inputText id="lastName" 
+						    value="#{registrationController.lastName}" required="true" maxlength="255"/>
+						<br />
+						
+<h:outputText value="#{messages.person_address1}"/>:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="address1"></h:message>
+						<br />
+						<h:inputText id="address1"
+						    value="#{registrationController.address1}" maxlength="255"/>
+						<br />
+						
+<h:outputText value="#{messages.person_address2}"/>:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="address2"></h:message>
+						<br />
+						<h:inputText id="address2"
+						    value="#{registrationController.address2}" maxlength="255"/>
 						<br />
 
+<h:outputText value="#{messages.person_zip}"/>:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="zip"></h:message>
+						<br />
+						<h:inputText id="zip"
+						    value="#{registrationController.zip}" maxlength="10"/>
+						<br />
+
+<h:outputText value="#{messages.person_city}"/>:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="city"></h:message>
+						<br />
+						<h:inputText id="city"
+						    value="#{registrationController.city}" maxlength="255"/>
+						<br />
+
+<h:outputText value="#{messages['person_country']}"/>:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="country"></h:message>
+						<br />
+						<h:selectOneMenu id="country" value="#{registrationController.countryId}">
+							<f:selectItems value="#{registrationController.countriesSelectItems}"/>
+						</h:selectOneMenu>
+						<br />
+
+<h:outputText value="#{messages.person_phoneHome}"/>:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="phoneHome"></h:message>
+						<br />
+						<h:inputText id="phoneHome"
+						    value="#{registrationController.phoneHome}" maxlength="100"/>
+						<br />
+						
+<h:outputText value="#{messages.person_phoneMobile}"/>:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="phoneMobile"></h:message>
+						<br />
+						<h:inputText id="phoneMobile"
+						    value="#{registrationController.phoneMobile}" maxlength="100"/>
+						<br />			
+
+<h:outputText value="#{messages.person_phoneProfessional}"/>:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="phoneProfessional"></h:message>
+						<br />
+						<h:inputText id="phoneProfessional"
+						    value="#{registrationController.phoneProfessional}" maxlength="100"/>
+						<br />	
 
 						<br />
 

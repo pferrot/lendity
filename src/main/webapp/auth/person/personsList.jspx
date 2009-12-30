@@ -57,9 +57,9 @@
         <f:facet name="header">
             <h:outputText value="REQUEST CONNECTION" />
         </f:facet>
-		<o:separateConversationContext>
+		<h:form>
 			<h:commandButton action="#{personsListController.requestConnection}" value="#{personsListController.requestConnectionLabel}"/>
-		</o:separateConversationContext>
+		</h:form>
     </h:column>    
 
 </h:dataTable>

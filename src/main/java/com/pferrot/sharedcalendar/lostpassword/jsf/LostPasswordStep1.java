@@ -35,16 +35,8 @@ public class LostPasswordStep1 {
 	}	
 	
 	public String submit() {
-		try {
-			getLostPasswordController().sendPassword();
-			return "success";
-		}
-		catch (Exception e) {
-			if (log.isErrorEnabled()) {
-				log.error(e);
-			}
-			return "error";
-		}
+		getLostPasswordController().sendPassword();
+		return "success";
 	}
 	
 	public void validateEmail(FacesContext context, UIComponent toValidate, Object value) {

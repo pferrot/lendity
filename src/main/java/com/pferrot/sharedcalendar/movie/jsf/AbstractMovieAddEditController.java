@@ -61,19 +61,11 @@ public abstract class AbstractMovieAddEditController {
 	public abstract Long processMovie();
 	
 	public String submit() {
-		try {
-			Long movieId = processMovie();
-			
-			JsfUtils.redirect(PagesURL.MOVIE_OVERVIEW, PagesURL.MOVIE_OVERVIEW_PARAM_MOVIE_ID, movieId.toString());
+		Long movieId = processMovie();
 		
-			// As a redirect is used, this is actually useless.
-			return null;
-		}
-		catch (Exception e) {
-			if (log.isErrorEnabled()) {
-				log.error(e);
-			}
-			return "error";
-		}
+		JsfUtils.redirect(PagesURL.MOVIE_OVERVIEW, PagesURL.MOVIE_OVERVIEW_PARAM_MOVIE_ID, movieId.toString());
+	
+		// As a redirect is used, this is actually useless.
+		return null;
 	}	
 }

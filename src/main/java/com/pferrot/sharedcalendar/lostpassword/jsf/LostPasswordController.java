@@ -24,7 +24,7 @@ public class LostPasswordController {
 		this.email = email;
 	}
 	
-	public void sendPassword() {		
+	public void sendPassword() {
 		lostPasswordService.sendPassword(getEmail());		
 	}	
 }

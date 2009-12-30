@@ -1,6 +1,7 @@
 package com.pferrot.sharedcalendar.registration.jsf;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -61,6 +62,31 @@ public class RegistrationStep1 {
 			// TODO
 			message = "User with that email already exists";
 			//message = CoffeeBreakBean.loadErrorMessage(context, CoffeeBreakBean.CB_RESOURCE_BUNDLE_NAME, "EMailError");
+			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
+		}
+	}
+
+	public void validatePassword(FacesContext context, UIComponent toValidate, Object value) {
+		String message = "";
+		String password = (String) value;
+		if (password.length() < 4) {
+			((UIInput)toValidate).setValid(false);
+			message = "Password must contain at least 4 characters";
+			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
+		}
+	}
+
+	public void validatePasswordRepeat(FacesContext context, UIComponent toValidate, Object value) {
+		String message = "";
+		String passwordRepeat = (String) value;
+		
+		final UIComponent passwordComponent = toValidate.findComponent("password");
+		final EditableValueHolder passwordEditableValueHolder = (EditableValueHolder)passwordComponent;
+		final String password = (String)passwordEditableValueHolder.getValue();
+
+		if (!passwordRepeat.equals(password)) {
+			((UIInput)toValidate).setValid(false);
+			message = "Passwords do not match";
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
 	}
