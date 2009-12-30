@@ -199,8 +199,7 @@ public class RegistrationController {
 		address.setZip(getZip());
 		address.setCity(getCity());
 		address.setCountry(registrationService.findCountry(getCountryId()));
-		
-		person.setAddress(new Address());		
+		person.setAddress(address);		
 		
 		registrationService.createUser(person);		
 	}
