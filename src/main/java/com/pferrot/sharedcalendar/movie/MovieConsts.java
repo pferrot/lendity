@@ -2,5 +2,5 @@ package com.pferrot.sharedcalendar.movie;
 
 public interface MovieConsts {
 
-	int NB_MOVIES_PER_PAGE = 10;
+	int NB_MOVIES_PER_PAGE = 20;
 }
