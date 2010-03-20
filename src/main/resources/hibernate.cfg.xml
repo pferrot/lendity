@@ -34,17 +34,13 @@
         <mapping class="com.pferrot.sharedcalendar.model.ListValue"/>
         <mapping class="com.pferrot.sharedcalendar.model.OrderedListValue"/>
         <mapping class="com.pferrot.sharedcalendar.model.Person"/>
-        <mapping class="com.pferrot.sharedcalendar.model.PersonSpeciality"/>
         <mapping class="com.pferrot.sharedcalendar.model.Language"/>
         
         <mapping class="com.pferrot.sharedcalendar.model.OwnerHistoryEntry"/>
         <mapping class="com.pferrot.sharedcalendar.model.BorrowerHistoryEntry"/>
-        <mapping class="com.pferrot.sharedcalendar.model.WaitListEntry"/>
         
-        <mapping class="com.pferrot.sharedcalendar.model.movie.Movie"/>
-        <mapping class="com.pferrot.sharedcalendar.model.movie.MovieInstance"/>
-        <mapping class="com.pferrot.sharedcalendar.model.movie.MovieCategory"/>
-        <mapping class="com.pferrot.sharedcalendar.model.movie.MovieFormat"/>
+        <mapping class="com.pferrot.sharedcalendar.model.Item"/>
+        <mapping class="com.pferrot.sharedcalendar.model.ItemCategory"/>
         
         <mapping class="com.pferrot.sharedcalendar.model.ConnectionRequest"/>
         <mapping class="com.pferrot.sharedcalendar.model.ConnectionRequestResponse"/>
