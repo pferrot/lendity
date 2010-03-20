@@ -87,116 +87,78 @@
 
 	<!-- 
 	********************************************************************
-	MOVIE OVERVIEW
+	ITEM OVERVIEW
 	********************************************************************
 	-->
 	<navigation-rule>
-		<from-view-id>/public/movie/movieOverview.jspx</from-view-id>
+		<from-view-id>/public/item/itemOverview.jspx</from-view-id>
 	</navigation-rule>
 	
 	<!-- 
 	********************************************************************
-	MOVIE ADD
+	ITEM ADD
 	********************************************************************
 	-->	
 	<navigation-rule>
-		<from-view-id>/auth/movie/movieAdd.jspx</from-view-id>			
+		<from-view-id>/auth/item/itemAdd.jspx</from-view-id>			
 	</navigation-rule>
 	
 	<!-- 
 	********************************************************************
-	MOVIE EDIT
+	ITEM EDIT
 	********************************************************************
 	-->	
 	<navigation-rule>
-		<from-view-id>/auth/movie/movieEdit.jspx</from-view-id>			
+		<from-view-id>/auth/item/itemEdit.jspx</from-view-id>			
 	</navigation-rule>	
 	
 	<!-- 
 	********************************************************************
-	MOVIES LIST
+	ITEMS LIST
 	********************************************************************
 	-->
 	<navigation-rule>
-		<from-view-id>/public/movie/moviesList.jspx</from-view-id>
+		<from-view-id>/public/item/itemsList.jspx</from-view-id>
 		<navigation-case>
 			<from-outcome>nextPage</from-outcome>
-			<to-view-id>/public/movie/moviesList.jspx</to-view-id>
+			<to-view-id>/public/item/itemsList.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>previousPage</from-outcome>
-			<to-view-id>/public/movie/moviesList.jspx</to-view-id>
+			<to-view-id>/public/item/itemsList.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>search</from-outcome>
-			<to-view-id>/public/movie/moviesList.jspx</to-view-id>
+			<to-view-id>/public/item/itemsList.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>clearSearch</from-outcome>
-			<to-view-id>/public/movie/moviesList.jspx</to-view-id>
+			<to-view-id>/public/item/itemsList.jspx</to-view-id>
 		</navigation-case>	
 	</navigation-rule>
 	
 	<!-- 
 	********************************************************************
-	MY MOVIES LIST
+	MY ITEMS LIST
 	********************************************************************
 	-->
 	<navigation-rule>
-		<from-view-id>/auth/movie/myMoviesList.jspx</from-view-id>
+		<from-view-id>/auth/item/myItemsList.jspx</from-view-id>
 		<navigation-case>
 			<from-outcome>nextPage</from-outcome>
-			<to-view-id>/auth/movie/myMoviesList.jspx</to-view-id>
+			<to-view-id>/auth/item/myItemsList.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>previousPage</from-outcome>
-			<to-view-id>/auth/movie/myMoviesList.jspx</to-view-id>
+			<to-view-id>/auth/item/myItemsList.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>movieOverview</from-outcome>
-			<to-view-id>/public/movie/movieOverview.jspx</to-view-id>
+			<from-outcome>itemOverview</from-outcome>
+			<to-view-id>/public/item/itemOverview.jspx</to-view-id>
 		</navigation-case>		
 	</navigation-rule>	
 	
-	<!-- 
-	********************************************************************
-	MOVIE INSTANCE OVERVIEW
-	********************************************************************
-	-->
-	<navigation-rule>
-		<from-view-id>/auth/movie/movieInstanceOverview.jspx</from-view-id>
-		<navigation-case>
-			<from-outcome>edit</from-outcome>
-			<to-view-id>/auth/movie/movieInstanceEdit.jspx</to-view-id>
-		</navigation-case>		
-	</navigation-rule>
 
-	<!-- 
-	********************************************************************
-	MOVIE INSTANCE EDIT
-	********************************************************************
-	-->
-	<navigation-rule>
-		<from-view-id>/auth/movie/movieInstanceEdit.jspx</from-view-id>
-		<navigation-case>
-			<from-outcome>success</from-outcome>
-			<to-view-id>/auth/movie/movieInstanceOverview.jspx</to-view-id>
-		</navigation-case>
-	</navigation-rule>			
-		
-	<!-- 
-	********************************************************************
-	MOVIE INSTANCE ADD
-	********************************************************************
-	-->
-	<navigation-rule>
-		<from-view-id>/auth/movie/movieInstanceAdd.jspx</from-view-id>
-		<navigation-case>
-			<from-outcome>success</from-outcome>
-			<to-view-id>/auth/movie/movieInstanceOverview.jspx</to-view-id>
-		</navigation-case>		
-	</navigation-rule>
-	
 	<!-- 
 	********************************************************************
 	PERSONS LIST
@@ -269,10 +231,12 @@
 	********************************************************************
 	VALIDATORS
 	********************************************************************	
-	 -->	
+	 -->
+	 <!-- 
     <validator>
-        <validator-id>movieYearValidator</validator-id>
-        <validator-class>com.pferrot.sharedcalendar.movie.jsf.validator.MovieYearValidator</validator-class>
+        <validator-id>itemYearValidator</validator-id>
+        <validator-class>com.pferrot.sharedcalendar.item.jsf.validator.ItemYearValidator</validator-class>
     </validator>
-	
+	 -->
+	 
 </faces-config>

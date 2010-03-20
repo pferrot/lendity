@@ -58,7 +58,7 @@
             <h:outputText value="REQUEST CONNECTION" />
         </f:facet>
 		<h:form>
-			<h:commandButton action="#{personsListController.requestConnection}" value="#{personsListController.requestConnectionLabel}"/>
+			<h:commandButton action="#{personsListController.requestConnection}" value="#{personsListController.requestConnectionLabel}" disabled="#{personsListController.requestConnectionDisabled}"/>
 		</h:form>
     </h:column>    
 

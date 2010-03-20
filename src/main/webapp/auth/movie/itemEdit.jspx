@@ -1,0 +1,72 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra">
+
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="Item Add" />
+	<ui:param name="contentHeader" value="Item Add" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+			<ui:define name="pageName">
+            	#{contentHeader}
+          	</ui:define>
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
+				<f:view>
+					<center>
+
+					<h:form>
+
+Category:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="category"></h:message>
+						<br />
+						<h:selectManyListbox id="category" 
+						    value="#{itemEditController.categoriesId}" converter="javax.faces.Long" required="true">
+							<f:selectItems value="#{itemEditController.categoriesSelectItems}"/>
+						</h:selectManyListbox>
+						<br />
+
+Titre:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="title"></h:message>
+						<br />
+						<h:inputText id="title" value="#{itemEditController.title}"
+							required="true">
+						</h:inputText>
+						<br />
+
+Description:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="description"></h:message>
+						<br />
+						<h:inputTextarea id="description" value="#{itemEditController.description}">
+						</h:inputTextarea>
+						<br />									
+						
+						<br />
+						<o:separateConversationContext>
+							<h:outputLink value="#{itemEditController.itemOverviewHref}">
+            					<h:outputText value="#{messages.cancel}"/>
+	         				</h:outputLink>
+						</o:separateConversationContext>
+						<br />
+						<h:commandButton value="#{messages.save}" action="#{itemEditController.submit}" />
+						<br />
+					</h:form></center>
+				</f:view>
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

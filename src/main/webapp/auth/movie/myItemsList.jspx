@@ -1,0 +1,62 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core_rt">
+
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="My Items List" />
+	<ui:param name="contentHeader" value="My Items List" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+			<ui:define name="pageName">
+            	#{contentHeader}
+          	</ui:define>
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
+				<f:view>
+					<center>
+
+<h:dataTable value="#{myItemsListController.itemsList}" binding="#{myItemsListController.itemsTable}" var="item">
+
+	<h:column>
+        <f:facet name="header">
+            <h:outputText value="ID" />
+        </f:facet>
+        <h:outputText value="#{item.id}" />
+    </h:column>
+
+	<h:column>
+        <f:facet name="header">
+            <h:outputText value="TITLE" />
+        </f:facet>
+        <!-- 
+        <h:outputText value="#{itemsListController.itemTitle}" />
+         -->
+		<h:outputText value="#{item.title}" />
+    </h:column>
+
+</h:dataTable>
+
+<br/>
+
+<h:form>
+    <h:commandLink rendered="#{myItemsListController.previousPage}" value="#{messages.previousPage}" action="#{myItemsListController.previousPage}"/>
+    <h:commandLink rendered="#{myItemsListController.nextPage}" value="#{messages.nextPage}" action="#{myItemsListController.nextPage}"/>
+</h:form>
+
+					</center>
+				</f:view>
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

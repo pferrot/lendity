@@ -14,7 +14,7 @@
 		<property name="roleDao" ref="security.roleDao"/>
 		<property name="personDao" ref="personDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
-		<property name="movieDao" ref="movieDao"/>
+		<property name="itemDao" ref="itemDao"/>
 		<property name="passwordEncoder" ref="security.passwordEncoder"/>
 	</bean>
 	
@@ -319,20 +319,20 @@
 	 	 
 	<!-- 
 	========================================================================================================================
-	MOVIE - start
+	ITEM - start
 	 --> 
 	 
-	<bean id="movieDaoTarget" class="com.pferrot.sharedcalendar.dao.hibernate.MovieDaoHibernateImpl">
+	<bean id="itemDaoTarget" class="com.pferrot.sharedcalendar.dao.hibernate.ItemDaoHibernateImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
 	
-	<bean id="movieDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+	<bean id="itemDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="transactionManager"/>
 		<property name="target">
-			<ref local="movieDaoTarget"/>
+			<ref local="itemDaoTarget"/>
 		</property>
 		<property name="proxyInterfaces">
-           <value>com.pferrot.sharedcalendar.dao.MovieDao</value>
+           <value>com.pferrot.sharedcalendar.dao.ItemDao</value>
          </property>		
 		<property name="transactionAttributes">
 			<props>
@@ -344,57 +344,42 @@
 		</property>
 	</bean>	
 		
-	<bean id="movieService" parent="baseTransactionProxy">
-		<property name="target" ref="movieServiceTarget" />
+	<bean id="itemService" parent="baseTransactionProxy">
+		<property name="target" ref="itemServiceTarget" />
 	</bean>
 		
-	<bean id="movieServiceTarget" class="com.pferrot.sharedcalendar.movie.MovieService">
-		<property name="movieDao" ref="movieDao"/>
+	<bean id="itemServiceTarget" class="com.pferrot.sharedcalendar.item.ItemService">
+		<property name="itemDao" ref="itemDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
 	</bean>
 	
-	<bean id="movieOverviewController" class="com.pferrot.sharedcalendar.movie.jsf.MovieOverviewController"
+	<bean id="itemOverviewController" class="com.pferrot.sharedcalendar.item.jsf.ItemOverviewController"
 	      scope="conversation.access">
-	      <property name="movieService" ref="movieService"/>
+	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="movieAddController" class="com.pferrot.sharedcalendar.movie.jsf.MovieAddController"
+	<bean id="itemAddController" class="com.pferrot.sharedcalendar.item.jsf.ItemAddController"
 	      scope="conversation.access">
-	      <property name="movieService" ref="movieService"/>
+	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="movieEditController" class="com.pferrot.sharedcalendar.movie.jsf.MovieEditController"
+	<bean id="itemEditController" class="com.pferrot.sharedcalendar.item.jsf.ItemEditController"
 	      scope="conversation.access">
-	      <property name="movieService" ref="movieService"/>
+	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="moviesListController" class="com.pferrot.sharedcalendar.movie.jsf.MoviesListController"
+	<bean id="itemsListController" class="com.pferrot.sharedcalendar.item.jsf.ItemsListController"
 	      scope="conversation.access">
-	      <property name="movieService" ref="movieService"/>
+	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="myMoviesListController" class="com.pferrot.sharedcalendar.movie.jsf.MyMoviesListController"
+	<bean id="myItemsListController" class="com.pferrot.sharedcalendar.item.jsf.MyItemsListController"
 	      scope="conversation.access">
-	      <property name="movieService" ref="movieService"/>
+	      <property name="itemService" ref="itemService"/>
 	</bean>	
-	
-	<bean id="movieInstanceOverviewController" class="com.pferrot.sharedcalendar.movie.jsf.MovieInstanceOverviewController"
-	      scope="conversation.access">
-	      <property name="movieService" ref="movieService"/>
-	</bean>
-
-	<bean id="movieInstanceAddController" class="com.pferrot.sharedcalendar.movie.jsf.MovieInstanceAddController"
-	      scope="conversation.access">
-	      <property name="movieService" ref="movieService"/>
-	</bean>
-
-	<bean id="movieInstanceEditController" class="com.pferrot.sharedcalendar.movie.jsf.MovieInstanceEditController"
-	      scope="conversation.access">
-	      <property name="movieService" ref="movieService"/>
-	</bean>	
-			
+				
 	<!-- 
-	MOVIE - end
+	ITEM - end
 	========================================================================================================================
 	 -->		 	
 	

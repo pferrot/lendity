@@ -1,0 +1,49 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra">
+
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="Item Overview" />
+	<ui:param name="contentHeader" value="Item Overview" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+			<ui:define name="pageName">
+            	#{contentHeader}
+          	</ui:define>
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
+				<f:view>
+					<center>
+
+					<h:form>
+
+Item:<br />
+						<h:outputText value="#{itemOverviewController.itemTitle}" />
+						<br />
+
+						<br />
+					</h:form></center>
+
+					<br/>
+					<o:separateConversationContext>
+						<h:outputLink value="#{itemOverviewController.itemEditHref}">
+	            			<h:outputText value="#{messages.item_edit}"/>
+	         			</h:outputLink>
+					</o:separateConversationContext>
+					<br/>
+				</f:view>
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+
