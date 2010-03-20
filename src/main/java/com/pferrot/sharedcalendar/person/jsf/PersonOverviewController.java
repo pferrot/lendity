@@ -7,7 +7,6 @@ import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.sharedcalendar.PagesURL;
 import com.pferrot.sharedcalendar.model.Person;
-import com.pferrot.sharedcalendar.movie.MovieUtils;
 import com.pferrot.sharedcalendar.person.PersonService;
 import com.pferrot.sharedcalendar.person.PersonUtils;
 import com.pferrot.sharedcalendar.utils.JsfUtils;
@@ -23,7 +22,7 @@ public class PersonOverviewController
 	
 	@InitView
 	public void initView() {
-		// Read the movie ID from the request parameter and load the correct movie.
+		// Read the item ID from the request parameter and load the correct item.
 		try {
 			final String personIdString = JsfUtils.getRequestParameter(PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID);
 			Person person = null;
@@ -32,7 +31,7 @@ public class PersonOverviewController
 				person = personService.findPerson(personId);
 				setPerson(person);
 			}
-			// Movie not found or not movie ID specified.
+			// Item not found or not item ID specified.
 			if (person == null) {
 				JsfUtils.redirect(PagesURL.PERSONS_LIST);
 			}

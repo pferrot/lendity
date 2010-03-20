@@ -46,5 +46,16 @@ public class PersonsListController extends AbstractPersonsListController {
 //		final Person person = (Person)getTable().getRowData();
 		return "request connection";
 	}
+
+	public boolean getRequestConnectionDisabled() {
+		try {
+			final Person person = (Person)getTable().getRowData();
+			return !getConnectionRequestService().isConnectionRequestAllowedFromCurrentUser(person);
+		}
+		catch (ConnectionRequestException e) {
+			// TODO redirect to error page instead.
+			throw new RuntimeException(e);
+		}			
+	}
 	
 }

@@ -19,6 +19,7 @@ import com.pferrot.sharedcalendar.dao.PersonDao;
 import com.pferrot.sharedcalendar.model.ConnectionRequest;
 import com.pferrot.sharedcalendar.model.ConnectionRequestResponse;
 import com.pferrot.sharedcalendar.model.Person;
+import com.pferrot.sharedcalendar.person.PersonUtils;
 
 public class ConnectionRequestService {
 
@@ -50,6 +51,76 @@ public class ConnectionRequestService {
 	}
 
 	/**
+	 * Returns false if the requester is not allowed to ask the other user for connecting (for any reason),
+	 * true otherwise.
+	 * 
+	 * @param pConnection
+	 * @param pRequester
+	 * @return
+	 * @throws ConnectionRequestException
+	 */
+	public boolean isConnectionRequestAllowed(final Person pConnection, final Person pRequester) throws ConnectionRequestException {
+		// Connection must be active applications user.
+		if (! PersonUtils.isActiveApplicationUser(pConnection)) {
+			if (log.isDebugEnabled()) {
+				log.debug("Connection is not an active app user: " + pConnection);
+			}
+			return false;
+		}
+		
+		// Requester must be active applications user.
+		if (! PersonUtils.isActiveApplicationUser(pRequester)) {
+			if (log.isDebugEnabled()) {
+				log.debug("Requester is not an active app user: " + pRequester);
+			}
+			return false;			
+		}
+		
+		// Same connection as requester.
+		if (pConnection.getId().equals(pRequester.getId())) {
+			if (log.isDebugEnabled()) {
+				log.debug("Requester and connection are the same person: " + pConnection);
+			}
+			return false;
+		}
+		
+		// Request is banned.
+		if (pConnection.getBannedPersons().contains(pRequester)) {
+			if (log.isDebugEnabled()) {
+				log.debug("Requester (" + pRequester + ") is banned by connection (" + pConnection + ") .");
+			}			
+			return false;
+		}
+		
+		// Already a connection.
+		if (pRequester.getConnections().contains(pConnection)) {
+			if (log.isDebugEnabled()) {
+				log.debug("Requester (" + pRequester + ") and connection (" + pConnection + ") are already connected.");
+			}			
+			return false;
+		}
+		
+		return true;			
+	}
+
+	/**
+	 * Returns false if the current user is not allowed to ask the other user for connecting (for any reason),
+	 * true otherwise.
+	 *
+	 * @param pConnection
+	 * @return
+	 * @throws ConnectionRequestException
+	 */
+	public boolean isConnectionRequestAllowedFromCurrentUser(final Person pConnection) throws ConnectionRequestException {
+		final User currentUser = SecurityUtils.getCurrentUser();
+		CoreUtils.assertNotNull(currentUser);
+		final Person currentUserPerson = personDao.findPersonFromUser(currentUser);
+		CoreUtils.assertNotNull(currentUserPerson);
+		
+		return isConnectionRequestAllowed(pConnection, currentUserPerson);		
+	}
+
+	/**
 	 * This operation will send an email to the connection informing him that
 	 * the current user wants to add him as a connection.
 
@@ -60,21 +131,8 @@ public class ConnectionRequestService {
 	 */
 	public Long createConnectionRequest(final Person pConnection, final Person pRequester) throws ConnectionRequestException {
 		try {
-			CoreUtils.assertNotNull(pConnection);
-			// Only users can be connections.
-			CoreUtils.assertNotNull(pConnection.getUser());
-			
-			CoreUtils.assertNotNull(pRequester);
-			// Only users can request.
-			CoreUtils.assertNotNull(pRequester.getUser());
-			
-			if (pConnection.getId().equals(pRequester.getId())) {
-				throw new ConnectionRequestException("Requester must be different from connection (i.e. cannot have yourself as a connection).");
-			}
-			
-			// Check that requester is not banned by connection.
-			if (pConnection.getBannedPersons().contains(pRequester)) {
-				throw new ConnectionRequestException("Requester '" + pRequester.getId() + "' is banned by connection '" + pConnection.getId() + "'.");
+			if (! isConnectionRequestAllowed(pConnection, pRequester)) {
+				throw new ConnectionRequestException("Connection request not allowed.");
 			}
 			
 			final ConnectionRequest connectionRequest = new ConnectionRequest();
@@ -211,7 +269,7 @@ public class ConnectionRequestService {
 		
 		assertConnectionIsCurrentUser(pConnectionRequest);
 		
-		final Person connection = pConnectionRequest.getConnection();
+//		final Person connection = pConnectionRequest.getConnection();
 		if (pConnectionRequest.getResponse() != null) {
 			throw new ConnectionRequestException("Connection request with ID '" + pConnectionRequest.getId().toString() + "' already has a response.");
 		}

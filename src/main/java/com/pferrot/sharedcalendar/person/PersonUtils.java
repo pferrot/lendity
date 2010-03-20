@@ -2,6 +2,7 @@ package com.pferrot.sharedcalendar.person;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.sharedcalendar.PagesURL;
+import com.pferrot.sharedcalendar.model.Person;
 import com.pferrot.sharedcalendar.utils.JsfUtils;
 
 public class PersonUtils {
@@ -35,5 +36,25 @@ public class PersonUtils {
 	 */
 	public static String getPersonsListUrl() {		
 		return JsfUtils.getFullUrl(PagesURL.PERSONS_LIST);
+	}
+
+	/**
+	 *
+	 * @param pPerson
+	 * @return
+	 */
+	public static boolean isActiveApplicationUser(final Person pPerson) {
+		return isApplicationUser(pPerson) && 
+			   pPerson.getUser().getEnabled();
+	}
+
+	/**
+	 *
+	 * @param pPerson
+	 * @return
+	 */
+	public static boolean isApplicationUser(final Person pPerson) {
+		return pPerson != null && 
+			   pPerson.getUser() != null;
 	}
 }

@@ -15,7 +15,6 @@ import com.pferrot.core.CoreUtils;
 import com.pferrot.security.model.User;
 import com.pferrot.sharedcalendar.dao.PersonDao;
 import com.pferrot.sharedcalendar.model.Person;
-import com.pferrot.sharedcalendar.model.movie.Movie;
 
 public class PersonDaoHibernateImpl extends HibernateDaoSupport implements PersonDao {
 
