@@ -65,8 +65,6 @@ public class Person implements Serializable {
 	@JoinColumn(name = "GENDER_ID", nullable = false)
 	private Gender gender;
 	
-	@ManyToMany(targetEntity = com.pferrot.sharedcalendar.model.PersonSpeciality.class)
-	private Set<PersonSpeciality> specialities = new HashSet<PersonSpeciality>();
 	
 	@ManyToMany(targetEntity = com.pferrot.sharedcalendar.model.Person.class)
 	private Set<Person> connections = new HashSet<Person>();
@@ -164,19 +162,6 @@ public class Person implements Serializable {
 
 	public void setAddress(Address address) {
 		this.address = address;
-	}
-
-	public Set<PersonSpeciality> getSpecialities() {
-		return specialities;
-	}
-
-	public void setSpecialities(final Set<PersonSpeciality> specialities) {
-		this.specialities = specialities;
-	}
-
-	public void addSpeciality(final PersonSpeciality pSpeciality) {
-		CoreUtils.assertNotNull(pSpeciality);
-		specialities.add(pSpeciality);
 	}
 	
 	public Set<Person> getConnections() {

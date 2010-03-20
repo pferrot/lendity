@@ -27,7 +27,7 @@ public class OwnerHistoryEntry implements Serializable {
 	@JoinColumn(name = "USER_ID", nullable = false)
 	private User owner;
 	
-	@ManyToOne(targetEntity = com.pferrot.sharedcalendar.model.movie.Movie.class)
+	@ManyToOne(targetEntity = com.pferrot.sharedcalendar.model.Item.class)
 	@JoinColumn(name = "OWNABLE_ID", nullable = false)
 	private Ownable ownable;	
 	
