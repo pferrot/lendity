@@ -36,6 +36,11 @@
 <!--	    <param-name>javax.faces.CONFIG_FILES</param-name>-->
 <!--	    <param-value>/WEB-INF/examples-config.xml,/WEB-INF/testSuite-config.xml</param-value>-->
 <!--  	</context-param>	-->
+	
+	<filter>
+		<filter-name>utf8Filter</filter-name>
+		<filter-class>com.pferrot.sharedcalendar.filter.UTF8Filter</filter-class>
+	</filter>
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -48,6 +53,10 @@
 		<filter-name>adapterFilter</filter-name>
 		<filter-class>org.apache.myfaces.orchestra.frameworkAdapter.jsf.JsfFrameworkAdapterFilter</filter-class>
 	</filter>
+	<filter-mapping>
+	    <filter-name>utf8Filter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
