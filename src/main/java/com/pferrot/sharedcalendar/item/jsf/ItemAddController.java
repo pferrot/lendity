@@ -16,10 +16,9 @@ public class ItemAddController extends AbstractItemAddEditController {
 		
 		item.setTitle(getTitle());
 		item.setDescription(getDescription());
-		item.setCategories(getItemService().getItemCategoriesFromIds(getCategoriesId()));
 		item.setOwner(SecurityUtils.getCurrentUser());
 				
-		return getItemService().createItem(item);		
+		return getItemService().createItemWithCategories(item, getCategoriesId());		
 	}
 
 	public String getItemsListHref() {		

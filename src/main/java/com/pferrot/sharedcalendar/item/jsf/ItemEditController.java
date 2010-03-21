@@ -42,7 +42,7 @@ public class ItemEditController extends AbstractItemAddEditController {
 	
 	private void setItem(final Item pItem) {
 		item = pItem;
-		
+
 		// Initialize the model to be edited.
 		setTitle(pItem.getTitle());
 		setDescription(pItem.getDescription());
@@ -52,10 +52,8 @@ public class ItemEditController extends AbstractItemAddEditController {
 	public Long updateItem() {		
 		getItem().setTitle(getTitle());
 		getItem().setDescription(getDescription());
-		getItem().setCategories(getItemService().getItemCategoriesFromIds(getCategoriesId()));
-				
-		getItemService().updateItem(getItem());
-		
+		getItemService().updateItemWithCategories(getItem(), getCategoriesId());
+
 		return getItem().getId();
 	}
 

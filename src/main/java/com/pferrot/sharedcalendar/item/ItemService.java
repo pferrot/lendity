@@ -2,7 +2,6 @@ package com.pferrot.sharedcalendar.item;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,12 +25,12 @@ public class ItemService {
 		this.itemDao = itemDao;
 	}
 
-	public List<ListValue> getCategories() {
-		return listValueDao.findListValue(ItemCategory.class);
-	}
-	
 	public void setListValueDao(ListValueDao listValueDao) {
 		this.listValueDao = listValueDao;
+	}
+
+	public List<ListValue> getCategories() {
+		return listValueDao.findListValue(ItemCategory.class);
 	}
 	
 	public Language findLanguage(final String languageLabelCode) {
@@ -62,12 +61,18 @@ public class ItemService {
 		return itemDao.createItem(item);
 	}
 
+	public Long createItemWithCategories(final Item pItem, final Collection<Long> pCategoriesIds) {
+		pItem.setCategories(ListValueUtils.getListValuesFromIds(pCategoriesIds, listValueDao));
+		return createItem(pItem);
+	}
+
 	public void updateItem(final Item item) {
 		itemDao.updateItem(item);
 	}
 
-	public Set<ItemCategory> getItemCategoriesFromIds(final Collection<Long> ids) {
-		return (Set<ItemCategory>) ListValueUtils.getListValuesFromIds(ids, listValueDao);
+	public void updateItemWithCategories(final Item pItem, final Collection<Long> pCategoriesIds) {
+		pItem.setCategories(ListValueUtils.getListValuesFromIds(pCategoriesIds, listValueDao));
+		updateItem(pItem);
 	}
 
 	public List<Long> getIdsFromItemCategories(final Collection<ItemCategory> itemCategories) {
