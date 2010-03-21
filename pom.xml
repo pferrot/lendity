@@ -103,8 +103,8 @@
 		-->
 		<dependency>
 			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java </artifactId>
-			<version>5.1.6</version>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.12</version>
 			<scope>runtime</scope>
 		</dependency>		
 		<dependency>
@@ -347,7 +347,7 @@
 <!--				<version>10.4.2.0</version>-->
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java </artifactId>
-				<version>5.1.6</version>				
+				<version>5.1.12</version>				
 			</extension>
 		</extensions>
 		<finalName>shared_calendar</finalName>
