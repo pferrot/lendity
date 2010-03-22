@@ -24,7 +24,7 @@
 				<f:view>
 					<center>
 
-<h:dataTable value="#{myItemsListController.list}" binding="#{myItemsListController.table}" var="item">
+<h:dataTable value="#{myConnectionsItemsListController.list}" binding="#{myConnectionsItemsListController.table}" var="item">
 
 	<h:column>
         <f:facet name="header">
@@ -45,8 +45,8 @@
 <br/>
 
 <h:form>
-    <h:commandLink rendered="#{myItemsListController.previousPage}" value="#{messages.previousPage}" action="#{myItemsListController.previousPage}"/>
-    <h:commandLink rendered="#{myItemsListController.nextPage}" value="#{messages.nextPage}" action="#{myItemsListController.nextPage}"/>
+    <h:commandLink rendered="#{myConnectionsItemsListController.previousPage}" value="#{messages.previousPage}" action="#{myConnectionsItemsListController.previousPage}"/>
+    <h:commandLink rendered="#{myConnectionsItemsListController.nextPage}" value="#{messages.nextPage}" action="#{myConnectionsItemsListController.nextPage}"/>
 </h:form>
 
 					</center>

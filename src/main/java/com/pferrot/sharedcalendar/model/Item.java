@@ -3,6 +3,7 @@ package com.pferrot.sharedcalendar.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -65,6 +66,9 @@ public class Item implements Ownable, Borrowable, Serializable {
 	@OneToOne(targetEntity = User.class)
 	@JoinColumn(name = "BORROWER_ID", nullable = true)
 	private User borrower;
+
+	@Column(name = "BORROW_DATE", nullable = true)
+	private Date borrowDate;
 	
 	@OneToMany(mappedBy = "borrowable", targetEntity = BorrowerHistoryEntry.class,
 			   cascade = {CascadeType.PERSIST})
@@ -156,6 +160,14 @@ public class Item implements Ownable, Borrowable, Serializable {
 
 	public void setBorrower(User borrower) {
 		this.borrower = borrower;
+	}
+
+	public Date getBorrowDate() {
+		return borrowDate;
+	}
+
+	public void setBorrowDate(Date borrowDate) {
+		this.borrowDate = borrowDate;
 	}
 
 	public boolean isBorrowed() {

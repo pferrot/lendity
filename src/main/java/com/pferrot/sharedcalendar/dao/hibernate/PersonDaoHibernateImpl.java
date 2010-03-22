@@ -2,6 +2,7 @@ package com.pferrot.sharedcalendar.dao.hibernate;
 
 import java.util.List;
 
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.LogicalExpression;
@@ -57,22 +58,44 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 
 	public List<Person> findPersonByAnything(final String pSearchString, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNullOrEmptyString(pSearchString);
-				
-		final String searchStringLower = pSearchString.trim().toLowerCase();
 		
-//		final Criterion usernameCriterion = Restrictions.ilike("user.username", pSearchString, MatchMode.ANYWHERE);
-		final Criterion firstNameCriterion = Restrictions.ilike("firstName", pSearchString, MatchMode.ANYWHERE);
-		final Criterion lastNameCriterion = Restrictions.ilike("lastName", pSearchString, MatchMode.ANYWHERE);
-		final Criterion emailCriterion = Restrictions.ilike("email", pSearchString, MatchMode.ANYWHERE);
-//		final LogicalExpression logicExpression = Restrictions.or(usernameCriterion, Restrictions.or(firstNameCriterion, Restrictions.or(lastNameCriterion, emailCriterion)));
-		final LogicalExpression logicExpression = Restrictions.or(firstNameCriterion, Restrictions.or(lastNameCriterion, emailCriterion));
-		
-		DetachedCriteria critera = DetachedCriteria.forClass(Person.class).add(logicExpression).addOrder(Order.asc("lastName").ignoreCase());
+		DetachedCriteria critera = DetachedCriteria.forClass(Person.class).
+		                  add(getEmailLastNameFirstNameLogicalExpression(pSearchString)).
+		                  addOrder(Order.asc("lastName").ignoreCase());
 		
 		return getHibernateTemplate().findByCriteria(critera, pFirstResult, pMaxResults);
 	}
 
 	public List<Person> findPersonByAnything(final String pSearchString) {
 		return findPersonByAnything(pSearchString, 0, 0);
+	}
+
+	public List<Person> findConnectionsByAnything(final String pSearchString, final Person pPerson, final int pFirstResult, final int pMaxResults) {
+		CoreUtils.assertNotNull(pPerson);
+
+		DetachedCriteria criteria = DetachedCriteria.forClass(Person.class).
+			addOrder(Order.asc("lastName").ignoreCase());
+		
+		if (pSearchString != null && pSearchString.trim().length() > 0) {
+			criteria.add(getEmailLastNameFirstNameLogicalExpression(pSearchString));
+		}
+		criteria.createCriteria("connections", CriteriaSpecification.INNER_JOIN).
+			add(Restrictions.eq("id", pPerson.getId()));
+		
+		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
+	}
+
+	public List<Person> findConnections(final Person pPerson, final int pFirstResult, final int pMaxResults) {
+		return findConnectionsByAnything(null, pPerson, pFirstResult, pMaxResults);
+	}
+	
+
+	private LogicalExpression getEmailLastNameFirstNameLogicalExpression(final String pSearchString) {
+		CoreUtils.assertNotNullOrEmptyString(pSearchString);
+		
+		final Criterion firstNameCriterion = Restrictions.ilike("firstName", pSearchString, MatchMode.ANYWHERE);
+		final Criterion lastNameCriterion = Restrictions.ilike("lastName", pSearchString, MatchMode.ANYWHERE);
+		final Criterion emailCriterion = Restrictions.ilike("email", pSearchString, MatchMode.ANYWHERE);
+		return Restrictions.or(firstNameCriterion, Restrictions.or(lastNameCriterion, emailCriterion));
 	}
 }

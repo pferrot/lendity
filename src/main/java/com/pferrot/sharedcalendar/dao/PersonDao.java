@@ -14,8 +14,11 @@ public interface PersonDao {
 	Person findPersonFromUser(User user);
 	
 	// Search a person by username OR firstName OR lastName OR email.
-	List<Person> findPersonByAnything(String searchString);	
-	List<Person> findPersonByAnything(String searchString, int pFirstResult, int pMaxResults);
+	List<Person> findPersonByAnything(String pSearchString);	
+	List<Person> findPersonByAnything(String pSearchString, int pFirstResult, int pMaxResults);
+	
+	List<Person> findConnections(Person pPerson, int pFirstResult, int pMaxResults);
+	List<Person> findConnectionsByAnything(String pSearchString, Person pPerson, int pFirstResult, int pMaxResults);
 	
 	void updatePerson(Person person);
 	

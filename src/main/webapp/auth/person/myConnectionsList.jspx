@@ -1,0 +1,81 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core_rt"
+	xmlns:o="http://myfaces.apache.org/orchestra">
+
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="Person Search" />
+	<ui:param name="contentHeader" value="Person Search" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+			<ui:define name="pageName">
+            	#{contentHeader}
+          	</ui:define>
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
+				<f:view>
+					<center>
+
+<h:form>
+	<h:inputText id="searchString" value="#{myConnectionsListController.searchString}"/>
+	<br/>
+	<h:commandButton value="#{messages.search}" action="#{myConnectionsListController.search}" />
+	<h:commandButton value="#{messages.clearSearch}" action="#{myConnectionsListController.clearSearch}" />
+</h:form>
+<br/>
+
+<h:dataTable value="#{myConnectionsListController.list}" binding="#{myConnectionsListController.table}" var="person">
+
+	<h:column>
+        <f:facet name="header">
+            <h:outputText value="ID" />
+        </f:facet>
+        <h:outputText value="#{person.id}" />
+    </h:column>
+
+	<h:column>
+        <f:facet name="header">
+            <h:outputText value="FIRST NAME" />
+        </f:facet>
+		<o:separateConversationContext>
+        	<h:outputLink value="#{myConnectionsListController.personOverviewHref}">
+            	<h:outputText value="#{person.firstName}" />
+        	</h:outputLink>
+		</o:separateConversationContext>
+    </h:column>
+    
+	<h:column>
+        <f:facet name="header">
+            <h:outputText value="REMOVE CONNECTION" />
+        </f:facet>
+		<h:form>
+			TODO
+		</h:form>
+    </h:column>    
+
+</h:dataTable>
+
+<br/>
+
+<h:form>
+    <h:commandLink rendered="#{myConnectionsListController.previousPage}" value="#{messages.previousPage}" action="#{myConnectionsListController.previousPage}"/>
+    <h:commandLink rendered="#{myConnectionsListController.nextPage}" value="#{messages.nextPage}" action="#{myConnectionsListController.nextPage}"/>
+</h:form>
+
+					</center>
+				</f:view>
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

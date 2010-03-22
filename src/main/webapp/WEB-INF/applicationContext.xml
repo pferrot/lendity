@@ -247,6 +247,12 @@
 	      <property name="personService" ref="personService"/>
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
+
+	<bean id="myConnectionsListController" class="com.pferrot.sharedcalendar.person.jsf.MyConnectionsListController"
+	      scope="conversation.access">
+	      <property name="personService" ref="personService"/>
+	      <property name="connectionRequestService" ref="connectionRequestService"/>
+	</bean>
 	
 	<bean id="personOverviewController" class="com.pferrot.sharedcalendar.person.jsf.PersonOverviewController"
 	      scope="conversation.access">
@@ -351,6 +357,7 @@
 	<bean id="itemServiceTarget" class="com.pferrot.sharedcalendar.item.ItemService">
 		<property name="itemDao" ref="itemDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
+		<property name="personDao" ref="personDao"/>
 	</bean>
 	
 	<bean id="itemOverviewController" class="com.pferrot.sharedcalendar.item.jsf.ItemOverviewController"
@@ -376,8 +383,23 @@
 	<bean id="myItemsListController" class="com.pferrot.sharedcalendar.item.jsf.MyItemsListController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
-	</bean>	
-				
+	</bean>
+
+	<bean id="myBorrowedItemsListController" class="com.pferrot.sharedcalendar.item.jsf.MyBorrowedItemsListController"
+	      scope="conversation.access">
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+
+	<bean id="myLentItemsListController" class="com.pferrot.sharedcalendar.item.jsf.MyLentItemsListController"
+	      scope="conversation.access">
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+
+	<bean id="myConnectionsItemsListController" class="com.pferrot.sharedcalendar.item.jsf.MyConnectionsItemsListController"
+	      scope="conversation.access">
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+
 	<!-- 
 	ITEM - end
 	========================================================================================================================

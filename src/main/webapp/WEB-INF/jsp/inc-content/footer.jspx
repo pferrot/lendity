@@ -3,4 +3,15 @@
          <h:outputText>
              &#169; pf, 2009
          </h:outputText>
+         
+         <br/><br/>
+         <a href="/shared_calendar/public/registration/registration.faces">registration</a><br/>
+         <a href="/shared_calendar/public/lostpassword/lostpassword.faces">lost password</a><br/>
+         <a href="/shared_calendar/auth/person/personsList.faces">persons list</a><br/>
+         <a href="/shared_calendar/auth/person/myConnectionsList.faces">my connections list</a><br/>
+         <a href="/shared_calendar/public/item/itemsList.faces">items list</a><br/>
+         <a href="/shared_calendar/auth/item/myItemsList.faces">my items list</a><br/>
+         <a href="/shared_calendar/auth/item/myBorrowedItemsList.faces">my borrowed items list</a><br/>
+         <a href="/shared_calendar/auth/item/myLentItemsList.faces">my lent items list</a><br/>
+         <a href="/shared_calendar/auth/item/myLentItemsList.faces">my connections items list</a><br/>
 </div>
