@@ -1,5 +1,7 @@
 package com.pferrot.sharedcalendar.person;
 
+import javax.faces.context.FacesContext;
+
 import com.pferrot.core.CoreUtils;
 import com.pferrot.sharedcalendar.PagesURL;
 import com.pferrot.sharedcalendar.model.Person;
@@ -7,6 +9,16 @@ import com.pferrot.sharedcalendar.utils.JsfUtils;
 
 public class PersonUtils {
 
+	/**
+	 * Returns the ID of the person corresponding to the user being loged in.
+	 *
+	 * @return
+	 */
+	public static Long getCurrentPersonId() {
+		return (Long)FacesContext.getCurrentInstance().getExternalContext().
+					getSessionMap().get(PersonConsts.CURRENT_PERSON_ID_SESSION_ATTRIBUTE_NAME);
+	}
+	
 	/**
 	 * Returns the HTML link to a person overview page.
 	 * 

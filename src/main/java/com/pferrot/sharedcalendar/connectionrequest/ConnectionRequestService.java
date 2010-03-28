@@ -435,7 +435,8 @@ public class ConnectionRequestService {
 	}
 
 	private Person getCurrentPerson() {
-		final String username = SecurityUtils.getCurrentUsername();
-		return personDao.findPersonFromUsername(username);
+//		final String username = SecurityUtils.getCurrentUsername();
+//		return personDao.findPersonFromUsername(username);
+		return personDao.findPerson(PersonUtils.getCurrentPersonId());
 	}
 }

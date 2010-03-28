@@ -13,8 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.pferrot.security.model.User;
-
 @Entity
 @Table(name = "BORROWER_HISTORY_ENTRIES")
 public class BorrowerHistoryEntry implements Serializable {
@@ -23,11 +21,11 @@ public class BorrowerHistoryEntry implements Serializable {
 	@Column(name = "ID")
     private Long id;
 	
-	@OneToOne(targetEntity = com.pferrot.security.model.User.class)
-	@JoinColumn(name = "USER_ID", nullable = false)
-	private User borrower;
+	@OneToOne(targetEntity = Person.class)
+	@JoinColumn(name = "PERSON_ID", nullable = false)
+	private Person borrower;
 	
-	@ManyToOne(targetEntity = com.pferrot.sharedcalendar.model.Item.class)
+	@ManyToOne(targetEntity = Item.class)
 	@JoinColumn(name = "BORROWABLE_ID", nullable = false)
 	private Borrowable borrowable;	
 	
@@ -50,11 +48,11 @@ public class BorrowerHistoryEntry implements Serializable {
         this.id = id;
     }
 
-	public User getBorrower() {
+	public Person getBorrower() {
 		return borrower;
 	}
 
-	public void setBorrower(User borrower) {
+	public void setBorrower(Person borrower) {
 		this.borrower = borrower;
 	}
 

@@ -13,6 +13,6 @@ public class MyConnectionsItemsListController extends AbstractItemsListControlle
 	
 	@Override
 	public List getListInternal() {
-		return getItemService().findItemsOwnedByCurrentUserConnections(getFirstResultIndex(), ItemConsts.NB_ITEMS_PER_PAGE + 1);
+		return getItemService().findVisibleItemsOwnedByCurrentPersonConnections(getFirstResultIndex(), ItemConsts.NB_ITEMS_PER_PAGE + 1);
 	}
 }

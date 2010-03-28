@@ -5,8 +5,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.pferrot.security.SecurityUtils;
 import com.pferrot.sharedcalendar.item.ItemConsts;
+import com.pferrot.sharedcalendar.person.PersonUtils;
 
 public class MyItemsListController extends AbstractItemsListController {
 	
@@ -14,6 +14,6 @@ public class MyItemsListController extends AbstractItemsListController {
 
 	@Override
 	public List getListInternal() {
-		return getItemService().findItemsOwnedByUsername(SecurityUtils.getCurrentUsername(), getFirstResultIndex(), ItemConsts.NB_ITEMS_PER_PAGE + 1);
+		return getItemService().findItemsOwnedByPersonId(PersonUtils.getCurrentPersonId(), getFirstResultIndex(), ItemConsts.NB_ITEMS_PER_PAGE + 1);
 	}
 }

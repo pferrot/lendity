@@ -3,12 +3,10 @@ package com.pferrot.sharedcalendar.model;
 import java.util.Date;
 import java.util.List;
 
-import com.pferrot.security.model.User;
-
 public interface Borrowable {
 	
-	User getBorrower();
-	void setBorrower(User borrower);
+	Person getBorrower();
+	void setBorrower(Person borrower);
 	
 	Date getBorrowDate();
 	void setBorrowDate(Date date);

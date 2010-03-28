@@ -91,7 +91,7 @@
 	********************************************************************
 	-->
 	<navigation-rule>
-		<from-view-id>/public/item/itemOverview.jspx</from-view-id>
+		<from-view-id>/auth/item/itemOverview.jspx</from-view-id>
 	</navigation-rule>
 	
 	<!-- 
@@ -118,22 +118,22 @@
 	********************************************************************
 	-->
 	<navigation-rule>
-		<from-view-id>/public/item/itemsList.jspx</from-view-id>
+		<from-view-id>/admin/item/itemsList.jspx</from-view-id>
 		<navigation-case>
 			<from-outcome>nextPage</from-outcome>
-			<to-view-id>/public/item/itemsList.jspx</to-view-id>
+			<to-view-id>/admin/item/itemsList.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>previousPage</from-outcome>
-			<to-view-id>/public/item/itemsList.jspx</to-view-id>
+			<to-view-id>/admin/item/itemsList.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>search</from-outcome>
-			<to-view-id>/public/item/itemsList.jspx</to-view-id>
+			<to-view-id>/admin/item/itemsList.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>clearSearch</from-outcome>
-			<to-view-id>/public/item/itemsList.jspx</to-view-id>
+			<to-view-id>/admin/item/itemsList.jspx</to-view-id>
 		</navigation-case>	
 	</navigation-rule>
 	
@@ -154,7 +154,7 @@
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>itemOverview</from-outcome>
-			<to-view-id>/public/item/itemOverview.jspx</to-view-id>
+			<to-view-id>/auth/item/itemOverview.jspx</to-view-id>
 		</navigation-case>		
 	</navigation-rule>	
 
@@ -175,7 +175,7 @@
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>itemOverview</from-outcome>
-			<to-view-id>/public/item/itemOverview.jspx</to-view-id>
+			<to-view-id>/auth/item/itemOverview.jspx</to-view-id>
 		</navigation-case>		
 	</navigation-rule>	
 
@@ -196,7 +196,7 @@
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>itemOverview</from-outcome>
-			<to-view-id>/public/item/itemOverview.jspx</to-view-id>
+			<to-view-id>/auth/item/itemOverview.jspx</to-view-id>
 		</navigation-case>		
 	</navigation-rule>		
 
@@ -217,7 +217,7 @@
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>itemOverview</from-outcome>
-			<to-view-id>/public/item/itemOverview.jspx</to-view-id>
+			<to-view-id>/auth/item/itemOverview.jspx</to-view-id>
 		</navigation-case>		
 	</navigation-rule>		
 
@@ -284,6 +284,39 @@
 		<navigation-case>
 			<from-outcome>clearSearch</from-outcome>
 			<to-view-id>/auth/person/myConnectionsList.jspx</to-view-id>
+		</navigation-case>			
+	</navigation-rule>
+
+	<!-- 
+	********************************************************************
+	MY BANNED PERSONS LIST
+	********************************************************************
+	-->
+	<navigation-rule>
+		<from-view-id>/auth/person/myBannedPersonsList.jspx</from-view-id>
+		<navigation-case>
+			<from-outcome>personOverview</from-outcome>
+			<to-view-id>/auth/person/personOverview.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>nextPage</from-outcome>
+			<to-view-id>/auth/person/myBannedPersonsList.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>previousPage</from-outcome>
+			<to-view-id>/auth/person/myBannedPersonsList.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>requestConnection</from-outcome>
+			<to-view-id>/auth/person/myBannedPersonsList.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>search</from-outcome>
+			<to-view-id>/auth/person/myBannedPersonsList.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>clearSearch</from-outcome>
+			<to-view-id>/auth/person/myBannedPersonsList.jspx</to-view-id>
 		</navigation-case>			
 	</navigation-rule>
 

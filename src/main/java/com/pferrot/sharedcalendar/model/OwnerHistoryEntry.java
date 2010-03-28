@@ -13,8 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.pferrot.security.model.User;
-
 @Entity
 @Table(name = "OWNER_HISTORY_ENTRIES")
 public class OwnerHistoryEntry implements Serializable {
@@ -23,11 +21,11 @@ public class OwnerHistoryEntry implements Serializable {
 	@Column(name = "ID")
     private Long id;
 	
-	@OneToOne(targetEntity = com.pferrot.security.model.User.class)
-	@JoinColumn(name = "USER_ID", nullable = false)
-	private User owner;
+	@OneToOne(targetEntity = Person.class)
+	@JoinColumn(name = "PERSON_ID", nullable = false)
+	private Person owner;
 	
-	@ManyToOne(targetEntity = com.pferrot.sharedcalendar.model.Item.class)
+	@ManyToOne(targetEntity = Item.class)
 	@JoinColumn(name = "OWNABLE_ID", nullable = false)
 	private Ownable ownable;	
 	
@@ -50,11 +48,11 @@ public class OwnerHistoryEntry implements Serializable {
         this.id = id;
     }
 
-	public User getOwner() {
+	public Person getOwner() {
 		return owner;
 	}
 
-	public void setOwner(User owner) {
+	public void setOwner(Person owner) {
 		this.owner = owner;
 	}
 

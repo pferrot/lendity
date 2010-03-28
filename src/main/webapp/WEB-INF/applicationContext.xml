@@ -253,6 +253,12 @@
 	      <property name="personService" ref="personService"/>
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
+
+	<bean id="myBannedPersonsListController" class="com.pferrot.sharedcalendar.person.jsf.MyBannedPersonsListController"
+	      scope="conversation.access">
+	      <property name="personService" ref="personService"/>
+	      <property name="connectionRequestService" ref="connectionRequestService"/>
+	</bean>
 	
 	<bean id="personOverviewController" class="com.pferrot.sharedcalendar.person.jsf.PersonOverviewController"
 	      scope="conversation.access">
@@ -408,7 +414,26 @@
 	<!-- 
 	ITEM - end
 	========================================================================================================================
-	 -->		 	
+	 -->
+
+	<!-- 
+	Listener to store the current person ID in the session, so it avoids to always query the DB to retrieve it.
+	 -->
+<!--	<bean id="currentPersonListenerTarget" class="com.pferrot.sharedcalendar.person.listener.CurrentPersonLoginListener">-->
+<!--    	<property name="personDao" ref="personDao"/>-->
+<!--	</bean>	-->
+<!--	<bean id="currentPersonListener" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">-->
+<!--		<property name="transactionManager" ref="transactionManager"/>-->
+<!--		<property name="target">-->
+<!--			<ref local="currentPersonListenerTarget"/>-->
+<!--		</property>-->
+<!--		<property name="transactionAttributes">-->
+<!--			<props>-->
+<!--				<prop key="onApplicationEvent">PROPAGATION_REQUIRED</prop>-->
+<!--				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>-->
+<!--			</props>-->
+<!--		</property>-->
+<!--	</bean>-->
 	
 	<!-- 
 	Orchestra stuff...

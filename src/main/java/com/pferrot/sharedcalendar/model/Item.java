@@ -25,7 +25,6 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.envers.Audited;
 
 import com.pferrot.core.CoreUtils;
-import com.pferrot.security.model.User;
 
 /**
  * @author Patrice
@@ -47,15 +46,18 @@ public class Item implements Ownable, Borrowable, Serializable {
 	@Audited
 	private String description;
 
+	@Column(name = "VISIBLE", nullable = false)
+	private Boolean visible = Boolean.TRUE;
+
 	@Column(name = "LOCKED", nullable = false)
 	private Boolean locked = Boolean.FALSE;
 	
 	@ManyToMany(targetEntity = ItemCategory.class)
 	private Set<ItemCategory> categories = new HashSet<ItemCategory>();
 
-	@OneToOne(targetEntity = User.class)
+	@OneToOne(targetEntity = Person.class)
 	@JoinColumn(name = "OWNER_ID", nullable = false)
-	private User owner;
+	private Person owner;
 
 	@OneToMany(mappedBy = "ownable", targetEntity = OwnerHistoryEntry.class,
 			   cascade = {CascadeType.PERSIST})
@@ -63,9 +65,9 @@ public class Item implements Ownable, Borrowable, Serializable {
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})	
 	private List<OwnerHistoryEntry> ownerHistoryEntries = new ArrayList<OwnerHistoryEntry>();	
 
-	@OneToOne(targetEntity = User.class)
+	@OneToOne(targetEntity = Person.class)
 	@JoinColumn(name = "BORROWER_ID", nullable = true)
-	private User borrower;
+	private Person borrower;
 
 	@Column(name = "BORROW_DATE", nullable = true)
 	private Date borrowDate;
@@ -136,13 +138,25 @@ public class Item implements Ownable, Borrowable, Serializable {
 
 	public boolean isLocked() {
 		return Boolean.TRUE.equals(getLocked());
+	}	
+
+	public Boolean getVisible() {
+		return visible;
 	}
 
-	public User getOwner() {
+	public void setVisible(Boolean visible) {
+		this.visible = visible;
+	}
+
+	public boolean isVisible() {
+		return Boolean.TRUE.equals(getVisible());
+	}
+
+	public Person getOwner() {
 		return owner;
 	}
 
-	public void setOwner(User owner) {
+	public void setOwner(Person owner) {
 		this.owner = owner;
 	}
 
@@ -154,11 +168,11 @@ public class Item implements Ownable, Borrowable, Serializable {
 		this.ownerHistoryEntries = ownerHistoryEntries;
 	}
 
-	public User getBorrower() {
+	public Person getBorrower() {
 		return borrower;
 	}
 
-	public void setBorrower(User borrower) {
+	public void setBorrower(Person borrower) {
 		this.borrower = borrower;
 	}
 
@@ -183,7 +197,7 @@ public class Item implements Ownable, Borrowable, Serializable {
 	}
 	
 	public boolean isAvailable() {
-		return !isBorrowed() && !isLocked();
+		return !isBorrowed() && !isLocked() && isVisible();
 	}
 
 	@Override

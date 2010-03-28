@@ -16,7 +16,7 @@ security module.
 		-->
 	</global-method-security>
 	
-	<http>
+	<http auto-config="false" entry-point-ref="authenticationProcessingFilterEntryPoint">
 		<!--
 			Disable web URI authorization, as we're using
 			<global-method-security> and have @Secured the services layer instead
@@ -41,12 +41,14 @@ security module.
 		-->
 
 <!--         All of this is unnecessary if auto-config="true"-->
+		<!-- 
 		<form-login login-page="/login.jsp" 
 			authentication-failure-url="/login.jsp?login_error=1"/>
 		<logout logout-success-url="/index.jsp" />
 		<anonymous />
 		<http-basic />
 		<logout />
+ 		-->
 
 		<remember-me user-service-ref="security.customUserDetailsService"/>
 		<!--
@@ -55,6 +57,19 @@ security module.
 			exception-if-maximum-exceeded="true"/>
 		-->
 	</http>
-	
+
+	<beans:bean id="authenticationProcessingFilter"	class="com.pferrot.sharedcalendar.security.filter.CustomAuthenticationProcessingFilter">
+		<custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
+		<beans:property name="defaultTargetUrl" value="/auth/person/personsList.faces" />
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<beans:property name="personDao" ref="personDao"/>
+	</beans:bean>
+
+	<beans:bean id="authenticationProcessingFilterEntryPoint"	class="org.springframework.security.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+		<beans:property name="loginFormUrl" value="/login.jsp" />
+		<beans:property name="forceHttps" value="false" />
+	</beans:bean>
+
+	<authentication-manager alias="authenticationManager" />
 	
 </beans:beans>

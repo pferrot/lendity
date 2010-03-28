@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.pferrot.security.SecurityUtils;
+import com.pferrot.core.CoreUtils;
 import com.pferrot.sharedcalendar.dao.ItemDao;
 import com.pferrot.sharedcalendar.dao.ListValueDao;
 import com.pferrot.sharedcalendar.dao.PersonDao;
@@ -15,6 +15,7 @@ import com.pferrot.sharedcalendar.model.ItemCategory;
 import com.pferrot.sharedcalendar.model.Language;
 import com.pferrot.sharedcalendar.model.ListValue;
 import com.pferrot.sharedcalendar.model.Person;
+import com.pferrot.sharedcalendar.person.PersonUtils;
 import com.pferrot.sharedcalendar.utils.ListValueUtils;
 
 public class ItemService {
@@ -61,22 +62,20 @@ public class ItemService {
 		return itemDao.findItemsByTitle(pTitle, pFirstResult, pMaxResults);
 	}
 	
-	public List<Item> findItemsOwnedByUsername(final String pUsername, final int pFirstResult, final int pMaxResults) {
-		return itemDao.findItemsOwnedByUser(pUsername, pFirstResult, pMaxResults);
+	public List<Item> findItemsOwnedByPersonId(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+		return itemDao.findItemsOwnedByPerson(pPersonId, pFirstResult, pMaxResults);
 	}
 
-	public List<Item> findItemsBorrowedByUsername(final String pUsername, final int pFirstResult, final int pMaxResults) {
-		return itemDao.findItemsBorrowedByUser(pUsername, pFirstResult, pMaxResults);
+	public List<Item> findItemsBorrowedByPersonId(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+		return itemDao.findItemsBorrowedByPerson(pPersonId, pFirstResult, pMaxResults);
 	}
 
-	public List<Item> findItemsLentByUsername(final String pUsername, final int pFirstResult, final int pMaxResults) {
-		return itemDao.findItemsLentByUser(pUsername, pFirstResult, pMaxResults);
+	public List<Item> findItemsLentByPersonId(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+		return itemDao.findItemsLentByPerson(pPersonId, pFirstResult, pMaxResults);
 	}
 	
-	public List<Item> findItemsOwnedByCurrentUserConnections(final int pFirstResult, final int pMaxResults) {
-		final String username = SecurityUtils.getCurrentUsername();
-		final Person currentPerson = personDao.findPersonFromUsername(username);
-		return itemDao.findItemsOwnedByConnections(currentPerson, pFirstResult, pMaxResults);
+	public List<Item> findVisibleItemsOwnedByCurrentPersonConnections(final int pFirstResult, final int pMaxResults) {
+		return itemDao.findVisibleItemsOwnedByConnections(getCurrentPerson(), pFirstResult, pMaxResults);
 	}
 
 	public Long createItem(final Item item) {
@@ -99,6 +98,41 @@ public class ItemService {
 
 	public List<Long> getIdsFromItemCategories(final Collection<ItemCategory> itemCategories) {
 		return ListValueUtils.getIdsFromListValues(itemCategories);
+	}
+
+	public boolean isCurrentUserAuthorizedToView(final Item pItem) {
+		CoreUtils.assertNotNull(pItem);
+		if (isCurrentUserAuthorizedToEdit(pItem)) {
+			return true;
+		}
+		// Connections can view.
+		if (pItem.isVisible() && 
+		    pItem.getOwner() != null &&
+		    pItem.getOwner().getConnections() != null &&
+		    pItem.getOwner().getConnections().contains(getCurrentPerson())) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isCurrentUserAuthorizedToEdit(final Item pItem) {
+		CoreUtils.assertNotNull(pItem);
+		final Person currentPerson = getCurrentPerson();
+		if (currentPerson == null) {
+			return false;
+		}
+		if (currentPerson.equals(pItem.getOwner())) {
+			return true;
+		}
+		if (currentPerson.getUser() != null &&
+		    currentPerson.getUser().isAdmin()) {
+			return true;
+		}
+		return false;
+	}
+
+	public Person getCurrentPerson() {
+		return personDao.findPerson(PersonUtils.getCurrentPersonId());
 	}
 	
 }

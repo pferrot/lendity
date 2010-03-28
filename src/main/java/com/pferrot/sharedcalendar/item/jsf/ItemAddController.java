@@ -3,7 +3,6 @@ package com.pferrot.sharedcalendar.item.jsf;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.pferrot.security.SecurityUtils;
 import com.pferrot.sharedcalendar.item.ItemUtils;
 import com.pferrot.sharedcalendar.model.Item;
 
@@ -16,7 +15,7 @@ public class ItemAddController extends AbstractItemAddEditController {
 		
 		item.setTitle(getTitle());
 		item.setDescription(getDescription());
-		item.setOwner(SecurityUtils.getCurrentUser());
+		item.setOwner(getItemService().getCurrentPerson());
 				
 		return getItemService().createItemWithCategories(item, getCategoriesId());		
 	}

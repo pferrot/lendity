@@ -87,8 +87,28 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 
 	public List<Person> findConnections(final Person pPerson, final int pFirstResult, final int pMaxResults) {
 		return findConnectionsByAnything(null, pPerson, pFirstResult, pMaxResults);
+	}	
+
+	public List<Person> findBannedPersonsByAnything(String pSearchString,
+			Person pPerson, int pFirstResult, int pMaxResults) {
+		CoreUtils.assertNotNull(pPerson);
+
+		DetachedCriteria criteria = DetachedCriteria.forClass(Person.class).
+			addOrder(Order.asc("lastName").ignoreCase());
+		
+		if (pSearchString != null && pSearchString.trim().length() > 0) {
+			criteria.add(getEmailLastNameFirstNameLogicalExpression(pSearchString));
+		}
+		criteria.createCriteria("bannedPersons", CriteriaSpecification.INNER_JOIN).
+			add(Restrictions.eq("id", pPerson.getId()));
+		
+		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
 	}
 	
+	public List<Person> findBannedPersons(Person pPerson, int pFirstResult,
+			int pMaxResults) {
+		return findBannedPersonsByAnything(null, pPerson, 0, 0);
+	}
 
 	private LogicalExpression getEmailLastNameFirstNameLogicalExpression(final String pSearchString) {
 		CoreUtils.assertNotNullOrEmptyString(pSearchString);

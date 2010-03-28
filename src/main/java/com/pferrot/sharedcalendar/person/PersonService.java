@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.pferrot.security.SecurityUtils;
+import com.pferrot.core.CoreUtils;
 import com.pferrot.sharedcalendar.dao.PersonDao;
 import com.pferrot.sharedcalendar.model.Person;
 
@@ -43,8 +43,45 @@ public class PersonService {
 		return personDao.findConnections(getCurrentPerson(), pFirstResult, pMaxResults);
 	}
 
+	public List<Person> findCurrentUserBannedPersonsByAnything(final String pSearchString, final int pFirstResult, final int pMaxResults) {
+		return personDao.findBannedPersonsByAnything(pSearchString, getCurrentPerson(), pFirstResult, pMaxResults);
+	}
+
+	public List<Person> findCurrentUserBannedPersons(final int pFirstResult, final int pMaxResults) {	
+		return personDao.findBannedPersons(getCurrentPerson(), pFirstResult, pMaxResults);
+	}
+	
+	public boolean isCurrentUserAuthorizedToView(final Person pPerson) {
+		CoreUtils.assertNotNull(pPerson);
+		if (isCurrentUserAuthorizedToEdit(pPerson)) {
+			return true;
+		}
+		// Connections can view.
+		if (pPerson.getConnections().contains(getCurrentPerson())) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isCurrentUserAuthorizedToEdit(final Person pPerson) {
+		CoreUtils.assertNotNull(pPerson);
+		final Person currentPerson = getCurrentPerson();
+		if (currentPerson == null) {
+			return false;
+		}
+		if (currentPerson.equals(pPerson)) {
+			return true;
+		}
+		if (currentPerson.getUser() != null &&
+		    currentPerson.getUser().isAdmin()) {
+			return true;
+		}
+		return false;
+	}
+
 	private Person getCurrentPerson() {
-		final String username = SecurityUtils.getCurrentUsername();
-		return personDao.findPersonFromUsername(username);
+//		final String username = SecurityUtils.getCurrentUsername();
+//		return personDao.findPersonFromUsername(username);
+		return personDao.findPerson(PersonUtils.getCurrentPersonId());
 	}
 }

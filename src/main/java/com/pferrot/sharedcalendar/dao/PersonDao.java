@@ -19,6 +19,9 @@ public interface PersonDao {
 	
 	List<Person> findConnections(Person pPerson, int pFirstResult, int pMaxResults);
 	List<Person> findConnectionsByAnything(String pSearchString, Person pPerson, int pFirstResult, int pMaxResults);
+
+	List<Person> findBannedPersons(Person pPerson, int pFirstResult, int pMaxResults);
+	List<Person> findBannedPersonsByAnything(String pSearchString, Person pPerson, int pFirstResult, int pMaxResults);
 	
 	void updatePerson(Person person);
 	
