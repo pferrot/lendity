@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -67,9 +68,19 @@ public class Person implements Serializable {
 	
 	
 	@ManyToMany(targetEntity = com.pferrot.sharedcalendar.model.Person.class)
+	@JoinTable(
+			name = "PERSONS_CONNECTIONS",
+			joinColumns = {@JoinColumn(name = "PERSON_ID")},
+			inverseJoinColumns = {@JoinColumn(name = "CONNECTION_ID")}
+	)
 	private Set<Person> connections = new HashSet<Person>();
 	
 	@ManyToMany(targetEntity = com.pferrot.sharedcalendar.model.Person.class)
+	@JoinTable(
+			name = "PERSONS_BANNED",
+			joinColumns = {@JoinColumn(name = "PERSON_ID")},
+			inverseJoinColumns = {@JoinColumn(name = "BANNED_ID")}
+	)
 	private Set<Person> bannedPersons = new HashSet<Person>();
 	
 	@Embedded
@@ -200,7 +211,17 @@ public class Person implements Serializable {
 	public void removeBannedPerson(final Person pPerson) {
 		CoreUtils.assertNotNull(pPerson);
 		bannedPersons.remove(pPerson);
-	}	
+	}
+
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer();
+		sb.append("ID: ");
+		sb.append(getId());
+		sb.append(", email: ");
+		sb.append(getEmail());
+		return sb.toString();
+	}
 }
 
 

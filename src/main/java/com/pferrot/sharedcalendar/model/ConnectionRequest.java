@@ -88,4 +88,24 @@ public class ConnectionRequest implements Serializable {
 	public void setResponse(ConnectionRequestResponse response) {
 		this.response = response;
 	}
+
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer();
+		sb.append("ID: ");
+		sb.append(getId());
+		sb.append(", requester: ");
+		if (getRequester() != null) {
+			sb.append(getRequester().getId());
+		} else {
+			sb.append("null");
+		}
+		sb.append(", connection: ");
+		if (getConnection() != null) {
+			sb.append(getConnection().getId());
+		} else {
+			sb.append("null");
+		}
+		return sb.toString();
+	}
 }

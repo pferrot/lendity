@@ -312,6 +312,11 @@
 		<property name="mailManager" ref="emailSender.mailManager"/>
 	</bean>
 
+	<bean id="myPendingConnectionRequestsListController" class="com.pferrot.sharedcalendar.connectionrequest.jsf.MyPendingConnectionRequests"
+	      scope="conversation.access">
+	      <property name="connectionRequestService" ref="connectionRequestService"/>
+	</bean>
+
 <!--	
 	<bean id="personsListController" class="com.pferrot.sharedcalendar.person.jsf.PersonsListController"
 	      scope="conversation.access">

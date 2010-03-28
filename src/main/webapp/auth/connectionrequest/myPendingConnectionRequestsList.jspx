@@ -1,0 +1,102 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core_rt"
+	xmlns:o="http://myfaces.apache.org/orchestra">
+
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="My Pending Connection Requests" />
+	<ui:param name="contentHeader" value="My Pending Connection Requests" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+			<ui:define name="pageName">
+            	#{contentHeader}
+          	</ui:define>
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
+				<f:view>
+					<center>
+
+<h:dataTable value="#{myPendingConnectionRequestsListController.list}" binding="#{myPendingConnectionRequestsListController.table}" var="connectionRequest">
+
+	<h:column>
+        <f:facet name="header">
+            <h:outputText value="ID" />
+        </f:facet>
+        <h:outputText value="#{connectionRequest.id}" />
+    </h:column>
+
+	<h:column>
+        <f:facet name="header">
+            <h:outputText value="Connection" />
+        </f:facet>
+		<o:separateConversationContext>
+        	<h:outputLink value="#{myPendingConnectionRequestsListController.connectionOverviewHref}">
+            	<h:outputText value="#{connectionRequest.connection.firstName}" />
+        	</h:outputLink>
+		</o:separateConversationContext>
+    </h:column>
+
+	<h:column>
+        <f:facet name="header">
+            <h:outputText value="Requester" />
+        </f:facet>
+		<o:separateConversationContext>
+        	<h:outputLink value="#{myPendingConnectionRequestsListController.requesterOverviewHref}">
+            	<h:outputText value="#{connectionRequest.requester.firstName}" />
+        	</h:outputLink>
+		</o:separateConversationContext>
+    </h:column>
+
+	<h:column>
+        <f:facet name="header">
+            <h:outputText value="ACCEPT CONNECTION REQUEST" />
+        </f:facet>
+		<h:form>
+			<h:commandButton action="#{myPendingConnectionRequestsListController.acceptConnectionRequest}" value="#{myPendingConnectionRequestsListController.acceptConnectionRequestLabel}" disabled="#{myPendingConnectionRequestsListController.acceptConnectionRequestDisabled}"/>
+		</h:form>
+    </h:column>    
+
+	<h:column>
+        <f:facet name="header">
+            <h:outputText value="REFUSE CONNECTION REQUEST" />
+        </f:facet>
+		<h:form>
+			<h:commandButton action="#{myPendingConnectionRequestsListController.refuseConnectionRequest}" value="#{myPendingConnectionRequestsListController.refuseConnectionRequestLabel}" disabled="#{myPendingConnectionRequestsListController.refuseConnectionRequestDisabled}"/>
+		</h:form>
+    </h:column>    
+
+	<h:column>
+        <f:facet name="header">
+            <h:outputText value="BAN CONNECTION REQUEST CONNECTION" />
+        </f:facet>
+		<h:form>
+			<h:commandButton action="#{myPendingConnectionRequestsListController.banConnectionRequest}" value="#{myPendingConnectionRequestsListController.banConnectionRequestLabel}" disabled="#{myPendingConnectionRequestsListController.banConnectionRequestDisabled}"/>
+		</h:form>
+    </h:column>    
+
+</h:dataTable>
+
+<br/>
+
+<h:form>
+    <h:commandLink rendered="#{myPendingConnectionRequestsListController.previousPage}" value="#{messages.previousPage}" action="#{myPendingConnectionRequestsListController.previousPage}"/>
+    <h:commandLink rendered="#{myPendingConnectionRequestsListController.nextPage}" value="#{messages.nextPage}" action="#{myPendingConnectionRequestsListController.nextPage}"/>
+</h:form>
+
+					</center>
+				</f:view>
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

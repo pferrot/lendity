@@ -71,7 +71,7 @@ public class InitialData {
 		createGenders();
 		
 		createPersonsAndUsers();
-		
+		createConnectionRequestResponse();
 		createItemCategories();
 		createLanguages();
 		createItems();

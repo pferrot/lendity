@@ -54,4 +54,14 @@ public abstract class ListValue implements Serializable, LabelCodeAware {
 	public void setLabelCode(final String labelCode) {
 		this.labelCode = labelCode;
 	}
+
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer();
+		sb.append("ID: ");
+		sb.append(getId());
+		sb.append(", label code: ");
+		sb.append(getLabelCode());
+		return sb.toString();
+	}
 }

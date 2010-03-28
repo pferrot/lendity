@@ -185,6 +185,16 @@ public class Item implements Ownable, Borrowable, Serializable {
 	public boolean isAvailable() {
 		return !isBorrowed() && !isLocked();
 	}
+
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer();
+		sb.append("ID: ");
+		sb.append(getId());
+		sb.append(", title: ");
+		sb.append(getTitle());
+		return sb.toString();
+	}
 }
 
 

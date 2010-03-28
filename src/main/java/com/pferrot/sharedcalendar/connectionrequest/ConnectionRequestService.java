@@ -2,6 +2,7 @@ package com.pferrot.sharedcalendar.connectionrequest;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -48,6 +49,11 @@ public class ConnectionRequestService {
 	
 	public ConnectionRequest findConnectionRequest(final Long pConnectionRequestId) {
 		return connectionRequestDao.findConnectionRequest(pConnectionRequestId);
+	}
+
+	public List<ConnectionRequest> findCurrentUserPendingConnectionRequests(final int pFirstResult, final int pMaxResults) {
+		return connectionRequestDao.findUncompletedConnectionRequestByConnection(getCurrentPerson(), pFirstResult, pMaxResults);
+		
 	}
 
 	/**
@@ -99,6 +105,14 @@ public class ConnectionRequestService {
 			}			
 			return false;
 		}
+
+		// Already a connection request pending.
+		if (isUncompletedConnectionRequestAvailable(pConnection, pRequester)) {
+			if (log.isDebugEnabled()) {
+				log.debug("Already a connection request pending between requester (" + pRequester + ") and connection (" + pConnection + ").");
+			}	
+			return false;
+		}
 		
 		return true;			
 	}
@@ -112,12 +126,7 @@ public class ConnectionRequestService {
 	 * @throws ConnectionRequestException
 	 */
 	public boolean isConnectionRequestAllowedFromCurrentUser(final Person pConnection) throws ConnectionRequestException {
-		final User currentUser = SecurityUtils.getCurrentUser();
-		CoreUtils.assertNotNull(currentUser);
-		final Person currentUserPerson = personDao.findPersonFromUser(currentUser);
-		CoreUtils.assertNotNull(currentUserPerson);
-		
-		return isConnectionRequestAllowed(pConnection, currentUserPerson);		
+		return isConnectionRequestAllowed(pConnection, getCurrentPerson());		
 	}
 
 	/**
@@ -134,13 +143,15 @@ public class ConnectionRequestService {
 			if (! isConnectionRequestAllowed(pConnection, pRequester)) {
 				throw new ConnectionRequestException("Connection request not allowed.");
 			}
-			
+
 			final ConnectionRequest connectionRequest = new ConnectionRequest();
 			connectionRequest.setConnection(pConnection);
 			connectionRequest.setRequester(pRequester);
 			connectionRequest.setRequestDate(new Date());
 			
-			assertRequesterIsCurrentUser(connectionRequest);
+			if (isUncompletedConnectionRequestAvailable(pConnection, pRequester)) {
+				throw new ConnectionRequestException("Connection request not allowed."); 
+			}
 			
 			Long connectionRequestId = connectionRequestDao.createConnectionRequest(connectionRequest);
 				
@@ -171,31 +182,52 @@ public class ConnectionRequestService {
 			throw new ConnectionRequestException(e);
 		}
 	}
-	
-	public Long createConnectionRequestFromCurrentUser(final Person pConnection) throws ConnectionRequestException {
-		final User currentUser = SecurityUtils.getCurrentUser();
-		CoreUtils.assertNotNull(currentUser);
-		final Person currentUserPerson = personDao.findPersonFromUser(currentUser);
-		CoreUtils.assertNotNull(currentUserPerson);
+
+	/**
+	 * Returns true if a there is already an connection request pending between two individuals.
+	 *
+	 * @param pPerson1
+	 * @param pPerson2
+	 * @return
+	 */
+	public boolean isUncompletedConnectionRequestAvailable(final Person pPerson1, final Person pPerson2) {
+		CoreUtils.assertNotNull(pPerson1);
+		CoreUtils.assertNotNull(pPerson2);
 		
-		return createConnectionRequest(pConnection, currentUserPerson);
+		final List<ConnectionRequest> existingUncompletedRequests = connectionRequestDao.findUncompletedConnectionRequestByRequesterAndConnection(pPerson1, pPerson2, 0, 0);
+		return existingUncompletedRequests != null && existingUncompletedRequests.size() > 0;
+	}
+	
+
+	/**
+	 * Create a connection request using the current user as requester.
+	 *
+	 * @param pConnection
+	 * @return
+	 * @throws ConnectionRequestException
+	 */
+	public Long createConnectionRequestFromCurrentUser(final Person pConnection) throws ConnectionRequestException {		
+		return createConnectionRequest(pConnection, getCurrentPerson());
 	}
 	
 	/**
 	 * The connection is simply refused.
 	 * An email is send to the requester to let him know about that.
 	 * 
-	 * @param pConnectionRequestId
+	 * @param pConnectionRequest
 	 * @throws ConnectionRequestException
 	 */
-	public void refuseConnectionRequest(final Long pConnectionRequestId) throws ConnectionRequestException {
+	public void updateRefuseConnectionRequest(final ConnectionRequest pConnectionRequest) throws ConnectionRequestException {
 		try {
-			CoreUtils.assertNotNull(pConnectionRequestId);
-			final ConnectionRequest connectionRequest = connectionRequestDao.findConnectionRequest(pConnectionRequestId);
+			CoreUtils.assertNotNull(pConnectionRequest);
 			
-			setConnectionRequestResponse(connectionRequest, (ConnectionRequestResponse)listValueDao.findListValue(ConnectionRequestResponse.REFUSE_LABEL_CODE));
+			setConnectionRequestResponse(pConnectionRequest, (ConnectionRequestResponse)listValueDao.findListValue(ConnectionRequestResponse.REFUSE_LABEL_CODE));
 			
-			sendResponseEmail(connectionRequest, "sharedcalendar.com: your connection request has been rejected", "com/pferrot/sharedcalendar/emailtemplate/connectionrequest/refuse/en");
+			sendResponseEmail(pConnectionRequest, "sharedcalendar.com: your connection request has been rejected", "com/pferrot/sharedcalendar/emailtemplate/connectionrequest/refuse/en");
+
+			if (log.isInfoEnabled()) {
+				log.info("'" + pConnectionRequest.getRequester() + "' is refused by '" + pConnectionRequest.getConnection() + "'.");
+			}
 		}
 		catch (ConnectionRequestException e) {
 			throw e;
@@ -203,6 +235,69 @@ public class ConnectionRequestService {
 		catch (Exception e) {
 			throw new ConnectionRequestException(e);
 		}		
+	}
+
+	/**
+	 * The connection is simply refused.
+	 * An email is send to the requester to let him know about that.
+	 * 
+	 * @param pConnectionRequestId
+	 * @throws ConnectionRequestException
+	 */
+	public void updateRefuseConnectionRequest(final Long pConnectionRequestId) throws ConnectionRequestException {
+		CoreUtils.assertNotNull(pConnectionRequestId);
+		final ConnectionRequest connectionRequest = connectionRequestDao.findConnectionRequest(pConnectionRequestId);
+
+		updateRefuseConnectionRequest(connectionRequest);
+	}
+
+	/**
+	 * The connection is refused and the requester is banned by the connection.
+	 * An email is send to the requester to let him know about that.
+	 * 
+	 * @param pConnectionRequest
+	 * @throws ConnectionRequestException
+	 */
+	public void updateBanConnectionRequest(final ConnectionRequest pConnectionRequest) throws ConnectionRequestException {
+		try {
+			CoreUtils.assertNotNull(pConnectionRequest);
+			
+			setConnectionRequestResponse(pConnectionRequest, (ConnectionRequestResponse)listValueDao.findListValue(ConnectionRequestResponse.BAN_LABEL_CODE));
+
+			// If the user is banned, it cannot be a connection.
+			if (pConnectionRequest.getConnection().getConnections().contains(pConnectionRequest.getRequester()) ||
+				pConnectionRequest.getRequester().getConnections().contains(pConnectionRequest.getConnection())) {
+				if (log.isWarnEnabled()) {
+					log.warn("'" + pConnectionRequest.getRequester() + "' is a connection of '" + pConnectionRequest.getConnection() + "' before ban.");
+				}				
+				// Reverse link is updated with this.
+				pConnectionRequest.getConnection().removeConnection(pConnectionRequest.getRequester());
+			}
+			
+			// This test should not be necessary, but it can eventually avoid inserting redundant information.
+			if (!pConnectionRequest.getConnection().getBannedPersons().contains(pConnectionRequest.getRequester())) {
+				// Ban connection.
+				pConnectionRequest.getConnection().addBannedPerson(pConnectionRequest.getRequester());
+			} else {
+				if (log.isWarnEnabled()) {
+					log.warn("'" + pConnectionRequest.getRequester() + "' was already banned by '" + pConnectionRequest.getConnection() + "'.");
+				}
+			}
+			
+			sendResponseEmail(pConnectionRequest,
+					"sharedcalendar.com: your connection request has been rejected and you were banned",
+					"com/pferrot/sharedcalendar/emailtemplate/connectionrequest/ban/en");
+
+			if (log.isInfoEnabled()) {
+				log.info("'" + pConnectionRequest.getRequester() + "' is banned by '" + pConnectionRequest.getConnection() + "'.");
+			}
+		}
+		catch (ConnectionRequestException e) {
+			throw e;
+		}
+		catch (Exception e) {
+			throw new ConnectionRequestException(e);
+		}	
 	}
 
 	/**
@@ -212,48 +307,55 @@ public class ConnectionRequestService {
 	 * @param pConnectionRequestId
 	 * @throws ConnectionRequestException
 	 */
-	public void banConnectionRequest(final Long pConnectionRequestId) throws ConnectionRequestException {
-		try {
-			CoreUtils.assertNotNull(pConnectionRequestId);
-			final ConnectionRequest connectionRequest = connectionRequestDao.findConnectionRequest(pConnectionRequestId);
-			
-			setConnectionRequestResponse(connectionRequest, (ConnectionRequestResponse)listValueDao.findListValue(ConnectionRequestResponse.BAN_LABEL_CODE));
-			
-			// Ban connection.
-			connectionRequest.getConnection().addBannedPerson(connectionRequest.getRequester());
-			
-			sendResponseEmail(connectionRequest,
-					"sharedcalendar.com: your connection request has been rejected and you were banned",
-					"com/pferrot/sharedcalendar/emailtemplate/connectionrequest/ban/en");
-		}
-		catch (ConnectionRequestException e) {
-			throw e;
-		}
-		catch (Exception e) {
-			throw new ConnectionRequestException(e);
-		}		
+	public void updateBanConnectionRequest(final Long pConnectionRequestId) throws ConnectionRequestException {
+		CoreUtils.assertNotNull(pConnectionRequestId);
+		final ConnectionRequest connectionRequest = connectionRequestDao.findConnectionRequest(pConnectionRequestId);
+
+		updateBanConnectionRequest(connectionRequest);	
 	}
 	
 	/**
-	 * The connection is accepted, both the requester and the connection are not connection of each other. 
+	 * The connection is accepted, both the requester and the connection are now connection of each other. 
 	 * An email is send to the requester to let him know about that.
 	 * 
-	 * @param pConnectionRequestId
+	 * @param pConnectionRequest
 	 * @throws ConnectionRequestException
 	 */
-	public void acceptConnectionRequest(final Long pConnectionRequestId) throws ConnectionRequestException {
+	public void updateAcceptConnectionRequest(final ConnectionRequest pConnectionRequest) throws ConnectionRequestException {
 		try {
-			CoreUtils.assertNotNull(pConnectionRequestId);
-			final ConnectionRequest connectionRequest = connectionRequestDao.findConnectionRequest(pConnectionRequestId);
+			CoreUtils.assertNotNull(pConnectionRequest);
 
-			setConnectionRequestResponse(connectionRequest, (ConnectionRequestResponse)listValueDao.findListValue(ConnectionRequestResponse.ACCEPT_LABEL_CODE));
+			setConnectionRequestResponse(pConnectionRequest, (ConnectionRequestResponse)listValueDao.findListValue(ConnectionRequestResponse.ACCEPT_LABEL_CODE));
+
+			// If the user is a connection, he cannot be a banned.
+			if (pConnectionRequest.getConnection().getBannedPersons().contains(pConnectionRequest.getRequester())) {
+				if (log.isWarnEnabled()) {
+					log.warn("'" + pConnectionRequest.getRequester() + "' is banned by '" + pConnectionRequest.getConnection() + "' before being added as connection.");
+				}				
+				pConnectionRequest.getConnection().removeBannedPerson(pConnectionRequest.getRequester());
+			}
+
+			// Same for reverse link.
+			if (pConnectionRequest.getRequester().getBannedPersons().contains(pConnectionRequest.getConnection())) {
+				if (log.isWarnEnabled()) {
+					log.warn("'" + pConnectionRequest.getConnection() + "' is banned by '" + pConnectionRequest.getRequester() + "' before being added as connection.");
+				}
+				pConnectionRequest.getRequester().removeBannedPerson(pConnectionRequest.getConnection());
+			}
+
+			// This test should not be necessary, but it can eventually avoid inserting redundant information.
+			if (!pConnectionRequest.getRequester().getConnections().contains(pConnectionRequest.getConnection())) {
+				// Add connection (will add on reverse link as well).
+				pConnectionRequest.getRequester().addConnection(pConnectionRequest.getConnection());
+			}
 			
-			// Add connection.
-			connectionRequest.getRequester().addConnection(connectionRequest.getConnection());
-			
-			sendResponseEmail(connectionRequest,
+			sendResponseEmail(pConnectionRequest,
 					"sharedcalendar.com: your connection request has been accepted",
 					"com/pferrot/sharedcalendar/emailtemplate/connectionrequest/accept/en");
+
+			if (log.isInfoEnabled()) {
+				log.info("'" + pConnectionRequest.getRequester() + "' is accepted by '" + pConnectionRequest.getConnection() + "'.");
+			}
 		}
 		catch (ConnectionRequestException e) {
 			throw e;
@@ -261,6 +363,20 @@ public class ConnectionRequestService {
 		catch (Exception e) {
 			throw new ConnectionRequestException(e);
 		}			
+	}
+
+	/**
+	 * The connection is accepted, both the requester and the connection are now connection of each other. 
+	 * An email is send to the requester to let him know about that.
+	 * 
+	 * @param pConnectionRequestId
+	 * @throws ConnectionRequestException
+	 */
+	public void updateAcceptConnectionRequest(final Long pConnectionRequestId) throws ConnectionRequestException {
+		CoreUtils.assertNotNull(pConnectionRequestId);
+		final ConnectionRequest connectionRequest = connectionRequestDao.findConnectionRequest(pConnectionRequestId);
+
+		updateAcceptConnectionRequest(connectionRequest);
 	}
 	
 	private void setConnectionRequestResponse(final ConnectionRequest pConnectionRequest, final ConnectionRequestResponse pConnectionRequestResponse) throws ConnectionRequestException {
@@ -316,5 +432,10 @@ public class ConnectionRequestService {
 		if (person.getId().longValue() != currentUserPerson.getId().longValue()) {
 			throw new ConnectionRequestException("Only the current user can execute that operation.");
 		}
+	}
+
+	private Person getCurrentPerson() {
+		final String username = SecurityUtils.getCurrentUsername();
+		return personDao.findPersonFromUsername(username);
 	}
 }

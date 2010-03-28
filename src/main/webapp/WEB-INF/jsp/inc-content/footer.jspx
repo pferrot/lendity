@@ -1,7 +1,7 @@
 <div xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://java.sun.com/jsf/html">
          <h:outputText>
-             &#169; pf, 2009
+             &#169; pf, 2010
          </h:outputText>
          
          <br/><br/>
@@ -14,4 +14,5 @@
          <a href="/shared_calendar/auth/item/myBorrowedItemsList.faces">my borrowed items list</a><br/>
          <a href="/shared_calendar/auth/item/myLentItemsList.faces">my lent items list</a><br/>
          <a href="/shared_calendar/auth/item/myLentItemsList.faces">my connections items list</a><br/>
+         <a href="/shared_calendar/auth/connectionrequest/myPendingConnectionRequestsList.faces">my pending connection requests list</a><br/>
 </div>
