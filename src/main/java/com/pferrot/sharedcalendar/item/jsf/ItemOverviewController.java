@@ -11,7 +11,7 @@ import com.pferrot.sharedcalendar.item.ItemUtils;
 import com.pferrot.sharedcalendar.model.Item;
 import com.pferrot.sharedcalendar.utils.JsfUtils;
 
-@ViewController(viewIds={"/public/item/itemOverview.jspx"})
+@ViewController(viewIds={"/auth/item/itemOverview.jspx"})
 public class ItemOverviewController
 {
 	private final static Log log = LogFactory.getLog(ItemOverviewController.class);

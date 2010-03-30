@@ -78,6 +78,14 @@
 						<h:inputText id="lastName" 
 						    value="#{registrationController.lastName}" required="true" maxlength="255"/>
 						<br />
+
+<h:outputText value="#{messages['person_displayName']}"/>:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="displayName"></h:message>
+						<br />
+						<h:inputText id="firstName"
+							value="#{registrationController.displayName}" required="true" maxlength="255"/>
+						<br />
 						
 <h:outputText value="#{messages.person_address1}"/>:<br />
 						<h:message showSummary="true" showDetail="false"

@@ -5,7 +5,7 @@ public interface PagesURL {
 	/////////////////////////////////////////////////////////////////////////
 	// ITEM - start
 	
-	String ITEM_OVERVIEW = "/public/item/itemOverview.faces";
+	String ITEM_OVERVIEW = "/auth/item/itemOverview.faces";
 	String ITEM_OVERVIEW_PARAM_ITEM_ID = "itemID";
 	
 	String ITEM_ADD = "/auth/item/itemAdd.faces";
@@ -13,7 +13,7 @@ public interface PagesURL {
 	String ITEM_EDIT = "/auth/item/itemEdit.faces";
 	String ITEM_EDIT_PARAM_ITEM_ID = ITEM_OVERVIEW_PARAM_ITEM_ID;
 	
-	String ITEMS_LIST = "/public/item/itemsList.faces";
+	String ITEMS_LIST = "/auth/item/itemsList.faces";
 	String MY_ITEMS_LIST = "/auth/item/myItemsList.faces";
 	
 	// ITEM - end

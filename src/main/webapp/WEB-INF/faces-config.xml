@@ -334,6 +334,7 @@
 	PERSON ADD
 	********************************************************************
 	-->	
+	<!-- 
 	<navigation-rule>
 		<from-view-id>/auth/person/personAdd.jspx</from-view-id>	
 		<navigation-case>
@@ -341,12 +342,14 @@
 			<to-view-id>/auth/person/personOverview.jspx</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-	
+	-->
+	 
 	<!-- 
 	********************************************************************
 	PERSON EDIT
 	********************************************************************
 	-->
+	<!-- 
 	<navigation-rule>
 		<from-view-id>/auth/person/personEdit.jspx</from-view-id>
 		<navigation-case>
@@ -354,7 +357,8 @@
 			<to-view-id>/auth/person/personOverview.jspx</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-
+ 	-->
+ 	
 	<!-- 
 	********************************************************************
 	MY PENDING CONNECTION REQUESTS LIST

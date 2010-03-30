@@ -26,8 +26,8 @@
 
 					<h:form>
 
-Person:<br />
-						<h:outputText value="#{personOverviewController.person.firstName}" />
+Display name:<br />
+						<h:outputText value="#{personOverviewController.person.displayName}" />
 						<br />
 
 						<br />

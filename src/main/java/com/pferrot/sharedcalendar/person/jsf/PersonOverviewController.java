@@ -4,7 +4,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
+import org.springframework.security.AccessDeniedException;
 
+import com.pferrot.security.SecurityUtils;
 import com.pferrot.sharedcalendar.PagesURL;
 import com.pferrot.sharedcalendar.model.Person;
 import com.pferrot.sharedcalendar.person.PersonService;
@@ -29,12 +31,19 @@ public class PersonOverviewController
 			if (personIdString != null) {
 				personId = Long.parseLong(personIdString);
 				person = personService.findPerson(personId);
+				if (person != null && !personService.isCurrentUserAuthorizedToView(person)) {
+					throw new AccessDeniedException("User '" + SecurityUtils.getCurrentUsername() + 
+							"' is not allowed to view '" + person +"'.");
+				}
 				setPerson(person);
 			}
 			// Item not found or not item ID specified.
 			if (person == null) {
 				JsfUtils.redirect(PagesURL.PERSONS_LIST);
 			}
+		}
+		catch (AccessDeniedException ade) {
+			throw ade;
 		}
 		catch (Exception e) {
 			//TODO display standard error page instead.

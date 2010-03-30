@@ -24,6 +24,7 @@ public class RegistrationController {
 	private List<SelectItem> gendersSelectItems;
 	private String firstName;
 	private String lastName;
+	private String displayName;
 	private String email;
 	private String phoneHome;
 	private String phoneMobile;
@@ -110,6 +111,14 @@ public class RegistrationController {
 		this.lastName = lastName;
 	}
 
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -187,6 +196,7 @@ public class RegistrationController {
 		person.setGender(registrationService.findGender(getGenderId()));
 		person.setFirstName(getFirstName());
 		person.setLastName(getLastName());
+		person.setDisplayName(getDisplayName());
 		person.setEmail(getEmail());
 		person.setPhoneHome(getPhoneHome());
 		person.setPhoneMobile(getPhoneMobile());

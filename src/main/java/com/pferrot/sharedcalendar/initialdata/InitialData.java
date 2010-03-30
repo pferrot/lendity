@@ -109,7 +109,7 @@ public class InitialData {
 	private void createPersonsAndUsers() {
 		
 		// Create Patrice Ferrot, admin user.
-		Person person = getNewPerson("Patrice", "Ferrot", "patrice.ferrot@gmail.com",
+		Person person = getNewPerson("Patrice", "Ferrot", "Patrice", "patrice.ferrot@gmail.com",
 				"Châtelard 1", 1400, "Yverdon-les-Bains",
 				(Country)listValueDao.findListValue(Country.SWITZERLAND_LABEL_CODE),
 				listValueDao.findGender(Gender.MALE_LABEL_CODE));
@@ -132,7 +132,7 @@ public class InitialData {
 		
 		
 		// Create Patrice Ferrot, admin user.
-		person = getNewPerson("Stupid", "Illusion", "stupid.illusion@gmail.com",
+		person = getNewPerson("Stupid", "Illusion", "Stupid.Illusion", "stupid.illusion@gmail.com",
 				"Main Street", 12345, "Pik City",
 				(Country)listValueDao.findListValue(Country.USA_LABEL_CODE),
 				listValueDao.findGender(Gender.MALE_LABEL_CODE));
@@ -150,13 +150,15 @@ public class InitialData {
 		personDao.createPerson(person);
 	}
 	
-	private static Person getNewPerson(final String firstName, final String lastName, final String email, final String address1,
-			final Integer zip, final String city, final Country country, final Gender gender) {
+	private static Person getNewPerson(final String firstName, final String lastName, final String displayName, 
+			final String email, final String address1, final Integer zip, final String city, 
+			final Country country, final Gender gender) {
 		
 		final Person person = new Person();
 		
 		person.setFirstName(firstName);
 		person.setLastName(lastName);
+		person.setDisplayName(displayName);
 		person.setEmail(email);
 		
 		Address address = new Address();

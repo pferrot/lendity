@@ -13,7 +13,7 @@ public interface PersonDao {
 	Person findPersonFromUsername(String username);
 	Person findPersonFromUser(User user);
 	
-	// Search a person by username OR firstName OR lastName OR email.
+	// Search a person by displayName OR firstName OR lastName OR email.
 	List<Person> findPersonByAnything(String pSearchString);	
 	List<Person> findPersonByAnything(String pSearchString, int pFirstResult, int pMaxResults);
 	

@@ -44,11 +44,11 @@
 
 	<h:column>
         <f:facet name="header">
-            <h:outputText value="FIRST NAME" />
+            <h:outputText value="DISPLAY NAME" />
         </f:facet>
 		<o:separateConversationContext>
         	<h:outputLink value="#{myBannedPersonsListController.personOverviewHref}">
-            	<h:outputText value="#{person.firstName}" />
+            	<h:outputText value="#{person.displayName}" />
         	</h:outputLink>
 		</o:separateConversationContext>
     </h:column>

@@ -60,7 +60,7 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 		CoreUtils.assertNotNullOrEmptyString(pSearchString);
 		
 		DetachedCriteria critera = DetachedCriteria.forClass(Person.class).
-		                  add(getEmailLastNameFirstNameLogicalExpression(pSearchString)).
+		                  add(getEmailLastNameFirstNameDisplayNameLogicalExpression(pSearchString)).
 		                  addOrder(Order.asc("lastName").ignoreCase());
 		
 		return getHibernateTemplate().findByCriteria(critera, pFirstResult, pMaxResults);
@@ -77,7 +77,7 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 			addOrder(Order.asc("lastName").ignoreCase());
 		
 		if (pSearchString != null && pSearchString.trim().length() > 0) {
-			criteria.add(getEmailLastNameFirstNameLogicalExpression(pSearchString));
+			criteria.add(getEmailLastNameFirstNameDisplayNameLogicalExpression(pSearchString));
 		}
 		criteria.createCriteria("connections", CriteriaSpecification.INNER_JOIN).
 			add(Restrictions.eq("id", pPerson.getId()));
@@ -97,7 +97,7 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 			addOrder(Order.asc("lastName").ignoreCase());
 		
 		if (pSearchString != null && pSearchString.trim().length() > 0) {
-			criteria.add(getEmailLastNameFirstNameLogicalExpression(pSearchString));
+			criteria.add(getEmailLastNameFirstNameDisplayNameLogicalExpression(pSearchString));
 		}
 		criteria.createCriteria("bannedPersons", CriteriaSpecification.INNER_JOIN).
 			add(Restrictions.eq("id", pPerson.getId()));
@@ -110,12 +110,15 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 		return findBannedPersonsByAnything(null, pPerson, 0, 0);
 	}
 
-	private LogicalExpression getEmailLastNameFirstNameLogicalExpression(final String pSearchString) {
+	private LogicalExpression getEmailLastNameFirstNameDisplayNameLogicalExpression(final String pSearchString) {
 		CoreUtils.assertNotNullOrEmptyString(pSearchString);
 		
 		final Criterion firstNameCriterion = Restrictions.ilike("firstName", pSearchString, MatchMode.ANYWHERE);
 		final Criterion lastNameCriterion = Restrictions.ilike("lastName", pSearchString, MatchMode.ANYWHERE);
 		final Criterion emailCriterion = Restrictions.ilike("email", pSearchString, MatchMode.ANYWHERE);
-		return Restrictions.or(firstNameCriterion, Restrictions.or(lastNameCriterion, emailCriterion));
+		final Criterion displayNameCriterion = Restrictions.ilike("displayName", pSearchString, MatchMode.ANYWHERE);
+		return Restrictions.or(displayNameCriterion, 
+				   Restrictions.or(firstNameCriterion, 
+						Restrictions.or(lastNameCriterion, emailCriterion)));
 	}
 }

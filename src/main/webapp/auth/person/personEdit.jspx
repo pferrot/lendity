@@ -1,0 +1,72 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra">
+
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="Person Overview" />
+	<ui:param name="contentHeader" value="Person Overview" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+			<ui:define name="pageName">
+            	#{contentHeader}
+          	</ui:define>
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
+				<f:view>
+					<center>
+					
+					<h:form>
+
+Display name:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="displayName"></h:message>
+						<br />
+						<h:inputText id="displayName" value="#{personEditController.displayName}"
+							required="true">
+						</h:inputText>
+						<br />
+
+First name:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="firstName"></h:message>
+						<br />
+						<h:inputText id="firstName" value="#{personEditController.firstName}"
+							required="true">
+						</h:inputText>
+						<br />
+
+Last name:<br />
+						<h:message showSummary="true" showDetail="false"
+							style="color: red;" for="lastName"></h:message>
+						<br />
+						<h:inputText id="lastName" value="#{personEditController.lastName}"
+							required="true">
+						</h:inputText>
+						<br />
+						
+						<br />
+						<o:separateConversationContext>
+							<h:outputLink value="#{personEditController.personOverviewHref}">
+            					<h:outputText value="#{messages.cancel}"/>
+	         				</h:outputLink>
+						</o:separateConversationContext>
+						<br />
+						<h:commandButton value="#{messages.save}" action="#{personEditController.submit}" />
+						<br />
+					</h:form></center>
+				</f:view>
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

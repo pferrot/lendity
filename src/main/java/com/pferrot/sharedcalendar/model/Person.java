@@ -39,6 +39,10 @@ public class Person implements Serializable {
 	@Column(name = "LAST_NAME", nullable = false, length = 255)
 	@Audited
     private String lastName;
+
+	@Column(name = "DISPLAY_NAME", nullable = false, length = 255)
+	@Audited
+    private String displayName;
 	
 	@Column(name = "EMAIL", length = 255)
 	@Audited
@@ -111,12 +115,21 @@ public class Person implements Serializable {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+    
     public String getLastName() {
         return this.lastName;
     }
     
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getDisplayName() {
+        return this.displayName;
+    }
+    
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
 	public String getEmail() {

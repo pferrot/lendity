@@ -265,11 +265,6 @@
 	      <property name="personService" ref="personService"/>
 	</bean>
 	
-	<bean id="personAddController" class="com.pferrot.sharedcalendar.person.jsf.PersonAddController"
-	      scope="conversation.access">
-	      <property name="personService" ref="personService"/>
-	</bean>
-	
 	<bean id="personEditController" class="com.pferrot.sharedcalendar.person.jsf.PersonEditController"
 	      scope="conversation.access">
 	      <property name="personService" ref="personService"/>

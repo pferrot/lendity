@@ -40,7 +40,7 @@
         </f:facet>
 		<o:separateConversationContext>
         	<h:outputLink value="#{myPendingConnectionRequestsListController.connectionOverviewHref}">
-            	<h:outputText value="#{connectionRequest.connection.firstName}" />
+            	<h:outputText value="#{connectionRequest.connection.displayName}" />
         	</h:outputLink>
 		</o:separateConversationContext>
     </h:column>
@@ -51,7 +51,7 @@
         </f:facet>
 		<o:separateConversationContext>
         	<h:outputLink value="#{myPendingConnectionRequestsListController.requesterOverviewHref}">
-            	<h:outputText value="#{connectionRequest.requester.firstName}" />
+            	<h:outputText value="#{connectionRequest.requester.displayName}" />
         	</h:outputLink>
 		</o:separateConversationContext>
     </h:column>

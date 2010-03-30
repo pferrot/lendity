@@ -79,6 +79,18 @@ public class PersonService {
 		return false;
 	}
 
+	public boolean isCurrentUserAuthorizedToAdd() {
+		final Person currentPerson = getCurrentPerson();
+		if (currentPerson == null) {
+			return false;
+		}
+		if (currentPerson.getUser() != null &&
+		    currentPerson.getUser().isAdmin()) {
+			return true;
+		}
+		return false;
+	}
+
 	private Person getCurrentPerson() {
 //		final String username = SecurityUtils.getCurrentUsername();
 //		return personDao.findPersonFromUsername(username);

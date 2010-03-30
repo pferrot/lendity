@@ -4,7 +4,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
+import org.springframework.security.AccessDeniedException;
 
+import com.pferrot.security.SecurityUtils;
 import com.pferrot.sharedcalendar.PagesURL;
 import com.pferrot.sharedcalendar.model.Person;
 import com.pferrot.sharedcalendar.person.PersonUtils;
@@ -23,12 +25,21 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		try {
 			final String personIdString = JsfUtils.getRequestParameter(PagesURL.PERSON_EDIT_PARAM_PERSON_ID);
 			if (personIdString != null) {
-				setPerson(getPersonService().findPerson(Long.parseLong(personIdString)));
+				final Long personId = Long.parseLong(personIdString);
+				person = getPersonService().findPerson(personId);				
+				if (person != null && !getPersonService().isCurrentUserAuthorizedToEdit(person)) {
+					throw new AccessDeniedException("User '" + SecurityUtils.getCurrentUsername() + 
+							"' is not allowed to edit '" + person +"'.");
+				}
+				setPerson(person);
 			}
 			// Person not found or no person ID specified.
 			if (getPerson() == null) {
 				JsfUtils.redirect(PagesURL.PERSONS_LIST);
 			}
+		}
+		catch (AccessDeniedException ade) {
+			throw ade;
 		}
 		catch (Exception e) {
 			//TODO display standard error page instead.
@@ -40,12 +51,21 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		return person;
 	}
 
-	public void setPerson(Person person) {
-		this.person = person;
+	public void setPerson(Person pPerson) {
+		person = pPerson;
+		
+		setFirstName(pPerson.getFirstName());
+		setLastName(pPerson.getLastName());
+		setDisplayName(pPerson.getDisplayName());
 	}
 
 	public Long updatePerson() {
-		// TODO what to update?
+
+		getPerson().setFirstName(getFirstName());
+		getPerson().setLastName(getLastName());
+		getPerson().setDisplayName(getDisplayName());
+		
+		getPersonService().updatePerson(getPerson());
 		
 		return getPerson().getId();
 	}
