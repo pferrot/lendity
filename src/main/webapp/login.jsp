@@ -1,40 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix='c' uri='http://java.sun.com/jstl/core_rt' %>
 <%@ page import="org.springframework.security.ui.AbstractProcessingFilter" %>
 <%@ page import="org.springframework.security.ui.webapp.AuthenticationProcessingFilter" %>
 <%@ page import="org.springframework.security.AuthenticationException" %>
 
-<!-- Not used unless you declare a <form-login login-page="/login.jsp"/> element -->
-
 <html>
-  <head>
-    <title>CUSTOM SPRING SECURITY LOGIN</title>
-  </head>
-
-  <body onload="document.f.j_username.focus();">
-    <h1>CUSTOM SPRING SECURITY LOGIN</h1>
-
-    <%-- this form-login-page form is also used as the
-         form-error-page to ask for a login again.
-         --%>
-    <c:if test="${not empty param.login_error}">
-      <font color="red">
-        Your login attempt was not successful, try again.<br/><br/>
-        Reason: <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/>.
-      </font>
-    </c:if>
-
-    <form name="f" action="<c:url value='http://localhost:8080/shared_calendar/j_spring_security_check'/>" method="POST">
-      <table>
-        <tr><td>User:</td><td><input type='text' name='j_username' value='<c:if test="${not empty param.login_error}"><c:out value="${SPRING_SECURITY_LAST_USERNAME}"/></c:if>'/></td></tr>
-        <tr><td>Password:</td><td><input type='password' name='j_password'></td></tr>
-        <tr><td><input type="checkbox" name="_spring_security_remember_me"></td><td>Don't ask for my password for two weeks</td></tr>
-
-        <tr><td colspan='2'><input name="submit" type="submit"></td></tr>
-        <tr><td colspan='2'><input name="reset" type="reset"></td></tr>
-      </table>
-
-    </form>
-
-  </body>
+	<head>
+		<title>Login</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<link rel="stylesheet" href="<%=request.getContextPath()%>/public/css/reset-fonts.css" type="text/css" media="screen, projection" />
+		<link rel="stylesheet" href="<%=request.getContextPath()%>/public/css/gt-styles.css" type="text/css" media="screen, projection" />
+	</head>
+	<body>
+		
+		<!-- login form head -->
+		<div class="gt-login-hd">
+			Login
+		</div>
+		
+		<!-- login box -->
+		<div class="gt-login-box">
+    
+			<!-- login form -->
+		  <form name="f" class="gt-form" action="<c:url value='http://localhost:8080/shared_calendar/j_spring_security_check'/>" method="POST">
+				<!-- form row -->
+				<div class="gt-form-row">
+					<label class="gt-login-label">Username</label>
+					<input type='text' class="gt-form-text" name='j_username' value='<c:if test="${not empty param.login_error}"><c:out value="${SPRING_SECURITY_LAST_USERNAME}"/></c:if>'/>
+				</div><!-- /form row -->
+				
+				<!-- form row -->
+				<div class="gt-form-row">
+					<label class="gt-login-label">Password</label>
+					<input type='password' class="gt-form-text" name='j_password'/>
+				</div><!-- /form row -->
+				
+				<!-- form row -->
+				<div class="gt-form-row">
+					<label class="gt-remember-me"><input type="checkbox" class="gt-form-checkbox" name="_spring_security_remember_me"> Remember me</label>
+					
+					<input type="submit" value="Login" class="gt-btn-green-medium gt-btn-right" />
+				</div>
+				<!-- /form row -->
+				
+				<p class="gt-forgot-password"><a href="<%=request.getContextPath()%>/public/lostpassword/lostpassword.faces">Forgot your password?</a></p>
+				
+			</form><!-- /login form -->
+		</div><!-- /login box -->
+		
+		
+	</body>
 </html>
