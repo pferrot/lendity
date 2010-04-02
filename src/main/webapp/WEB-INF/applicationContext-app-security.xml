@@ -5,6 +5,7 @@ security module.
  -->
 <beans:beans xmlns="http://www.springframework.org/schema/security"
 	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:orchestra="http://myfaces.apache.org/orchestra"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
                         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.1.xsd">
 
@@ -24,7 +25,7 @@ security module.
 			access="IS_AUTHENTICATED_REMEMBERED" /> <intercept-url
 			pattern="/post.html" access="ROLE_TELLER" />
 		-->
-		<intercept-url pattern="/login.jsp" filters="none" />
+		<intercept-url pattern="/login.faces" filters="none" />
 		<intercept-url pattern="/public/**" filters="none" />
 		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />		
 		<intercept-url pattern="/**" access="ROLE_USER" />
@@ -49,7 +50,7 @@ security module.
 		<http-basic />
 		<logout />
  		-->
-
+		<logout logout-success-url="/index.faces" />
 		<remember-me user-service-ref="security.customUserDetailsService"/>
 		<!--
 			Uncomment to limit the number of sessions a user can have
@@ -57,16 +58,21 @@ security module.
 			exception-if-maximum-exceeded="true"/>
 		-->
 	</http>
+	
+	<beans:bean id="loginController" class="com.pferrot.sharedcalendar.login.jsf.LoginController"
+	      scope="conversation.access" orchestra:conversationName="login">
+	</beans:bean>	
 
 	<beans:bean id="authenticationProcessingFilter"	class="com.pferrot.sharedcalendar.security.filter.CustomAuthenticationProcessingFilter">
 		<custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
+		<beans:property name="authenticationFailureUrl" value="/login.faces?loginFailed=true"/>
 		<beans:property name="defaultTargetUrl" value="/auth/person/personsList.faces" />
 		<beans:property name="authenticationManager" ref="authenticationManager" />
 		<beans:property name="personDao" ref="personDao"/>
 	</beans:bean>
 
 	<beans:bean id="authenticationProcessingFilterEntryPoint"	class="org.springframework.security.ui.webapp.AuthenticationProcessingFilterEntryPoint">
-		<beans:property name="loginFormUrl" value="/login.jsp" />
+		<beans:property name="loginFormUrl" value="/login.faces" />
 		<beans:property name="forceHttps" value="false" />
 	</beans:bean>
 

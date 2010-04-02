@@ -158,7 +158,7 @@ public class InitialData {
 		
 		person.setFirstName(firstName);
 		person.setLastName(lastName);
-		person.setDisplayName(displayName);
+//		person.setDisplayName(displayName);
 		person.setEmail(email);
 		
 		Address address = new Address();

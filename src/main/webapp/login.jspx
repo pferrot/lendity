@@ -1,0 +1,101 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="#{messages.login}" />
+	<ui:param name="contentHeader" value="#{messages.login}" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+
+
+		<!-- body -->
+		<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				<h2>Tada</h2>
+				<p>Bla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla bla</p>
+				<p>Bla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla bla</p>
+				<p>Bla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla bla</p>
+				<p>Bla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla bla</p>
+				
+			</div>
+			<!-- /main content -->
+
+			<!-- sidebar -->
+			<div class="gt-sidebar">			
+			
+			<!-- main content -->
+			<div class="gt-sidebar-content">
+				
+				<!-- Registration Form -->
+				<h2 class="gt-form-head">#{messages.login}</h2>
+					
+			
+				<!-- login box -->
+				<div class="gt-form gt-login-box">
+				
+				
+				<f:view>
+
+					<h:form>
+				
+					<!-- form row -->
+					<div class="gt-form-row gt-width-66">
+						<label><h:outputText value="#{messages.person_email}"/> *</label>
+						<h:inputText id="j_username" name="j_username" required="true" styleClass="gt-form-text gt-form-text-login" ></h:inputText>										
+					</div><!-- /form row -->	
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-66">
+						<label><h:outputText value="#{messages.user_password}"/> *</label>
+						<h:inputSecret id="j_password" name="j_password" required="true" styleClass="gt-form-text gt-form-text-login"></h:inputSecret>											
+					</div><!-- /form row -->	
+					
+					<!-- form row -->
+					<div class="gt-form-row">
+						<label class="gt-remember-me"><h:selectBooleanCheckbox id="_spring_security_remember_me" styleClass="gt-form-checkbox" /> Remember me</label>
+					</div>
+					<!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row">
+						<h:commandButton styleClass="gt-btn-green-medium gt-btn-left" type="submit" id="login" action="#{loginController.doLogin}" value="Login" />
+					</div>
+					<!-- /form row -->				
+					<p class="gt-forgot-password"><a href="#{facesContext.externalContext.requestContextPath}/public/lostpassword/lostpassword.faces">#{messages.lostpassword}</a></p>
+					<p class="gt-forgot-password"><a href="#{facesContext.externalContext.requestContextPath}/public/registration/registration.faces">#{messages.not_member_yet}</a></p>
+													
+					</h:form>
+				</f:view>	
+				</div>
+						
+				
+			</div>
+						
+				
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+				
+						
+						
+						
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>

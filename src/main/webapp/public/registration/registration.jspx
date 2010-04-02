@@ -5,159 +5,174 @@
 	xmlns:h="http://java.sun.com/jsf/html">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.registration_pageTitle}" />
-	<ui:param name="contentHeader" value="#{messages.registration_contentHeader}" />
+	<ui:param name="pageTitle" value="#{messages.registration_signup}" />
+	<ui:param name="contentHeader" value="#{messages.registration_signup}" />
 
 	<ui:define name="content">
 
 		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
 
 			<!-- header content here  -->
-			<ui:define name="pageName">#{contentHeader}</ui:define>
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
 
 			<!-- insert content here -->
 			<ui:define name="pageContent">
-<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
+
+
+		<!-- body -->
+		<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				
+				<!-- Registration Form -->
+				<h2 class="gt-form-head">#{messages.registration_signup}</h2>
+				<h6></h6>
+				<div class="gt-form gt-content-box">
+				
+				<div style="padding-left: 100px">
+				
 				<f:view>
-					<center>
 
 					<h:form>
-						
-<h:outputText value="#{messages.person_email}"/>:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="email"></h:message>
-						<br />
-						<h:inputText id="email"
+
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-66">
+						<label><h:outputText value="#{messages.person_firstName}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="firstName"></h:message>			
+						<h:inputText id="firstName" styleClass="gt-form-text"
+							value="#{registrationController.firstName}" required="true" maxlength="255"/>
+					</div><!-- /form row -->
+					
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-66">
+						<label><h:outputText value="#{messages.person_lastName}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="lastName"></h:message>
+					    <h:inputText id="lastName" styleClass="gt-form-text"
+							value="#{registrationController.lastName}" required="true" maxlength="255"/>			
+					</div><!-- /form row -->
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-66">
+						<label><h:outputText value="#{messages.person_email}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="email"></h:message>
+						<h:inputText id="email" styleClass="gt-form-text"
 						    value="#{registrationController.email}" required="true"
 						    validator="#{registrationStep1.validateEmail}" maxlength="255">
-						</h:inputText>
-						<br />
+						</h:inputText>						
+					</div><!-- /form row -->
 
-<h:outputText value="#{messages.user_password}"/>:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="password"></h:message>
-						<br />
-						<h:inputSecret id="password"
+					<!-- form row -->
+					<div class="gt-form-row gt-width-66">
+						<label><h:outputText value="#{messages.user_password}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="password"></h:message>
+						<h:inputSecret id="password" styleClass="gt-form-text"
 						    value="#{registrationController.password}" required="true"
-						    validator="#{registrationStep1.validatePassword}" maxlength="30">
-						</h:inputSecret>
-						<br />
-						
-<h:outputText value="#{messages.user_passwordRepeat}"/>:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="passwordRepeat"></h:message>
-						<br />
-						<h:inputSecret id="passwordRepeat"
+						    validator="#{registrationStep1.validatePassword}" maxlength="255">
+						</h:inputSecret>						
+					</div><!-- /form row -->
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-66">
+						<label><h:outputText value="#{messages.user_passwordRepeat}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="passwordRepeat"></h:message>
+						<h:inputSecret id="passwordRepeat" styleClass="gt-form-text"
 						    value="#{registrationController.passwordRepeat}" required="true"
-						    validator="#{registrationStep1.validatePasswordRepeat}" maxlength="30">
-						</h:inputSecret>
-						<br />
+						    validator="#{registrationStep1.validatePasswordRepeat}" maxlength="255">
+						</h:inputSecret>												
+					</div><!-- /form row -->					
+					
+					
+					<!-- form row -->
+					<div class="gt-form-row">
+						<br/><h:commandButton styleClass="gt-btn-green-large gt-btn-left" value="#{messages.registration_submit}" action="#{registrationStep1.submit}" />
+					</div>
+					<!-- /form row -->
+					
+					</h:form>
+				</f:view>		
+				</div>			
+				</div>
+				<!-- /Registration Form -->
+				
+			</div>
+			<!-- /main content -->
 
-<h:outputText value="#{messages['person_gender']}"/>:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="gender"></h:message>
-						<br />
-						<h:selectOneMenu id="gender" 
-						    value="#{registrationController.genderId}" required="true">
-							<f:selectItems value="#{registrationController.gendersSelectItems}"/>
-						</h:selectOneMenu>
-						<br />
+			<!-- sidebar -->
+			<div class="gt-sidebar">
+				<!-- Sidebar Navigation -->
+				<div class="gt-sidebar-nav gt-sidebar-nav-green">
 
-<h:outputText value="#{messages['person_firstName']}"/>:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="firstName"></h:message>
-						<br />
-						<h:inputText id="firstName"
-							value="#{registrationController.firstName}" required="true" maxlength="255"/>
-						<br />
+					<h3>Quick Links</h3>
+					<ul>
+						<li><a href="">Add a New Post</a></li>
+						<li><a href="">Edit User Settings</a></li>
+						<li><a href="">View Live Site</a></li>
+					</ul>
+				</div><!-- /Sidebar Navigation -->
 
-<h:outputText value="#{messages.person_lastName}"/>:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="lastName"></h:message>
-						<br />
-						<h:inputText id="lastName" 
-						    value="#{registrationController.lastName}" required="true" maxlength="255"/>
-						<br />
+				
+				<!-- Sidebar Box -->
+				<div class="gt-sidebar-box gt-sidebar-box-brown">
+					<!-- search -->
+					<div class="gt-search"><div class="gt-search-inner">
+						<input type="text" class="gt-search-text" value="Find an Article" onfocus="javascript:if(this.value=='Find an Article')this.value='';" onblur="javascript:if(this.value=='')this.value='Find an Article';" />
+					</div></div><!-- /search -->
+				</div><!-- /Sidebar Box -->
+				
+				
+				<!-- Sidebar Content -->
+				<div class="gt-sidebar-content">
 
-<h:outputText value="#{messages['person_displayName']}"/>:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="displayName"></h:message>
-						<br />
-						<h:inputText id="firstName"
-							value="#{registrationController.displayName}" required="true" maxlength="255"/>
-						<br />
+					<h3>Author Contact</h3>
+					<p>John Marker<br />
+					1756 Main Court<br />
+					City, State 12345, Country</p>
+					
+					<p>email: <a href="">john.marker@example.com</a></p>
+					
+					<p>phone: 123-555-1356</p>
+
+					
+					<p>aim: johnmarker</p>
+				</div><!-- /Sidebar Content -->
+				
+				<!-- Sidebar List -->
+				<div class="gt-sidebar-list">
+					<h3>Recent Users</h3>
+					<ul class="gt-sidebar-list-content">
+						<li class="gt-sidebar-list-row">
+							<img class="gt-avatar-small" src="images/gt/avatar-small.gif" alt="avatar-small" width="25" height="25"/>
+
+							<h4><a href="">John Marker</a></h4>
+							<p>I love to color pictures!</p>
+						</li>
 						
-<h:outputText value="#{messages.person_address1}"/>:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="address1"></h:message>
-						<br />
-						<h:inputText id="address1"
-						    value="#{registrationController.address1}" maxlength="255"/>
-						<br />
+						<li class="gt-sidebar-list-row">
+							<img class="gt-avatar-small" src="images/gt/avatar-small.gif" alt="avatar-small" width="25" height="25"/>
+							<h4><a href="">Charlee Watts</a></h4>
+							<p>Eco-friendly is the way to go!</p>
+
+						</li>
+					</ul>
+				</div><!-- /Sidebar List -->
+				
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+				
 						
-<h:outputText value="#{messages.person_address2}"/>:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="address2"></h:message>
-						<br />
-						<h:inputText id="address2"
-						    value="#{registrationController.address2}" maxlength="255"/>
-						<br />
-
-<h:outputText value="#{messages.person_zip}"/>:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="zip"></h:message>
-						<br />
-						<h:inputText id="zip"
-						    value="#{registrationController.zip}" maxlength="10"/>
-						<br />
-
-<h:outputText value="#{messages.person_city}"/>:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="city"></h:message>
-						<br />
-						<h:inputText id="city"
-						    value="#{registrationController.city}" maxlength="255"/>
-						<br />
-
-<h:outputText value="#{messages['person_country']}"/>:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="country"></h:message>
-						<br />
-						<h:selectOneMenu id="country" value="#{registrationController.countryId}">
-							<f:selectItems value="#{registrationController.countriesSelectItems}"/>
-						</h:selectOneMenu>
-						<br />
-
-<h:outputText value="#{messages.person_phoneHome}"/>:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="phoneHome"></h:message>
-						<br />
-						<h:inputText id="phoneHome"
-						    value="#{registrationController.phoneHome}" maxlength="100"/>
-						<br />
 						
-<h:outputText value="#{messages.person_phoneMobile}"/>:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="phoneMobile"></h:message>
-						<br />
-						<h:inputText id="phoneMobile"
-						    value="#{registrationController.phoneMobile}" maxlength="100"/>
-						<br />			
-
-<h:outputText value="#{messages.person_phoneProfessional}"/>:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="phoneProfessional"></h:message>
-						<br />
-						<h:inputText id="phoneProfessional"
-						    value="#{registrationController.phoneProfessional}" maxlength="100"/>
-						<br />	
-
-						<br />
-
-						<h:commandButton value="#{messages.registration_submit}" action="#{registrationStep1.submit}" />
-						<br />
-					</h:form></center>
-				</f:view>
+						
 			</ui:define>
 		</ui:decorate>
 

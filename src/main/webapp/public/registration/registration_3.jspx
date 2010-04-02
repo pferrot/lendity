@@ -5,32 +5,107 @@
 	xmlns:h="http://java.sun.com/jsf/html">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.registration_pageTitle}" />
-	<ui:param name="contentHeader" value="#{messages.registration_contentHeader}" />
+	<ui:param name="pageTitle" value="#{messages.registration_completed}" />
+	<ui:param name="contentHeader" value="#{messages.registration_completed}" />
 
 	<ui:define name="content">
 
 		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
 
 			<!-- header content here  -->
-			<ui:define name="pageName">
-            	#{contentHeader}
-          	</ui:define>
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
 
 			<!-- insert content here -->
 			<ui:define name="pageContent">
-<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
-				<f:view>
-					<center>
 
-					<h:form>
 
-User: <h:outputText value="#{registrationController.email}" /> has been created...
+		<!-- body -->
+		<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+			
+				<h2 class="gt-form-head">#{messages.registration_completed}</h2>				
+			    <p>
+	            <h:outputFormat value="#{messages.registration_confirmation_1}">
+			      <f:param value="#{registrationController.email}" />
+		        </h:outputFormat>
+		        </p>
+		        <p><b>#{messages.registration_confirmation_2}</b></p>
+				<p>#{messages.registration_confirmation_3}</p>
+								
+			</div>
+			<!-- /main content -->
 
-					</h:form>
+			<!-- sidebar -->
+			<div class="gt-sidebar">
+				<!-- Sidebar Navigation -->
+				<div class="gt-sidebar-nav gt-sidebar-nav-green">
 
-					</center>
-				</f:view>
+					<h3>Quick Links</h3>
+					<ul>
+						<li><a href="">Add a New Post</a></li>
+						<li><a href="">Edit User Settings</a></li>
+						<li><a href="">View Live Site</a></li>
+					</ul>
+				</div><!-- /Sidebar Navigation -->
+
+				
+				<!-- Sidebar Box -->
+				<div class="gt-sidebar-box gt-sidebar-box-brown">
+					<!-- search -->
+					<div class="gt-search"><div class="gt-search-inner">
+						<input type="text" class="gt-search-text" value="Find an Article" onfocus="javascript:if(this.value=='Find an Article')this.value='';" onblur="javascript:if(this.value=='')this.value='Find an Article';" />
+					</div></div><!-- /search -->
+				</div><!-- /Sidebar Box -->
+				
+				
+				<!-- Sidebar Content -->
+				<div class="gt-sidebar-content">
+
+					<h3>Author Contact</h3>
+					<p>John Marker<br />
+					1756 Main Court<br />
+					City, State 12345, Country</p>
+					
+					<p>email: <a href="">john.marker@example.com</a></p>
+					
+					<p>phone: 123-555-1356</p>
+
+					
+					<p>aim: johnmarker</p>
+				</div><!-- /Sidebar Content -->
+				
+				<!-- Sidebar List -->
+				<div class="gt-sidebar-list">
+					<h3>Recent Users</h3>
+					<ul class="gt-sidebar-list-content">
+						<li class="gt-sidebar-list-row">
+							<img class="gt-avatar-small" src="images/gt/avatar-small.gif" alt="avatar-small" width="25" height="25"/>
+
+							<h4><a href="">John Marker</a></h4>
+							<p>I love to color pictures!</p>
+						</li>
+						
+						<li class="gt-sidebar-list-row">
+							<img class="gt-avatar-small" src="images/gt/avatar-small.gif" alt="avatar-small" width="25" height="25"/>
+							<h4><a href="">Charlee Watts</a></h4>
+							<p>Eco-friendly is the way to go!</p>
+
+						</li>
+					</ul>
+				</div><!-- /Sidebar List -->
+				
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+
+				
+						
+						
+						
 			</ui:define>
 		</ui:decorate>
 

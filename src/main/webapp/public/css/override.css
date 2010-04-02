@@ -6,3 +6,36 @@ You can then use !important to override the style.
 
 If you add styles to this template, be sure to include it in your template files.
 */
+
+/*
+Overriden for the cursor property.
+*/
+.gt-btn-green-mini, .gt-btn-green-small, .gt-btn-green-medium, .gt-btn-green-large, .gt-btn-brown-mini, .gt-btn-brown-small, .gt-btn-brown-medium, .gt-btn-brown-large {
+	display: block;
+	height: 38px;
+	line-height: 38px;
+	text-align: center;
+	font-weight: bold;
+	color: #fff!important;
+	text-decoration: none!important;
+	font-size: 13px;
+	border: none;
+	padding: 0;
+	margin: 0;
+	cursor: pointer!important;
+	cursor: hand!important;	
+}
+
+/*
+Overriden for width.
+*/
+.gt-login-box {
+	width: 200px!important;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 1.5em 3em;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	border-radius: 5px;
+}
+

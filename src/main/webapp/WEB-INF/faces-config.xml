@@ -3,6 +3,11 @@
   "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
   "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
 <faces-config>
+
+	<lifecycle>
+		<phase-listener>com.pferrot.sharedcalendar.login.listener.LoginErrorPhaseListener</phase-listener>
+	</lifecycle>
+
 	
 	<application>
 		<!-- 
@@ -83,6 +88,15 @@
 		
 	<navigation-rule>
 		<from-view-id>/public/registration/lostpassword_2.jspx</from-view-id>
+	</navigation-rule>	
+
+	<!-- 
+	********************************************************************
+	LOGIN
+	********************************************************************
+	-->		
+	<navigation-rule>
+		<from-view-id>/login.jspx</from-view-id>
 	</navigation-rule>	
 
 	<!-- 

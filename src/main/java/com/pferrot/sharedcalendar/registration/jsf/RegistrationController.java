@@ -193,22 +193,22 @@ public class RegistrationController {
 		user.setPassword(getPassword());
 	
 		Person person = new Person();
-		person.setGender(registrationService.findGender(getGenderId()));
+//		person.setGender(registrationService.findGender(getGenderId()));
 		person.setFirstName(getFirstName());
 		person.setLastName(getLastName());
-		person.setDisplayName(getDisplayName());
+//		person.setDisplayName(getDisplayName());
 		person.setEmail(getEmail());
-		person.setPhoneHome(getPhoneHome());
-		person.setPhoneMobile(getPhoneMobile());
-		person.setPhoneProfessional(getPhoneProfessional());
+//		person.setPhoneHome(getPhoneHome());
+//		person.setPhoneMobile(getPhoneMobile());
+//		person.setPhoneProfessional(getPhoneProfessional());
 		person.setUser(user);
 		
 		final Address address = new Address();
-		address.setAddress1(getAddress1());
-		address.setAddress2(getAddress2());
-		address.setZip(getZip());
-		address.setCity(getCity());
-		address.setCountry(registrationService.findCountry(getCountryId()));
+//		address.setAddress1(getAddress1());
+//		address.setAddress2(getAddress2());
+//		address.setZip(getZip());
+//		address.setCity(getCity());
+//		address.setCountry(registrationService.findCountry(getCountryId()));
 		person.setAddress(address);		
 		
 		registrationService.createUser(person);		

@@ -4,3 +4,44 @@ File:		custom.css - Use this file to add any custom styles you need
 
 If you add styles to this template, be sure to include it in your template files.
 */
+.testclass {
+	background-color: yellow;	
+}
+.gt-form-text-login {
+	width: 200px!important;	
+}
+.gt-form .error {
+	/*
+	background: url(../images/famfamfam/icons/exclamation.png) no-repeat 0 0;
+	*/
+	font-size: 80%;
+	color: #c2462c;
+	padding-left:0px;
+	margin-top:0px;
+	margin-left:0px;
+	margin-right:0px;
+	margin-bottom:5px;
+	
+	font-weight: bold;
+	display: block;
+}
+
+/*
+Todo: different color when mousing over buttons.
+*/
+.gt-btn-green-mini:hover {
+}
+.gt-btn-green-small:hover {
+}
+.gt-btn-green-medium:hover {
+}
+.gt-btn-green-large:hover {
+}
+.gt-btn-brown-mini:hover {
+}
+.gt-btn-brown-small:hover {
+}
+.gt-btn-brown-medium:hover {
+}
+.gt-btn-brown-large:hover {
+}

@@ -67,7 +67,7 @@ public class Person implements Serializable {
 	private User user;
 	
 	@ManyToOne(targetEntity = com.pferrot.sharedcalendar.model.Gender.class)
-	@JoinColumn(name = "GENDER_ID", nullable = false)
+	@JoinColumn(name = "GENDER_ID", nullable = true)
 	private Gender gender;
 	
 	
@@ -114,6 +114,7 @@ public class Person implements Serializable {
     
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+        setDisplayName(this.firstName + " " + this.lastName);
     }
     
     public String getLastName() {
@@ -122,13 +123,14 @@ public class Person implements Serializable {
     
     public void setLastName(String lastName) {
         this.lastName = lastName;
+        setDisplayName(this.firstName + " " + this.lastName);
     }
 
     public String getDisplayName() {
         return this.displayName;
     }
-    
-    public void setDisplayName(String displayName) {
+
+    private void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
