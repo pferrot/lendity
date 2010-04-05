@@ -1,0 +1,9 @@
+Hello $firstName,
+
+Please follow the link below in order to complete your registration for $siteName.
+
+$activationLink
+
+Thank you for joining,
+
+$signature
