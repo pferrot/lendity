@@ -39,3 +39,11 @@ Overriden for width.
 	border-radius: 5px;
 }
 
+/*
+Overriden for align right.
+*/
+.gt-util-box-inner {
+	padding: .35em 2em;
+	text-align : right!important; 
+}
+

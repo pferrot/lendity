@@ -25,10 +25,15 @@ security module.
 			access="IS_AUTHENTICATED_REMEMBERED" /> <intercept-url
 			pattern="/post.html" access="ROLE_TELLER" />
 		-->
+		<!-- 
 		<intercept-url pattern="/login.faces" filters="none" />
 		<intercept-url pattern="/public/**" filters="none" />
+		 -->
+		<intercept-url pattern="/login.faces" access="ROLE_ANONYMOUS, ROLE_USER" />
+		<intercept-url pattern="/public/**" access="ROLE_ANONYMOUS, ROLE_USER" />
 		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />		
 		<intercept-url pattern="/**" access="ROLE_USER" />
+		<anonymous username="anonymous" granted-authority="ROLE_ANONYMOUS"/>
 		<!--
 			<intercept-url pattern="/secure/extreme/**"
 			access="ROLE_SUPERVISOR"/>
@@ -50,7 +55,7 @@ security module.
 		<http-basic />
 		<logout />
  		-->
-		<logout logout-success-url="/index.faces" />
+		<logout logout-success-url="/auth/home.faces" />
 		<remember-me user-service-ref="security.customUserDetailsService"/>
 		<!--
 			Uncomment to limit the number of sessions a user can have
@@ -60,13 +65,16 @@ security module.
 	</http>
 	
 	<beans:bean id="loginController" class="com.pferrot.sharedcalendar.login.jsf.LoginController"
-	      scope="conversation.access" orchestra:conversationName="login">
+	      scope="request">
 	</beans:bean>	
 
-	<beans:bean id="authenticationProcessingFilter"	class="com.pferrot.sharedcalendar.security.filter.CustomAuthenticationProcessingFilter">
+	<beans:bean id="authenticationController" class="com.pferrot.sharedcalendar.login.jsf.AuthenticationController">
+	</beans:bean>	
+
+	<beans:bean id="authenticationProcessingFilter"	class="com.pferrot.sharedcalendar.login.filter.CustomAuthenticationProcessingFilter">
 		<custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
 		<beans:property name="authenticationFailureUrl" value="/login.faces?loginFailed=true"/>
-		<beans:property name="defaultTargetUrl" value="/auth/person/personsList.faces" />
+		<beans:property name="defaultTargetUrl" value="/auth/home.jsp" />
 		<beans:property name="authenticationManager" ref="authenticationManager" />
 		<beans:property name="personDao" ref="personDao"/>
 	</beans:bean>

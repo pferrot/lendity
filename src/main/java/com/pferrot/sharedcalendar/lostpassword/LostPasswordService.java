@@ -11,6 +11,7 @@ import com.pferrot.emailsender.Consts;
 import com.pferrot.emailsender.manager.MailManager;
 import com.pferrot.security.dao.UserDao;
 import com.pferrot.security.model.User;
+import com.pferrot.sharedcalendar.configuration.Configuration;
 import com.pferrot.sharedcalendar.dao.PersonDao;
 import com.pferrot.sharedcalendar.model.Person;
 
@@ -83,12 +84,12 @@ public class LostPasswordService {
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(person.getEmail(), person.getEmail());
 		
-		mailManager.send(Consts.DEFAULT_SENDER_NAME, 
-				         Consts.DEFAULT_SENDER_ADDRESS,
+		mailManager.send(Configuration.getNoReplySenderName(), 
+						 Configuration.getNoReplyEmailAddress(),
 				         to,
 				         null, 
 				         null,
-				         "Your password for sharedcalendar.com",
+				         "Your password for " + Configuration.getSiteName(),
 				         objects, 
 				         velocityTemplateLocation);		
 		

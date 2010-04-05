@@ -31,6 +31,10 @@ public class Person implements Serializable {
 	@Id @GeneratedValue
 	@Column(name = "ID")
     private Long id;
+
+	@Column(name = "ENABLED", nullable = false)
+	@Audited
+	private Boolean enabled;
 	
 	@Column(name = "FIRST_NAME", nullable = false, length = 255)
 	@Audited
@@ -107,8 +111,20 @@ public class Person implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
-    public String getFirstName() {
+
+    public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public boolean isEnabled() {
+		return Boolean.TRUE.equals(getEnabled());
+	}
+
+	public String getFirstName() {
         return this.firstName;
     }
     

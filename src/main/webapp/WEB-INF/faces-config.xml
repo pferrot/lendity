@@ -4,11 +4,6 @@
   "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
 <faces-config>
 
-	<lifecycle>
-		<phase-listener>com.pferrot.sharedcalendar.login.listener.LoginErrorPhaseListener</phase-listener>
-	</lifecycle>
-
-	
 	<application>
 		<!-- 
 		Make it possible to access spring beans.

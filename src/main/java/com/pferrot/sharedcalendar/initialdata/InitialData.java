@@ -120,6 +120,8 @@ public class InitialData {
 		user.setPassword("pf");
 		user.setEnabled(Boolean.TRUE);
 		user.setCreationDate(new Date());
+		user.setActivationCode("MANUALLY ACTIVATED");
+		user.setActivationDate(new Date());
 		Role userRole = roleDao.findRole(Role.USER_ROLE_NAME);
 		Role adminRole = roleDao.findRole(Role.ADMIN_ROLE_NAME);
 		user.addRole(userRole);
@@ -142,6 +144,8 @@ public class InitialData {
 		user.setPassword("stupid");
 		user.setEnabled(Boolean.TRUE);
 		user.setCreationDate(new Date());
+		user.setActivationCode("MANUALLY ACTIVATED");
+		user.setActivationDate(new Date());
 		user.addRole(userRole);
 		
 		person.setUser(user);		
@@ -160,6 +164,7 @@ public class InitialData {
 		person.setLastName(lastName);
 //		person.setDisplayName(displayName);
 		person.setEmail(email);
+		person.setEnabled(Boolean.TRUE);
 		
 		Address address = new Address();
 		address.setAddress1(address1);

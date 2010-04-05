@@ -4,11 +4,10 @@ File:		custom.css - Use this file to add any custom styles you need
 
 If you add styles to this template, be sure to include it in your template files.
 */
-.testclass {
-	background-color: yellow;	
-}
 .gt-form-text-login {
-	width: 200px!important;	
+	width: 180px!important;	
+	font-size: 92%!important;
+	padding: 3px 0px!important;
 }
 .gt-form .error {
 	/*

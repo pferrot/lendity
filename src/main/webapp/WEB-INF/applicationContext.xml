@@ -18,6 +18,26 @@
 		<property name="passwordEncoder" ref="security.passwordEncoder"/>
 	</bean>
 	
+	<!-- 
+	<bean id="configuration" class="com.pferrot.sharedcalendar.configuration.Configuration" lazy-init="false">
+		<property name="siteName">
+			<value>patriceferrot.com</value>
+		</property>		
+		<property name="rootURL">
+			<value>http://localhost:8080/shared_calendar</value>
+		</property>
+		<property name="noReplyEmailAddress">
+			<value>no_reply@patriceferrot.com</value>
+		</property>
+		<property name="noReplySenderName">
+			<value>patriceferrot.com</value>
+		</property>
+		<property name="supportEmailAddress">
+			<value>support@patriceferrot.com</value>
+		</property>
+	</bean>
+	 -->
+	 
 	<!--
 	<bean id="dataSource" name="core.dataSource,security.dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
@@ -169,6 +189,11 @@
 	
 	<bean id="registrationController" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationController"
 	      scope="conversation.access" orchestra:conversationName="registration">
+	      <property name="registrationService" ref="registrationService"/>
+	</bean>
+
+	<bean id="registrationValidationController" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationValidationController"
+	      scope="request">
 	      <property name="registrationService" ref="registrationService"/>
 	</bean>
 	

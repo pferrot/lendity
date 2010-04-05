@@ -13,6 +13,7 @@ import com.pferrot.emailsender.Consts;
 import com.pferrot.emailsender.manager.MailManager;
 import com.pferrot.security.SecurityUtils;
 import com.pferrot.security.model.User;
+import com.pferrot.sharedcalendar.configuration.Configuration;
 import com.pferrot.sharedcalendar.connectionrequest.exception.ConnectionRequestException;
 import com.pferrot.sharedcalendar.dao.ConnectionRequestDao;
 import com.pferrot.sharedcalendar.dao.ListValueDao;
@@ -167,12 +168,12 @@ public class ConnectionRequestService {
 			Map<String, String> to = new HashMap<String, String>();
 			to.put(pConnection.getEmail(), pConnection.getEmail());
 			
-			mailManager.send(Consts.DEFAULT_SENDER_NAME, 
-					         Consts.DEFAULT_SENDER_ADDRESS,
+			mailManager.send(Configuration.getNoReplySenderName(), 
+					         Configuration.getNoReplyEmailAddress(),
 					         to,
 					         null, 
 					         null,
-					         "sharedcalendar.com: someone wants to enter your network",
+					         Configuration.getSiteName() + ": someone wants to enter your network",
 					         objects, 
 					         velocityTemplateLocation);		
 			
@@ -223,7 +224,7 @@ public class ConnectionRequestService {
 			
 			setConnectionRequestResponse(pConnectionRequest, (ConnectionRequestResponse)listValueDao.findListValue(ConnectionRequestResponse.REFUSE_LABEL_CODE));
 			
-			sendResponseEmail(pConnectionRequest, "sharedcalendar.com: your connection request has been rejected", "com/pferrot/sharedcalendar/emailtemplate/connectionrequest/refuse/en");
+			sendResponseEmail(pConnectionRequest, Configuration.getSiteName() + ": your connection request has been rejected", "com/pferrot/sharedcalendar/emailtemplate/connectionrequest/refuse/en");
 
 			if (log.isInfoEnabled()) {
 				log.info("'" + pConnectionRequest.getRequester() + "' is refused by '" + pConnectionRequest.getConnection() + "'.");
@@ -285,7 +286,7 @@ public class ConnectionRequestService {
 			}
 			
 			sendResponseEmail(pConnectionRequest,
-					"sharedcalendar.com: your connection request has been rejected and you were banned",
+					Configuration.getSiteName() + ": your connection request has been rejected and you were banned",
 					"com/pferrot/sharedcalendar/emailtemplate/connectionrequest/ban/en");
 
 			if (log.isInfoEnabled()) {
@@ -350,7 +351,7 @@ public class ConnectionRequestService {
 			}
 			
 			sendResponseEmail(pConnectionRequest,
-					"sharedcalendar.com: your connection request has been accepted",
+					Configuration.getSiteName() + ": your connection request has been accepted",
 					"com/pferrot/sharedcalendar/emailtemplate/connectionrequest/accept/en");
 
 			if (log.isInfoEnabled()) {
@@ -399,12 +400,13 @@ public class ConnectionRequestService {
 		objects.put("requesterFirstName", pConnectionRequest.getRequester().getFirstName());
 		objects.put("connectionFirstName", pConnectionRequest.getConnection().getFirstName());
 		objects.put("connectionLastName", pConnectionRequest.getConnection().getLastName());
+		objects.put("signature", Configuration.getSiteName());
 		
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(pConnectionRequest.getRequester().getEmail(), pConnectionRequest.getRequester().getEmail());
 		
-		mailManager.send(Consts.DEFAULT_SENDER_NAME, 
-				         Consts.DEFAULT_SENDER_ADDRESS,
+		mailManager.send(Configuration.getNoReplySenderName(), 
+						 Configuration.getNoReplyEmailAddress(),
 				         to,
 				         null, 
 				         null,

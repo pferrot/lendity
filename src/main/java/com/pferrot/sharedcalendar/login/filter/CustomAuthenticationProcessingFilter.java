@@ -1,4 +1,4 @@
-package com.pferrot.sharedcalendar.security.filter;
+package com.pferrot.sharedcalendar.login.filter;
 
 import java.io.IOException;
 
@@ -13,11 +13,12 @@ import com.pferrot.security.SecurityUtils;
 import com.pferrot.sharedcalendar.dao.PersonDao;
 import com.pferrot.sharedcalendar.model.Person;
 import com.pferrot.sharedcalendar.person.PersonConsts;
+import com.pferrot.sharedcalendar.person.PersonUtils;
 
 /**
  * This custom filter allows setting / removing custom attribute when
  * users log in / out.
- * 
+ *
  * @author pferrot
  *
  */
@@ -35,16 +36,13 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
 			throws IOException {
 		super.onSuccessfulAuthentication(pRequest, pResponse, pAuthResult);
 		setCurrentPersonIdInSession(pRequest);
-	}
-	
+	}	
+
 	private void setCurrentPersonIdInSession(final HttpServletRequest pRequest) {
 		final String currentUsername = SecurityUtils.getCurrentUsername();
-		if (! StringUtils.isNullOrEmptyString(currentUsername)) {
+		if (! StringUtils.isNullOrEmpty(currentUsername)) {
 			final Person currentPerson = personDao.findPersonFromUsername(currentUsername);
-			if (currentPerson != null) {
-				pRequest.getSession().setAttribute(PersonConsts.CURRENT_PERSON_ID_SESSION_ATTRIBUTE_NAME, currentPerson.getId());
-			}
-		}
-		
+			PersonUtils.updatePersonInSession(currentPerson, pRequest);
+		}		
 	}
 }

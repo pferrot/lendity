@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import com.pferrot.core.CoreUtils;
 import com.pferrot.sharedcalendar.dao.PersonDao;
 import com.pferrot.sharedcalendar.model.Person;
+import com.pferrot.sharedcalendar.utils.JsfUtils;
 
 public class PersonService {
 
@@ -29,6 +30,7 @@ public class PersonService {
 
 	public void updatePerson(final Person pPerson) {
 		personDao.updatePerson(pPerson);
+		PersonUtils.updatePersonInSession(pPerson, JsfUtils.getHttpServletRequest());
 	}
 	
 	public List<Person> findPersonsByAnything(final String pSearchString, final int pFirstResult, final int pMaxResults) {

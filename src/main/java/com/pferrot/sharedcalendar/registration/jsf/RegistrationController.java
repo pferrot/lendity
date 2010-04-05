@@ -10,9 +10,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.security.model.User;
+import com.pferrot.sharedcalendar.configuration.Configuration;
 import com.pferrot.sharedcalendar.model.Address;
 import com.pferrot.sharedcalendar.model.Country;
 import com.pferrot.sharedcalendar.model.Person;
+import com.pferrot.sharedcalendar.registration.RegistrationConsts;
+import com.pferrot.sharedcalendar.registration.RegistrationException;
 import com.pferrot.sharedcalendar.registration.RegistrationService;
 import com.pferrot.sharedcalendar.utils.UiUtils;
 
@@ -167,6 +170,10 @@ public class RegistrationController {
 		this.passwordRepeat = passwordRepeat;
 	}
 
+	public String getNbDaysToValidateRegistration() {
+		return String.valueOf(Configuration.getNbDaysToValidateRegistration());
+	}
+
 	public List<SelectItem> getGendersSelectItems() {
 		if (gendersSelectItems == null) {
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
@@ -188,29 +195,33 @@ public class RegistrationController {
 	}	
 	
 	public void createUser() {
-		User user = new User();
-		user.setUsername(getEmail());
-		user.setPassword(getPassword());
-	
-		Person person = new Person();
-//		person.setGender(registrationService.findGender(getGenderId()));
-		person.setFirstName(getFirstName());
-		person.setLastName(getLastName());
-//		person.setDisplayName(getDisplayName());
-		person.setEmail(getEmail());
-//		person.setPhoneHome(getPhoneHome());
-//		person.setPhoneMobile(getPhoneMobile());
-//		person.setPhoneProfessional(getPhoneProfessional());
-		person.setUser(user);
+		try {
+			User user = new User();
+			user.setUsername(getEmail());
+			user.setPassword(getPassword());
 		
-		final Address address = new Address();
-//		address.setAddress1(getAddress1());
-//		address.setAddress2(getAddress2());
-//		address.setZip(getZip());
-//		address.setCity(getCity());
-//		address.setCountry(registrationService.findCountry(getCountryId()));
-		person.setAddress(address);		
-		
-		registrationService.createUser(person);		
+			Person person = new Person();
+	//		person.setGender(registrationService.findGender(getGenderId()));
+			person.setFirstName(getFirstName());
+			person.setLastName(getLastName());
+	//		person.setDisplayName(getDisplayName());
+			person.setEmail(getEmail());
+	//		person.setPhoneHome(getPhoneHome());
+	//		person.setPhoneMobile(getPhoneMobile());
+	//		person.setPhoneProfessional(getPhoneProfessional());
+			person.setUser(user);
+			
+			final Address address = new Address();
+	//		address.setAddress1(getAddress1());
+	//		address.setAddress2(getAddress2());
+	//		address.setZip(getZip());
+	//		address.setCity(getCity());
+	//		address.setCountry(registrationService.findCountry(getCountryId()));
+			person.setAddress(address);		
+			
+			registrationService.createUser(person);
+		} catch (RegistrationException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

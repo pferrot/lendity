@@ -1,7 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:o="http://myfaces.apache.org/orchestra"
+      xmlns:c="http://java.sun.com/jstl/core">
 
 
 <f:loadBundle basename="messages" var="messages"/>
@@ -57,10 +60,37 @@
 				</div>
 				<!-- / logo -->
 				
+				
 				<!-- utility box -->
 				<div class="gt-util-box">
 					<div class="gt-util-box-inner">
-						<p>welcome <strong>sarah</strong> <span class="gt-util-separator">|</span> <a href="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout">logout</a></p>
+						<c:if test="#{authenticationController.loggedIn}" var="loggedInUser"/>
+						<c:if test="${loggedInUser}">
+							<p><strong><h:outputText value="#{authenticationController.currentUserDisplayName}"/></strong></p>
+							<p>					
+								<o:separateConversationContext>
+	                        		<h:outputLink value="#{authenticationController.logoutURL}">
+		            					<h:outputText value="#{messages.logout}"/>
+					         		</h:outputLink>
+		        		 		</o:separateConversationContext>
+		         			</p>
+		         			<p>					
+								<o:separateConversationContext>
+	                        		<h:outputLink value="#{authenticationController.myProfileURL}">
+		            					<h:outputText value="#{messages.my_profile}"/>
+					         		</h:outputLink>
+		        		 		</o:separateConversationContext>
+		         			</p>
+	         			</c:if>
+	         			<c:if test="${not (loggedInUser)}">
+		         			<p>
+		         				<o:separateConversationContext>
+	                        		<h:outputLink value="#{authenticationController.loginURL}">
+	                        			<h:outputText value="#{messages.login_2}"/>
+	                        		</h:outputLink>
+	                       		 </o:separateConversationContext>
+	                        </p>
+	         			</c:if>
 					</div>
 				</div>
 				<!-- / utility box -->
@@ -77,20 +107,43 @@
 				<!-- navigation -->
 				<div class="gt-nav">
 					<ul>
-						<li><a href="#{facesContext.externalContext.requestContextPath}">Home</a></li>
+						<li>
+							<o:separateConversationContext>
+		                        <h:outputLink value="#{authenticationController.homeURL}">
+		                        	<h:outputText value="#{messages.navigation_home}"/>
+		                        </h:outputLink>
+                   			</o:separateConversationContext>
+						</li>
+						<c:if test="${loggedInUser}">
+							<li>
+								<o:separateConversationContext>
+			                        <h:outputLink value="#{authenticationController.myItemsURL}">
+			                        	<h:outputText value="#{messages.navigation_items}"/>
+			                        </h:outputLink>
+	                   			</o:separateConversationContext>
+							</li>
+						</c:if>
+						<c:if test="${loggedInUser}">
+							<li>
+								<o:separateConversationContext>
+			                        <h:outputLink value="#{authenticationController.myConnectionsURL}">
+			                        	<h:outputText value="#{messages.navigation_connections}"/>
+			                        </h:outputLink>
+	                   			</o:separateConversationContext>
+							</li>
+						</c:if>	
+						<!-- 
 						<li><a class="gt-active" href="base.html">Base HTML</a></li>
-						<li><a href="tables.html">Tables</a></li>
-						<li><a href="forms.html">Forms</a></li>
-						<li><a href="text-styles.html">Text Styles</a></li>
-						<li><a href="buttons.html">Buttons</a></li>
-						<li><a href="#{facesContext.externalContext.requestContextPath}/login.jsp">Login</a></li>
+						 -->
 					</ul>
 				</div><!-- / navigation -->
 				
 				<!-- search -->
-				<div class="gt-search"><div class="gt-search-inner">
-					<input type="text" class="gt-search-text" value="Search" onfocus="javascript:if(this.value=='Search')this.value='';" onblur="javascript:if(this.value=='')this.value='Search';" />
-				</div></div>
+				<c:if test="${loggedInUser}">
+					<div class="gt-search"><div class="gt-search-inner">
+						<input type="text" class="gt-search-text" value="#{messages.navigation_items}" onfocus="javascript:if(this.value=='Search')this.value='';" onblur="javascript:if(this.value=='')this.value='Search';" />
+					</div></div>
+				</c:if>
 				
 				</div>
 				

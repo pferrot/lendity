@@ -2,7 +2,9 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
 	<ui:param name="pageTitle" value="#{messages.login}" />
@@ -36,12 +38,33 @@
 			<!-- sidebar -->
 			<div class="gt-sidebar">			
 			
-			<!-- main content -->
+			<!-- sidebar content -->
 			<div class="gt-sidebar-content">
+			
+				<c:if test="#{authenticationController.loggedIn}" var="loggedInUser"/>
+				<c:if test="${loggedInUser}">
+					<p>
+						<h:outputFormat value="#{messages.login_already_connected_1}">
+							<f:param value="#{authenticationController.currentUserFirstName}" />
+		        		</h:outputFormat>
+		        	</p>
+					<p><h:outputText value="#{messages.login_already_connected_2}"/></p>
+					<p><h:outputText value="#{messages.login_already_connected_3}"/></p>
+					<p><h:outputText value="#{messages.login_already_connected_4}"/></p> 
+					<p>
+					<o:separateConversationContext>
+                  		<h:outputLink value="#{authenticationController.logoutURL}">
+		            		<h:outputText value="#{messages.logout}"/>
+	         			</h:outputLink>
+       		 		</o:separateConversationContext>
+					</p>				
+				</c:if>
+				<c:if test="${not (loggedInUser)}">
 				
 				<!-- Registration Form -->
+				<!-- 
 				<h2 class="gt-form-head">#{messages.login}</h2>
-					
+				 -->	
 			
 				<!-- login box -->
 				<div class="gt-form gt-login-box">
@@ -49,23 +72,31 @@
 				
 				<f:view>
 
-					<h:form>
+					<h:form id="loginForm" prependId="false">
 				
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">
 						<label><h:outputText value="#{messages.person_email}"/> *</label>
-						<h:inputText id="j_username" name="j_username" required="true" styleClass="gt-form-text gt-form-text-login" ></h:inputText>										
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="j_username"></h:message>
+						<h:inputText id="j_username" required="true" 
+						    value="#{loginController.username}"
+						    styleClass="gt-form-text gt-form-text-login" ></h:inputText>										
 					</div><!-- /form row -->	
 
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">
 						<label><h:outputText value="#{messages.user_password}"/> *</label>
-						<h:inputSecret id="j_password" name="j_password" required="true" styleClass="gt-form-text gt-form-text-login"></h:inputSecret>											
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="j_password"></h:message>
+						<h:inputSecret id="j_password" required="true" 
+						    value="#{loginController.password}"
+						    styleClass="gt-form-text gt-form-text-login"></h:inputSecret>											
 					</div><!-- /form row -->	
 					
 					<!-- form row -->
 					<div class="gt-form-row">
-						<label class="gt-remember-me"><h:selectBooleanCheckbox id="_spring_security_remember_me" styleClass="gt-form-checkbox" /> Remember me</label>
+						<label class="gt-remember-me"><h:selectBooleanCheckbox id="_spring_security_remember_me" styleClass="gt-form-checkbox" value="#{loginController.rememberMe}" /> Remember me</label>
 					</div>
 					<!-- /form row -->
 					
@@ -74,19 +105,34 @@
 						<h:commandButton styleClass="gt-btn-green-medium gt-btn-left" type="submit" id="login" action="#{loginController.doLogin}" value="Login" />
 					</div>
 					<!-- /form row -->				
-					<p class="gt-forgot-password"><a href="#{facesContext.externalContext.requestContextPath}/public/lostpassword/lostpassword.faces">#{messages.lostpassword}</a></p>
-					<p class="gt-forgot-password"><a href="#{facesContext.externalContext.requestContextPath}/public/registration/registration.faces">#{messages.not_member_yet}</a></p>
+					<p class="gt-forgot-password">
+						<o:separateConversationContext>
+	                        <h:outputLink value="#{authenticationController.lostPasswordURL}">
+		            			<h:outputText value="#{messages.lostpassword}"/>
+					    	</h:outputLink>
+		        		</o:separateConversationContext>
+					</p>
+					<p class="gt-forgot-password">
+						<o:separateConversationContext>
+	                        <h:outputLink value="#{authenticationController.registrationURL}">
+		            			<h:outputText value="#{messages.not_member_yet}"/>
+					    	</h:outputLink>
+		        		</o:separateConversationContext>
+					</p>
 													
 					</h:form>
 				</f:view>	
 				</div>
+				</c:if>
+				
+			</div>
+			<!-- /sidebar content -->
+			
+			
 						
 				
 			</div>
-						
-				
-			</div>
-			<!-- / sidebar -->
+			<!-- /sidebar -->
 
 		</div>
 		<!-- /body -->

@@ -1,6 +1,6 @@
 Hello $firstName,
 
-You asked for your password information for http://www.sharedcalendar.com. If you did not, just ignore this email. 
+You asked for your password information for $siteName. If you did not, just ignore this email. 
 
 Use the following information to login:
 
@@ -9,4 +9,4 @@ Password: $password
 
 Regards,
 
-sharedcalendar.com
+$signature

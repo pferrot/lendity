@@ -2,41 +2,65 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.registration_completed}" />
-	<ui:param name="contentHeader" value="#{messages.registration_completed}" />
+	<ui:param name="pageTitle" value="Home" />
+	<ui:param name="contentHeader" value="Home" />
 
 	<ui:define name="content">
 
 		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
 
 			<!-- header content here  -->
-<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+			<ui:define name="pageName">
+            	#{contentHeader}
+          	</ui:define>
 
 			<!-- insert content here -->
 			<ui:define name="pageContent">
-
 
 		<!-- body -->
 		<div class="gt-bd gt-cols clearfix">
 			
 			<!-- main content -->
 			<div class="gt-content">
-			
-				<h2 class="gt-form-head">#{messages.registration_completed}</h2>				
-			    <p>
-	            <h:outputFormat value="#{messages.registration_confirmation_1}">
-			      <f:param value="#{registrationController.email}" />
-		        </h:outputFormat>
-		        </p>
-		        <p><b>#{messages.registration_confirmation_2}</b></p>
-				<p>
-				<h:outputFormat value="#{messages.registration_confirmation_3}">
-			      <f:param value="#{registrationController.nbDaysToValidateRegistration}" />
-		        </h:outputFormat>
-		        </p>
+
+				<c:if test="#{registrationValidationController.validationSuccessful}" var="validationOk"/>
+	
+				<c:if test="${validationOk}">
+					<h2 class="gt-form-head">#{messages.registration_validation_ok}</h2>				
+				    <p>
+		            <h:outputFormat value="#{messages.registration_validation_ok_1}">
+				      <f:param value="#{registrationValidationController.username}" />
+			        </h:outputFormat>
+			        </p>
+			        <p>#{messages.registration_validation_ok_2}</p>
+			        <p>
+			        <o:separateConversationContext>
+                     	<h:outputLink value="#{authenticationController.loginURL}">
+           					<h:outputText value="#{messages.login}"/>
+		         		</h:outputLink>
+       		 		</o:separateConversationContext>
+			        </p>
+				    <p>
+		            <h:outputFormat value="#{messages.registration_validation_ok_3}">
+				      <f:param value="#{registrationValidationController.username}" /> 
+			        </h:outputFormat>
+			        </p>
+					<p>#{messages.registration_validation_ok_4}</p>			
+				</c:if>
+				
+				<c:if test="${not (validationOk)}">
+					<h2 class="gt-form-head">#{messages.registration_validation_failed}</h2>				
+				    <p><h:outputFormat value="#{messages.registration_validation_failed_1}"/></p>
+				    <!-- 
+				    TODO: display support email.
+				     -->
+				    <p><h:outputFormat value="#{messages.registration_validation_failed_2}"/></p>				
+				</c:if>
 								
 			</div>
 			<!-- /main content -->
