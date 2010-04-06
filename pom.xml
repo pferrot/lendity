@@ -23,19 +23,19 @@
 		<dependency>
 		    <groupId>org.apache.myfaces.core</groupId>
 		    <artifactId>myfaces-api</artifactId>
-		    <version>1.2.4</version>
+		    <version>1.2.8</version>
 		    <scope>compile</scope>
 		</dependency> 
 		<dependency>
 		    <groupId>org.apache.myfaces.core</groupId>
 		    <artifactId>myfaces-impl</artifactId>
-		    <version>1.2.4</version>
+		    <version>1.2.8</version>
 		    <scope>compile</scope>
 		</dependency> 	
 		<dependency>
 		    <groupId>org.apache.myfaces.orchestra</groupId>
 		    <artifactId>myfaces-orchestra-core</artifactId>
-		    <version>1.2</version>
+		    <version>1.4</version>
 		    <scope>compile</scope>
 		</dependency>
 		<dependency>
