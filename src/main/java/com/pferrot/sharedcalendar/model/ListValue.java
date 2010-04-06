@@ -27,7 +27,7 @@ public abstract class ListValue implements Serializable, LabelCodeAware {
 	@Column(name = "ID")	
 	private Long id;
 	
-	@Column(name = "LABEL_CODE", nullable = false, length = 255)	
+	@Column(name = "LABEL_CODE", unique = true, nullable = false, length = 255)	
 	private String labelCode;
 	
 	public ListValue() {

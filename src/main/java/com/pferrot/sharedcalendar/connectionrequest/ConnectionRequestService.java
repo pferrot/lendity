@@ -161,6 +161,8 @@ public class ConnectionRequestService {
 			objects.put("connectionFirstName", pConnection.getFirstName());
 			objects.put("requesterFirstName", pRequester.getFirstName());
 			objects.put("requesterLastName", pRequester.getLastName());
+			objects.put("signature", Configuration.getSiteName());
+			objects.put("siteName", Configuration.getSiteName());
 			
 			// TODO: localization
 			final String velocityTemplateLocation = "com/pferrot/sharedcalendar/emailtemplate/connectionrequest/ask/en";
@@ -401,6 +403,7 @@ public class ConnectionRequestService {
 		objects.put("connectionFirstName", pConnectionRequest.getConnection().getFirstName());
 		objects.put("connectionLastName", pConnectionRequest.getConnection().getLastName());
 		objects.put("signature", Configuration.getSiteName());
+		objects.put("siteName", Configuration.getSiteName());
 		
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(pConnectionRequest.getRequester().getEmail(), pConnectionRequest.getRequester().getEmail());

@@ -133,25 +133,25 @@ public class InitialData {
 		
 		
 		
-		// Create Patrice Ferrot, admin user.
-		person = getNewPerson("Stupid", "Illusion", "Stupid.Illusion", "stupid.illusion@gmail.com",
-				"Main Street", 12345, "Pik City",
-				(Country)listValueDao.findListValue(Country.USA_LABEL_CODE),
-				listValueDao.findGender(Gender.MALE_LABEL_CODE));
-		
-		user = new User();
-		user.setUsername("stupid.illusion@gmail.com");
-		user.setPassword("stupid");
-		user.setEnabled(Boolean.TRUE);
-		user.setCreationDate(new Date());
-		user.setActivationCode("MANUALLY ACTIVATED");
-		user.setActivationDate(new Date());
-		user.addRole(userRole);
-		
-		person.setUser(user);		
-		
-		
-		personDao.createPerson(person);
+		// Create Stupid Illusion, normal user.
+//		person = getNewPerson("Stupid", "Illusion", "Stupid.Illusion", "stupid.illusion@gmail.com",
+//				"Main Street", 12345, "Pik City",
+//				(Country)listValueDao.findListValue(Country.USA_LABEL_CODE),
+//				listValueDao.findGender(Gender.MALE_LABEL_CODE));
+//		
+//		user = new User();
+//		user.setUsername("stupid.illusion@gmail.com");
+//		user.setPassword("stupid");
+//		user.setEnabled(Boolean.TRUE);
+//		user.setCreationDate(new Date());
+//		user.setActivationCode("MANUALLY ACTIVATED");
+//		user.setActivationDate(new Date());
+//		user.addRole(userRole);
+//		
+//		person.setUser(user);		
+//		
+//		
+//		personDao.createPerson(person);
 	}
 	
 	private static Person getNewPerson(final String firstName, final String lastName, final String displayName, 

@@ -77,6 +77,8 @@ public class LostPasswordService {
 		objects.put("firstName", person.getFirstName());
 		objects.put("username", person.getUser().getUsername());
 		objects.put("password", person.getUser().getPassword());
+		objects.put("signature", Configuration.getSiteName());
+		objects.put("siteName", Configuration.getSiteName());
 		
 		// TODO: localization
 		final String velocityTemplateLocation = "com/pferrot/sharedcalendar/emailtemplate/lostpassword/en";

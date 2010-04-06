@@ -1,60 +1,73 @@
 package com.pferrot.sharedcalendar.configuration;
 
+/**
+ * Values are set from applicationContext.xml.
+ * As I wanted to be able to access that bean in a static manner rather than
+ * wiring it did to every single controller or service where it is needed, I
+ * am using a workaround which consists of setting static member variables through
+ * instance setters. Indeed, an instance of that bean is created at application
+ * startup by Spring.
+ * 
+ * Probably not best practice, but it fits my needs.
+ *
+ * @author pferrot
+ *
+ */
 public class Configuration {
 
-	private static String siteName = "patriceferrot.com";
-	private static String rootURL = "http://localhost:8080/shared_calendar";
-	private static String noReplyEmailAddress = "no_reply@patriceferrot.com";
-	private static String noReplySenderName = "patriceferrot.com";
-	private static String supportEmailAddress = "support@patriceferrot.com";
-	private static int nbDaysToValidateRegistration = 30;
+	private static String siteName;
+	private static String rootURL;
+	private static String noReplyEmailAddress;
+	private static String noReplySenderName;
+	private static String supportEmailAddress;
+	private static int nbDaysToValidateRegistration;
 
 	public static String getRootURL() {
 		return rootURL;
 	}
 
-	public static void setRootURL(String rootURL) {
-		Configuration.rootURL = rootURL;
+	public void setRootURL(String rootURL) {
+		this.rootURL = rootURL;
 	}
 
 	public static String getSiteName() {
 		return siteName;
 	}
 
-	public static void setSiteName(String siteName) {
-		Configuration.siteName = siteName;
+	public void setSiteName(String siteName) {
+		this.siteName = siteName;
 	}
 
 	public static String getNoReplyEmailAddress() {
 		return noReplyEmailAddress;
 	}
 
-	public static void setNoReplyEmailAddress(String noReplyEmailAddress) {
-		Configuration.noReplyEmailAddress = noReplyEmailAddress;
+	public void setNoReplyEmailAddress(String noReplyEmailAddress) {
+		this.noReplyEmailAddress = noReplyEmailAddress;
 	}
 
 	public static String getNoReplySenderName() {
 		return noReplySenderName;
 	}
 
-	public static void setNoReplySenderName(String noReplySenderName) {
-		Configuration.noReplySenderName = noReplySenderName;
+	public void setNoReplySenderName(String noReplySenderName) {
+		this.noReplySenderName = noReplySenderName;
 	}
 
 	public static String getSupportEmailAddress() {
 		return supportEmailAddress;
 	}
 
-	public static void setSupportEmailAddress(String supportEmailAddress) {
-		Configuration.supportEmailAddress = supportEmailAddress;
+	public void setSupportEmailAddress(String supportEmailAddress) {
+		this.supportEmailAddress = supportEmailAddress;
 	}
 
 	public static int getNbDaysToValidateRegistration() {
 		return nbDaysToValidateRegistration;
 	}
 
-	public static void setNbDaysToValidateRegistration(
+	public void setNbDaysToValidateRegistration(
 			int nbDaysToValidateRegistration) {
-		Configuration.nbDaysToValidateRegistration = nbDaysToValidateRegistration;
+		this.nbDaysToValidateRegistration = nbDaysToValidateRegistration;
 	}	
 }

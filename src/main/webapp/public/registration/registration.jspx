@@ -43,9 +43,8 @@
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="firstName"></h:message>			
 						<h:inputText id="firstName" styleClass="gt-form-text"
-							value="#{registrationController.firstName}" required="true" maxlength="255"/>
-					</div><!-- /form row -->
-					
+							value="#{registrationController.firstName}" required="true" maxlength="255"/>			
+					</div><!-- /form row -->					
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">

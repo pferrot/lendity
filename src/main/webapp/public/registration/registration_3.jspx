@@ -31,13 +31,14 @@
 			      <f:param value="#{registrationController.email}" />
 		        </h:outputFormat>
 		        </p>
-		        <p><b>#{messages.registration_confirmation_2}</b></p>
-				<p>
-				<h:outputFormat value="#{messages.registration_confirmation_3}">
+		        <p>
+		        <b>
+		        <h:outputFormat value="#{messages.registration_confirmation_2}">
 			      <f:param value="#{registrationController.nbDaysToValidateRegistration}" />
 		        </h:outputFormat>
+		        </b>
 		        </p>
-								
+				<p>#{messages.registration_confirmation_3}</p>								
 			</div>
 			<!-- /main content -->
 

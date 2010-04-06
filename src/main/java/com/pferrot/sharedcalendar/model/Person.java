@@ -48,7 +48,7 @@ public class Person implements Serializable {
 	@Audited
     private String displayName;
 	
-	@Column(name = "EMAIL", length = 255)
+	@Column(name = "EMAIL", unique = true, nullable = false, length = 255)
 	@Audited
 	private String email;
 	

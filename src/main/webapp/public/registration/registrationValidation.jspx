@@ -55,11 +55,7 @@
 				
 				<c:if test="${not (validationOk)}">
 					<h2 class="gt-form-head">#{messages.registration_validation_failed}</h2>				
-				    <p><h:outputFormat value="#{messages.registration_validation_failed_1}"/></p>
-				    <!-- 
-				    TODO: display support email.
-				     -->
-				    <p><h:outputFormat value="#{messages.registration_validation_failed_2}"/></p>				
+				    <p><h:outputFormat value="#{messages.registration_validation_failed_1}"/></p>			
 				</c:if>
 								
 			</div>

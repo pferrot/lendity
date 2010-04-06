@@ -18,7 +18,6 @@
 		<property name="passwordEncoder" ref="security.passwordEncoder"/>
 	</bean>
 	
-	<!-- 
 	<bean id="configuration" class="com.pferrot.sharedcalendar.configuration.Configuration" lazy-init="false">
 		<property name="siteName">
 			<value>patriceferrot.com</value>
@@ -35,8 +34,10 @@
 		<property name="supportEmailAddress">
 			<value>support@patriceferrot.com</value>
 		</property>
+		<property name="nbDaysToValidateRegistration">
+			<value>30</value>
+		</property>
 	</bean>
-	 -->
 	 
 	<!--
 	<bean id="dataSource" name="core.dataSource,security.dataSource" class="org.apache.commons.dbcp.BasicDataSource"
