@@ -74,7 +74,7 @@ security module.
 	<beans:bean id="authenticationProcessingFilter"	class="com.pferrot.sharedcalendar.login.filter.CustomAuthenticationProcessingFilter">
 		<custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
 		<beans:property name="authenticationFailureUrl" value="/login.faces?loginFailed=true"/>
-		<beans:property name="defaultTargetUrl" value="/auth/home.jsp" />
+		<beans:property name="defaultTargetUrl" value="/auth/home.faces" />
 		<beans:property name="authenticationManager" ref="authenticationManager" />
 		<beans:property name="personDao" ref="personDao"/>
 	</beans:bean>

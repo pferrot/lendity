@@ -28,8 +28,8 @@
 <h:form>
 	<h:inputText id="searchString" value="#{myBannedPersonsListController.searchString}"/>
 	<br/>
-	<h:commandButton value="#{messages.search}" action="#{myBannedPersonsListController.search}" />
-	<h:commandButton value="#{messages.clearSearch}" action="#{myBannedPersonsListController.clearSearch}" />
+	<h:commandButton value="#{messages.navigation_search}" action="#{myBannedPersonsListController.search}" />
+	<h:commandButton value="#{messages.navigation_clearSearch}" action="#{myBannedPersonsListController.clearSearch}" />
 </h:form>
 <br/>
 
@@ -67,8 +67,8 @@
 <br/>
 
 <h:form>
-    <h:commandLink rendered="#{myBannedPersonsListController.previousPage}" value="#{messages.previousPage}" action="#{myBannedPersonsListController.previousPage}"/>
-    <h:commandLink rendered="#{myBannedPersonsListController.nextPage}" value="#{messages.nextPage}" action="#{myBannedPersonsListController.nextPage}"/>
+    <h:commandLink rendered="#{myBannedPersonsListController.previousPage}" value="#{messages.navigation_previousPage}" action="#{myBannedPersonsListController.previousPage}"/>
+    <h:commandLink rendered="#{myBannedPersonsListController.nextPage}" value="#{messages.navigation_nextPage}" action="#{myBannedPersonsListController.nextPage}"/>
 </h:form>
 
 					</center>

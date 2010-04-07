@@ -5,8 +5,8 @@
 	xmlns:h="http://java.sun.com/jsf/html">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.registration_signup}" />
-	<ui:param name="contentHeader" value="#{messages.registration_signup}" />
+	<ui:param name="pageTitle" value="#{messages.registration_signUp}" />
+	<ui:param name="contentHeader" value="#{messages.registration_signUp}" />
 
 	<ui:define name="content">
 
@@ -26,7 +26,7 @@
 			<div class="gt-content">
 				
 				<!-- Registration Form -->
-				<h2 class="gt-form-head">#{messages.registration_signup}</h2>
+				<h2 class="gt-form-head">#{messages.registration_signUp}</h2>
 				<div class="gt-form gt-content-box">
 				
 				<div style="padding-left: 100px">
@@ -58,7 +58,7 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row">
-						<br/><h:commandButton styleClass="gt-btn-green-medium gt-btn-left" value="#{messages.back}"	action="#{registrationStep2.back}" />
+						<br/><h:commandButton styleClass="gt-btn-green-medium gt-btn-left" value="#{messages.navigation_back}"	action="#{registrationStep2.back}" />
 						<h:commandButton styleClass="gt-btn-green-large gt-btn-left" value="#{messages.registration_confirm}"	action="#{registrationStep2.confirm}" />
 					</div>
 					<!-- /form row -->

@@ -56,11 +56,11 @@ Description:<br />
 						<br />
 						<o:separateConversationContext>
 							<h:outputLink value="#{itemEditController.itemOverviewHref}">
-            					<h:outputText value="#{messages.cancel}"/>
+            					<h:outputText value="#{messages.navigation_cancel}"/>
 	         				</h:outputLink>
 						</o:separateConversationContext>
 						<br />
-						<h:commandButton value="#{messages.save}" action="#{itemEditController.submit}" />
+						<h:commandButton value="#{messages.navigation_save}" action="#{itemEditController.submit}" />
 						<br />
 					</h:form></center>
 				</f:view>

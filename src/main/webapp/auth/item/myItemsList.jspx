@@ -45,8 +45,8 @@
 <br/>
 
 <h:form>
-    <h:commandLink rendered="#{myItemsListController.previousPage}" value="#{messages.previousPage}" action="#{myItemsListController.previousPage}"/>
-    <h:commandLink rendered="#{myItemsListController.nextPage}" value="#{messages.nextPage}" action="#{myItemsListController.nextPage}"/>
+    <h:commandLink rendered="#{myItemsListController.previousPage}" value="#{messages.navigation_previousPage}" action="#{myItemsListController.previousPage}"/>
+    <h:commandLink rendered="#{myItemsListController.nextPage}" value="#{messages.navigation_nextPage}" action="#{myItemsListController.nextPage}"/>
 </h:form>
 
 					</center>

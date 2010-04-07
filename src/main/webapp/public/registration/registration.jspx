@@ -5,8 +5,8 @@
 	xmlns:h="http://java.sun.com/jsf/html">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.registration_signup}" />
-	<ui:param name="contentHeader" value="#{messages.registration_signup}" />
+	<ui:param name="pageTitle" value="#{messages.registration_signUp}" />
+	<ui:param name="contentHeader" value="#{messages.registration_signUp}" />
 
 	<ui:define name="content">
 
@@ -26,7 +26,7 @@
 			<div class="gt-content">
 				
 				<!-- Registration Form -->
-				<h2 class="gt-form-head">#{messages.registration_signup}</h2>
+				<h2 class="gt-form-head">#{messages.registration_signUp}</h2>
 				<h6></h6>
 				<div class="gt-form gt-content-box">
 				

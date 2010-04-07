@@ -28,8 +28,8 @@
 <h:form>
 	<h:inputText id="searchString" value="#{itemsListController.searchString}"/>
 	<br/>
-	<h:commandButton value="#{messages.search}" action="#{itemsListController.search}" />
-	<h:commandButton value="#{messages.clearSearch}" action="#{itemsListController.clearSearch}" />
+	<h:commandButton value="#{messages.navigation_search}" action="#{itemsListController.search}" />
+	<h:commandButton value="#{messages.navigation_clearSearch}" action="#{itemsListController.clearSearch}" />
 </h:form>
 <br/>
 
@@ -58,8 +58,8 @@
 <br/>
 
 <h:form>
-    <h:commandLink rendered="#{itemsListController.previousPage}" value="#{messages.previousPage}" action="#{itemsListController.previousPage}"/>
-    <h:commandLink rendered="#{itemsListController.nextPage}" value="#{messages.nextPage}" action="#{itemsListController.nextPage}"/>
+    <h:commandLink rendered="#{itemsListController.previousPage}" value="#{messages.navigation_previousPage}" action="#{itemsListController.previousPage}"/>
+    <h:commandLink rendered="#{itemsListController.nextPage}" value="#{messages.navigation_nextPage}" action="#{itemsListController.nextPage}"/>
 </h:form>
 
 					</center>

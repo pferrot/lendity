@@ -56,11 +56,11 @@ Last name:<br />
 						<br />
 						<o:separateConversationContext>
 							<h:outputLink value="#{personEditController.personOverviewHref}">
-            					<h:outputText value="#{messages.cancel}"/>
+            					<h:outputText value="#{messages.navigation_cancel}"/>
 	         				</h:outputLink>
 						</o:separateConversationContext>
 						<br />
-						<h:commandButton value="#{messages.save}" action="#{personEditController.submit}" />
+						<h:commandButton value="#{messages.navigation_save}" action="#{personEditController.submit}" />
 						<br />
 					</h:form></center>
 				</f:view>

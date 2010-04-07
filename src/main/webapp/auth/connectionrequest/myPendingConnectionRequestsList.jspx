@@ -88,8 +88,8 @@
 <br/>
 
 <h:form>
-    <h:commandLink rendered="#{myPendingConnectionRequestsListController.previousPage}" value="#{messages.previousPage}" action="#{myPendingConnectionRequestsListController.previousPage}"/>
-    <h:commandLink rendered="#{myPendingConnectionRequestsListController.nextPage}" value="#{messages.nextPage}" action="#{myPendingConnectionRequestsListController.nextPage}"/>
+    <h:commandLink rendered="#{myPendingConnectionRequestsListController.previousPage}" value="#{messages.navigation_previousPage}" action="#{myPendingConnectionRequestsListController.previousPage}"/>
+    <h:commandLink rendered="#{myPendingConnectionRequestsListController.nextPage}" value="#{messages.navigation_nextPage}" action="#{myPendingConnectionRequestsListController.nextPage}"/>
 </h:form>
 
 					</center>

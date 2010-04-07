@@ -57,7 +57,7 @@ Description:<br />
 						<br />
 						<o:separateConversationContext>
 							<h:outputLink value="#{itemAddController.itemsListHref}">
-            					<h:outputText value="#{messages.cancel}"/>
+            					<h:outputText value="#{messages.navigation_cancel}"/>
 	         				</h:outputLink>
 						</o:separateConversationContext>
 						<br />

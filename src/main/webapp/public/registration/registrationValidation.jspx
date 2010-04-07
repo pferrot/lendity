@@ -31,31 +31,31 @@
 				<c:if test="#{registrationValidationController.validationSuccessful}" var="validationOk"/>
 	
 				<c:if test="${validationOk}">
-					<h2 class="gt-form-head">#{messages.registration_validation_ok}</h2>				
+					<h2 class="gt-form-head">#{messages.registration_validationOk}</h2>				
 				    <p>
-		            <h:outputFormat value="#{messages.registration_validation_ok_1}">
+		            <h:outputFormat value="#{messages.registration_validationOk1}">
 				      <f:param value="#{registrationValidationController.username}" />
 			        </h:outputFormat>
 			        </p>
-			        <p>#{messages.registration_validation_ok_2}</p>
+			        <p>#{messages.registration_validationOk2}</p>
 			        <p>
 			        <o:separateConversationContext>
                      	<h:outputLink value="#{authenticationController.loginURL}">
-           					<h:outputText value="#{messages.login}"/>
+           					<h:outputText value="#{messages.login_login}"/>
 		         		</h:outputLink>
        		 		</o:separateConversationContext>
 			        </p>
 				    <p>
-		            <h:outputFormat value="#{messages.registration_validation_ok_3}">
+		            <h:outputFormat value="#{messages.registration_validationOk3}">
 				      <f:param value="#{registrationValidationController.username}" /> 
 			        </h:outputFormat>
 			        </p>
-					<p>#{messages.registration_validation_ok_4}</p>			
+					<p>#{messages.registration_validationOk4}</p>			
 				</c:if>
 				
 				<c:if test="${not (validationOk)}">
-					<h2 class="gt-form-head">#{messages.registration_validation_failed}</h2>				
-				    <p><h:outputFormat value="#{messages.registration_validation_failed_1}"/></p>			
+					<h2 class="gt-form-head">#{messages.registration_validationFailed}</h2>				
+				    <p><h:outputFormat value="#{messages.registration_validationFailed1}"/></p>			
 				</c:if>
 								
 			</div>

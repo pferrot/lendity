@@ -20,7 +20,7 @@ public class UiUtils {
 	private final static Log log = LogFactory.getLog(UiUtils.class);
 	
 	public static SelectItem getPleaseSelectSelectItem(final Locale locale) {
-		final String label = I18nUtils.getMessageResourceString("ui_please_select", locale);
+		final String label = I18nUtils.getMessageResourceString("general.please_select", locale);
 		final SelectItem si = new SelectItem(null, label);
 		return si;
 	}

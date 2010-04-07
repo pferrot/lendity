@@ -27,18 +27,18 @@
 			
 				<h2 class="gt-form-head">#{messages.registration_completed}</h2>				
 			    <p>
-	            <h:outputFormat value="#{messages.registration_confirmation_1}">
+	            <h:outputFormat value="#{messages.registration_confirmation1}">
 			      <f:param value="#{registrationController.email}" />
 		        </h:outputFormat>
 		        </p>
 		        <p>
 		        <b>
-		        <h:outputFormat value="#{messages.registration_confirmation_2}">
+		        <h:outputFormat value="#{messages.registration.confirmation2}">
 			      <f:param value="#{registrationController.nbDaysToValidateRegistration}" />
 		        </h:outputFormat>
 		        </b>
 		        </p>
-				<p>#{messages.registration_confirmation_3}</p>								
+				<p>#{messages.registration_confirmation3}</p>								
 			</div>
 			<!-- /main content -->
 

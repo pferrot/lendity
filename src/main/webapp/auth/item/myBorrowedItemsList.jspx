@@ -45,8 +45,8 @@
 <br/>
 
 <h:form>
-    <h:commandLink rendered="#{myBorrowedItemsListController.previousPage}" value="#{messages.previousPage}" action="#{myBorrowedItemsListController.previousPage}"/>
-    <h:commandLink rendered="#{myBorrowedItemsListController.nextPage}" value="#{messages.nextPage}" action="#{myBorrowedItemsListController.nextPage}"/>
+    <h:commandLink rendered="#{myBorrowedItemsListController.previousPage}" value="#{messages.navigation_previousPage}" action="#{myBorrowedItemsListController.previousPage}"/>
+    <h:commandLink rendered="#{myBorrowedItemsListController.nextPage}" value="#{messages.navigation_nextPage}" action="#{myBorrowedItemsListController.nextPage}"/>
 </h:form>
 
 					</center>

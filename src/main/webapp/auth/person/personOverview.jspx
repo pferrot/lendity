@@ -36,7 +36,7 @@ Display name:<br />
 					<br/>
 					<o:separateConversationContext>
 						<h:outputLink value="#{personOverviewController.personEditHref}">
-	            			<h:outputText value="#{messages.person_edit}"/>
+	            			<h:outputText value="#{messages.navigation_edit}"/>
 	         			</h:outputLink>
 					</o:separateConversationContext>
 					<br/>

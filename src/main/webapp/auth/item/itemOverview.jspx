@@ -36,7 +36,7 @@ Item:<br />
 					<br/>
 					<o:separateConversationContext>
 						<h:outputLink value="#{itemOverviewController.itemEditHref}">
-	            			<h:outputText value="#{messages.item_edit}"/>
+	            			<h:outputText value="#{messages.navigation_edit}"/>
 	         			</h:outputLink>
 					</o:separateConversationContext>
 					<br/>
