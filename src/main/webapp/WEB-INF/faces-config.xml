@@ -96,29 +96,29 @@
 
 	<!-- 
 	********************************************************************
-	ITEM OVERVIEW
+	INTERNAL ITEM OVERVIEW
 	********************************************************************
 	-->
 	<navigation-rule>
-		<from-view-id>/auth/item/itemOverview.jspx</from-view-id>
+		<from-view-id>/auth/item/internalItemOverview.jspx</from-view-id>
 	</navigation-rule>
 	
 	<!-- 
 	********************************************************************
-	ITEM ADD
+	INTERNAL ITEM ADD
 	********************************************************************
 	-->	
 	<navigation-rule>
-		<from-view-id>/auth/item/itemAdd.jspx</from-view-id>			
+		<from-view-id>/auth/item/internalItemAdd.jspx</from-view-id>			
 	</navigation-rule>
 	
 	<!-- 
 	********************************************************************
-	ITEM EDIT
+	INTERNAL ITEM EDIT
 	********************************************************************
 	-->	
 	<navigation-rule>
-		<from-view-id>/auth/item/itemEdit.jspx</from-view-id>			
+		<from-view-id>/auth/item/internalItemEdit.jspx</from-view-id>			
 	</navigation-rule>	
 	
 	<!-- 
@@ -153,6 +153,10 @@
 	-->
 	<navigation-rule>
 		<from-view-id>/auth/item/myItemsList.jspx</from-view-id>
+		<navigation-case>
+			<from-outcome>firstPage</from-outcome>
+			<to-view-id>/auth/item/myItemsList.jspx</to-view-id>
+		</navigation-case>
 		<navigation-case>
 			<from-outcome>nextPage</from-outcome>
 			<to-view-id>/auth/item/myItemsList.jspx</to-view-id>

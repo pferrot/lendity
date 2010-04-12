@@ -159,7 +159,7 @@ public class JsfUtils {
 			}
 			
 			if (log.isDebugEnabled()) {
-				log.debug("Redirect URL: " + finalUrl.toString());
+				log.debug("Full URL: " + finalUrl.toString());
 			}
 			
 			return finalUrl.toString();

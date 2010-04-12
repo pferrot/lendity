@@ -6,8 +6,4 @@ public interface Ownable {
 	
 	Person getOwner();
 	void setOwner(Person owner);
-
-	List<OwnerHistoryEntry> getOwnerHistoryEntries();
-	void setOwnerHistoryEntries(List<OwnerHistoryEntry> ownerHistoryEntries);
-
 }

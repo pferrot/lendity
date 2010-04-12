@@ -37,10 +37,9 @@
         <mapping class="com.pferrot.sharedcalendar.model.Person"/>
         <mapping class="com.pferrot.sharedcalendar.model.Language"/>
         
-        <mapping class="com.pferrot.sharedcalendar.model.OwnerHistoryEntry"/>
-        <mapping class="com.pferrot.sharedcalendar.model.BorrowerHistoryEntry"/>
-        
         <mapping class="com.pferrot.sharedcalendar.model.Item"/>
+        <mapping class="com.pferrot.sharedcalendar.model.InternalItem"/>
+        <mapping class="com.pferrot.sharedcalendar.model.ExternalItem"/>
         <mapping class="com.pferrot.sharedcalendar.model.ItemCategory"/>
         
         <mapping class="com.pferrot.sharedcalendar.model.ConnectionRequest"/>

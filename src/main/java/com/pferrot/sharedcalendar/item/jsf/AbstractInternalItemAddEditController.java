@@ -14,9 +14,9 @@ import com.pferrot.sharedcalendar.item.ItemService;
 import com.pferrot.sharedcalendar.utils.JsfUtils;
 import com.pferrot.sharedcalendar.utils.UiUtils;
 
-public abstract class AbstractItemAddEditController {
+public abstract class AbstractInternalItemAddEditController {
 	
-	private final static Log log = LogFactory.getLog(AbstractItemAddEditController.class);
+	private final static Log log = LogFactory.getLog(AbstractInternalItemAddEditController.class);
 	
 	private ItemService itemService;
 	
@@ -70,7 +70,7 @@ public abstract class AbstractItemAddEditController {
 	public String submit() {
 		Long itemId = processItem();
 		
-		JsfUtils.redirect(PagesURL.ITEM_OVERVIEW, PagesURL.ITEM_OVERVIEW_PARAM_ITEM_ID, itemId.toString());
+		JsfUtils.redirect(PagesURL.INTERNAL_ITEM_OVERVIEW, PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID, itemId.toString());
 	
 		// As a redirect is used, this is actually useless.
 		return null;

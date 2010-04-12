@@ -392,17 +392,17 @@
 		<property name="personDao" ref="personDao"/>
 	</bean>
 	
-	<bean id="itemOverviewController" class="com.pferrot.sharedcalendar.item.jsf.ItemOverviewController"
+	<bean id="itemOverviewController" class="com.pferrot.sharedcalendar.item.jsf.InternalItemOverviewController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="itemAddController" class="com.pferrot.sharedcalendar.item.jsf.ItemAddController"
+	<bean id="itemAddController" class="com.pferrot.sharedcalendar.item.jsf.InternalItemAddController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="itemEditController" class="com.pferrot.sharedcalendar.item.jsf.ItemEditController"
+	<bean id="itemEditController" class="com.pferrot.sharedcalendar.item.jsf.InternalItemEditController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
@@ -413,7 +413,7 @@
 	</bean>
 	
 	<bean id="myItemsListController" class="com.pferrot.sharedcalendar.item.jsf.MyItemsListController"
-	      scope="conversation.access">
+	      scope="session">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 

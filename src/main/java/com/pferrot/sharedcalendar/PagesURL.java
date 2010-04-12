@@ -40,13 +40,21 @@ public interface PagesURL {
 	/////////////////////////////////////////////////////////////////////////
 	// ITEM - start
 	
-	String ITEM_OVERVIEW = "/auth/item/itemOverview.faces";
-	String ITEM_OVERVIEW_PARAM_ITEM_ID = "itemID";
+	String INTERNAL_ITEM_OVERVIEW = "/auth/item/internalItemOverview.faces";
+	String INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID = "itemID";
 	
-	String ITEM_ADD = "/auth/item/itemAdd.faces";
+	String INTERNAL_ITEM_ADD = "/auth/item/internalItemAdd.faces";
 	
-	String ITEM_EDIT = "/auth/item/itemEdit.faces";
-	String ITEM_EDIT_PARAM_ITEM_ID = ITEM_OVERVIEW_PARAM_ITEM_ID;
+	String INTERNAL_ITEM_EDIT = "/auth/item/internalItemEdit.faces";
+	String INTERNAL_ITEM_EDIT_PARAM_ITEM_ID = INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID;
+	
+	String EXTERNAL_ITEM_OVERVIEW = "/auth/item/externalItemOverview.faces";
+	String EXTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID = "itemID";
+	
+	String EXTERNAL_ITEM_ADD = "/auth/item/externalAdd.faces";
+	
+	String EXTERNAL_ITEM_EDIT = "/auth/item/externalEdit.faces";
+	String EXTERNAL_ITEM_EDIT_PARAM_ITEM_ID = EXTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID;	
 	
 	String ITEMS_LIST = "/auth/item/itemsList.faces";
 	String MY_ITEMS_LIST = "/auth/item/myItemsList.faces";

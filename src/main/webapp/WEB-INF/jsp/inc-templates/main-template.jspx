@@ -67,28 +67,22 @@
 						<c:if test="#{authenticationController.loggedIn}" var="loggedInUser"/>
 						<c:if test="${loggedInUser}">
 							<p><strong><h:outputText value="#{authenticationController.currentUserDisplayName}"/></strong></p>
-							<p>					
-								<o:separateConversationContext>
-	                        		<h:outputLink value="#{authenticationController.logoutURL}">
-		            					<h:outputText value="#{messages.logout_logout}"/>
-					         		</h:outputLink>
-		        		 		</o:separateConversationContext>
+							<p>
+                        		<h:outputLink value="#{authenticationController.logoutURL}">
+	            					<h:outputText value="#{messages.logout_logout}"/>
+				         		</h:outputLink>
 		         			</p>
-		         			<p>					
-								<o:separateConversationContext>
-	                        		<h:outputLink value="#{authenticationController.myProfileURL}">
-		            					<h:outputText value="#{messages.myProfile_myProfile}"/>
-					         		</h:outputLink>
-		        		 		</o:separateConversationContext>
+		         			<p>
+                        		<h:outputLink value="#{authenticationController.myProfileURL}">
+	            					<h:outputText value="#{messages.myProfile_myProfile}"/>
+				         		</h:outputLink>
 		         			</p>
 	         			</c:if>
 	         			<c:if test="${not (loggedInUser)}">
 		         			<p>
-		         				<o:separateConversationContext>
-	                        		<h:outputLink value="#{authenticationController.loginURL}">
-	                        			<h:outputText value="#{messages.login_login2}"/>
-	                        		</h:outputLink>
-	                       		 </o:separateConversationContext>
+                        		<h:outputLink value="#{authenticationController.loginURL}">
+                        			<h:outputText value="#{messages.login_login2}"/>
+                        		</h:outputLink>
 	                        </p>
 	         			</c:if>
 					</div>
@@ -108,28 +102,22 @@
 				<div class="gt-nav">
 					<ul>
 						<li>
-							<o:separateConversationContext>
-		                        <h:outputLink value="#{authenticationController.homeURL}">
-		                        	<h:outputText value="#{messages.menu_home}"/>
-		                        </h:outputLink>
-                   			</o:separateConversationContext>
+	                        <h:outputLink value="#{authenticationController.homeURL}">
+	                        	<h:outputText value="#{messages.menu_home}"/>
+	                        </h:outputLink>
 						</li>
 						<c:if test="${loggedInUser}">
 							<li>
-								<o:separateConversationContext>
-			                        <h:outputLink value="#{authenticationController.myItemsURL}">
-			                        	<h:outputText value="#{messages.menu_items}"/>
-			                        </h:outputLink>
-	                   			</o:separateConversationContext>
+		                        <h:outputLink value="#{authenticationController.myItemsURL}">
+		                        	<h:outputText value="#{messages.menu_items}"/>
+		                        </h:outputLink>
 							</li>
 						</c:if>
 						<c:if test="${loggedInUser}">
 							<li>
-								<o:separateConversationContext>
-			                        <h:outputLink value="#{authenticationController.myConnectionsURL}">
-			                        	<h:outputText value="#{messages.menu_connections}"/>
-			                        </h:outputLink>
-	                   			</o:separateConversationContext>
+		                        <h:outputLink value="#{authenticationController.myConnectionsURL}">
+		                        	<h:outputText value="#{messages.menu_connections}"/>
+		                        </h:outputLink>
 							</li>
 						</c:if>	
 						<!-- 

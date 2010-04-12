@@ -39,11 +39,9 @@
 			        </p>
 			        <p>#{messages.registration_validationOk2}</p>
 			        <p>
-			        <o:separateConversationContext>
-                     	<h:outputLink value="#{authenticationController.loginURL}">
-           					<h:outputText value="#{messages.login_login}"/>
-		         		</h:outputLink>
-       		 		</o:separateConversationContext>
+                   	<h:outputLink value="#{authenticationController.loginURL}">
+        				<h:outputText value="#{messages.login_login}"/>
+	         		</h:outputLink>
 			        </p>
 				    <p>
 		            <h:outputFormat value="#{messages.registration_validationOk3}">

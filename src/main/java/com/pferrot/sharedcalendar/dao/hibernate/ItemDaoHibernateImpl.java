@@ -5,15 +5,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.sharedcalendar.dao.ItemDao;
+import com.pferrot.sharedcalendar.dao.bean.ListWithRowCount;
+import com.pferrot.sharedcalendar.model.ExternalItem;
+import com.pferrot.sharedcalendar.model.InternalItem;
 import com.pferrot.sharedcalendar.model.Item;
 import com.pferrot.sharedcalendar.model.Person;
 
@@ -31,52 +36,47 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 		getHibernateTemplate().update(item);
 	}
 
-	public Item findItem(final Long itemId) {
-		return (Item)getHibernateTemplate().load(Item.class, itemId);
+	public InternalItem findInternalItem(final Long itemId) {
+		return (InternalItem)getHibernateTemplate().load(InternalItem.class, itemId);
 	}
 
-	public List<Item> findItemsByTitle(final String pTitle, final int pFirstResult, final int pMaxResults) {
-		DetachedCriteria criteria = DetachedCriteria.forClass(Item.class);
+	public ExternalItem findExternalItem(final Long itemId) {
+		return (ExternalItem)getHibernateTemplate().load(ExternalItem.class, itemId);
+	}
+	
+	public List<InternalItem> findAllInternalItems() {
+		return findInternalItems(0, 0);
+	}
+	
+	public List<InternalItem> findInternalItems(final int pFirstResult, final int pMaxResults) {
+		return findInternalItemsByTitle(null, pFirstResult, pMaxResults);
+	}
+
+	public List<InternalItem> findInternalItemsByTitle(final String pTitle) {
+		return (List<InternalItem>) findItemsByTitle(pTitle, 0, 0, InternalItem.class);
+	}
+
+	public List<InternalItem> findInternalItemsByTitle(final String pTitle, final int pFirstResult, final int pMaxResults) {
+		return (List<InternalItem>) findItemsByTitle(pTitle, pFirstResult, pMaxResults, InternalItem.class);
+	}
+
+	private List findItemsByTitle(final String pTitle, final int pFirstResult, final int pMaxResults, final Class clazz) {
+		final DetachedCriteria criteria = getItemsByTitleCriteria(pTitle, clazz);
+		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
+	}
+	
+	private long countItemsByTitle(final String pTitle, final Class clazz) {
+		final DetachedCriteria criteria = getItemsByTitleCriteria(pTitle, clazz);
+		return rowCount(criteria);
+	}
+	
+	private DetachedCriteria getItemsByTitleCriteria(final String pTitle, final Class clazz) {
+		final DetachedCriteria criteria = DetachedCriteria.forClass(clazz);
 		if (pTitle != null && pTitle.trim().length() > 0) {
 			criteria.add(Restrictions.ilike("title", pTitle, MatchMode.ANYWHERE));
 		}
 		criteria.addOrder(Order.asc("title").ignoreCase());
-		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
-	}
-	
-	public List<Item> findItemsByTitle(final String pTitle) {
-		return findItemsByTitle(pTitle, 0, 0);
-	}	
-	
-	public List<Item> findItems(final int pFirstResult, final int pMaxResults) {
-		return findItemsByTitle(null, pFirstResult, pMaxResults);
-	}
-	
-	public List<Item> findAllItems() {
-		return findItems(0, 0);
-	}
-
-	public List<Item> findItemsByTitleOwnedByPerson(final String pTitle, final Long pPersonId, final int pFirstResult, final int pMaxResults) {
-		CoreUtils.assertNotNull(pPersonId);
-		
-		DetachedCriteria criteria = DetachedCriteria.forClass(Item.class).
-			addOrder(Order.asc("title").ignoreCase());
-		if (pTitle != null && pTitle.trim().length() > 0) {
-			criteria.add(Restrictions.ilike("title", pTitle, MatchMode.ANYWHERE));
-		}
-		criteria.createCriteria("owner", CriteriaSpecification.INNER_JOIN).
-			add(Restrictions.eq("id", pPersonId));
-		
-		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
-	}
-	
-	public List<Item> findItemsOwnedByPerson(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
-		return findItemsByTitleOwnedByPerson(null, pPersonId, pFirstResult, pMaxResults);
-	}
-
-	public List<Item> findItemsOwnedByPerson(final Person pPerson, final int pFirstResult, final int pMaxResults) {
-		CoreUtils.assertNotNull(pPerson);
-		return findItemsOwnedByPerson(pPerson.getId(), pFirstResult, pMaxResults);
+		return criteria;
 	}
 
 	public List<Item> findItemsByTitleBorrowedByPerson(final String pTitle, final Long pPersonId, final int pFirstResult, final int pMaxResults) {
@@ -103,37 +103,82 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 		return findItemsBorrowedByPerson(pPerson.getId(), pFirstResult, pMaxResults);
 	}
 
-	public List<Item> findItemsByTitleLentByPerson(final String pTitle, final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+	public List<InternalItem> findItemsByTitleLentByPerson(final String pTitle, final Long pPersonId, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNull(pPersonId);
 		
-		DetachedCriteria criteria = DetachedCriteria.forClass(Item.class).
+		DetachedCriteria criteria = DetachedCriteria.forClass(InternalItem.class).
 		addOrder(Order.asc("title").ignoreCase());
 		if (pTitle != null && pTitle.trim().length() > 0) {
 			criteria.add(Restrictions.ilike("title", pTitle, MatchMode.ANYWHERE));
 		}
-		criteria.add(Restrictions.isNotNull("borrower")).
+		criteria.add(Restrictions.isNotNull("borrowDate")).
 			createCriteria("owner", CriteriaSpecification.INNER_JOIN).
 			add(Restrictions.eq("id", pPersonId));
 	
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
 	}
 
-	public List<Item> findItemsLentByPerson(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+	public List<InternalItem> findItemsLentByPerson(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
 		return findItemsByTitleLentByPerson(null, pPersonId, pFirstResult, pMaxResults);		
 	}
 
-	public List<Item> findItemsLentByPerson(final Person pPerson, final int pFirstResult, final int pMaxResults) {
+	public List<InternalItem> findItemsLentByPerson(final Person pPerson, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNull(pPerson);
 		return findItemsLentByPerson(pPerson.getId(), pFirstResult, pMaxResults);
 	}
 
-	private List<Item> findItemsByTitleOwnedByPersons(final String pTitle, final Long[] pPersonIds, final boolean pVisibleItemsOnly, final int pFirstResult, final int pMaxResults) {
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Items owned by person
+	public ListWithRowCount findItemsByTitleOwnedByPerson(final String pTitle, final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+		
+		final List list = listItemsByTitleOwnedByPerson(pTitle, pPersonId, pFirstResult, pMaxResults);
+		final long rowCount = countItemsByTitleOwnedByPerson(pTitle, pPersonId);
+		
+		final ListWithRowCount result = new ListWithRowCount(pFirstResult, pMaxResults, list, rowCount);
+		
+		return result;		
+	}
+	
+	public ListWithRowCount findItemsByTitleOwnedByPerson(final String pTitle, final Person pPerson, final int pFirstResult, final int pMaxResults) {
+		CoreUtils.assertNotNull(pPerson);
+		return findItemsByTitleOwnedByPerson(pTitle, pPerson.getId(), pFirstResult, pMaxResults);
+	}
+	
+	public ListWithRowCount findItemsOwnedByPerson(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+		return findItemsByTitleOwnedByPerson(null, pPersonId, pFirstResult, pMaxResults);
+	}
+
+	public ListWithRowCount findItemsOwnedByPerson(final Person pPerson, final int pFirstResult, final int pMaxResults) {
+		CoreUtils.assertNotNull(pPerson);
+		return findItemsOwnedByPerson(pPerson.getId(), pFirstResult, pMaxResults);
+	}
+	
+	private List<InternalItem> listItemsByTitleOwnedByPerson(final String pTitle, final Long pPersonId, final int pFirstResult, final int pMaxResults) {		
+		final DetachedCriteria criteria = getItemsByTitleOwnedByPersonCriteria(pTitle, pPersonId);
+		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
+	}
+	
+	private DetachedCriteria getItemsByTitleOwnedByPersonCriteria(final String pTitle, final Long pPersonId) {
+		CoreUtils.assertNotNull(pPersonId);
+		final DetachedCriteria criteria = DetachedCriteria.forClass(InternalItem.class).
+			addOrder(Order.asc("title").ignoreCase());
+		if (pTitle != null && pTitle.trim().length() > 0) {
+			criteria.add(Restrictions.ilike("title", pTitle, MatchMode.ANYWHERE));
+		}
+		criteria.createCriteria("owner", CriteriaSpecification.INNER_JOIN).
+			add(Restrictions.eq("id", pPersonId));
+		return criteria;
+	}
+
+
+
+	private List<InternalItem> findItemsByTitleOwnedByPersons(final String pTitle, final Long[] pPersonIds, final boolean pVisibleItemsOnly, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNull(pPersonIds);
 		if (pPersonIds.length == 0) {
 			return Collections.EMPTY_LIST;
 		}
 
-		DetachedCriteria criteria = DetachedCriteria.forClass(Item.class).
+		DetachedCriteria criteria = DetachedCriteria.forClass(InternalItem.class).
 			addOrder(Order.asc("title").ignoreCase());
 		
 		if (pTitle != null && pTitle.trim().length() > 0) {
@@ -148,15 +193,37 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
 	}
 
-	public List<Item> findVisibleItemsByTitleOwnedByPersons(final String pTitle, final Long[] pPersonIds, final int pFirstResult, final int pMaxResults) {
+	public List<InternalItem> findVisibleItemsByTitleOwnedByPersons(final String pTitle, final Long[] pPersonIds, final int pFirstResult, final int pMaxResults) {
 		return findItemsByTitleOwnedByPersons(pTitle, pPersonIds, true, pFirstResult, pMaxResults);
 	}
 
-	public List<Item> findVisibleItemsOwnedByPersons(final Long[] pPersonIds, final int pFirstResult, final int pMaxResults) {
+	public List<InternalItem> findVisibleItemsOwnedByPersons(final Long[] pPersonIds, final int pFirstResult, final int pMaxResults) {
 		return findVisibleItemsByTitleOwnedByPersons(null, pPersonIds, pFirstResult, pMaxResults);
 	}
 
-	public List<Item> findVisibleItemsByTitleOwnedByConnections(final String pTitle, final Person pPerson, final int pFirstResult, final int pMaxResults) {
+
+	private long countItemsByTitleOwnedByPerson(final String pTitle, final Person pPerson) {
+		CoreUtils.assertNotNull(pPerson);
+		return countItemsByTitleOwnedByPerson(pTitle, pPerson.getId());
+	}
+
+	private long countItemsByTitleOwnedByPerson(final String pTitle, final Long pPersonId) {
+		return rowCount(getItemsByTitleOwnedByPersonCriteria(pTitle, pPersonId));
+	}
+
+	private long countItemsOwnedByPerson(final Person pPerson) {
+		CoreUtils.assertNotNull(pPerson);
+		return countItemsOwnedByPerson(pPerson.getId());
+	}
+
+	private long countItemsOwnedByPerson(final Long pPersonId) {
+		return countItemsByTitleOwnedByPerson(null, pPersonId);
+	}
+	
+	// Items owned by person - end
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public List<InternalItem> findVisibleItemsByTitleOwnedByConnections(final String pTitle, final Person pPerson, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNull(pPerson);
 		
 		final List<Long> connetionsIds = new ArrayList<Long>();
@@ -172,7 +239,18 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 		return findVisibleItemsByTitleOwnedByPersons(pTitle, connetionsIdsArray, pFirstResult, pMaxResults);
 	}
 
-	public List<Item> findVisibleItemsOwnedByConnections(final Person pPerson, final int pFirstResult, final int pMaxResults) {
+	public List<InternalItem> findVisibleItemsOwnedByConnections(final Person pPerson, final int pFirstResult, final int pMaxResults) {
 		return findVisibleItemsByTitleOwnedByConnections(null, pPerson, pFirstResult, pMaxResults);
-	}	
+	}
+
+	/**
+	 * Returns the number of rows for a giver DetachedCriteria.
+	 *
+	 * @param pCriteria
+	 * @return
+	 */
+	private long rowCount(final DetachedCriteria pCriteria) {
+		pCriteria.setProjection(Projections.rowCount());
+		return ((Long)getHibernateTemplate().findByCriteria(pCriteria).get(0)).longValue();
+	}
 }

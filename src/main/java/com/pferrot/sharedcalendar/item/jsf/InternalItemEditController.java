@@ -7,23 +7,23 @@ import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.sharedcalendar.PagesURL;
 import com.pferrot.sharedcalendar.item.ItemUtils;
-import com.pferrot.sharedcalendar.model.Item;
+import com.pferrot.sharedcalendar.model.InternalItem;
 import com.pferrot.sharedcalendar.utils.JsfUtils;
 
-@ViewController(viewIds={"/auth/item/itemEdit.jspx"})
-public class ItemEditController extends AbstractItemAddEditController {
+@ViewController(viewIds={"/auth/item/internalItemEdit.jspx"})
+public class InternalItemEditController extends AbstractInternalItemAddEditController {
 	
-	private final static Log log = LogFactory.getLog(ItemEditController.class);
+	private final static Log log = LogFactory.getLog(InternalItemEditController.class);
 	
-	private Item item;
+	private InternalItem item;
 
 	@InitView
 	public void initView() {
 		// Read the item ID from the request parameter and load the correct item.
 		try {
-			final String itemIdString = JsfUtils.getRequestParameter(PagesURL.ITEM_EDIT_PARAM_ITEM_ID);
+			final String itemIdString = JsfUtils.getRequestParameter(PagesURL.INTERNAL_ITEM_EDIT_PARAM_ITEM_ID);
 			if (itemIdString != null) {
-				setItem(getItemService().findItem(Long.parseLong(itemIdString)));
+				setItem(getItemService().findInternalItem(Long.parseLong(itemIdString)));
 			}
 			// Item not found or no item ID specified.
 			if (getItem() == null) {
@@ -36,11 +36,11 @@ public class ItemEditController extends AbstractItemAddEditController {
 		}		
 	}
 
-	public Item getItem() {
+	public InternalItem getItem() {
 		return item;
 	}
 	
-	private void setItem(final Item pItem) {
+	private void setItem(final InternalItem pItem) {
 		item = pItem;
 
 		// Initialize the model to be edited.
@@ -58,7 +58,7 @@ public class ItemEditController extends AbstractItemAddEditController {
 	}
 
 	public String getItemOverviewHref() {		
-		return ItemUtils.getItemOverviewPageUrl(item.getId().toString());
+		return ItemUtils.getInternalItemOverviewPageUrl(item.getId().toString());
 	}	
 
 	@Override

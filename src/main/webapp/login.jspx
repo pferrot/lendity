@@ -51,11 +51,9 @@
 					<p><h:outputText value="#{messages.login_alreadyConnected3}"/></p>
 					<p><h:outputText value="#{messages.login_alreadyConnected4}"/></p> 
 					<p>
-					<o:separateConversationContext>
-                  		<h:outputLink value="#{authenticationController.logoutURL}">
-		            		<h:outputText value="#{messages.logout_logout}"/>
-	         			</h:outputLink>
-       		 		</o:separateConversationContext>
+               		<h:outputLink value="#{authenticationController.logoutURL}">
+	            		<h:outputText value="#{messages.logout_logout}"/>
+         			</h:outputLink>
 					</p>				
 				</c:if>
 				<c:if test="${not (loggedInUser)}">
@@ -105,18 +103,14 @@
 					</div>
 					<!-- /form row -->				
 					<p class="gt-forgot-password">
-						<o:separateConversationContext>
-	                        <h:outputLink value="#{authenticationController.lostPasswordURL}">
-		            			<h:outputText value="#{messages.lostPassword_lostPassword}"/>
-					    	</h:outputLink>
-		        		</o:separateConversationContext>
+                        <h:outputLink value="#{authenticationController.lostPasswordURL}">
+	            			<h:outputText value="#{messages.lostPassword_lostPassword}"/>
+				    	</h:outputLink>
 					</p>
 					<p class="gt-forgot-password">
-						<o:separateConversationContext>
-	                        <h:outputLink value="#{authenticationController.registrationURL}">
-		            			<h:outputText value="#{messages.registration_notMemberYet}"/>
-					    	</h:outputLink>
-		        		</o:separateConversationContext>
+                        <h:outputLink value="#{authenticationController.registrationURL}">
+	            			<h:outputText value="#{messages.registration_notMemberYet}"/>
+				    	</h:outputLink>
 					</p>
 													
 					</h:form>

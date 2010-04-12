@@ -7,6 +7,8 @@ import com.pferrot.sharedcalendar.item.ItemConsts;
 import com.pferrot.sharedcalendar.item.ItemService;
 import com.pferrot.sharedcalendar.item.ItemUtils;
 import com.pferrot.sharedcalendar.jsf.list.AbstractListController;
+import com.pferrot.sharedcalendar.model.ExternalItem;
+import com.pferrot.sharedcalendar.model.InternalItem;
 import com.pferrot.sharedcalendar.model.Item;
 
 public abstract class AbstractItemsListController extends AbstractListController {
@@ -29,11 +31,35 @@ public abstract class AbstractItemsListController extends AbstractListController
 
 	public boolean isAvailable() {
 		final Item item = (Item)getTable().getRowData();
-		return item.isAvailable();
+		if (item instanceof InternalItem) {
+		return ((InternalItem) item).isAvailable();
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public String getItemOverviewHref() {
-		final Item item = (Item)getTable().getRowData();		
-		return ItemUtils.getItemOverviewPageUrl(item.getId().toString());
-	}	
+		final Item item = (Item)getTable().getRowData();
+		if (item instanceof InternalItem) {
+			return ItemUtils.getInternalItemOverviewPageUrl(((InternalItem)item).getId().toString());
+		}
+		else {
+			return ItemUtils.getExternalItemOverviewPageUrl(((ExternalItem)item).getId().toString());
+		}		
+	}
+	
+	public String getInternalItemAddHref() {
+		return ItemUtils.getInternalItemAddPageUrl();
+	}
+
+	public String getItemEditHref() {
+		final Item item = (Item)getTable().getRowData();
+		if (item instanceof InternalItem) {
+			return ItemUtils.getInternalItemEditPageUrl(((InternalItem)item).getId().toString());
+		}
+		else {
+			return ItemUtils.getInternalItemEditPageUrl(((ExternalItem)item).getId().toString());
+		}
+	}
 }

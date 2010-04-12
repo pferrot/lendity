@@ -7,15 +7,15 @@ import com.pferrot.sharedcalendar.utils.JsfUtils;
 public class ItemUtils {
 
 	/**
-	 * Returns the HTML link to an item overview page.
+	 * Returns the HTML link to an internal item overview page.
 	 * 
 	 * @param pItemId
 	 * @return
 	 */
-	public static String getItemOverviewPageUrl(final String pItemId) {
+	public static String getInternalItemOverviewPageUrl(final String pItemId) {
 		CoreUtils.assertNotNull(pItemId);
 		
-		return JsfUtils.getFullUrl(PagesURL.ITEM_OVERVIEW, PagesURL.ITEM_OVERVIEW_PARAM_ITEM_ID, pItemId);
+		return JsfUtils.getFullUrl(PagesURL.INTERNAL_ITEM_OVERVIEW, PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID, pItemId);
 	}
 	
 	/**
@@ -23,18 +23,49 @@ public class ItemUtils {
 	 * @param pItemId
 	 * @return
 	 */
-	public static String getItemEditPageUrl(final String pItemId) {
+	public static String getInternalItemEditPageUrl(final String pItemId) {
 		CoreUtils.assertNotNull(pItemId);
 		
-		return JsfUtils.getFullUrl(PagesURL.ITEM_EDIT, PagesURL.ITEM_EDIT_PARAM_ITEM_ID, pItemId);
+		return JsfUtils.getFullUrl(PagesURL.INTERNAL_ITEM_EDIT, PagesURL.INTERNAL_ITEM_EDIT_PARAM_ITEM_ID, pItemId);
 	}
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public static String getItemAddPageUrl() {		
-		return JsfUtils.getFullUrl(PagesURL.ITEM_ADD);
+	public static String getInternalItemAddPageUrl() {		
+		return JsfUtils.getFullUrl(PagesURL.INTERNAL_ITEM_ADD);
+	}
+
+	/**
+	 * Returns the HTML link to an external item overview page.
+	 * 
+	 * @param pItemId
+	 * @return
+	 */
+	public static String getExternalItemOverviewPageUrl(final String pItemId) {
+		CoreUtils.assertNotNull(pItemId);
+		
+		return JsfUtils.getFullUrl(PagesURL.EXTERNAL_ITEM_OVERVIEW, PagesURL.EXTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID, pItemId);
+	}
+	
+	/**
+	 * 
+	 * @param pItemId
+	 * @return
+	 */
+	public static String getExternalItemEditPageUrl(final String pItemId) {
+		CoreUtils.assertNotNull(pItemId);
+		
+		return JsfUtils.getFullUrl(PagesURL.EXTERNAL_ITEM_EDIT, PagesURL.EXTERNAL_ITEM_EDIT_PARAM_ITEM_ID, pItemId);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static String getExternalItemAddPageUrl() {		
+		return JsfUtils.getFullUrl(PagesURL.EXTERNAL_ITEM_ADD);
 	}
 	
 	/**

@@ -3,7 +3,9 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:c="http://java.sun.com/jstl/core_rt">
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<!-- params for page titles-->
 	<ui:param name="pageTitle" value="My Items List" />
@@ -14,43 +16,120 @@
 		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
 
 			<!-- header content here  -->
-			<ui:define name="pageName">
-            	#{contentHeader}
-          	</ui:define>
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
 
 			<!-- insert content here -->
 			<ui:define name="pageContent">
-<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+				
+				<h2 class="gt-table-head">My Items List</h2>
+			
+				<!-- content box -->
+				<div class="gt-content-box">
+
+			
+				
 				<f:view>
-					<center>
 
-<h:dataTable value="#{myItemsListController.list}" binding="#{myItemsListController.table}" var="item">
+<!-- Search -->
+<div class="gt-sidebar-box gt-sidebar-box-brown">
+	<!-- search -->
+	<div class="gt-search"><div class="gt-search-inner">
+		<h:form>
+		    <h:inputText id="searchString" styleClass="gt-search-text" value="#{itemsListController.searchString}"/>
+		    <br/>
+			<h:commandButton value="#{messages.navigation_search}" action="#{itemsListController.search}" />
+			<h:commandButton value="#{messages.navigation_clearSearch}" action="#{itemsListController.clearSearch}" />
+		</h:form>
+	</div></div><!-- /search -->
+</div><!-- /Search -->
 
-	<h:column>
-        <f:facet name="header">
-            <h:outputText value="ID" />
-        </f:facet>
-        <h:outputText value="#{item.id}" />
+
+<h:dataTable value="#{myItemsListController.list}" binding="#{myItemsListController.table}" var="item" 
+   styleClass="gt-table gt-user-table">
+
+
+    <h:column>
+		<h4>
+			<h:outputLink value="#{myItemsListController.itemOverviewHref}">
+				<h:outputText value="#{item.title}" />
+			</h:outputLink>
+		</h4>
+		<p>Here's a quick snippet of this article. It's the preview that shows the first couple lines.</p>
+		<p class="gt-table-edit">
+			<h:outputLink value="#{myItemsListController.itemEditHref}">
+				<h:outputText value="#{messages.navigation_edit}" />
+			</h:outputLink>
+		</p>
     </h:column>
 
 	<h:column>
-        <f:facet name="header">
-            <h:outputText value="TITLE" />
-        </f:facet>
-		<h:outputText value="#{item.title}" />
+		<!-- Categories Sub Table -->
+		<table border="0" class="gt-table-categories">
+			<tr>
+			    <th>Category:</th>
+				<td><a href="#">Blog</a></td>
+		    </tr>
+			<tr>
+				<th>Lent to:</th>
+				<td>greenman17</td>
+			</tr>
+
+			<tr>
+				<th>Lent since:</th>
+				<td>04.12.2010</td>
+			</tr>
+		</table>
+
     </h:column>
 
 </h:dataTable>
 
-<br/>
+<!-- Table Controls -->
+<div class="gt-table-controls gt-table-controls-btm clearfix">
+<h:form> 
+<p class="gt-table-pager">
 
-<h:form>
-    <h:commandLink rendered="#{myItemsListController.previousPage}" value="#{messages.navigation_previousPage}" action="#{myItemsListController.previousPage}"/>
-    <h:commandLink rendered="#{myItemsListController.nextPage}" value="#{messages.navigation_nextPage}" action="#{myItemsListController.nextPage}"/>
+
+<!--	The paging buttons-->
+<h:commandLink action="#{myItemsListController.pageFirst}"
+    disabled="#{myItemsListController.firstRow == 0}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" />
+</h:commandLink>
+<h:commandLink action="#{myItemsListController.pagePrevious}"
+    disabled="#{myItemsListController.firstRow == 0}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" />
+</h:commandLink>
+<h:commandLink action="#{myItemsListController.pageNext}"
+    disabled="#{myItemsListController.firstRow + myItemsListController.rowsPerPage >= myItemsListController.totalRows}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" />
+</h:commandLink>
+<h:commandLink action="#{myItemsListController.pageLast}"
+    disabled="#{myItemsListController.firstRow + myItemsListController.rowsPerPage >= myItemsListController.totalRows}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" />
+</h:commandLink>
+
+<br/>        
+<h:outputText value="Page #{myItemsListController.currentPage} / #{myItemsListController.totalPages}" />
+
+</p>
 </h:form>
+</div><!-- /Table Controls -->
 
-					</center>
+
+
 				</f:view>
+				</div><!-- /content box -->
+				<div class="gt-table-buttons">
+					<h:outputLink value="#{myItemsListController.internalItemAddHref}" styleClass="gt-btn-green-large">
+       					<h:outputText value="#{messages.item_addInternalItem}" />
+       				</h:outputLink>
+				</div>
+			</div>
+			<!-- /body -->
+			
 			</ui:define>
 		</ui:decorate>
 

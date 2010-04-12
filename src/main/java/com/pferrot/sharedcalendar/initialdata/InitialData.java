@@ -16,6 +16,7 @@ import com.pferrot.sharedcalendar.model.Address;
 import com.pferrot.sharedcalendar.model.ConnectionRequestResponse;
 import com.pferrot.sharedcalendar.model.Country;
 import com.pferrot.sharedcalendar.model.Gender;
+import com.pferrot.sharedcalendar.model.InternalItem;
 import com.pferrot.sharedcalendar.model.Item;
 import com.pferrot.sharedcalendar.model.ItemCategory;
 import com.pferrot.sharedcalendar.model.Language;
@@ -220,7 +221,7 @@ public class InitialData {
 	}
 	private void createItems() {
 		// Create book.
-		Item item = new Item();
+		InternalItem item = new InternalItem();
 		item.setTitle("Les fourmis");
 		item.setDescription("Blabla blabla le dude blablabla tadadada...");
 		item.addCategory((ItemCategory) listValueDao.findListValue(ItemCategory.BOOK_LABEL_CODE));
@@ -228,7 +229,7 @@ public class InitialData {
 		itemDao.createItem(item);
 
 		// Create CD.
-		item = new Item();
+		item = new InternalItem();
 		item.setTitle("Massive Attack - Helligoland");
 		item.setDescription("Track 1:..., Track 2: ...");
 		item.addCategory((ItemCategory) listValueDao.findListValue(ItemCategory.CD_LABEL_CODE));
@@ -236,7 +237,7 @@ public class InitialData {
 		itemDao.createItem(item);
 
 		// Create DVD.
-		item = new Item();
+		item = new InternalItem();
 		item.setTitle("Trainspotting");
 		item.setDescription("Tadadadadadada dadadadada adadadadadadadadadad");
 		item.addCategory((ItemCategory) listValueDao.findListValue(ItemCategory.DVD_LABEL_CODE));

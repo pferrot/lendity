@@ -2,26 +2,19 @@ package com.pferrot.sharedcalendar.model;
 // Generated 10 oct. 2008 00:01:18 by Hibernate Tools 3.2.0.b9
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.envers.Audited;
 
 import com.pferrot.core.CoreUtils;
@@ -30,13 +23,9 @@ import com.pferrot.core.CoreUtils;
  * @author Patrice
  *
  */
-@Entity
-@Table(name = "ITEMS")
-public class Item implements Ownable, Borrowable, Serializable {
-
-	@Id @GeneratedValue
-	@Column(name = "ID")
-    private Long id;
+@MappedSuperclass
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Item implements Borrowable, Serializable {
 
 	@Column(name = "TITLE", nullable = false, length = 255)
 	@Audited
@@ -45,38 +34,21 @@ public class Item implements Ownable, Borrowable, Serializable {
 	@Column(name = "DESCRIPTION", nullable = true, length = 3999)
 	@Audited
 	private String description;
-
-	@Column(name = "VISIBLE", nullable = false)
-	private Boolean visible = Boolean.TRUE;
-
-	@Column(name = "LOCKED", nullable = false)
-	private Boolean locked = Boolean.FALSE;
 	
 	@ManyToMany(targetEntity = ItemCategory.class)
 	private Set<ItemCategory> categories = new HashSet<ItemCategory>();
 
-	@OneToOne(targetEntity = Person.class)
-	@JoinColumn(name = "OWNER_ID", nullable = false)
-	private Person owner;
-
-	@OneToMany(mappedBy = "ownable", targetEntity = OwnerHistoryEntry.class,
-			   cascade = {CascadeType.PERSIST})
-	@OrderBy(value = "startDate DESC")
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})	
-	private List<OwnerHistoryEntry> ownerHistoryEntries = new ArrayList<OwnerHistoryEntry>();	
-
+	// If the borrower if a user of the system.
 	@OneToOne(targetEntity = Person.class)
 	@JoinColumn(name = "BORROWER_ID", nullable = true)
 	private Person borrower;
 
+	// If the borrower is not a user of the system.
+	@Column(name = "BORROWER_NAME", nullable = true, length = 255)
+	private String borrowerName;
+
 	@Column(name = "BORROW_DATE", nullable = true)
 	private Date borrowDate;
-	
-	@OneToMany(mappedBy = "borrowable", targetEntity = BorrowerHistoryEntry.class,
-			   cascade = {CascadeType.PERSIST})
-	@OrderBy(value = "startDate DESC")
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})	
-	private List<BorrowerHistoryEntry> borrowerHistoryEntries = new ArrayList<BorrowerHistoryEntry>();
 	
 	@Version
 	@Column(name = "OBJ_VERSION")
@@ -85,14 +57,6 @@ public class Item implements Ownable, Borrowable, Serializable {
     public Item() {
     	super();
     }
-   
-    public Long getId() {
-        return id;
-    }
-    
-    public void setId(Long id) {
-        this.id = id;
-    }    
 	
 	public String getTitle() {
 		return title;
@@ -128,52 +92,20 @@ public class Item implements Ownable, Borrowable, Serializable {
 		categories.remove(pCategory);
 	}
 
-	public Boolean getLocked() {
-		return locked;
-	}
-
-	public void setLocked(Boolean locked) {
-		this.locked = locked;
-	}
-
-	public boolean isLocked() {
-		return Boolean.TRUE.equals(getLocked());
-	}	
-
-	public Boolean getVisible() {
-		return visible;
-	}
-
-	public void setVisible(Boolean visible) {
-		this.visible = visible;
-	}
-
-	public boolean isVisible() {
-		return Boolean.TRUE.equals(getVisible());
-	}
-
-	public Person getOwner() {
-		return owner;
-	}
-
-	public void setOwner(Person owner) {
-		this.owner = owner;
-	}
-
-	public List<OwnerHistoryEntry> getOwnerHistoryEntries() {
-		return ownerHistoryEntries;
-	}
-
-	public void setOwnerHistoryEntries(List<OwnerHistoryEntry> ownerHistoryEntries) {
-		this.ownerHistoryEntries = ownerHistoryEntries;
-	}
-
 	public Person getBorrower() {
 		return borrower;
 	}
 
 	public void setBorrower(Person borrower) {
 		this.borrower = borrower;
+	}
+
+	public String getBorrowerName() {
+		return borrowerName;
+	}
+
+	public void setBorrowerName(String borrowerName) {
+		this.borrowerName = borrowerName;
 	}
 
 	public Date getBorrowDate() {
@@ -185,26 +117,23 @@ public class Item implements Ownable, Borrowable, Serializable {
 	}
 
 	public boolean isBorrowed() {
-		return getBorrower() != null;
-	}
-
-	public List<BorrowerHistoryEntry> getBorrowerHistoryEntries() {
-		return borrowerHistoryEntries;
-	}
-
-	public void setBorrowerHistoryEntries(List<BorrowerHistoryEntry> borrowerHistoryEntries) {
-		this.borrowerHistoryEntries = borrowerHistoryEntries;
-	}
-	
-	public boolean isAvailable() {
-		return !isBorrowed() && !isLocked() && isVisible();
+		return getBorrowDate() != null;
 	}
 
 	@Override
 	public String toString() {
 		final StringBuffer sb = new StringBuffer();
-		sb.append("ID: ");
-		sb.append(getId());
+		
+		if (this instanceof InternalItem) {
+			sb.append("InternalItem, ");
+			sb.append("ID: ");
+			sb.append(((InternalItem)this).getId());
+		}
+		else if (this instanceof ExternalItem) {
+			sb.append("ExternalItem, ");
+			sb.append("ID: ");
+			sb.append(((ExternalItem)this).getId());
+		}
 		sb.append(", title: ");
 		sb.append(getTitle());
 		return sb.toString();
