@@ -23,29 +23,27 @@
 			
 			<!-- body -->
 			<div class="gt-bd gt-cols clearfix">
-				
-				<h2 class="gt-table-head">My Items List</h2>
-			
-				<!-- content box -->
-				<div class="gt-content-box">
 
-			
 				
-				<f:view>
+<f:view>
 
 <!-- Search -->
 <div class="gt-sidebar-box gt-sidebar-box-brown">
 	<!-- search -->
 	<div class="gt-search"><div class="gt-search-inner">
 		<h:form>
-		    <h:inputText id="searchString" styleClass="gt-search-text" value="#{itemsListController.searchString}"/>
+		    <h:inputText id="searchString" styleClass="gt-search-text" value="#{myItemsListController.searchString}"/>
 		    <br/>
-			<h:commandButton value="#{messages.navigation_search}" action="#{itemsListController.search}" />
-			<h:commandButton value="#{messages.navigation_clearSearch}" action="#{itemsListController.clearSearch}" />
+			<h:commandButton value="#{messages.navigation_search}" action="#{myItemsListController.search}" />
+			<h:commandButton value="#{messages.navigation_clearSearch}" action="#{myItemsListController.clearSearch}" />
 		</h:form>
 	</div></div><!-- /search -->
 </div><!-- /Search -->
 
+<h2 class="gt-table-head">My Items List</h2>
+
+<!-- content box -->
+<div class="gt-content-box">
 
 <h:dataTable value="#{myItemsListController.list}" binding="#{myItemsListController.table}" var="item" 
    styleClass="gt-table gt-user-table">
@@ -95,33 +93,49 @@
 
 <!--	The paging buttons-->
 <h:commandLink action="#{myItemsListController.pageFirst}"
-    disabled="#{myItemsListController.firstRow == 0}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" />
+    rendered="#{myItemsListController.firstRow != 0}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" alt="#{messages.navigation_firstPage}"/>
 </h:commandLink>
-<h:commandLink action="#{myItemsListController.pagePrevious}"
-    disabled="#{myItemsListController.firstRow == 0}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" />
-</h:commandLink>
-<h:commandLink action="#{myItemsListController.pageNext}"
-    disabled="#{myItemsListController.firstRow + myItemsListController.rowsPerPage >= myItemsListController.totalRows}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" />
-</h:commandLink>
-<h:commandLink action="#{myItemsListController.pageLast}"
-    disabled="#{myItemsListController.firstRow + myItemsListController.rowsPerPage >= myItemsListController.totalRows}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" />
-</h:commandLink>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" rendered="#{myItemsListController.firstRow == 0}" alt="#{messages.navigation_firstPage}"/>
 
-<br/>        
-<h:outputText value="Page #{myItemsListController.currentPage} / #{myItemsListController.totalPages}" />
+<h:commandLink action="#{myItemsListController.pagePrevious}"
+    rendered="#{myItemsListController.firstRow != 0}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" alt="#{messages.navigation_previousPage}" />
+</h:commandLink>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" rendered="#{myItemsListController.firstRow == 0}" alt="#{messages.navigation_previousPage}"/>
+
+<h:commandLink action="#{myItemsListController.pageNext}"
+    rendered="#{myItemsListController.firstRow + myItemsListController.rowsPerPage lt myItemsListController.totalRows}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" alt="#{messages.navigation_nextPage}" />
+</h:commandLink>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" 
+                rendered="#{myItemsListController.firstRow + myItemsListController.rowsPerPage >= myItemsListController.totalRows}"
+                alt="#{messages.navigation_nextPage}"/>
+
+
+<h:commandLink action="#{myItemsListController.pageLast}"
+    rendered="#{myItemsListController.firstRow + myItemsListController.rowsPerPage lt myItemsListController.totalRows}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" alt="#{messages.navigation_lastPage}" />
+</h:commandLink>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" 
+                rendered="#{myItemsListController.firstRow + myItemsListController.rowsPerPage >= myItemsListController.totalRows}"
+                 alt="#{messages.navigation_lastPage}"/>
+
+<br/>
+<h:outputText value="#{messages.navigation_page} "/> 
+<h:selectOneMenu id="goToPage" value="#{myItemsListController.goToPageNumber}" valueChangeListener="#{myItemsListController.page}" onchange="submit()" required="true">
+	<f:selectItems value="#{myItemsListController.goToPageNumberSelectItems}"/>
+</h:selectOneMenu>
+<h:outputText value=" / #{myItemsListController.totalPages}" />
 
 </p>
 </h:form>
 </div><!-- /Table Controls -->
 
+</div><!-- /content box -->
 
-
-				</f:view>
-				</div><!-- /content box -->
+</f:view>
+				
 				<div class="gt-table-buttons">
 					<h:outputLink value="#{myItemsListController.internalItemAddHref}" styleClass="gt-btn-green-large">
        					<h:outputText value="#{messages.item_addInternalItem}" />

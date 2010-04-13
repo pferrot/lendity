@@ -1,12 +1,17 @@
 package com.pferrot.sharedcalendar.jsf.list;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.component.UICommand;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,10 +38,12 @@ public abstract class AbstractListController implements Serializable {
     private int totalPages;
     private int pageRange;
     private Integer[] pages;
-    private int currentPage;	
+    private int currentPage;
+	private Integer goToPageNumber;
+	private List<SelectItem> goToPageNumberSelectItems;
 	
     // Search
-	private String searchString = null;
+	private String searchString;
 	
 	
 	
@@ -115,14 +122,17 @@ public abstract class AbstractListController implements Serializable {
         page(totalRows - ((totalRows % rowsPerPage != 0) ? totalRows % rowsPerPage : rowsPerPage));
     }
 
-    public void page(ActionEvent event) {
-        page(((Integer) ((UICommand) event.getComponent()).getValue() - 1) * rowsPerPage);
+    public void page(final ValueChangeEvent event) {
+        page(((Integer) ((HtmlSelectOneMenu) event.getComponent()).getValue() - 1) * rowsPerPage);
+        // loadDataList() is not called by getList() when the page is submitted with the onchange
+        // event on the h:selectOneMenu. Not sure why!?
+        loadDataList();
     }
 
     private void page(int firstRow) {
         this.firstRow = firstRow;
         // Load requested page.
-        loadDataList();
+//        loadDataList();
     }
 
     private void loadDataList() {
@@ -135,6 +145,12 @@ public abstract class AbstractListController implements Serializable {
         // Set currentPage, totalPages and pages.
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
+        // Still display page 1 (and not 0) if no row.
+        if (totalPages < 1) {
+        	currentPage = 1;
+        	totalPages = 1;        	
+        }
+        goToPageNumber = Integer.valueOf(currentPage);
         int pagesLength = Math.min(pageRange, totalPages);
         pages = new Integer[pagesLength];
 
@@ -145,7 +161,16 @@ public abstract class AbstractListController implements Serializable {
         for (int i = 0; i < pagesLength; i++) {
             pages[i] = ++firstPage;
         }
+        loadGoToPageNumberSelectItems();
     }
+    
+    private void loadGoToPageNumberSelectItems() {
+    	final List<SelectItem> list = new ArrayList<SelectItem>();
+    	for (int i = 0; i < totalPages; i++) {
+    		list.add(new SelectItem(Integer.valueOf(i+1), String.valueOf(i+1)));
+    	}
+    	goToPageNumberSelectItems = list;
+    } 
     
 
     // Getters ------------------------------------------------------------------------------------
@@ -197,10 +222,22 @@ public abstract class AbstractListController implements Serializable {
     public int getTotalPages() {
         return totalPages;
     }
+    
+    public List<SelectItem> getGoToPageNumberSelectItems() {
+    	return goToPageNumberSelectItems;    	
+    }
+
+    public Integer getGoToPageNumber() {
+		return goToPageNumber;
+	}    
 
     // Setters ------------------------------------------------------------------------------------
-	
-    public void setTable(final HtmlDataTable pTable) {
+
+	public void setGoToPageNumber(Integer goToPageNumber) {
+		this.goToPageNumber = goToPageNumber;
+	}
+
+	public void setTable(final HtmlDataTable pTable) {
 		this.table = pTable;
 	}
 	
