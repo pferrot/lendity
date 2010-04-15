@@ -8,8 +8,8 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="My Items List" />
-	<ui:param name="contentHeader" value="My Items List" />
+	<ui:param name="pageTitle" value="#{messages.items_myItems}" />
+	<ui:param name="contentHeader" value="#{messages.items_myItems}" />
 
 	<ui:define name="content">
 
@@ -27,23 +27,59 @@
 				
 <f:view>
 
-<!-- Search -->
-<div class="gt-sidebar-box gt-sidebar-box-brown">
-	<!-- search -->
-	<div class="gt-search"><div class="gt-search-inner">
-		<h:form>
-		    <h:inputText id="searchString" styleClass="gt-search-text" value="#{myItemsListController.searchString}"/>
-		    <br/>
-			<h:commandButton value="#{messages.navigation_search}" action="#{myItemsListController.search}" />
-			<h:commandButton value="#{messages.navigation_clearSearch}" action="#{myItemsListController.clearSearch}" />
-		</h:form>
-	</div></div><!-- /search -->
-</div><!-- /Search -->
+<h2 class="gt-table-head"><h:outputText value="#{messages.items_myItems}"/></h2>
 
-<h2 class="gt-table-head">My Items List</h2>
+<br/>
+
+<!-- search -->
+<div style="width: 200px;">
+<h:form prependId="false">
+<div class="gt-search"><div class="gt-search-inner">
+	
+    <h:inputText id="myItemsSearchString" 
+                 styleClass="gt-search-text"
+                 value="#{myItemsListController.searchString}" />
+                 
+	<script type="text/javascript">
+		setupSearchField('myItemsSearchString', 'myItemsClearSearchString', '#{messages.item_searchItem}');
+	</script>	
+</div></div>
+<c:if test="#{myItemsListController.searchString != null}">
+<div class="clearSearch">	
+	<h:commandLink id="myItemsClearSearchString" action="#{myItemsListController.clearSearch}">#{messages.search_clearSearch}</h:commandLink>	
+</div>
+</c:if>
+</h:form>
+</div>
+<!-- /search -->
+
+<!-- category -->
+<div style="width: 200px;">
+<h:form>
+<div>
+	
+	<h:selectOneMenu id="category" 
+	    value="#{myItemsListController.categoryId}" converter="javax.faces.Long">
+		<f:selectItems value="#{myItemsListController.categoriesSelectItems}"/>
+	</h:selectOneMenu>
+                 
+</div>
+</h:form>
+</div>
+<!-- /category -->
+
+<br/>
 
 <!-- content box -->
 <div class="gt-content-box">
+
+<c:if test="#{empty(myItemsListController.list)}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
 
 <h:dataTable value="#{myItemsListController.list}" binding="#{myItemsListController.table}" var="item" 
    styleClass="gt-table gt-user-table">
@@ -85,6 +121,8 @@
 
 </h:dataTable>
 
+<c:if test="#{!empty(myItemsListController.list)}">
+
 <!-- Table Controls -->
 <div class="gt-table-controls gt-table-controls-btm clearfix">
 <h:form> 
@@ -94,32 +132,32 @@
 <!--	The paging buttons-->
 <h:commandLink action="#{myItemsListController.pageFirst}"
     rendered="#{myItemsListController.firstRow != 0}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" alt="#{messages.navigation_firstPage}"/>
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"/>
 </h:commandLink>
-<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" rendered="#{myItemsListController.firstRow == 0}" alt="#{messages.navigation_firstPage}"/>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" rendered="#{myItemsListController.firstRow == 0}" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"/>
 
 <h:commandLink action="#{myItemsListController.pagePrevious}"
     rendered="#{myItemsListController.firstRow != 0}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" alt="#{messages.navigation_previousPage}" />
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}" />
 </h:commandLink>
-<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" rendered="#{myItemsListController.firstRow == 0}" alt="#{messages.navigation_previousPage}"/>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" rendered="#{myItemsListController.firstRow == 0}" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}"/>
 
 <h:commandLink action="#{myItemsListController.pageNext}"
     rendered="#{myItemsListController.firstRow + myItemsListController.rowsPerPage lt myItemsListController.totalRows}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" alt="#{messages.navigation_nextPage}" />
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}" />
 </h:commandLink>
 <h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" 
                 rendered="#{myItemsListController.firstRow + myItemsListController.rowsPerPage >= myItemsListController.totalRows}"
-                alt="#{messages.navigation_nextPage}"/>
+                alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}"/>
 
 
 <h:commandLink action="#{myItemsListController.pageLast}"
     rendered="#{myItemsListController.firstRow + myItemsListController.rowsPerPage lt myItemsListController.totalRows}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" alt="#{messages.navigation_lastPage}" />
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}" />
 </h:commandLink>
 <h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" 
                 rendered="#{myItemsListController.firstRow + myItemsListController.rowsPerPage >= myItemsListController.totalRows}"
-                 alt="#{messages.navigation_lastPage}"/>
+                alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}"/>
 
 <br/>
 <h:outputText value="#{messages.navigation_page} "/> 
@@ -131,6 +169,8 @@
 </p>
 </h:form>
 </div><!-- /Table Controls -->
+
+</c:if><!-- /not empty  -->
 
 </div><!-- /content box -->
 

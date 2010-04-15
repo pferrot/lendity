@@ -3,21 +3,17 @@ package com.pferrot.sharedcalendar.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.persistence.Version;
 
 import org.hibernate.envers.Audited;
-
-import com.pferrot.core.CoreUtils;
 
 /**
  * @author Patrice
@@ -35,8 +31,9 @@ public abstract class Item implements Borrowable, Serializable {
 	@Audited
 	private String description;
 	
-	@ManyToMany(targetEntity = ItemCategory.class)
-	private Set<ItemCategory> categories = new HashSet<ItemCategory>();
+	@ManyToOne(targetEntity = ItemCategory.class)
+	@JoinColumn(name = "CATEGORY_ID", nullable = true)
+	private ItemCategory category;
 
 	// If the borrower if a user of the system.
 	@OneToOne(targetEntity = Person.class)
@@ -74,22 +71,12 @@ public abstract class Item implements Borrowable, Serializable {
 		this.description = description;
 	}
 
-	public Set<ItemCategory> getCategories() {
-		return categories;
+	public ItemCategory getCategory() {
+		return category;
 	}
 
-	public void setCategories(Set<ItemCategory> categories) {
-		this.categories = categories;
-	}
-
-	public void addCategory(final ItemCategory pCategory) {
-		CoreUtils.assertNotNull(pCategory);
-		categories.add(pCategory);
-	}
-
-	public void removeCategory(final ItemCategory pCategory) {
-		CoreUtils.assertNotNull(pCategory);
-		categories.remove(pCategory);
+	public void setCategory(ItemCategory category) {
+		this.category = category;
 	}
 
 	public Person getBorrower() {

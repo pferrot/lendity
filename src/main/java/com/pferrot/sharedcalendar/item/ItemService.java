@@ -77,6 +77,21 @@ public class ItemService {
 		return itemDao.findItemsByTitleOwnedByPerson(pTitle, pPersonId, pFirstResult, pMaxResults);
 	}
 
+	public ListWithRowCount findItems(final Long pPersonId, final String pTitle, final Long pCategoryId, final int pFirstResult, final int pMaxResults) {
+		Long[] personIds = null;
+		if (pPersonId != null) {
+			personIds = new Long[1];
+			personIds[0] = pPersonId;
+		}
+		Long[] categoryIds = null;
+		if (pCategoryId != null) {
+			categoryIds = new Long[1];
+			categoryIds[0] = pCategoryId;
+		}
+		
+		return itemDao.findItems(personIds, pTitle, categoryIds, pFirstResult, pMaxResults);
+	}
+
 	public List<Item> findItemsBorrowedByPersonId(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
 		return itemDao.findItemsBorrowedByPerson(pPersonId, pFirstResult, pMaxResults);
 	}
@@ -93,8 +108,8 @@ public class ItemService {
 		return itemDao.createItem(item);
 	}
 
-	public Long createItemWithCategories(final Item pItem, final Collection<Long> pCategoriesIds) {
-		pItem.setCategories(ListValueUtils.getListValuesFromIds(pCategoriesIds, listValueDao));
+	public Long createItemWithCategory(final Item pItem, final Long pCategoryId) {
+		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, listValueDao));
 		return createItem(pItem);
 	}
 
@@ -102,13 +117,9 @@ public class ItemService {
 		itemDao.updateItem(item);
 	}
 
-	public void updateItemWithCategories(final Item pItem, final Collection<Long> pCategoriesIds) {
-		pItem.setCategories(ListValueUtils.getListValuesFromIds(pCategoriesIds, listValueDao));
+	public void updateItemWithCategory(final Item pItem, final Long pCategoryId) {
+		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, listValueDao));
 		updateItem(pItem);
-	}
-
-	public List<Long> getIdsFromItemCategories(final Collection<ItemCategory> itemCategories) {
-		return ListValueUtils.getIdsFromListValues(itemCategories);
 	}
 
 	public boolean isCurrentUserAuthorizedToView(final Item pItem) {

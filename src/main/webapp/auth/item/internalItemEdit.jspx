@@ -31,7 +31,7 @@ Category:<br />
 							style="color: red;" for="category"></h:message>
 						<br />
 						<h:selectManyListbox id="category" 
-						    value="#{itemEditController.categoriesId}" converter="javax.faces.Long" required="true">
+						    value="#{itemEditController.categoriyId}" converter="javax.faces.Long" required="true">
 							<f:selectItems value="#{itemEditController.categoriesSelectItems}"/>
 						</h:selectManyListbox>
 						<br />

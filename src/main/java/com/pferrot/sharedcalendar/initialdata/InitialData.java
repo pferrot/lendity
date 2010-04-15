@@ -224,7 +224,7 @@ public class InitialData {
 		InternalItem item = new InternalItem();
 		item.setTitle("Les fourmis");
 		item.setDescription("Blabla blabla le dude blablabla tadadada...");
-		item.addCategory((ItemCategory) listValueDao.findListValue(ItemCategory.BOOK_LABEL_CODE));
+		item.setCategory((ItemCategory) listValueDao.findListValue(ItemCategory.BOOK_LABEL_CODE));
 		item.setOwner(personDao.findPersonFromUsername("patrice.ferrot@gmail.com"));
 		itemDao.createItem(item);
 
@@ -232,7 +232,7 @@ public class InitialData {
 		item = new InternalItem();
 		item.setTitle("Massive Attack - Helligoland");
 		item.setDescription("Track 1:..., Track 2: ...");
-		item.addCategory((ItemCategory) listValueDao.findListValue(ItemCategory.CD_LABEL_CODE));
+		item.setCategory((ItemCategory) listValueDao.findListValue(ItemCategory.CD_LABEL_CODE));
 		item.setOwner(personDao.findPersonFromUsername("patrice.ferrot@gmail.com"));
 		itemDao.createItem(item);
 
@@ -240,7 +240,7 @@ public class InitialData {
 		item = new InternalItem();
 		item.setTitle("Trainspotting");
 		item.setDescription("Tadadadadadada dadadadada adadadadadadadadadad");
-		item.addCategory((ItemCategory) listValueDao.findListValue(ItemCategory.DVD_LABEL_CODE));
+		item.setCategory((ItemCategory) listValueDao.findListValue(ItemCategory.DVD_LABEL_CODE));
 		item.setOwner(personDao.findPersonFromUsername("patrice.ferrot@gmail.com"));
 		itemDao.createItem(item);	
 	}

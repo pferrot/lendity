@@ -46,13 +46,13 @@ public class InternalItemEditController extends AbstractInternalItemAddEditContr
 		// Initialize the model to be edited.
 		setTitle(pItem.getTitle());
 		setDescription(pItem.getDescription());
-		setCategoriesId(getItemService().getIdsFromItemCategories(pItem.getCategories()));
+		setCategoryId(pItem.getCategory().getId());
 	}	
 
 	public Long updateItem() {		
 		getItem().setTitle(getTitle());
 		getItem().setDescription(getDescription());
-		getItemService().updateItemWithCategories(getItem(), getCategoriesId());
+		getItemService().updateItemWithCategory(getItem(), getCategoryId());
 
 		return getItem().getId();
 	}

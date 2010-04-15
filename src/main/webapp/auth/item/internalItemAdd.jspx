@@ -30,10 +30,10 @@ Category:<br />
 						<h:message showSummary="true" showDetail="false"
 							style="color: red;" for="category"></h:message>
 						<br />
-						<h:selectManyListbox id="category" 
-						    value="#{itemAddController.categoriesId}" converter="javax.faces.Long" required="true">
+						<h:selectOneMenu id="category" 
+						    value="#{itemAddController.categoryId}" converter="javax.faces.Long" required="true">
 							<f:selectItems value="#{itemAddController.categoriesSelectItems}"/>
-						</h:selectManyListbox>
+						</h:selectOneMenu>
 						<br />
 
 Titre:<br />

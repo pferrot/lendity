@@ -15,15 +15,11 @@ import java.util.List;
 public class ListWithRowCount {
 
 	private long rowCount;
-	private int firstRow;
-	private int maxRows;
 	private List list;
 	
-	public ListWithRowCount(int firstRow, int maxRows, List list, long rowCount) {
+	public ListWithRowCount(List list, long rowCount) {
 		super();
 		this.rowCount = rowCount;
-		this.firstRow = firstRow;
-		this.maxRows = maxRows;
 		this.list = list;
 	}
 
@@ -33,22 +29,6 @@ public class ListWithRowCount {
 
 	public void setRowCount(long rowCount) {
 		this.rowCount = rowCount;
-	}
-
-	public int getFirstRow() {
-		return firstRow;
-	}
-
-	public void setFirstRow(int firstRow) {
-		this.firstRow = firstRow;
-	}
-
-	public int getMaxRows() {
-		return maxRows;
-	}
-
-	public void setMaxRows(int maxRows) {
-		this.maxRows = maxRows;
 	}
 
 	public List getList() {

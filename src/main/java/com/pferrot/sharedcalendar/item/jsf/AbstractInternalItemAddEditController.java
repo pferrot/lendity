@@ -21,7 +21,7 @@ public abstract class AbstractInternalItemAddEditController {
 	private ItemService itemService;
 	
 	private List<SelectItem> categoriesSelectItems;
-	private List<Long> categoriesId;
+	private Long categoryId;
 	private String title;
 	private String description;
 	
@@ -39,14 +39,14 @@ public abstract class AbstractInternalItemAddEditController {
 			categoriesSelectItems = UiUtils.getSelectItemsForListValue(itemService.getCategories(), locale);
 		}		
 		return categoriesSelectItems;	
-	}
-	
-	public List<Long> getCategoriesId() {
-		return categoriesId;
+	}	
+
+	public Long getCategoryId() {
+		return categoryId;
 	}
 
-	public void setCategoriesId(List<Long> categoriesId) {
-		this.categoriesId = categoriesId;
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	public String getTitle() {

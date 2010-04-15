@@ -90,8 +90,8 @@ public abstract class AbstractListController implements Serializable {
 	public void setSearchString(final String pSearchString) {
 		this.searchString = pSearchString;
 		// If the search string changes, go the the first page.
-//		forceReloadList();
-//		setFirstResultIndex(0);
+		page(0);
+		loadDataList();
 	}
 	
 	public String search() {

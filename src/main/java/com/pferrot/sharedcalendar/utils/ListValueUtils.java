@@ -37,4 +37,12 @@ public class ListValueUtils {
 		}
 		return result;		
 	}
+
+	public static ListValue getListValueFromId(final Long listValueId, final ListValueDao listValueDao) {
+		CoreUtils.assertNotNull(listValueDao);
+		if (listValueId == null) {
+			return null;
+		}
+		return listValueDao.findListValue(listValueId);
+	}
 }

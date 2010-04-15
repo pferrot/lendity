@@ -9,9 +9,9 @@ import com.pferrot.sharedcalendar.model.ListValue;
 @DiscriminatorValue("ItemCategory")
 public class ItemCategory extends ListValue {
 	
-	public static final String DVD_LABEL_CODE = "item_category_dvd";
-	public static final String CD_LABEL_CODE = "item_category_cd";
-	public static final String BOOK_LABEL_CODE = "item_category_book";
+	public static final String DVD_LABEL_CODE = "item_categoryDvd";
+	public static final String CD_LABEL_CODE = "item_categoryCd";
+	public static final String BOOK_LABEL_CODE = "item_categoryBook";
 	
 	public ItemCategory() {
 		super();

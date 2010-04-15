@@ -17,7 +17,7 @@ public class InternalItemAddController extends AbstractInternalItemAddEditContro
 		internalItem.setDescription(getDescription());
 		internalItem.setOwner(getItemService().getCurrentPerson());
 				
-		return getItemService().createItemWithCategories(internalItem, getCategoriesId());		
+		return getItemService().createItemWithCategory(internalItem, getCategoryId());		
 	}
 
 	public String getItemsListHref() {		

@@ -134,7 +134,7 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 		final List list = listItemsByTitleOwnedByPerson(pTitle, pPersonId, pFirstResult, pMaxResults);
 		final long rowCount = countItemsByTitleOwnedByPerson(pTitle, pPersonId);
 		
-		final ListWithRowCount result = new ListWithRowCount(pFirstResult, pMaxResults, list, rowCount);
+		final ListWithRowCount result = new ListWithRowCount(list, rowCount);
 		
 		return result;		
 	}
@@ -172,29 +172,41 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 
 
 
-	private List<InternalItem> findItemsByTitleOwnedByPersons(final String pTitle, final Long[] pPersonIds, final boolean pVisibleItemsOnly, final int pFirstResult, final int pMaxResults) {
-		CoreUtils.assertNotNull(pPersonIds);
-		if (pPersonIds.length == 0) {
-			return Collections.EMPTY_LIST;
-		}
-
-		DetachedCriteria criteria = DetachedCriteria.forClass(InternalItem.class).
-			addOrder(Order.asc("title").ignoreCase());
+	private List<InternalItem> findItemsByTitleOwnedByPersons(final Long[] pPersonIds, final String pTitle, final Long[] pCategoryIds, final boolean pVisibleItemsOnly, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria criteria = getItemsDetachedCriteria(pPersonIds, pTitle, pCategoryIds, pVisibleItemsOnly);
+		criteria.addOrder(Order.asc("title").ignoreCase());
 		
+		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
+	}
+
+	private long countItemsByTitleOwnedByPersons(final Long[] pPersonIds, final String pTitle, final Long[] pCategoryIds, final boolean pVisibleItemsOnly) {
+		final DetachedCriteria criteria = getItemsDetachedCriteria(pPersonIds, pTitle, pCategoryIds, pVisibleItemsOnly);
+		return rowCount(criteria);
+	}
+	
+	private DetachedCriteria getItemsDetachedCriteria(final Long[] pPersonIds, final String pTitle, final Long[] pCategoryIds, final boolean pVisibleItemsOnly) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(InternalItem.class);
+	
 		if (pTitle != null && pTitle.trim().length() > 0) {
 			criteria.add(Restrictions.ilike("title", pTitle, MatchMode.ANYWHERE));
 		}
 		if (pVisibleItemsOnly) {
 			criteria.add(Restrictions.eq("visible", Boolean.TRUE));
 		}
-		criteria.createCriteria("owner", CriteriaSpecification.INNER_JOIN).
-			add(Restrictions.in("id", pPersonIds));
+		if (pCategoryIds != null && pCategoryIds.length > 0) {
+			criteria.createCriteria("categories", CriteriaSpecification.INNER_JOIN).
+				add(Restrictions.in("id", pCategoryIds));
+		}
+		if (pPersonIds != null && pPersonIds.length > 0) {
+			criteria.createCriteria("owner", CriteriaSpecification.INNER_JOIN).
+				add(Restrictions.in("id", pPersonIds));
+		}
 		
-		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
+		return criteria;	
 	}
 
 	public List<InternalItem> findVisibleItemsByTitleOwnedByPersons(final String pTitle, final Long[] pPersonIds, final int pFirstResult, final int pMaxResults) {
-		return findItemsByTitleOwnedByPersons(pTitle, pPersonIds, true, pFirstResult, pMaxResults);
+		return findItemsByTitleOwnedByPersons(pPersonIds, pTitle, null, true, pFirstResult, pMaxResults);
 	}
 
 	public List<InternalItem> findVisibleItemsOwnedByPersons(final Long[] pPersonIds, final int pFirstResult, final int pMaxResults) {
@@ -252,5 +264,13 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 	private long rowCount(final DetachedCriteria pCriteria) {
 		pCriteria.setProjection(Projections.rowCount());
 		return ((Long)getHibernateTemplate().findByCriteria(pCriteria).get(0)).longValue();
+	}
+
+	public ListWithRowCount findItems(Long[] pPersonIds, String pTitle,
+			Long[] categoriesId, int pFirstResult, int pMaxResults) {
+		final List list = findItemsByTitleOwnedByPersons(pPersonIds, pTitle, categoriesId, false, pFirstResult, pMaxResults);
+		final long count = countItemsByTitleOwnedByPersons(pPersonIds, pTitle, categoriesId, false);
+		
+		return new ListWithRowCount(list, count);
 	}
 }

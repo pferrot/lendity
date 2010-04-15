@@ -20,15 +20,7 @@ public class MyItemsListController extends AbstractItemsListController {
 
 	@Override
 	protected ListWithRowCount getListWithRowCount() {
-		// Is there a search string specified?
-		if (getSearchString() != null  && getSearchString().trim().length() > 0) {
-			// + 1 so that we can know whether there is a next page or not.
-			return getItemService().findItemsByTitleOwnedByPersonId(getSearchString(), PersonUtils.getCurrentPersonId(), getFirstRow(), getRowsPerPage());
-		}
-		else {
-			// + 1 so that we can know whether there is a next page or not.
-			return getItemService().findItemsOwnedByPersonId(PersonUtils.getCurrentPersonId(), getFirstRow(), getRowsPerPage());
-		}
+		return getItemService().findItems(PersonUtils.getCurrentPersonId(), getSearchString(), getCategoryId(), getFirstRow(), getRowsPerPage());
 	}
 	
 

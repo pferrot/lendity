@@ -1,8 +1,15 @@
 package com.pferrot.sharedcalendar.item.jsf;
 
+import java.util.List;
+import java.util.Locale;
+
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.sharedcalendar.i18n.I18nUtils;
 import com.pferrot.sharedcalendar.item.ItemConsts;
 import com.pferrot.sharedcalendar.item.ItemService;
 import com.pferrot.sharedcalendar.item.ItemUtils;
@@ -10,11 +17,15 @@ import com.pferrot.sharedcalendar.jsf.list.AbstractListController;
 import com.pferrot.sharedcalendar.model.ExternalItem;
 import com.pferrot.sharedcalendar.model.InternalItem;
 import com.pferrot.sharedcalendar.model.Item;
+import com.pferrot.sharedcalendar.utils.UiUtils;
 
 public abstract class AbstractItemsListController extends AbstractListController {
 	private final static Log log = LogFactory.getLog(AbstractItemsListController.class);
 	
 	private ItemService itemService;
+
+	private List<SelectItem> categoriesSelectItems;
+	private Long categoryId;
 	
 	public void setItemService(ItemService itemService) {
 		this.itemService = itemService;
@@ -22,6 +33,30 @@ public abstract class AbstractItemsListController extends AbstractListController
 	
 	public ItemService getItemService() {
 		return itemService;
+	}
+
+	public List<SelectItem> getCategoriesSelectItems() {
+		if (categoriesSelectItems == null) {
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			categoriesSelectItems = UiUtils.getSelectItemsForListValue(itemService.getCategories(), locale);
+			// Add all categories first.
+			categoriesSelectItems.add(0, getAllCategoriesSelectItem(locale));
+		}		
+		return categoriesSelectItems;	
+	}
+
+	private SelectItem getAllCategoriesSelectItem(final Locale locale) {
+		final String label = I18nUtils.getMessageResourceString("item_categoryAll", locale);
+		final SelectItem si = new SelectItem(null, label);
+		return si;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	@Override
