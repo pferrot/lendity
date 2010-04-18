@@ -18,19 +18,19 @@ public interface ItemDao {
 	ExternalItem findExternalItem(Long itemId);
 	
 	// Return all internal items containing title.
-	List<InternalItem> findAllInternalItems();	
+//	List<InternalItem> findAllInternalItems();	
 //	List<InternalItem> findItems(int pFirstResult, int pMaxResults);
 	
-	List<InternalItem> findInternalItems(int pFirstResult, int pMaxResults);
-	List<InternalItem> findInternalItemsByTitle(String title);
-	List<InternalItem> findInternalItemsByTitle(String title, int pFirstResult, int pMaxResults);
-		
-	ListWithRowCount findItemsOwnedByPerson(Person pPerson, int pFirstResult, int pMaxResults);
-	ListWithRowCount findItemsOwnedByPerson(Long pPersonId, int pFirstResult, int pMaxResults);
-	ListWithRowCount findItemsByTitleOwnedByPerson(String pTitle, Person pPerson, int pFirstResult, int pMaxResults);
-	ListWithRowCount findItemsByTitleOwnedByPerson(String pTitle, Long pPersonId, int pFirstResult, int pMaxResults);
+//	List<InternalItem> findInternalItems(int pFirstResult, int pMaxResults);
+//	List<InternalItem> findInternalItemsByTitle(String title);
+//	List<InternalItem> findInternalItemsByTitle(String title, int pFirstResult, int pMaxResults);
+//		
+//	ListWithRowCount findItemsOwnedByPerson(Person pPerson, int pFirstResult, int pMaxResults);
+//	ListWithRowCount findItemsOwnedByPerson(Long pPersonId, int pFirstResult, int pMaxResults);
+//	ListWithRowCount findItemsByTitleOwnedByPerson(String pTitle, Person pPerson, int pFirstResult, int pMaxResults);
+//	ListWithRowCount findItemsByTitleOwnedByPerson(String pTitle, Long pPersonId, int pFirstResult, int pMaxResults);
 	
-	ListWithRowCount findItems(Long[] pPersonIds, String pTitle, Long[] categoriesId, int pFirstResult, int pMaxResults);
+	ListWithRowCount findItems(Long[] pOwnerIds, Long[] pBorrowerIds, String pTitle, Long[] categoriesId, Boolean pVisible, Boolean pBorrowed, int pFirstResult, int pMaxResults);
 	
 //	List<InternalItem> findItemsOwnedByPerson(Person pPerson, int pFirstResult, int pMaxResults);
 //	long countItemsOwnedByPerson(Person pPerson);
@@ -41,20 +41,20 @@ public interface ItemDao {
 //	List<InternalItem> findItemsByTitleOwnedByPerson(String pTitle, Long pPersonId, int pFirstResult, int pMaxResults);
 //	long countItemsByTitleOwnedByPerson(String pTitle, Long pPersonId);	
 	
-	List<InternalItem> findVisibleItemsOwnedByPersons(Long[] pPersonIds, int pFirstResult, int pMaxResults);
-	List<InternalItem> findVisibleItemsByTitleOwnedByPersons(String pTitle, Long[] pPersonIds, int pFirstResult, int pMaxResults);
-	
-	List<InternalItem> findVisibleItemsOwnedByConnections(Person pPerson, int pFirstResult, int pMaxResults);
-	List<InternalItem> findVisibleItemsByTitleOwnedByConnections(String pTitle, Person pPerson, int pFirstResult, int pMaxResults);
+//	List<InternalItem> findVisibleItemsOwnedByPersons(Long[] pPersonIds, int pFirstResult, int pMaxResults);
+//	List<InternalItem> findVisibleItemsByTitleOwnedByPersons(String pTitle, Long[] pPersonIds, int pFirstResult, int pMaxResults);
+//	
+//	List<InternalItem> findVisibleItemsOwnedByConnections(Person pPerson, int pFirstResult, int pMaxResults);
+//	List<InternalItem> findVisibleItemsByTitleOwnedByConnections(String pTitle, Person pPerson, int pFirstResult, int pMaxResults);
 
 	// Internal and external items can be borrowed.
-	List<Item> findItemsBorrowedByPerson(Person pPerson, int pFirstResult, int pMaxResults);
-	List<Item> findItemsBorrowedByPerson(Long pPersonId, int pFirstResult, int pMaxResults);
-	List<Item> findItemsByTitleBorrowedByPerson(String pTitle, Long pPersonId, int pFirstResult, int pMaxResults);
-
-	List<InternalItem> findItemsLentByPerson(Person pPerson, int pFirstResult, int pMaxResults);
-	List<InternalItem> findItemsLentByPerson(Long pPersonId, int pFirstResult, int pMaxResults);
-	List<InternalItem> findItemsByTitleLentByPerson(String pTitle, Long pPersonId, int pFirstResult, int pMaxResults);
+//	List<Item> findItemsBorrowedByPerson(Person pPerson, int pFirstResult, int pMaxResults);
+//	List<Item> findItemsBorrowedByPerson(Long pPersonId, int pFirstResult, int pMaxResults);
+//	List<Item> findItemsByTitleBorrowedByPerson(String pTitle, Long pPersonId, int pFirstResult, int pMaxResults);
+//
+//	List<InternalItem> findItemsLentByPerson(Person pPerson, int pFirstResult, int pMaxResults);
+//	List<InternalItem> findItemsLentByPerson(Long pPersonId, int pFirstResult, int pMaxResults);
+//	List<InternalItem> findItemsByTitleLentByPerson(String pTitle, Long pPersonId, int pFirstResult, int pMaxResults);
 	
 	void updateItem(Item pItem);
 	

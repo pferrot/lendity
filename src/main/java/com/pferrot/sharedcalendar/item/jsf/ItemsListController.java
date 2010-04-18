@@ -13,14 +13,15 @@ public class ItemsListController extends AbstractItemsListController {
 	
 	@Override
 	public List getListInternal() {		
-		// Is there a search string specified?
-		if (getSearchString() != null  && getSearchString().trim().length() > 0) {
-			// + 1 so that we can know whether there is a next page or not.
-			return getItemService().findItemsByTitle(getSearchString(), getFirstResultIndex(), ItemConsts.NB_ITEMS_PER_PAGE + 1);
-		}
-		else {
-			// + 1 so that we can know whether there is a next page or not.
-			return getItemService().findItems(getFirstResultIndex(), ItemConsts.NB_ITEMS_PER_PAGE + 1);
-		}
+		return null;
+//		// Is there a search string specified?
+//		if (getSearchString() != null  && getSearchString().trim().length() > 0) {
+//			// + 1 so that we can know whether there is a next page or not.
+//			return getItemService().findItemsByTitle(getSearchString(), getFirstResultIndex(), ItemConsts.NB_ITEMS_PER_PAGE + 1);
+//		}
+//		else {
+//			// + 1 so that we can know whether there is a next page or not.
+//			return getItemService().findItems(getFirstResultIndex(), ItemConsts.NB_ITEMS_PER_PAGE + 1);
+//		}
 	}
 }

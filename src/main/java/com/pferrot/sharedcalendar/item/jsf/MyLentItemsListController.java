@@ -14,6 +14,7 @@ public class MyLentItemsListController extends AbstractItemsListController {
 
 	@Override
 	public List getListInternal() {
-		return getItemService().findItemsLentByPersonId(PersonUtils.getCurrentPersonId(), getFirstResultIndex(), ItemConsts.NB_ITEMS_PER_PAGE + 1);
+		return null;
+//		return getItemService().findItemsLentByPersonId(PersonUtils.getCurrentPersonId(), getFirstResultIndex(), ItemConsts.NB_ITEMS_PER_PAGE + 1);
 	}
 }

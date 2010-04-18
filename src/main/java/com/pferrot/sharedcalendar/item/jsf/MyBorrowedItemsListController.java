@@ -14,6 +14,7 @@ public class MyBorrowedItemsListController extends AbstractItemsListController {
 
 	@Override
 	public List getListInternal() {
-		return getItemService().findItemsBorrowedByPersonId(PersonUtils.getCurrentPersonId(), getFirstResultIndex(), ItemConsts.NB_ITEMS_PER_PAGE + 1);
+		return null;
+//		return getItemService().findItemsBorrowedByPersonId(PersonUtils.getCurrentPersonId(), getFirstResultIndex(), ItemConsts.NB_ITEMS_PER_PAGE + 1);
 	}
 }

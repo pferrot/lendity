@@ -57,31 +57,32 @@ public class ItemService {
 		return itemDao.findExternalItem(itemId);
 	}
 	
-	public List<InternalItem> findAllInternalItems() {
-		return itemDao.findAllInternalItems();
-	}
+//	public List<InternalItem> findAllInternalItems() {
+//		return itemDao.findAllInternalItems();
+//	}
+//	
+//	public List<InternalItem> findItems(final int pFirstResult, final int pMaxResults) {
+//		return itemDao.findInternalItems(pFirstResult, pMaxResults);
+//	}
+//	
+//	public List<InternalItem> findItemsByTitle(final String pTitle, final int pFirstResult, final int pMaxResults) {
+//		return itemDao.findInternalItemsByTitle(pTitle, pFirstResult, pMaxResults);
+//	}
 	
-	public List<InternalItem> findItems(final int pFirstResult, final int pMaxResults) {
-		return itemDao.findInternalItems(pFirstResult, pMaxResults);
-	}
-	
-	public List<InternalItem> findItemsByTitle(final String pTitle, final int pFirstResult, final int pMaxResults) {
-		return itemDao.findInternalItemsByTitle(pTitle, pFirstResult, pMaxResults);
-	}
-	
-	public ListWithRowCount findItemsOwnedByPersonId(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
-		return itemDao.findItemsOwnedByPerson(pPersonId, pFirstResult, pMaxResults);
-	}
+//	public ListWithRowCount findItemsOwnedByPersonId(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+//		return itemDao.findItemsOwnedByPerson(pPersonId, pFirstResult, pMaxResults);
+//	}
+//
+//	public ListWithRowCount findItemsByTitleOwnedByPersonId(final String pTitle, final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+//		return itemDao.findItemsByTitleOwnedByPerson(pTitle, pPersonId, pFirstResult, pMaxResults);
+//	}
 
-	public ListWithRowCount findItemsByTitleOwnedByPersonId(final String pTitle, final Long pPersonId, final int pFirstResult, final int pMaxResults) {
-		return itemDao.findItemsByTitleOwnedByPerson(pTitle, pPersonId, pFirstResult, pMaxResults);
-	}
-
-	public ListWithRowCount findItems(final Long pPersonId, final String pTitle, final Long pCategoryId, final int pFirstResult, final int pMaxResults) {
+	public ListWithRowCount findItems(final Long pOwnerId, final String pTitle, final Long pCategoryId, final Boolean pVisible,
+			final Boolean pBorrowed, final int pFirstResult, final int pMaxResults) {
 		Long[] personIds = null;
-		if (pPersonId != null) {
+		if (pOwnerId != null) {
 			personIds = new Long[1];
-			personIds[0] = pPersonId;
+			personIds[0] = pOwnerId;
 		}
 		Long[] categoryIds = null;
 		if (pCategoryId != null) {
@@ -89,20 +90,20 @@ public class ItemService {
 			categoryIds[0] = pCategoryId;
 		}
 		
-		return itemDao.findItems(personIds, pTitle, categoryIds, pFirstResult, pMaxResults);
+		return itemDao.findItems(personIds, null, pTitle, categoryIds, pVisible, pBorrowed, pFirstResult, pMaxResults);
 	}
 
-	public List<Item> findItemsBorrowedByPersonId(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
-		return itemDao.findItemsBorrowedByPerson(pPersonId, pFirstResult, pMaxResults);
-	}
-
-	public List<InternalItem> findItemsLentByPersonId(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
-		return itemDao.findItemsLentByPerson(pPersonId, pFirstResult, pMaxResults);
-	}
-	
-	public List<InternalItem> findVisibleItemsOwnedByCurrentPersonConnections(final int pFirstResult, final int pMaxResults) {
-		return itemDao.findVisibleItemsOwnedByConnections(getCurrentPerson(), pFirstResult, pMaxResults);
-	}
+//	public List<Item> findItemsBorrowedByPersonId(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+//		return itemDao.findItemsBorrowedByPerson(pPersonId, pFirstResult, pMaxResults);
+//	}
+//
+//	public List<InternalItem> findItemsLentByPersonId(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+//		return itemDao.findItemsLentByPerson(pPersonId, pFirstResult, pMaxResults);
+//	}
+//	
+//	public List<InternalItem> findVisibleItemsOwnedByCurrentPersonConnections(final int pFirstResult, final int pMaxResults) {
+//		return itemDao.findVisibleItemsOwnedByConnections(getCurrentPerson(), pFirstResult, pMaxResults);
+//	}
 
 	public Long createItem(final Item item) {
 		return itemDao.createItem(item);

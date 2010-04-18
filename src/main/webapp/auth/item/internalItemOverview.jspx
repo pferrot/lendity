@@ -9,38 +9,55 @@
 	<ui:param name="pageTitle" value="Item Overview" />
 	<ui:param name="contentHeader" value="Item Overview" />
 
-	<ui:define name="content">
+		<ui:define name="content">
 
 		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
 
 			<!-- header content here  -->
-			<ui:define name="pageName">
-            	#{contentHeader}
-          	</ui:define>
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
 
 			<!-- insert content here -->
 			<ui:define name="pageContent">
-<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+						
+			
+			
 				<f:view>
-					<center>
 
-					<h:form>
+<h2 class="gt-table-head">Object overview</h2>
 
-Item:<br />
-						<h:outputText value="#{itemOverviewController.itemTitle}" />
-						<br />
-
-						<br />
-					</h:form></center>
-
-					<br/>
-					<o:separateConversationContext>
-						<h:outputLink value="#{itemOverviewController.itemEditHref}">
-	            			<h:outputText value="#{messages.navigation_edit}"/>
-	         			</h:outputLink>
-					</o:separateConversationContext>
-					<br/>
+<!-- content box -->
+<div class="gt-form gt-content-box">
+	
+	<div><h4><h:outputText value="#{itemOverviewController.itemTitle}" /></h4></div>
+	<div><p>sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv</p></div>
+	<div><p>Category: </p></div>
+	<div><p>Visible: </p></div>
+	<div><p>Lent to: </p></div>
+	<div><p>Lent since: </p></div>				
+</div>
+<!-- /content box -->
+					
 				</f:view>
+			
+	<div class="gt-table-buttons">
+		<h:outputLink value="#{itemOverviewController.itemEditHref}" styleClass="gt-btn-green-large">
+    		<h:outputText value="#{messages.navigation_edit}"/>
+    	</h:outputLink>
+	</div>			
+			
+			</div>
+			<!-- /main content -->
+
+
+			
+			</div>
+			<!-- /body -->
 			</ui:define>
 		</ui:decorate>
 

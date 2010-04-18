@@ -16,6 +16,7 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.core.StringUtils;
 import com.pferrot.sharedcalendar.dao.bean.ListWithRowCount;
 
 /**
@@ -101,7 +102,16 @@ public abstract class AbstractListController implements Serializable {
 	public String clearSearch() {
 		setSearchString(null);
 		return "clearSearch";
-	}		
+	}
+
+	public String clearAllFilters() {
+		setSearchString(null);
+		return "clearAllFilters";
+	}
+	
+	public boolean isClearAllFiltersAvailable() {
+		return !StringUtils.isNullOrEmpty(getSearchString());
+	}
 	
 	
 	 // Paging actions -----------------------------------------------------------------------------
@@ -129,13 +139,13 @@ public abstract class AbstractListController implements Serializable {
         loadDataList();
     }
 
-    private void page(int firstRow) {
+    protected void page(int firstRow) {
         this.firstRow = firstRow;
         // Load requested page.
 //        loadDataList();
     }
 
-    private void loadDataList() {
+    protected void loadDataList() {
 
         // Load list and totalCount.
     	final ListWithRowCount listWithRowCount = getListWithRowCount();

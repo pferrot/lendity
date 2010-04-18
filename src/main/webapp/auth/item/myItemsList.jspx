@@ -44,7 +44,7 @@
 		setupSearchField('myItemsSearchString', 'myItemsClearSearchString', '#{messages.item_searchItem}');
 	</script>	
 </div></div>
-<c:if test="#{myItemsListController.searchString != null}">
+<c:if test="#{myItemsListController.searchString != null and !empty(myItemsListController.searchString)}">
 <div class="clearSearch">	
 	<h:commandLink id="myItemsClearSearchString" action="#{myItemsListController.clearSearch}">#{messages.search_clearSearch}</h:commandLink>	
 </div>
@@ -53,20 +53,47 @@
 </div>
 <!-- /search -->
 
-<!-- category -->
+<!-- categories -->
 <div style="width: 200px;">
 <h:form>
-<div>
-	
-	<h:selectOneMenu id="category" 
-	    value="#{myItemsListController.categoryId}" converter="javax.faces.Long">
+	<h:selectOneMenu id="category" value="#{myItemsListController.categoryId}" valueChangeListener="#{myItemsListController.category}" converter="javax.faces.Long" onchange="submit()">
 		<f:selectItems value="#{myItemsListController.categoriesSelectItems}"/>
 	</h:selectOneMenu>
-                 
-</div>
 </h:form>
 </div>
-<!-- /category -->
+<!-- /categories -->
+
+<!-- borrow status -->
+<div style="width: 200px;">
+<h:form>
+	<h:selectOneMenu id="borrowStatus" value="#{myItemsListController.borrowStatus}" valueChangeListener="#{myItemsListController.borrowStatus}" converter="javax.faces.Long" onchange="submit()">
+		<f:selectItems value="#{myItemsListController.borrowStatusSelectItems}"/>
+	</h:selectOneMenu>
+</h:form>
+</div>
+<!-- /borrow status -->
+
+<!-- visible status -->
+<div style="width: 200px;">
+<h:form>
+	<h:selectOneMenu id="visibleStatus" value="#{myItemsListController.visibleStatus}" valueChangeListener="#{myItemsListController.visibleStatus}" converter="javax.faces.Long" onchange="submit()">
+		<f:selectItems value="#{myItemsListController.visibleStatusSelectItems}"/>
+	</h:selectOneMenu>
+</h:form>
+</div>
+<!-- /visible status -->
+
+<br/>
+
+<!-- clear all filters -->
+<c:if test="#{myItemsListController.clearAllFiltersAvailable}">
+<div style="width: 200px;">
+	<h:form>
+		<h:commandLink id="myItemsClearAllFilters" action="#{myItemsListController.clearAllFilters}">#{messages.search_clearAllFilters}</h:commandLink>
+	</h:form>
+</div>	
+</c:if>
+<!-- clear all filters -->
 
 <br/>
 
@@ -91,7 +118,7 @@
 				<h:outputText value="#{item.title}" />
 			</h:outputLink>
 		</h4>
-		<p>Here's a quick snippet of this article. It's the preview that shows the first couple lines.</p>
+		<p><h:outputText value="#{myItemsListController.description}" /></p>
 		<p class="gt-table-edit">
 			<h:outputLink value="#{myItemsListController.itemEditHref}">
 				<h:outputText value="#{messages.navigation_edit}" />
@@ -103,20 +130,22 @@
 		<!-- Categories Sub Table -->
 		<table border="0" class="gt-table-categories">
 			<tr>
-			    <th>Category:</th>
-				<td><a href="#">Blog</a></td>
+			    <th><h:outputText value="#{messages.item_category}" />:</th>
+				<td><h:outputText value="#{myItemsListController.categoryLabel}"/></td>
 		    </tr>
 			<tr>
-				<th>Lent to:</th>
-				<td>greenman17</td>
+				<th><h:outputText value="#{messages.item_visible}" />:</th>
+				<td><h:outputText value="#{myItemsListController.visibleLabel}"/></td>
 			</tr>
-
 			<tr>
-				<th>Lent since:</th>
-				<td>04.12.2010</td>
+				<th><h:outputText value="#{messages.item_lentTo}" />:</th>
+				<td><h:outputText value="#{myItemsListController.borrowerLabel}"/></td>
+			</tr>
+			<tr>
+				<th><h:outputText value="#{messages.item_lentSince}" />:</th>
+				<td><h:outputText value="#{myItemsListController.borrowDateLabel}"/></td>
 			</tr>
 		</table>
-
     </h:column>
 
 </h:dataTable>

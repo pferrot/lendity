@@ -1,14 +1,18 @@
 package com.pferrot.sharedcalendar.item.jsf;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.core.StringUtils;
 import com.pferrot.sharedcalendar.i18n.I18nUtils;
 import com.pferrot.sharedcalendar.item.ItemConsts;
 import com.pferrot.sharedcalendar.item.ItemService;
@@ -27,8 +31,30 @@ public abstract class AbstractItemsListController extends AbstractListController
 	private List<SelectItem> categoriesSelectItems;
 	private Long categoryId;
 	
-	public void setItemService(ItemService itemService) {
-		this.itemService = itemService;
+	private List<SelectItem> borrowStatusSelectItems;
+	// Cannot use Boolean because selecting the SelectItem with value null actually
+	// sets the value False...
+	// 1 = True = borrowed by someone
+	// -1 = False = not borrowed
+	// null = all items
+	private Long borrowStatus;
+
+	private List<SelectItem> visibleStatusSelectItems;
+	// Cannot use Boolean because selecting the SelectItem with value null actually
+	// sets the value False...
+	// 1 = True = visible by connections
+	// -1 = False = not visible by connections.
+	// null = all items
+	private Long visibleStatus;
+	
+	
+	public AbstractItemsListController() {
+		super();
+		setRowsPerPage(ItemConsts.NB_ITEMS_PER_PAGE);
+	}
+
+	public void setItemService(final ItemService pItemService) {
+		this.itemService = pItemService;
 	}
 	
 	public ItemService getItemService() {
@@ -45,8 +71,8 @@ public abstract class AbstractItemsListController extends AbstractListController
 		return categoriesSelectItems;	
 	}
 
-	private SelectItem getAllCategoriesSelectItem(final Locale locale) {
-		final String label = I18nUtils.getMessageResourceString("item_categoryAll", locale);
+	private SelectItem getAllCategoriesSelectItem(final Locale pLocale) {
+		final String label = I18nUtils.getMessageResourceString("item_categoryAll", pLocale);
 		final SelectItem si = new SelectItem(null, label);
 		return si;
 	}
@@ -55,19 +81,186 @@ public abstract class AbstractItemsListController extends AbstractListController
 		return categoryId;
 	}
 
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
+	public void setCategoryId(final Long pCategoryId) {
+		this.categoryId = pCategoryId;
 	}
+
+    public void category(final ValueChangeEvent pEevent) {
+    	final Long categoryId = (Long) ((HtmlSelectOneMenu) pEevent.getComponent()).getValue();
+        setCategoryId(categoryId);
+        // loadDataList() is not called by getList() when the page is submitted with the onchange
+        // event on the h:selectOneMenu. Not sure why!?
+        page(0);
+        loadDataList();
+    }    
+
+	public List<SelectItem> getBorrowStatusSelectItems() {
+		if (borrowStatusSelectItems == null) {
+			final List result = new ArrayList<SelectItem>();
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			
+			result.add(new SelectItem(UiUtils.getLongFromBoolean(null), I18nUtils.getMessageResourceString("item_borrowStatusAll", locale)));
+			result.add(new SelectItem(UiUtils.getLongFromBoolean(Boolean.TRUE), I18nUtils.getMessageResourceString("item_borrowStatusBorrowed", locale)));
+			result.add(new SelectItem(UiUtils.getLongFromBoolean(Boolean.FALSE), I18nUtils.getMessageResourceString("item_borrowStatusNotBorrowed", locale)));
+			
+			borrowStatusSelectItems = result;
+		}		
+		return borrowStatusSelectItems;	
+	}
+
+	public Long getBorrowStatus() {
+		return borrowStatus;
+	}
+	
+	public Boolean getBorrowStatusBoolean() {
+		return UiUtils.getBooleanFromLong(borrowStatus);
+	}
+
+	public void setBorrowStatus(final Long pBorrowStatus) {
+		this.borrowStatus = pBorrowStatus;
+	}
+
+    public void borrowStatus(final ValueChangeEvent event) {
+    	final Long borrowStatus = (Long) ((HtmlSelectOneMenu) event.getComponent()).getValue();
+        setBorrowStatus(borrowStatus);
+        // loadDataList() is not called by getList() when the page is submitted with the onchange
+        // event on the h:selectOneMenu. Not sure why!?
+        page(0);
+        loadDataList();
+    }    
+
+	public List<SelectItem> getVisibleStatusSelectItems() {
+		if (visibleStatusSelectItems == null) {
+			final List result = new ArrayList<SelectItem>();
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			
+			result.add(new SelectItem(UiUtils.getLongFromBoolean(null), I18nUtils.getMessageResourceString("item_visibleStatusAll", locale)));
+			result.add(new SelectItem(UiUtils.getLongFromBoolean(Boolean.TRUE), I18nUtils.getMessageResourceString("item_visibleStatusVisible", locale)));
+			result.add(new SelectItem(UiUtils.getLongFromBoolean(Boolean.FALSE), I18nUtils.getMessageResourceString("item_visibleStatusNotVisible", locale)));
+			
+			visibleStatusSelectItems = result;
+		}		
+		return visibleStatusSelectItems;	
+	}
+
+	public Long getVisibleStatus() {
+		return visibleStatus;
+	}
+
+	public Boolean getVisibleStatusBoolean() {
+		return UiUtils.getBooleanFromLong(visibleStatus);
+	}
+
+	public void setVisibleStatus(final Long pVisibleStatus) {
+		this.visibleStatus = pVisibleStatus;
+	}
+
+    public void visibleStatus(final ValueChangeEvent pEevent) {
+    	final Long borrowStatus = (Long) ((HtmlSelectOneMenu) pEevent.getComponent()).getValue();
+        setVisibleStatus(borrowStatus);
+        // loadDataList() is not called by getList() when the page is submitted with the onchange
+        // event on the h:selectOneMenu. Not sure why!?
+        page(0);
+        loadDataList();
+    } 
 
 	@Override
 	public int getNbEntriesPerPage() {
 		return ItemConsts.NB_ITEMS_PER_PAGE;
 	}
+	
+	@Override
+	public String clearAllFilters() {
+		setBorrowStatus(null);
+		setVisibleStatus(null);
+		setCategoryId(null);
+		return super.clearAllFilters();
+	}
+
+	@Override
+	public boolean isClearAllFiltersAvailable() {
+		boolean tempResult = getCategoryId() != null || getBorrowStatusBoolean() != null || getVisibleStatusBoolean() != null; 
+		return tempResult || super.isClearAllFiltersAvailable();
+	}
+
+	@Override
+	public List<Object> getListInternal() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getCategoryLabel() {
+		final Item item = (Item)getTable().getRowData();
+		if (item != null && item.getCategory() != null) {
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			return I18nUtils.getMessageResourceString(item.getCategory().getLabelCode(), locale);
+		}
+		else {
+			return "";
+		}
+	}
+
+	public String getVisibleLabel() {
+		final Item item = (Item)getTable().getRowData();
+		if (item instanceof InternalItem) {
+			InternalItem internalItem = (InternalItem) item;
+			if (Boolean.TRUE.equals(internalItem.getVisible())) {
+				final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+				return I18nUtils.getMessageResourceString("item_visibleYes", locale);
+			}
+			else if (Boolean.FALSE.equals(internalItem.getVisible())) {
+				final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+				return I18nUtils.getMessageResourceString("item_visibleNo", locale);
+			}
+		}
+		return "";
+	}
+
+	public String getDescription() {
+		final Item item = (Item)getTable().getRowData();
+		if (item != null && item.getDescription() != null) {
+			String description = item.getDescription();
+			if (description.length() > ItemConsts.NB_CHARACTERS_DESCRIPTION_IN_LISTS) {
+				description = description.substring(0, ItemConsts.NB_CHARACTERS_DESCRIPTION_IN_LISTS - 3);
+				description = description + "...";
+			}
+			return description;
+		}
+		else {
+			return "";
+		}
+	}
+
+	public boolean isBorrowed() {
+		final Item item = (Item)getTable().getRowData();
+		return item != null && item.isBorrowed();
+	}
+
+	public String getBorrowerLabel() {
+		final Item item = (Item)getTable().getRowData();
+		if (item != null && item.isBorrowed()) {
+			if (item.getBorrower() != null) {
+				return item.getBorrower().getDisplayName();
+			}
+			else if (! StringUtils.isNullOrEmpty(item.getBorrowerName())) {
+				return item.getBorrowerName();
+			}
+		}
+		return "";
+	}
+
+	public String getBorrowDateLabel() {
+		final Item item = (Item)getTable().getRowData();
+		if (item != null && item.isBorrowed()) {
+			return UiUtils.getDateAsString(item.getBorrowDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		}
+		return "";
+	}
 
 	public boolean isAvailable() {
 		final Item item = (Item)getTable().getRowData();
 		if (item instanceof InternalItem) {
-		return ((InternalItem) item).isAvailable();
+			return ((InternalItem) item).isAvailable();
 		}
 		else {
 			return false;

@@ -9,6 +9,7 @@ import com.pferrot.security.dao.RoleDao;
 import com.pferrot.security.dao.UserDao;
 import com.pferrot.security.model.Role;
 import com.pferrot.security.model.User;
+import com.pferrot.security.passwordgenerator.PasswordGenerator;
 import com.pferrot.sharedcalendar.dao.ItemDao;
 import com.pferrot.sharedcalendar.dao.ListValueDao;
 import com.pferrot.sharedcalendar.dao.PersonDao;
@@ -72,6 +73,7 @@ public class InitialData {
 		createGenders();
 		
 		createPersonsAndUsers();
+		createRandomPersonsAndUsers(100, personDao.findPersonFromUsername("patrice.ferrot@gmail.com"));
 		createConnectionRequestResponse();
 		createItemCategories();
 		createLanguages();
@@ -117,7 +119,6 @@ public class InitialData {
 		
 		User user = new User();
 		user.setUsername("patrice.ferrot@gmail.com");
-//		user.setPassword(passwordEncoder.encodePassword("pferrot", null));
 		user.setPassword("pf");
 		user.setEnabled(Boolean.TRUE);
 		user.setCreationDate(new Date());
@@ -130,29 +131,71 @@ public class InitialData {
 		
 		person.setUser(user);
 		
-		personDao.createPerson(person);
-		
+		personDao.createPerson(person);		
 		
 		
 		// Create Stupid Illusion, normal user.
-//		person = getNewPerson("Stupid", "Illusion", "Stupid.Illusion", "stupid.illusion@gmail.com",
-//				"Main Street", 12345, "Pik City",
-//				(Country)listValueDao.findListValue(Country.USA_LABEL_CODE),
-//				listValueDao.findGender(Gender.MALE_LABEL_CODE));
-//		
-//		user = new User();
-//		user.setUsername("stupid.illusion@gmail.com");
-//		user.setPassword("stupid");
-//		user.setEnabled(Boolean.TRUE);
-//		user.setCreationDate(new Date());
-//		user.setActivationCode("MANUALLY ACTIVATED");
-//		user.setActivationDate(new Date());
-//		user.addRole(userRole);
-//		
-//		person.setUser(user);		
-//		
-//		
-//		personDao.createPerson(person);
+		person = getNewPerson("Stupid", "Illusion", "Stupid.Illusion", "stupid.illusion@gmail.com",
+				"Main Street", 12345, "Pik City",
+				(Country)listValueDao.findListValue(Country.USA_LABEL_CODE),
+				listValueDao.findGender(Gender.MALE_LABEL_CODE));
+		
+		user = new User();
+		user.setUsername("stupid.illusion@gmail.com");
+		user.setPassword("stupid");
+		user.setEnabled(Boolean.TRUE);
+		user.setCreationDate(new Date());
+		user.setActivationCode("MANUALLY ACTIVATED");
+		user.setActivationDate(new Date());
+		user.addRole(userRole);
+		
+		person.setUser(user);		
+		
+		
+		personDao.createPerson(person);
+	}
+	
+	private void createRandomPersonsAndUsers(int pNumberToCreate, final Person pPatricePerson) {
+		Person person = null;
+		User user = null;
+		String firstName = null;
+		String lastName = null;
+		String displayName = null;
+		String email = null;
+		String password = null;
+		Role userRole = roleDao.findRole(Role.USER_ROLE_NAME);
+		
+		for (int i = 0; i < pNumberToCreate; i++) {
+			firstName = PasswordGenerator.getNewPassword(PasswordGenerator.getRandom(4, 12));
+			lastName = PasswordGenerator.getNewPassword(PasswordGenerator.getRandom(4, 12));
+			displayName = firstName + " " + lastName;
+			email = PasswordGenerator.getNewPassword(PasswordGenerator.getRandom(4, 12)) + "@test1234.com";
+		    password = PasswordGenerator.getNewPassword();
+			person = getNewPerson(firstName, lastName, displayName, email,
+					null, null, null,
+					null, null);
+			
+			user = new User();
+			user.setUsername(email);
+			user.setPassword(password);
+			user.setEnabled(Boolean.TRUE);
+			user.setCreationDate(new Date());
+			user.setActivationCode("MANUALLY ACTIVATED");
+			user.setActivationDate(new Date());
+			user.addRole(userRole);
+			
+			person.setUser(user);
+			
+			// Connect to Patrice?
+			if (PasswordGenerator.getRandom(0, 3) == 0) {
+				person.addConnection(pPatricePerson);
+			}
+			
+			personDao.createPerson(person);
+			
+			createItems(person, PasswordGenerator.getRandom(0, 50));		
+		}
+		
 	}
 	
 	private static Person getNewPerson(final String firstName, final String lastName, final String displayName, 
@@ -163,7 +206,6 @@ public class InitialData {
 		
 		person.setFirstName(firstName);
 		person.setLastName(lastName);
-//		person.setDisplayName(displayName);
 		person.setEmail(email);
 		person.setEnabled(Boolean.TRUE);
 		
@@ -209,39 +251,31 @@ public class InitialData {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// ITEMS	
-	private void createItemCategories() {
-		ItemCategory category = new ItemCategory(ItemCategory.BOOK_LABEL_CODE);
-		listValueDao.createListValue(category);
-		
-		category = new ItemCategory(ItemCategory.CD_LABEL_CODE);
-		listValueDao.createListValue(category);
-		
-		category = new ItemCategory(ItemCategory.DVD_LABEL_CODE);
-		listValueDao.createListValue(category);	
+	private void createItemCategories() {	
+		for (int i = 0; i < ItemCategory.LABEL_CODES.length; i++) {
+			listValueDao.createListValue(new ItemCategory(ItemCategory.LABEL_CODES[i]));
+		}	
 	}
+	
 	private void createItems() {
-		// Create book.
-		InternalItem item = new InternalItem();
-		item.setTitle("Les fourmis");
-		item.setDescription("Blabla blabla le dude blablabla tadadada...");
-		item.setCategory((ItemCategory) listValueDao.findListValue(ItemCategory.BOOK_LABEL_CODE));
-		item.setOwner(personDao.findPersonFromUsername("patrice.ferrot@gmail.com"));
-		itemDao.createItem(item);
+		Person person = null;
+		
+		// Create random items.
+		createItems(personDao.findPersonFromUsername("patrice.ferrot@gmail.com"), 500);
+		
+		// Create random items.
+		createItems(personDao.findPersonFromUsername("stupid.illusion@gmail.com"), 200);
+	}
 
-		// Create CD.
-		item = new InternalItem();
-		item.setTitle("Massive Attack - Helligoland");
-		item.setDescription("Track 1:..., Track 2: ...");
-		item.setCategory((ItemCategory) listValueDao.findListValue(ItemCategory.CD_LABEL_CODE));
-		item.setOwner(personDao.findPersonFromUsername("patrice.ferrot@gmail.com"));
-		itemDao.createItem(item);
-
-		// Create DVD.
-		item = new InternalItem();
-		item.setTitle("Trainspotting");
-		item.setDescription("Tadadadadadada dadadadada adadadadadadadadadad");
-		item.setCategory((ItemCategory) listValueDao.findListValue(ItemCategory.DVD_LABEL_CODE));
-		item.setOwner(personDao.findPersonFromUsername("patrice.ferrot@gmail.com"));
-		itemDao.createItem(item);	
+	private void createItems(final Person pPerson, final int pNbItems) {
+		for (int i = 0; i < pNbItems; i++) {
+			InternalItem item = new InternalItem();
+			item.setTitle(PasswordGenerator.getNewPassword(PasswordGenerator.getRandom(10, 40)));
+			item.setDescription(PasswordGenerator.getNewPassword(PasswordGenerator.getRandom(0, 255)));
+			item.setCategory((ItemCategory) listValueDao.findListValue(ItemCategory.LABEL_CODES[PasswordGenerator.getRandom(0, ItemCategory.LABEL_CODES.length - 1)]));
+			item.setOwner(pPerson);
+			item.setVisible(PasswordGenerator.getRandom(0, 1) == 0? Boolean.FALSE:Boolean.TRUE);
+			itemDao.createItem(item);
+		}		
 	}
 }
