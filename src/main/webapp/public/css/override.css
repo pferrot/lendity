@@ -8,7 +8,7 @@ If you add styles to this template, be sure to include it in your template files
 */
 
 /*
-Overriden for the cursor property.
+Overridden for the cursor property.
 */
 .gt-btn-green-mini, .gt-btn-green-small, .gt-btn-green-medium, .gt-btn-green-large, .gt-btn-brown-mini, .gt-btn-brown-small, .gt-btn-brown-medium, .gt-btn-brown-large {
 	display: block;
@@ -27,7 +27,7 @@ Overriden for the cursor property.
 }
 
 /*
-Overriden for width.
+Overridden for width.
 */
 .gt-login-box {
 	width: 200px!important;
@@ -40,10 +40,42 @@ Overriden for width.
 }
 
 /*
-Overriden for align right.
+Overridden for align right.
 */
 .gt-util-box-inner {
 	padding: .35em 2em;
 	text-align : right!important; 
+}
+
+/*
+Overridden color.
+*/
+.gt-table-categories a:link, .gt-table-categories a:visited {
+	color: #47790a!important;
+	text-decoration: none;
+	
+}
+.gt-table-categories a:hover {
+	text-decoration: underline;
+}
+
+a:link, a:visited {
+	color: #47790a;
+	text-decoration: none!important;
+}
+a:hover {
+	text-decoration: underline!important;
+}
+
+.gt-content-box {
+	word-wrap:break-word!important;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	padding: 1px;
+}
+
+.gt-table tr:hover td {
+	background-color: #f1f4e2!important;
 }
 

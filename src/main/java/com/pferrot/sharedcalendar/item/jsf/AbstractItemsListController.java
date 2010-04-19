@@ -21,6 +21,7 @@ import com.pferrot.sharedcalendar.jsf.list.AbstractListController;
 import com.pferrot.sharedcalendar.model.ExternalItem;
 import com.pferrot.sharedcalendar.model.InternalItem;
 import com.pferrot.sharedcalendar.model.Item;
+import com.pferrot.sharedcalendar.person.PersonUtils;
 import com.pferrot.sharedcalendar.utils.UiUtils;
 
 public abstract class AbstractItemsListController extends AbstractListController {
@@ -230,6 +231,28 @@ public abstract class AbstractItemsListController extends AbstractListController
 			return "";
 		}
 	}
+	
+	public boolean isEditAvailable() {
+		final Item item = (Item)getTable().getRowData();
+		return getItemService().isCurrentUserAuthorizedToEdit(item);
+	}
+
+	public boolean isAddAvailable() {
+		return getItemService().isCurrentUserAuthorizedToAdd();
+	}
+
+	public boolean isDeleteAvailable() {
+		final Item item = (Item)getTable().getRowData();
+		return getItemService().isCurrentUserAuthorizedToDelete(item);
+	}
+	
+	public boolean isOwner() {
+		final Item item = (Item)getTable().getRowData();
+		if (item instanceof InternalItem) {
+			return getItemService().isCurrentUserOwner((InternalItem)item);
+		}
+		return false;
+	}
 
 	public boolean isBorrowed() {
 		final Item item = (Item)getTable().getRowData();
@@ -265,6 +288,26 @@ public abstract class AbstractItemsListController extends AbstractListController
 		else {
 			return false;
 		}
+	}
+
+	public String getBorrowerHref() {
+		final Item item = (Item)getTable().getRowData();
+		if (item instanceof InternalItem) {
+			final InternalItem internalItem = (InternalItem) item;
+			if (internalItem.getBorrower() != null) {
+				return PersonUtils.getPersonOverviewPageUrl(internalItem.getBorrower().getId().toString());
+			}
+		}
+		return null;		
+	}
+	
+	public boolean isBorrowerHrefAvailable() {
+		final Item item = (Item)getTable().getRowData();
+		if (item instanceof InternalItem) {
+			final InternalItem internalItem = (InternalItem) item;
+			return internalItem.getBorrower() != null;
+		}
+		return false;
 	}
 	
 	public String getItemOverviewHref() {

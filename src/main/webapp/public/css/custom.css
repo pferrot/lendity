@@ -53,3 +53,12 @@ Todo: different color when mousing over buttons.
 	font-size: 10px;
 	padding: 0 0 0 25px;
 }
+
+.gt-form label.small {
+	font-size:82%;
+}
+
+div.highlightedBg {
+	background-color: #f1f4e2;
+	width: 100%;
+}

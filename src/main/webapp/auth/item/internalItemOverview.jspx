@@ -3,7 +3,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:o="http://myfaces.apache.org/orchestra">
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
 	<ui:param name="pageTitle" value="Item Overview" />
@@ -33,21 +34,48 @@
 
 <!-- content box -->
 <div class="gt-form gt-content-box">
-	
-	<div><h4><h:outputText value="#{itemOverviewController.itemTitle}" /></h4></div>
-	<div><p>sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv sdvasdvsdv</p></div>
-	<div><p>Category: </p></div>
-	<div><p>Visible: </p></div>
-	<div><p>Lent to: </p></div>
-	<div><p>Lent since: </p></div>				
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_title}:" /></label></div>
+		<h4><h:outputText value="#{itemOverviewController.title}" /></h4>
+	</div>
+	<br/>
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_description}:" /></label></div>
+		<h:outputText value="#{itemOverviewController.description}" escape="false" />
+	</div>
+	<br/>
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_category}:" /></label></div>
+		<h:outputText value="#{itemOverviewController.categoryLabel}" />
+	</div>
+	<br/>	
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText rendered="#{itemOverviewController.owner}" value="#{messages.item_visible}:" /></label></div>
+		<h:outputText rendered="#{itemOverviewController.owner}" value="#{itemOverviewController.visibleLabel}" />
+	</div>
+	<c:if test="#{itemOverviewController.owner and itemOverviewController.borrowed}">
+	<br/>
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText rendered="#{itemOverviewController.owner and itemOverviewController.borrowed}" value="#{messages.item_lentTo}:" /></label></div>
+		<h:outputLink rendered="#{itemOverviewController.owner and itemOverviewController.borrowerHrefAvailable}" value="#{itemOverviewController.borrowerHref}">
+			<h:outputText value="#{itemOverviewController.borrowerLabel}"/>
+		</h:outputLink>
+		<h:outputText rendered="#{itemOverviewController.owner and itemOverviewController.borrowed and !itemOverviewController.borrowerHrefAvailable}" value="#{itemOverviewController.borrowerLabel}:"/>
+	</div>
+	<br/>
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText rendered="#{itemOverviewController.owner and itemOverviewController.borrowed}" value="#{messages.item_lentSince}" /></label></div>
+		<h:outputText rendered="#{itemOverviewController.owner and itemOverviewController.borrowed}" value="#{itemOverviewController.borrowDateLabel}" />
+	</div>
+	</c:if>
 </div>
 <!-- /content box -->
 					
 				</f:view>
 			
 	<div class="gt-table-buttons">
-		<h:outputLink value="#{itemOverviewController.itemEditHref}" styleClass="gt-btn-green-large">
-    		<h:outputText value="#{messages.navigation_edit}"/>
+		<h:outputLink rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.itemEditHref}" styleClass="gt-btn-green-large">
+    		<h:outputText rendered="#{itemOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
     	</h:outputLink>
 	</div>			
 			

@@ -166,6 +166,27 @@ public class ItemService {
 		return false;
 	}
 
+	public boolean isCurrentUserAuthorizedToAdd() {
+		final Person currentPerson = getCurrentPerson();
+		if (currentPerson != null && currentPerson.getUser() != null) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isCurrentUserAuthorizedToDelete(final Item pItem) {
+		return isCurrentUserAuthorizedToEdit(pItem);
+	}
+	
+	public boolean isCurrentUserOwner(final InternalItem pInternalItem) {
+		CoreUtils.assertNotNull(pInternalItem);
+		final Person currentPerson = getCurrentPerson();
+		if (currentPerson == null) {
+			return false;
+		}
+		return currentPerson.equals(pInternalItem.getOwner());
+	}
+
 	public Person getCurrentPerson() {
 		return personDao.findPerson(PersonUtils.getCurrentPersonId());
 	}

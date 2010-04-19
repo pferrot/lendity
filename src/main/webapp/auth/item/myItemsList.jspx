@@ -120,8 +120,8 @@
 		</h4>
 		<p><h:outputText value="#{myItemsListController.description}" /></p>
 		<p class="gt-table-edit">
-			<h:outputLink value="#{myItemsListController.itemEditHref}">
-				<h:outputText value="#{messages.navigation_edit}" />
+			<h:outputLink rendered="#{myItemsListController.editAvailable}" value="#{myItemsListController.itemEditHref}">
+				<h:outputText rendered="#{myItemsListController.editAvailable}" value="#{messages.navigation_edit}" />
 			</h:outputLink>
 		</p>
     </h:column>
@@ -130,20 +130,25 @@
 		<!-- Categories Sub Table -->
 		<table border="0" class="gt-table-categories">
 			<tr>
-			    <th><h:outputText value="#{messages.item_category}" />:</th>
+			    <th><h:outputText value="#{messages.item_category}:" /></th>
 				<td><h:outputText value="#{myItemsListController.categoryLabel}"/></td>
 		    </tr>
 			<tr>
-				<th><h:outputText value="#{messages.item_visible}" />:</th>
-				<td><h:outputText value="#{myItemsListController.visibleLabel}"/></td>
+				<th><h:outputText rendered="#{myItemsListController.owner}" value="#{messages.item_visible}:" /></th>
+				<td><h:outputText rendered="#{myItemsListController.owner}" value="#{myItemsListController.visibleLabel}"/></td>
 			</tr>
 			<tr>
-				<th><h:outputText value="#{messages.item_lentTo}" />:</th>
-				<td><h:outputText value="#{myItemsListController.borrowerLabel}"/></td>
+				<th><h:outputText rendered="#{myItemsListController.owner and myItemsListController.borrowed}" value="#{messages.item_lentTo}:" /></th>
+				<td>
+					<h:outputLink rendered="#{myItemsListController.owner and myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerHref}">
+						<h:outputText value="#{myItemsListController.borrowerLabel}"/>
+					</h:outputLink>
+					<h:outputText rendered="#{myItemsListController.owner and myItemsListController.borrowed and !myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerLabel}"/>
+				</td>
 			</tr>
 			<tr>
-				<th><h:outputText value="#{messages.item_lentSince}" />:</th>
-				<td><h:outputText value="#{myItemsListController.borrowDateLabel}"/></td>
+				<th><h:outputText rendered="#{myItemsListController.owner and myItemsListController.borrowed}" value="#{messages.item_lentSince}:" /></th>
+				<td><h:outputText rendered="#{myItemsListController.owner and myItemsListController.borrowed}" value="#{myItemsListController.borrowDateLabel}"/></td>
 			</tr>
 		</table>
     </h:column>
@@ -206,8 +211,8 @@
 </f:view>
 				
 				<div class="gt-table-buttons">
-					<h:outputLink value="#{myItemsListController.internalItemAddHref}" styleClass="gt-btn-green-large">
-       					<h:outputText value="#{messages.item_addInternalItem}" />
+					<h:outputLink rendered="#{myItemsListController.addAvailable}" value="#{myItemsListController.internalItemAddHref}" styleClass="gt-btn-green-large">
+       					<h:outputText rendered="#{myItemsListController.addAvailable}" value="#{messages.item_addInternalItem}" />
        				</h:outputLink>
 				</div>
 			</div>
