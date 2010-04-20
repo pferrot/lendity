@@ -256,19 +256,17 @@ public class Person implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		// This tests if null at the same time.
+		else if (!(obj instanceof Person)){
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Person other = (Person) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
+		}
+		else {
+			final Person other = (Person)obj;
+			return id != null && id.equals(other.getId());
+		}
 	}
 
 	@Override

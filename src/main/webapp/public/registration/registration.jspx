@@ -43,7 +43,10 @@
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="firstName"></h:message>			
 						<h:inputText id="firstName" styleClass="gt-form-text"
-							value="#{registrationController.firstName}" required="true" maxlength="255"/>			
+							value="#{registrationController.firstName}"
+							required="true"
+							requiredMessage="#{messages.validation_requiredMessage}"
+							maxlength="255"/>			
 					</div><!-- /form row -->					
 					
 					<!-- form row -->
@@ -52,7 +55,10 @@
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="lastName"></h:message>
 					    <h:inputText id="lastName" styleClass="gt-form-text"
-							value="#{registrationController.lastName}" required="true" maxlength="255"/>			
+							value="#{registrationController.lastName}"
+							required="true"
+							requiredMessage="#{messages.validation_requiredMessage}"
+							maxlength="255"/>			
 					</div><!-- /form row -->
 
 					<!-- form row -->
@@ -61,8 +67,11 @@
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="email"></h:message>
 						<h:inputText id="email" styleClass="gt-form-text"
-						    value="#{registrationController.email}" required="true"
-						    validator="#{registrationStep1.validateEmail}" maxlength="255">
+						    value="#{registrationController.email}"
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}"
+						    validator="#{registrationStep1.validateEmail}"
+						    maxlength="255">
 						</h:inputText>						
 					</div><!-- /form row -->
 
@@ -72,8 +81,11 @@
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="password"></h:message>
 						<h:inputSecret id="password" styleClass="gt-form-text"
-						    value="#{registrationController.password}" required="true"
-						    validator="#{registrationStep1.validatePassword}" maxlength="255">
+						    value="#{registrationController.password}"
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}"
+						    validator="#{registrationStep1.validatePassword}"
+						    maxlength="255">
 						</h:inputSecret>						
 					</div><!-- /form row -->
 
@@ -83,8 +95,11 @@
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="passwordRepeat"></h:message>
 						<h:inputSecret id="passwordRepeat" styleClass="gt-form-text"
-						    value="#{registrationController.passwordRepeat}" required="true"
-						    validator="#{registrationStep1.validatePasswordRepeat}" maxlength="255">
+						    value="#{registrationController.passwordRepeat}"
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}"
+						    validator="#{registrationStep1.validatePasswordRepeat}"
+						    maxlength="255">
 						</h:inputSecret>												
 					</div><!-- /form row -->					
 					

@@ -67,19 +67,17 @@ public abstract class ListValue implements Serializable, LabelCodeAware {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		// This tests if null at the same time.
+		else if (!(obj instanceof ListValue)){
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ListValue other = (ListValue) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
+		}
+		else {
+			final ListValue other = (ListValue)obj;
+			return id != null && id.equals(other.getId());
+		}
 	}
 
 	@Override

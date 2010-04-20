@@ -77,19 +77,17 @@ public class InternalItem extends Item implements Ownable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		// This tests if null at the same time.
+		else if (!(obj instanceof InternalItem)){
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		InternalItem other = (InternalItem) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
+		}
+		else {
+			final InternalItem other = (InternalItem)obj;
+			return id != null && id.equals(other.getId());
+		}
 	}
 }
 

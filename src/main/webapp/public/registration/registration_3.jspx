@@ -5,8 +5,8 @@
 	xmlns:h="http://java.sun.com/jsf/html">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.registration_completed}" />
-	<ui:param name="contentHeader" value="#{messages.registration_completed}" />
+	<ui:param name="pageTitle" value="#{messages.registration_registrationCompleted}" />
+	<ui:param name="contentHeader" value="#{messages.registration_registrationCompleted}" />
 
 	<ui:define name="content">
 
@@ -25,7 +25,7 @@
 			<!-- main content -->
 			<div class="gt-content">
 			
-				<h2 class="gt-form-head">#{messages.registration_completed}</h2>				
+				<h2 class="gt-form-head">#{messages.registration_registrationCompleted}</h2>				
 			    <p>
 	            <h:outputFormat value="#{messages.registration_confirmation1}">
 			      <f:param value="#{registrationController.email}" />
@@ -33,7 +33,7 @@
 		        </p>
 		        <p>
 		        <b>
-		        <h:outputFormat value="#{messages.registration.confirmation2}">
+		        <h:outputFormat value="#{messages.registration_confirmation2}">
 			      <f:param value="#{registrationController.nbDaysToValidateRegistration}" />
 		        </h:outputFormat>
 		        </b>

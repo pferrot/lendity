@@ -1,5 +1,7 @@
 package com.pferrot.sharedcalendar.registration.jsf;
 
+import java.util.Locale;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
@@ -9,6 +11,9 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.sharedcalendar.i18n.I18nUtils;
+import com.pferrot.sharedcalendar.item.ItemConsts;
+import com.pferrot.sharedcalendar.registration.RegistrationConsts;
 import com.pferrot.sharedcalendar.registration.RegistrationService;
 
 public class RegistrationStep1 {
@@ -52,16 +57,14 @@ public class RegistrationStep1 {
 		String email = (String) value;
 		if (!email.contains("@")) {
 			((UIInput)toValidate).setValid(false);
-			// TODO
-			message = "Email not valid";
-			//message = CoffeeBreakBean.loadErrorMessage(context, CoffeeBreakBean.CB_RESOURCE_BUNDLE_NAME, "EMailError");
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			message = I18nUtils.getMessageResourceString("validation_emailNotValid", locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
 		else if (!registrationService.isUsernameAvailable(email)) {
 			((UIInput)toValidate).setValid(false);
-			// TODO
-			message = "User with that email already exists";
-			//message = CoffeeBreakBean.loadErrorMessage(context, CoffeeBreakBean.CB_RESOURCE_BUNDLE_NAME, "EMailError");
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			message = I18nUtils.getMessageResourceString("validation_userAlreadyExists", locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
 	}
@@ -71,7 +74,8 @@ public class RegistrationStep1 {
 		String password = (String) value;
 		if (password.length() < 4) {
 			((UIInput)toValidate).setValid(false);
-			message = "Password must contain at least 4 characters";
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			message = I18nUtils.getMessageResourceString("validation_passwordMinSize", new Object[]{String.valueOf(RegistrationConsts.MIN_PASSWORD_SIZE)}, locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
 	}
@@ -86,7 +90,8 @@ public class RegistrationStep1 {
 
 		if (!passwordRepeat.equals(password)) {
 			((UIInput)toValidate).setValid(false);
-			message = "Passwords do not match";
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			message = I18nUtils.getMessageResourceString("validation_passwordsNotMatch", locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
 	}

@@ -3,6 +3,9 @@ package com.pferrot.sharedcalendar.item.jsf;
 import java.util.List;
 import java.util.Locale;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -10,6 +13,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.sharedcalendar.PagesURL;
+import com.pferrot.sharedcalendar.i18n.I18nUtils;
+import com.pferrot.sharedcalendar.item.ItemConsts;
 import com.pferrot.sharedcalendar.item.ItemService;
 import com.pferrot.sharedcalendar.utils.JsfUtils;
 import com.pferrot.sharedcalendar.utils.UiUtils;
@@ -24,6 +29,7 @@ public abstract class AbstractInternalItemAddEditController {
 	private Long categoryId;
 	private String title;
 	private String description;
+	private Boolean visible;
 	
 	public void setItemService(ItemService itemService) {
 		this.itemService = itemService;
@@ -37,6 +43,7 @@ public abstract class AbstractInternalItemAddEditController {
 		if (categoriesSelectItems == null) {
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 			categoriesSelectItems = UiUtils.getSelectItemsForListValue(itemService.getCategories(), locale);
+			categoriesSelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
 		}		
 		return categoriesSelectItems;	
 	}	
@@ -65,6 +72,14 @@ public abstract class AbstractInternalItemAddEditController {
 		this.description = description;
 	}
 	
+	public Boolean getVisible() {
+		return visible;
+	}
+
+	public void setVisible(Boolean visible) {
+		this.visible = visible;
+	}
+
 	public abstract Long processItem();
 	
 	public String submit() {
@@ -74,5 +89,16 @@ public abstract class AbstractInternalItemAddEditController {
 	
 		// As a redirect is used, this is actually useless.
 		return null;
-	}	
+	}
+
+	public void validateDescriptionSize(FacesContext context, UIComponent toValidate, Object value) {
+		String message = "";
+		String description = (String) value;
+		if (description != null && description.length() > ItemConsts.MAX_DESCRIPTION_SIZE) {
+			((UIInput)toValidate).setValid(false);
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			message = I18nUtils.getMessageResourceString("validation_maxSizeExceeded", new Object[]{String.valueOf(ItemConsts.MAX_DESCRIPTION_SIZE)}, locale);
+			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
+		}
+	}
 }

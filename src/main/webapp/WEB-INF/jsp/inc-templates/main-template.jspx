@@ -6,8 +6,6 @@
       xmlns:o="http://myfaces.apache.org/orchestra"
       xmlns:c="http://java.sun.com/jstl/core">
 
-
-<f:loadBundle basename="messages" var="messages"/>
 <head>
     <!-- page title param passed in by param -->
     <title></title>

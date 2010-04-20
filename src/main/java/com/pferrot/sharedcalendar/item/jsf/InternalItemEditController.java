@@ -47,11 +47,13 @@ public class InternalItemEditController extends AbstractInternalItemAddEditContr
 		setTitle(pItem.getTitle());
 		setDescription(pItem.getDescription());
 		setCategoryId(pItem.getCategory().getId());
+		setVisible(pItem.getVisible());
 	}	
 
 	public Long updateItem() {		
 		getItem().setTitle(getTitle());
 		getItem().setDescription(getDescription());
+		getItem().setVisible(getVisible());
 		getItemService().updateItemWithCategory(getItem(), getCategoryId());
 
 		return getItem().getId();

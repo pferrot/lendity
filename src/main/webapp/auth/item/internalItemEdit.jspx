@@ -3,67 +3,170 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:o="http://myfaces.apache.org/orchestra">
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="Item Add" />
-	<ui:param name="contentHeader" value="Item Add" />
+	<ui:param name="pageTitle" value="Item Overview" />
+	<ui:param name="contentHeader" value="Item Overview" />
 
-	<ui:define name="content">
+		<ui:define name="content">
 
 		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
 
 			<!-- header content here  -->
-			<ui:define name="pageName">
-            	#{contentHeader}
-          	</ui:define>
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
 
 			<!-- insert content here -->
 			<ui:define name="pageContent">
-<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				
+				<!-- Item Edit Form -->
+				<h2 class="gt-form-head">#{messages.registration_signUp}</h2>
+				<div class="gt-form gt-content-box">
+				
 				<f:view>
-					<center>
 
 					<h:form>
 
-Category:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="category"></h:message>
-						<br />
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.item_title}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="title"></h:message>			
+						<h:inputText id="title" styleClass="gt-form-text"
+							value="#{itemEditController.title}" 
+							required="true" 
+							requiredMessage="#{messages.validation_requiredMessage}"
+							maxlength="255"/>			
+					</div><!-- /form row -->					
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.item_description}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="description"></h:message>			
+						<h:inputTextarea id="description" 
+						    styleClass="gt-form-textarea"
+						    rows="10"
+							value="#{itemEditController.description}" 
+							maxlength="1333"
+							validator="#{itemEditController.validateDescriptionSize}"/>			
+					</div><!-- /form row -->		
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.item_category}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="category"></h:message>
 						<h:selectOneMenu id="category" 
-						    value="#{itemEditController.categoryId}" converter="javax.faces.Long" required="true">
+						    value="#{itemEditController.categoryId}" 
+						    converter="javax.faces.Long" 
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}">
 							<f:selectItems value="#{itemEditController.categoriesSelectItems}"/>
-						</h:selectOneMenu>
-						<br />
+						</h:selectOneMenu>					
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.item_visibility}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="visible"></h:message>
+						<label class="gt-form-element-label">
+						<h:selectBooleanCheckbox id="visible" value="#{itemEditController.visible}" styleClass="gt-form-element-checkbox"/>
+						<h:outputText value=" #{messages.item_visibilityConnectionsCanSee}"/>
+						</label>
+					</div><!-- /form row -->					
+					
+					<!-- form row -->
+					<div class="gt-form-row">
+						<br/><h:commandButton styleClass="gt-btn-green-medium gt-btn-left" value="#{messages.navigation_save}" action="#{itemEditController.submit}" />
+						<h:outputLink styleClass="gt-btn-green-medium gt-btn-left"  value="#{itemEditController.itemOverviewHref}">
+           					<h:outputText value="#{messages.navigation_cancel}"/>
+         				</h:outputLink>
+					</div>
+					<!-- /form row -->
+					
+					</h:form>
+				</f:view>		
+				</div>			
+				<!-- /Item Edit Form -->
+				
+			</div>
+			<!-- /main content -->
 
-Titre:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="title"></h:message>
-						<br />
-						<h:inputText id="title" value="#{itemEditController.title}"
-							required="true">
-						</h:inputText>
-						<br />
+			<!-- sidebar -->
+			<div class="gt-sidebar">
+				<!-- Sidebar Navigation -->
+				<div class="gt-sidebar-nav gt-sidebar-nav-green">
 
-Description:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="description"></h:message>
-						<br />
-						<h:inputTextarea id="description" value="#{itemEditController.description}">
-						</h:inputTextarea>
-						<br />									
+					<h3>Quick Links</h3>
+					<ul>
+						<li><a href="">Add a New Post</a></li>
+						<li><a href="">Edit User Settings</a></li>
+						<li><a href="">View Live Site</a></li>
+					</ul>
+				</div><!-- /Sidebar Navigation -->
+
+				
+				<!-- Sidebar Box -->
+				<div class="gt-sidebar-box gt-sidebar-box-brown">
+					<!-- search -->
+					<div class="gt-search"><div class="gt-search-inner">
+						<input type="text" class="gt-search-text" value="Find an Article" onfocus="javascript:if(this.value=='Find an Article')this.value='';" onblur="javascript:if(this.value=='')this.value='Find an Article';" />
+					</div></div><!-- /search -->
+				</div><!-- /Sidebar Box -->
+				
+				
+				<!-- Sidebar Content -->
+				<div class="gt-sidebar-content">
+
+					<h3>Author Contact</h3>
+					<p>John Marker<br />
+					1756 Main Court<br />
+					City, State 12345, Country</p>
+					
+					<p>email: <a href="">john.marker@example.com</a></p>
+					
+					<p>phone: 123-555-1356</p>
+
+					
+					<p>aim: johnmarker</p>
+				</div><!-- /Sidebar Content -->
+				
+				<!-- Sidebar List -->
+				<div class="gt-sidebar-list">
+					<h3>Recent Users</h3>
+					<ul class="gt-sidebar-list-content">
+						<li class="gt-sidebar-list-row">
+							<img class="gt-avatar-small" src="images/gt/avatar-small.gif" alt="avatar-small" width="25" height="25"/>
+
+							<h4><a href="">John Marker</a></h4>
+							<p>I love to color pictures!</p>
+						</li>
 						
-						<br />
-						<o:separateConversationContext>
-							<h:outputLink value="#{itemEditController.itemOverviewHref}">
-            					<h:outputText value="#{messages.navigation_cancel}"/>
-	         				</h:outputLink>
-						</o:separateConversationContext>
-						<br />
-						<h:commandButton value="#{messages.navigation_save}" action="#{itemEditController.submit}" />
-						<br />
-					</h:form></center>
-				</f:view>
+						<li class="gt-sidebar-list-row">
+							<img class="gt-avatar-small" src="images/gt/avatar-small.gif" alt="avatar-small" width="25" height="25"/>
+							<h4><a href="">Charlee Watts</a></h4>
+							<p>Eco-friendly is the way to go!</p>
+
+						</li>
+					</ul>
+				</div><!-- /Sidebar List -->
+				
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+			
 			</ui:define>
 		</ui:decorate>
 

@@ -27,7 +27,7 @@ public class UiUtils {
 	private final static Map<Locale, DateFormat> DATE_FORMATS = new HashMap<Locale, DateFormat>();
 	
 	public static SelectItem getPleaseSelectSelectItem(final Locale locale) {
-		final String label = I18nUtils.getMessageResourceString("general.please_select", locale);
+		final String label = I18nUtils.getMessageResourceString("general_pleaseSelect", locale);
 		final SelectItem si = new SelectItem(null, label);
 		return si;
 	}
