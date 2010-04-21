@@ -19,7 +19,7 @@ public class MyItemsListController extends AbstractItemsListController {
 
 	@Override
 	protected ListWithRowCount getListWithRowCount() {
-		return getItemService().findItems(PersonUtils.getCurrentPersonId(), getSearchString(), getCategoryId(), 
+		return getItemService().findOwnerItems(PersonUtils.getCurrentPersonId(), getSearchString(), getCategoryId(), 
 				getVisibleStatusBoolean(), getBorrowStatusBoolean(), getFirstRow(), getRowsPerPage());
 	}
 	

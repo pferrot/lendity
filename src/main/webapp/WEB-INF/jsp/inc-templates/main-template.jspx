@@ -106,7 +106,14 @@
 						<c:if test="${loggedInUser}">
 							<li>
 		                        <h:outputLink value="#{authenticationController.myItemsURL}">
-		                        	<h:outputText value="#{messages.menu_items}"/>
+		                        	<h:outputText value="#{messages.menu_myItems}"/>
+		                        </h:outputLink>
+							</li>
+						</c:if>
+						<c:if test="${loggedInUser}">
+							<li>
+		                        <h:outputLink value="#{authenticationController.myConnectionsItemsURL}">
+		                        	<h:outputText value="#{messages.menu_myConnectionsItems}"/>
 		                        </h:outputLink>
 							</li>
 						</c:if>
@@ -126,7 +133,7 @@
 				<!-- search -->
 				<c:if test="${loggedInUser}">
 					<div class="gt-search"><div class="gt-search-inner">
-						<input type="text" class="gt-search-text" value="#{messages.menu_items}" onfocus="javascript:if(this.value=='Search')this.value='';" onblur="javascript:if(this.value=='')this.value='Search';" />
+						<input type="text" class="gt-search-text" value="Search" onfocus="javascript:if(this.value=='Search')this.value='';" onblur="javascript:if(this.value=='')this.value='Search';" />
 					</div></div>
 				</c:if>
 				

@@ -71,13 +71,13 @@ public class InitialData {
 		createCountries();
 		createRoles();
 		createGenders();
-		
-		createPersonsAndUsers();
-		createRandomPersonsAndUsers(100, personDao.findPersonFromUsername("patrice.ferrot@gmail.com"));
-		createConnectionRequestResponse();
 		createItemCategories();
 		createLanguages();
+		
+		createPersonsAndUsers();
 		createItems();
+		createRandomPersonsAndUsers(20, personDao.findPersonFromUsername("patrice.ferrot@gmail.com"));
+		createConnectionRequestResponse();	
 	}
 
 	/**
@@ -186,14 +186,16 @@ public class InitialData {
 			
 			person.setUser(user);
 			
+			personDao.createPerson(person);
+			
+			createItems(person, PasswordGenerator.getRandom(0, 50));
+			
 			// Connect to Patrice?
 			if (PasswordGenerator.getRandom(0, 3) == 0) {
 				person.addConnection(pPatricePerson);
+				personDao.updatePerson(pPatricePerson);
+				personDao.updatePerson(person);				
 			}
-			
-			personDao.createPerson(person);
-			
-			createItems(person, PasswordGenerator.getRandom(0, 50));		
 		}
 		
 	}

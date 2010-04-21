@@ -52,6 +52,10 @@ public class AuthenticationController {
 	public String getMyItemsURL() {
 		return JsfUtils.getContextRoot() + PagesURL.MY_ITEMS_LIST;
 	}
+
+	public String getMyConnectionsItemsURL() {
+		return JsfUtils.getContextRoot() + PagesURL.MY_CONNECTIONS_ITEMS_LIST;
+	}
 	
 	public String getMyProfileURL() {
 		return JsfUtils.getContextRoot() + PagesURL.MY_PROFILE;

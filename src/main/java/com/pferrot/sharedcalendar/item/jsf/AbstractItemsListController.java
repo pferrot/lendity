@@ -217,6 +217,23 @@ public abstract class AbstractItemsListController extends AbstractListController
 		return "";
 	}
 
+	public String getAvailableLabel() {
+		final Item item = (Item)getTable().getRowData();
+		if (item instanceof InternalItem) {
+			InternalItem internalItem = (InternalItem) item;
+			if (internalItem.isAvailable()) {
+				final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+				return I18nUtils.getMessageResourceString("item_availableYes", locale);
+			}
+			else {
+				final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+				return I18nUtils.getMessageResourceString("item_availableNo", locale);
+			}
+		}
+		return "";
+	}
+
+
 	public String getDescription() {
 		final Item item = (Item)getTable().getRowData();
 		if (item != null && item.getDescription() != null) {
@@ -276,6 +293,23 @@ public abstract class AbstractItemsListController extends AbstractListController
 		final Item item = (Item)getTable().getRowData();
 		if (item != null && item.isBorrowed()) {
 			return UiUtils.getDateAsString(item.getBorrowDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		}
+		return "";
+	}
+
+	public String getOwnerLabel() {
+		final Item item = (Item)getTable().getRowData();
+		if (item instanceof InternalItem) {
+			final InternalItem internalItem = (InternalItem) item;
+			if (internalItem.getOwner() != null && internalItem.getOwner().getDisplayName() != null) {
+				return internalItem.getOwner().getDisplayName();
+			}
+		}
+		else if (item instanceof ExternalItem) {
+			final ExternalItem externalItem = (ExternalItem) item;
+			if (externalItem.getOwnerName() != null) {
+				return externalItem.getOwnerName();
+			}
 		}
 		return "";
 	}

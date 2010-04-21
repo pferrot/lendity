@@ -32,7 +32,7 @@ public abstract class Item implements Borrowable, Serializable {
 	private String description;
 	
 	@ManyToOne(targetEntity = ItemCategory.class)
-	@JoinColumn(name = "CATEGORY_ID", nullable = true)
+	@JoinColumn(name = "CATEGORY_ID", nullable = false)
 	private ItemCategory category;
 
 	// If the borrower if a user of the system.

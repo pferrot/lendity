@@ -1,5 +1,6 @@
 package com.pferrot.sharedcalendar.dao.bean;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,7 +17,8 @@ public class ListWithRowCount {
 
 	private long rowCount;
 	private List list;
-	
+	private static ListWithRowCount emptyListWithRowCount;
+		
 	public ListWithRowCount(List list, long rowCount) {
 		super();
 		this.rowCount = rowCount;
@@ -37,5 +39,12 @@ public class ListWithRowCount {
 
 	public void setList(List list) {
 		this.list = list;
+	}
+
+	public static ListWithRowCount emptyListWithRowCount() {
+		if (emptyListWithRowCount == null) {
+			emptyListWithRowCount = new ListWithRowCount(Collections.EMPTY_LIST, 0);
+		}
+		return emptyListWithRowCount;	
 	}
 }

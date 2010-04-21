@@ -58,6 +58,7 @@ public interface PagesURL {
 	
 	String ITEMS_LIST = "/auth/item/itemsList.faces";
 	String MY_ITEMS_LIST = "/auth/item/myItemsList.faces";
+	String MY_CONNECTIONS_ITEMS_LIST = "/auth/item/myConnectionsItemsList.faces";
 	
 	// ITEM - end
 	/////////////////////////////////////////////////////////////////////////

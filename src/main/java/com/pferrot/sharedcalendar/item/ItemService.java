@@ -2,6 +2,7 @@ package com.pferrot.sharedcalendar.item;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -77,20 +78,38 @@ public class ItemService {
 //		return itemDao.findItemsByTitleOwnedByPerson(pTitle, pPersonId, pFirstResult, pMaxResults);
 //	}
 
-	public ListWithRowCount findItems(final Long pOwnerId, final String pTitle, final Long pCategoryId, final Boolean pVisible,
+	public ListWithRowCount findOwnerItems(final Long pOwnerId, final String pTitle, final Long pCategoryId, final Boolean pVisible,
 			final Boolean pBorrowed, final int pFirstResult, final int pMaxResults) {
-		Long[] personIds = null;
-		if (pOwnerId != null) {
-			personIds = new Long[1];
-			personIds[0] = pOwnerId;
+		CoreUtils.assertNotNull(pOwnerId);
+		final Long[] personIds = new Long[]{pOwnerId};
+		
+		return itemDao.findItems(personIds, null, pTitle, getCategoryIds(pCategoryId), pVisible, pBorrowed, pFirstResult, pMaxResults);
+	}
+
+	public ListWithRowCount findConnectionsItems(final Long pPersonId, final String pTitle, final Long pCategoryId, final Boolean pVisible,
+			final Boolean pBorrowed, final int pFirstResult, final int pMaxResults) {
+		CoreUtils.assertNotNull(pPersonId);
+		final Person person = personDao.findPerson(pPersonId);
+		final Set<Person> connections = person.getConnections();
+		if (connections == null || connections.isEmpty()) {
+			return ListWithRowCount.emptyListWithRowCount();
 		}
+		final Long[] connectionsIds = new Long[connections.size()];
+		int counter = 0;
+		for(Person connection: connections) {
+			connectionsIds[counter] = connection.getId();
+			counter++;
+		}		
+		return itemDao.findItems(connectionsIds, null, pTitle, getCategoryIds(pCategoryId), pVisible, pBorrowed, pFirstResult, pMaxResults);
+	}
+	
+	private Long[] getCategoryIds(final Long pCategoryId) {
 		Long[] categoryIds = null;
 		if (pCategoryId != null) {
 			categoryIds = new Long[1];
 			categoryIds[0] = pCategoryId;
 		}
-		
-		return itemDao.findItems(personIds, null, pTitle, categoryIds, pVisible, pBorrowed, pFirstResult, pMaxResults);
+		return categoryIds;		
 	}
 
 //	public List<Item> findItemsBorrowedByPersonId(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
