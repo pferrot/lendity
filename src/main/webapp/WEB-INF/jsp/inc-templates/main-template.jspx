@@ -123,7 +123,14 @@
 		                        	<h:outputText value="#{messages.menu_connections}"/>
 		                        </h:outputLink>
 							</li>
-						</c:if>	
+						</c:if>
+						<c:if test="${loggedInUser}">
+							<li>
+		                        <h:outputLink value="#{authenticationController.personsURL}">
+		                        	<h:outputText value="#{messages.menu_persons}"/>
+		                        </h:outputLink>
+							</li>
+						</c:if>
 						<!-- 
 						<li><a class="gt-active" href="base.html">Base HTML</a></li>
 						 -->

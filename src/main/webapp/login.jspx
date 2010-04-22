@@ -93,7 +93,7 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row">
-						<label class="gt-remember-me"><h:selectBooleanCheckbox id="_spring_security_remember_me" styleClass="gt-form-checkbox" value="#{loginController.rememberMe}" /> Remember me</label>
+						<label class="gt-remember-me"><h:selectBooleanCheckbox id="_spring_security_remember_me" styleClass="gt-form-checkbox" value="#{loginController.rememberMe}" /> <h:outputText value="#{messages.login_rememberMe}"/></label>
 					</div>
 					<!-- /form row -->
 					

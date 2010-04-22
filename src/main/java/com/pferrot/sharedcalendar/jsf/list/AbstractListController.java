@@ -4,12 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.UICommand;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
@@ -45,13 +42,7 @@ public abstract class AbstractListController implements Serializable {
 	
     // Search
 	private String searchString;
-	
-	
-	
-	
-	
-	
-	
+
 	public AbstractListController() {
 		super();
 		// Default rows per page (max amount of rows to be displayed at once).
@@ -59,15 +50,8 @@ public abstract class AbstractListController implements Serializable {
 		// Default page range (max amount of page links to be displayed at once).
 		pageRange = 10;
 	}
-	
-	public abstract List<Object> getListInternal();
-	// TODO: make it abstract.
-	protected ListWithRowCount getListWithRowCount() {
-		return null;
-	}
-	
-//	public abstract int getTotalListSize();
-	public abstract int getNbEntriesPerPage();
+
+	protected abstract ListWithRowCount getListWithRowCount();
 	
 	
 	
@@ -207,15 +191,6 @@ public abstract class AbstractListController implements Serializable {
     public int getFirstRow() {
         return firstRow;
     }
-    
-    /**
-     * 
-     * @return
-     * @deprecated
-     */
-    public int getFirstResultIndex() {
-    	return getFirstRow();
-    }
 
     public int getRowsPerPage() {
         return rowsPerPage;
@@ -255,6 +230,4 @@ public abstract class AbstractListController implements Serializable {
         this.rowsPerPage = rowsPerPage;
     }
 
-	
-	
 }

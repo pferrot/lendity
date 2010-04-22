@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.sharedcalendar.dao.PersonDao;
+import com.pferrot.sharedcalendar.dao.bean.ListWithRowCount;
 import com.pferrot.sharedcalendar.model.Person;
 import com.pferrot.sharedcalendar.utils.JsfUtils;
 
@@ -33,26 +34,20 @@ public class PersonService {
 		PersonUtils.updatePersonInSession(pPerson, JsfUtils.getHttpServletRequest());
 	}
 	
-	public List<Person> findPersonsByAnything(final String pSearchString, final int pFirstResult, final int pMaxResults) {
-		return personDao.findPersonByAnything(pSearchString, pFirstResult, pMaxResults);
+	public ListWithRowCount findEnabledPersons(final String pSearchString, final int pFirstResult, final int pMaxResults) {
+		return personDao.findPersons(null, null, pSearchString, Boolean.TRUE, true, pFirstResult, pMaxResults);
 	}
 
-	public List<Person> findCurrentUserConnectionsByAnything(final String pSearchString, final int pFirstResult, final int pMaxResults) {
-		return personDao.findConnectionsByAnything(pSearchString, getCurrentPerson(), pFirstResult, pMaxResults);
-	}
-
-	public List<Person> findCurrentUserConnections(final int pFirstResult, final int pMaxResults) {	
-		return personDao.findConnections(getCurrentPerson(), pFirstResult, pMaxResults);
-	}
-
-	public List<Person> findCurrentUserBannedPersonsByAnything(final String pSearchString, final int pFirstResult, final int pMaxResults) {
-		return personDao.findBannedPersonsByAnything(pSearchString, getCurrentPerson(), pFirstResult, pMaxResults);
-	}
-
-	public List<Person> findCurrentUserBannedPersons(final int pFirstResult, final int pMaxResults) {	
-		return personDao.findBannedPersons(getCurrentPerson(), pFirstResult, pMaxResults);
+	public ListWithRowCount findConnections(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {
+		CoreUtils.assertNotNull(pPersonId);
+		return personDao.findPersons(pPersonId, "connections", pSearchString, Boolean.TRUE, false, pFirstResult, pMaxResults);
 	}
 	
+	public ListWithRowCount findBannedPersons(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {
+		CoreUtils.assertNotNull(pPersonId);
+		return personDao.findPersons(pPersonId, "bannedPersons", pSearchString, Boolean.TRUE, false, pFirstResult, pMaxResults);
+	}
+		
 	public boolean isCurrentUserAuthorizedToView(final Person pPerson) {
 		CoreUtils.assertNotNull(pPerson);
 		if (isCurrentUserAuthorizedToEdit(pPerson)) {

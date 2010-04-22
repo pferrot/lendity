@@ -13,11 +13,6 @@ public class MyConnectionsItemsListController extends AbstractItemsListControlle
 	private final static Log log = LogFactory.getLog(MyConnectionsItemsListController.class);
 	
 	@Override
-	public List getListInternal() {
-		return null;
-	}
-	
-	@Override
 	protected ListWithRowCount getListWithRowCount() {
 		return getItemService().findConnectionsItems(PersonUtils.getCurrentPersonId(), getSearchString(), getCategoryId(), 
 				getVisibleStatusBoolean(), getBorrowStatusBoolean(), getFirstRow(), getRowsPerPage());

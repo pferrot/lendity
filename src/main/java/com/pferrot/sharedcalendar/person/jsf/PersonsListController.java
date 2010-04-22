@@ -1,35 +1,27 @@
 package com.pferrot.sharedcalendar.person.jsf;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.faces.event.ActionEvent;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.pferrot.security.SecurityUtils;
 import com.pferrot.sharedcalendar.connectionrequest.exception.ConnectionRequestException;
+import com.pferrot.sharedcalendar.dao.bean.ListWithRowCount;
 import com.pferrot.sharedcalendar.model.Person;
-import com.pferrot.sharedcalendar.person.PersonUtils;
 
 public class PersonsListController extends AbstractPersonsListController {
 	
 	private final static Log log = LogFactory.getLog(PersonsListController.class);
 	
 	@Override
-	public List getListInternal() {		
+	protected ListWithRowCount getListWithRowCount() {
 		// Is there a search string specified?
 		if (getSearchString() != null  && getSearchString().trim().length() > 0) {
-			// + 1 so that we can know whether there is a next page or not.
-			return getPersonService().findPersonsByAnything(getSearchString(), getFirstResultIndex(), getNbEntriesPerPage() + 1);
+			return getPersonService().findEnabledPersons(getSearchString(), getFirstRow(), getRowsPerPage());
 		}
 		else {
-			// TODO: return nothing if no search string - is that good? 
-			return Collections.EMPTY_LIST;
+			return ListWithRowCount.emptyListWithRowCount();
 		}
 	}
-	
+
 	public String requestConnection() {
 		try {
 			final Person person = (Person)getTable().getRowData();
@@ -41,13 +33,8 @@ public class PersonsListController extends AbstractPersonsListController {
 			throw new RuntimeException(e);
 		}		
 	}
-	
-	public String getRequestConnectionLabel() {
-//		final Person person = (Person)getTable().getRowData();
-		return "request connection";
-	}
 
-	public boolean getRequestConnectionDisabled() {
+	public boolean isRequestConnectionDisabled() {
 		try {
 			final Person person = (Person)getTable().getRowData();
 			return !getConnectionRequestService().isConnectionRequestAllowedFromCurrentUser(person);

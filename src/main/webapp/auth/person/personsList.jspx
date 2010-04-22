@@ -3,79 +3,158 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:c="http://java.sun.com/jstl/core_rt"
-	xmlns:o="http://myfaces.apache.org/orchestra">
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="Person Search" />
-	<ui:param name="contentHeader" value="Person Search" />
+	<ui:param name="pageTitle" value="#{messages.person_personsListTitle}" />
+	<ui:param name="contentHeader" value="#{messages.person_personsListTitle}" />
 
 	<ui:define name="content">
 
 		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
 
 			<!-- header content here  -->
-			<ui:define name="pageName">
-            	#{contentHeader}
-          	</ui:define>
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
 
 			<!-- insert content here -->
 			<ui:define name="pageContent">
-<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
-				<f:view>
-					<center>
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
 
-<h:form>
-	<h:inputText id="searchString" value="#{personsListController.searchString}"/>
-	<br/>
-	<h:commandButton value="#{messages.navigation_search}" action="#{personsListController.search}" />
-	<h:commandButton value="#{messages.navigation_clearSearch}" action="#{personsListController.clearSearch}" />
-</h:form>
+				
+<f:view>
+
+<h2 class="gt-table-head"><h:outputText value="#{messages.person_personsListTitle}"/></h2>
+
 <br/>
 
-<h:dataTable value="#{personsListController.list}" binding="#{personsListController.table}" var="person">
+<!-- search -->
+<div style="width: 200px;">
+<h:form prependId="false">
+<div class="gt-search"><div class="gt-search-inner">
+	
+    <h:inputText id="personsSearchString" 
+                 styleClass="gt-search-text"
+                 value="#{personsListController.searchString}" />
+                 
+	<script type="text/javascript">
+		setupSearchField('personsSearchString', 'personsClearSearchString', '#{messages.person_searchPerson}');
+	</script>	
+</div></div>
+<c:if test="#{personsListController.searchString != null and !empty(personsListController.searchString)}">
+<div class="clearSearch">	
+	<h:commandLink id="personsClearSearchString" action="#{personsListController.clearSearch}">#{messages.search_clearSearch}</h:commandLink>	
+</div>
+</c:if>
+</h:form>
+</div>
+<!-- /search -->
 
-	<h:column>
-        <f:facet name="header">
-            <h:outputText value="ID" />
-        </f:facet>
-        <h:outputText value="#{person.id}" />
+<br/>
+
+<!-- content box -->
+<div class="gt-content-box">
+
+<c:if test="#{empty(personsListController.list)}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<h:dataTable value="#{personsListController.list}" binding="#{personsListController.table}" var="person" 
+   styleClass="gt-table gt-user-table">
+
+
+    <h:column>
+		<h4>
+			<h:outputLink value="#{personsListController.personOverviewHref}">
+				<h:outputText value="#{person.displayName}" />
+			</h:outputLink>
+		</h4>
     </h:column>
 
 	<h:column>
-        <f:facet name="header">
-            <h:outputText value="DISPLAY NAME" />
-        </f:facet>
-		<o:separateConversationContext>
-        	<h:outputLink value="#{personsListController.personOverviewHref}">
-            	<h:outputText value="#{person.displayName}" />
-        	</h:outputLink>
-		</o:separateConversationContext>
+		<!-- Categories Sub Table -->
+		<table border="0" class="gt-table-categories">
+			<tr>
+				<td>
+					<h:form>
+						<h:commandLink action="#{personsListController.requestConnection}"
+						               value="#{messages.connectionRequest_requestConnection}"
+						               disabled="#{personsListController.requestConnectionDisabled}"/>
+					</h:form>
+				</td>
+		    </tr>
+		</table>
     </h:column>
-    
-	<h:column>
-        <f:facet name="header">
-            <h:outputText value="REQUEST CONNECTION" />
-        </f:facet>
-		<h:form>
-			<h:commandButton action="#{personsListController.requestConnection}" value="#{personsListController.requestConnectionLabel}" disabled="#{personsListController.requestConnectionDisabled}"/>
-		</h:form>
-    </h:column>    
 
 </h:dataTable>
 
+<c:if test="#{!empty(personsListController.list)}">
+
+<!-- Table Controls -->
+<div class="gt-table-controls gt-table-controls-btm clearfix">
+<h:form> 
+<p class="gt-table-pager">
+
+
+<!--	The paging buttons-->
+<h:commandLink action="#{personsListController.pageFirst}"
+    rendered="#{personsListController.firstRow != 0}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"/>
+</h:commandLink>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" rendered="#{personsListController.firstRow == 0}" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"/>
+
+<h:commandLink action="#{personsListController.pagePrevious}"
+    rendered="#{personsListController.firstRow != 0}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}" />
+</h:commandLink>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" rendered="#{personsListController.firstRow == 0}" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}"/>
+
+<h:commandLink action="#{personsListController.pageNext}"
+    rendered="#{personsListController.firstRow + personsListController.rowsPerPage lt personsListController.totalRows}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}" />
+</h:commandLink>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" 
+                rendered="#{personsListController.firstRow + personsListController.rowsPerPage >= personsListController.totalRows}"
+                alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}"/>
+
+
+<h:commandLink action="#{personsListController.pageLast}"
+    rendered="#{personsListController.firstRow + personsListController.rowsPerPage lt personsListController.totalRows}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}" />
+</h:commandLink>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" 
+                rendered="#{personsListController.firstRow + personsListController.rowsPerPage >= personsListController.totalRows}"
+                alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}"/>
+
 <br/>
+<h:outputText value="#{messages.navigation_page} "/> 
+<h:selectOneMenu id="goToPage" value="#{personsListController.goToPageNumber}" valueChangeListener="#{personsListController.page}" onchange="submit()" required="true">
+	<f:selectItems value="#{personsListController.goToPageNumberSelectItems}"/>
+</h:selectOneMenu>
+<h:outputText value=" / #{personsListController.totalPages}" />
 
-<h:form>
-    <h:commandLink rendered="#{personsListController.previousPage}" value="#{messages.navigation_previousPage}" action="#{personsListController.previousPage}"/>
-    <h:commandLink rendered="#{personsListController.nextPage}" value="#{messages.navigation_nextPage}" action="#{personsListController.nextPage}"/>
+</p>
 </h:form>
+</div><!-- /Table Controls -->
 
-					</center>
-				</f:view>
+</c:if><!-- /not empty  -->
+
+</div><!-- /content box -->
+
+</f:view>
+				
+			</div>
+			<!-- /body -->
+			
 			</ui:define>
 		</ui:decorate>
 
 	</ui:define>
 </ui:composition>
-

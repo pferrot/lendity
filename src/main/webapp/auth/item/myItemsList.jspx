@@ -134,16 +134,26 @@
 				<td><h:outputText value="#{myItemsListController.categoryLabel}"/></td>
 		    </tr>
 			<tr>
-				<th><h:outputText rendered="#{myItemsListController.owner}" value="#{messages.item_visible}:" /></th>
-				<td><h:outputText rendered="#{myItemsListController.owner}" value="#{myItemsListController.visibleLabel}"/></td>
+				<th>
+					<h:outputText rendered="#{myItemsListController.owner}" value="#{messages.item_visible}:" />
+					<h:outputText rendered="#{not myItemsListController.owner}" value="#{messages.item_owner}:" />
+				</th>
+				<td>
+					<h:outputText rendered="#{myItemsListController.owner}" value="#{myItemsListController.visibleLabel}"/>
+					<h:outputText rendered="#{not myItemsListController.owner}" value="#{myItemsListController.ownerLabel}"/>
+				</td>
 			</tr>
 			<tr>
-				<th><h:outputText rendered="#{myItemsListController.owner and myItemsListController.borrowed}" value="#{messages.item_lentTo}:" /></th>
+				<th>
+					<h:outputText rendered="#{myItemsListController.owner and myItemsListController.borrowed}" value="#{messages.item_lentTo}:" />
+					<h:outputText rendered="#{not myItemsListController.owner}" value="#{messages.item_available}:" />
+				</th>
 				<td>
 					<h:outputLink rendered="#{myItemsListController.owner and myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerHref}">
 						<h:outputText value="#{myItemsListController.borrowerLabel}"/>
 					</h:outputLink>
 					<h:outputText rendered="#{myItemsListController.owner and myItemsListController.borrowed and !myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerLabel}"/>
+					<h:outputText rendered="#{not myItemsListController.owner}" value="#{myItemsListController.availableLabel}" />
 				</td>
 			</tr>
 			<tr>

@@ -9,10 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.CoreUtils;
-import com.pferrot.emailsender.Consts;
 import com.pferrot.emailsender.manager.MailManager;
-import com.pferrot.security.SecurityUtils;
-import com.pferrot.security.model.User;
 import com.pferrot.sharedcalendar.configuration.Configuration;
 import com.pferrot.sharedcalendar.connectionrequest.exception.ConnectionRequestException;
 import com.pferrot.sharedcalendar.dao.ConnectionRequestDao;
@@ -84,7 +81,7 @@ public class ConnectionRequestService {
 		}
 		
 		// Same connection as requester.
-		if (pConnection.getId().equals(pRequester.getId())) {
+		if (pConnection.equals(pRequester)) {
 			if (log.isDebugEnabled()) {
 				log.debug("Requester and connection are the same person: " + pConnection);
 			}
@@ -429,12 +426,7 @@ public class ConnectionRequestService {
 	private void assertConnectionOrRequesterIsCurrentUser(final ConnectionRequest pConnectionRequest, boolean pConnection) throws ConnectionRequestException {
 		CoreUtils.assertNotNull(pConnectionRequest);
 		Person person = pConnection?pConnectionRequest.getConnection():pConnectionRequest.getRequester();
-		CoreUtils.assertNotNull(person);		
-		final User currentUser = SecurityUtils.getCurrentUser();
-		CoreUtils.assertNotNull(currentUser);
-		final Person currentUserPerson = personDao.findPersonFromUser(currentUser);
-		CoreUtils.assertNotNull(currentUserPerson);
-		if (person.getId().longValue() != currentUserPerson.getId().longValue()) {
+		if (!person.getId().equals(PersonUtils.getCurrentPersonId())) {
 			throw new ConnectionRequestException("Only the current user can execute that operation.");
 		}
 	}

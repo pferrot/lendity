@@ -44,7 +44,11 @@ public class AuthenticationController {
 	public String getHomeURL() {
 		return JsfUtils.getContextRoot() + PagesURL.HOME;
 	}
-
+	
+	public String getPersonsURL() {
+		return JsfUtils.getContextRoot() + PagesURL.PERSONS_LIST;
+	}
+	
 	public String getMyConnectionsURL() {
 		return JsfUtils.getContextRoot() + PagesURL.MY_CONNECTIONS_LIST;
 	}

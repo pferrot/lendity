@@ -10,17 +10,18 @@ public abstract class AbstractConnectionRequestsListController extends AbstractL
 	
 	private ConnectionRequestService connectionRequestService;
 
+	
+	public AbstractConnectionRequestsListController() {
+		super();
+		setRowsPerPage(ConnectionRequestConsts.NB_CONNECTIONS_REQUESTS_PER_PAGE);
+	}
+
 	public ConnectionRequestService getConnectionRequestService() {
 		return connectionRequestService;
 	}
 
 	public void setConnectionRequestService(final ConnectionRequestService pConnectionRequestService) {
 		this.connectionRequestService = pConnectionRequestService;
-	}
-	
-	@Override
-	public int getNbEntriesPerPage() {
-		return ConnectionRequestConsts.NB_CONNECTIONS_REQUESTS_PER_PAGE;
 	}
 
 	public String getRequesterOverviewHref() {

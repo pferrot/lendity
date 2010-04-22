@@ -1,20 +1,18 @@
 package com.pferrot.sharedcalendar.item.jsf;
 
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.pferrot.sharedcalendar.item.ItemConsts;
-import com.pferrot.sharedcalendar.person.PersonUtils;
+import com.pferrot.sharedcalendar.dao.bean.ListWithRowCount;
 
 public class MyBorrowedItemsListController extends AbstractItemsListController {
 	
 	private final static Log log = LogFactory.getLog(MyBorrowedItemsListController.class);
 
 	@Override
-	public List getListInternal() {
+	protected ListWithRowCount getListWithRowCount() {
 		return null;
-//		return getItemService().findItemsBorrowedByPersonId(PersonUtils.getCurrentPersonId(), getFirstResultIndex(), ItemConsts.NB_ITEMS_PER_PAGE + 1);
+//		return getItemService().findConnectionsItems(PersonUtils.getCurrentPersonId(), getSearchString(), getCategoryId(), 
+//				getVisibleStatusBoolean(), getBorrowStatusBoolean(), getFirstRow(), getRowsPerPage());
 	}
 }

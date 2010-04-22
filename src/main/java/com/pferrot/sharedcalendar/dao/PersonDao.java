@@ -1,8 +1,6 @@
 package com.pferrot.sharedcalendar.dao;
 
-import java.util.List;
-
-import com.pferrot.security.model.User;
+import com.pferrot.sharedcalendar.dao.bean.ListWithRowCount;
 import com.pferrot.sharedcalendar.model.Person;
 
 public interface PersonDao {
@@ -11,18 +9,22 @@ public interface PersonDao {
 	
 	Person findPerson(Long personId);
 	Person findPersonFromUsername(String username);
-	Person findPersonFromUser(User user);
 	
-	// Search a person by displayName OR firstName OR lastName OR email.
-	List<Person> findPersonByAnything(String pSearchString);	
-	List<Person> findPersonByAnything(String pSearchString, int pFirstResult, int pMaxResults);
-	
-	List<Person> findConnections(Person pPerson, int pFirstResult, int pMaxResults);
-	List<Person> findConnectionsByAnything(String pSearchString, Person pPerson, int pFirstResult, int pMaxResults);
-
-	List<Person> findBannedPersons(Person pPerson, int pFirstResult, int pMaxResults);
-	List<Person> findBannedPersonsByAnything(String pSearchString, Person pPerson, int pFirstResult, int pMaxResults);
-	
+	/**
+	 * pConnectionLink can be null, "connections" or "bannedPersons". If not null, then pPersonId must be set.
+	 * It will then return the connections / banned persons for that person.
+	 *
+	 * @param pPersonId
+	 * @param pConnectionLink
+	 * @param pSearchString
+	 * @param pEnabled
+	 * @param pEmailExactMatch
+	 * @param pFirstResult
+	 * @param pMaxResults
+	 * @return
+	 */
+	ListWithRowCount findPersons(Long pPersonId, String pConnectionLink, String pSearchString, Boolean pEnabled, boolean pEmailExactMatch, int pFirstResult, int pMaxResults);
+		
 	void updatePerson(Person person);
 	
 	void deletePerson(Person person);

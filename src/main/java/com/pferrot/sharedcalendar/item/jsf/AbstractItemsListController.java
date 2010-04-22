@@ -163,12 +163,7 @@ public abstract class AbstractItemsListController extends AbstractListController
         // event on the h:selectOneMenu. Not sure why!?
         page(0);
         loadDataList();
-    } 
-
-	@Override
-	public int getNbEntriesPerPage() {
-		return ItemConsts.NB_ITEMS_PER_PAGE;
-	}
+    }
 	
 	@Override
 	public String clearAllFilters() {
@@ -182,12 +177,6 @@ public abstract class AbstractItemsListController extends AbstractListController
 	public boolean isClearAllFiltersAvailable() {
 		boolean tempResult = getCategoryId() != null || getBorrowStatusBoolean() != null || getVisibleStatusBoolean() != null; 
 		return tempResult || super.isClearAllFiltersAvailable();
-	}
-
-	@Override
-	public List<Object> getListInternal() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public String getCategoryLabel() {

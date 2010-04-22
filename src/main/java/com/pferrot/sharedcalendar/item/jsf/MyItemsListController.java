@@ -13,11 +13,6 @@ public class MyItemsListController extends AbstractItemsListController {
 	private final static Log log = LogFactory.getLog(MyItemsListController.class);
 
 	@Override
-	public List getListInternal() {
-		return null;
-	}
-
-	@Override
 	protected ListWithRowCount getListWithRowCount() {
 		return getItemService().findOwnerItems(PersonUtils.getCurrentPersonId(), getSearchString(), getCategoryId(), 
 				getVisibleStatusBoolean(), getBorrowStatusBoolean(), getFirstRow(), getRowsPerPage());

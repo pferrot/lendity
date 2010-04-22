@@ -15,7 +15,12 @@ public abstract class AbstractPersonsListController extends AbstractListControll
 	
 	private PersonService personService;
 	private ConnectionRequestService connectionRequestService;
-	
+
+	public AbstractPersonsListController() {
+		super();
+		setRowsPerPage(PersonConsts.NB_PERSONS_PER_PAGE);
+	}
+
 	public void setPersonService(final PersonService pPersonService) {
 		this.personService = pPersonService;
 	}
@@ -30,11 +35,6 @@ public abstract class AbstractPersonsListController extends AbstractListControll
 
 	public void setConnectionRequestService(final ConnectionRequestService pConnectionRequestService) {
 		this.connectionRequestService = pConnectionRequestService;
-	}
-
-	@Override
-	public int getNbEntriesPerPage() {
-		return PersonConsts.NB_PERSONS_PER_PAGE;
 	}
 
 	public String getPersonOverviewHref() {
