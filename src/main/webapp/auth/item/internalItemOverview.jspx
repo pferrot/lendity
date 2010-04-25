@@ -7,8 +7,8 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="Item Overview" />
-	<ui:param name="contentHeader" value="Item Overview" />
+	<ui:param name="pageTitle" value="#{messages.item_internalItemOverviewTitle}" />
+	<ui:param name="contentHeader" value="#{messages.item_internalItemOverviewTitle}" />
 
 		<ui:define name="content">
 
@@ -30,7 +30,7 @@
 			
 				<f:view>
 
-<h2 class="gt-table-head">Object overview</h2>
+<h2 class="gt-table-head"><h:outputText value="#{messages.item_internalItemOverviewTitle}"/></h2>
 
 <!-- content box -->
 <div class="gt-form gt-content-box">

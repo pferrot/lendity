@@ -8,8 +8,8 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.items_myItems}" />
-	<ui:param name="contentHeader" value="#{messages.items_myItems}" />
+	<ui:param name="pageTitle" value="#{messages.item_myItemsListTitle}" />
+	<ui:param name="contentHeader" value="#{messages.item_myItemsListTitle}" />
 
 	<ui:define name="content">
 
@@ -27,80 +27,96 @@
 				
 <f:view>
 
-<h2 class="gt-table-head"><h:outputText value="#{messages.items_myItems}"/></h2>
+<h2 class="gt-table-head"><h:outputText value="#{messages.item_myItemsListTitle}"/></h2>
 
 <br/>
 
+
+<table style="vertical-align: top; width: 100%;">
+<tr>
+
 <!-- search -->
-<div style="width: 200px;">
+<td>
 <h:form prependId="false">
-<div class="gt-search"><div class="gt-search-inner">
+<h:outputText value="#{messages.item_title}" styleClass="small"/>
+<c:if test="#{myItemsListController.searchString != null and !empty(myItemsListController.searchString)}">
+	<h:commandLink id="myItemsClearSearchString" action="#{myItemsListController.clearSearch}">clear</h:commandLink>	
+</c:if>
+<br/>
+<div class="gt-search"><div class="gt-search-inner" style="width:90%;">
 	
     <h:inputText id="myItemsSearchString" 
                  styleClass="gt-search-text"
                  value="#{myItemsListController.searchString}" />
                  
 	<script type="text/javascript">
-		setupSearchField('myItemsSearchString', 'myItemsClearSearchString', '#{messages.item_searchItem}');
+		setupSearchField('myItemsSearchString', 'myItemsClearSearchString', '');
 	</script>	
 </div></div>
-<c:if test="#{myItemsListController.searchString != null and !empty(myItemsListController.searchString)}">
-<div class="clearSearch">	
-	<h:commandLink id="myItemsClearSearchString" action="#{myItemsListController.clearSearch}">#{messages.search_clearSearch}</h:commandLink>	
-</div>
-</c:if>
 </h:form>
-</div>
+</td>
 <!-- /search -->
 
 <!-- categories -->
-<div style="width: 200px;">
+<td>
+<h:outputText value="#{messages.item_category}" styleClass="small"/><br/>
 <h:form>
 	<h:selectOneMenu id="category" value="#{myItemsListController.categoryId}" valueChangeListener="#{myItemsListController.category}" converter="javax.faces.Long" onchange="submit()">
 		<f:selectItems value="#{myItemsListController.categoriesSelectItems}"/>
 	</h:selectOneMenu>
 </h:form>
-</div>
+</td>
 <!-- /categories -->
 
 <!-- borrow status -->
-<div style="width: 200px;">
+<td>
+<h:outputText value="#{messages.item_borrowStatus}" styleClass="small"/><br/>
 <h:form>
 	<h:selectOneMenu id="borrowStatus" value="#{myItemsListController.borrowStatus}" valueChangeListener="#{myItemsListController.borrowStatus}" converter="javax.faces.Long" onchange="submit()">
 		<f:selectItems value="#{myItemsListController.borrowStatusSelectItems}"/>
 	</h:selectOneMenu>
 </h:form>
-</div>
+</td>
 <!-- /borrow status -->
 
 <!-- visible status -->
-<div style="width: 200px;">
+<td>
+<h:outputText value="#{messages.item_visibleStatus}" styleClass="small"/><br/>
 <h:form>
 	<h:selectOneMenu id="visibleStatus" value="#{myItemsListController.visibleStatus}" valueChangeListener="#{myItemsListController.visibleStatus}" converter="javax.faces.Long" onchange="submit()">
 		<f:selectItems value="#{myItemsListController.visibleStatusSelectItems}"/>
 	</h:selectOneMenu>
 </h:form>
-</div>
+</td>
 <!-- /visible status -->
 
+<td>
+<div class="gt-table-buttons">
+	<h:outputLink rendered="#{myItemsListController.addAvailable}" value="#{myItemsListController.internalItemAddHref}" styleClass="gt-btn-green-large gt-btn-right">
+  		<h:outputText rendered="#{myItemsListController.addAvailable}" value="#{messages.item_addInternalItem}" />
+   	</h:outputLink>
+</div>
+</td>
+</tr>
+
+</table>
+
+
 <br/>
 
-<!-- clear all filters -->
-<c:if test="#{myItemsListController.clearAllFiltersAvailable}">
-<div style="width: 200px;">
-	<h:form>
-		<h:commandLink id="myItemsClearAllFilters" action="#{myItemsListController.clearAllFilters}">#{messages.search_clearAllFilters}</h:commandLink>
-	</h:form>
-</div>	
-</c:if>
-<!-- clear all filters -->
-
-<br/>
 
 <!-- content box -->
 <div class="gt-content-box">
 
-<c:if test="#{empty(myItemsListController.list)}">
+<c:if test="#{empty(myItemsListController.list) and not(myItemsListController.filteredList)}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText value="#{messages.item_noItemAdded}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<c:if test="#{empty(myItemsListController.list) and myItemsListController.filteredList}">
 	<br/><br/>
 	<center>
 	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
@@ -119,10 +135,21 @@
 			</h:outputLink>
 		</h4>
 		<p><h:outputText value="#{myItemsListController.description}" /></p>
-		<p class="gt-table-edit">
-			<h:outputLink rendered="#{myItemsListController.editAvailable}" value="#{myItemsListController.itemEditHref}">
-				<h:outputText rendered="#{myItemsListController.editAvailable}" value="#{messages.navigation_edit}" />
-			</h:outputLink>
+		<p>
+			<table>
+			<tr>
+			<td class="gt-table-edit">
+				<h:outputLink rendered="#{myItemsListController.editAvailable}" value="#{myItemsListController.itemEditHref}">
+					<h:outputText rendered="#{myItemsListController.editAvailable}" value="#{messages.navigation_edit}" />
+				</h:outputLink>
+			</td>
+			<td class="gt-table-edit">
+				<h:outputLink rendered="#{myItemsListController.editAvailable}" value="#{myItemsListController.itemEditHref}">
+					<h:outputText rendered="#{myItemsListController.editAvailable}" value="#{messages.navigation_edit}" />
+				</h:outputLink>
+			</td>
+			</tr>
+			</table>
 		</p>
     </h:column>
 
@@ -135,7 +162,7 @@
 		    </tr>
 			<tr>
 				<th>
-					<h:outputText rendered="#{myItemsListController.owner}" value="#{messages.item_visible}:" />
+					<h:outputText rendered="#{myItemsListController.owner}" value="#{messages.item_visibility}:" />
 					<h:outputText rendered="#{not myItemsListController.owner}" value="#{messages.item_owner}:" />
 				</th>
 				<td>
@@ -165,9 +192,10 @@
 
 </h:dataTable>
 
-<c:if test="#{!empty(myItemsListController.list)}">
 
 <!-- Table Controls -->
+<c:if test="#{!empty(myItemsListController.list)}">
+
 <div class="gt-table-controls gt-table-controls-btm clearfix">
 <h:form> 
 <p class="gt-table-pager">
@@ -212,19 +240,13 @@
 
 </p>
 </h:form>
-</div><!-- /Table Controls -->
-
-</c:if><!-- /not empty  -->
+</div>
+</c:if>
+<!-- /Table Controls -->
 
 </div><!-- /content box -->
 
 </f:view>
-				
-				<div class="gt-table-buttons">
-					<h:outputLink rendered="#{myItemsListController.addAvailable}" value="#{myItemsListController.internalItemAddHref}" styleClass="gt-btn-green-large">
-       					<h:outputText rendered="#{myItemsListController.addAvailable}" value="#{messages.item_addInternalItem}" />
-       				</h:outputLink>
-				</div>
 			</div>
 			<!-- /body -->
 			

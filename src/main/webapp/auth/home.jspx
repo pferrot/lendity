@@ -3,7 +3,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:o="http://myfaces.apache.org/orchestra">
+    xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
 	<ui:param name="pageTitle" value="Home" />
@@ -14,20 +15,67 @@
 		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
 
 			<!-- header content here  -->
-			<ui:define name="pageName">
-            	#{contentHeader}
-          	</ui:define>
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
 
 			<!-- insert content here -->
 			<ui:define name="pageContent">
-				<f:view>
 
-This is the homepage.
 
-				</f:view>
+		<!-- body -->
+		<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				<h2>Tada</h2>
+				<p>Quoi mettre sur la homepage?</p>
+				<p>Quoi mettre sur la homepage?</p>
+				<p>Quoi mettre sur la homepage?</p>
+				<p>Quoi mettre sur la homepage?</p>
+				<p>Quoi mettre sur la homepage?</p>
+				<p>Quoi mettre sur la homepage?</p>
+				<p>Quoi mettre sur la homepage?</p>
+				<p>Quoi mettre sur la homepage?</p>
+				<p>Quoi mettre sur la homepage?</p>
+				<p>Quoi mettre sur la homepage?</p>
+				<p>Quoi mettre sur la homepage?</p>
+				<p>Quoi mettre sur la homepage?</p>
+				<p>Quoi mettre sur la homepage?</p>
+			</div>
+			<!-- /main content -->
+
+			<!-- sidebar -->
+			<div class="gt-sidebar">
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>
+				<p>Place pour de la pub par exemple?</p>				
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+				
+						
+						
+						
 			</ui:define>
 		</ui:decorate>
 
 	</ui:define>
 </ui:composition>
-

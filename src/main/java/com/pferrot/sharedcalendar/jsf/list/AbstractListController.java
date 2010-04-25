@@ -93,7 +93,7 @@ public abstract class AbstractListController implements Serializable {
 		return "clearAllFilters";
 	}
 	
-	public boolean isClearAllFiltersAvailable() {
+	public boolean isFilteredList() {
 		return !StringUtils.isNullOrEmpty(getSearchString());
 	}
 	

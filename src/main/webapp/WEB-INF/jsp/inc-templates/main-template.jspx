@@ -53,7 +53,7 @@
 			
 				<!-- logo -->
 				<div class="gt-logo">
-					pf.com<img class="gt-leaf" src="#{facesContext.externalContext.requestContextPath}/public/images/gt/leaf-logo-icon.png" alt="leaf-logo-icon" width="49" height="44"/>
+					pf.com
 				</div>
 				<!-- / logo -->
 				
@@ -152,9 +152,6 @@
 		<!-- / head -->
   		
   		<ui:insert name="content">Default Content</ui:insert>
-
-
-
 		<!-- footer -->
 		<div class="gt-footer"><div class="gt-footer-inner">
 			<p>&#169; 2010 pf</p>

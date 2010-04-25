@@ -8,8 +8,8 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.items_myItems}" />
-	<ui:param name="contentHeader" value="#{messages.items_myItems}" />
+	<ui:param name="pageTitle" value="#{messages.item_myConnectionsItemsListTitle}" />
+	<ui:param name="contentHeader" value="#{messages.item_myConnectionsItemsListTitle}" />
 
 	<ui:define name="content">
 
@@ -27,7 +27,7 @@
 				
 <f:view>
 
-<h2 class="gt-table-head"><h:outputText value="#{messages.items_myItems}"/></h2>
+<h2 class="gt-table-head"><h:outputText value="#{messages.item_myConnectionsItemsListTitle}"/></h2>
 
 <br/>
 
@@ -86,7 +86,7 @@
 <br/>
 
 <!-- clear all filters -->
-<c:if test="#{myConnectionsItemsListController.clearAllFiltersAvailable}">
+<c:if test="#{myConnectionsItemsListController.filteredList}">
 <div style="width: 200px;">
 	<h:form>
 		<h:commandLink id="myItemsClearAllFilters" action="#{myConnectionsItemsListController.clearAllFilters}">#{messages.search_clearAllFilters}</h:commandLink>

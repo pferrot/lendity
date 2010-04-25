@@ -41,7 +41,7 @@
                  value="#{myConnectionsListController.searchString}" />
                  
 	<script type="text/javascript">
-		setupSearchField('myConnections', 'myConnections', '#{messages.person_searchPerson}');
+		setupSearchField('myConnectionsSearchString', 'myConnectionsClearSearchString', '#{messages.person_searchPerson}');
 	</script>	
 </div></div>
 <c:if test="#{myConnectionsListController.searchString != null and !empty(myConnectionsListController.searchString)}">
@@ -58,10 +58,18 @@
 <!-- content box -->
 <div class="gt-content-box">
 
-<c:if test="#{empty(myConnectionsListController.list)}">
+<c:if test="#{empty(myConnectionsListController.list) and myConnectionsListController.filteredList}">
 	<br/><br/>
 	<center>
 	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<c:if test="#{empty(myItemsListController.list) and not(myConnectionsListController.filteredList)}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText value="#{messages.person_noConnectionAdded}"></h:outputText></h4>
 	</center>
 	<br/>
 </c:if>

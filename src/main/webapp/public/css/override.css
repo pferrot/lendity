@@ -63,6 +63,7 @@ a:link, a:visited {
 	color: #47790a;
 	text-decoration: none!important;
 }
+
 a:hover {
 	text-decoration: underline!important;
 }
@@ -79,3 +80,25 @@ a:hover {
 	background-color: #f1f4e2!important;
 }
 
+.gt-nav ul li a {
+	font-size: 100%!important;
+}
+
+.gt-nav a:hover, .gt-nav a.gt-active:link, .gt-nav a.gt-active:visited, .gt-nav .gt-active a:link, .gt-nav .gt-active a:visited {
+	text-decoration: none!important;
+}
+
+.gt-table-buttons {
+	margin: 0px 0px 0px 0px;
+}
+
+.gt-search .gt-search-text {
+	color: black!important;
+}
+
+.gt-bd {
+	padding-top: 25px!important;
+	padding-bottom: 0px!important;
+	padding-left: 35px!important;
+	padding-right: 35px!important;
+}

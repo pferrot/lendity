@@ -174,9 +174,9 @@ public abstract class AbstractItemsListController extends AbstractListController
 	}
 
 	@Override
-	public boolean isClearAllFiltersAvailable() {
+	public boolean isFilteredList() {
 		boolean tempResult = getCategoryId() != null || getBorrowStatusBoolean() != null || getVisibleStatusBoolean() != null; 
-		return tempResult || super.isClearAllFiltersAvailable();
+		return tempResult || super.isFilteredList();
 	}
 
 	public String getCategoryLabel() {

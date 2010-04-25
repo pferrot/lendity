@@ -49,8 +49,12 @@ Todo: different color when mousing over buttons.
 	background-color: #f8b6a1!important;
 }
 
+.small {
+	font-size:82%;
+}
+
 .clearSearch {
-	font-size: 10px;
+	font-size:82%;
 	padding: 0 0 0 25px;
 }
 
