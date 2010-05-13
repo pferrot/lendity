@@ -80,14 +80,15 @@
 							for="visible"></h:message>
 						<label class="gt-form-element-label">
 						<h:selectBooleanCheckbox id="visible" value="#{itemAddController.visible}" styleClass="gt-form-element-checkbox"/>
-						<h:outputText value=" #{messages.item_visibilityConnectionsCanSee}"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputText value="#{messages.item_visibilityConnectionsCanSee}"/>
 						</label>
 					</div><!-- /form row -->					
 					
 					<!-- form row -->
 					<div class="gt-form-row">
 						<br/><h:commandButton styleClass="gt-btn-green-medium gt-btn-left" value="#{messages.navigation_save}" action="#{itemAddController.submit}" />
-						<h:outputLink styleClass="gt-btn-green-medium gt-btn-left"  value="#{itemAddController.itemsListHref}">
+						<h:outputLink styleClass="gt-btn-green-medium gt-btn-left"  value="#{authenticationController.myItemsURL}">
            					<h:outputText value="#{messages.navigation_cancel}"/>
          				</h:outputLink>
 					</div>

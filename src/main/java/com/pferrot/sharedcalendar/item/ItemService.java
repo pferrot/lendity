@@ -1,6 +1,6 @@
 package com.pferrot.sharedcalendar.item;
 
-import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -46,6 +46,11 @@ public class ItemService {
 		return listValueDao.findListValue(ItemCategory.class);
 	}
 	
+	public List<Person> getCurrentPersonEnabledConnections() {
+		final ListWithRowCount listWithRowCount = personDao.findPersons(PersonUtils.getCurrentPersonId(), "connections", null, Boolean.TRUE, true, 0, 0);
+		return listWithRowCount.getList();
+	}
+	
 	public Language findLanguage(final String languageLabelCode) {
 		return (Language)listValueDao.findListValue(languageLabelCode);
 	}
@@ -78,29 +83,52 @@ public class ItemService {
 //		return itemDao.findItemsByTitleOwnedByPerson(pTitle, pPersonId, pFirstResult, pMaxResults);
 //	}
 
-	public ListWithRowCount findOwnerItems(final Long pOwnerId, final String pTitle, final Long pCategoryId, final Boolean pVisible,
+	public ListWithRowCount findMyItems(final String pTitle, final Long pCategoryId, final Boolean pVisible,
 			final Boolean pBorrowed, final int pFirstResult, final int pMaxResults) {
-		CoreUtils.assertNotNull(pOwnerId);
-		final Long[] personIds = new Long[]{pOwnerId};
+		final Long currentPersonId = PersonUtils.getCurrentPersonId();
+		CoreUtils.assertNotNull(currentPersonId);
+		final Long[] personIds = new Long[]{currentPersonId};
 		
-		return itemDao.findItems(personIds, null, pTitle, getCategoryIds(pCategoryId), pVisible, pBorrowed, pFirstResult, pMaxResults);
+		return itemDao.findItems(personIds, Boolean.TRUE, null, null, pTitle, getCategoryIds(pCategoryId), pVisible, pBorrowed, pFirstResult, pMaxResults);
 	}
 
-	public ListWithRowCount findConnectionsItems(final Long pPersonId, final String pTitle, final Long pCategoryId, final Boolean pVisible,
+	public ListWithRowCount findMyConnectionsItems(final Long pConnectionId, final String pTitle, final Long pCategoryId,
 			final Boolean pBorrowed, final int pFirstResult, final int pMaxResults) {
-		CoreUtils.assertNotNull(pPersonId);
-		final Person person = personDao.findPerson(pPersonId);
-		final Set<Person> connections = person.getConnections();
-		if (connections == null || connections.isEmpty()) {
-			return ListWithRowCount.emptyListWithRowCount();
+		Long[] connectionsIds = null;
+		// All connections
+		if (pConnectionId == null) {
+			final Person person = getCurrentPerson();
+			final Set<Person> connections = person.getConnections();
+			if (connections == null || connections.isEmpty()) {
+				return ListWithRowCount.emptyListWithRowCount();
+			}
+			connectionsIds = new Long[connections.size()];
+			int counter = 0;
+			for(Person connection: connections) {			
+				connectionsIds[counter] = connection.getId();
+				counter++;
+			}
 		}
-		final Long[] connectionsIds = new Long[connections.size()];
-		int counter = 0;
-		for(Person connection: connections) {
-			connectionsIds[counter] = connection.getId();
-			counter++;
-		}		
-		return itemDao.findItems(connectionsIds, null, pTitle, getCategoryIds(pCategoryId), pVisible, pBorrowed, pFirstResult, pMaxResults);
+		// Only one connection - make sure that it is a connection of the user. If not, it is someone trying to hack...
+		else {
+			final Person person = getCurrentPerson();
+			final Set<Person> connections = person.getConnections();
+			boolean connectionFound = false;
+			if (connections != null) {
+				for(Person connection: connections) {			
+					if (pConnectionId.equals(connection.getId())) {
+						connectionFound = true;
+						break;
+					}
+				}
+			}
+			if (!connectionFound) {
+				throw new SecurityException("Person with ID '" + PersonUtils.getCurrentPersonId() + "' tried to display details about person with " +
+						"ID '" + pConnectionId.toString() + "' but is not a connection.");
+			}
+			connectionsIds = new Long[]{pConnectionId};
+		}
+		return itemDao.findItems(connectionsIds, Boolean.TRUE, null, null, pTitle, getCategoryIds(pCategoryId), Boolean.TRUE, pBorrowed, pFirstResult, pMaxResults);
 	}
 	
 	private Long[] getCategoryIds(final Long pCategoryId) {
@@ -124,6 +152,40 @@ public class ItemService {
 //		return itemDao.findVisibleItemsOwnedByConnections(getCurrentPerson(), pFirstResult, pMaxResults);
 //	}
 
+	/**
+	 * Lend to a user of the system.
+	 * 
+	 * @param pItemId
+	 * @param pBorrowerId
+	 * @param pBorrowDate
+	 */
+	public void updateLendInternalItem(final Long pItemId, final Long pBorrowerId, final Date pBorrowDate) {
+		final InternalItem internalItem = findInternalItem(pItemId);
+		assertCurrentUserAuthorizedToEdit(internalItem);
+		// TODO: check if enabled and allowed to borrow !?
+		final Person borrower = personDao.findPerson(pBorrowerId);
+		internalItem.setBorrower(borrower);
+		internalItem.setBorrowerName(null);
+		internalItem.setBorrowDate(pBorrowDate);
+		updateItem(internalItem);
+	}
+
+	/**
+	 * Lend to someone not using the system.
+	 * 
+	 * @param pItemId
+	 * @param pBorrowerId
+	 * @param pBorrowDate
+	 */
+	public void updateLendInternalItem(final Long pItemId, final String pBorrowerName, final Date pBorrowDate) {
+		final InternalItem internalItem = findInternalItem(pItemId);
+		assertCurrentUserAuthorizedToEdit(internalItem);
+		internalItem.setBorrowerName(pBorrowerName);
+		internalItem.setBorrower(null);
+		internalItem.setBorrowDate(pBorrowDate);
+		updateItem(internalItem);
+	}	
+	
 	public Long createItem(final Item item) {
 		return itemDao.createItem(item);
 	}
@@ -159,6 +221,12 @@ public class ItemService {
 		}
 		return false;
 	}
+	
+	public void assertCurrentUserAuthorizedToView(final Item pItem) {
+		if (!isCurrentUserAuthorizedToView(pItem)) {
+			throw new SecurityException("Current user is not authorized to view item");
+		}
+	}
 
 	public boolean isCurrentUserAuthorizedToEdit(final Item pItem) {
 		CoreUtils.assertNotNull(pItem);
@@ -185,6 +253,12 @@ public class ItemService {
 		return false;
 	}
 
+	public void assertCurrentUserAuthorizedToEdit(final Item pItem) {
+		if (!isCurrentUserAuthorizedToEdit(pItem)) {
+			throw new SecurityException("Current user is not authorized to edit item");
+		}
+	}
+
 	public boolean isCurrentUserAuthorizedToAdd() {
 		final Person currentPerson = getCurrentPerson();
 		if (currentPerson != null && currentPerson.getUser() != null) {
@@ -193,8 +267,20 @@ public class ItemService {
 		return false;
 	}
 
+	public void assertCurrentUserAuthorizedToAdd(final Item pItem) {
+		if (!isCurrentUserAuthorizedToAdd()) {
+			throw new SecurityException("Current user is not authorized to add item");
+		}
+	}
+
 	public boolean isCurrentUserAuthorizedToDelete(final Item pItem) {
 		return isCurrentUserAuthorizedToEdit(pItem);
+	}
+
+	public void assertCurrentUserAuthorizedToDelete(final Item pItem) {
+		if (!isCurrentUserAuthorizedToDelete(pItem)) {
+			throw new SecurityException("Current user is not authorized to delete item");
+		}
 	}
 	
 	public boolean isCurrentUserOwner(final InternalItem pInternalItem) {

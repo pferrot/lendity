@@ -1,11 +1,7 @@
 package com.pferrot.sharedcalendar.dao.hibernate;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
-import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
@@ -14,13 +10,11 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import com.pferrot.core.CoreUtils;
 import com.pferrot.sharedcalendar.dao.ItemDao;
 import com.pferrot.sharedcalendar.dao.bean.ListWithRowCount;
 import com.pferrot.sharedcalendar.model.ExternalItem;
 import com.pferrot.sharedcalendar.model.InternalItem;
 import com.pferrot.sharedcalendar.model.Item;
-import com.pferrot.sharedcalendar.model.Person;
 
 public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao {
 
@@ -172,21 +166,22 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 //
 //
 //
-	private List<InternalItem> findInternalItemsList(final Long[] pOwnerIds, final Long[] pBorrwoerIds, final String pTitle, final Long[] pCategoryIds,
-			final Boolean pVisible, final Boolean pBorrowed, final int pFirstResult, final int pMaxResults) {
-		final DetachedCriteria criteria = getInternalItemsDetachedCriteria(pOwnerIds, pBorrwoerIds, pTitle, pCategoryIds, pVisible, pBorrowed);
+	private List<InternalItem> findInternalItemsList(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrwoerIds, final Boolean pBorrowerEnabled,
+			final String pTitle, final Long[] pCategoryIds, final Boolean pVisible, final Boolean pBorrowed, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria criteria = getInternalItemsDetachedCriteria(pOwnerIds, pOwnerEnabled, pBorrwoerIds, pBorrowerEnabled, pTitle, pCategoryIds, pVisible, pBorrowed);
 		criteria.addOrder(Order.asc("title").ignoreCase());
 		
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
 	}
 
-	private long countInternalItems(final Long[] pOwnerIds, final Long[] pBorrwoerIds, final String pTitle, final Long[] pCategoryIds,
+	private long countInternalItems(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrwoerIds, final Boolean pBorrowerEnabled, final String pTitle, final Long[] pCategoryIds,
 			final Boolean pVisible, final Boolean pBorrowed) {
-		final DetachedCriteria criteria = getInternalItemsDetachedCriteria(pOwnerIds, pBorrwoerIds, pTitle, pCategoryIds, pVisible, pBorrowed);
+		final DetachedCriteria criteria = getInternalItemsDetachedCriteria(pOwnerIds, pOwnerEnabled, pBorrwoerIds, pBorrowerEnabled, pTitle, pCategoryIds, pVisible, pBorrowed);
 		return rowCount(criteria);
 	}
 	
-	private DetachedCriteria getInternalItemsDetachedCriteria(final Long[] pOwnerIds, final Long[] pBorrwoerIds, final String pTitle, final Long[] pCategoryIds,
+	private DetachedCriteria getInternalItemsDetachedCriteria(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrwoerIds,
+			final Boolean pBorrowerEnabled, final String pTitle, final Long[] pCategoryIds,
 			final Boolean pVisible, final Boolean pBorrowed) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(InternalItem.class);
 	
@@ -209,12 +204,18 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 				add(Restrictions.in("id", pCategoryIds));
 		}
 		if (pOwnerIds != null && pOwnerIds.length > 0) {
-			criteria.createCriteria("owner", CriteriaSpecification.INNER_JOIN).
-				add(Restrictions.in("id", pOwnerIds));
+			final DetachedCriteria ownerCriteria = criteria.createCriteria("owner", CriteriaSpecification.INNER_JOIN);
+			ownerCriteria.add(Restrictions.in("id", pOwnerIds));
+			if (pOwnerEnabled != null) {
+				ownerCriteria.add(Restrictions.eq("enabled", pOwnerEnabled));
+			}
 		}
 		if (pBorrwoerIds != null && pBorrwoerIds.length > 0) {
-			criteria.createCriteria("borrower", CriteriaSpecification.INNER_JOIN).
-				add(Restrictions.in("id", pBorrwoerIds));
+			final DetachedCriteria borrowerCriteria = criteria.createCriteria("borrower", CriteriaSpecification.INNER_JOIN);
+			borrowerCriteria.add(Restrictions.in("id", pBorrwoerIds));
+			if (pBorrowerEnabled != null) {
+				borrowerCriteria.add(Restrictions.eq("enabled", pBorrowerEnabled));
+			}
 		}
 		
 		return criteria;	
@@ -281,10 +282,10 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 		return ((Long)getHibernateTemplate().findByCriteria(pCriteria).get(0)).longValue();
 	}
 
-	public ListWithRowCount findItems(final Long[] pOwnerIds, final Long[] pBorrowerIds, final String pTitle,
+	public ListWithRowCount findItems(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrowerIds, final Boolean pBorrowerEnabled, final String pTitle,
 			final Long[] categoriesId, final Boolean pVisible, final Boolean pBorrowed, final int pFirstResult, final int pMaxResults) {
-		final List list = findInternalItemsList(pOwnerIds, pBorrowerIds, pTitle, categoriesId, pVisible, pBorrowed, pFirstResult, pMaxResults);
-		final long count = countInternalItems(pOwnerIds, pBorrowerIds, pTitle, categoriesId, pVisible, pBorrowed);
+		final List list = findInternalItemsList(pOwnerIds, pOwnerEnabled, pBorrowerIds, pBorrowerEnabled, pTitle, categoriesId, pVisible, pBorrowed, pFirstResult, pMaxResults);
+		final long count = countInternalItems(pOwnerIds, pOwnerEnabled, pBorrowerIds, pBorrowerEnabled, pTitle, categoriesId, pVisible, pBorrowed);
 		
 		return new ListWithRowCount(list, count);
 	}

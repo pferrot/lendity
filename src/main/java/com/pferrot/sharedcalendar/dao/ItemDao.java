@@ -30,7 +30,7 @@ public interface ItemDao {
 //	ListWithRowCount findItemsByTitleOwnedByPerson(String pTitle, Person pPerson, int pFirstResult, int pMaxResults);
 //	ListWithRowCount findItemsByTitleOwnedByPerson(String pTitle, Long pPersonId, int pFirstResult, int pMaxResults);
 	
-	ListWithRowCount findItems(Long[] pOwnerIds, Long[] pBorrowerIds, String pTitle, Long[] categoriesId, Boolean pVisible, Boolean pBorrowed, int pFirstResult, int pMaxResults);
+	ListWithRowCount findItems(Long[] pOwnerIds, Boolean pOwnerEnabled, Long[] pBorrowerIds, Boolean pBorrowerEnabled, String pTitle, Long[] categoriesId, Boolean pVisible, Boolean pBorrowed, int pFirstResult, int pMaxResults);
 	
 //	List<InternalItem> findItemsOwnedByPerson(Person pPerson, int pFirstResult, int pMaxResults);
 //	long countItemsOwnedByPerson(Person pPerson);

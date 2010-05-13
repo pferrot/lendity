@@ -32,60 +32,92 @@
 <br/>
 
 
-<table style="vertical-align: top; width: 100%;">
+<table class="filtersTable">
 <tr>
 
 <!-- search -->
-<td>
+<td width="25%">
+<!-- 
+    Need 2 different forms for the clear search link and the text input field otherwise the
+    loadList() method is called twice.
+-->
 <h:form prependId="false">
 <h:outputText value="#{messages.item_title}" styleClass="small"/>
-<c:if test="#{myItemsListController.searchString != null and !empty(myItemsListController.searchString)}">
-	<h:commandLink id="myItemsClearSearchString" action="#{myItemsListController.clearSearch}">clear</h:commandLink>	
+<c:if test="#{myItemsListController.searchString != null and !empty(myItemsListController.searchString)}">    
+	<h:outputText value=" " escape="false" />
+	<h:commandLink id="myItemsClearSearchString" action="#{myItemsListController.clearSearch}">
+		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
+	</h:commandLink>
 </c:if>
-<br/>
-<div class="gt-search"><div class="gt-search-inner" style="width:90%;">
-	
-    <h:inputText id="myItemsSearchString" 
-                 styleClass="gt-search-text"
-                 value="#{myItemsListController.searchString}" />
-                 
-	<script type="text/javascript">
-		setupSearchField('myItemsSearchString', 'myItemsClearSearchString', '');
-	</script>	
-</div></div>
 </h:form>
+<h:form prependId="false">
+	<h:inputText id="myItemsSearchString"
+	             styleClass="listerSearchInput"
+    	         value="#{myItemsListController.searchString}" />
+</h:form>
+<script type="text/javascript">
+	setupSearchField('myItemsSearchString', 'myItemsClearSearchString', '#{messages.item_searchItem}');
+</script>	
 </td>
 <!-- /search -->
 
 <!-- categories -->
 <td>
-<h:outputText value="#{messages.item_category}" styleClass="small"/><br/>
-<h:form>
+<h:form prependId="false">
+<h:outputText value="#{messages.item_category}" styleClass="small"/>
+<c:if test="#{myItemsListController.categoryId != null}">
+	<h:outputText value=" " escape="false" />
+	<h:commandLink id="myItemsClearCategory" action="#{myItemsListController.clearCategory}">
+		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
+	</h:commandLink>	
+</c:if>
+<br/>
 	<h:selectOneMenu id="category" value="#{myItemsListController.categoryId}" valueChangeListener="#{myItemsListController.category}" converter="javax.faces.Long" onchange="submit()">
 		<f:selectItems value="#{myItemsListController.categoriesSelectItems}"/>
 	</h:selectOneMenu>
+<script type="text/javascript">
+	setupDropDownFilterField('category');
+</script>	
 </h:form>
 </td>
 <!-- /categories -->
 
 <!-- borrow status -->
 <td>
+<h:form prependId="false">
 <h:outputText value="#{messages.item_borrowStatus}" styleClass="small"/><br/>
-<h:form>
+<c:if test="#{myItemsListController.borrowStatus != null}">
+	<h:outputText value=" " escape="false" />
+	<h:commandLink id="myItemsClearBorrowStatus" action="#{myItemsListController.clearBorrowStatus}">
+		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
+	</h:commandLink>	
+</c:if>
 	<h:selectOneMenu id="borrowStatus" value="#{myItemsListController.borrowStatus}" valueChangeListener="#{myItemsListController.borrowStatus}" converter="javax.faces.Long" onchange="submit()">
 		<f:selectItems value="#{myItemsListController.borrowStatusSelectItems}"/>
 	</h:selectOneMenu>
+<script type="text/javascript">
+	setupDropDownFilterField('borrowStatus');
+</script>
 </h:form>
 </td>
 <!-- /borrow status -->
 
 <!-- visible status -->
 <td>
+<h:form prependId="false">
 <h:outputText value="#{messages.item_visibleStatus}" styleClass="small"/><br/>
-<h:form>
+<c:if test="#{myItemsListController.borrowStatus != null}">
+	<h:outputText value=" " escape="false" />
+	<h:commandLink id="myItemsClearVisibleStatus" action="#{myItemsListController.clearVisibleStatus}">
+		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
+	</h:commandLink>	
+</c:if>
 	<h:selectOneMenu id="visibleStatus" value="#{myItemsListController.visibleStatus}" valueChangeListener="#{myItemsListController.visibleStatus}" converter="javax.faces.Long" onchange="submit()">
 		<f:selectItems value="#{myItemsListController.visibleStatusSelectItems}"/>
 	</h:selectOneMenu>
+<script type="text/javascript">
+	setupDropDownFilterField('visibleStatus');
+</script>	
 </h:form>
 </td>
 <!-- /visible status -->
@@ -124,9 +156,12 @@
 	<br/>
 </c:if>
 
-<h:dataTable value="#{myItemsListController.list}" binding="#{myItemsListController.table}" var="item" 
-   styleClass="gt-table gt-user-table">
+<script type="text/javascript">
+setupLendItem();
+setupLendBackItem();
+</script>
 
+<h:dataTable value="#{myItemsListController.list}" binding="#{myItemsListController.table}" var="item" styleClass="gt-table gt-user-table">
 
     <h:column>
 		<h4>
@@ -138,15 +173,13 @@
 		<p>
 			<table>
 			<tr>
-			<td class="gt-table-edit">
-				<h:outputLink rendered="#{myItemsListController.editAvailable}" value="#{myItemsListController.itemEditHref}">
-					<h:outputText rendered="#{myItemsListController.editAvailable}" value="#{messages.navigation_edit}" />
-				</h:outputLink>
-			</td>
-			<td class="gt-table-edit">
-				<h:outputLink rendered="#{myItemsListController.editAvailable}" value="#{myItemsListController.itemEditHref}">
-					<h:outputText rendered="#{myItemsListController.editAvailable}" value="#{messages.navigation_edit}" />
-				</h:outputLink>
+			<td>
+				<span class="linkStyleAction" usage="lendItem" itemID="#{item.id}">
+					<h:outputText id="lendItem" rendered="#{myItemsListController.lendAvailable}" value="#{messages.item_lend}" />
+				</span>	
+				<span class="linkStyleAction" usage="lendBackItem" itemID="#{item.id}">
+					<h:outputText id="lendBackItem" rendered="#{myItemsListController.lendBackAvailable}" value="#{messages.item_lendBack}" />
+				</span>	
 			</td>
 			</tr>
 			</table>

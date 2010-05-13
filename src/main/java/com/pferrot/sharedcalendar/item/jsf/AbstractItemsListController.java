@@ -36,7 +36,7 @@ public abstract class AbstractItemsListController extends AbstractListController
 	// Cannot use Boolean because selecting the SelectItem with value null actually
 	// sets the value False...
 	// 1 = True = borrowed by someone
-	// -1 = False = not borrowed
+	// 2 = False = not borrowed
 	// null = all items
 	private Long borrowStatus;
 
@@ -44,7 +44,7 @@ public abstract class AbstractItemsListController extends AbstractListController
 	// Cannot use Boolean because selecting the SelectItem with value null actually
 	// sets the value False...
 	// 1 = True = visible by connections
-	// -1 = False = not visible by connections.
+	// 2 = False = not visible by connections.
 	// null = all items
 	private Long visibleStatus;
 	
@@ -83,7 +83,7 @@ public abstract class AbstractItemsListController extends AbstractListController
 	}
 
 	public void setCategoryId(final Long pCategoryId) {
-		this.categoryId = pCategoryId;
+		this.categoryId = UiUtils.getPositiveLongOrNull(pCategoryId);
 	}
 
     public void category(final ValueChangeEvent pEevent) {
@@ -91,12 +91,11 @@ public abstract class AbstractItemsListController extends AbstractListController
         setCategoryId(categoryId);
         // loadDataList() is not called by getList() when the page is submitted with the onchange
         // event on the h:selectOneMenu. Not sure why!?
-        page(0);
-        loadDataList();
+        reloadList();
     }    
 
 	public List<SelectItem> getBorrowStatusSelectItems() {
-		if (borrowStatusSelectItems == null) {
+		if (getBorrowStatusSelectItemsInternal() == null) {
 			final List result = new ArrayList<SelectItem>();
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 			
@@ -104,9 +103,17 @@ public abstract class AbstractItemsListController extends AbstractListController
 			result.add(new SelectItem(UiUtils.getLongFromBoolean(Boolean.TRUE), I18nUtils.getMessageResourceString("item_borrowStatusBorrowed", locale)));
 			result.add(new SelectItem(UiUtils.getLongFromBoolean(Boolean.FALSE), I18nUtils.getMessageResourceString("item_borrowStatusNotBorrowed", locale)));
 			
-			borrowStatusSelectItems = result;
+			setBorrowStatusSelectItemsInternal(result);
 		}		
-		return borrowStatusSelectItems;	
+		return getBorrowStatusSelectItemsInternal();	
+	}
+	
+	protected List<SelectItem> getBorrowStatusSelectItemsInternal() {
+		return borrowStatusSelectItems;
+	}
+
+	protected void setBorrowStatusSelectItemsInternal(final List<SelectItem> pBorrowStatusSelectItems) {
+		this.borrowStatusSelectItems = pBorrowStatusSelectItems;
 	}
 
 	public Long getBorrowStatus() {
@@ -118,7 +125,7 @@ public abstract class AbstractItemsListController extends AbstractListController
 	}
 
 	public void setBorrowStatus(final Long pBorrowStatus) {
-		this.borrowStatus = pBorrowStatus;
+		this.borrowStatus = UiUtils.getPositiveLongOrNull(pBorrowStatus);
 	}
 
     public void borrowStatus(final ValueChangeEvent event) {
@@ -126,8 +133,7 @@ public abstract class AbstractItemsListController extends AbstractListController
         setBorrowStatus(borrowStatus);
         // loadDataList() is not called by getList() when the page is submitted with the onchange
         // event on the h:selectOneMenu. Not sure why!?
-        page(0);
-        loadDataList();
+        reloadList();
     }    
 
 	public List<SelectItem> getVisibleStatusSelectItems() {
@@ -153,7 +159,7 @@ public abstract class AbstractItemsListController extends AbstractListController
 	}
 
 	public void setVisibleStatus(final Long pVisibleStatus) {
-		this.visibleStatus = pVisibleStatus;
+		this.visibleStatus = UiUtils.getPositiveLongOrNull(pVisibleStatus);
 	}
 
     public void visibleStatus(final ValueChangeEvent pEevent) {
@@ -161,16 +167,22 @@ public abstract class AbstractItemsListController extends AbstractListController
         setVisibleStatus(borrowStatus);
         // loadDataList() is not called by getList() when the page is submitted with the onchange
         // event on the h:selectOneMenu. Not sure why!?
-        page(0);
-        loadDataList();
+        reloadList();
     }
 	
-	@Override
-	public String clearAllFilters() {
+	public String clearBorrowStatus() {
 		setBorrowStatus(null);
+		return "clearBorrowStatus";
+	}
+
+	public String clearVisibleStatus() {
 		setVisibleStatus(null);
+		return "clearVisibleStatus";
+	}
+
+	public String clearCategory() {
 		setCategoryId(null);
-		return super.clearAllFilters();
+		return "clearCategory";
 	}
 
 	@Override
@@ -241,6 +253,19 @@ public abstract class AbstractItemsListController extends AbstractListController
 	public boolean isEditAvailable() {
 		final Item item = (Item)getTable().getRowData();
 		return getItemService().isCurrentUserAuthorizedToEdit(item);
+	}
+
+	public boolean isLendAvailable() {
+		final Item item = (Item)getTable().getRowData();
+		return getItemService().isCurrentUserAuthorizedToEdit(item) &&
+			!item.isBorrowed();
+		
+	}
+
+	public boolean isLendBackAvailable() {
+		final Item item = (Item)getTable().getRowData();
+		return getItemService().isCurrentUserAuthorizedToEdit(item) &&
+			item.isBorrowed();
 	}
 
 	public boolean isAddAvailable() {

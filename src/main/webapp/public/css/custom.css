@@ -49,6 +49,10 @@ Todo: different color when mousing over buttons.
 	background-color: #f8b6a1!important;
 }
 
+.filterActive {
+	background-color: #93e0b8!important;
+}
+
 .small {
 	font-size:82%;
 }
@@ -66,3 +70,83 @@ div.highlightedBg {
 	background-color: #f1f4e2;
 	width: 100%;
 }
+
+table.filtersTable {
+	vertical-align: top;
+	width: 100%;
+}
+
+input.listerSearchInput {
+	width: 90%;	
+}
+
+input.grayColor {
+	color: gray!important;
+}
+
+span.linkStyleAction {
+	color: #47790a;
+	text-decoration: none;
+	font-weight: bold;
+	font-size:82%;
+	cursor: pointer; 
+}
+
+span.linkStyleAction:hover {
+	text-decoration: underline;
+}
+
+/*
+qTip
+See http://craigsworks.com/projects/qtip/docs/#structure
+*/
+.qtip {
+}
+
+.qtip-stylename {
+}
+
+.qtip-tip {
+}
+
+.qtip-wrapper {
+}
+
+.qtip-borderTop {
+}
+
+.qtip-contentWrapper {	
+}
+
+.qtip-title {
+}
+
+.qtip-button {
+}
+
+.qtip-content {
+	font-size:82%;
+}
+
+.qtip-content div {	
+	padding: 10px;
+	background-color: #14e177;
+}
+
+.qtip-content table {	
+	border-width: 0px;	
+}
+
+.qtip-content th {
+	text-align: right;
+	padding: 5px;	
+}
+
+.qtip-content td {
+	text-align: left;
+	padding: 5px;	
+}
+
+.qtip-borderBottom {
+}
+

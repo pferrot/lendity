@@ -39,6 +39,7 @@ public abstract class AbstractListController implements Serializable {
     private int currentPage;
 	private Integer goToPageNumber;
 	private List<SelectItem> goToPageNumberSelectItems;
+	private boolean emptyList;
 	
     // Search
 	private String searchString;
@@ -73,10 +74,14 @@ public abstract class AbstractListController implements Serializable {
 	}
 
 	public void setSearchString(final String pSearchString) {
+		setSearchString(pSearchString, true);
+	}
+	
+	private void setSearchString(final String pSearchString, final boolean pReloadList) {
 		this.searchString = pSearchString;
-		// If the search string changes, go the the first page.
-		page(0);
-		loadDataList();
+		if (pReloadList) {
+			reloadList();
+		}
 	}
 	
 	public String search() {
@@ -84,13 +89,8 @@ public abstract class AbstractListController implements Serializable {
 	}
 	
 	public String clearSearch() {
-		setSearchString(null);
+		setSearchString(null, false);
 		return "clearSearch";
-	}
-
-	public String clearAllFilters() {
-		setSearchString(null);
-		return "clearAllFilters";
 	}
 	
 	public boolean isFilteredList() {
@@ -130,10 +130,15 @@ public abstract class AbstractListController implements Serializable {
     }
 
     protected void loadDataList() {
+    	
+    	if (log.isDebugEnabled()) {
+    		log.debug("Loading list");
+    	}
 
         // Load list and totalCount.
     	final ListWithRowCount listWithRowCount = getListWithRowCount();
         list = listWithRowCount.getList();
+        emptyList = list == null || list.isEmpty();
         totalRows = (int)listWithRowCount.getRowCount();
 
         // Set currentPage, totalPages and pages.
@@ -165,7 +170,11 @@ public abstract class AbstractListController implements Serializable {
     	}
     	goToPageNumberSelectItems = list;
     } 
-    
+
+    protected void reloadList() {
+    	pageFirst();
+    	loadDataList();
+    }
 
     // Getters ------------------------------------------------------------------------------------
 
@@ -173,11 +182,14 @@ public abstract class AbstractListController implements Serializable {
         // See http://balusc.blogspot.com/2006/06/using-datatables.html
 		// Doing this since using session bean.
     	if (FacesContext.getCurrentInstance().getRenderResponse()) {
-//		if (list == null) {
     		// Reload to get most recent data.
 			loadDataList();
         }
         return list;
+	}
+
+	public boolean isEmptyList() {
+		return emptyList;
 	}
 
 	public HtmlDataTable getTable() {
@@ -216,8 +228,7 @@ public abstract class AbstractListController implements Serializable {
 		return goToPageNumber;
 	}    
 
-    // Setters ------------------------------------------------------------------------------------
-
+    // Setters ------------------------------------------------------------------------------------	
 	public void setGoToPageNumber(Integer goToPageNumber) {
 		this.goToPageNumber = goToPageNumber;
 	}
@@ -229,5 +240,4 @@ public abstract class AbstractListController implements Serializable {
     public void setRowsPerPage(int rowsPerPage) {
         this.rowsPerPage = rowsPerPage;
     }
-
 }

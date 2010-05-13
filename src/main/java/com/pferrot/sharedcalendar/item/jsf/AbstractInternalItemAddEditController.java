@@ -53,7 +53,7 @@ public abstract class AbstractInternalItemAddEditController {
 	}
 
 	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
+		this.categoryId = UiUtils.getPositiveLongOrNull(categoryId);
 	}
 
 	public String getTitle() {

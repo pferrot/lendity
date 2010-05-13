@@ -31,82 +31,106 @@
 
 <br/>
 
+<table class="filtersTable">
+<tr>
+
 <!-- search -->
-<div style="width: 200px;">
+<td>
+<!-- 
+    Need 2 different forms for the clear search link and the text input field otherwise the
+    loadList() method is called twice.
+-->
 <h:form prependId="false">
-<div class="gt-search"><div class="gt-search-inner">
-	
-    <h:inputText id="myItemsSearchString" 
-                 styleClass="gt-search-text"
-                 value="#{myConnectionsItemsListController.searchString}" />
-                 
-	<script type="text/javascript">
-		setupSearchField('myItemsSearchString', 'myItemsClearSearchString', '#{messages.item_searchItem}');
-	</script>	
-</div></div>
-<c:if test="#{myConnectionsItemsListController.searchString != null and !empty(myConnectionsItemsListController.searchString)}">
-<div class="clearSearch">	
-	<h:commandLink id="myItemsClearSearchString" action="#{myConnectionsItemsListController.clearSearch}">#{messages.search_clearSearch}</h:commandLink>	
-</div>
+<h:outputText value="#{messages.item_title}" styleClass="small"/>
+<c:if test="#{myConnectionsItemsListController.searchString != null and !empty(myConnectionsItemsListController.searchString)}">    
+	<h:outputText value=" " escape="false" />
+	<h:commandLink id="myConnectionsItemsClearSearchString" action="#{myConnectionsItemsListController.clearSearch}">
+		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
+	</h:commandLink>
 </c:if>
 </h:form>
-</div>
+<h:form prependId="false">
+	<h:inputText id="myConnectionsItemsSearchString"
+	             styleClass="listerSearchInput"
+    	         value="#{myConnectionsItemsListController.searchString}" />
+</h:form>
+<script type="text/javascript">
+	setupSearchField('myConnectionsItemsSearchString', 'myConnectionsItemsClearSearchString', '#{messages.item_searchItem}');
+</script>	
+</td>
 <!-- /search -->
 
 <!-- categories -->
-<div style="width: 200px;">
-<h:form>
+<td>
+<h:form prependId="false">
+<h:outputText value="#{messages.item_category}" styleClass="small"/>
+<c:if test="#{myConnectionsItemsListController.categoryId != null}">
+	<h:outputText value=" " escape="false" />
+	<h:commandLink id="myConnectionsItemsClearCategory" action="#{myConnectionsItemsListController.clearCategory}">
+		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
+	</h:commandLink>	
+</c:if>
+<br/>
 	<h:selectOneMenu id="category" value="#{myConnectionsItemsListController.categoryId}" valueChangeListener="#{myConnectionsItemsListController.category}" converter="javax.faces.Long" onchange="submit()">
 		<f:selectItems value="#{myConnectionsItemsListController.categoriesSelectItems}"/>
 	</h:selectOneMenu>
+<script type="text/javascript">
+	setupDropDownFilterField('category');
+</script>	
 </h:form>
-</div>
+</td>
 <!-- /categories -->
 
 <!-- borrow status -->
-<div style="width: 200px;">
-<h:form>
+<td>
+<h:form prependId="false">
+<h:outputText value="#{messages.item_availableStatus}" styleClass="small"/>
+<c:if test="#{myConnectionsItemsListController.borrowStatus != null}">
+	<h:outputText value=" " escape="false" />
+	<h:commandLink id="myConnectionsItemsClearBorrowStatus" action="#{myConnectionsItemsListController.clearBorrowStatus}">
+		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
+	</h:commandLink>	
+</c:if>
+<br/>
 	<h:selectOneMenu id="borrowStatus" value="#{myConnectionsItemsListController.borrowStatus}" valueChangeListener="#{myConnectionsItemsListController.borrowStatus}" converter="javax.faces.Long" onchange="submit()">
 		<f:selectItems value="#{myConnectionsItemsListController.borrowStatusSelectItems}"/>
 	</h:selectOneMenu>
+<script type="text/javascript">
+	setupDropDownFilterField('borrowStatus');
+</script>
 </h:form>
-</div>
+</td>
 <!-- /borrow status -->
 
-<!-- visible status -->
-<div style="width: 200px;">
-<h:form>
-	<h:selectOneMenu id="visibleStatus" value="#{myConnectionsItemsListController.visibleStatus}" valueChangeListener="#{myConnectionsItemsListController.visibleStatus}" converter="javax.faces.Long" onchange="submit()">
-		<f:selectItems value="#{myConnectionsItemsListController.visibleStatusSelectItems}"/>
-	</h:selectOneMenu>
-</h:form>
-</div>
-<!-- /visible status -->
-
-<br/>
-
-<!-- clear all filters -->
-<c:if test="#{myConnectionsItemsListController.filteredList}">
-<div style="width: 200px;">
-	<h:form>
-		<h:commandLink id="myItemsClearAllFilters" action="#{myConnectionsItemsListController.clearAllFilters}">#{messages.search_clearAllFilters}</h:commandLink>
-	</h:form>
-</div>	
+<!-- owner -->
+<td>
+<h:form prependId="false">
+<h:outputText value="#{messages.item_owner}" styleClass="small"/>
+<c:if test="#{myConnectionsItemsListController.ownerId != null}">
+	<h:outputText value=" " escape="false" />
+	<h:commandLink id="myConnectionsItemsClearOwner" action="#{myConnectionsItemsListController.clearOwner}">
+		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
+	</h:commandLink>	
 </c:if>
-<!-- clear all filters -->
+<br/>
+	<h:selectOneMenu id="owner" value="#{myConnectionsItemsListController.ownerId}" valueChangeListener="#{myConnectionsItemsListController.owner}" converter="javax.faces.Long" immediate="true" onchange="submit()">
+		<f:selectItems value="#{myConnectionsItemsListController.ownerSelectItems}"/>
+	</h:selectOneMenu>
+<script type="text/javascript">
+	setupDropDownFilterField('owner');
+</script>
+</h:form>
+</td>
+<!-- /owner -->
+
+</tr>
+
+</table>
 
 <br/>
 
 <!-- content box -->
 <div class="gt-content-box">
-
-<c:if test="#{empty(myConnectionsItemsListController.list)}">
-	<br/><br/>
-	<center>
-	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
-	</center>
-	<br/>
-</c:if>
 
 <h:dataTable value="#{myConnectionsItemsListController.list}" binding="#{myConnectionsItemsListController.table}" var="item" 
    styleClass="gt-table gt-user-table">
@@ -165,7 +189,15 @@
 
 </h:dataTable>
 
-<c:if test="#{!empty(myConnectionsItemsListController.list)}">
+<c:if test="#{myConnectionsItemsListController.emptyList}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<c:if test="#{!myConnectionsItemsListController.emptyList}">
 
 <!-- Table Controls -->
 <div class="gt-table-controls gt-table-controls-btm clearfix">

@@ -20,7 +20,7 @@
 	
 	<bean id="configuration" class="com.pferrot.sharedcalendar.configuration.Configuration" lazy-init="false">
 		<property name="siteName">
-			<value>patriceferrot.com</value>
+			<value>lendity.com</value>
 		</property>		
 		<property name="rootURL">
 			<value>http://localhost:8080/shared_calendar</value>
@@ -428,7 +428,12 @@
 	</bean>
 
 	<bean id="myConnectionsItemsListController" class="com.pferrot.sharedcalendar.item.jsf.MyConnectionsItemsListController"
-	      scope="conversation.access">
+	      scope="session">
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+
+	<bean id="internalItemLendTooltipController" class="com.pferrot.sharedcalendar.item.jsf.InternalItemLendTooltipController"
+	      scope="request">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 

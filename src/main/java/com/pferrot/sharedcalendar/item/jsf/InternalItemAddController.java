@@ -5,7 +5,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
-import com.pferrot.sharedcalendar.item.ItemUtils;
 import com.pferrot.sharedcalendar.model.InternalItem;
 
 @ViewController(viewIds={"/auth/item/internalItemAdd.jspx"})
@@ -27,10 +26,6 @@ public class InternalItemAddController extends AbstractInternalItemAddEditContro
 		internalItem.setOwner(getItemService().getCurrentPerson());
 				
 		return getItemService().createItemWithCategory(internalItem, getCategoryId());		
-	}
-
-	public String getItemsListHref() {		
-		return ItemUtils.getItemsListUrl();
 	}
 	
 	@Override

@@ -158,10 +158,6 @@ public class JsfUtils {
 				}
 			}
 			
-			if (log.isDebugEnabled()) {
-				log.debug("Full URL: " + finalUrl.toString());
-			}
-			
 			return finalUrl.toString();
 		}
 		catch (UnsupportedEncodingException e) {

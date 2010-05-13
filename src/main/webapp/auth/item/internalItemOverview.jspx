@@ -50,7 +50,7 @@
 	</div>
 	<br/>	
 	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText rendered="#{itemOverviewController.owner}" value="#{messages.item_visible}:" /></label></div>
+		<div class="highlightedBg"><label class="small"><h:outputText rendered="#{itemOverviewController.owner}" value="#{messages.item_visibility}:" /></label></div>
 		<h:outputText rendered="#{itemOverviewController.owner}" value="#{itemOverviewController.visibleLabel}" />
 	</div>
 	<c:if test="#{itemOverviewController.owner and itemOverviewController.borrowed}">

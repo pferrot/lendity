@@ -3,11 +3,14 @@ package com.pferrot.sharedcalendar.utils;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 import javax.faces.model.SelectItem;
@@ -19,6 +22,7 @@ import com.pferrot.sharedcalendar.i18n.I18nUtils;
 import com.pferrot.sharedcalendar.i18n.SelectItemComparator;
 import com.pferrot.sharedcalendar.model.ListValue;
 import com.pferrot.sharedcalendar.model.OrderedListValue;
+import com.pferrot.sharedcalendar.model.Person;
 
 public class UiUtils {
 	
@@ -42,12 +46,37 @@ public class UiUtils {
 		return result;		
 	}
 	
-	public static List<SelectItem> getSelectItemsForListValue(final List<ListValue> list,
-															  final Locale locale) {
+	public static List<SelectItem> getSelectItemsForListValue(final List<ListValue> pList,
+															  final Locale pLocale) {
+		if (pList == null) {
+			return Collections.EMPTY_LIST;
+		}
 		final TreeSet<SelectItem> treeSet = new TreeSet<SelectItem>(new SelectItemComparator());
-		for (ListValue lv: list) {
-			final SelectItem selectItem = new SelectItem(lv.getId(), I18nUtils.getMessageResourceString(lv.getLabelCode(), locale));
+		for (ListValue lv: pList) {
+			final SelectItem selectItem = new SelectItem(lv.getId(), I18nUtils.getMessageResourceString(lv.getLabelCode(), pLocale));
 			treeSet.add(selectItem);
+		}
+		final List result = new ArrayList<SelectItem>();
+		result.addAll(treeSet);
+		return result; 
+	}
+
+	/**
+	 * Will only consider ENABLED persons.
+	 *
+	 * @param pList
+	 * @return
+	 */
+	public static List<SelectItem> getSelectItemsForPerson(final Collection<Person> pList) {
+		if (pList == null) {
+			return Collections.EMPTY_LIST;
+		}
+		final TreeSet<SelectItem> treeSet = new TreeSet<SelectItem>(new SelectItemComparator());
+		for (Person person: pList) {
+			if (person.isEnabled()) {
+				final SelectItem selectItem = new SelectItem(person.getId(), person.getDisplayName());
+				treeSet.add(selectItem);
+			}
 		}
 		final List result = new ArrayList<SelectItem>();
 		result.addAll(treeSet);
@@ -56,15 +85,16 @@ public class UiUtils {
 
 	// Since we cannot use Boolean for fields like AbstractItemsListController.borrowStatus because
 	// selecting the SelectItem with value null actually sets the value False, we need to use Long.
+	// 1 is TRUE
+	// 2 is FALSE
 	public static Boolean getBooleanFromLong(final Long pLong) {
-		// Sometimes 0 is set by JSF instead of null...
-		if (pLong == null || pLong.longValue() == 0) {
+		if (pLong == null) {
 			return null;
 		}
 		else if (pLong.longValue() == 1) {
 			return Boolean.TRUE;
 		}
-		else if (pLong.longValue() == -1) {
+		else if (pLong.longValue() == 2) {
 			return Boolean.FALSE;
 		}
 		else {
@@ -82,8 +112,15 @@ public class UiUtils {
 			return Long.valueOf(1);
 		}
 		else {
-			return Long.valueOf(-1);
+			return Long.valueOf(2);
 		}		
+	}
+
+	public static Long getPositiveLongOrNull(final Long pInput) {
+		if (pInput == null || pInput.longValue() <= 0) {
+			return null;
+		}
+		return pInput;
 	}
 
 	public static String getDateAsString(final Date pDate, final Locale pLocale) {
