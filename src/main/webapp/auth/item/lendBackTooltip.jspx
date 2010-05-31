@@ -1,0 +1,32 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<div id="lendBackDiv" style="display: none;">
+	<h:form id="lendBackForm" prependId="false">
+		<h:inputHidden id="lendBackItemId" value="#{internalItemLendBackTooltipController.itemId}" />
+		<h:inputHidden id="lendBackRedirectId" value="#{internalItemLendBackTooltipController.redirectId}" />
+		<table> 
+			<tr>
+				<td colspan="2" style="text-align: center;">
+					<h:outputText value="#{messages.item_lendBackMessage}"/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align: center;">
+					<input type="button" onclick="cancelLendBackItem()" value="#{messages.navigation_cancel}"/>
+					<input type="button" onclick="submitLendBackItem()" value="#{messages.item_lendBackSubmit}"/>
+					<h:commandButton id="lendBackActionButton" action="#{internalItemLendBackTooltipController.submit}" style="display: none" value="not_displayed"/>
+				</td>
+			</tr>
+		</table>
+	</h:form>
+</div>
+
+</ui:composition>

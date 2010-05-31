@@ -34,7 +34,7 @@ public class InternalItemOverviewController
 	@InitView
 	public void initView() {
 		// Read the item ID from the request parameter and load the correct item.
-		try {
+//		try {
 			final String itemIdString = JsfUtils.getRequestParameter(PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID);
 			InternalItem item = null;
 			if (itemIdString != null) {
@@ -43,14 +43,14 @@ public class InternalItemOverviewController
 				setItem(item);
 			}
 			// Item not found or not item ID specified.
-			if (item == null) {
-				JsfUtils.redirect(PagesURL.ITEMS_LIST);
-			}
-		}
-		catch (Exception e) {
+//			if (item == null) {
+//				JsfUtils.redirect(PagesURL.MY_ITEMS_LIST);
+//			}
+//		}
+//		catch (Exception e) {
 			//TODO display standard error page instead.
-			JsfUtils.redirect(PagesURL.ITEMS_LIST);
-		}		
+//			JsfUtils.redirect(PagesURL.MY_ITEMS_LIST);
+//		}		
 	}
 
 	public void setItemService(ItemService itemService) {

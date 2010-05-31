@@ -188,7 +188,7 @@ public class InitialData {
 			
 			personDao.createPerson(person);
 			
-			createItems(person, PasswordGenerator.getRandom(0, 50));
+			createItems(person, PasswordGenerator.getRandom(0, 10));
 			
 			// Connect to Patrice?
 			if (PasswordGenerator.getRandom(0, 3) == 0) {
@@ -263,10 +263,10 @@ public class InitialData {
 		Person person = null;
 		
 		// Create random items.
-		createItems(personDao.findPersonFromUsername("patrice.ferrot@gmail.com"), 500);
+		createItems(personDao.findPersonFromUsername("patrice.ferrot@gmail.com"), 50);
 		
 		// Create random items.
-		createItems(personDao.findPersonFromUsername("stupid.illusion@gmail.com"), 200);
+		createItems(personDao.findPersonFromUsername("stupid.illusion@gmail.com"), 30);
 	}
 
 	private void createItems(final Person pPerson, final int pNbItems) {

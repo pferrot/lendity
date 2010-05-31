@@ -390,6 +390,7 @@
 		<property name="itemDao" ref="itemDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
 		<property name="personDao" ref="personDao"/>
+		<property name="mailManager" ref="emailSender.mailManager"/>
 	</bean>
 	
 	<bean id="itemOverviewController" class="com.pferrot.sharedcalendar.item.jsf.InternalItemOverviewController"
@@ -418,7 +419,7 @@
 	</bean>
 
 	<bean id="myBorrowedItemsListController" class="com.pferrot.sharedcalendar.item.jsf.MyBorrowedItemsListController"
-	      scope="conversation.access">
+	      scope="session">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 
@@ -433,6 +434,11 @@
 	</bean>
 
 	<bean id="internalItemLendTooltipController" class="com.pferrot.sharedcalendar.item.jsf.InternalItemLendTooltipController"
+	      scope="request">
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+	
+	<bean id="internalItemLendBackTooltipController" class="com.pferrot.sharedcalendar.item.jsf.InternalItemLendBackTooltipController"
 	      scope="request">
 	      <property name="itemService" ref="itemService"/>
 	</bean>

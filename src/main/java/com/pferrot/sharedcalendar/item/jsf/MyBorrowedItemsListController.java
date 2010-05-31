@@ -5,14 +5,13 @@ import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.sharedcalendar.dao.bean.ListWithRowCount;
 
-public class MyBorrowedItemsListController extends AbstractItemsListController {
+public class MyBorrowedItemsListController extends AbstractItemsWithOwnerListController {
 	
 	private final static Log log = LogFactory.getLog(MyBorrowedItemsListController.class);
 
 	@Override
 	protected ListWithRowCount getListWithRowCount() {
-		return null;
-//		return getItemService().findConnectionsItems(PersonUtils.getCurrentPersonId(), getSearchString(), getCategoryId(), 
-//				getVisibleStatusBoolean(), getBorrowStatusBoolean(), getFirstRow(), getRowsPerPage());
+		return getItemService().findMyBorrowedItems(getOwnerId(), getSearchString(), getCategoryId(), 
+						getFirstRow(), getRowsPerPage());
 	}
 }

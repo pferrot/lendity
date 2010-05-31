@@ -1,13 +1,17 @@
 package com.pferrot.sharedcalendar.item;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.CoreUtils;
+import com.pferrot.emailsender.manager.MailManager;
+import com.pferrot.sharedcalendar.configuration.Configuration;
 import com.pferrot.sharedcalendar.dao.ItemDao;
 import com.pferrot.sharedcalendar.dao.ListValueDao;
 import com.pferrot.sharedcalendar.dao.PersonDao;
@@ -29,6 +33,11 @@ public class ItemService {
 	private ItemDao itemDao;
 	private ListValueDao listValueDao;
 	private PersonDao personDao;
+	private MailManager mailManager;
+	
+	public void setMailManager(final MailManager pMailManager) {
+		this.mailManager = pMailManager;
+	}
 
 	public void setItemDao(ItemDao itemDao) {
 		this.itemDao = itemDao;
@@ -83,6 +92,18 @@ public class ItemService {
 //		return itemDao.findItemsByTitleOwnedByPerson(pTitle, pPersonId, pFirstResult, pMaxResults);
 //	}
 
+	public ListWithRowCount findMyBorrowedItems(final Long pConnectionId, final String pTitle, final Long pCategoryId, final int pFirstResult, final int pMaxResults) {
+		final Long currentPersonId = PersonUtils.getCurrentPersonId();
+		CoreUtils.assertNotNull(currentPersonId);
+		Long[] connectionsIds = getConnectionIds(pConnectionId);
+		if (connectionsIds == null || connectionsIds.length == 0) {
+			return ListWithRowCount.emptyListWithRowCount();
+		}
+		Long[] ownerId = new Long[]{PersonUtils.getCurrentPersonId()};
+		
+		return itemDao.findItems(connectionsIds, Boolean.TRUE, ownerId, null, pTitle, getCategoryIds(pCategoryId), null, null, pFirstResult, pMaxResults);
+	}
+	
 	public ListWithRowCount findMyItems(final String pTitle, final Long pCategoryId, final Boolean pVisible,
 			final Boolean pBorrowed, final int pFirstResult, final int pMaxResults) {
 		final Long currentPersonId = PersonUtils.getCurrentPersonId();
@@ -94,13 +115,21 @@ public class ItemService {
 
 	public ListWithRowCount findMyConnectionsItems(final Long pConnectionId, final String pTitle, final Long pCategoryId,
 			final Boolean pBorrowed, final int pFirstResult, final int pMaxResults) {
+		Long[] connectionsIds = getConnectionIds(pConnectionId);
+		if (connectionsIds == null || connectionsIds.length == 0) {
+			return ListWithRowCount.emptyListWithRowCount();
+		}
+		return itemDao.findItems(connectionsIds, Boolean.TRUE, null, null, pTitle, getCategoryIds(pCategoryId), Boolean.TRUE, pBorrowed, pFirstResult, pMaxResults);
+	}
+	
+	private Long[] getConnectionIds(final Long pConnectionId) {
 		Long[] connectionsIds = null;
 		// All connections
 		if (pConnectionId == null) {
 			final Person person = getCurrentPerson();
 			final Set<Person> connections = person.getConnections();
 			if (connections == null || connections.isEmpty()) {
-				return ListWithRowCount.emptyListWithRowCount();
+				return null;
 			}
 			connectionsIds = new Long[connections.size()];
 			int counter = 0;
@@ -128,7 +157,7 @@ public class ItemService {
 			}
 			connectionsIds = new Long[]{pConnectionId};
 		}
-		return itemDao.findItems(connectionsIds, Boolean.TRUE, null, null, pTitle, getCategoryIds(pCategoryId), Boolean.TRUE, pBorrowed, pFirstResult, pMaxResults);
+		return connectionsIds;
 	}
 	
 	private Long[] getCategoryIds(final Long pCategoryId) {
@@ -152,6 +181,47 @@ public class ItemService {
 //		return itemDao.findVisibleItemsOwnedByConnections(getCurrentPerson(), pFirstResult, pMaxResults);
 //	}
 
+	
+	/**
+	 * When an internal item is no more lent.
+	 *
+	 * @param pItemId
+	 */
+	public void updateLendBackInternalItem(final Long pItemId) {
+		final InternalItem internalItem = findInternalItem(pItemId);
+		assertCurrentUserAuthorizedToEdit(internalItem);
+		final Person borrower = internalItem.getBorrower();
+		internalItem.setLendBack();
+		updateItem(internalItem);
+		// Send email only if was lent to a user of the system.
+		if (borrower != null) {
+			// Send email (will actually create a JMS message, i.e. it is async).
+			Map<String, String> objects = new HashMap<String, String>();
+			objects.put("borrowerFirstName", borrower.getFirstName());
+			objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
+			objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
+			objects.put("itemTitle", internalItem.getTitle());
+			objects.put("signature", Configuration.getSiteName());
+			objects.put("siteName", Configuration.getSiteName());
+			
+			// TODO: localization
+			final String velocityTemplateLocation = "com/pferrot/sharedcalendar/emailtemplate/lend/lendback/en";
+			
+			Map<String, String> to = new HashMap<String, String>();
+			to.put(borrower.getEmail(), borrower.getEmail());
+			
+			mailManager.send(Configuration.getNoReplySenderName(), 
+					         Configuration.getNoReplyEmailAddress(),
+					         to,
+					         null, 
+					         null,
+					         Configuration.getSiteName() + ": item back to owner",
+					         objects, 
+					         velocityTemplateLocation);
+			
+		}
+	}
+
 	/**
 	 * Lend to a user of the system.
 	 * 
@@ -160,14 +230,40 @@ public class ItemService {
 	 * @param pBorrowDate
 	 */
 	public void updateLendInternalItem(final Long pItemId, final Long pBorrowerId, final Date pBorrowDate) {
+		if (log.isInfoEnabled()) {
+			log.info("Lending item to borrower ID: " + pBorrowerId);
+		}
 		final InternalItem internalItem = findInternalItem(pItemId);
 		assertCurrentUserAuthorizedToEdit(internalItem);
 		// TODO: check if enabled and allowed to borrow !?
 		final Person borrower = personDao.findPerson(pBorrowerId);
-		internalItem.setBorrower(borrower);
-		internalItem.setBorrowerName(null);
-		internalItem.setBorrowDate(pBorrowDate);
+		internalItem.setBorrowed(borrower, pBorrowDate);
+		
 		updateItem(internalItem);
+		
+		// Send email (will actually create a JMS message, i.e. it is async).
+		Map<String, String> objects = new HashMap<String, String>();
+		objects.put("borrowerFirstName", borrower.getFirstName());
+		objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
+		objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
+		objects.put("itemTitle", internalItem.getTitle());
+		objects.put("signature", Configuration.getSiteName());
+		objects.put("siteName", Configuration.getSiteName());
+		
+		// TODO: localization
+		final String velocityTemplateLocation = "com/pferrot/sharedcalendar/emailtemplate/lend/lend/en";
+		
+		Map<String, String> to = new HashMap<String, String>();
+		to.put(borrower.getEmail(), borrower.getEmail());
+		
+		mailManager.send(Configuration.getNoReplySenderName(), 
+				         Configuration.getNoReplyEmailAddress(),
+				         to,
+				         null, 
+				         null,
+				         Configuration.getSiteName() + ": item lent to you",
+				         objects, 
+				         velocityTemplateLocation);
 	}
 
 	/**
@@ -178,13 +274,62 @@ public class ItemService {
 	 * @param pBorrowDate
 	 */
 	public void updateLendInternalItem(final Long pItemId, final String pBorrowerName, final Date pBorrowDate) {
+		if (log.isInfoEnabled()) {
+			log.info("Lending item to borrower name: " + pBorrowerName);
+		}
 		final InternalItem internalItem = findInternalItem(pItemId);
 		assertCurrentUserAuthorizedToEdit(internalItem);
 		internalItem.setBorrowerName(pBorrowerName);
 		internalItem.setBorrower(null);
 		internalItem.setBorrowDate(pBorrowDate);
 		updateItem(internalItem);
-	}	
+		// No email to send out since the borrower is not a user of the system.
+	}
+
+	public void updateSendReminderInternalItem(final Long pItemId) {
+		if (log.isInfoEnabled()) {
+			log.info("Sending reminder for item: " + pItemId);
+		}
+		final InternalItem internalItem = findInternalItem(pItemId);
+		assertCurrentUserAuthorizedToEdit(internalItem);
+		
+		if (!internalItem.isBorrowed()) {
+			return;			
+		}
+		
+		final Person borrower = internalItem.getBorrower();
+		if (borrower == null) {
+			return;
+		}
+		
+		internalItem.reminderSentNow();		
+		updateItem(internalItem);
+		
+		// Send email (will actually create a JMS message, i.e. it is async).
+		Map<String, String> objects = new HashMap<String, String>();
+		objects.put("borrowerFirstName", borrower.getFirstName());
+		objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
+		objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
+		objects.put("itemTitle", internalItem.getTitle());
+		objects.put("signature", Configuration.getSiteName());
+		objects.put("siteName", Configuration.getSiteName());
+		
+		// TODO: localization
+		final String velocityTemplateLocation = "com/pferrot/sharedcalendar/emailtemplate/lend/reminder/en";
+		
+		Map<String, String> to = new HashMap<String, String>();
+		to.put(borrower.getEmail(), borrower.getEmail());
+		
+		mailManager.send(Configuration.getNoReplySenderName(), 
+				         Configuration.getNoReplyEmailAddress(),
+				         to,
+				         null, 
+				         null,
+				         Configuration.getSiteName() + ": rappel pour objet emprunté",
+				         objects, 
+				         velocityTemplateLocation);		
+		
+	}
 	
 	public Long createItem(final Item item) {
 		return itemDao.createItem(item);

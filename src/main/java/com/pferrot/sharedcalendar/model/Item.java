@@ -15,6 +15,8 @@ import javax.persistence.Version;
 
 import org.hibernate.envers.Audited;
 
+import com.pferrot.core.CoreUtils;
+
 /**
  * @author Patrice
  *
@@ -105,6 +107,45 @@ public abstract class Item implements Borrowable, Serializable {
 
 	public boolean isBorrowed() {
 		return getBorrowDate() != null;
+	}
+
+
+	/**
+	 * Reset the lend date and set the borrowerName / borrowerId to null.
+	 */
+	public void setLendBack() {
+		setBorrowDate(null);
+		setBorrowerName(null);
+		setBorrower(null);
+	}
+
+	/**
+	 * 
+	 * Set the borrowerName and borrowDate fields and set borrower to null.
+	 * 
+	 * @param pBorrowerName
+	 * @param pBorrowDate
+	 */
+	public void setBorrowed(final String pBorrowerName, final Date pBorrowDate) {
+		CoreUtils.assertNotNull(pBorrowerName);
+		CoreUtils.assertNotNull(pBorrowDate);
+		setBorrowDate(pBorrowDate);
+		setBorrowerName(pBorrowerName);
+		setBorrower(null);
+	}
+
+	/**
+	 * Set the borrower and borrowDate fields and set borrowerName to null.
+	 *
+	 * @param pBorrower
+	 * @param pBorrowDate
+	 */
+	public void setBorrowed(final Person pBorrower, final Date pBorrowDate) {
+		CoreUtils.assertNotNull(pBorrower);
+		CoreUtils.assertNotNull(pBorrowDate);
+		setBorrowDate(pBorrowDate);
+		setBorrowerName(null);
+		setBorrower(pBorrower);
 	}
 
 	@Override

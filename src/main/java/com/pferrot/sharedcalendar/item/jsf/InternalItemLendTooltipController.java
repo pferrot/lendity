@@ -10,15 +10,13 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.orchestra.viewController.annotations.InitView;
-import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
+import com.pferrot.core.StringUtils;
 import com.pferrot.sharedcalendar.PagesURL;
 import com.pferrot.sharedcalendar.item.ItemService;
 import com.pferrot.sharedcalendar.utils.JsfUtils;
 import com.pferrot.sharedcalendar.utils.UiUtils;
 
-@ViewController(viewIds={"/auth/item/internalItemLendTooltip.jspx"})
 public class InternalItemLendTooltipController implements Serializable {
 	
 	private final static Log log = LogFactory.getLog(InternalItemLendTooltipController.class);
@@ -30,22 +28,12 @@ public class InternalItemLendTooltipController implements Serializable {
 	private String borrowerName;
 	private Long itemId;
 	
+	// 1 == my items page
+	// 2 == item overview page
+	private Long redirectId;
+	
 	// Default to today.
 	private Date borrowDate = new Date();
-
-	@InitView
-	public void initView() {
-		try {
-			final String itemIdString = JsfUtils.getRequestParameter(PagesURL.INTERNAL_ITEM_LEND_TOOLTIP_PARAM_ITEM_ID);
-			if (itemIdString != null) {
-				setItemId(Long.parseLong(itemIdString));
-			}
-		}
-		catch (Exception e) {
-			//TODO display standard error page instead.
-			JsfUtils.redirect(PagesURL.ITEMS_LIST);
-		}		
-	}
 
 	public void setItemService(final ItemService pItemService) {
 		this.itemService = pItemService;
@@ -94,16 +82,37 @@ public class InternalItemLendTooltipController implements Serializable {
 		this.itemId = itemId;
 	}
 
+	public Long getRedirectId() {
+		return redirectId;
+	}
+
+	public void setRedirectId(Long redirectId) {
+		this.redirectId = redirectId;
+	}
+
 	public String submit() {
-		lentItem();
+		lendItem();
 		
-		JsfUtils.redirect(PagesURL.MY_ITEMS_LIST);
+		if (getRedirectId().longValue() == 1) {
+			JsfUtils.redirect(PagesURL.MY_ITEMS_LIST);
+		}
+		else if (getRedirectId().longValue() == 2) {
+			JsfUtils.redirect(PagesURL.INTERNAL_ITEM_OVERVIEW, PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID, getItemId().toString());
+		}
 	
 		// As a redirect is used, this is actually useless.
 		return null;
 	}
 
-	private void lentItem() {
-		getItemService().updateLendInternalItem(getItemId(), getBorrowerId(), getBorrowDate());		
+	private void lendItem() {		
+		if (getBorrowerId() != null && getBorrowerId().longValue() > 0) {
+			getItemService().updateLendInternalItem(getItemId(), getBorrowerId(), getBorrowDate());
+		}
+		else if (!StringUtils.isNullOrEmpty(getBorrowerName())) {
+			getItemService().updateLendInternalItem(getItemId(), getBorrowerName().trim(), getBorrowDate());
+		}
+		else {
+			throw new RuntimeException("Neither borrower ID not borrower name is specified");
+		}
 	}	
 }

@@ -1,0 +1,9 @@
+Hello $borrowerFirstName,<br/><br/>
+
+<b>$lenderFirstName $lenderLastName</b> indicated that you returned the following item to him:<br/><br/>
+
+<b>$itemTitle</b><br/><br/> 
+
+Regards,<br/><br/>
+
+$signature

@@ -1,0 +1,54 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+    
+<div id="lendDiv" style="display: none;">
+	<h:form id="lendForm" prependId="false">
+		<h:inputHidden id="lendItemId" value="#{internalItemLendTooltipController.itemId}" />
+		<h:inputHidden id="lendRedirectId" value="#{internalItemLendTooltipController.redirectId}" />
+		<table> 
+			<tr>
+				<td colspan="2" style="text-align: center;">
+					<h:outputText value="#{messages.item_lendMessage}"/>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<h:outputText value="#{messages.item_lendTo}:" /> *
+				</th>
+				<td>
+					<h:selectOneMenu id="lendBorrowerId" value="#{internalItemLendTooltipController.borrowerId}" converter="javax.faces.Long">
+						<f:selectItems value="#{internalItemLendTooltipController.borrowerSelectItems}"/>
+					</h:selectOneMenu>
+					<span id="lendBorrowerToName" onclick="enableLendBorrowerName()" class="linkStyleAction"><br/><h:outputText value="#{messages.item_lendToName}"/></span>
+					<h:inputText id="lendBorrowerName" value="#{internalItemLendTooltipController.borrowerName}" style="display: none"></h:inputText>
+					<span id="lendBorrowerToId" onclick="enableLendBorrowerId()" class="linkStyleAction" style="display: none"><br/><h:outputText value="#{messages.item_lendToId}"/></span>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<h:outputText value="#{messages.item_lendSince}:" /> *
+				</th>
+				<td>
+					<h:inputText id="lendBorrowDate" styleClass="datepicker" value="#{internalItemLendTooltipController.borrowDate}"/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align: center;">
+					<input type="button" onclick="cancelLendItem()" value="#{messages.navigation_cancel}"/>
+					<input type="button" onclick="submitLendItem()" value="#{messages.item_lendSubmit}"/>
+					<h:commandButton id="lendActionButton" action="#{internalItemLendTooltipController.submit}" style="display: none"  value="not_displayed"/>
+				</td>
+			</tr>
+		</table>
+	</h:form>
+</div>
+
+</ui:composition>
+

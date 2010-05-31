@@ -1,0 +1,9 @@
+Hello $borrowerFirstName,<br/><br/>
+
+<b>$lenderFirstName $lenderLastName</b> sends you a reminder for the item bellow that he would like to return:<br/><br/>
+
+<b>$itemTitle</b><br/><br/> 
+
+Regards,<br/><br/>
+
+$signature

@@ -1,5 +1,6 @@
 <ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
 	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -85,13 +86,14 @@
 <!-- borrow status -->
 <td>
 <h:form prependId="false">
-<h:outputText value="#{messages.item_borrowStatus}" styleClass="small"/><br/>
+<h:outputText value="#{messages.item_borrowStatus}" styleClass="small"/>
 <c:if test="#{myItemsListController.borrowStatus != null}">
 	<h:outputText value=" " escape="false" />
 	<h:commandLink id="myItemsClearBorrowStatus" action="#{myItemsListController.clearBorrowStatus}">
 		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
 	</h:commandLink>	
 </c:if>
+<br/>
 	<h:selectOneMenu id="borrowStatus" value="#{myItemsListController.borrowStatus}" valueChangeListener="#{myItemsListController.borrowStatus}" converter="javax.faces.Long" onchange="submit()">
 		<f:selectItems value="#{myItemsListController.borrowStatusSelectItems}"/>
 	</h:selectOneMenu>
@@ -105,13 +107,14 @@
 <!-- visible status -->
 <td>
 <h:form prependId="false">
-<h:outputText value="#{messages.item_visibleStatus}" styleClass="small"/><br/>
-<c:if test="#{myItemsListController.borrowStatus != null}">
+<h:outputText value="#{messages.item_visibleStatus}" styleClass="small"/>
+<c:if test="#{myItemsListController.visibleStatus != null}">
 	<h:outputText value=" " escape="false" />
 	<h:commandLink id="myItemsClearVisibleStatus" action="#{myItemsListController.clearVisibleStatus}">
 		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
 	</h:commandLink>	
 </c:if>
+<br/>
 	<h:selectOneMenu id="visibleStatus" value="#{myItemsListController.visibleStatus}" valueChangeListener="#{myItemsListController.visibleStatus}" converter="javax.faces.Long" onchange="submit()">
 		<f:selectItems value="#{myItemsListController.visibleStatusSelectItems}"/>
 	</h:selectOneMenu>
@@ -156,10 +159,8 @@
 	<br/>
 </c:if>
 
-<script type="text/javascript">
-setupLendItem();
-setupLendBackItem();
-</script>
+<ui:include src="lendTooltip.jspx"/>
+<ui:include src="lendBackTooltip.jspx"/>
 
 <h:dataTable value="#{myItemsListController.list}" binding="#{myItemsListController.table}" var="item" styleClass="gt-table gt-user-table">
 
@@ -174,12 +175,12 @@ setupLendBackItem();
 			<table>
 			<tr>
 			<td>
-				<span class="linkStyleAction" usage="lendItem" itemID="#{item.id}">
-					<h:outputText id="lendItem" rendered="#{myItemsListController.lendAvailable}" value="#{messages.item_lend}" />
-				</span>	
-				<span class="linkStyleAction" usage="lendBackItem" itemID="#{item.id}">
-					<h:outputText id="lendBackItem" rendered="#{myItemsListController.lendBackAvailable}" value="#{messages.item_lendBack}" />
-				</span>	
+				<span class="linkStyleAction" onclick="lendItemTooltip(this, '#{item.id}', 1)">
+					<h:outputText value="#{messages.item_lend}" rendered="#{myItemsListController.lendAvailable}"/>
+				</span>
+				<span class="linkStyleAction" onclick="lendBackItemTooltip(this, '#{item.id}', 1)">
+					<h:outputText value="#{messages.item_lendBack}" rendered="#{myItemsListController.lendBackAvailable}"/>
+				</span>		
 			</td>
 			</tr>
 			</table>
@@ -188,37 +189,38 @@ setupLendBackItem();
 
 	<h:column>
 		<!-- Categories Sub Table -->
-		<table border="0" class="gt-table-categories">
+		<!-- Need to set fake IDs otherwise get sometimes error of the type "id is duplicated in the faces tree" -->
+		<table border="0" class="gt-table-categories" width="100%">
 			<tr>
-			    <th><h:outputText value="#{messages.item_category}:" /></th>
-				<td><h:outputText value="#{myItemsListController.categoryLabel}"/></td>
+			    <th width="50%"><h:outputText id="id_1" value="#{messages.item_category}:" /></th>
+				<td width="50%"><h:outputText id="id_2" value="#{myItemsListController.categoryLabel}"/></td>
 		    </tr>
 			<tr>
 				<th>
-					<h:outputText rendered="#{myItemsListController.owner}" value="#{messages.item_visibility}:" />
-					<h:outputText rendered="#{not myItemsListController.owner}" value="#{messages.item_owner}:" />
+					<h:outputText id="id_3" rendered="#{myItemsListController.owner}" value="#{messages.item_visibility}:" />
+					<h:outputText id="id_4" rendered="#{not myItemsListController.owner}" value="#{messages.item_owner}:" />
 				</th>
 				<td>
-					<h:outputText rendered="#{myItemsListController.owner}" value="#{myItemsListController.visibleLabel}"/>
-					<h:outputText rendered="#{not myItemsListController.owner}" value="#{myItemsListController.ownerLabel}"/>
+					<h:outputText id="id_5" rendered="#{myItemsListController.owner}" value="#{myItemsListController.visibleLabel}"/>
+					<h:outputText id="id_6" rendered="#{not myItemsListController.owner}" value="#{myItemsListController.ownerLabel}"/>
 				</td>
 			</tr>
 			<tr>
 				<th>
-					<h:outputText rendered="#{myItemsListController.owner and myItemsListController.borrowed}" value="#{messages.item_lentTo}:" />
-					<h:outputText rendered="#{not myItemsListController.owner}" value="#{messages.item_available}:" />
+					<h:outputText id="id_7" rendered="#{myItemsListController.owner and myItemsListController.borrowed}" value="#{messages.item_lentTo}:" />
+					<h:outputText id="id_8" rendered="#{not myItemsListController.owner}" value="#{messages.item_available}:" />
 				</th>
 				<td>
-					<h:outputLink rendered="#{myItemsListController.owner and myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerHref}">
-						<h:outputText value="#{myItemsListController.borrowerLabel}"/>
+					<h:outputLink id="id_9" rendered="#{myItemsListController.owner and myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerHref}">
+						<h:outputText id="id_10" value="#{myItemsListController.borrowerLabel}"/>
 					</h:outputLink>
-					<h:outputText rendered="#{myItemsListController.owner and myItemsListController.borrowed and !myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerLabel}"/>
-					<h:outputText rendered="#{not myItemsListController.owner}" value="#{myItemsListController.availableLabel}" />
+					<h:outputText id="id_11" rendered="#{myItemsListController.owner and myItemsListController.borrowed and !myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerLabel}"/>
+					<h:outputText id="id_12" rendered="#{not myItemsListController.owner}" value="#{myItemsListController.availableLabel}" />
 				</td>
 			</tr>
 			<tr>
-				<th><h:outputText rendered="#{myItemsListController.owner and myItemsListController.borrowed}" value="#{messages.item_lentSince}:" /></th>
-				<td><h:outputText rendered="#{myItemsListController.owner and myItemsListController.borrowed}" value="#{myItemsListController.borrowDateLabel}"/></td>
+				<th><h:outputText id="id_13" rendered="#{myItemsListController.owner and myItemsListController.borrowed}" value="#{messages.item_lentSince}:" /></th>
+				<td><h:outputText id="id_14" rendered="#{myItemsListController.owner and myItemsListController.borrowed}" value="#{myItemsListController.borrowDateLabel}"/></td>
 			</tr>
 		</table>
     </h:column>

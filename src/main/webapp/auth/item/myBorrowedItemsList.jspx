@@ -1,56 +1,222 @@
 <ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
 	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:c="http://java.sun.com/jstl/core_rt">
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="My Items List" />
-	<ui:param name="contentHeader" value="My Items List" />
+	<ui:param name="pageTitle" value="#{messages.item_myBorrowedItemsListTitle}" />
+	<ui:param name="contentHeader" value="#{messages.item_myBorrowedItemsListTitle}" />
 
 	<ui:define name="content">
 
 		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
 
 			<!-- header content here  -->
-			<ui:define name="pageName">
-            	#{contentHeader}
-          	</ui:define>
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
 
 			<!-- insert content here -->
 			<ui:define name="pageContent">
-<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
-				<f:view>
-					<center>
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
 
-<h:dataTable value="#{myBorrowedItemsListController.list}" binding="#{myBorrowedItemsListController.table}" var="item">
+				
+<f:view>
 
-	<h:column>
-        <f:facet name="header">
-            <h:outputText value="ID" />
-        </f:facet>
-        <h:outputText value="#{item.id}" />
+<h2 class="gt-table-head"><h:outputText value="#{messages.item_myBorrowedItemsListTitle}"/></h2>
+
+<br/>
+
+
+<table class="filtersTable">
+<tr>
+
+<!-- search -->
+<td>
+<!-- 
+    Need 2 different forms for the clear search link and the text input field otherwise the
+    loadList() method is called twice.
+-->
+<h:form prependId="false">
+<h:outputText value="#{messages.item_title}" styleClass="small"/>
+<c:if test="#{myBorrowedItemsListController.searchString != null and !empty(myBorrowedItemsListController.searchString)}">    
+	<h:outputText value=" " escape="false" />
+	<h:commandLink id="myBorrowedItemsClearSearchString" action="#{myBorrowedItemsListController.clearSearch}">
+		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
+	</h:commandLink>
+</c:if>
+</h:form>
+<h:form prependId="false">
+	<h:inputText id="myBorrowedItemsSearchString"
+	             styleClass="listerSearchInput"
+    	         value="#{myBorrowedItemsListController.searchString}" />
+</h:form>
+<script type="text/javascript">
+	setupSearchField('myBorrowedItemsSearchString', 'myBorrowedItemsClearSearchString', '#{messages.item_searchItem}');
+</script>	
+</td>
+<!-- /search -->
+
+<!-- categories -->
+<td>
+<h:form prependId="false">
+<h:outputText value="#{messages.item_category}" styleClass="small"/>
+<c:if test="#{myBorrowedItemsListController.categoryId != null}">
+	<h:outputText value=" " escape="false" />
+	<h:commandLink id="myBorrowedItemsClearCategory" action="#{myBorrowedItemsListController.clearCategory}">
+		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
+	</h:commandLink>	
+</c:if>
+<br/>
+	<h:selectOneMenu id="category" value="#{myBorrowedItemsListController.categoryId}" valueChangeListener="#{myBorrowedItemsListController.category}" converter="javax.faces.Long" onchange="submit()">
+		<f:selectItems value="#{myBorrowedItemsListController.categoriesSelectItems}"/>
+	</h:selectOneMenu>
+<script type="text/javascript">
+	setupDropDownFilterField('category');
+</script>	
+</h:form>
+</td>
+<!-- /categories -->
+
+<!-- owner -->
+<td>
+<h:form prependId="false">
+<h:outputText value="#{messages.item_owner}" styleClass="small"/>
+<c:if test="#{myBorrowedItemsListController.ownerId != null}">
+	<h:outputText value=" " escape="false" />
+	<h:commandLink id="myBorrowedItemsClearOwner" action="#{myBorrowedItemsListController.clearOwner}">
+		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
+	</h:commandLink>	
+</c:if>
+<br/>
+	<h:selectOneMenu id="owner" value="#{myBorrowedItemsListController.ownerId}" valueChangeListener="#{myBorrowedItemsListController.owner}" converter="javax.faces.Long" immediate="true" onchange="submit()">
+		<f:selectItems value="#{myBorrowedItemsListController.ownerSelectItems}"/>
+	</h:selectOneMenu>
+<script type="text/javascript">
+	setupDropDownFilterField('owner');
+</script>
+</h:form>
+</td>
+<!-- /owner -->
+
+</tr>
+
+</table>
+
+
+<br/>
+
+
+<!-- content box -->
+<div class="gt-content-box">
+
+<c:if test="#{empty(myBorrowedItemsListController.list)}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<h:dataTable value="#{myBorrowedItemsListController.list}" binding="#{myBorrowedItemsListController.table}" var="item" styleClass="gt-table gt-user-table">
+
+    <h:column>
+		<h4>
+			<h:outputLink value="#{myBorrowedItemsListController.itemOverviewHref}">
+				<h:outputText value="#{item.title}" />
+			</h:outputLink>
+		</h4>
+		<p><h:outputText value="#{myBorrowedItemsListController.description}" /></p>
     </h:column>
 
 	<h:column>
-        <f:facet name="header">
-            <h:outputText value="TITLE" />
-        </f:facet>
-		<h:outputText value="#{item.title}" />
+		<!-- Categories Sub Table -->
+		<!-- Need to set fake IDs otherwise get sometimes error of the type "id is duplicated in the faces tree" -->
+		<table border="0" class="gt-table-categories" width="100%">
+			<tr>
+			    <th width="50%"><h:outputText id="id_1" value="#{messages.item_category}:" /></th>
+				<td width="50%"><h:outputText id="id_2" value="#{myBorrowedItemsListController.categoryLabel}"/></td>
+		    </tr>
+			<tr>
+				<th>
+					<h:outputText id="id_4" value="#{messages.item_owner}:" />
+				</th>
+				<td>
+					<h:outputText id="id_6" value="#{myBorrowedItemsListController.ownerLabel}"/>
+				</td>
+			</tr>
+			<tr>
+				<th><h:outputText id="id_13" value="#{messages.item_lentSince}:" /></th>
+				<td><h:outputText id="id_14" value="#{myBorrowedItemsListController.borrowDateLabel}"/></td>
+			</tr>
+		</table>
     </h:column>
 
 </h:dataTable>
 
+
+<!-- Table Controls -->
+<c:if test="#{!empty(myBorrowedItemsListController.list)}">
+
+<div class="gt-table-controls gt-table-controls-btm clearfix">
+<h:form> 
+<p class="gt-table-pager">
+
+
+<!--	The paging buttons-->
+<h:commandLink action="#{myBorrowedItemsListController.pageFirst}"
+    rendered="#{myBorrowedItemsListController.firstRow != 0}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"/>
+</h:commandLink>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" rendered="#{myBorrowedItemsListController.firstRow == 0}" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"/>
+
+<h:commandLink action="#{myBorrowedItemsListController.pagePrevious}"
+    rendered="#{myBorrowedItemsListController.firstRow != 0}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}" />
+</h:commandLink>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" rendered="#{myBorrowedItemsListController.firstRow == 0}" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}"/>
+
+<h:commandLink action="#{myBorrowedItemsListController.pageNext}"
+    rendered="#{myBorrowedItemsListController.firstRow + myBorrowedItemsListController.rowsPerPage lt myBorrowedItemsListController.totalRows}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}" />
+</h:commandLink>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" 
+                rendered="#{myBorrowedItemsListController.firstRow + myBorrowedItemsListController.rowsPerPage >= myBorrowedItemsListController.totalRows}"
+                alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}"/>
+
+
+<h:commandLink action="#{myBorrowedItemsListController.pageLast}"
+    rendered="#{myBorrowedItemsListController.firstRow + myBorrowedItemsListController.rowsPerPage lt myBorrowedItemsListController.totalRows}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}" />
+</h:commandLink>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" 
+                rendered="#{myBorrowedItemsListController.firstRow + myBorrowedItemsListController.rowsPerPage >= myBorrowedItemsListController.totalRows}"
+                alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}"/>
+
 <br/>
+<h:outputText value="#{messages.navigation_page} "/> 
+<h:selectOneMenu id="goToPage" value="#{myBorrowedItemsListController.goToPageNumber}" valueChangeListener="#{myBorrowedItemsListController.page}" onchange="submit()" required="true">
+	<f:selectItems value="#{myBorrowedItemsListController.goToPageNumberSelectItems}"/>
+</h:selectOneMenu>
+<h:outputText value=" / #{myBorrowedItemsListController.totalPages}" />
 
-<h:form>
-    <h:commandLink rendered="#{myBorrowedItemsListController.previousPage}" value="#{messages.navigation_previousPage}" action="#{myBorrowedItemsListController.previousPage}"/>
-    <h:commandLink rendered="#{myBorrowedItemsListController.nextPage}" value="#{messages.navigation_nextPage}" action="#{myBorrowedItemsListController.nextPage}"/>
+</p>
 </h:form>
+</div>
+</c:if>
+<!-- /Table Controls -->
 
-					</center>
-				</f:view>
+</div><!-- /content box -->
+
+</f:view>
+			</div>
+			<!-- /body -->
+			
 			</ui:define>
 		</ui:decorate>
 

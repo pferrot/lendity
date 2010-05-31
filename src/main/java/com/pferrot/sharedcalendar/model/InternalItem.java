@@ -1,6 +1,8 @@
 package com.pferrot.sharedcalendar.model;
 // Generated 10 oct. 2008 00:01:18 by Hibernate Tools 3.2.0.b9
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,6 +32,12 @@ public class InternalItem extends Item implements Ownable {
 	@OneToOne(targetEntity = Person.class)
 	@JoinColumn(name = "OWNER_ID", nullable = false)
 	private Person owner;
+	
+	@Column(name = "NB_REMINDERS_SENT")
+    private Integer nbRemindersSent;
+	
+	@Column(name = "LATEST_REMINDER_DATE")
+	private Date latestReminderDate;
 
     public InternalItem() {
     	super();
@@ -63,8 +71,58 @@ public class InternalItem extends Item implements Ownable {
 		this.owner = owner;
 	}
 
+	public Integer getNbRemindersSent() {
+		return nbRemindersSent;
+	}
+
+	public void setNbRemindersSent(Integer nbRemindersSent) {
+		this.nbRemindersSent = nbRemindersSent;
+	}
+
+	public Date getLatestReminderDate() {
+		return latestReminderDate;
+	}
+
+	public void setLatestReminderDate(Date latestReminderDate) {
+		this.latestReminderDate = latestReminderDate;
+	}
+
 	public boolean isAvailable() {
 		return !isBorrowed() && isVisible();
+	}
+
+	@Override
+	public void setLendBack() {
+		super.setLendBack();
+		setLatestReminderDate(null);
+		setNbRemindersSent(null);
+	}
+
+	@Override
+	public void setBorrowed(Person pBorrower, Date pBorrowDate) {
+		super.setBorrowed(pBorrower, pBorrowDate);
+		setLatestReminderDate(null);
+		setNbRemindersSent(Integer.valueOf(0));
+	}
+
+	@Override
+	public void setBorrowed(String pBorrowerName, Date pBorrowDate) {
+		super.setBorrowed(pBorrowerName, pBorrowDate);
+		setLatestReminderDate(null);
+		setNbRemindersSent(Integer.valueOf(0));
+	}
+
+	/**
+	 * Update latestReminderDate and nbRemindersSent.
+	 */
+	public void reminderSentNow() {
+		setLatestReminderDate(new Date());
+		if (getNbRemindersSent() == null) {
+			setNbRemindersSent(Integer.valueOf(1));
+		}
+		else {
+			setNbRemindersSent(Integer.valueOf(getNbRemindersSent().intValue() + 1));
+		}
 	}
 
 	@Override

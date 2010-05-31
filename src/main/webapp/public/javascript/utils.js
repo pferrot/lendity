@@ -15,31 +15,31 @@ function colorErrorFields() {
  * - the default content is added when leaving the field and it is empty
  * - the form is submitted when pressing enter
  */
-function setupSearchField(fieldId, clearSearchId, text) {
+function setupSearchField(pFieldId, pClearSearchId, pText) {
   $j(document).ready(function() {
-    if ($j("#" + fieldId).val() == '' ||
-        $j("#" + fieldId).val() == text) {
-      $j("#" + fieldId).val(text);
-      $j("#" + fieldId).addClass('grayColor');
-      //$j("#" + clearSearchId).hide();
+    if ($j("#" + pFieldId).val() == '' ||
+        $j("#" + pFieldId).val() == pText) {
+      $j("#" + pFieldId).val(pText);
+      $j("#" + pFieldId).addClass('grayColor');
+      //$j("#" + pClearSearchId).hide();
     }
     else {
-      $j("#" + clearSearchId).show();
-      $j("#" + fieldId).addClass("filterActive");
+      $j("#" + pClearSearchId).show();
+      $j("#" + pFieldId).addClass("filterActive");
     }
-    $j("#" + fieldId).focus(function() {
-	  if(this.value == text ) {
+    $j("#" + pFieldId).focus(function() {
+	  if(this.value == pText ) {
 	    this.value = '';
-	    $j("#" + fieldId).removeClass('grayColor');
+	    $j("#" + pFieldId).removeClass('grayColor');
 	  }
     });
-    $j("#" + fieldId).blur(function() {
+    $j("#" + pFieldId).blur(function() {
 	  if(this.value == '') {
-	    this.value = text;
-	    $j("#" + fieldId).addClass('grayColor');
+	    this.value = pText;
+	    $j("#" + pFieldId).addClass('grayColor');
 	  }
     });
-    //$j("#" + fieldId).bind('keypress', function(e) {
+    //$j("#" + pFieldId).bind('keypress', function(e) {
       //var code = (e.keyCode ? e.keyCode : e.which);
       // Enter keycode.  
       //if(code == 13) { 
@@ -49,10 +49,10 @@ function setupSearchField(fieldId, clearSearchId, text) {
   });
 }
 
-function setupDropDownFilterField(fieldId) {
+function setupDropDownFilterField(pFieldId) {
   $j(document).ready(function() {
-	if ($j("#" + fieldId).val() != null && $j("#" + fieldId).val() != '') {
-	  $j("#" + fieldId).addClass("filterActive");
+	if ($j("#" + pFieldId).val() && $j("#" + pFieldId).val() != '') {
+	  $j("#" + pFieldId).addClass("filterActive");
     }
   });
 }
@@ -69,95 +69,229 @@ function setupDropDownFilterField(fieldId) {
 
 
 /*
- * Setup the span fields with an attribute 'usage' containing the value 'lendItem' to display
- * a qtip tooltip when clicked. That tooltip allows lending the item.
+ * Fully destroy a qTip.
  */
-function setupLendItem() {	
-  $j(document).ready(function() {
-    // Use each method to gain access to all youtube links
-	$j('span[usage*="lendItem"]').each(function() {
-      var itemID = $j(this).attr('itemID');
-      $j(this).qtip({
-    		   content: {
-    	 	       url: 'http://localhost:8080/shared_calendar/auth/item/internalItemLendTooltip.faces?itemID=' + itemID,
-    	 	       method: 'get'
-    	       },
-    	       show: {
-    	           when: 'click', // Show it on click...
-    	           solo: true, // ...and hide all others when its shown
-    	           delay: 0
-     	       },
-    	       hide: { 
-     	    	   when: 'click'
-     	       }, // Hide it when inactive...
-
-    		   position: {
-    		      corner: {
-    		        target: 'topMiddle',
-    		        tooltip: 'bottomMiddle'
-    		      }
-    		   },
-               style: {
-     			  border: {
-                     width: 3,
-                     radius: 7,
-                     color: '#009b4b'
-                   },
-                   padding: 0, 
-                   textAlign: 'center',
-                   tip: true, // Give it a speech bubble tip with automatic corner detection
-     		   }
-      });	 
-    });
-  });	
+function destroyQtip(pQtipTarget) {
+	var qtipTargetJquery = $j(pQtipTarget);
+	if (qtipTargetJquery.data("qtip")) {
+		qtipTargetJquery.qtip("destroy");
+		qtipTargetJquery.removeData("qtip");
+	}
 }
 
-// TODO - currently same as setupLendItem
-function setupLendBackItem() {	
-  $j(document).ready(function() {
-    // Use each method to gain access to all youtube links
-	$j('span[usage*="lendBackItem"]').each(function() {
-      var itemID = $j(this).attr('itemID');
-      $j(this).qtip({
-    		   //content: '<form type="post"><input type="hidden" name="lendItemId" value="' + itemId + '"/><input class="datepicker" type="text" name="lendItemDate"/><br/><button type="submit" value="Submit"/></form>',
-    		   content: {
-    	 	       url: 'http://localhost:8080/shared_calendar/auth/item/internalItemLendTooltip.faces?itemID=' + itemID,
-    	 	       method: 'get'
-    	       },
-    	       show: {
-    	           when: 'click', // Show it on click...
-    	           solo: true, // ...and hide all others when its shown
-    	           delay: 0
-     	       },
-    	       hide: { when: { event: 'click' } }, // Hide it when inactive...
-
-    		   position: {
-    		      corner: {
-    		        target: 'topMiddle',
-    		        tooltip: 'bottomMiddle'
-    		      }
-    		   },
-               style: {
-    			  border: {
-                    width: 3,
-                    radius: 7,
-                    color: '#009b4b'
-                  },
-                  padding: 0, 
-                  textAlign: 'center',
-                  tip: true, // Give it a speech bubble tip with automatic corner detection
-    		   }
-      });	 
-    });
-  });	
+/*
+ * Callback method called when the qtip is hidden.
+ */
+function qtipOnHide(pContent, pTarget, pJqueryDiv) {
+	// TODO: if the qtip still contains the form, move it in its original div.
+	// This occurs when opening another tooltip while one it opened. E.g. click on the
+	// link to open the "lend back" tooltip when the "lend" tooltip is opened.
+	if (pContent) {
+		var contentHtml = pContent.html();
+		if (contentHtml && contentHtml.length > 0) {
+			pJqueryDiv.append(contentHtml);
+		}
+	}
+	destroyQtip(pTarget);
 }
 
-function submitLendItem(theButton, borrowerDropDownId) {
-	var borrowerDropDown = document.getElementById(borrowerDropDownId);
-	if (borrowerDropDown.selectedIndex == 0) {
+/*
+ * Replace the form in its original location: the div.
+ */
+function hideTooltip(pTooltipTarget, pJqueryForm, pJqueryDiv) {
+    var formParent = pJqueryForm.parent();
+  	var formParentContent = formParent.html();
+  	pJqueryDiv.append(formParentContent);
+  	
+  	destroyQtip(pTooltipTarget);
+}
+
+function createFormTooltip(pJqueryTooltipTarget, pForm, pOnHideCallbackMethod) {
+	var formParent = pForm.parent();
+  	var formParentContent = formParent.html();
+  	
+  	var result = pJqueryTooltipTarget.qtip({
+		content: {
+			text: formParentContent
+			//title: {
+		    //  text: 'About Me'
+		   //}
+		},
+		show: {
+		      when: false, // Don't specify a show event
+		      ready: true, // Show the tooltip when ready
+		      solo: true,
+		      delay: 0
+		},
+		hide: false,
+		position: {
+			corner: {
+				target: 'topMiddle',
+				tooltip: 'bottomMiddle'
+			}
+		},
+		style: {
+			border: {
+				width: 3,
+				radius: 7,
+				color: '#009b4b'
+			},
+			padding: 0, 
+			textAlign: 'center',
+			tip: true // Give it a speech bubble tip with automatic corner detection
+		}
+	});
+		
+	var api = $j(result).qtip("api");
+	// This is triggered right after another tooltip is opened due to the "solo" mode.
+	api.onHide = pOnHideCallbackMethod;
+	// Remove the form from its previous location - it must never be duplicated.
+	formParent.empty();	
+}
+
+
+/***************************************************************************************************
+ * 
+ * LEND ITEM
+ * 
+ ***************************************************************************************************/
+/*
+ * Replace the form in its original location: the div "lendDiv".
+ */
+function hideLendItemTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#lendForm'), $j('#lendDiv'));
+}
+
+function lendQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#lendDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip that is used to lend an item.
+ */
+var mLendItemTooltip;
+var mLendItemTooltipTarget;
+function lendItemTooltip(pTooltipTarget, pItemID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideLendItemTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('lendForm').reset();
+	    $j('#lendBorrowerId').removeClass("validationError");
+	    $j('#lendBorrowerName').removeClass("validationError");
+		// Set the correct itemID.
+		$j('#lendItemId').val(pItemID);		
+		// Set the correct redirectID.
+		$j('#lendRedirectId').val(pRedirectID);
+			  	 
+	  	mLendItemTooltipTarget = pTooltipTarget;
+		mLendItemTooltip = createFormTooltip($j(pTooltipTarget), $j('#lendForm'), lendQtipOnHide);
+		
+		$j("#lendBorrowDate").datepicker();
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip when an item is lent.
+ */
+function submitLendItem() {	
+	var borrowerDropDown = document.getElementById('lendBorrowerId');
+	var jqueryBorrowerName = $j("#lendBorrowerName")
+	if ($j("#lendBorrowerId").is(":visible") && 
+	    borrowerDropDown.selectedIndex == 0) {
 		$j(borrowerDropDown).addClass("validationError");
 	}
-	else {
-		theButton.form.submit();
+	else if (jqueryBorrowerName.is(":visible") &&
+			jqueryBorrowerName.val() == '') {
+		jqueryBorrowerName.addClass("validationError");
 	}
+	else {
+		document.getElementById("lendActionButton").click();
+	}	
+}
+
+/*
+ * Click the cancel button to close the lend item tooltip.
+ */
+function cancelLendItem() {
+	hideLendItemTooltip(mLendItemTooltipTarget);
+}
+
+function enableLendBorrowerId() {
+	$j("#lendBorrowerId").show();
+	$j("#lendBorrowerToName").show();
+	$j("#lendBorrowerName").hide();
+	$j("#lendBorrowerToId").hide();
+	
+	resetLendBorrowerFields();	
+}
+
+function enableLendBorrowerName() {
+	$j("#lendBorrowerName").show();
+	$j("#lendBorrowerToId").show();
+	$j("#lendBorrowerId").hide();
+	$j("#lendBorrowerToName").hide();
+	
+	resetLendBorrowerFields();
+}
+
+function resetLendBorrowerFields() {
+	$j("#lendBorrowerId").val(0);
+	$j("#lendBorrowerName").val("");
+	$j('#lendBorrowerId').removeClass("validationError");
+	$j('#lendBorrowerName').removeClass("validationError");	    
+}
+
+/***************************************************************************************************
+ * 
+ * LEND BACK ITEM
+ * 
+ ***************************************************************************************************/
+function hideLendBackItemTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#lendBackForm'), $j('#lendBackDiv'));
+}
+
+function lendBackQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#lendBackDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip that is used to lend an item.
+ */
+var mLendBackItemTooltip;
+var mLendBackItemTooltipTarget;
+function lendBackItemTooltip(pTooltipTarget, pItemID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideLendBackItemTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('lendBackForm').reset();
+		// Set the correct itemID.
+		$j('#lendBackItemId').val(pItemID);
+		// Set the correct redirectID.
+		$j('#lendBackRedirectId').val(pRedirectID);
+		
+	  	mLendBackItemTooltipTarget = pTooltipTarget;
+	  	mLendBackItemTooltip = createFormTooltip($j(pTooltipTarget), $j('#lendBackForm'), lendBackQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip when an item is back.
+ */
+function submitLendBackItem() {	
+	document.getElementById("lendBackActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the lend back item tooltip.
+ */
+function cancelLendBackItem() {
+	hideLendBackItemTooltip(mLendBackItemTooltipTarget);
 }
