@@ -24,6 +24,8 @@
 			
 			<!-- body -->
 			<div class="gt-bd gt-cols clearfix">
+			<!-- main content -->
+			<div class="gt-content">
 
 				
 <f:view>
@@ -36,94 +38,29 @@
 <table class="filtersTable">
 <tr>
 
-<!-- search -->
 <td width="25%">
-<!-- 
-    Need 2 different forms for the clear search link and the text input field otherwise the
-    loadList() method is called twice.
--->
-<h:form prependId="false">
-<h:outputText value="#{messages.item_title}" styleClass="small"/>
-<c:if test="#{myItemsListController.searchString != null and !empty(myItemsListController.searchString)}">    
-	<h:outputText value=" " escape="false" />
-	<h:commandLink id="myItemsClearSearchString" action="#{myItemsListController.clearSearch}">
-		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
-	</h:commandLink>
-</c:if>
-</h:form>
-<h:form prependId="false">
-	<h:inputText id="myItemsSearchString"
-	             styleClass="listerSearchInput"
-    	         value="#{myItemsListController.searchString}" />
-</h:form>
-<script type="text/javascript">
-	setupSearchField('myItemsSearchString', 'myItemsClearSearchString', '#{messages.item_searchItem}');
-</script>	
+<ui:include src="filter/searchFilter.jspx">
+	<ui:param name="theBean" value="#{myItemsListController}"/>
+</ui:include>
 </td>
-<!-- /search -->
 
-<!-- categories -->
 <td>
-<h:form prependId="false">
-<h:outputText value="#{messages.item_category}" styleClass="small"/>
-<c:if test="#{myItemsListController.categoryId != null}">
-	<h:outputText value=" " escape="false" />
-	<h:commandLink id="myItemsClearCategory" action="#{myItemsListController.clearCategory}">
-		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
-	</h:commandLink>	
-</c:if>
-<br/>
-	<h:selectOneMenu id="category" value="#{myItemsListController.categoryId}" valueChangeListener="#{myItemsListController.category}" converter="javax.faces.Long" onchange="submit()">
-		<f:selectItems value="#{myItemsListController.categoriesSelectItems}"/>
-	</h:selectOneMenu>
-<script type="text/javascript">
-	setupDropDownFilterField('category');
-</script>	
-</h:form>
+<ui:include src="filter/categoryFilter.jspx">
+	<ui:param name="theBean" value="#{myItemsListController}"/>
+</ui:include>
 </td>
-<!-- /categories -->
 
-<!-- borrow status -->
 <td>
-<h:form prependId="false">
-<h:outputText value="#{messages.item_borrowStatus}" styleClass="small"/>
-<c:if test="#{myItemsListController.borrowStatus != null}">
-	<h:outputText value=" " escape="false" />
-	<h:commandLink id="myItemsClearBorrowStatus" action="#{myItemsListController.clearBorrowStatus}">
-		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
-	</h:commandLink>	
-</c:if>
-<br/>
-	<h:selectOneMenu id="borrowStatus" value="#{myItemsListController.borrowStatus}" valueChangeListener="#{myItemsListController.borrowStatus}" converter="javax.faces.Long" onchange="submit()">
-		<f:selectItems value="#{myItemsListController.borrowStatusSelectItems}"/>
-	</h:selectOneMenu>
-<script type="text/javascript">
-	setupDropDownFilterField('borrowStatus');
-</script>
-</h:form>
+<ui:include src="filter/borrowStatusFilter.jspx">
+	<ui:param name="theBean" value="#{myItemsListController}"/>
+</ui:include>
 </td>
-<!-- /borrow status -->
 
-<!-- visible status -->
 <td>
-<h:form prependId="false">
-<h:outputText value="#{messages.item_visibleStatus}" styleClass="small"/>
-<c:if test="#{myItemsListController.visibleStatus != null}">
-	<h:outputText value=" " escape="false" />
-	<h:commandLink id="myItemsClearVisibleStatus" action="#{myItemsListController.clearVisibleStatus}">
-		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
-	</h:commandLink>	
-</c:if>
-<br/>
-	<h:selectOneMenu id="visibleStatus" value="#{myItemsListController.visibleStatus}" valueChangeListener="#{myItemsListController.visibleStatus}" converter="javax.faces.Long" onchange="submit()">
-		<f:selectItems value="#{myItemsListController.visibleStatusSelectItems}"/>
-	</h:selectOneMenu>
-<script type="text/javascript">
-	setupDropDownFilterField('visibleStatus');
-</script>	
-</h:form>
+<ui:include src="filter/visibleStatusFilter.jspx">
+	<ui:param name="theBean" value="#{myItemsListController}"/>
+</ui:include>
 </td>
-<!-- /visible status -->
 
 <td>
 <div class="gt-table-buttons">
@@ -190,37 +127,33 @@
 	<h:column>
 		<!-- Categories Sub Table -->
 		<!-- Need to set fake IDs otherwise get sometimes error of the type "id is duplicated in the faces tree" -->
-		<table border="0" class="gt-table-categories" width="100%">
+		<table border="0" class="gt-table-categories" width="250" align="right">
 			<tr>
-			    <th width="50%"><h:outputText id="id_1" value="#{messages.item_category}:" /></th>
-				<td width="50%"><h:outputText id="id_2" value="#{myItemsListController.categoryLabel}"/></td>
+			    <th width="50%"><h:outputText value="#{messages.item_category}:" /></th>
+				<td width="50%"><h:outputText value="#{myItemsListController.categoryLabel}"/></td>
 		    </tr>
 			<tr>
 				<th>
-					<h:outputText id="id_3" rendered="#{myItemsListController.owner}" value="#{messages.item_visibility}:" />
-					<h:outputText id="id_4" rendered="#{not myItemsListController.owner}" value="#{messages.item_owner}:" />
+					<h:outputText value="#{messages.item_visibility}:" />
 				</th>
 				<td>
-					<h:outputText id="id_5" rendered="#{myItemsListController.owner}" value="#{myItemsListController.visibleLabel}"/>
-					<h:outputText id="id_6" rendered="#{not myItemsListController.owner}" value="#{myItemsListController.ownerLabel}"/>
+					<h:outputText value="#{myItemsListController.visibleLabel}"/>
 				</td>
 			</tr>
 			<tr>
 				<th>
-					<h:outputText id="id_7" rendered="#{myItemsListController.owner and myItemsListController.borrowed}" value="#{messages.item_lentTo}:" />
-					<h:outputText id="id_8" rendered="#{not myItemsListController.owner}" value="#{messages.item_available}:" />
+					<h:outputText rendered="#{myItemsListController.borrowed}" value="#{messages.item_lentTo}:" />
 				</th>
 				<td>
-					<h:outputLink id="id_9" rendered="#{myItemsListController.owner and myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerHref}">
-						<h:outputText id="id_10" value="#{myItemsListController.borrowerLabel}"/>
+					<h:outputLink rendered="#{myItemsListController.borrowed and myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerHref}">
+						<h:outputText value="#{myItemsListController.borrowerLabel}"/>
 					</h:outputLink>
-					<h:outputText id="id_11" rendered="#{myItemsListController.owner and myItemsListController.borrowed and !myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerLabel}"/>
-					<h:outputText id="id_12" rendered="#{not myItemsListController.owner}" value="#{myItemsListController.availableLabel}" />
+					<h:outputText rendered="#{myItemsListController.borrowed and !myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerLabel}"/>
 				</td>
 			</tr>
 			<tr>
-				<th><h:outputText id="id_13" rendered="#{myItemsListController.owner and myItemsListController.borrowed}" value="#{messages.item_lentSince}:" /></th>
-				<td><h:outputText id="id_14" rendered="#{myItemsListController.owner and myItemsListController.borrowed}" value="#{myItemsListController.borrowDateLabel}"/></td>
+				<th><h:outputText rendered="#{myItemsListController.borrowed}" value="#{messages.item_lentSince}:" /></th>
+				<td><h:outputText rendered="#{myItemsListController.borrowed}" value="#{myItemsListController.borrowDateLabel}"/></td>
 			</tr>
 		</table>
     </h:column>
@@ -228,60 +161,15 @@
 </h:dataTable>
 
 
-<!-- Table Controls -->
-<c:if test="#{!empty(myItemsListController.list)}">
-
-<div class="gt-table-controls gt-table-controls-btm clearfix">
-<h:form> 
-<p class="gt-table-pager">
-
-
-<!--	The paging buttons-->
-<h:commandLink action="#{myItemsListController.pageFirst}"
-    rendered="#{myItemsListController.firstRow != 0}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"/>
-</h:commandLink>
-<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" rendered="#{myItemsListController.firstRow == 0}" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"/>
-
-<h:commandLink action="#{myItemsListController.pagePrevious}"
-    rendered="#{myItemsListController.firstRow != 0}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}" />
-</h:commandLink>
-<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" rendered="#{myItemsListController.firstRow == 0}" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}"/>
-
-<h:commandLink action="#{myItemsListController.pageNext}"
-    rendered="#{myItemsListController.firstRow + myItemsListController.rowsPerPage lt myItemsListController.totalRows}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}" />
-</h:commandLink>
-<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" 
-                rendered="#{myItemsListController.firstRow + myItemsListController.rowsPerPage >= myItemsListController.totalRows}"
-                alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}"/>
-
-
-<h:commandLink action="#{myItemsListController.pageLast}"
-    rendered="#{myItemsListController.firstRow + myItemsListController.rowsPerPage lt myItemsListController.totalRows}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}" />
-</h:commandLink>
-<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" 
-                rendered="#{myItemsListController.firstRow + myItemsListController.rowsPerPage >= myItemsListController.totalRows}"
-                alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}"/>
-
-<br/>
-<h:outputText value="#{messages.navigation_page} "/> 
-<h:selectOneMenu id="goToPage" value="#{myItemsListController.goToPageNumber}" valueChangeListener="#{myItemsListController.page}" onchange="submit()" required="true">
-	<f:selectItems value="#{myItemsListController.goToPageNumberSelectItems}"/>
-</h:selectOneMenu>
-<h:outputText value=" / #{myItemsListController.totalPages}" />
-
-</p>
-</h:form>
-</div>
-</c:if>
-<!-- /Table Controls -->
+<ui:include src="../table/tableControls.jspx">
+	<ui:param name="theBean" value="#{myItemsListController}"/>
+</ui:include>
 
 </div><!-- /content box -->
 
 </f:view>
+			</div>
+			<!-- /main content -->
 			</div>
 			<!-- /body -->
 			
