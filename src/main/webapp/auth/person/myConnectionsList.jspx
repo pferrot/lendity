@@ -23,6 +23,8 @@
 			
 			<!-- body -->
 			<div class="gt-bd gt-cols clearfix">
+			<!-- main content -->
+			<div class="gt-content">
 
 				
 <f:view>
@@ -31,45 +33,35 @@
 
 <br/>
 
-<!-- search -->
-<div style="width: 200px;">
-<h:form prependId="false">
-<div class="gt-search"><div class="gt-search-inner">
-	
-    <h:inputText id="myConnectionsSearchString" 
-                 styleClass="gt-search-text"
-                 value="#{myConnectionsListController.searchString}" />
-                 
-	<script type="text/javascript">
-		setupSearchField('myConnectionsSearchString', 'myConnectionsClearSearchString', '#{messages.person_searchPerson}');
-	</script>	
-</div></div>
-<c:if test="#{myConnectionsListController.searchString != null and !empty(myConnectionsListController.searchString)}">
-<div class="clearSearch">	
-	<h:commandLink id="myConnectionsClearSearchString" action="#{myConnectionsListController.clearSearch}">#{messages.search_clearSearch}</h:commandLink>	
-</div>
-</c:if>
-</h:form>
-</div>
-<!-- /search -->
+<table class="filtersTable">
+<tr>
+
+<td>
+<ui:include src="filter/searchFilter.jspx">
+	<ui:param name="theBean" value="#{myConnectionsListController}"/>
+</ui:include>
+</td>
+
+</tr>
+</table>
 
 <br/>
 
 <!-- content box -->
 <div class="gt-content-box">
 
-<c:if test="#{empty(myConnectionsListController.list) and myConnectionsListController.filteredList}">
+<c:if test="#{empty(myConnectionsListController.list) and not(myConnectionsListController.filteredList)}">
 	<br/><br/>
 	<center>
-	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	<h4><h:outputText value="#{messages.person_noConnectionAdded}"></h:outputText></h4>
 	</center>
 	<br/>
 </c:if>
 
-<c:if test="#{empty(myItemsListController.list) and not(myConnectionsListController.filteredList)}">
+<c:if test="#{empty(myConnectionsListController.list) and myConnectionsListController.filteredList}">
 	<br/><br/>
 	<center>
-	<h4><h:outputText value="#{messages.person_noConnectionAdded}"></h:outputText></h4>
+	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
 	</center>
 	<br/>
 </c:if>
@@ -88,12 +80,12 @@
     </h:column>
 
 	<h:column>
-		<!-- Categories Sub Table -->
-		<table border="0" class="gt-table-categories">
+		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 				<td>
 					<h:form>
-						TODO
+						<h:commandLink action="#{myConnectionsListController.removeConnection}"
+						               value="#{messages.person_removeConnection}"/>
 					</h:form>
 				</td>
 		    </tr>
@@ -156,7 +148,10 @@
 </div><!-- /content box -->
 
 </f:view>
-				
+
+			</div>
+			<!-- /main content -->
+			
 			</div>
 			<!-- /body -->
 			

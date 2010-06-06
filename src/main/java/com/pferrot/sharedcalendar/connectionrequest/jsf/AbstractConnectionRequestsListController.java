@@ -33,5 +33,4 @@ public abstract class AbstractConnectionRequestsListController extends AbstractL
 		final ConnectionRequest connectionRequest = (ConnectionRequest)getTable().getRowData();
 		return PersonUtils.getPersonOverviewPageUrl(connectionRequest.getConnection().getId().toString());
 	}
-
 }

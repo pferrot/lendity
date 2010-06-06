@@ -3,67 +3,149 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:o="http://myfaces.apache.org/orchestra">
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="Person Overview" />
-	<ui:param name="contentHeader" value="Person Overview" />
+	<ui:param name="pageTitle" value="#{messages.person_personEditTitle}" />
+	<ui:param name="contentHeader" value="#{messages.person_personEditTitle}" />
 
-	<ui:define name="content">
+		<ui:define name="content">
 
 		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
 
 			<!-- header content here  -->
-			<ui:define name="pageName">
-            	#{contentHeader}
-          	</ui:define>
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
 
 			<!-- insert content here -->
 			<ui:define name="pageContent">
-<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				
+				<!-- Item Edit Form -->
+				<h2 class="gt-form-head"><h:outputText value="#{messages.person_personEditTitle}"/></h2>
+				<div class="gt-form gt-content-box">
+				
 				<f:view>
-					<center>
-					
+
 					<h:form>
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.person_firstName}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="firstName"></h:message>			
+						<h:inputText id="firstName" styleClass="gt-form-text"
+							value="#{personEditController.firstName}" 
+							required="true" 
+							requiredMessage="#{messages.validation_requiredMessage}"
+							maxlength="255"/>			
+					</div><!-- /form row -->	
 
-Display name:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="displayName"></h:message>
-						<br />
-						<h:inputText id="displayName" value="#{personEditController.displayName}"
-							required="true">
-						</h:inputText>
-						<br />
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.person_lastName}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="lastName"></h:message>			
+						<h:inputText id="lastName" styleClass="gt-form-text"
+							value="#{personEditController.lastName}" 
+							required="true" 
+							requiredMessage="#{messages.validation_requiredMessage}"
+							maxlength="255"/>			
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.person_email}"/></label>
+						<a href="mailto:#{personEditController.person.email}"><h:outputText value="#{personEditController.person.email}" /></a>		
+					</div><!-- /form row -->	
+					
+					<!-- form row -->
+					<div class="gt-form-row">
+						<br/><h:commandButton styleClass="gt-btn-green-medium gt-btn-left" value="#{messages.navigation_save}" action="#{personEditController.submit}" />
+						<h:outputLink styleClass="gt-btn-green-medium gt-btn-left"  value="#{personEditController.personOverviewHref}">
+           					<h:outputText value="#{messages.navigation_cancel}"/>
+         				</h:outputLink>
+					</div>
+					<!-- /form row -->
+					
+					</h:form>
+				</f:view>		
+				</div>			
+				<!-- /Item Edit Form -->
+				
+			</div>
+			<!-- /main content -->
 
-First name:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="firstName"></h:message>
-						<br />
-						<h:inputText id="firstName" value="#{personEditController.firstName}"
-							required="true">
-						</h:inputText>
-						<br />
+			<!-- sidebar -->
+			<div class="gt-sidebar">
+				<!-- Sidebar Navigation -->
+				<div class="gt-sidebar-nav gt-sidebar-nav-green">
 
-Last name:<br />
-						<h:message showSummary="true" showDetail="false"
-							style="color: red;" for="lastName"></h:message>
-						<br />
-						<h:inputText id="lastName" value="#{personEditController.lastName}"
-							required="true">
-						</h:inputText>
-						<br />
+					<h3>Quick Links</h3>
+					<ul>
+						<li><a href="">Add a New Post</a></li>
+						<li><a href="">Edit User Settings</a></li>
+						<li><a href="">View Live Site</a></li>
+					</ul>
+				</div><!-- /Sidebar Navigation -->
+
+				
+				<!-- Sidebar Box -->
+				<div class="gt-sidebar-box gt-sidebar-box-brown">
+					<!-- search -->
+					<div class="gt-search"><div class="gt-search-inner">
+						<input type="text" class="gt-search-text" value="Find an Article" onfocus="javascript:if(this.value=='Find an Article')this.value='';" onblur="javascript:if(this.value=='')this.value='Find an Article';" />
+					</div></div><!-- /search -->
+				</div><!-- /Sidebar Box -->
+				
+				
+				<!-- Sidebar Content -->
+				<div class="gt-sidebar-content">
+
+					<h3>Author Contact</h3>
+					<p>John Marker<br />
+					1756 Main Court<br />
+					City, State 12345, Country</p>
+					
+					<p>email: <a href="">john.marker@example.com</a></p>
+					
+					<p>phone: 123-555-1356</p>
+
+					
+					<p>aim: johnmarker</p>
+				</div><!-- /Sidebar Content -->
+				
+				<!-- Sidebar List -->
+				<div class="gt-sidebar-list">
+					<h3>Recent Users</h3>
+					<ul class="gt-sidebar-list-content">
+						<li class="gt-sidebar-list-row">
+							<img class="gt-avatar-small" src="images/gt/avatar-small.gif" alt="avatar-small" width="25" height="25"/>
+
+							<h4><a href="">John Marker</a></h4>
+							<p>I love to color pictures!</p>
+						</li>
 						
-						<br />
-						<o:separateConversationContext>
-							<h:outputLink value="#{personEditController.personOverviewHref}">
-            					<h:outputText value="#{messages.navigation_cancel}"/>
-	         				</h:outputLink>
-						</o:separateConversationContext>
-						<br />
-						<h:commandButton value="#{messages.navigation_save}" action="#{personEditController.submit}" />
-						<br />
-					</h:form></center>
-				</f:view>
+						<li class="gt-sidebar-list-row">
+							<img class="gt-avatar-small" src="images/gt/avatar-small.gif" alt="avatar-small" width="25" height="25"/>
+							<h4><a href="">Charlee Watts</a></h4>
+							<p>Eco-friendly is the way to go!</p>
+
+						</li>
+					</ul>
+				</div><!-- /Sidebar List -->
+				
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+			
 			</ui:define>
 		</ui:decorate>
 

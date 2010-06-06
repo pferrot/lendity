@@ -7,15 +7,13 @@ import com.pferrot.sharedcalendar.connectionrequest.exception.ConnectionRequestE
 import com.pferrot.sharedcalendar.dao.bean.ListWithRowCount;
 import com.pferrot.sharedcalendar.model.ConnectionRequest;
 
-public class MyPendingConnectionRequests extends AbstractConnectionRequestsListController {
+public class MyPendingConnectionRequestsListController extends AbstractConnectionRequestsListController {
 
-	private final static Log log = LogFactory.getLog(MyPendingConnectionRequests.class);
+	private final static Log log = LogFactory.getLog(MyPendingConnectionRequestsListController.class);
 	
 	@Override
 	protected ListWithRowCount getListWithRowCount() {
-		return null;
-//		return getItemService().findConnectionsItems(PersonUtils.getCurrentPersonId(), getSearchString(), getCategoryId(), 
-//				getVisibleStatusBoolean(), getBorrowStatusBoolean(), getFirstRow(), getRowsPerPage());
+		return getConnectionRequestService().findCurrentUserPendingConnectionRequests(getFirstRow(), getRowsPerPage());
 	}
 
 	public String acceptConnectionRequest() {
@@ -30,14 +28,6 @@ public class MyPendingConnectionRequests extends AbstractConnectionRequestsListC
 		}		
 	}
 
-	public String getAcceptConnectionRequestLabel() {
-		return "accept";
-	}
-
-	public boolean getAcceptConnectionRequestDisabled() {
-		return false;		
-	}
-
 	public String refuseConnectionRequest() {
 		try {
 			final ConnectionRequest connectionRequest = (ConnectionRequest)getTable().getRowData();
@@ -50,14 +40,6 @@ public class MyPendingConnectionRequests extends AbstractConnectionRequestsListC
 		}		
 	}
 
-	public String getRefuseConnectionRequestLabel() {
-		return "refuse";
-	}
-
-	public boolean getRefuseConnectionRequestDisabled() {
-		return false;		
-	}
-
 	public String banConnectionRequest() {
 		try {
 			final ConnectionRequest connectionRequest = (ConnectionRequest)getTable().getRowData();
@@ -68,14 +50,6 @@ public class MyPendingConnectionRequests extends AbstractConnectionRequestsListC
 			// TODO redirect to error page instead.
 			throw new RuntimeException(e);
 		}		
-	}
-
-	public String getBanConnectionRequestLabel() {
-		return "ban";
-	}
-
-	public boolean getBanConnectionRequestDisabled() {
-		return false;		
 	}
 
 }

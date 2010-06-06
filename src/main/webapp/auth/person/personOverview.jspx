@@ -3,44 +3,69 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:o="http://myfaces.apache.org/orchestra">
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="Person Overview" />
-	<ui:param name="contentHeader" value="Person Overview" />
+	<ui:param name="pageTitle" value="#{messages.person_personOverviewTitle}" />
+	<ui:param name="contentHeader" value="#{messages.person_personOverviewTitle}" />
 
-	<ui:define name="content">
+		<ui:define name="content">
 
 		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
 
 			<!-- header content here  -->
-			<ui:define name="pageName">
-            	#{contentHeader}
-          	</ui:define>
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
 
 			<!-- insert content here -->
 			<ui:define name="pageContent">
-<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+						
+			
+			
 				<f:view>
-					<center>
 
-					<h:form>
+<h2 class="gt-table-head"><h:outputText value="#{messages.person_personOverviewTitle}"/></h2>
 
-Display name:<br />
-						<h:outputText value="#{personOverviewController.person.displayName}" />
-						<br />
+<!-- content box -->
+<div class="gt-form gt-content-box">
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_firstName}:" /></label></div>
+		<h:outputText value="#{personOverviewController.person.firstName}" />
+	</div>
+	<br/>
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_lastName}:" /></label></div>
+		<h:outputText value="#{personOverviewController.person.lastName}" />
+	</div>
+	<br/>
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_email}:" /></label></div>
+		<a href="mailto:#{personOverviewController.person.email}"><h:outputText value="#{personOverviewController.person.email}" /></a>
+	</div>
+	<br/>	
+	<div class="gt-form-row gt-width-100">
+		<h:outputLink rendered="#{personOverviewController.editAvailable}" value="#{personOverviewController.personEditHref}" styleClass="gt-btn-green-medium">
+    		<h:outputText rendered="#{personOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
+    	</h:outputLink>	
+	</div>
+</div>
+<!-- /content box -->
+					
+				</f:view>	
+			
+			</div>
+			<!-- /main content -->
 
-						<br />
-					</h:form></center>
 
-					<br/>
-					<o:separateConversationContext>
-						<h:outputLink value="#{personOverviewController.personEditHref}">
-	            			<h:outputText value="#{messages.navigation_edit}"/>
-	         			</h:outputLink>
-					</o:separateConversationContext>
-					<br/>
-				</f:view>
+			
+			</div>
+			<!-- /body -->
 			</ui:define>
 		</ui:decorate>
 

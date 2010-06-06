@@ -65,5 +65,9 @@ public class PersonOverviewController
 
 	public String getPersonEditHref() {		
 		return PersonUtils.getPersonEditPageUrl(person.getId().toString());
-	}	
+	}
+
+	public boolean isEditAvailable() {
+		return personService.isCurrentUserAuthorizedToEdit(person);
+	}
 }

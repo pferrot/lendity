@@ -39,7 +39,7 @@ public abstract class AbstractListController implements Serializable {
     private int currentPage;
 	private Integer goToPageNumber;
 	private List<SelectItem> goToPageNumberSelectItems;
-	private boolean emptyList;
+//	private boolean emptyList;
 	
     // Search
 	private String searchString;
@@ -52,8 +52,7 @@ public abstract class AbstractListController implements Serializable {
 		pageRange = 10;
 	}
 
-	protected abstract ListWithRowCount getListWithRowCount();
-	
+	protected abstract ListWithRowCount getListWithRowCount();	
 	
 	
 	// Keep a member variable so that the DB is not accessed everytime.
@@ -138,7 +137,7 @@ public abstract class AbstractListController implements Serializable {
         // Load list and totalCount.
     	final ListWithRowCount listWithRowCount = getListWithRowCount();
         list = listWithRowCount.getList();
-        emptyList = list == null || list.isEmpty();
+//        emptyList = list == null || list.isEmpty();
         totalRows = (int)listWithRowCount.getRowCount();
 
         // Set currentPage, totalPages and pages.
@@ -188,9 +187,9 @@ public abstract class AbstractListController implements Serializable {
         return list;
 	}
 
-	public boolean isEmptyList() {
-		return emptyList;
-	}
+//	public boolean isEmptyList() {
+//		return emptyList;
+//	}
 
 	public HtmlDataTable getTable() {
 		return table;

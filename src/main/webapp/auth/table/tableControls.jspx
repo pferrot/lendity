@@ -1,0 +1,62 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+    
+<!-- Table Controls -->
+<c:if test="#{!empty(theBean.list)}">
+
+<div class="gt-table-controls gt-table-controls-btm clearfix">
+<h:form> 
+<p class="gt-table-pager">
+
+
+<!--	The paging buttons-->
+<h:commandLink action="#{theBean.pageFirst}"
+    rendered="#{theBean.firstRow != 0}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"/>
+</h:commandLink>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" rendered="#{theBean.firstRow == 0}" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"/>
+
+<h:commandLink action="#{theBean.pagePrevious}"
+    rendered="#{theBean.firstRow != 0}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}" />
+</h:commandLink>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" rendered="#{theBean.firstRow == 0}" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}"/>
+
+<h:commandLink action="#{theBean.pageNext}"
+    rendered="#{theBean.firstRow + theBean.rowsPerPage lt theBean.totalRows}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}" />
+</h:commandLink>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" 
+                rendered="#{theBean.firstRow + theBean.rowsPerPage >= theBean.totalRows}"
+                alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}"/>
+
+
+<h:commandLink action="#{theBean.pageLast}"
+    rendered="#{theBean.firstRow + theBean.rowsPerPage lt theBean.totalRows}">
+	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}" />
+</h:commandLink>
+<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" 
+                rendered="#{theBean.firstRow + theBean.rowsPerPage >= theBean.totalRows}"
+                alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}"/>
+
+<br/>
+<h:outputText value="#{messages.navigation_page} "/> 
+<h:selectOneMenu id="goToPage" value="#{theBean.goToPageNumber}" valueChangeListener="#{theBean.page}" onchange="submit()" required="true">
+	<f:selectItems value="#{theBean.goToPageNumberSelectItems}"/>
+</h:selectOneMenu>
+<h:outputText value=" / #{theBean.totalPages}" />
+
+</p>
+</h:form>
+</div>
+</c:if>
+<!-- /Table Controls -->
+
+</ui:composition>

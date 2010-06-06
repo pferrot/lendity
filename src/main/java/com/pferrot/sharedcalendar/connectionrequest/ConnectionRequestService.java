@@ -15,6 +15,7 @@ import com.pferrot.sharedcalendar.connectionrequest.exception.ConnectionRequestE
 import com.pferrot.sharedcalendar.dao.ConnectionRequestDao;
 import com.pferrot.sharedcalendar.dao.ListValueDao;
 import com.pferrot.sharedcalendar.dao.PersonDao;
+import com.pferrot.sharedcalendar.dao.bean.ListWithRowCount;
 import com.pferrot.sharedcalendar.model.ConnectionRequest;
 import com.pferrot.sharedcalendar.model.ConnectionRequestResponse;
 import com.pferrot.sharedcalendar.model.Person;
@@ -49,8 +50,8 @@ public class ConnectionRequestService {
 		return connectionRequestDao.findConnectionRequest(pConnectionRequestId);
 	}
 
-	public List<ConnectionRequest> findCurrentUserPendingConnectionRequests(final int pFirstResult, final int pMaxResults) {
-		return connectionRequestDao.findUncompletedConnectionRequestByConnection(getCurrentPerson(), pFirstResult, pMaxResults);
+	public ListWithRowCount findCurrentUserPendingConnectionRequests(final int pFirstResult, final int pMaxResults) {		
+		return connectionRequestDao.findConnectionRequests(PersonUtils.getCurrentPersonId(), null, Boolean.FALSE, pFirstResult, pMaxResults);
 		
 	}
 
@@ -193,9 +194,20 @@ public class ConnectionRequestService {
 	public boolean isUncompletedConnectionRequestAvailable(final Person pPerson1, final Person pPerson2) {
 		CoreUtils.assertNotNull(pPerson1);
 		CoreUtils.assertNotNull(pPerson2);
+
+		final Long person1Id = pPerson1.getId();
+		final Long person2Id = pPerson2.getId();
 		
-		final List<ConnectionRequest> existingUncompletedRequests = connectionRequestDao.findUncompletedConnectionRequestByRequesterAndConnection(pPerson1, pPerson2, 0, 0);
-		return existingUncompletedRequests != null && existingUncompletedRequests.size() > 0;
+//		final List<ConnectionRequest> existingUncompletedRequests = connectionRequestDao.findUncompletedConnectionRequestByRequesterAndConnection(pPerson1, pPerson2, 0, 0);
+		ListWithRowCount listWithRowCount = connectionRequestDao.findConnectionRequests(person1Id, person2Id, Boolean.FALSE, 0, 1);
+		List list = listWithRowCount.getList();
+		if (list != null && !list.isEmpty()) {
+			return true;
+		}
+		
+		listWithRowCount = connectionRequestDao.findConnectionRequests(person2Id, person1Id, Boolean.FALSE, 0, 1);
+		list = listWithRowCount.getList();
+		return list != null && !list.isEmpty();
 	}
 	
 
@@ -432,8 +444,6 @@ public class ConnectionRequestService {
 	}
 
 	private Person getCurrentPerson() {
-//		final String username = SecurityUtils.getCurrentUsername();
-//		return personDao.findPersonFromUsername(username);
 		return personDao.findPerson(PersonUtils.getCurrentPersonId());
 	}
 }

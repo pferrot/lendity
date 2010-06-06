@@ -3,16 +3,15 @@ package com.pferrot.sharedcalendar.dao.hibernate;
 import java.util.List;
 
 import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import com.pferrot.core.CoreUtils;
 import com.pferrot.sharedcalendar.dao.ConnectionRequestDao;
+import com.pferrot.sharedcalendar.dao.bean.ListWithRowCount;
 import com.pferrot.sharedcalendar.model.ConnectionRequest;
-import com.pferrot.sharedcalendar.model.Person;
 
 public class ConnectionRequestDaoHibernateImpl extends HibernateDaoSupport implements ConnectionRequestDao {
 
@@ -31,87 +30,61 @@ public class ConnectionRequestDaoHibernateImpl extends HibernateDaoSupport imple
 	public ConnectionRequest findConnectionRequest(final Long pConnectionRequestId) {
 		return (ConnectionRequest)getHibernateTemplate().load(ConnectionRequest.class, pConnectionRequestId);
 	}
-
-	public List<ConnectionRequest> findConnectionRequestByConnection(
-			final Person pPerson, final int pFirstResult, final int pMaxResults) {
-		return findConnectionRequest(pPerson, pFirstResult, pMaxResults, false, false);
+	
+	private List<ConnectionRequest> findConnectionRequestsList(final Long pConnectionId, final Long pRequesterId, 
+			final Boolean pCompleted, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria criteria = getConnectionRequestDetachedCriteria(pConnectionId, pRequesterId, pCompleted);
+		criteria.addOrder(Order.desc("requestDate"));
+		
+		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
 	}
 
-	public List<ConnectionRequest> findUncompletedConnectionRequestByConnection(
-			final Person pPerson, final int pFirstResult, final int pMaxResults) {
-		return findConnectionRequest(pPerson, pFirstResult, pMaxResults, false, true);
+	private long countConnectionRequests(final Long pConnectionId, final Long pRequesterId, final Boolean pCompleted) {
+		final DetachedCriteria criteria = getConnectionRequestDetachedCriteria(pConnectionId, pRequesterId, pCompleted);
+		return rowCount(criteria);
 	}
 
-	public List<ConnectionRequest> findConnectionRequestByRequester(
-			final Person pPerson, final int pFirstResult, final int pMaxResults) {
-		return findConnectionRequest(pPerson, pFirstResult, pMaxResults, true, false);
+	private DetachedCriteria getConnectionRequestDetachedCriteria(final Long pConnectionId, final Long pRequesterId, final Boolean pCompleted) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(ConnectionRequest.class);
+	
+		if (pCompleted != null) {
+			if (pCompleted.booleanValue()) {
+				criteria.add(Restrictions.isNotNull("responseDate"));
+			}
+			else {
+				criteria.add(Restrictions.isNull("responseDate"));
+			}			
+		}
+		
+		if (pConnectionId != null) {
+			final DetachedCriteria connectionCriteria = criteria.createCriteria("connection", CriteriaSpecification.INNER_JOIN);
+			connectionCriteria.add(Restrictions.eq("id", pConnectionId));
+		}
+		
+		if (pRequesterId != null) {
+			final DetachedCriteria requesterCriteria = criteria.createCriteria("requester", CriteriaSpecification.INNER_JOIN);
+			requesterCriteria.add(Restrictions.eq("id", pRequesterId));
+		}
+		
+		return criteria;	
 	}
 
-	public List<ConnectionRequest> findUncompletedConnectionRequestByRequester(
-			final Person pPerson, final int pFirstResult, final int pMaxResults) {
-		return findConnectionRequest(pPerson, pFirstResult, pMaxResults, true, true);
+	/**
+	 * Returns the number of rows for a giver DetachedCriteria.
+	 *
+	 * @param pCriteria
+	 * @return
+	 */
+	private long rowCount(final DetachedCriteria pCriteria) {
+		pCriteria.setProjection(Projections.rowCount());
+		return ((Long)getHibernateTemplate().findByCriteria(pCriteria).get(0)).longValue();
+	}
+	
+	public ListWithRowCount findConnectionRequests(final Long pConnectionId, final Long pRequesterId, 
+			final Boolean pCompleted, final int pFirstResult, final int pMaxResults) {
+		final List list = findConnectionRequestsList(pConnectionId, pRequesterId, pCompleted, pFirstResult, pMaxResults);
+		final long count = countConnectionRequests(pConnectionId, pRequesterId, pCompleted);
+		
+		return new ListWithRowCount(list, count);
 	}	
-	
-	private List<ConnectionRequest> findConnectionRequest(
-			final Person pPerson, 
-			final int pFirstResult, final int pMaxResults, 
-			final boolean byRequester, final boolean uncompletedOnly) {
-		
-		CoreUtils.assertNotNull(pPerson);
-		
-		DetachedCriteria critera = DetachedCriteria.forClass(ConnectionRequest.class).
-			addOrder(Order.desc("requestDate"));
-		
-		if (uncompletedOnly) {
-			critera.add(Restrictions.isNull("responseDate"));
-		}
-		
-		critera.createCriteria(byRequester?"requester":"connection", CriteriaSpecification.INNER_JOIN).
-			add(Restrictions.eq("id", pPerson.getId()));
-		
-		return getHibernateTemplate().findByCriteria(critera, pFirstResult, pMaxResults);
-	}
-
-	private List<ConnectionRequest> findConnectionRequestByRequesterAndConnection(
-			final Person pPerson1, final Person pPerson2, final int pFirstResult,
-			final int pMaxResults, final boolean uncompletedOnly) {
-	
-		CoreUtils.assertNotNull(pPerson1);
-		CoreUtils.assertNotNull(pPerson2);
-		
-		Criterion requesterCriterion = Restrictions.eq("requester", pPerson1);
-		Criterion connectionCriterion = Restrictions.eq("connection", pPerson2);
-
-		final Criterion personCriterion1 = Restrictions.and(requesterCriterion, connectionCriterion);
-
-		requesterCriterion = Restrictions.eq("requester", pPerson2);
-		connectionCriterion = Restrictions.eq("connection", pPerson1);
-
-		final Criterion personCriterion2 = Restrictions.and(requesterCriterion, connectionCriterion);
-		
-		final Criterion personCriterion = Restrictions.or(personCriterion1, personCriterion2);
-		
-		Criterion finalCriterion = null;
-		if (uncompletedOnly) {
-			final Criterion uncompletedCriteria = Restrictions.isNull("responseDate");
-			finalCriterion = Restrictions.and(personCriterion, uncompletedCriteria);
-		}
-		else {
-			finalCriterion = personCriterion;
-		}
-		DetachedCriteria critera = DetachedCriteria.forClass(ConnectionRequest.class).add(finalCriterion);		
-		return getHibernateTemplate().findByCriteria(critera, pFirstResult, pMaxResults);
-	}
-
-	public List<ConnectionRequest> findConnectionRequestByRequesterAndConnection(
-			Person pPerson1, Person pPerson2, int pFirstResult,
-			int pMaxResults) {
-		return findConnectionRequestByRequesterAndConnection(pPerson1, pPerson2, pFirstResult, pMaxResults, false);
-	}
-
-	public List<ConnectionRequest> findUncompletedConnectionRequestByRequesterAndConnection(
-			Person pPerson1, Person pPerson2, int pFirstResult,
-			int pMaxResults) {
-		return findConnectionRequestByRequesterAndConnection(pPerson1, pPerson2, pFirstResult, pMaxResults, true);
-	}
 }

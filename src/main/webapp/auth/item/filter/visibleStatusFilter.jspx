@@ -1,0 +1,30 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+    
+<!-- visible status -->
+<h:form prependId="false">
+<h:outputText value="#{messages.item_visibleStatus}" styleClass="small"/>
+<c:if test="#{theBean.visibleStatus != null}">
+	<h:outputText value=" " escape="false" />
+	<h:commandLink id="clearVisibleStatus" action="#{theBean.clearVisibleStatus}">
+		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
+	</h:commandLink>	
+</c:if>
+<br/>
+	<h:selectOneMenu id="visibleStatus" value="#{theBean.visibleStatus}" valueChangeListener="#{theBean.visibleStatus}" converter="javax.faces.Long" onchange="submit()">
+		<f:selectItems value="#{theBean.visibleStatusSelectItems}"/>
+	</h:selectOneMenu>
+<script type="text/javascript">
+	setupDropDownFilterField('visibleStatus');
+</script>	
+</h:form>
+<!-- /visible status -->
+
+</ui:composition>

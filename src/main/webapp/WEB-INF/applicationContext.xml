@@ -26,13 +26,13 @@
 			<value>http://localhost:8080/shared_calendar</value>
 		</property>
 		<property name="noReplyEmailAddress">
-			<value>no_reply@patriceferrot.com</value>
+			<value>no_reply@lendity.com</value>
 		</property>
 		<property name="noReplySenderName">
-			<value>patriceferrot.com</value>
+			<value>lendity.com</value>
 		</property>
 		<property name="supportEmailAddress">
-			<value>support@patriceferrot.com</value>
+			<value>support@lendity.com</value>
 		</property>
 		<property name="nbDaysToValidateRegistration">
 			<value>30</value>
@@ -266,6 +266,7 @@
 	
 	<bean id="personServiceTarget" class="com.pferrot.sharedcalendar.person.PersonService">
 		<property name="personDao" ref="personDao"/>
+		<property name="mailManager" ref="emailSender.mailManager"/>
 	</bean>
 	
 	<bean id="personsListController" class="com.pferrot.sharedcalendar.person.jsf.PersonsListController"
@@ -275,13 +276,13 @@
 	</bean>
 
 	<bean id="myConnectionsListController" class="com.pferrot.sharedcalendar.person.jsf.MyConnectionsListController"
-	      scope="conversation.access">
+	      scope="session">
 	      <property name="personService" ref="personService"/>
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
 
 	<bean id="myBannedPersonsListController" class="com.pferrot.sharedcalendar.person.jsf.MyBannedPersonsListController"
-	      scope="conversation.access">
+	      scope="session">
 	      <property name="personService" ref="personService"/>
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
@@ -294,7 +295,7 @@
 	<bean id="personEditController" class="com.pferrot.sharedcalendar.person.jsf.PersonEditController"
 	      scope="conversation.access">
 	      <property name="personService" ref="personService"/>
-	</bean>	
+	</bean>
 	
 	<!-- 
 	PERSON - end
@@ -339,17 +340,11 @@
 		<property name="mailManager" ref="emailSender.mailManager"/>
 	</bean>
 
-	<bean id="myPendingConnectionRequestsListController" class="com.pferrot.sharedcalendar.connectionrequest.jsf.MyPendingConnectionRequests"
+	<bean id="myPendingConnectionRequestsListController" class="com.pferrot.sharedcalendar.connectionrequest.jsf.MyPendingConnectionRequestsListController"
 	      scope="conversation.access">
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
 
-<!--	
-	<bean id="personsListController" class="com.pferrot.sharedcalendar.person.jsf.PersonsListController"
-	      scope="conversation.access">
-	      <property name="personService" ref="personService"/>
-	</bean>	
--->	
 	<!-- 
 	CONNECTION REQUEST - end
 	========================================================================================================================
@@ -409,7 +404,7 @@
 	</bean>
 	
 	<bean id="itemsListController" class="com.pferrot.sharedcalendar.item.jsf.ItemsListController"
-	      scope="conversation.access">
+	      scope="session">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
@@ -420,11 +415,6 @@
 
 	<bean id="myBorrowedItemsListController" class="com.pferrot.sharedcalendar.item.jsf.MyBorrowedItemsListController"
 	      scope="session">
-	      <property name="itemService" ref="itemService"/>
-	</bean>
-
-	<bean id="myLentItemsListController" class="com.pferrot.sharedcalendar.item.jsf.MyLentItemsListController"
-	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 

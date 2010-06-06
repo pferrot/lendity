@@ -61,27 +61,33 @@ public interface PagesURL {
 	
 	String ITEMS_LIST = "/auth/item/itemsList.faces";
 	String MY_ITEMS_LIST = "/auth/item/myItemsList.faces";
+	String MY_BORROWED_ITEMS_LIST = "/auth/item/myBorrowedItemsList.faces";
 	String MY_CONNECTIONS_ITEMS_LIST = "/auth/item/myConnectionsItemsList.faces";
 	
 	// ITEM - end
 	/////////////////////////////////////////////////////////////////////////
 
+	
 	/////////////////////////////////////////////////////////////////////////
-	// MY PROFILE - start
+	// CONNECTION REQUEST - start	
 	
-	String MY_PROFILE = "/auth/profile/myProfile.faces";
+	// Connection requests I have to reply to.
+	String MY_PENDING_CONNECTION_REQUESTS_LIST = "/auth/connectionrequest/myPendingConnectionRequestsList.faces";
+	// Connection requests I have made.
+	String MY_PENDING_CONNECTION_REQUESTS_LIST_2 = "/auth/connectionrequest/myPendingConnectionRequestsList2.faces";
 	
-	// MY PROFILE - end
-	/////////////////////////////////////////////////////////////////////////
-
-	
+	// CONNECTION REQUEST - end
+	/////////////////////////////////////////////////////////////////////////	
 	
 	
 	/////////////////////////////////////////////////////////////////////////
 	// PERSON - start	
 	
+	String MY_PROFILE = "/auth/person/myProfile.faces";
+	
 	String PERSONS_LIST = "/auth/person/personsList.faces";
 	String MY_CONNECTIONS_LIST = "/auth/person/myConnectionsList.faces";
+	String MY_BANNED_PERSONS_LIST = "/auth/person/myBannedPersonsList.faces";
 	
 	String PERSON_OVERVIEW = "/auth/person/personOverview.faces";
 	String PERSON_OVERVIEW_PARAM_PERSON_ID = "personID";

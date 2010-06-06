@@ -51,9 +51,25 @@ public class AuthenticationController {
 	public String getMyConnectionsURL() {
 		return JsfUtils.getContextRoot() + PagesURL.MY_CONNECTIONS_LIST;
 	}
+	
+	public String getMyBannedPersonsURL() {
+		return JsfUtils.getContextRoot() + PagesURL.MY_BANNED_PERSONS_LIST;
+	}
+
+	public String getMyPendingConnectionRequestsURL() {
+		return JsfUtils.getContextRoot() + PagesURL.MY_PENDING_CONNECTION_REQUESTS_LIST;
+	}
+
+	public String getMyPendingConnectionRequests2URL() {
+		return JsfUtils.getContextRoot() + PagesURL.MY_PENDING_CONNECTION_REQUESTS_LIST_2;
+	}
 
 	public String getMyItemsURL() {
 		return JsfUtils.getContextRoot() + PagesURL.MY_ITEMS_LIST;
+	}
+
+	public String getMyBorrowedItemsURL() {
+		return JsfUtils.getContextRoot() + PagesURL.MY_BORROWED_ITEMS_LIST;
 	}
 
 	public String getMyConnectionsItemsURL() {
@@ -61,6 +77,7 @@ public class AuthenticationController {
 	}
 	
 	public String getMyProfileURL() {
-		return JsfUtils.getContextRoot() + PagesURL.MY_PROFILE;
+//		return JsfUtils.getContextRoot() + PagesURL.MY_PROFILE;
+		return JsfUtils.getFullUrl(PagesURL.PERSON_OVERVIEW, PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID, PersonUtils.getCurrentPersonId().toString());
 	}
 }

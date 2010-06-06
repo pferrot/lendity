@@ -23,6 +23,9 @@
 			
 			<!-- body -->
 			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
 
 				
 <f:view>
@@ -31,27 +34,17 @@
 
 <br/>
 
-<!-- search -->
-<div style="width: 200px;">
-<h:form prependId="false">
-<div class="gt-search"><div class="gt-search-inner">
-	
-    <h:inputText id="personsSearchString" 
-                 styleClass="gt-search-text"
-                 value="#{personsListController.searchString}" />
-                 
-	<script type="text/javascript">
-		setupSearchField('personsSearchString', 'personsClearSearchString', '#{messages.person_searchPerson}');
-	</script>	
-</div></div>
-<c:if test="#{personsListController.searchString != null and !empty(personsListController.searchString)}">
-<div class="clearSearch">	
-	<h:commandLink id="personsClearSearchString" action="#{personsListController.clearSearch}">#{messages.search_clearSearch}</h:commandLink>	
-</div>
-</c:if>
-</h:form>
-</div>
-<!-- /search -->
+<table class="filtersTable">
+<tr>
+
+<td width="100%">
+<ui:include src="filter/searchFilter.jspx">
+	<ui:param name="theBean" value="#{personsListController}"/>
+</ui:include>
+</td>
+
+</tr>
+</table>
 
 <br/>
 
@@ -72,15 +65,12 @@
 
     <h:column>
 		<h4>
-			<h:outputLink value="#{personsListController.personOverviewHref}">
-				<h:outputText value="#{person.displayName}" />
-			</h:outputLink>
+			<h:outputText value="#{person.displayName}" />
 		</h4>
     </h:column>
 
 	<h:column>
-		<!-- Categories Sub Table -->
-		<table border="0" class="gt-table-categories">
+		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 				<td>
 					<h:form>
@@ -149,6 +139,8 @@
 </div><!-- /content box -->
 
 </f:view>
+			</div>
+			<!-- /main content -->
 				
 			</div>
 			<!-- /body -->

@@ -24,8 +24,6 @@
 			
 			<!-- body -->
 			<div class="gt-bd gt-cols clearfix">
-			<!-- main content -->
-			<div class="gt-content">
 
 				
 <f:view>
@@ -107,27 +105,10 @@
 				<h:outputText value="#{item.title}" />
 			</h:outputLink>
 		</h4>
-		<p><h:outputText value="#{myItemsListController.description}" /></p>
-		<p>
-			<table>
-			<tr>
-			<td>
-				<span class="linkStyleAction" onclick="lendItemTooltip(this, '#{item.id}', 1)">
-					<h:outputText value="#{messages.item_lend}" rendered="#{myItemsListController.lendAvailable}"/>
-				</span>
-				<span class="linkStyleAction" onclick="lendBackItemTooltip(this, '#{item.id}', 1)">
-					<h:outputText value="#{messages.item_lendBack}" rendered="#{myItemsListController.lendBackAvailable}"/>
-				</span>		
-			</td>
-			</tr>
-			</table>
-		</p>
     </h:column>
-
+    
 	<h:column>
-		<!-- Categories Sub Table -->
-		<!-- Need to set fake IDs otherwise get sometimes error of the type "id is duplicated in the faces tree" -->
-		<table border="0" class="gt-table-categories" width="250" align="right">
+		<table border="0" class="gt-table-categories" width="300" align="right">
 			<tr>
 			    <th width="50%"><h:outputText value="#{messages.item_category}:" /></th>
 				<td width="50%"><h:outputText value="#{myItemsListController.categoryLabel}"/></td>
@@ -158,6 +139,21 @@
 		</table>
     </h:column>
 
+	<h:column>
+		<table border="0" class="gt-table-categories" width="150" align="right">
+			<tr>
+			<td>
+				<span class="linkStyleAction" onclick="lendItemTooltip(this, '#{item.id}', 1)">
+					<h:outputText value="#{messages.item_lend}" rendered="#{myItemsListController.lendAvailable}"/>
+				</span>
+				<span class="linkStyleAction" onclick="lendBackItemTooltip(this, '#{item.id}', 1)">
+					<h:outputText value="#{messages.item_lendBack}" rendered="#{myItemsListController.lendBackAvailable}"/>
+				</span>		
+			</td>
+			</tr>
+		</table>
+    </h:column>
+
 </h:dataTable>
 
 
@@ -168,8 +164,7 @@
 </div><!-- /content box -->
 
 </f:view>
-			</div>
-			<!-- /main content -->
+
 			</div>
 			<!-- /body -->
 			

@@ -1,99 +1,85 @@
 <ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
 	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:c="http://java.sun.com/jstl/core_rt"
-	xmlns:o="http://myfaces.apache.org/orchestra">
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="My Pending Connection Requests" />
-	<ui:param name="contentHeader" value="My Pending Connection Requests" />
+	<ui:param name="pageTitle" value="#{messages.connectionRequest_myPendingConnectionRequestsTitle}" />
+	<ui:param name="contentHeader" value="#{messages.connectionRequest_myPendingConnectionRequestsTitle}" />
 
 	<ui:define name="content">
 
 		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
 
 			<!-- header content here  -->
-			<ui:define name="pageName">
-            	#{contentHeader}
-          	</ui:define>
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
 
 			<!-- insert content here -->
 			<ui:define name="pageContent">
-<!-- 				<ui:include src="/WEB-INF/inc-content/component-content.jspx" /> -->
-				<f:view>
-					<center>
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			<!-- main content -->
+			<div class="gt-content">
 
-<h:dataTable value="#{myPendingConnectionRequestsListController.list}" binding="#{myPendingConnectionRequestsListController.table}" var="connectionRequest">
+				
+<f:view>
 
-	<h:column>
-        <f:facet name="header">
-            <h:outputText value="ID" />
-        </f:facet>
-        <h:outputText value="#{connectionRequest.id}" />
-    </h:column>
-
-	<h:column>
-        <f:facet name="header">
-            <h:outputText value="Connection" />
-        </f:facet>
-		<o:separateConversationContext>
-        	<h:outputLink value="#{myPendingConnectionRequestsListController.connectionOverviewHref}">
-            	<h:outputText value="#{connectionRequest.connection.displayName}" />
-        	</h:outputLink>
-		</o:separateConversationContext>
-    </h:column>
-
-	<h:column>
-        <f:facet name="header">
-            <h:outputText value="Requester" />
-        </f:facet>
-		<o:separateConversationContext>
-        	<h:outputLink value="#{myPendingConnectionRequestsListController.requesterOverviewHref}">
-            	<h:outputText value="#{connectionRequest.requester.displayName}" />
-        	</h:outputLink>
-		</o:separateConversationContext>
-    </h:column>
-
-	<h:column>
-        <f:facet name="header">
-            <h:outputText value="ACCEPT CONNECTION REQUEST" />
-        </f:facet>
-		<h:form>
-			<h:commandButton action="#{myPendingConnectionRequestsListController.acceptConnectionRequest}" value="#{myPendingConnectionRequestsListController.acceptConnectionRequestLabel}" disabled="#{myPendingConnectionRequestsListController.acceptConnectionRequestDisabled}"/>
-		</h:form>
-    </h:column>    
-
-	<h:column>
-        <f:facet name="header">
-            <h:outputText value="REFUSE CONNECTION REQUEST" />
-        </f:facet>
-		<h:form>
-			<h:commandButton action="#{myPendingConnectionRequestsListController.refuseConnectionRequest}" value="#{myPendingConnectionRequestsListController.refuseConnectionRequestLabel}" disabled="#{myPendingConnectionRequestsListController.refuseConnectionRequestDisabled}"/>
-		</h:form>
-    </h:column>    
-
-	<h:column>
-        <f:facet name="header">
-            <h:outputText value="BAN CONNECTION REQUEST CONNECTION" />
-        </f:facet>
-		<h:form>
-			<h:commandButton action="#{myPendingConnectionRequestsListController.banConnectionRequest}" value="#{myPendingConnectionRequestsListController.banConnectionRequestLabel}" disabled="#{myPendingConnectionRequestsListController.banConnectionRequestDisabled}"/>
-		</h:form>
-    </h:column>    
-
-</h:dataTable>
+<h2 class="gt-table-head"><h:outputText value="#{messages.connectionRequest_myPendingConnectionRequestsTitle}"/></h2>
 
 <br/>
 
-<h:form>
-    <h:commandLink rendered="#{myPendingConnectionRequestsListController.previousPage}" value="#{messages.navigation_previousPage}" action="#{myPendingConnectionRequestsListController.previousPage}"/>
-    <h:commandLink rendered="#{myPendingConnectionRequestsListController.nextPage}" value="#{messages.navigation_nextPage}" action="#{myPendingConnectionRequestsListController.nextPage}"/>
-</h:form>
 
-					</center>
-				</f:view>
+<!-- content box -->
+<div class="gt-content-box">
+
+<c:if test="#{empty(myPendingConnectionRequestsListController.list)}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText value="#{messages.connectionRequest_noPendingConnectionRequest}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<h:dataTable value="#{myPendingConnectionRequestsListController.list}" binding="#{myPendingConnectionRequestsListController.table}" var="connectionRequest" styleClass="gt-table gt-user-table">
+
+    <h:column>
+		<h4>
+			<h:outputText value="#{connectionRequest.requester.displayName}" />
+		</h4>
+    </h:column>
+
+	<h:column>
+	<h:form>
+		<table border="0" class="gt-table-categories" width="150" align="right">
+			<tr>
+				<td><h:commandLink value="#{messages.connectionRequest_responseAccept}" action="#{myPendingConnectionRequestsListController.acceptConnectionRequest}"/></td>
+		    </tr>
+		    <tr>
+				<td><h:commandLink value="#{messages.connectionRequest_responseRefuse}" action="#{myPendingConnectionRequestsListController.refuseConnectionRequest}"/></td>
+		    </tr>
+		    <tr>
+				<td><h:commandLink value="#{messages.connectionRequest_responseBan}" action="#{myPendingConnectionRequestsListController.banConnectionRequest}"/></td>
+		    </tr>
+		</table>
+	</h:form>
+    </h:column>
+
+</h:dataTable>
+
+</div><!-- /content box -->
+
+</f:view>
+			</div>
+			<!-- /main content -->
+			</div>
+			<!-- /body -->
+			
 			</ui:define>
 		</ui:decorate>
 

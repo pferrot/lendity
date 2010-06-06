@@ -22,6 +22,7 @@ import com.pferrot.sharedcalendar.model.ExternalItem;
 import com.pferrot.sharedcalendar.model.InternalItem;
 import com.pferrot.sharedcalendar.model.Item;
 import com.pferrot.sharedcalendar.person.PersonUtils;
+import com.pferrot.sharedcalendar.utils.HtmlUtils;
 import com.pferrot.sharedcalendar.utils.UiUtils;
 
 public abstract class AbstractItemsListController extends AbstractListController {
@@ -243,7 +244,7 @@ public abstract class AbstractItemsListController extends AbstractListController
 				description = description.substring(0, ItemConsts.NB_CHARACTERS_DESCRIPTION_IN_LISTS - 3);
 				description = description + "...";
 			}
-			return description;
+			return HtmlUtils.escapeHtmlAndReplaceCrAndWhiteSpaces(description);
 		}
 		else {
 			return "";
@@ -356,6 +357,20 @@ public abstract class AbstractItemsListController extends AbstractListController
 			return internalItem.getBorrower() != null;
 		}
 		return false;
+	}
+
+	public String getOwnerHref() {
+		final Item item = (Item)getTable().getRowData();
+		if (item instanceof InternalItem) {
+			final InternalItem internalItem = (InternalItem) item;
+			return PersonUtils.getPersonOverviewPageUrl(internalItem.getOwner().getId().toString());
+		}
+		return null;		
+	}
+
+	public boolean isOwnerHrefAvailable() {
+		final Item item = (Item)getTable().getRowData();
+		return item instanceof InternalItem;		
 	}
 	
 	public String getItemOverviewHref() {

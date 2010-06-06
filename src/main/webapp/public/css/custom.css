@@ -88,7 +88,7 @@ span.linkStyleAction {
 	color: #47790a;
 	text-decoration: none;
 	font-weight: bold;
-	font-size:82%;
+	font-size:100%;
 	cursor: pointer; 
 }
 
@@ -148,5 +148,9 @@ See http://craigsworks.com/projects/qtip/docs/#structure
 }
 
 .qtip-borderBottom {
+}
+
+.testHeader {
+	width: 200px;	
 }
 
