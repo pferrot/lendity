@@ -23,13 +23,26 @@
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/qtip/jquery.qtip-1.0.0-rc3.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/utils.js"></script>
 	
+	
+	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/superfish/superfish.js"></script>
+	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/superfish/hoverIntent.js"></script>
+	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/jquery/superfish/superfish.css" type="text/css" media="screen, projection" />
+	
+	
 	<script type="text/javascript">
 	  var $j = jQuery.noConflict();
-	</script>  
+	</script>	
 
 	<script type="text/javascript">
 		colorErrorFields();
-	</script>    
+	</script>
+	
+	<script>
+	// initialise plugins
+	$j(document).ready(function() {
+		$j('ul.sf-menu').superfish();
+	});
+	</script>   
 
 <!-- 	
   <script type="text/javascript">
@@ -96,73 +109,99 @@
 				<div class="gt-fixed-wrap clearfix">
 				
 				<!-- navigation -->
-				<div class="gt-nav">
-					<ul>
-						<li>
-	                        <h:outputLink value="#{authenticationController.homeURL}">
-	                        	<h:outputText value="#{messages.menu_home}"/>
-	                        </h:outputLink>
-						</li>
-						<c:if test="${loggedInUser}">
-							<li>
-		                        <h:outputLink value="#{authenticationController.myItemsURL}">
-		                        	<h:outputText value="#{messages.menu_myItems}"/>
-		                        </h:outputLink>
-							</li>
-						</c:if>
-						<c:if test="${loggedInUser}">
-							<li>
-		                        <h:outputLink value="#{authenticationController.myBorrowedItemsURL}">
+				<div>
+
+
+
+
+
+
+
+<ul class="sf-menu">
+	<li>
+	    <h:outputLink value="#{authenticationController.homeURL}">
+	        <h:outputText value="#{messages.menu_home}" />
+	    </h:outputLink>
+	</li>
+	<c:if test="${loggedInUser}">
+    <li>
+        <h:outputLink value="#{authenticationController.myItemsURL}">
+        	<h:outputText value="#{messages.menu_items}"/>
+        </h:outputLink>
+		<ul class="sf-menu-sub1">
+			<li>
+			    <h:outputLink value="#{authenticationController.myItemsURL}">
+				    <h:outputText value="#{messages.menu_myItems}" />
+			    </h:outputLink>
+			</li>
+			<li>
+			    <h:outputLink value="#{authenticationController.myBorrowedItemsURL}">
 		                        	<h:outputText value="#{messages.menu_myBorrowedItems}"/>
 		                        </h:outputLink>
-							</li>
-						</c:if>
-						<c:if test="${loggedInUser}">
-							<li>
-		                        <h:outputLink value="#{authenticationController.myConnectionsItemsURL}">
+			</li>
+			<li>
+			   <h:outputLink value="#{authenticationController.myConnectionsItemsURL}">
 		                        	<h:outputText value="#{messages.menu_myConnectionsItems}"/>
 		                        </h:outputLink>
-							</li>
-						</c:if>
-						<c:if test="${loggedInUser}">
-							<li>
-		                        <h:outputLink value="#{authenticationController.myConnectionsURL}">
-		                        	<h:outputText value="#{messages.menu_myConnections}"/>
-		                        </h:outputLink>
-							</li>
-						</c:if>
-						<c:if test="${loggedInUser}">
-							<li>
-		                        <h:outputLink value="#{authenticationController.myPendingConnectionRequestsURL}">
+			</li>
+			<li>
+			    <h:outputLink value="#{authenticationController.myItemsURL}">
+				    <h:outputText value="#{messages.menu_myItems}" />
+			    </h:outputLink>
+			</li>
+	    </ul>
+	</li>
+	<li>
+      	<h:outputLink value="#{authenticationController.myConnectionsURL}">
+            <h:outputText value="#{messages.menu_friends}"/>
+        </h:outputLink>
+		<ul class="sf-menu-sub1">
+			<li>
+			   <h:outputLink value="#{authenticationController.myConnectionsURL}">
+               	  <h:outputText value="#{messages.menu_myConnections}"/>
+               </h:outputLink>
+			</li>
+			<li>
+			    <h:outputLink value="#{authenticationController.personsURL}">
+		            <h:outputText value="#{messages.menu_persons}"/>
+		        </h:outputLink>
+		    </li>
+			<li>
+			    <h:outputLink value="#{authenticationController.myPendingConnectionRequestsURL}">
 		                        	<h:outputText value="#{messages.menu_myPendingConnectionRequests}"/>
 		                        </h:outputLink>
-							</li>
-						</c:if>
-						<c:if test="${loggedInUser}">
-							<li>
-		                        <h:outputLink value="#{authenticationController.myBannedPersonsURL}">
+			</li>
+			<li>
+			    <h:outputLink value="#{authenticationController.myBannedPersonsURL}">
 		                        	<h:outputText value="#{messages.menu_myBannedPersons}"/>
 		                        </h:outputLink>
-							</li>
-						</c:if>
-						<c:if test="${loggedInUser}">
-							<li>
-		                        <h:outputLink value="#{authenticationController.myPendingConnectionRequests2URL}">
+			</li>
+			<li>
+			    <h:outputLink value="#{authenticationController.myPendingConnectionRequests2URL}">
 		                        	<h:outputText value="#{messages.menu_myPendingConnectionRequests2}"/>
 		                        </h:outputLink>
-							</li>
-						</c:if>
-						<c:if test="${loggedInUser}">
-							<li>
-		                        <h:outputLink value="#{authenticationController.personsURL}">
-		                        	<h:outputText value="#{messages.menu_persons}"/>
-		                        </h:outputLink>
-							</li>
-						</c:if>
-						<!-- 
-						<li><a class="gt-active" href="base.html">Base HTML</a></li>
-						 -->
-					</ul>
+			</li>
+	    </ul>
+	</li>
+	</c:if>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 				</div><!-- / navigation -->
 				
 				</div>

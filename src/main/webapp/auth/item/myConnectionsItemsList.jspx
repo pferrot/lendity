@@ -87,16 +87,10 @@
 				<h:outputText value="#{item.title}" />
 			</h:outputLink>
 		</h4>
-		<p><h:outputText value="#{myConnectionsItemsListController.description}" /></p>
-		<p class="gt-table-edit">
-			<h:outputLink rendered="#{myConnectionsItemsListController.editAvailable}" value="#{myConnectionsItemsListController.itemEditHref}">
-				<h:outputText rendered="#{myConnectionsItemsListController.editAvailable}" value="#{messages.navigation_edit}" />
-			</h:outputLink>
-		</p>
     </h:column>
 
 	<h:column>
-		<table border="0" class="gt-table-categories" width="250" align="right">
+		<table border="0" class="gt-table-categories" width="300" align="right">
 			<tr>
 			    <th width="50%"><h:outputText value="#{messages.item_category}:" /></th>
 				<td width="50%"><h:outputText value="#{myConnectionsItemsListController.categoryLabel}"/></td>

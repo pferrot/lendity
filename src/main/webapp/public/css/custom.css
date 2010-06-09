@@ -25,16 +25,30 @@ If you add styles to this template, be sure to include it in your template files
 	display: block;
 }
 
+.gt-btn-green-medium-25 {
+	width: 83px;
+	background: url(../images/gt/btn-green-medium_25.png) no-repeat 0 0 transparent;
+	font-size: 80%;
+}
+
 /*
 Todo: different color when mousing over buttons.
 */
 .gt-btn-green-mini:hover {
+text-decoration: none!important;
+	background: url(../images/gt/btn-green-mini-hover.png) no-repeat 0 0 transparent;
 }
 .gt-btn-green-small:hover {
+text-decoration: none!important;
+	background: url(../images/gt/btn-green-small-hover.png) no-repeat 0 0 transparent;
 }
 .gt-btn-green-medium:hover {
+	text-decoration: none!important;
+	background: url(../images/gt/btn-green-medium-hover.png) no-repeat 0 0 transparent;
 }
 .gt-btn-green-large:hover {
+	text-decoration: none!important;
+	background: url(../images/gt/btn-green-large-hover.png) no-repeat 0 0 transparent;
 }
 .gt-btn-brown-mini:hover {
 }
