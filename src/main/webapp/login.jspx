@@ -26,11 +26,24 @@
 			
 			<!-- main content -->
 			<div class="gt-content">
-				<h2>Tada</h2>
-				<p>Bla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla bla</p>
-				<p>Bla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla bla</p>
-				<p>Bla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla bla</p>
-				<p>Bla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla bla</p>
+				
+				<div style="padding-left: 30px;">
+					<ul>
+					<li><h4><h:outputText value="#{messages.login_text1}"/></h4></li>
+					<li><h4><h:outputText value="#{messages.login_text2}"/></h4></li>
+					<li><h4><h:outputText value="#{messages.login_text3}"/></h4></li>
+					</ul>
+				</div>
+				<div style="padding-left: 50px;">	
+					<br/>
+					<i><h:outputText value="#{messages.login_textExample}"/></i>
+					<br/><br/><br/>
+					<h:outputLink value="#{authenticationController.registrationURL}">
+						<h:outputText value="#{messages.login_registerForFree}"/>
+					</h:outputLink>
+				</div>
+				
+				
 			</div>
 			<!-- /main content -->
 

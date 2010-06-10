@@ -7,6 +7,15 @@ You can then use !important to override the style.
 If you add styles to this template, be sure to include it in your template files.
 */
 
+.gt-hd {
+	/*background: url(../images/gt/hd-bkg.jpg) repeat-x 0 100%;*/
+	background: url(../images/top-green-smudge.jpg) repeat-x 0 100%;
+	/*background: url(../images/top-green-waterpaper.jpg) repeat-x 0 100%;*/
+	/*background-color: #4f7f11;*/
+
+	padding-top: 1px;
+}
+
 /*
 Overridden for the cursor property.
 */

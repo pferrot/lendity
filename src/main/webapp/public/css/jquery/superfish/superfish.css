@@ -55,11 +55,16 @@ ul.sf-menu li li li.sfHover ul {
 /*** DEMO SKIN ***/
 .sf-menu {
 	float:			left;
-	margin-bottom:	1em;
+	margin-bottom:	0em;
 	font-weight: bold;
 }
 .sf-menu a {
 	padding: 		.75em 1em;
+	text-decoration:none;
+}
+
+.sf-menu-first-li a {
+	padding: 		.75em 1em .75em 0em;
 	text-decoration:none;
 }
 
