@@ -14,7 +14,6 @@ import com.pferrot.sharedcalendar.configuration.Configuration;
 import com.pferrot.sharedcalendar.model.Address;
 import com.pferrot.sharedcalendar.model.Country;
 import com.pferrot.sharedcalendar.model.Person;
-import com.pferrot.sharedcalendar.registration.RegistrationConsts;
 import com.pferrot.sharedcalendar.registration.RegistrationException;
 import com.pferrot.sharedcalendar.registration.RegistrationService;
 import com.pferrot.sharedcalendar.utils.UiUtils;
@@ -22,6 +21,8 @@ import com.pferrot.sharedcalendar.utils.UiUtils;
 public class RegistrationController {
 	
 	private final static Log log = LogFactory.getLog(RegistrationController.class);
+	
+	private final static String CAPTCHA_SESSION_KEY_NAME = "registrationCaptchaSessionKeyName";
 	
 	private Long genderId;
 	private List<SelectItem> gendersSelectItems;
@@ -40,6 +41,7 @@ public class RegistrationController {
 	private List<SelectItem> countriesSelectItems;
 	private String password;
 	private String passwordRepeat;
+	private String captcha;
 	
 	private RegistrationService registrationService;
 
@@ -169,6 +171,18 @@ public class RegistrationController {
 	public void setPasswordRepeat(String passwordRepeat) {
 		this.passwordRepeat = passwordRepeat;
 	}
+
+	public String getCaptcha() {
+		return captcha;
+	}
+
+	public void setCaptcha(String captcha) {
+		this.captcha = captcha;
+	}
+
+	public String getCaptchaSessionKeyName() {
+        return CAPTCHA_SESSION_KEY_NAME;
+    }
 
 	public String getNbDaysToValidateRegistration() {
 		return String.valueOf(Configuration.getNbDaysToValidateRegistration());

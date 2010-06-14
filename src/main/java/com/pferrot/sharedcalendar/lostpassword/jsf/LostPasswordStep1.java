@@ -6,6 +6,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,6 +57,19 @@ public class LostPasswordStep1 {
 			((UIInput)toValidate).setValid(false);
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 			message = I18nUtils.getMessageResourceString("validation_userNotFound", locale);
+			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
+		}
+	}
+
+	public void validateCaptcha(FacesContext context, UIComponent toValidate, Object value) {
+		String message = "";
+		String captchaUserValue = (String) value;
+		String captchaCorrectValue = (String)((HttpSession) FacesContext.getCurrentInstance().
+				getExternalContext().getSession(true)).getAttribute(getLostPasswordController().getCaptchaSessionKeyName());
+		if (! captchaCorrectValue.equalsIgnoreCase(captchaUserValue)) {
+			((UIInput)toValidate).setValid(false);
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			message = I18nUtils.getMessageResourceString("validation_captchaWrong", locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
 	}

@@ -7,12 +7,12 @@ import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.sharedcalendar.i18n.I18nUtils;
-import com.pferrot.sharedcalendar.item.ItemConsts;
 import com.pferrot.sharedcalendar.registration.RegistrationConsts;
 import com.pferrot.sharedcalendar.registration.RegistrationService;
 
@@ -76,6 +76,19 @@ public class RegistrationStep1 {
 			((UIInput)toValidate).setValid(false);
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 			message = I18nUtils.getMessageResourceString("validation_passwordConstraints", locale);
+			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
+		}
+	}
+	
+	public void validateCaptcha(FacesContext context, UIComponent toValidate, Object value) {
+		String message = "";
+		String captchaUserValue = (String) value;
+		String captchaCorrectValue = (String)((HttpSession) FacesContext.getCurrentInstance().
+				getExternalContext().getSession(true)).getAttribute(getRegistrationController().getCaptchaSessionKeyName());
+		if (! captchaCorrectValue.equalsIgnoreCase(captchaUserValue)) {
+			((UIInput)toValidate).setValid(false);
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			message = I18nUtils.getMessageResourceString("validation_captchaWrong", locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
 	}
