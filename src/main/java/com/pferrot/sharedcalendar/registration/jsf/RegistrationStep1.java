@@ -72,10 +72,10 @@ public class RegistrationStep1 {
 	public void validatePassword(FacesContext context, UIComponent toValidate, Object value) {
 		String message = "";
 		String password = (String) value;
-		if (password.length() < 4) {
+		if (password == null || !password.matches(RegistrationConsts.PASSWORD_REGEXP)) {
 			((UIInput)toValidate).setValid(false);
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			message = I18nUtils.getMessageResourceString("validation_passwordMinSize", new Object[]{String.valueOf(RegistrationConsts.MIN_PASSWORD_SIZE)}, locale);
+			message = I18nUtils.getMessageResourceString("validation_passwordConstraints", locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
 	}
