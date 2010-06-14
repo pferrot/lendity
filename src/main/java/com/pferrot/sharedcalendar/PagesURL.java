@@ -1,8 +1,6 @@
 package com.pferrot.sharedcalendar;
 
 public interface PagesURL {
-	
-	String ROOT_URL = "http://localhost:8080/shared_calendar";
 
 	/////////////////////////////////////////////////////////////////////////
 	// LOGIN - start

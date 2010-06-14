@@ -23,7 +23,7 @@
 			<value>lendity.com</value>
 		</property>		
 		<property name="rootURL">
-			<value>http://localhost:8080/shared_calendar</value>
+			<value>http://localhost:8080/lendity</value>
 		</property>
 		<property name="noReplyEmailAddress">
 			<value>no_reply@lendity.com</value>

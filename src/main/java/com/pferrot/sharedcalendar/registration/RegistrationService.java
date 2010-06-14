@@ -122,7 +122,7 @@ public class RegistrationService {
 			Long personId = personDao.createPerson(pPerson);
 			
 			// Generate activation link.
-			final StringBuffer activationLink = new StringBuffer(PagesURL.ROOT_URL);
+			final StringBuffer activationLink = new StringBuffer(Configuration.getRootURL());
 			activationLink.append(PagesURL.REGISTRATION_VALIDATION);
 			activationLink.append("?");
 			activationLink.append(RegistrationConsts.USERNAME_PARAMETER_NAME);
