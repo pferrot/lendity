@@ -82,12 +82,15 @@ ul.sf-menu li li li.sfHover ul {
 }
 
 .sf-menu li li {
-	background:		#59891b;
-	background: rgba(89, 137, 27, 0.9);
+	background-image:url(../../../images/top_background.jpg);
+	background-repeat:no-repeat;
+	background-attachment:fixed;
+
 }
 .sf-menu li li li {
-	background:		#59891b;
-	background: rgba(89, 137, 27, 0.9);
+	background-image:url(../../../images/top_background.jpg);
+	background-repeat:no-repeat;
+	background-attachment:fixed;
 }
 .sf-menu li li:hover, .sf-menu li.sfHover,
 .sf-menu a:focus, .sf-menu a:hover, .sf-menu a:active {
@@ -100,8 +103,7 @@ ul.sf-menu li li li.sfHover ul {
 }
 .sf-menu-sub1 li li:hover, .sf-menu-sub1 li.sfHover,
 .sf-menu-sub1 a:focus, .sf-menu-sub1 a:hover, .sf-menu-sub1 a:active {
-	background:		#59891b;
-	background: rgba(89, 137, 27, 0.9);	
+	background: url(../../../images/gt/navbar-bkg.png) repeat 0 0;
 }
 /*** arrows **/
 .sf-menu a.sf-with-ul {

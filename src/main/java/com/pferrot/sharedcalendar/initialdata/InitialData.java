@@ -125,9 +125,9 @@ public class InitialData {
 		user.setActivationCode("MANUALLY ACTIVATED");
 		user.setActivationDate(new Date());
 		Role userRole = roleDao.findRole(Role.USER_ROLE_NAME);
-		Role adminRole = roleDao.findRole(Role.ADMIN_ROLE_NAME);
+		//Role adminRole = roleDao.findRole(Role.ADMIN_ROLE_NAME);
 		user.addRole(userRole);
-		user.addRole(adminRole);		
+		//user.addRole(adminRole);		
 		
 		person.setUser(user);
 		

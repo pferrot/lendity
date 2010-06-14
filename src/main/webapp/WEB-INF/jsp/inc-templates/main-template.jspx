@@ -66,7 +66,9 @@
 			
 				<!-- logo -->
 				<div class="gt-logo">
-					<h:outputText value="#{messages.general_mainTitle}"/>
+					<h:outputLink value="#{authenticationController.homeURL}">
+						<img src="#{facesContext.externalContext.requestContextPath}/public/images/title_lendity.gif" />
+					</h:outputLink>
 				</div>
 				<!-- / logo -->
 				
@@ -213,7 +215,7 @@
   		<ui:insert name="content">Default Content</ui:insert>
 		<!-- footer -->
 		<div class="gt-footer"><div class="gt-footer-inner">
-			<p>&#169; 2010 pf</p>
+			<p>lendity.com &#169; 2010</p>
 		</div></div>
 		<!-- /footer -->
 </body>
