@@ -91,7 +91,9 @@
 							for="j_username"></h:message>
 						<h:inputText id="j_username" required="true" 
 						    value="#{loginController.username}"
-						    styleClass="gt-form-text gt-form-text-login" ></h:inputText>										
+						    requiredMessage="#{messages.validation_requiredMessage}"
+						    styleClass="gt-form-text gt-form-text-login"
+						    autocomplete="false"></h:inputText>										
 					</div><!-- /form row -->	
 
 					<!-- form row -->
@@ -101,7 +103,9 @@
 							for="j_password"></h:message>
 						<h:inputSecret id="j_password" required="true" 
 						    value="#{loginController.password}"
-						    styleClass="gt-form-text gt-form-text-login"></h:inputSecret>											
+						    requiredMessage="#{messages.validation_requiredMessage}"
+						    styleClass="gt-form-text gt-form-text-login"
+						    autocomplete="false"></h:inputSecret>											
 					</div><!-- /form row -->	
 					
 					<!-- form row -->
@@ -112,7 +116,7 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row">
-						<h:commandButton styleClass="gt-btn-green-medium gt-btn-left" type="submit" id="login" action="#{loginController.doLogin}" value="Login" />
+						<h:commandButton styleClass="gt-btn-green-medium gt-btn-left" type="submit" id="login" action="#{loginController.doLogin}" value="#{messages.login_login}" />
 					</div>
 					<!-- /form row -->				
 					<p class="gt-forgot-password">

@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
-import com.pferrot.sharedcalendar.dao.PersonDao;
-import com.pferrot.sharedcalendar.model.Person;
+import com.pferrot.lendity.dao.PersonDao;
+import com.pferrot.lendity.model.Person;
 /**
  * Controller to generate the Home Page basics to be rendered by a view.
  * It extends the convenience class AbstractController that encapsulates most

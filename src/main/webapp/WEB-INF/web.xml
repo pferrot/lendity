@@ -39,7 +39,7 @@
 	
 	<filter>
 		<filter-name>utf8Filter</filter-name>
-		<filter-class>com.pferrot.sharedcalendar.filter.UTF8Filter</filter-class>
+		<filter-class>com.pferrot.lendity.filter.UTF8Filter</filter-class>
 	</filter>
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>

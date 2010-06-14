@@ -25,7 +25,7 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
-	<bean id="initialDataController" class="com.pferrot.sharedcalendar.initialdata.InitialDataController">
+	<bean id="initialDataController" class="com.pferrot.lendity.initialdata.InitialDataController">
 		<property name="initialData"><ref bean="initialData"/></property>
 	</bean>
 	

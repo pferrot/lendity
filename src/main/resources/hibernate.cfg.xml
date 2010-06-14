@@ -15,7 +15,7 @@
 	        
         
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/sharedcalendar?characterEncoding=UTF-8</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/lendity?characterEncoding=UTF-8</property>
 		<property name="connection.username">pferrot</property>
 		<property name="connection.password">klop</property>
         
@@ -29,21 +29,21 @@
         <mapping class="com.pferrot.security.model.Role"/>
         <mapping class="com.pferrot.security.model.User"/>
         
-        <mapping class="com.pferrot.sharedcalendar.model.Address"/>
-        <mapping class="com.pferrot.sharedcalendar.model.Country"/>
-        <mapping class="com.pferrot.sharedcalendar.model.Gender"/>
-        <mapping class="com.pferrot.sharedcalendar.model.ListValue"/>
-        <mapping class="com.pferrot.sharedcalendar.model.OrderedListValue"/>
-        <mapping class="com.pferrot.sharedcalendar.model.Person"/>
-        <mapping class="com.pferrot.sharedcalendar.model.Language"/>
+        <mapping class="com.pferrot.lendity.model.Address"/>
+        <mapping class="com.pferrot.lendity.model.Country"/>
+        <mapping class="com.pferrot.lendity.model.Gender"/>
+        <mapping class="com.pferrot.lendity.model.ListValue"/>
+        <mapping class="com.pferrot.lendity.model.OrderedListValue"/>
+        <mapping class="com.pferrot.lendity.model.Person"/>
+        <mapping class="com.pferrot.lendity.model.Language"/>
         
-        <mapping class="com.pferrot.sharedcalendar.model.Item"/>
-        <mapping class="com.pferrot.sharedcalendar.model.InternalItem"/>
-        <mapping class="com.pferrot.sharedcalendar.model.ExternalItem"/>
-        <mapping class="com.pferrot.sharedcalendar.model.ItemCategory"/>
+        <mapping class="com.pferrot.lendity.model.Item"/>
+        <mapping class="com.pferrot.lendity.model.InternalItem"/>
+        <mapping class="com.pferrot.lendity.model.ExternalItem"/>
+        <mapping class="com.pferrot.lendity.model.ItemCategory"/>
         
-        <mapping class="com.pferrot.sharedcalendar.model.ConnectionRequest"/>
-        <mapping class="com.pferrot.sharedcalendar.model.ConnectionRequestResponse"/>
+        <mapping class="com.pferrot.lendity.model.ConnectionRequest"/>
+        <mapping class="com.pferrot.lendity.model.ConnectionRequestResponse"/>
         
         <mapping class="com.pferrot.envers.model.UserRevisionEntity"/>
         

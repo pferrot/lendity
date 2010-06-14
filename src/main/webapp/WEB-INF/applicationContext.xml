@@ -9,7 +9,7 @@
 	                    http://myfaces.apache.org/orchestra http://myfaces.apache.org/orchestra/orchestra.xsd">
 	
 	
-	<bean id="initialData" class="com.pferrot.sharedcalendar.initialdata.InitialData">
+	<bean id="initialData" class="com.pferrot.lendity.initialdata.InitialData">
 		<property name="userDao" ref="security.userDao"/>
 		<property name="roleDao" ref="security.roleDao"/>
 		<property name="personDao" ref="personDao"/>
@@ -18,7 +18,7 @@
 		<property name="passwordEncoder" ref="security.passwordEncoder"/>
 	</bean>
 	
-	<bean id="configuration" class="com.pferrot.sharedcalendar.configuration.Configuration" lazy-init="false">
+	<bean id="configuration" class="com.pferrot.lendity.configuration.Configuration" lazy-init="false">
 		<property name="siteName">
 			<value>lendity.com</value>
 		</property>		
@@ -62,7 +62,7 @@
 			<value>com.mysql.jdbc.Driver</value>
 		</property>
 		<property name="url">
-			<value>jdbc:mysql://localhost:3306/sharedcalendar?characterEncoding=UTF-8</value>
+			<value>jdbc:mysql://localhost:3306/lendity?characterEncoding=UTF-8</value>
 		</property>
 		<property name="username">
 			<value>pferrot</value>
@@ -118,7 +118,7 @@
 		</property>
 	</bean>
 	
-	<bean id="listValueDaoTarget" class="com.pferrot.sharedcalendar.dao.hibernate.ListValueDaoHibernateImpl">
+	<bean id="listValueDaoTarget" class="com.pferrot.lendity.dao.hibernate.ListValueDaoHibernateImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
 	
@@ -128,7 +128,7 @@
 			<ref local="listValueDaoTarget"/>
 		</property>
 		<property name="proxyInterfaces">
-           <value>com.pferrot.sharedcalendar.dao.ListValueDao</value>
+           <value>com.pferrot.lendity.dao.ListValueDao</value>
          </property>		
 		<property name="transactionAttributes">
 			<props>
@@ -161,7 +161,7 @@
 		<property name="target" ref="registrationServiceTarget" />
 	</bean>
 		
-	<bean id="registrationServiceTarget" class="com.pferrot.sharedcalendar.registration.RegistrationService">
+	<bean id="registrationServiceTarget" class="com.pferrot.lendity.registration.RegistrationService">
 		<property name="userDao" ref="security.userDao"/>
 		<property name="roleDao" ref="security.roleDao"/>
 		<property name="personDao" ref="personDao"/>
@@ -170,30 +170,30 @@
 		<property name="mailManager" ref="emailSender.mailManager"/>
 	</bean>
 	
-	<bean id="registrationStep1" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationStep1"
+	<bean id="registrationStep1" class="com.pferrot.lendity.registration.jsf.RegistrationStep1"
 	      scope="request">
 		<property name="registrationController" ref="registrationController"/>
 		<property name="registrationService" ref="registrationService"/>
 	</bean>
 	
-	<bean id="registrationStep2" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationStep2"
+	<bean id="registrationStep2" class="com.pferrot.lendity.registration.jsf.RegistrationStep2"
 	      scope="request">
 		<property name="registrationController" ref="registrationController"/>
 		<property name="registrationService" ref="registrationService"/>
 	</bean>
 	
-	<bean id="registrationStep3" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationStep3"
+	<bean id="registrationStep3" class="com.pferrot.lendity.registration.jsf.RegistrationStep3"
 	      scope="request">
 		<property name="registrationController" ref="registrationController"/>
 		<property name="registrationService" ref="registrationService"/>
 	</bean>		
 	
-	<bean id="registrationController" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationController"
+	<bean id="registrationController" class="com.pferrot.lendity.registration.jsf.RegistrationController"
 	      scope="conversation.access" orchestra:conversationName="registration">
 	      <property name="registrationService" ref="registrationService"/>
 	</bean>
 
-	<bean id="registrationValidationController" class="com.pferrot.sharedcalendar.registration.jsf.RegistrationValidationController"
+	<bean id="registrationValidationController" class="com.pferrot.lendity.registration.jsf.RegistrationValidationController"
 	      scope="request">
 	      <property name="registrationService" ref="registrationService"/>
 	</bean>
@@ -212,23 +212,23 @@
 		<property name="target" ref="lostPasswordServiceTarget" />
 	</bean>
 		
-	<bean id="lostPasswordServiceTarget" class="com.pferrot.sharedcalendar.lostpassword.LostPasswordService">
+	<bean id="lostPasswordServiceTarget" class="com.pferrot.lendity.lostpassword.LostPasswordService">
 		<property name="userDao" ref="security.userDao"/>
 		<property name="personDao" ref="personDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
 	</bean>
 
-	<bean id="lostPasswordStep1" class="com.pferrot.sharedcalendar.lostpassword.jsf.LostPasswordStep1"
+	<bean id="lostPasswordStep1" class="com.pferrot.lendity.lostpassword.jsf.LostPasswordStep1"
 	      scope="request">
 		<property name="lostPasswordController" ref="lostPasswordController"/>
 		<property name="lostPasswordService" ref="lostPasswordService"/>
 	</bean>
 	
-	<bean id="lostPasswordStep2" class="com.pferrot.sharedcalendar.lostpassword.jsf.LostPasswordStep2"
+	<bean id="lostPasswordStep2" class="com.pferrot.lendity.lostpassword.jsf.LostPasswordStep2"
 	      scope="request">
 	</bean>	
 	
-	<bean id="lostPasswordController" class="com.pferrot.sharedcalendar.lostpassword.jsf.LostPasswordController"
+	<bean id="lostPasswordController" class="com.pferrot.lendity.lostpassword.jsf.LostPasswordController"
 	      scope="conversation.access" orchestra:conversationName="lostpassword">
 	      <property name="lostPasswordService" ref="lostPasswordService"/>
 	</bean>
@@ -238,7 +238,7 @@
 	PERSON - start
 	 -->
 	 
-	<bean id="personDaoTarget" class="com.pferrot.sharedcalendar.dao.hibernate.PersonDaoHibernateImpl">
+	<bean id="personDaoTarget" class="com.pferrot.lendity.dao.hibernate.PersonDaoHibernateImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
 	
@@ -248,7 +248,7 @@
 			<ref local="personDaoTarget"/>
 		</property>
 		<property name="proxyInterfaces">
-           <value>com.pferrot.sharedcalendar.dao.PersonDao</value>
+           <value>com.pferrot.lendity.dao.PersonDao</value>
          </property>		
 		<property name="transactionAttributes">
 			<props>
@@ -264,35 +264,35 @@
 		<property name="target" ref="personServiceTarget" />
 	</bean>
 	
-	<bean id="personServiceTarget" class="com.pferrot.sharedcalendar.person.PersonService">
+	<bean id="personServiceTarget" class="com.pferrot.lendity.person.PersonService">
 		<property name="personDao" ref="personDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
 	</bean>
 	
-	<bean id="personsListController" class="com.pferrot.sharedcalendar.person.jsf.PersonsListController"
+	<bean id="personsListController" class="com.pferrot.lendity.person.jsf.PersonsListController"
 	      scope="conversation.access">
 	      <property name="personService" ref="personService"/>
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
 
-	<bean id="myConnectionsListController" class="com.pferrot.sharedcalendar.person.jsf.MyConnectionsListController"
+	<bean id="myConnectionsListController" class="com.pferrot.lendity.person.jsf.MyConnectionsListController"
 	      scope="session">
 	      <property name="personService" ref="personService"/>
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
 
-	<bean id="myBannedPersonsListController" class="com.pferrot.sharedcalendar.person.jsf.MyBannedPersonsListController"
+	<bean id="myBannedPersonsListController" class="com.pferrot.lendity.person.jsf.MyBannedPersonsListController"
 	      scope="session">
 	      <property name="personService" ref="personService"/>
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
 	
-	<bean id="personOverviewController" class="com.pferrot.sharedcalendar.person.jsf.PersonOverviewController"
+	<bean id="personOverviewController" class="com.pferrot.lendity.person.jsf.PersonOverviewController"
 	      scope="conversation.access">
 	      <property name="personService" ref="personService"/>
 	</bean>
 	
-	<bean id="personEditController" class="com.pferrot.sharedcalendar.person.jsf.PersonEditController"
+	<bean id="personEditController" class="com.pferrot.lendity.person.jsf.PersonEditController"
 	      scope="conversation.access">
 	      <property name="personService" ref="personService"/>
 	</bean>
@@ -307,7 +307,7 @@
 	CONNECTION REQUEST - start
 	 -->
 	 
-	<bean id="connectionRequestDaoTarget" class="com.pferrot.sharedcalendar.dao.hibernate.ConnectionRequestDaoHibernateImpl">
+	<bean id="connectionRequestDaoTarget" class="com.pferrot.lendity.dao.hibernate.ConnectionRequestDaoHibernateImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
 	
@@ -317,7 +317,7 @@
 			<ref local="connectionRequestDaoTarget"/>
 		</property>
 		<property name="proxyInterfaces">
-           <value>com.pferrot.sharedcalendar.dao.ConnectionRequestDao</value>
+           <value>com.pferrot.lendity.dao.ConnectionRequestDao</value>
          </property>		
 		<property name="transactionAttributes">
 			<props>
@@ -333,14 +333,14 @@
 		<property name="target" ref="connectionRequestServiceTarget" />
 	</bean>
 	
-	<bean id="connectionRequestServiceTarget" class="com.pferrot.sharedcalendar.connectionrequest.ConnectionRequestService">
+	<bean id="connectionRequestServiceTarget" class="com.pferrot.lendity.connectionrequest.ConnectionRequestService">
 		<property name="connectionRequestDao" ref="connectionRequestDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
 		<property name="personDao" ref="personDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
 	</bean>
 
-	<bean id="myPendingConnectionRequestsListController" class="com.pferrot.sharedcalendar.connectionrequest.jsf.MyPendingConnectionRequestsListController"
+	<bean id="myPendingConnectionRequestsListController" class="com.pferrot.lendity.connectionrequest.jsf.MyPendingConnectionRequestsListController"
 	      scope="conversation.access">
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
@@ -355,7 +355,7 @@
 	ITEM - start
 	 --> 
 	 
-	<bean id="itemDaoTarget" class="com.pferrot.sharedcalendar.dao.hibernate.ItemDaoHibernateImpl">
+	<bean id="itemDaoTarget" class="com.pferrot.lendity.dao.hibernate.ItemDaoHibernateImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
 	
@@ -365,7 +365,7 @@
 			<ref local="itemDaoTarget"/>
 		</property>
 		<property name="proxyInterfaces">
-           <value>com.pferrot.sharedcalendar.dao.ItemDao</value>
+           <value>com.pferrot.lendity.dao.ItemDao</value>
          </property>		
 		<property name="transactionAttributes">
 			<props>
@@ -381,54 +381,54 @@
 		<property name="target" ref="itemServiceTarget" />
 	</bean>
 		
-	<bean id="itemServiceTarget" class="com.pferrot.sharedcalendar.item.ItemService">
+	<bean id="itemServiceTarget" class="com.pferrot.lendity.item.ItemService">
 		<property name="itemDao" ref="itemDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
 		<property name="personDao" ref="personDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
 	</bean>
 	
-	<bean id="itemOverviewController" class="com.pferrot.sharedcalendar.item.jsf.InternalItemOverviewController"
+	<bean id="itemOverviewController" class="com.pferrot.lendity.item.jsf.InternalItemOverviewController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="itemAddController" class="com.pferrot.sharedcalendar.item.jsf.InternalItemAddController"
+	<bean id="itemAddController" class="com.pferrot.lendity.item.jsf.InternalItemAddController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="itemEditController" class="com.pferrot.sharedcalendar.item.jsf.InternalItemEditController"
+	<bean id="itemEditController" class="com.pferrot.lendity.item.jsf.InternalItemEditController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="itemsListController" class="com.pferrot.sharedcalendar.item.jsf.ItemsListController"
+	<bean id="itemsListController" class="com.pferrot.lendity.item.jsf.ItemsListController"
 	      scope="session">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="myItemsListController" class="com.pferrot.sharedcalendar.item.jsf.MyItemsListController"
+	<bean id="myItemsListController" class="com.pferrot.lendity.item.jsf.MyItemsListController"
 	      scope="session">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 
-	<bean id="myBorrowedItemsListController" class="com.pferrot.sharedcalendar.item.jsf.MyBorrowedItemsListController"
+	<bean id="myBorrowedItemsListController" class="com.pferrot.lendity.item.jsf.MyBorrowedItemsListController"
 	      scope="session">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 
-	<bean id="myConnectionsItemsListController" class="com.pferrot.sharedcalendar.item.jsf.MyConnectionsItemsListController"
+	<bean id="myConnectionsItemsListController" class="com.pferrot.lendity.item.jsf.MyConnectionsItemsListController"
 	      scope="session">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 
-	<bean id="internalItemLendTooltipController" class="com.pferrot.sharedcalendar.item.jsf.InternalItemLendTooltipController"
+	<bean id="internalItemLendTooltipController" class="com.pferrot.lendity.item.jsf.InternalItemLendTooltipController"
 	      scope="request">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="internalItemLendBackTooltipController" class="com.pferrot.sharedcalendar.item.jsf.InternalItemLendBackTooltipController"
+	<bean id="internalItemLendBackTooltipController" class="com.pferrot.lendity.item.jsf.InternalItemLendBackTooltipController"
 	      scope="request">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
@@ -441,7 +441,7 @@
 	<!-- 
 	Listener to store the current person ID in the session, so it avoids to always query the DB to retrieve it.
 	 -->
-<!--	<bean id="currentPersonListenerTarget" class="com.pferrot.sharedcalendar.person.listener.CurrentPersonLoginListener">-->
+<!--	<bean id="currentPersonListenerTarget" class="com.pferrot.lendity.person.listener.CurrentPersonLoginListener">-->
 <!--    	<property name="personDao" ref="personDao"/>-->
 <!--	</bean>	-->
 <!--	<bean id="currentPersonListener" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">-->

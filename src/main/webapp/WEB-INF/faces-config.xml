@@ -31,7 +31,7 @@
 <!--	<managed-bean>-->
 <!--		<description>Registration Bean</description>-->
 <!--		<managed-bean-name>registrationBean</managed-bean-name>-->
-<!--		<managed-bean-class>com.pferrot.sharedcalendar.registration.jsf.RegistrationBean</managed-bean-class>-->
+<!--		<managed-bean-class>com.pferrot.lendity.registration.jsf.RegistrationBean</managed-bean-class>-->
 <!--		<managed-bean-scope>request</managed-bean-scope>-->
 <!--		<managed-property>-->
 <!--			<property-name>registrationService</property-name>-->
@@ -390,7 +390,7 @@
 	 <!-- 
     <validator>
         <validator-id>itemYearValidator</validator-id>
-        <validator-class>com.pferrot.sharedcalendar.item.jsf.validator.ItemYearValidator</validator-class>
+        <validator-class>com.pferrot.lendity.item.jsf.validator.ItemYearValidator</validator-class>
     </validator>
 	 -->
 </faces-config>

@@ -47,7 +47,8 @@
 							value="#{registrationController.firstName}"
 							required="true"
 							requiredMessage="#{messages.validation_requiredMessage}"
-							maxlength="255"/>			
+							maxlength="255"
+							autocomplete="false"/>			
 					</div><!-- /form row -->					
 					
 					<!-- form row -->
@@ -59,7 +60,8 @@
 							value="#{registrationController.lastName}"
 							required="true"
 							requiredMessage="#{messages.validation_requiredMessage}"
-							maxlength="255"/>			
+							maxlength="255"
+							autocomplete="false"/>			
 					</div><!-- /form row -->
 
 					<!-- form row -->
@@ -72,7 +74,8 @@
 						    required="true"
 						    requiredMessage="#{messages.validation_requiredMessage}"
 						    validator="#{registrationStep1.validateEmail}"
-						    maxlength="255">
+						    maxlength="255"
+						    autocomplete="false">
 						</h:inputText>						
 					</div><!-- /form row -->
 
@@ -86,7 +89,8 @@
 						    required="true"
 						    requiredMessage="#{messages.validation_requiredMessage}"
 						    validator="#{registrationStep1.validatePassword}"
-						    maxlength="255">
+						    maxlength="255"
+						    autocomplete="false">
 						</h:inputSecret>						
 					</div><!-- /form row -->
 
@@ -100,7 +104,8 @@
 						    required="true"
 						    requiredMessage="#{messages.validation_requiredMessage}"
 						    validator="#{registrationStep1.validatePasswordRepeat}"
-						    maxlength="255">
+						    maxlength="255"
+						    autocomplete="false">
 						</h:inputSecret>												
 					</div><!-- /form row -->	
 
@@ -114,7 +119,8 @@
 						     required="true"
 						     requiredMessage="#{messages.validation_requiredMessage}"
 						  	 validator="#{registrationStep1.validateCaptcha}"
-						  	 maxlength="50"/>
+						  	 maxlength="50"
+						  	 autocomplete="false"/>
 						<br/><br/>
 					  	<t:captcha captchaSessionKeyName="#{registrationController.captchaSessionKeyName}" imageWidth="200" imageHeight="56" />
 					</div><!-- /form row -->	

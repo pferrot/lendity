@@ -5,7 +5,7 @@
 TODO: non-lazy fetching should never be used...
  -->
 <hibernate-mapping default-lazy="false">
-    <class name="com.pferrot.sharedcalendar.model.Person" table="persons">
+    <class name="com.pferrot.lendity.model.Person" table="persons">
         <comment></comment>
         <id name="id" type="int">
             <column name="id" precision="10" scale="0" />
@@ -36,7 +36,7 @@ TODO: non-lazy fetching should never be used...
 <!--                <comment></comment>-->
 <!--            </column>-->
 <!--        </property>-->
-<!--        <many-to-one name="friends" class="com.pferrot.sharedcalendar.model.Person" fetch="select">-->
+<!--        <many-to-one name="friends" class="com.pferrot.lendity.model.Person" fetch="select">-->
 <!--            <column name="CATEGORY_ID_FK" precision="10" scale="0" not-null="true">-->
 <!--                <comment></comment>-->
 <!--            </column>-->

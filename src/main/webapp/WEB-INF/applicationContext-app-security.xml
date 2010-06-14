@@ -65,14 +65,14 @@ security module.
 		-->
 	</http>
 	
-	<beans:bean id="loginController" class="com.pferrot.sharedcalendar.login.jsf.LoginController"
+	<beans:bean id="loginController" class="com.pferrot.lendity.login.jsf.LoginController"
 	      scope="request">
 	</beans:bean>	
 
-	<beans:bean id="authenticationController" class="com.pferrot.sharedcalendar.login.jsf.AuthenticationController">
+	<beans:bean id="authenticationController" class="com.pferrot.lendity.login.jsf.AuthenticationController">
 	</beans:bean>	
 
-	<beans:bean id="authenticationProcessingFilter"	class="com.pferrot.sharedcalendar.login.filter.CustomAuthenticationProcessingFilter">
+	<beans:bean id="authenticationProcessingFilter"	class="com.pferrot.lendity.login.filter.CustomAuthenticationProcessingFilter">
 		<custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
 		<beans:property name="authenticationFailureUrl" value="/login.faces?loginFailed=true"/>
 		<beans:property name="defaultTargetUrl" value="/auth/home.faces" />
