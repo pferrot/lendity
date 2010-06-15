@@ -51,7 +51,17 @@
 <!-- content box -->
 <div class="gt-content-box">
 
-<c:if test="#{empty(personsListController.list)}">
+<c:if test="#{empty(personsListController.list) and not(personsListController.filteredList)}">
+	<br/><br/>
+	<center>
+	<div style="padding-left: 100px; padding-right: 100px;">
+	<p><b><h:outputText value="#{messages.person_searchPersonTip}"></h:outputText></b></p>
+	</div>
+	</center>
+	<br/>
+</c:if>
+
+<c:if test="#{empty(personsListController.list) and personsListController.filteredList}">
 	<br/><br/>
 	<center>
 	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>

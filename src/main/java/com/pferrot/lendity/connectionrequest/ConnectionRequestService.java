@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.emailsender.manager.MailManager;
+import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
 import com.pferrot.lendity.dao.ConnectionRequestDao;
@@ -20,6 +21,7 @@ import com.pferrot.lendity.model.ConnectionRequest;
 import com.pferrot.lendity.model.ConnectionRequestResponse;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.utils.JsfUtils;
 
 public class ConnectionRequestService {
 
@@ -161,9 +163,11 @@ public class ConnectionRequestService {
 			objects.put("requesterLastName", pRequester.getLastName());
 			objects.put("signature", Configuration.getSiteName());
 			objects.put("siteName", Configuration.getSiteName());
+			objects.put("siteUrl", Configuration.getRootURL());
+			objects.put("invitationsUrl", Configuration.getRootURL() + PagesURL.MY_PENDING_CONNECTION_REQUESTS_LIST);
 			
 			// TODO: localization
-			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/connectionrequest/ask/en";
+			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/connectionrequest/ask/fr";
 			
 			Map<String, String> to = new HashMap<String, String>();
 			to.put(pConnection.getEmail(), pConnection.getEmail());
@@ -173,7 +177,7 @@ public class ConnectionRequestService {
 					         to,
 					         null, 
 					         null,
-					         Configuration.getSiteName() + ": someone wants to enter your network",
+					         Configuration.getSiteName() + ": invitation à devenir ami",
 					         objects, 
 					         velocityTemplateLocation);		
 			
@@ -235,7 +239,7 @@ public class ConnectionRequestService {
 			
 			setConnectionRequestResponse(pConnectionRequest, (ConnectionRequestResponse)listValueDao.findListValue(ConnectionRequestResponse.REFUSE_LABEL_CODE));
 			
-			sendResponseEmail(pConnectionRequest, Configuration.getSiteName() + ": your connection request has been rejected", "com/pferrot/lendity/emailtemplate/connectionrequest/refuse/en");
+			sendResponseEmail(pConnectionRequest, Configuration.getSiteName() + ": demande d'ami refusée", "com/pferrot/lendity/emailtemplate/connectionrequest/refuse/fr");
 
 			if (log.isInfoEnabled()) {
 				log.info("'" + pConnectionRequest.getRequester() + "' is refused by '" + pConnectionRequest.getConnection() + "'.");
@@ -297,8 +301,8 @@ public class ConnectionRequestService {
 			}
 			
 			sendResponseEmail(pConnectionRequest,
-					Configuration.getSiteName() + ": your connection request has been rejected and you were banned",
-					"com/pferrot/lendity/emailtemplate/connectionrequest/ban/en");
+					Configuration.getSiteName() + ": demande d'ami refusée et exclusion",
+					"com/pferrot/lendity/emailtemplate/connectionrequest/ban/fr");
 
 			if (log.isInfoEnabled()) {
 				log.info("'" + pConnectionRequest.getRequester() + "' is banned by '" + pConnectionRequest.getConnection() + "'.");
@@ -362,8 +366,8 @@ public class ConnectionRequestService {
 			}
 			
 			sendResponseEmail(pConnectionRequest,
-					Configuration.getSiteName() + ": your connection request has been accepted",
-					"com/pferrot/lendity/emailtemplate/connectionrequest/accept/en");
+					Configuration.getSiteName() + ": demande d'ami acceptée",
+					"com/pferrot/lendity/emailtemplate/connectionrequest/accept/fr");
 
 			if (log.isInfoEnabled()) {
 				log.info("'" + pConnectionRequest.getRequester() + "' is accepted by '" + pConnectionRequest.getConnection() + "'.");
@@ -413,6 +417,7 @@ public class ConnectionRequestService {
 		objects.put("connectionLastName", pConnectionRequest.getConnection().getLastName());
 		objects.put("signature", Configuration.getSiteName());
 		objects.put("siteName", Configuration.getSiteName());
+		objects.put("siteUrl", Configuration.getRootURL());
 		
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(pConnectionRequest.getRequester().getEmail(), pConnectionRequest.getRequester().getEmail());

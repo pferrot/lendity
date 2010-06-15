@@ -1,0 +1,5 @@
+Hello $requesterFirstName,<br/><br/>
+
+$connectionFirstName $connectionLastName a accepté de t'ajouter comme ami.<br/><br/>
+
+A bientôt sur <a href="$siteUrl">$siteName</a>.

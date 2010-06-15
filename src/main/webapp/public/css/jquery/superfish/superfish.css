@@ -158,3 +158,11 @@ li.sfHover > a > .sf-sub-indicator {
 .sf-shadow ul.sf-shadow-off {
 	background: transparent;
 }
+
+a.menuLinkParent {
+	cursor: pointer;
+}
+
+a.menuLinkParent:hover {
+	color: #d1db9d;
+}

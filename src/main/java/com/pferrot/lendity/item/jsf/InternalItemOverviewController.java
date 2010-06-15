@@ -100,6 +100,14 @@ public class InternalItemOverviewController
 	public boolean isEditAvailable() {
 		return itemService.isCurrentUserAuthorizedToEdit(item);
 	}
+	
+	public boolean isLendAvailable() {
+		return isEditAvailable() && !item.isBorrowed();
+	}
+	
+	public boolean isLendBackAvailable() {
+		return isEditAvailable() && item.isBorrowed();
+	}
 
 	public boolean isDeleteAvailable() {
 		return itemService.isCurrentUserAuthorizedToDelete(item);

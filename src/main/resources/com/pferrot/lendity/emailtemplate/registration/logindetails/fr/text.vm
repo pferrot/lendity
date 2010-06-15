@@ -1,0 +1,12 @@
+Hello $firstName,
+
+Ton compte pour $siteName a été validé avec succès.
+
+Tu peux dès maintenant te connecter en utilisant les informations suivantes:
+
+Username: $username
+Password: $password
+
+A bientôt sur $siteName.
+
+$siteUrl

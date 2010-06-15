@@ -59,7 +59,7 @@ public class PersonService {
 	}
 
 	/**
-	 * Unban a user and send an email to the person who was banned.
+	 * Unban a user.
 	 *
 	 * @param pBannerPersonId
 	 * @param pBannedPersonId
@@ -75,29 +75,6 @@ public class PersonService {
 			if (bannedPerson != null) {
 				bannerPerson.removeBannedPerson(bannedPerson);
 				personDao.updatePerson(bannerPerson);
-				
-				// Send email (will actually create a JMS message, i.e. it is async).
-				Map<String, String> objects = new HashMap<String, String>();
-				objects.put("bannedFirstName", bannedPerson.getFirstName());
-				objects.put("userFirstName", bannerPerson.getFirstName());
-				objects.put("userLastName", bannerPerson.getLastName());
-				objects.put("signature", Configuration.getSiteName());
-				objects.put("siteName", Configuration.getSiteName());
-				
-				// TODO: localization
-				final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/connectionrequest/unban/en";
-				
-				Map<String, String> to = new HashMap<String, String>();
-				to.put(bannedPerson.getEmail(), bannedPerson.getEmail());
-				
-				mailManager.send(Configuration.getNoReplySenderName(), 
-						         Configuration.getNoReplyEmailAddress(),
-						         to,
-						         null, 
-						         null,
-						         Configuration.getSiteName() + ": someone unbanned you",
-						         objects, 
-						         velocityTemplateLocation);
 			}
 		} 
 		catch (Exception e) {

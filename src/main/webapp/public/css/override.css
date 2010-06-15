@@ -134,3 +134,14 @@ a:hover {
 .gt-btn-green-large a:hover {
 	text-decoration: none!important;
 }
+
+.gt-form.gt-content-box {
+	padding: 15px 15px 5px 15px;
+	margin-bottom: 0px!important;
+}
+
+/* Sidebar Content */
+.gt-sidebar-content {
+	margin-bottom: 0px!important;
+	color: #333;
+}

@@ -1,7 +1,0 @@
-Hello $bannedFirstName,
-
-$userFirstName $userLastName removed you from his/her list of banned users. This means that you cannot try to add $userFirstName $userLastName as connection again.
-
-Best regards,
-
-$signature

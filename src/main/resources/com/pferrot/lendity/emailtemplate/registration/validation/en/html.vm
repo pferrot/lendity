@@ -1,9 +1,0 @@
-Hello $firstName,<br/><br/>
-
-Please follow the link below in order to complete your registration for $siteName.<br/><br/>
-
-<a href="$activationLink">Activation link</a><br/><br/>
-
-Thank you for joining,<br/><br/>
-
-$signature

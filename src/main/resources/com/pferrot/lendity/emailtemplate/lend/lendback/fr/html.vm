@@ -1,0 +1,7 @@
+Hello $borrowerFirstName,<br/><br/>
+
+<b>$lenderFirstName $lenderLastName</b> a indiqué que tu lui a retourné l'objet suivant:<br/><br/>
+
+<b>$itemTitle</b><br/><br/> 
+
+A bientôt sur <a href="$siteUrl">$siteName</a>.

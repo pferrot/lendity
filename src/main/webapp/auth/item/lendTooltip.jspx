@@ -15,7 +15,7 @@
 		<table> 
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<h:outputText value="#{messages.item_lendMessage}"/>
+					<b><h:outputText value="#{messages.item_lendMessage}"/></b>
 				</td>
 			</tr>
 			<tr>
@@ -26,9 +26,9 @@
 					<h:selectOneMenu id="lendBorrowerId" value="#{internalItemLendTooltipController.borrowerId}" converter="javax.faces.Long">
 						<f:selectItems value="#{internalItemLendTooltipController.borrowerSelectItems}"/>
 					</h:selectOneMenu>
-					<span id="lendBorrowerToName" onclick="enableLendBorrowerName()" class="linkStyleAction"><br/><h:outputText value="#{messages.item_lendToName}"/></span>
-					<h:inputText id="lendBorrowerName" value="#{internalItemLendTooltipController.borrowerName}" style="display: none"></h:inputText>
-					<span id="lendBorrowerToId" onclick="enableLendBorrowerId()" class="linkStyleAction" style="display: none"><br/><h:outputText value="#{messages.item_lendToId}"/></span>
+					<span id="lendBorrowerToName" onclick="enableLendBorrowerName()" class="linkStyleActionSmall"><br/><h:outputText value="#{messages.item_lendToName}"/></span>
+					<h:inputText id="lendBorrowerName" value="#{internalItemLendTooltipController.borrowerName}" style="display: none;"></h:inputText>
+					<span id="lendBorrowerToId" onclick="enableLendBorrowerId()" class="linkStyleActionSmall" style="display: none"><br/><h:outputText value="#{messages.item_lendToId}"/></span>
 				</td>
 			</tr>
 			<tr>

@@ -1,7 +1,0 @@
-Hello $requesterFirstName,
-
-$connectionFirstName $connectionLastName denied your connection request.
-
-Best regards,
-
-$signature

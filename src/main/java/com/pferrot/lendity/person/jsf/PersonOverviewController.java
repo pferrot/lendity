@@ -67,6 +67,10 @@ public class PersonOverviewController
 		return PersonUtils.getPersonEditPageUrl(person.getId().toString());
 	}
 
+	public String getChangePasswordHref() {		
+		return JsfUtils.getFullUrl(PagesURL.CHANGE_PASSWORD);
+	}
+
 	public boolean isEditAvailable() {
 		return personService.isCurrentUserAuthorizedToEdit(person);
 	}

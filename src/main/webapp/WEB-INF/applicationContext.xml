@@ -232,6 +232,35 @@
 	      scope="conversation.access" orchestra:conversationName="lostpassword">
 	      <property name="lostPasswordService" ref="lostPasswordService"/>
 	</bean>
+
+	<!-- 
+	LOST PASSWORD - end
+	========================================================================================================================
+	 -->
+
+	<!-- 
+	========================================================================================================================
+	CHANGE PASSWORD - start
+	 -->
+	
+	<bean id="changePasswordService" parent="baseTransactionProxy">
+		<property name="target" ref="changePasswordServiceTarget" />
+	</bean>
+		
+	<bean id="changePasswordServiceTarget" class="com.pferrot.lendity.changepassword.ChangePasswordService">
+		<property name="userDao" ref="security.userDao"/>
+		<property name="personDao" ref="personDao"/>
+	</bean>
+	
+	<bean id="changePasswordController" class="com.pferrot.lendity.changepassword.jsf.ChangePasswordController"
+	      scope="conversation.access" orchestra:conversationName="changePassword">
+	      <property name="changePasswordService" ref="changePasswordService"/>
+	</bean>
+
+	<!-- 
+	LOST PASSWORD - end
+	========================================================================================================================
+	 -->
 	 
 	<!-- 
 	========================================================================================================================

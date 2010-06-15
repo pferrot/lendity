@@ -79,9 +79,10 @@ public class LostPasswordService {
 		objects.put("password", person.getUser().getPassword());
 		objects.put("signature", Configuration.getSiteName());
 		objects.put("siteName", Configuration.getSiteName());
+		objects.put("siteUrl", Configuration.getRootURL());
 		
 		// TODO: localization
-		final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lostpassword/en";
+		final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lostpassword/fr";
 		
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(person.getEmail(), person.getEmail());
@@ -91,7 +92,7 @@ public class LostPasswordService {
 				         to,
 				         null, 
 				         null,
-				         "Your password for " + Configuration.getSiteName(),
+				         Configuration.getSiteName() + ": rappel du mot de passe", 
 				         objects, 
 				         velocityTemplateLocation);		
 		

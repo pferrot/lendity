@@ -35,7 +35,7 @@
 				
 				<f:view>
 
-					<h:form>
+					<h:form prependId="false">
 
 
 					<!-- form row -->
@@ -48,7 +48,7 @@
 							required="true"
 							requiredMessage="#{messages.validation_requiredMessage}"
 							maxlength="255"
-							autocomplete="false"/>			
+							autocomplete="off"/>			
 					</div><!-- /form row -->					
 					
 					<!-- form row -->
@@ -61,7 +61,7 @@
 							required="true"
 							requiredMessage="#{messages.validation_requiredMessage}"
 							maxlength="255"
-							autocomplete="false"/>			
+							autocomplete="off"/>			
 					</div><!-- /form row -->
 
 					<!-- form row -->
@@ -75,7 +75,7 @@
 						    requiredMessage="#{messages.validation_requiredMessage}"
 						    validator="#{registrationStep1.validateEmail}"
 						    maxlength="255"
-						    autocomplete="false">
+						    autocomplete="off">
 						</h:inputText>						
 					</div><!-- /form row -->
 
@@ -90,7 +90,7 @@
 						    requiredMessage="#{messages.validation_requiredMessage}"
 						    validator="#{registrationStep1.validatePassword}"
 						    maxlength="255"
-						    autocomplete="false">
+						    autocomplete="off">
 						</h:inputSecret>						
 					</div><!-- /form row -->
 
@@ -105,13 +105,19 @@
 						    requiredMessage="#{messages.validation_requiredMessage}"
 						    validator="#{registrationStep1.validatePasswordRepeat}"
 						    maxlength="255"
-						    autocomplete="false">
+						    autocomplete="off">
 						</h:inputSecret>												
 					</div><!-- /form row -->	
 
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">
 						<label><h:outputText value="#{messages.captcha_title}"/> *</label>						
+						<span style="font-size: 82%;">
+						<h:outputText value="#{messages.captcha_explanation}"/>
+						<br/><br/>
+						</span>
+						<t:captcha captchaSessionKeyName="#{registrationController.captchaSessionKeyName}" imageWidth="200" imageHeight="56" />
+						<br/><br/>				
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="captcha"></h:message>
 						<h:inputText id="captcha" styleClass="gt-form-text" 
@@ -120,10 +126,17 @@
 						     requiredMessage="#{messages.validation_requiredMessage}"
 						  	 validator="#{registrationStep1.validateCaptcha}"
 						  	 maxlength="50"
-						  	 autocomplete="false"/>
-						<br/><br/>
-					  	<t:captcha captchaSessionKeyName="#{registrationController.captchaSessionKeyName}" imageWidth="200" imageHeight="56" />
-					</div><!-- /form row -->	
+						  	 autocomplete="off"/>
+						<br/>
+					  	
+					</div><!-- /form row -->
+					
+					<!-- 
+					Reset the value that the user entered since the captcha image is changed.
+					-->
+					<script type="text/javascript">
+					  document.getElementById('captcha').value = '';
+					</script>
 					
 					<!-- form row -->
 					<div class="gt-form-row">

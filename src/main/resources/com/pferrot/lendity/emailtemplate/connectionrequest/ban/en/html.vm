@@ -1,7 +1,0 @@
-Hello $requesterFirstName,<br/><br/>
-
-$connectionFirstName $connectionLastName denied your connection request and banned you. This means that you cannot try to add $connectionFirstName $connectionLastName as connection anymore.<br/><br/>
-
-Best regards,<br/><br/>
-
-$signature

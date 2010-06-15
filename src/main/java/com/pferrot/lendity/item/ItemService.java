@@ -203,9 +203,10 @@ public class ItemService {
 			objects.put("itemTitle", internalItem.getTitle());
 			objects.put("signature", Configuration.getSiteName());
 			objects.put("siteName", Configuration.getSiteName());
+			objects.put("siteUrl", Configuration.getRootURL());
 			
 			// TODO: localization
-			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lend/lendback/en";
+			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lend/lendback/fr";
 			
 			Map<String, String> to = new HashMap<String, String>();
 			to.put(borrower.getEmail(), borrower.getEmail());
@@ -215,7 +216,7 @@ public class ItemService {
 					         to,
 					         null, 
 					         null,
-					         Configuration.getSiteName() + ": item back to owner",
+					         Configuration.getSiteName() + ": objet rendu",
 					         objects, 
 					         velocityTemplateLocation);
 			
@@ -249,9 +250,10 @@ public class ItemService {
 		objects.put("itemTitle", internalItem.getTitle());
 		objects.put("signature", Configuration.getSiteName());
 		objects.put("siteName", Configuration.getSiteName());
+		objects.put("siteUrl", Configuration.getRootURL());
 		
 		// TODO: localization
-		final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lend/lend/en";
+		final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lend/lend/fr";
 		
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(borrower.getEmail(), borrower.getEmail());
@@ -261,7 +263,7 @@ public class ItemService {
 				         to,
 				         null, 
 				         null,
-				         Configuration.getSiteName() + ": item lent to you",
+				         Configuration.getSiteName() + ": objet emprunté",
 				         objects, 
 				         velocityTemplateLocation);
 	}
@@ -313,9 +315,10 @@ public class ItemService {
 		objects.put("itemTitle", internalItem.getTitle());
 		objects.put("signature", Configuration.getSiteName());
 		objects.put("siteName", Configuration.getSiteName());
+		objects.put("siteUrl", Configuration.getRootURL());
 		
 		// TODO: localization
-		final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lend/reminder/en";
+		final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lend/reminder/fr";
 		
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(borrower.getEmail(), borrower.getEmail());

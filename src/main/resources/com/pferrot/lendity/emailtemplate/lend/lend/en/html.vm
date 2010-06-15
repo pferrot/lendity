@@ -1,9 +1,0 @@
-Hello $borrowerFirstName,<br/><br/>
-
-<b>$lenderFirstName $lenderLastName</b> indicated that he lent the following item to you:<br/><br/>
-
-<b>$itemTitle</b><br/><br/> 
-
-Regards,<br/><br/>
-
-$signature

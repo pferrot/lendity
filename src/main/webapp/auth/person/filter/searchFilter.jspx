@@ -25,7 +25,8 @@
 <h:form prependId="false">
 	<h:inputText id="searchString"
 	             styleClass="listerSearchInput"
-    	         value="#{theBean.searchString}" />
+	             style="width: 100%;"
+    	         value="#{theBean.searchString}"/>
 </h:form>
 <script type="text/javascript">
 	setupSearchField('searchString', 'clearSearchString', '#{messages.person_searchPerson}');

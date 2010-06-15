@@ -89,8 +89,17 @@
 		
 	<navigation-rule>
 		<from-view-id>/public/registration/lostpassword_2.jspx</from-view-id>
-	</navigation-rule>	
-
+	</navigation-rule>
+	
+	<!-- 
+	********************************************************************
+	CHANGE PASSWORD
+	********************************************************************
+	-->
+	<navigation-rule>
+		<from-view-id>/auth/changepassword/changepassword.jspx</from-view-id>
+	</navigation-rule>
+	
 	<!-- 
 	********************************************************************
 	LOGIN

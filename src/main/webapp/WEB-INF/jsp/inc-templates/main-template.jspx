@@ -122,9 +122,9 @@
 	</li>
 	<c:if test="${loggedInUser}">
     <li>
-        <h:outputLink value="#{authenticationController.myItemsURL}">
+        <a class="menuLinkParent">
         	<h:outputText value="#{messages.menu_items}"/>
-        </h:outputLink>
+        </a>
 		<ul class="sf-menu-sub1">
 			<li>
 			    <h:outputLink value="#{authenticationController.myItemsURL}">
@@ -141,17 +141,12 @@
 		                        	<h:outputText value="#{messages.menu_myConnectionsItems}"/>
 		                        </h:outputLink>
 			</li>
-			<li>
-			    <h:outputLink value="#{authenticationController.myItemsURL}">
-				    <h:outputText value="#{messages.menu_myItems}" />
-			    </h:outputLink>
-			</li>
 	    </ul>
 	</li>
 	<li>
-      	<h:outputLink value="#{authenticationController.myConnectionsURL}">
+      	<a class="menuLinkParent">
             <h:outputText value="#{messages.menu_friends}"/>
-        </h:outputLink>
+        </a>
 		<ul class="sf-menu-sub1">
 			<li>
 			   <h:outputLink value="#{authenticationController.myConnectionsURL}">
@@ -171,11 +166,6 @@
 			<li>
 			    <h:outputLink value="#{authenticationController.myBannedPersonsURL}">
 		                        	<h:outputText value="#{messages.menu_myBannedPersons}"/>
-		                        </h:outputLink>
-			</li>
-			<li>
-			    <h:outputLink value="#{authenticationController.myPendingConnectionRequests2URL}">
-		                        	<h:outputText value="#{messages.menu_myPendingConnectionRequests2}"/>
 		                        </h:outputLink>
 			</li>
 	    </ul>

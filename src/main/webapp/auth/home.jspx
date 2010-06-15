@@ -7,8 +7,8 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="Home" />
-	<ui:param name="contentHeader" value="Home" />
+	<ui:param name="pageTitle" value="#{messages.menu_home}" />
+	<ui:param name="contentHeader" value="#{messages.menu_home}" />
 
 	<ui:define name="content">
 
@@ -26,20 +26,29 @@
 			
 			<!-- main content -->
 			<div class="gt-content">
-				<h2>Tada</h2>
-				<p>Quoi mettre sur la homepage?</p>
-				<p>Quoi mettre sur la homepage?</p>
-				<p>Quoi mettre sur la homepage?</p>
-				<p>Quoi mettre sur la homepage?</p>
-				<p>Quoi mettre sur la homepage?</p>
-				<p>Quoi mettre sur la homepage?</p>
-				<p>Quoi mettre sur la homepage?</p>
-				<p>Quoi mettre sur la homepage?</p>
-				<p>Quoi mettre sur la homepage?</p>
-				<p>Quoi mettre sur la homepage?</p>
-				<p>Quoi mettre sur la homepage?</p>
-				<p>Quoi mettre sur la homepage?</p>
-				<p>Quoi mettre sur la homepage?</p>
+
+<h2 class="gt-table-head"><h:outputText value="#{messages.menu_home}"/></h2>
+
+			<div style="padding-left: 50px;">	
+					<br/>
+					<p>
+						<h:outputFormat value="#{messages.home_welcome}">
+							<f:param value="#{authenticationController.currentUserFirstName}" />
+						</h:outputFormat>
+					</p>
+					<p>
+						<h:outputText value="#{messages.home_text2}"/>
+					</p>
+					<ul>
+					<li><h:outputLink value="#{authenticationController.myItemsURL}"><h:outputText value="#{messages.home_link1}"/></h:outputLink></li>
+					<li><h:outputLink value="#{authenticationController.myBorrowedItemsURL}"><h:outputText value="#{messages.home_link2}"/></h:outputLink></li>
+					<li><h:outputLink value="#{authenticationController.myConnectionsItemsURL}"><h:outputText value="#{messages.home_link3}"/></h:outputLink></li>
+					<li><h:outputLink value="#{authenticationController.personsURL}"><h:outputText value="#{messages.home_link4}"/></h:outputLink></li>
+					</ul>
+					<p>
+						<h:outputText value="#{messages.home_signature}"/>
+					</p>
+				</div>
 			</div>
 			<!-- /main content -->
 

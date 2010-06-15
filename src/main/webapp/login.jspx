@@ -41,9 +41,7 @@
 					<h:outputLink value="#{authenticationController.registrationURL}">
 						<h:outputText value="#{messages.login_registerForFree}"/>
 					</h:outputLink>
-				</div>
-				
-				
+				</div>				
 			</div>
 			<!-- /main content -->
 
@@ -92,8 +90,7 @@
 						<h:inputText id="j_username" required="true" 
 						    value="#{loginController.username}"
 						    requiredMessage="#{messages.validation_requiredMessage}"
-						    styleClass="gt-form-text gt-form-text-login"
-						    autocomplete="false"></h:inputText>										
+						    styleClass="gt-form-text gt-form-text-login"/>										
 					</div><!-- /form row -->	
 
 					<!-- form row -->
@@ -104,8 +101,7 @@
 						<h:inputSecret id="j_password" required="true" 
 						    value="#{loginController.password}"
 						    requiredMessage="#{messages.validation_requiredMessage}"
-						    styleClass="gt-form-text gt-form-text-login"
-						    autocomplete="false"></h:inputSecret>											
+						    styleClass="gt-form-text gt-form-text-login"/>											
 					</div><!-- /form row -->	
 					
 					<!-- form row -->

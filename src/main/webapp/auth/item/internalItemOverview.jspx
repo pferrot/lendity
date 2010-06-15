@@ -72,15 +72,22 @@
 	</div>
 	</c:if>
 	<div class="gt-form-row gt-width-100">
-		<h:outputLink rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.itemEditHref}" styleClass="gt-btn-green-medium">
-    		<h:outputText rendered="#{itemOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
-    	</h:outputLink>
-		<span class="linkStyleAction" onclick="lendItemTooltip(this, '#{itemOverviewController.item.id}', 2)">
-			<h:outputText value="#{messages.item_lend}"/>
-		</span>
-		<span class="linkStyleAction" onclick="lendBackItemTooltip(this, '#{itemOverviewController.item.id}', 2)">
-			<h:outputText value="#{messages.item_lendBack}"/>
-		</span>		
+		<table><tr><td>
+			<h:outputLink rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.itemEditHref}" styleClass="gt-btn-green-medium">
+	    		<h:outputText rendered="#{itemOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
+	    	</h:outputLink>
+    	</td><td>
+    		<c:if test="#{itemOverviewController.lendAvailable}">
+				<span class="gt-btn-green-medium" onclick="lendItemTooltip(this, '#{itemOverviewController.item.id}', 2)">
+					<h:outputText value="#{messages.item_lend}"/>
+				</span>
+			</c:if>
+			<c:if test="#{itemOverviewController.lendBackAvailable}">
+				<span class="gt-btn-green-large" onclick="lendBackItemTooltip(this, '#{itemOverviewController.item.id}', 2)">
+					<h:outputText value="#{messages.item_lendBack}"/>
+				</span>
+			</c:if>
+		</td></tr></table>		
 	</div>
 </div>
 <!-- /content box -->

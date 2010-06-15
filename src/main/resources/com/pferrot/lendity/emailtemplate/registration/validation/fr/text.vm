@@ -1,0 +1,9 @@
+Hello $firstName,
+
+Merci de cliquer sur le lien ci-dessous afin de finaliser ton enregistrement pour $siteName:
+
+$activationUrl
+
+Merci pour ton enregistrement et à bientôt sur $siteName.
+
+$siteUrl

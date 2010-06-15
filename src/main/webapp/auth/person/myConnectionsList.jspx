@@ -54,6 +54,9 @@
 	<br/><br/>
 	<center>
 	<h4><h:outputText value="#{messages.person_noConnectionAdded}"></h:outputText></h4>
+	<h:outputLink value="#{authenticationController.personsURL}">
+        <h:outputText value="#{messages.menu_persons}"/>
+    </h:outputLink>
 	</center>
 	<br/>
 </c:if>

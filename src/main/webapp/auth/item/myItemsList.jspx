@@ -110,31 +110,31 @@
 	<h:column>
 		<table border="0" class="gt-table-categories" width="300" align="right">
 			<tr>
-			    <th width="50%"><h:outputText value="#{messages.item_category}:" /></th>
-				<td width="50%"><h:outputText value="#{myItemsListController.categoryLabel}"/></td>
+			    <th width="50%"><h:outputText id="id_1" value="#{messages.item_category}:" /></th>
+				<td width="50%"><h:outputText id="id_2" value="#{myItemsListController.categoryLabel}"/></td>
 		    </tr>
 			<tr>
 				<th>
-					<h:outputText value="#{messages.item_visibility}:" />
+					<h:outputText id="id_3" value="#{messages.item_visibility}:" />
 				</th>
 				<td>
-					<h:outputText value="#{myItemsListController.visibleLabel}"/>
+					<h:outputText id="id_4" value="#{myItemsListController.visibleLabel}"/>
 				</td>
 			</tr>
 			<tr>
 				<th>
-					<h:outputText rendered="#{myItemsListController.borrowed}" value="#{messages.item_lentTo}:" />
+					<h:outputText id="id_5" rendered="#{myItemsListController.borrowed}" value="#{messages.item_lentTo}:" />
 				</th>
 				<td>
-					<h:outputLink rendered="#{myItemsListController.borrowed and myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerHref}">
-						<h:outputText value="#{myItemsListController.borrowerLabel}"/>
+					<h:outputLink id="id_6" rendered="#{myItemsListController.borrowed and myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerHref}">
+						<h:outputText id="id_7" value="#{myItemsListController.borrowerLabel}"/>
 					</h:outputLink>
-					<h:outputText rendered="#{myItemsListController.borrowed and !myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerLabel}"/>
+					<h:outputText id="id_8" rendered="#{myItemsListController.borrowed and !myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerLabel}"/>
 				</td>
 			</tr>
 			<tr>
-				<th><h:outputText rendered="#{myItemsListController.borrowed}" value="#{messages.item_lentSince}:" /></th>
-				<td><h:outputText rendered="#{myItemsListController.borrowed}" value="#{myItemsListController.borrowDateLabel}"/></td>
+				<th><h:outputText id="id_9" rendered="#{myItemsListController.borrowed}" value="#{messages.item_lentSince}:" /></th>
+				<td><h:outputText id="id_10" rendered="#{myItemsListController.borrowed}" value="#{myItemsListController.borrowDateLabel}"/></td>
 			</tr>
 		</table>
     </h:column>

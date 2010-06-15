@@ -1,0 +1,7 @@
+Hello $borrowerFirstName,<br/><br/>
+
+<b>$lenderFirstName $lenderLastName</b> t'envoie un rappel à propos d'un emprunt qu'il aimerait que tu lui retournes:<br/><br/>
+
+<b>$itemTitle</b><br/><br/> 
+
+A bientôt sur <a href="$siteUrl">$siteName</a>.

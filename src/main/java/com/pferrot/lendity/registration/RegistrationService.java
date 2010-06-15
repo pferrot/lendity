@@ -137,11 +137,12 @@ public class RegistrationService {
 			Map<String, String> objects = new HashMap<String, String>();
 			objects.put("firstName", pPerson.getFirstName());
 			objects.put("siteName", Configuration.getSiteName());
-			objects.put("activationLink", activationLink.toString());
+			objects.put("siteUrl", Configuration.getRootURL());
+			objects.put("activationUrl", activationLink.toString());
 			objects.put("signature", Configuration.getSiteName());
 			
 			// TODO: localization
-			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/registration/validation/en";
+			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/registration/validation/fr";
 			
 			Map<String, String> to = new HashMap<String, String>();
 			to.put(pPerson.getEmail(), pPerson.getEmail());
@@ -151,7 +152,7 @@ public class RegistrationService {
 					         to,
 					         null, 
 					         null,
-					         "Validate your registration for " + Configuration.getSiteName(),
+					         Configuration.getSiteName() + ": validation de l'enregistrement",
 					         objects, 
 					         velocityTemplateLocation);		
 			
@@ -198,12 +199,13 @@ public class RegistrationService {
 		Map<String, String> objects = new HashMap<String, String>();
 		objects.put("firstName", person.getFirstName());
 		objects.put("siteName", Configuration.getSiteName());
+		objects.put("siteUrl", Configuration.getRootURL());
 		objects.put("username", user.getUsername());
 		objects.put("password", user.getPassword());
 		objects.put("signature", Configuration.getSiteName());
 		
 		// TODO: localization
-		final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/registration/logindetails/en";
+		final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/registration/logindetails/fr";
 		
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(person.getEmail(), person.getEmail());
@@ -213,7 +215,7 @@ public class RegistrationService {
 				         to,
 				         null, 
 				         null,
-				         "Registration completed for " + Configuration.getSiteName(),
+				         Configuration.getSiteName() + ": enregistrement terminé",
 				         objects, 
 				         velocityTemplateLocation);		
 

@@ -1,0 +1,7 @@
+Hello $requesterFirstName,
+
+$connectionFirstName $connectionLastName a refusé de t'ajouter comme ami et t'a exclu de ses contacts.
+
+A bientôt sur $siteName.
+
+$siteUrl

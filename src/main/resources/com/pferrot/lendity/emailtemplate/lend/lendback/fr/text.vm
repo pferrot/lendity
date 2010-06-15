@@ -1,0 +1,9 @@
+Hello $borrowerFirstName,
+
+$lenderFirstName $lenderLastName a indiqué que tu lui a retourné l'objet suivant:
+
+$itemTitle
+
+A bientôt sur $siteName.
+
+$siteUrl

@@ -110,6 +110,18 @@ span.linkStyleAction:hover {
 	text-decoration: underline;
 }
 
+span.linkStyleActionSmall {
+	color: #47790a;
+	text-decoration: none;
+	font-weight: bold;
+	font-size:82%;
+	cursor: pointer; 
+}
+
+span.linkStyleActionSmall:hover {
+	text-decoration: underline;
+}
+
 /*
 qTip
 See http://craigsworks.com/projects/qtip/docs/#structure
@@ -144,27 +156,35 @@ See http://craigsworks.com/projects/qtip/docs/#structure
 
 .qtip-content div {	
 	padding: 10px;
-	background-color: #14e177;
+	background-color: #bad19b;
 }
 
 .qtip-content table {	
-	border-width: 0px;	
+	border-width: 0px;
+	background-color: #bad19b;
 }
 
 .qtip-content th {
 	text-align: right;
 	padding: 5px;	
+	background-color: #bad19b;
 }
 
 .qtip-content td {
 	text-align: left;
-	padding: 5px;	
+	padding: 5px;
+	background-color: #bad19b;
 }
 
 .qtip-borderBottom {
 }
 
-.testHeader {
-	width: 200px;	
+/*
+For the datepicker to appear
+above the qtip.
+*/
+#ui-datepicker-div {
+    z-index: 9999999;
 }
+
 

@@ -1,0 +1,10 @@
+Hello $firstName,<br/><br/>
+
+Tu as demandé un rappel de ton mot de passe pour $siteName. Si ce n'est pas le cas, ignore simplement ce message.<br/><br/>
+
+Utilise les données suivantes pour te connecter:<br/><br/>
+
+Nom d'utilisateur: <b>$username</b><br/>
+Mot de passe: <b>$password</b><br/><br/>
+
+A bientôt sur <a href="$siteUrl">$siteName</a>.

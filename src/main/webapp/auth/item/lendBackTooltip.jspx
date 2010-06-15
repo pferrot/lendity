@@ -15,7 +15,7 @@
 		<table> 
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<h:outputText value="#{messages.item_lendBackMessage}"/>
+					<b><h:outputText value="#{messages.item_lendBackMessage}"/></b>
 				</td>
 			</tr>
 			<tr>
