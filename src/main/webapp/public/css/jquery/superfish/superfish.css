@@ -101,7 +101,7 @@ ul.sf-menu li li li.sfHover ul {
 .sf-menu li:hover {
 	background-color:transparent!important;
 }
-.sf-menu-sub1 li li:hover, .sf-menu-sub1 li.sfHover,
+.sf-menu-sub1 li li:hover, .sf-menu-sub1 li li.sfHover,
 .sf-menu-sub1 a:focus, .sf-menu-sub1 a:hover, .sf-menu-sub1 a:active {
 	background: url(../../../images/gt/navbar-bkg.png) repeat 0 0;
 }
