@@ -1,11 +1,14 @@
 package com.pferrot.lendity.lendrequest.jsf;
 
+import javax.faces.context.FacesContext;
+
 import com.pferrot.lendity.item.ItemUtils;
 import com.pferrot.lendity.jsf.list.AbstractListController;
 import com.pferrot.lendity.lendrequest.LendRequestConsts;
 import com.pferrot.lendity.lendrequest.LendRequestService;
 import com.pferrot.lendity.model.LendRequest;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.utils.UiUtils;
 
 public abstract class AbstractLendRequestsListController extends AbstractListController {
 	
@@ -38,5 +41,11 @@ public abstract class AbstractLendRequestsListController extends AbstractListCon
 	public String getItemOverviewHref() {
 		final LendRequest lendRequest = (LendRequest)getTable().getRowData();
 		return ItemUtils.getInternalItemOverviewPageUrl(lendRequest.getItem().getId().toString());
+	}
+	
+	public String getRequestDateLabel() {
+		final LendRequest lendRequest = (LendRequest)getTable().getRowData();
+		return UiUtils.getDateAsString(lendRequest.getRequestDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		
 	}
 }

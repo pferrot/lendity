@@ -9,8 +9,8 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.connectionRequest_myPendingConnectionRequestsTitle}" />
-	<ui:param name="contentHeader" value="#{messages.connectionRequest_myPendingConnectionRequestsTitle}" />
+	<ui:param name="pageTitle" value="#{messages.connectionRequest_myPendingConnectionRequestsOutTitle}" />
+	<ui:param name="contentHeader" value="#{messages.connectionRequest_myPendingConnectionRequestsOutTitle}" />
 
 	<ui:define name="content">
 
@@ -30,7 +30,7 @@
 				
 <f:view>
 
-<h2 class="gt-table-head"><h:outputText value="#{messages.connectionRequest_myPendingConnectionRequestsTitle}"/></h2>
+<h2 class="gt-table-head"><h:outputText value="#{messages.connectionRequest_myPendingConnectionRequestsOutTitle}"/></h2>
 <p><h:outputText value="#{messages.connectionRequest_onlyThoseWithNoResponse}"/></p>
 
 <br/>
@@ -39,19 +39,19 @@
 <!-- content box -->
 <div class="gt-content-box">
 
-<c:if test="#{empty(myPendingConnectionRequestsListController.list)}">
+<c:if test="#{empty(myPendingConnectionRequestsOutListController.list)}">
 	<br/><br/>
 	<center>
-	<h4><h:outputText value="#{messages.connectionRequest_noPendingConnectionRequest}"></h:outputText></h4>
+	<h4><h:outputText value="#{messages.connectionRequest_noPendingConnectionRequestOut}"></h:outputText></h4>
 	</center>
 	<br/>
 </c:if>
 
-<h:dataTable value="#{myPendingConnectionRequestsListController.list}" binding="#{myPendingConnectionRequestsListController.table}" var="connectionRequest" styleClass="gt-table gt-user-table">
+<h:dataTable value="#{myPendingConnectionRequestsOutListController.list}" binding="#{myPendingConnectionRequestsOutListController.table}" var="connectionRequest" styleClass="gt-table gt-user-table">
 
     <h:column>
 		<h4>
-			<h:outputText value="#{connectionRequest.requester.displayName}" />
+			<h:outputText value="#{connectionRequest.connection.displayName}" />
 		</h4>
     </h:column>
 
@@ -59,25 +59,9 @@
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 			    <th width="50%"><nobr><h:outputText id="id_1" value="#{messages.connectionRequest_requestDate}:" /></nobr></th>
-				<td width="50%"><nobr><h:outputText id="id_2" value="#{myPendingConnectionRequestsListController.requestDateLabel}"/></nobr></td>
+				<td width="50%"><nobr><h:outputText id="id_2" value="#{myPendingConnectionRequestsOutListController.requestDateLabel}"/></nobr></td>
 		    </tr>
 		</table>
-    </h:column>
-
-	<h:column>
-	<h:form>
-		<table border="0" class="gt-table-categories" width="150" align="right">
-			<tr>
-				<td><h:commandLink value="#{messages.connectionRequest_responseAccept}" action="#{myPendingConnectionRequestsListController.acceptConnectionRequest}"/></td>
-		    </tr>
-		    <tr>
-				<td><h:commandLink value="#{messages.connectionRequest_responseRefuse}" action="#{myPendingConnectionRequestsListController.refuseConnectionRequest}"/></td>
-		    </tr>
-		    <tr>
-				<td><h:commandLink value="#{messages.connectionRequest_responseBan}" action="#{myPendingConnectionRequestsListController.banConnectionRequest}"/></td>
-		    </tr>
-		</table>
-	</h:form>
     </h:column>
 
 </h:dataTable>

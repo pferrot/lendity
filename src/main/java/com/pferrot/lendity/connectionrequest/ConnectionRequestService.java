@@ -56,6 +56,11 @@ public class ConnectionRequestService {
 		return connectionRequestDao.findConnectionRequests(PersonUtils.getCurrentPersonId(), null, Boolean.FALSE, pFirstResult, pMaxResults);
 		
 	}
+	
+	public ListWithRowCount findCurrentUserPendingConnectionRequestsOut(final int pFirstResult, final int pMaxResults) {		
+		return connectionRequestDao.findConnectionRequests(null, PersonUtils.getCurrentPersonId(), Boolean.FALSE, pFirstResult, pMaxResults);
+		
+	}
 
 	/**
 	 * Returns false if the requester is not allowed to ask the other user for connecting (for any reason),

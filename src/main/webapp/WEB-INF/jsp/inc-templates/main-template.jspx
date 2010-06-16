@@ -146,6 +146,11 @@
 		                        	<h:outputText value="#{messages.menu_myPendingLendRequests}"/>
 		                        </h:outputLink>
 			</li>
+			<li>
+			   <h:outputLink value="#{authenticationController.myPendingLendRequestsOutURL}">
+		                        	<h:outputText value="#{messages.menu_myPendingLendRequestsOut}"/>
+		                        </h:outputLink>
+			</li>
 	    </ul>
 	</li>
 	<li>
@@ -166,6 +171,11 @@
 			<li>
 			    <h:outputLink value="#{authenticationController.myPendingConnectionRequestsURL}">
 		                        	<h:outputText value="#{messages.menu_myPendingConnectionRequests}"/>
+		                        </h:outputLink>
+			</li>
+			<li>
+			    <h:outputLink value="#{authenticationController.myPendingConnectionRequestsOutURL}">
+		                        	<h:outputText value="#{messages.menu_myPendingConnectionRequestsOut}"/>
 		                        </h:outputLink>
 			</li>
 			<li>

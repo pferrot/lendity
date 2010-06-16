@@ -3,10 +3,8 @@ package com.pferrot.lendity.lendrequest.jsf;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.lendrequest.exception.LendRequestException;
-import com.pferrot.lendity.model.ConnectionRequest;
 import com.pferrot.lendity.model.LendRequest;
 
 public class MyPendingLendRequestsListController extends AbstractLendRequestsListController {

@@ -374,6 +374,11 @@
 	      <property name="lendRequestService" ref="lendRequestService"/>
 	</bean>
 	
+	<bean id="myPendingLendRequestsOutListController" class="com.pferrot.lendity.lendrequest.jsf.MyPendingLendRequestsOutListController"
+	      scope="conversation.access">
+	      <property name="lendRequestService" ref="lendRequestService"/>
+	</bean>
+	
 	<!-- 
 	LEND REQUEST - end
 	========================================================================================================================
@@ -418,6 +423,11 @@
 	</bean>
 
 	<bean id="myPendingConnectionRequestsListController" class="com.pferrot.lendity.connectionrequest.jsf.MyPendingConnectionRequestsListController"
+	      scope="conversation.access">
+	      <property name="connectionRequestService" ref="connectionRequestService"/>
+	</bean>
+	
+	<bean id="myPendingConnectionRequestsOutListController" class="com.pferrot.lendity.connectionrequest.jsf.MyPendingConnectionRequestsOutListController"
 	      scope="conversation.access">
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>

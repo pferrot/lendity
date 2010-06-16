@@ -1,10 +1,13 @@
 package com.pferrot.lendity.connectionrequest.jsf;
 
+import javax.faces.context.FacesContext;
+
 import com.pferrot.lendity.connectionrequest.ConnectionRequestConsts;
 import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
 import com.pferrot.lendity.jsf.list.AbstractListController;
 import com.pferrot.lendity.model.ConnectionRequest;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.utils.UiUtils;
 
 public abstract class AbstractConnectionRequestsListController extends AbstractListController {
 	
@@ -32,5 +35,10 @@ public abstract class AbstractConnectionRequestsListController extends AbstractL
 	public String getConnectionOverviewHref() {
 		final ConnectionRequest connectionRequest = (ConnectionRequest)getTable().getRowData();
 		return PersonUtils.getPersonOverviewPageUrl(connectionRequest.getConnection().getId().toString());
+	}
+
+	public String getRequestDateLabel() {
+		final ConnectionRequest connectionRequest = (ConnectionRequest)getTable().getRowData();
+		return UiUtils.getDateAsString(connectionRequest.getRequestDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
 	}
 }

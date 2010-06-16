@@ -17,8 +17,6 @@ import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.lendrequest.exception.LendRequestException;
-import com.pferrot.lendity.model.ConnectionRequest;
-import com.pferrot.lendity.model.ConnectionRequestResponse;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.LendRequest;
 import com.pferrot.lendity.model.LendRequestResponse;
@@ -56,6 +54,10 @@ public class LendRequestService {
 
 	public ListWithRowCount findCurrentUserPendingLendRequests(final int pFirstResult, final int pMaxResults) {		
 		return lendRequestDao.findLendRequests(null, PersonUtils.getCurrentPersonId(), null, Boolean.FALSE, pFirstResult, pMaxResults);
+	}
+	
+	public ListWithRowCount findCurrentUserPendingLendRequestsOut(final int pFirstResult, final int pMaxResults) {		
+		return lendRequestDao.findLendRequests(PersonUtils.getCurrentPersonId(), null, null, Boolean.FALSE, pFirstResult, pMaxResults);
 	}
 
 	/**
