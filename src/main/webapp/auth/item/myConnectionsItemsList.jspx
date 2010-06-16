@@ -23,8 +23,6 @@
 			
 			<!-- body -->
 			<div class="gt-bd gt-cols clearfix">
-			<!-- main content -->
-			<div class="gt-content">
 
 				
 <f:view>
@@ -115,6 +113,20 @@
 			</tr>
 		</table>
     </h:column>
+    
+	<h:column>
+		<table border="0" class="gt-table-categories" width="150" align="right">
+			<tr>
+			<td>
+				<h:form>
+					<h:commandLink action="#{myConnectionsItemsListController.requestLend}"
+					               value="#{messages.lendRequest_requestLend}"
+					               disabled="#{!myConnectionsItemsListController.requestLendAvailable}"/>
+				</h:form>	
+			</td>
+			</tr>
+		</table>
+    </h:column>
 
 </h:dataTable>
 
@@ -125,8 +137,6 @@
 </div><!-- /content box -->
 
 </f:view>
-			</div>
-			<!-- /main content -->
 			</div>
 			<!-- /body -->
 			

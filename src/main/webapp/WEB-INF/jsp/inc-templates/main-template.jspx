@@ -141,6 +141,11 @@
 		                        	<h:outputText value="#{messages.menu_myConnectionsItems}"/>
 		                        </h:outputLink>
 			</li>
+			<li>
+			   <h:outputLink value="#{authenticationController.myPendingLendRequestsURL}">
+		                        	<h:outputText value="#{messages.menu_myPendingLendRequests}"/>
+		                        </h:outputLink>
+			</li>
 	    </ul>
 	</li>
 	<li>

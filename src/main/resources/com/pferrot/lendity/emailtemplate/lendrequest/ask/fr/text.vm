@@ -1,0 +1,13 @@
+Hello $ownerFirstName,
+
+$requesterFirstName $requesterLastName souhaite t'emprunter l'objet suivant:
+
+<b>$itemTitle</b><br/><br/>
+
+Rends-toi sur la page suivante pour lui rendre réponse:
+
+$pendingRequestsUrl
+
+A bientôt sur $siteName.
+
+$siteUrl

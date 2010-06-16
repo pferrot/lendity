@@ -1,0 +1,9 @@
+Hello $requesterFirstName,<br/><br/>
+
+<b>$ownerFirstName $ownerLastName</b> accepte de te prêter l'objet suivant:<br/><br/>
+
+<b>$itemTitle</b><br/><br/>
+
+Prends contact avec $ownerFirstName afin de régler les détails de l'échange. Tu peux par exemple simplement répondre à cet e-mail.<br/><br/>
+
+A bientôt sur <a href="$siteUrl">$siteName</a>.

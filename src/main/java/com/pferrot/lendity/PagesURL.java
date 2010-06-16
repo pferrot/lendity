@@ -80,9 +80,20 @@ public interface PagesURL {
 	// Connection requests I have to reply to.
 	String MY_PENDING_CONNECTION_REQUESTS_LIST = "/auth/connectionrequest/myPendingConnectionRequestsList.faces";
 	// Connection requests I have made.
-	String MY_PENDING_CONNECTION_REQUESTS_LIST_2 = "/auth/connectionrequest/myPendingConnectionRequestsList2.faces";
+	String MY_PENDING_CONNECTION_REQUESTS_OUT_LIST = "/auth/connectionrequest/myPendingConnectionRequestsOutList.faces";
 	
 	// CONNECTION REQUEST - end
+	/////////////////////////////////////////////////////////////////////////
+
+	/////////////////////////////////////////////////////////////////////////
+	// LEND REQUEST - start	
+	
+	// Lend requests I have to reply to.
+	String MY_PENDING_LEND_REQUESTS_LIST = "/auth/lendrequest/myPendingLendRequestsList.faces";
+	// Lend requests I have made.
+	String MY_PENDING_LEND_REQUESTS_OUT_LIST = "/auth/lendrequest/myPendingLendRequestsOutList.faces";
+	
+	// LEND REQUEST - end
 	/////////////////////////////////////////////////////////////////////////	
 	
 	

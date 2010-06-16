@@ -333,6 +333,54 @@
 
 	<!-- 
 	========================================================================================================================
+	LEND REQUEST - start
+	 -->
+	 
+	<bean id="lendRequestDaoTarget" class="com.pferrot.lendity.dao.hibernate.LendRequestDaoHibernateImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	
+	<bean id="lendRequestDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target">
+			<ref local="lendRequestDaoTarget"/>
+		</property>
+		<property name="proxyInterfaces">
+           <value>com.pferrot.lendity.dao.LendRequestDao</value>
+         </property>		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="lendRequestService" parent="baseTransactionProxy">
+		<property name="target" ref="lendRequestServiceTarget" />
+	</bean>
+	
+	<bean id="lendRequestServiceTarget" class="com.pferrot.lendity.lendrequest.LendRequestService">
+		<property name="lendRequestDao" ref="lendRequestDao"/>
+		<property name="listValueDao" ref="listValueDao"/>
+		<property name="personDao" ref="personDao"/>
+		<property name="mailManager" ref="emailSender.mailManager"/>
+	</bean>
+
+    <bean id="myPendingLendRequestsListController" class="com.pferrot.lendity.lendrequest.jsf.MyPendingLendRequestsListController"
+	      scope="conversation.access">
+	      <property name="lendRequestService" ref="lendRequestService"/>
+	</bean>
+	
+	<!-- 
+	LEND REQUEST - end
+	========================================================================================================================
+	 -->
+
+	<!-- 
+	========================================================================================================================
 	CONNECTION REQUEST - start
 	 -->
 	 
@@ -448,8 +496,9 @@
 	</bean>
 
 	<bean id="myConnectionsItemsListController" class="com.pferrot.lendity.item.jsf.MyConnectionsItemsListController"
-	      scope="session">
+	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
+	      <property name="lendRequestService" ref="lendRequestService"/>
 	</bean>
 
 	<bean id="internalItemLendTooltipController" class="com.pferrot.lendity.item.jsf.InternalItemLendTooltipController"

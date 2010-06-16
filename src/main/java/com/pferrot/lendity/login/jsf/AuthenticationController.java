@@ -60,8 +60,16 @@ public class AuthenticationController {
 		return JsfUtils.getContextRoot() + PagesURL.MY_PENDING_CONNECTION_REQUESTS_LIST;
 	}
 
-	public String getMyPendingConnectionRequests2URL() {
-		return JsfUtils.getContextRoot() + PagesURL.MY_PENDING_CONNECTION_REQUESTS_LIST_2;
+	public String getMyPendingConnectionRequestsOutURL() {
+		return JsfUtils.getContextRoot() + PagesURL.MY_PENDING_CONNECTION_REQUESTS_OUT_LIST;
+	}
+
+	public String getMyPendingLendRequestsURL() {
+		return JsfUtils.getContextRoot() + PagesURL.MY_PENDING_LEND_REQUESTS_LIST;
+	}
+
+	public String getMyPendingLendRequestsOutURL() {
+		return JsfUtils.getContextRoot() + PagesURL.MY_PENDING_LEND_REQUESTS_OUT_LIST;
 	}
 
 	public String getMyItemsURL() {

@@ -24,8 +24,6 @@
 			
 			<!-- body -->
 			<div class="gt-bd gt-cols clearfix">
-			<!-- main content -->
-			<div class="gt-content">
 
 				
 <f:view>
@@ -117,8 +115,6 @@
 </div><!-- /content box -->
 
 </f:view>
-			</div>
-			<!-- /main content -->
 			</div>
 			<!-- /body -->
 			

@@ -1,0 +1,11 @@
+Hello $requesterFirstName,
+
+$ownerFirstName $ownerLastName refuse de te prêter l'objet suivant:
+
+$itemTitle
+
+Tu peux encore prendre contact avec $ownerFirstName en répondant à cet e-mail si tu veux connaître les raisons de ce refus.
+
+A bientôt sur $siteName.
+
+$siteName

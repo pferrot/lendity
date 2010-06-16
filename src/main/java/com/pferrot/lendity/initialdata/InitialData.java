@@ -21,6 +21,7 @@ import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.Language;
+import com.pferrot.lendity.model.LendRequestResponse;
 import com.pferrot.lendity.model.Person;
 
 /**
@@ -74,6 +75,7 @@ public class InitialData {
 		createItemCategories();
 		createLanguages();
 		createConnectionRequestResponse();
+		createLendRequestResponse();
 		
 		createPersonsAndUsers();
 		//createItems();
@@ -241,6 +243,17 @@ public class InitialData {
 		
 		crr = new ConnectionRequestResponse(ConnectionRequestResponse.BAN_LABEL_CODE, new Integer(3));
 		listValueDao.createListValue(crr);
+	}
+
+	private void createLendRequestResponse() {
+		LendRequestResponse lrr = new LendRequestResponse(LendRequestResponse.ACCEPT_LABEL_CODE, new Integer(1));
+		listValueDao.createListValue(lrr);
+		
+		lrr = new LendRequestResponse(LendRequestResponse.REFUSE_LABEL_CODE, new Integer(2));
+		listValueDao.createListValue(lrr);
+		
+		lrr = new LendRequestResponse(LendRequestResponse.IGNORE_LABEL_CODE, new Integer(3));
+		listValueDao.createListValue(lrr);
 	}
 	
 	private void createLanguages() {

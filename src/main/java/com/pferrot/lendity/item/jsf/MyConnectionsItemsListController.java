@@ -10,19 +10,29 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
+import com.pferrot.lendity.lendrequest.LendRequestService;
+import com.pferrot.lendity.lendrequest.exception.LendRequestException;
+import com.pferrot.lendity.model.InternalItem;
+import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.utils.UiUtils;
 
 public class MyConnectionsItemsListController extends AbstractItemsWithOwnerListController {
 	
 	private final static Log log = LogFactory.getLog(MyConnectionsItemsListController.class);
 	
+	private LendRequestService lendRequestService;	
 	
 	public MyConnectionsItemsListController() {
 		super();
 		// Display available items by default.
 		setBorrowStatus(UiUtils.getLongFromBoolean(Boolean.FALSE));
+	}
+	
+	public void setLendRequestService(final LendRequestService pLendRequestService) {
+		this.lendRequestService = pLendRequestService;
 	}
 
 	@Override
@@ -44,5 +54,23 @@ public class MyConnectionsItemsListController extends AbstractItemsWithOwnerList
 			setBorrowStatusSelectItemsInternal(result);
 		}		
 		return getBorrowStatusSelectItemsInternal();	
+	}
+	
+	public boolean isRequestLendAvailable() {
+		final InternalItem item = (InternalItem)getTable().getRowData();
+		
+		return lendRequestService.isLendRequestAllowedFromCurrentUser(item);	
+	}
+	
+	public String requestLend() {
+		try {
+			final InternalItem item = (InternalItem)getTable().getRowData();
+			lendRequestService.createLendRequestFromCurrentUser(item);
+			return "requestLend";
+		}
+		catch (LendRequestException e) {
+			// TODO redirect to error page instead.
+			throw new RuntimeException(e);
+		}
 	}
 }
