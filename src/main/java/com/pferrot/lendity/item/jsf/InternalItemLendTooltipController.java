@@ -1,6 +1,9 @@
 package com.pferrot.lendity.item.jsf;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -20,6 +23,8 @@ import com.pferrot.lendity.utils.UiUtils;
 public class InternalItemLendTooltipController implements Serializable {
 	
 	private final static Log log = LogFactory.getLog(InternalItemLendTooltipController.class);
+	
+	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 	
 	private ItemService itemService;
 	
@@ -72,6 +77,19 @@ public class InternalItemLendTooltipController implements Serializable {
 
 	public void setBorrowDate(Date borrowDate) {
 		this.borrowDate = borrowDate;
+	}
+	
+	public void setBorrowDateAsString(String borrowDateAsString) {
+		try {
+			setBorrowDate(DATE_FORMAT.parse(borrowDateAsString));
+		}
+		catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public String getBorrowDateAsString() {
+		return DATE_FORMAT.format(getBorrowDate());
 	}
 
 	public Long getItemId() {

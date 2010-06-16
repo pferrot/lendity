@@ -185,12 +185,20 @@ function lendItemTooltip(pTooltipTarget, pItemID, pRedirectID) {
 		// Set the correct itemID.
 		$j('#lendItemId').val(pItemID);		
 		// Set the correct redirectID.
-		$j('#lendRedirectId').val(pRedirectID);
+		$j('#lendRedirectId').val(pRedirectID);		
 			  	 
 	  	mLendItemTooltipTarget = pTooltipTarget;
 		mLendItemTooltip = createFormTooltip($j(pTooltipTarget), $j('#lendForm'), lendQtipOnHide);
 		
-		$j("#lendBorrowDate").datepicker();
+		$j("#lendBorrowDate").datepicker({ dateFormat: 'dd.mm.yy', 
+			                               dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+			                               dayNamesMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+			                               dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+			                               firstDay: 1,
+			                               monthNames: ['Janvier','F&eacute;vrier','Mars','Avril','Mai','Juin','Juillet','Ao&ucirc;t','Septembre','Octobre','Novembre','D&eacute;cembre'],
+			                               monthNamesShort: ['Jan','F&eacute;v','Mar','Avr','Mai','Jui','Jul','Ao&ucirc;','Sep','Oct','Nov','D&eacute;c']});
+		
+		$j("#lendBorrowDate").attr( 'readOnly' , 'true' );		
 	}    
 }
 

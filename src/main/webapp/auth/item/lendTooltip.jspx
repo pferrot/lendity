@@ -18,25 +18,29 @@
 					<b><h:outputText value="#{messages.item_lendMessage}"/></b>
 				</td>
 			</tr>
-			<tr>
-				<th>
-					<h:outputText value="#{messages.item_lendTo}:" /> *
+			<tr style="padding-bottom: 0px;">
+				<th style="padding-bottom: 0px;">
+					<nobr><h:outputText value="#{messages.item_lendTo}:" /> *</nobr>
 				</th>
-				<td>
-					<h:selectOneMenu id="lendBorrowerId" value="#{internalItemLendTooltipController.borrowerId}" converter="javax.faces.Long">
+				<td style="padding-bottom: 0px;">
+					<h:selectOneMenu id="lendBorrowerId" value="#{internalItemLendTooltipController.borrowerId}" converter="javax.faces.Long" style="width: 100%;">
 						<f:selectItems value="#{internalItemLendTooltipController.borrowerSelectItems}"/>
 					</h:selectOneMenu>
-					<span id="lendBorrowerToName" onclick="enableLendBorrowerName()" class="linkStyleActionSmall"><br/><h:outputText value="#{messages.item_lendToName}"/></span>
-					<h:inputText id="lendBorrowerName" value="#{internalItemLendTooltipController.borrowerName}" style="display: none;"></h:inputText>
-					<span id="lendBorrowerToId" onclick="enableLendBorrowerId()" class="linkStyleActionSmall" style="display: none"><br/><h:outputText value="#{messages.item_lendToId}"/></span>
+					<h:inputText id="lendBorrowerName" value="#{internalItemLendTooltipController.borrowerName}" style="display: none; width: 100%;"></h:inputText>
 				</td>
+			</tr>
+			<tr style="padding-top: 0px; vertical-align: top;">
+			<td colspan="2" style="padding-top: 2px; text-align: right;">
+				<span id="lendBorrowerToName" onclick="enableLendBorrowerName()" class="linkStyleActionSmall"><h:outputText value="#{messages.item_lendToName}"/></span>
+				<span id="lendBorrowerToId" onclick="enableLendBorrowerId()" class="linkStyleActionSmall" style="display: none"><h:outputText value="#{messages.item_lendToId}"/></span>
+			</td>
 			</tr>
 			<tr>
 				<th>
-					<h:outputText value="#{messages.item_lendSince}:" /> *
+					<nobr><h:outputText value="#{messages.item_lendSince}:" /> *</nobr>
 				</th>
 				<td>
-					<h:inputText id="lendBorrowDate" styleClass="datepicker" value="#{internalItemLendTooltipController.borrowDate}"/>
+					<h:inputText id="lendBorrowDate" styleClass="datepicker" value="#{internalItemLendTooltipController.borrowDateAsString}" style="width: 100%;"/>
 				</td>
 			</tr>
 			<tr>

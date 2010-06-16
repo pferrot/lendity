@@ -113,8 +113,8 @@ span.linkStyleAction:hover {
 span.linkStyleActionSmall {
 	color: #47790a;
 	text-decoration: none;
-	font-weight: bold;
-	font-size:82%;
+	font-weight: normal;
+	font-size:90%;
 	cursor: pointer; 
 }
 
@@ -151,8 +151,18 @@ See http://craigsworks.com/projects/qtip/docs/#structure
 }
 
 .qtip-content {
-	font-size:82%;
+	font-size:90%;
+	background-color: #bad19b;	
 }
+
+#lendForm {
+	background-color: #bad19b;	
+}
+
+#lendForm td {
+	height: 25px;
+}
+
 
 .qtip-content div {	
 	padding: 10px;
@@ -185,6 +195,15 @@ above the qtip.
 */
 #ui-datepicker-div {
     z-index: 9999999;
+    font-size:90%!important;
+}
+
+div.ui-datepicker-title {
+	color: black;
+}
+
+table.ui-datepicker-calendar a:hover {
+	text-decoration: none!important;
 }
 
 
