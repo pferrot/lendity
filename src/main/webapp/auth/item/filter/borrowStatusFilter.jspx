@@ -10,7 +10,7 @@
 
 <!-- borrow status -->
 <h:form prependId="false">
-<h:outputText value="#{messages.item_borrowStatus}" styleClass="small"/>
+<h:outputText value="#{borrowStatusTitle}" styleClass="small"/>
 <c:if test="#{theBean.borrowStatus != null}">
 	<h:outputText value=" " escape="false" />
 	<h:commandLink id="clearBorrowStatus" action="#{theBean.clearBorrowStatus}">

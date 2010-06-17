@@ -51,6 +51,7 @@
 <td>
 <ui:include src="filter/borrowStatusFilter.jspx">
 	<ui:param name="theBean" value="#{myItemsListController}"/>
+	<ui:param name="borrowStatusTitle" value="#{messages.item_borrowStatus}"/>	
 </ui:include>
 </td>
 

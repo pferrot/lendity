@@ -28,6 +28,7 @@
 <f:view>
 
 <h2 class="gt-table-head"><h:outputText value="#{messages.item_myConnectionsItemsListTitle}"/></h2>
+<p><h:outputText value="#{messages.item_myConnectionsItemsListDescription}"/></p>
 
 <br/>
 
@@ -49,6 +50,7 @@
 <td>
 <ui:include src="filter/borrowStatusFilter.jspx">
 	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
+	<ui:param name="borrowStatusTitle" value="#{messages.item_availableStatus}"/>	
 </ui:include>
 </td>
 

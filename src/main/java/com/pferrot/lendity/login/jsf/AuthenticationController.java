@@ -1,10 +1,10 @@
 package com.pferrot.lendity.login.jsf;
 
-import com.pferrot.security.SecurityUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.login.AuthenticationConsts;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.security.SecurityUtils;
 
 public class AuthenticationController {
 	

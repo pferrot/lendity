@@ -57,6 +57,10 @@ public class Configuration {
 	public static String getSupportEmailAddress() {
 		return supportEmailAddress;
 	}
+	
+	public String getSupportEmailAddressNotStatic() {
+		return supportEmailAddress;
+	}
 
 	public void setSupportEmailAddress(String supportEmailAddress) {
 		this.supportEmailAddress = supportEmailAddress;

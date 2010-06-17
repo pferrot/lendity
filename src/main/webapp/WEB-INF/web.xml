@@ -25,6 +25,37 @@
 		<param-value>.jspx</param-value>
 	</context-param>
 	
+	<!-- 
+	See http://wiki.apache.org/myfaces/Handling_Server_Errors
+	-->
+	<context-param>
+	    <param-name>facelets.DEVELOPMENT</param-name>
+	    <param-value>false</param-value>
+	</context-param>
+	
+	<context-param>
+	    <param-name>org.apache.myfaces.ERROR_HANDLING</param-name>
+	    <param-value>true</param-value>
+	</context-param>
+	
+	<context-param>
+	    <param-name>org.apache.myfaces.ERROR_TEMPLATE_RESOURCE</param-name>
+	    <!-- 
+	    <param-value>META-INF/rsc/myfaces-dev-error.xml</param-value>
+	     -->
+	    <param-value>custom-template-error.xml</param-value>
+	</context-param>
+	
+	<context-param>
+	    <param-name>org.apache.myfaces.ERROR_HANDLER</param-name>
+	    <!--
+	    Default value.
+	    <param-value>javax.faces.webapp._ErrorPageWriter</param-value>
+	    -->
+	    <param-value>com.pferrot.lendity.error.CustomErrorPageWriter</param-value>
+	</context-param> 
+
+	
 	
 	
 <!--	  	<context-param>-->
@@ -169,15 +200,10 @@
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
-	
-	<error-page>
-		<error-code>404</error-code>
-		<location>/public/error/error_404.jsp</location>
-	</error-page>
 
 	<error-page>
-		<exception-type>java.lang.Throwable</exception-type>
-		<location>/public/error/error.jsp</location>
+		<error-code>404</error-code>
+		<location>/public/error/error_404.faces</location>
 	</error-page>
 		
 </web-app>
