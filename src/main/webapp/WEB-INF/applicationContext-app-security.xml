@@ -31,6 +31,7 @@ security module.
 		 -->
 		<intercept-url pattern="/login.faces" access="ROLE_ANONYMOUS, ROLE_USER" />
 		<intercept-url pattern="/public/**" access="ROLE_ANONYMOUS, ROLE_USER" />
+		<intercept-url pattern="/favicon.ico" access="ROLE_ANONYMOUS, ROLE_USER" />
 		<intercept-url pattern="/faces/myFacesExtensionResource/**" access="ROLE_ANONYMOUS, ROLE_USER" />
 		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />		
 		<intercept-url pattern="/**" access="ROLE_USER" />
