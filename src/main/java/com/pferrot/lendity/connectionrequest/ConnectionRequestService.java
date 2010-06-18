@@ -230,6 +230,17 @@ public class ConnectionRequestService {
 	public Long createConnectionRequestFromCurrentUser(final Person pConnection) throws ConnectionRequestException {		
 		return createConnectionRequest(pConnection, getCurrentPerson());
 	}
+
+	/**
+	 * Create a connection request using the current user as requester.
+	 *
+	 * @param pConnectionId
+	 * @return
+	 * @throws ConnectionRequestException
+	 */
+	public Long createConnectionRequestFromCurrentUser(final Long pConnectionId) throws ConnectionRequestException {		
+		return createConnectionRequestFromCurrentUser(personDao.findPerson(pConnectionId));
+	}
 	
 	/**
 	 * The connection is simply refused.

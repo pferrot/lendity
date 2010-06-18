@@ -47,6 +47,10 @@
 	<br/>
 </c:if>
 
+<ui:include src="acceptConnectionTooltip.jspx"/>
+<ui:include src="refuseConnectionTooltip.jspx"/>
+<ui:include src="banConnectionTooltip.jspx"/>
+
 <h:dataTable value="#{myPendingConnectionRequestsListController.list}" binding="#{myPendingConnectionRequestsListController.table}" var="connectionRequest" styleClass="gt-table gt-user-table">
 
     <h:column>
@@ -68,13 +72,25 @@
 	<h:form>
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
-				<td><h:commandLink value="#{messages.connectionRequest_responseAccept}" action="#{myPendingConnectionRequestsListController.acceptConnectionRequest}"/></td>
+				<td>
+					<span class="linkStyleAction" onclick="acceptConnectionTooltip(this, '#{connectionRequest.id}', 1)">
+						<h:outputText value="#{messages.connectionRequest_responseAccept}"/>
+					</span>
+				</td>
 		    </tr>
 		    <tr>
-				<td><h:commandLink value="#{messages.connectionRequest_responseRefuse}" action="#{myPendingConnectionRequestsListController.refuseConnectionRequest}"/></td>
+				<td>
+					<span class="linkStyleAction" onclick="refuseConnectionTooltip(this, '#{connectionRequest.id}', 1)">
+						<h:outputText value="#{messages.connectionRequest_responseRefuse}"/>
+					</span>
+				</td>
 		    </tr>
 		    <tr>
-				<td><h:commandLink value="#{messages.connectionRequest_responseBan}" action="#{myPendingConnectionRequestsListController.banConnectionRequest}"/></td>
+				<td>
+					<span class="linkStyleAction" onclick="banConnectionTooltip(this, '#{connectionRequest.id}', 1)">
+						<h:outputText value="#{messages.connectionRequest_responseBan}"/>
+					</span>
+				</td>
 		    </tr>
 		</table>
 	</h:form>

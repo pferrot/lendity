@@ -21,7 +21,7 @@
 			<tr>
 				<td colspan="2" style="text-align: center;">
 					<input type="button" onclick="cancelLendBackItem()" value="#{messages.navigation_cancel}"/>
-					<input type="button" onclick="submitLendBackItem()" value="#{messages.item_lendBackSubmit}"/>
+					<input type="button" onclick="submitLendBackItem()" value="#{messages.navigation_ok}"/>
 					<h:commandButton id="lendBackActionButton" action="#{internalItemLendBackTooltipController.submit}" style="display: none" value="not_displayed"/>
 				</td>
 			</tr>

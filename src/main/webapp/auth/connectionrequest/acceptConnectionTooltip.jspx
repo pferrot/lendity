@@ -1,0 +1,32 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<div id="acceptConnectionDiv" style="display: none;">
+	<h:form id="acceptConnectionForm" prependId="false">
+		<h:inputHidden id="acceptConnectionConnectionRequestId" value="#{acceptConnectionTooltipController.connectionRequestId}" />
+		<h:inputHidden id="acceptConnectionRedirectId" value="#{acceptConnectionTooltipController.redirectId}" />
+		<table> 
+			<tr>
+				<td colspan="2" style="text-align: center;">
+					<b><h:outputText value="#{messages.connectionRequest_acceptConnectionMessage}"/></b>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align: center;">
+					<input type="button" onclick="cancelAcceptConnection()" value="#{messages.navigation_cancel}"/>
+					<input type="button" onclick="submitAcceptConnection()" value="#{messages.navigation_ok}"/>
+					<h:commandButton id="acceptConnectionActionButton" action="#{acceptConnectionTooltipController.submit}" style="display: none" value="not_displayed"/>
+				</td>
+			</tr>
+		</table>
+	</h:form>
+</div>
+
+</ui:composition>

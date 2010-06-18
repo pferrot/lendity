@@ -303,3 +303,360 @@ function submitLendBackItem() {
 function cancelLendBackItem() {
 	hideLendBackItemTooltip(mLendBackItemTooltipTarget);
 }
+
+/***************************************************************************************************
+ * 
+ * REQUEST CONNECTION
+ * 
+ ***************************************************************************************************/
+function hideRequestConnectionTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#requestConnectionForm'), $j('#requestConnectionDiv'));
+}
+
+function requestConnectionQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#requestConnectionDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip.
+ */
+var mRequestConnectionTooltip;
+var mRequestConnectionTooltipTarget;
+function requestConnectionTooltip(pTooltipTarget, pPersonID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideRequestConnectionTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('requestConnectionForm').reset();
+		// Set the correct ID.
+		$j('#requestConnectionPersonId').val(pPersonID);
+		// Set the correct redirectID.
+		$j('#requestConnectionRedirectId').val(pRedirectID);
+		
+	  	mRequestConnectionTooltipTarget = pTooltipTarget;
+	  	mRequestConnectionTooltip = createFormTooltip($j(pTooltipTarget), $j('#requestConnectionForm'), requestConnectionQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip.
+ */
+function submitRequestConnection() {	
+	document.getElementById("requestConnectionActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelRequestConnection() {
+	hideRequestConnectionTooltip(mRequestConnectionTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * ACCEPT CONNECTION
+ * 
+ ***************************************************************************************************/
+function hideAcceptConnectionTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#acceptConnectionForm'), $j('#acceptConnectionDiv'));
+}
+
+function acceptConnectionQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#acceptConnectionDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip.
+ */
+var mAcceptConnectionTooltip;
+var mAcceptConnectionTooltipTarget;
+function acceptConnectionTooltip(pTooltipTarget, pConnectionRequestID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideAcceptConnectionTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('acceptConnectionForm').reset();
+		// Set the correct ID.
+		$j('#acceptConnectionConnectionRequestId').val(pConnectionRequestID);
+		// Set the correct redirectID.
+		$j('#acceptConnectionRedirectId').val(pRedirectID);
+		
+	  	mAcceptConnectionTooltipTarget = pTooltipTarget;
+	  	mAcceptConnectionTooltip = createFormTooltip($j(pTooltipTarget), $j('#acceptConnectionForm'), acceptConnectionQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip.
+ */
+function submitAcceptConnection() {	
+	document.getElementById("acceptConnectionActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelAcceptConnection() {
+	hideAcceptConnectionTooltip(mAcceptConnectionTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * REFUSE CONNECTION
+ * 
+ ***************************************************************************************************/
+function hideRefuseConnectionTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#refuseConnectionForm'), $j('#refuseConnectionDiv'));
+}
+
+function refuseConnectionQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#refuseConnectionDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip.
+ */
+var mRefuseConnectionTooltip;
+var mRefuseConnectionTooltipTarget;
+function refuseConnectionTooltip(pTooltipTarget, pConnectionRequestID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideRefuseConnectionTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('refuseConnectionForm').reset();
+		// Set the correct ID.
+		$j('#refuseConnectionConnectionRequestId').val(pConnectionRequestID);
+		// Set the correct redirectID.
+		$j('#refuseConnectionRedirectId').val(pRedirectID);
+		
+	  	mRefuseConnectionTooltipTarget = pTooltipTarget;
+	  	mRefuseConnectionTooltip = createFormTooltip($j(pTooltipTarget), $j('#refuseConnectionForm'), refuseConnectionQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip.
+ */
+function submitRefuseConnection() {	
+	document.getElementById("refuseConnectionActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelRefuseConnection() {
+	hideRefuseConnectionTooltip(mRefuseConnectionTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * BAN CONNECTION
+ * 
+ ***************************************************************************************************/
+function hideBanConnectionTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#banConnectionForm'), $j('#banConnectionDiv'));
+}
+
+function banConnectionQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#banConnectionDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip.
+ */
+var mBanConnectionTooltip;
+var mBanConnectionTooltipTarget;
+function banConnectionTooltip(pTooltipTarget, pConnectionRequestID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideBanConnectionTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('banConnectionForm').reset();
+		// Set the correct ID.
+		$j('#banConnectionConnectionRequestId').val(pConnectionRequestID);
+		// Set the correct redirectID.
+		$j('#banConnectionRedirectId').val(pRedirectID);
+		
+	  	mBanConnectionTooltipTarget = pTooltipTarget;
+	  	mBanConnectionTooltip = createFormTooltip($j(pTooltipTarget), $j('#banConnectionForm'), banConnectionQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip.
+ */
+function submitBanConnection() {	
+	document.getElementById("banConnectionActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelBanConnection() {
+	hideBanConnectionTooltip(mBanConnectionTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * REQUEST LEND
+ * 
+ ***************************************************************************************************/
+function hideRequestLendTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#requestLendForm'), $j('#requestLendDiv'));
+}
+
+function requestLendQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#requestLendDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip.
+ */
+var mRequestLendTooltip;
+var mRequestLendTooltipTarget;
+function requestLendTooltip(pTooltipTarget, pItemID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideRequestLendTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('requestLendForm').reset();
+		// Set the correct ID.
+		$j('#requestLendItemId').val(pItemID);
+		// Set the correct redirectID.
+		$j('#requestLendRedirectId').val(pRedirectID);
+		
+	  	mRequestLendTooltipTarget = pTooltipTarget;
+	  	mRequestLendTooltip = createFormTooltip($j(pTooltipTarget), $j('#requestLendForm'), requestLendQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip.
+ */
+function submitRequestLend() {	
+	document.getElementById("requestLendActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelRequestLend() {
+	hideRequestLendTooltip(mRequestLendTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * ACCEPT LEND
+ * 
+ ***************************************************************************************************/
+function hideAcceptLendTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#acceptLendForm'), $j('#acceptLendDiv'));
+}
+
+function acceptLendQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#acceptLendDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip.
+ */
+var mAcceptLendTooltip;
+var mAcceptLendTooltipTarget;
+function acceptLendTooltip(pTooltipTarget, pLendRequestID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideAcceptLendTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('acceptLendForm').reset();
+		// Set the correct ID.
+		$j('#acceptLendLendRequestId').val(pLendRequestID);
+		// Set the correct redirectID.
+		$j('#acceptLendRedirectId').val(pRedirectID);
+		
+	  	mAcceptLendTooltipTarget = pTooltipTarget;
+	  	mAcceptLendTooltip = createFormTooltip($j(pTooltipTarget), $j('#acceptLendForm'), acceptLendQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip.
+ */
+function submitAcceptLend() {	
+	document.getElementById("acceptLendActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelAcceptLend() {
+	hideAcceptLendTooltip(mAcceptLendTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * REFUSE LEND
+ * 
+ ***************************************************************************************************/
+function hideRefuseLendTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#refuseLendForm'), $j('#refuseLendDiv'));
+}
+
+function refuseLendQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#refuseLendDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip.
+ */
+var mRefuseLendTooltip;
+var mRefuseLendTooltipTarget;
+function refuseLendTooltip(pTooltipTarget, pLendRequestID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideRefuseLendTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('refuseLendForm').reset();
+		// Set the correct ID.
+		$j('#refuseLendLendRequestId').val(pLendRequestID);
+		// Set the correct redirectID.
+		$j('#refuseLendRedirectId').val(pRedirectID);
+		
+	  	mRefuseLendTooltipTarget = pTooltipTarget;
+	  	mRefuseLendTooltip = createFormTooltip($j(pTooltipTarget), $j('#refuseLendForm'), refuseLendQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip.
+ */
+function submitRefuseLend() {	
+	document.getElementById("refuseLendActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelRefuseLend() {
+	hideRefuseLendTooltip(mRefuseLendTooltipTarget);
+}

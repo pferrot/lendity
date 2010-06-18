@@ -12,6 +12,7 @@ import com.pferrot.emailsender.manager.MailManager;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
+import com.pferrot.lendity.dao.ItemDao;
 import com.pferrot.lendity.dao.LendRequestDao;
 import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.dao.PersonDao;
@@ -30,6 +31,7 @@ public class LendRequestService {
 	private LendRequestDao lendRequestDao;
 	private ListValueDao listValueDao;
 	private PersonDao personDao;
+	private ItemDao itemDao;
 	private MailManager mailManager;
 
 	public void setMailManager(final MailManager pMailManager) {
@@ -48,6 +50,10 @@ public class LendRequestService {
 		this.listValueDao = pListValueDao;
 	}
 	
+	public void setItemDao(ItemDao itemDao) {
+		this.itemDao = itemDao;
+	}
+
 	public LendRequest findLendRequest(final Long pLendRequestId) {
 		return lendRequestDao.findLendRequest(pLendRequestId);
 	}
@@ -136,6 +142,10 @@ public class LendRequestService {
 	
 	public Long createLendRequestFromCurrentUser(final InternalItem pItem) throws LendRequestException {
 		return createLendRequest(getCurrentPerson(), pItem);		
+	}
+
+	public Long createLendRequestFromCurrentUser(final Long pItemId) throws LendRequestException {
+		return createLendRequestFromCurrentUser(itemDao.findInternalItem(pItemId));		
 	}
 
 	/**

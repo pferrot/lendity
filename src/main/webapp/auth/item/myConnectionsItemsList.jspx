@@ -77,6 +77,8 @@
 	<br/>
 </c:if>
 
+<ui:include src="../lendrequest/requestLendTooltip.jspx"/>
+
 <h:dataTable value="#{myConnectionsItemsListController.list}" binding="#{myConnectionsItemsListController.table}" var="item" 
    styleClass="gt-table gt-user-table">
 
@@ -119,14 +121,12 @@
 	<h:column>
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
-			<td>
-				<h:form>
-					<h:commandLink action="#{myConnectionsItemsListController.requestLend}"
-					               value="#{messages.lendRequest_requestLend}"
-					               disabled="#{!myConnectionsItemsListController.requestLendAvailable}"/>
-				</h:form>	
-			</td>
-			</tr>
+				<td>
+					<span class="linkStyleAction" onclick="requestLendTooltip(this, '#{item.id}', 1)">
+						<h:outputText value="#{messages.lendRequest_requestLend}" rendered="#{myConnectionsItemsListController.requestLendAvailable}"/>
+					</span>	
+				</td>
+		    </tr>
 		</table>
     </h:column>
 

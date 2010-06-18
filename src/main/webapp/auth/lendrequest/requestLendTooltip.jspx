@@ -1,0 +1,32 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<div id="requestLendDiv" style="display: none;">
+	<h:form id="requestLendForm" prependId="false">
+		<h:inputHidden id="requestLendItemId" value="#{requestLendTooltipController.itemId}" />
+		<h:inputHidden id="requestLendRedirectId" value="#{requestLendTooltipController.redirectId}" />
+		<table> 
+			<tr>
+				<td colspan="2" style="text-align: center;">
+					<b><h:outputText value="#{messages.lendRequest_requestLendMessage}"/></b>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align: center;">
+					<input type="button" onclick="cancelRequestLend()" value="#{messages.navigation_cancel}"/>
+					<input type="button" onclick="submitRequestLend()" value="#{messages.navigation_ok}"/>
+					<h:commandButton id="requestLendActionButton" action="#{requestLendTooltipController.submit}" style="display: none" value="not_displayed"/>
+				</td>
+			</tr>
+		</table>
+	</h:form>
+</div>
+
+</ui:composition>

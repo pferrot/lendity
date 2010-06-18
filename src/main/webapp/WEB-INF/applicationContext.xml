@@ -366,6 +366,7 @@
 		<property name="lendRequestDao" ref="lendRequestDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
 		<property name="personDao" ref="personDao"/>
+		<property name="itemDao" ref="itemDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
 	</bean>
 
@@ -376,6 +377,21 @@
 	
 	<bean id="myPendingLendRequestsOutListController" class="com.pferrot.lendity.lendrequest.jsf.MyPendingLendRequestsOutListController"
 	      scope="conversation.access">
+	      <property name="lendRequestService" ref="lendRequestService"/>
+	</bean>
+	
+	<bean id="requestLendTooltipController" class="com.pferrot.lendity.lendrequest.jsf.RequestLendTooltipController"
+	      scope="request">
+	      <property name="lendRequestService" ref="lendRequestService"/>
+	</bean>
+
+	<bean id="acceptLendTooltipController" class="com.pferrot.lendity.lendrequest.jsf.AcceptLendTooltipController"
+	      scope="request">
+	      <property name="lendRequestService" ref="lendRequestService"/>
+	</bean>
+	
+	<bean id="refuseLendTooltipController" class="com.pferrot.lendity.lendrequest.jsf.RefuseLendTooltipController"
+	      scope="request">
 	      <property name="lendRequestService" ref="lendRequestService"/>
 	</bean>
 	
@@ -429,6 +445,26 @@
 	
 	<bean id="myPendingConnectionRequestsOutListController" class="com.pferrot.lendity.connectionrequest.jsf.MyPendingConnectionRequestsOutListController"
 	      scope="conversation.access">
+	      <property name="connectionRequestService" ref="connectionRequestService"/>
+	</bean>
+	
+	<bean id="requestConnectionTooltipController" class="com.pferrot.lendity.connectionrequest.jsf.RequestConnectionTooltipController"
+	      scope="request">
+	      <property name="connectionRequestService" ref="connectionRequestService"/>
+	</bean>
+	
+	<bean id="acceptConnectionTooltipController" class="com.pferrot.lendity.connectionrequest.jsf.AcceptConnectionTooltipController"
+	      scope="request">
+	      <property name="connectionRequestService" ref="connectionRequestService"/>
+	</bean>
+	
+	<bean id="refuseConnectionTooltipController" class="com.pferrot.lendity.connectionrequest.jsf.RefuseConnectionTooltipController"
+	      scope="request">
+	      <property name="connectionRequestService" ref="connectionRequestService"/>
+	</bean>
+	
+	<bean id="banConnectionTooltipController" class="com.pferrot.lendity.connectionrequest.jsf.BanConnectionTooltipController"
+	      scope="request">
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
 

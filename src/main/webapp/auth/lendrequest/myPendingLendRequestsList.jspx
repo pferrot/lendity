@@ -47,6 +47,9 @@
 	<br/>
 </c:if>
 
+<ui:include src="acceptLendTooltip.jspx"/>
+<ui:include src="refuseLendTooltip.jspx"/>
+
 <h:dataTable value="#{myPendingLendRequestsListController.list}" binding="#{myPendingLendRequestsListController.table}" var="lendRequest" styleClass="gt-table gt-user-table">
 
     <h:column>
@@ -75,10 +78,18 @@
 	<h:form>
 		<table border="0" class="gt-table-categories" width="75" align="right">
 			<tr>
-				<td><h:commandLink value="#{messages.lendRequest_responseAccept}" action="#{myPendingLendRequestsListController.acceptLendRequest}"/></td>
+				<td>
+					<span class="linkStyleAction" onclick="acceptLendTooltip(this, '#{lendRequest.id}', 1)">
+						<h:outputText value="#{messages.lendRequest_responseAccept}"/>
+					</span>
+				</td>
 		    </tr>
 		    <tr>
-				<td><h:commandLink value="#{messages.lendRequest_responseRefuse}" action="#{myPendingLendRequestsListController.refuseLendRequest}"/></td>
+				<td>
+					<span class="linkStyleAction" onclick="refuseLendTooltip(this, '#{lendRequest.id}', 1)">
+						<h:outputText value="#{messages.lendRequest_responseRefuse}"/>
+					</span>
+				</td>
 		    </tr>
 		</table>
 	</h:form>
