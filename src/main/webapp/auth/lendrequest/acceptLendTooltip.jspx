@@ -16,12 +16,13 @@
 			<tr>
 				<td colspan="2" style="text-align: center;">
 					<b><h:outputText value="#{messages.lendRequest_acceptLendMessage}"/></b>
+					<br/><br/><h:outputText value="#{messages.lendRequest_acceptLendMessage2}"/>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<input type="button" onclick="cancelAcceptLend()" value="#{messages.navigation_cancel}"/>
 					<input type="button" onclick="submitAcceptLend()" value="#{messages.navigation_ok}"/>
+					<input type="button" onclick="cancelAcceptLend()" value="#{messages.navigation_cancel}"/>
 					<h:commandButton id="acceptLendActionButton" action="#{acceptLendTooltipController.submit}" style="display: none" value="not_displayed"/>
 				</td>
 			</tr>

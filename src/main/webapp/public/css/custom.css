@@ -141,7 +141,11 @@ See http://craigsworks.com/projects/qtip/docs/#structure
 .qtip-borderTop {
 }
 
+.qtip-wrapper {
+}
+
 .qtip-contentWrapper {	
+	background-color: #bad19b;
 }
 
 .qtip-title {

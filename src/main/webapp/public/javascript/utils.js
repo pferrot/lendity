@@ -660,3 +660,106 @@ function submitRefuseLend() {
 function cancelRefuseLend() {
 	hideRefuseLendTooltip(mRefuseLendTooltipTarget);
 }
+
+/***************************************************************************************************
+ * 
+ * REMOVE CONNECTION
+ * 
+ ***************************************************************************************************/
+function hideRemoveConnectionTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#removeConnectionForm'), $j('#removeConnectionDiv'));
+}
+
+function removeConnectionQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#removeConnectionDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip.
+ */
+var mRemoveConnectionTooltip;
+var mRemoveConnectionTooltipTarget;
+function removeConnectionTooltip(pTooltipTarget, pPersonID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideRemoveConnectionTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('removeConnectionForm').reset();
+		// Set the correct ID.
+		$j('#removeConnectionPersonId').val(pPersonID);
+		// Set the correct redirectID.
+		$j('#removeConnectionRedirectId').val(pRedirectID);
+		
+	  	mRemoveConnectionTooltipTarget = pTooltipTarget;
+	  	mRemoveConnectionTooltip = createFormTooltip($j(pTooltipTarget), $j('#removeConnectionForm'), removeConnectionQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip.
+ */
+function submitRemoveConnection() {	
+	document.getElementById("removeConnectionActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelRemoveConnection() {
+	hideRemoveConnectionTooltip(mRemoveConnectionTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * REMOVE BANNED PERSON
+ * 
+ ***************************************************************************************************/
+function hideRemoveBannedPersonTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#removeBannedPersonForm'), $j('#removeBannedPersonDiv'));
+}
+
+function removeBannedPersonQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#removeBannedPersonDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip.
+ */
+var mRemoveBannedPersonTooltip;
+var mRemoveBannedPersonTooltipTarget;
+function removeBannedPersonTooltip(pTooltipTarget, pPersonID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideRemoveBannedPersonTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('removeBannedPersonForm').reset();
+		// Set the correct ID.
+		$j('#removeBannedPersonPersonId').val(pPersonID);
+		// Set the correct redirectID.
+		$j('#removeBannedPersonRedirectId').val(pRedirectID);
+		
+	  	mRemoveBannedPersonTooltipTarget = pTooltipTarget;
+	  	mRemoveBannedPersonTooltip = createFormTooltip($j(pTooltipTarget), $j('#removeBannedPersonForm'), removeBannedPersonQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip.
+ */
+function submitRemoveBannedPerson() {	
+	document.getElementById("removeBannedPersonActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelRemoveBannedPerson() {
+	hideRemoveBannedPersonTooltip(mRemoveBannedPersonTooltipTarget);
+}
+

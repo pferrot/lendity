@@ -58,6 +58,8 @@
 	<br/>
 </c:if>
 
+<ui:include src="removeBannedPersonTooltip.jspx"/>
+
 <h:dataTable value="#{myBannedPersonsListController.list}" binding="#{myBannedPersonsListController.table}" var="person" 
    styleClass="gt-table gt-user-table">
 
@@ -72,10 +74,9 @@
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 				<td>
-					<h:form>
-						<h:commandLink action="#{myBannedPersonsListController.unbanPerson}"
-						               value="#{messages.person_unbanPerson}"/>
-					</h:form>
+					<span class="linkStyleAction" onclick="removeBannedPersonTooltip(this, '#{person.id}', 1)">
+						<h:outputText value="#{messages.person_unbanPerson}"/>
+					</span>
 				</td>
 		    </tr>
 		</table>

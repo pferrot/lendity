@@ -45,8 +45,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<input type="button" onclick="cancelLendItem()" value="#{messages.navigation_cancel}"/>
 					<input type="button" onclick="submitLendItem()" value="#{messages.navigation_ok}"/>
+					<input type="button" onclick="cancelLendItem()" value="#{messages.navigation_cancel}"/>
 					<h:commandButton id="lendActionButton" action="#{internalItemLendTooltipController.submit}" style="display: none"  value="not_displayed"/>
 				</td>
 			</tr>

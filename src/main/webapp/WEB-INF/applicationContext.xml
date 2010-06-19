@@ -326,6 +326,16 @@
 	      <property name="personService" ref="personService"/>
 	</bean>
 	
+	<bean id="removeConnectionTooltipController" class="com.pferrot.lendity.person.jsf.RemoveConnectionTooltipController"
+	      scope="request">
+	      <property name="personService" ref="personService"/>
+	</bean>
+	
+	<bean id="removeBannedPersonTooltipController" class="com.pferrot.lendity.person.jsf.RemoveBannedPersonTooltipController"
+	      scope="request">
+	      <property name="personService" ref="personService"/>
+	</bean>
+	
 	<!-- 
 	PERSON - end
 	========================================================================================================================

@@ -69,6 +69,8 @@
 	<br/>
 </c:if>
 
+<ui:include src="removeConnectionTooltip.jspx"/>
+
 <h:dataTable value="#{myConnectionsListController.list}" binding="#{myConnectionsListController.table}" var="person" 
    styleClass="gt-table gt-user-table">
 
@@ -86,10 +88,9 @@
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 				<td>
-					<h:form>
-						<h:commandLink action="#{myConnectionsListController.removeConnection}"
-						               value="#{messages.person_removeConnection}"/>
-					</h:form>
+					<span class="linkStyleAction" onclick="removeConnectionTooltip(this, '#{person.id}', 1)">
+						<h:outputText value="#{messages.person_removeConnection}"/>
+					</span>
 				</td>
 		    </tr>
 		</table>
