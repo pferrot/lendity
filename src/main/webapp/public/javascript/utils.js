@@ -190,16 +190,21 @@ function lendItemTooltip(pTooltipTarget, pItemID, pRedirectID) {
 	  	mLendItemTooltipTarget = pTooltipTarget;
 		mLendItemTooltip = createFormTooltip($j(pTooltipTarget), $j('#lendForm'), lendQtipOnHide);
 		
-		$j("#lendBorrowDate").datepicker({ dateFormat: 'dd.mm.yy', 
-			                               dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-			                               dayNamesMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
-			                               dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
-			                               firstDay: 1,
-			                               monthNames: ['Janvier','F&eacute;vrier','Mars','Avril','Mai','Juin','Juillet','Ao&ucirc;t','Septembre','Octobre','Novembre','D&eacute;cembre'],
-			                               monthNamesShort: ['Jan','F&eacute;v','Mar','Avr','Mai','Jui','Jul','Ao&ucirc;','Sep','Oct','Nov','D&eacute;c']});
-		
-		$j("#lendBorrowDate").attr( 'readOnly' , 'true' );		
+		createDatePicker($j("#lendBorrowDate"));
 	}    
+}
+
+function createDatePicker(pJqueryInputField) {
+	pJqueryInputField.datepicker( "destroy" );
+	pJqueryInputField.datepicker({ dateFormat: 'dd.mm.yy', 
+        dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+        dayNamesMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+        dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+        firstDay: 1,
+        monthNames: ['Janvier','F&eacute;vrier','Mars','Avril','Mai','Juin','Juillet','Ao&ucirc;t','Septembre','Octobre','Novembre','D&eacute;cembre'],
+        monthNamesShort: ['Jan','F&eacute;v','Mar','Avr','Mai','Jui','Jul','Ao&ucirc;','Sep','Oct','Nov','D&eacute;c']});
+
+	pJqueryInputField.attr( 'readOnly' , 'true' );		
 }
 
 /*
@@ -247,7 +252,9 @@ function enableLendBorrowerName() {
 }
 
 function resetLendBorrowerFields() {
-	$j("#lendBorrowerId").val(0);
+	// Maybe a bug in jQuery? Does not work in Safari 5 with the jQuery.val function.
+	//$j("#lendBorrowerId").val(0);
+	document.getElementById('lendBorrowerId').options[0].selected = true;
 	$j("#lendBorrowerName").val("");
 	$j('#lendBorrowerId').removeClass("validationError");
 	$j('#lendBorrowerName').removeClass("validationError");	    
