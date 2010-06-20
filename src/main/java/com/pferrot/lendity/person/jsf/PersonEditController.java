@@ -6,7 +6,6 @@ import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import org.springframework.security.AccessDeniedException;
 
-import com.pferrot.security.SecurityUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonUtils;
@@ -27,9 +26,13 @@ public class PersonEditController extends AbstractPersonAddEditController {
 			if (personIdString != null) {
 				final Long personId = Long.parseLong(personIdString);
 				person = getPersonService().findPerson(personId);				
-				if (person != null && !getPersonService().isCurrentUserAuthorizedToEdit(person)) {
-					throw new AccessDeniedException("User '" + SecurityUtils.getCurrentUsername() + 
-							"' is not allowed to edit '" + person +"'.");
+				// Access control check.
+				if (!getPersonService().isCurrentUserAuthorizedToEdit(person)) {
+					JsfUtils.redirect(PagesURL.ERROR_ACCESS_DENIED);
+					if (log.isWarnEnabled()) {
+						log.warn("Access denied (person edit): user = " + PersonUtils.getCurrentPersonDisplayName() + " (" + PersonUtils.getCurrentPersonId() + "), person = " + personIdString);
+					}
+					return;
 				}
 				setPerson(person);
 			}

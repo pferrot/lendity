@@ -133,7 +133,7 @@
 </h:dataTable>
 
 <ui:include src="../table/tableControls.jspx">
-	<ui:param name="theBean" value="#{myItemsListController}"/>
+	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
 </ui:include>
 
 </div><!-- /content box -->

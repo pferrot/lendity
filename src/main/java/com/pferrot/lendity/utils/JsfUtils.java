@@ -70,7 +70,11 @@ public class JsfUtils {
 		HttpServletRequest request = (HttpServletRequest)getExternalContext().getRequest();
 		return request.getParameter(pParameterName);
 	}
-
+	
+	public static HttpServletRequest getRequest() {
+		return (HttpServletRequest)getExternalContext().getRequest();
+	}
+	
 	/**
 	 * Returns a session attribute.
 	 *

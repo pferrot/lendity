@@ -188,7 +188,7 @@ public class LendRequestService {
 		try {
 			CoreUtils.assertNotNull(pLendRequest);
 
-			setLendRequestResponse(pLendRequest, (LendRequestResponse)listValueDao.findListValue(LendRequestResponse.ACCEPT_LABEL_CODE));
+			setLendRequestResponse(pLendRequest, (LendRequestResponse)listValueDao.findListValue(LendRequestResponse.REFUSE_LABEL_CODE));
 			
 			sendResponseEmail(pLendRequest,
 					Configuration.getSiteName() + ": demande d'emprunt refusée",

@@ -30,25 +30,22 @@ public class InternalItemOverviewController
 	private InternalItem item;
 	
 	@InitView
-	public void initView() {
-		// Read the item ID from the request parameter and load the correct item.
-//		try {
-			final String itemIdString = JsfUtils.getRequestParameter(PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID);
-			InternalItem item = null;
-			if (itemIdString != null) {
-				itemId = Long.parseLong(itemIdString);
-				item = itemService.findInternalItem(itemId);
-				setItem(item);
+	public void initView() {		
+		final String itemIdString = JsfUtils.getRequestParameter(PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID);
+		InternalItem item = null;
+		if (itemIdString != null) {
+			itemId = Long.parseLong(itemIdString);
+			item = itemService.findInternalItem(itemId);
+			// Access control check.
+			if (!itemService.isCurrentUserAuthorizedToView(item)) {
+				JsfUtils.redirect(PagesURL.ERROR_ACCESS_DENIED);
+				if (log.isWarnEnabled()) {
+					log.warn("Access denied (item view): user = " + PersonUtils.getCurrentPersonDisplayName() + " (" + PersonUtils.getCurrentPersonId() + "), item = " + itemId);
+				}
+				return;
 			}
-			// Item not found or not item ID specified.
-//			if (item == null) {
-//				JsfUtils.redirect(PagesURL.MY_ITEMS_LIST);
-//			}
-//		}
-//		catch (Exception e) {
-			//TODO display standard error page instead.
-//			JsfUtils.redirect(PagesURL.MY_ITEMS_LIST);
-//		}		
+			setItem(item);
+		}	
 	}
 
 	public void setItemService(ItemService itemService) {

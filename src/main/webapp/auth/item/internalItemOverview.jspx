@@ -89,9 +89,11 @@
 				</span>
 			</c:if>
 		</td><td>
-			<span class="gt-btn-green-medium" onclick="deleteInternalItemTooltip(this, '#{itemOverviewController.item.id}', 1)">
-				<h:outputText rendered="#{itemOverviewController.editAvailable}" value="#{messages.item_delete}"/>
-			</span>
+			<c:if test="#{itemOverviewController.editAvailable}">
+				<span class="gt-btn-green-medium" onclick="deleteInternalItemTooltip(this, '#{itemOverviewController.item.id}', 1)">
+					<h:outputText value="#{messages.item_delete}"/>
+				</span>
+			</c:if>
 		</td></tr></table>		
 	</div>
 </div>

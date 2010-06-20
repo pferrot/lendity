@@ -8,6 +8,7 @@ import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.item.ItemUtils;
 import com.pferrot.lendity.model.InternalItem;
+import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 
 @ViewController(viewIds={"/auth/item/internalItemEdit.jspx"})
@@ -24,6 +25,14 @@ public class InternalItemEditController extends AbstractInternalItemAddEditContr
 			final String itemIdString = JsfUtils.getRequestParameter(PagesURL.INTERNAL_ITEM_EDIT_PARAM_ITEM_ID);
 			if (itemIdString != null) {
 				setItem(getItemService().findInternalItem(Long.parseLong(itemIdString)));
+				// Access control check.
+				if (!getItemService().isCurrentUserAuthorizedToEdit(getItem())) {
+					JsfUtils.redirect(PagesURL.ERROR_ACCESS_DENIED);
+					if (log.isWarnEnabled()) {
+						log.warn("Access denied (item edit): user = " + PersonUtils.getCurrentPersonDisplayName() + " (" + PersonUtils.getCurrentPersonId() + "), item = " + itemIdString);
+					}
+					return;
+				}
 			}
 			// Item not found or no item ID specified.
 			if (getItem() == null) {

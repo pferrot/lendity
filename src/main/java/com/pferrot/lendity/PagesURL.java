@@ -5,7 +5,9 @@ public interface PagesURL {
 	/////////////////////////////////////////////////////////////////////////
 	// ERROR - start
 	
-	String ERROR = "/public/error/error.faces";
+	String ERROR_GENERAL_ERROR = "/public/error/error.faces";
+	String ERROR_ACCESS_DENIED = "/public/error/accessDenied.faces";
+	String ERROR_PAGE_NOT_FOUND = "/public/error/error_404.faces";
 	
 	// ERROR - end
 	/////////////////////////////////////////////////////////////////////////

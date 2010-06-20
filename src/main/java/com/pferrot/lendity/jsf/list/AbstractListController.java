@@ -9,12 +9,14 @@ import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.utils.JsfUtils;
 
 /**
  * See http://balusc.blogspot.com/2008/10/effective-datatable-paging-and-sorting.html
@@ -23,7 +25,11 @@ import com.pferrot.lendity.dao.bean.ListWithRowCount;
  *
  */
 public abstract class AbstractListController implements Serializable {
+
 	private final static Log log = LogFactory.getLog(AbstractListController.class);
+	
+	private final static String LIST_LOADED_ATTRIBUTE_PREFIX_NAME = "LIST_LOADED";
+	private final static String LIST_LOADED_ATTRIBUTE_VALUE = "TRUE";
 	
     private List list;
 
@@ -180,10 +186,19 @@ public abstract class AbstractListController implements Serializable {
 	public List getList() {
         // See http://balusc.blogspot.com/2006/06/using-datatables.html
 		// Doing this since using session bean.
-    	if (FacesContext.getCurrentInstance().getRenderResponse()) {
-    		// Reload to get most recent data.
-			loadDataList();
-        }
+		
+		HttpServletRequest request = JsfUtils.getRequest();
+		if (FacesContext.getCurrentInstance().getRenderResponse()
+			&& ! LIST_LOADED_ATTRIBUTE_VALUE.equals(
+					request.getAttribute(LIST_LOADED_ATTRIBUTE_PREFIX_NAME + this.getClass().getName()))) {
+	    		// Reload to get most recent data.
+				loadDataList();
+				// Flag the request so that the list is only loaded once. 
+				// The "FacesContext.getCurrentInstance().getRenderResponse()" is not enough since
+				// the getList method is called several times during the same phase - because of the tableControls
+				// for instance.
+				request.setAttribute(LIST_LOADED_ATTRIBUTE_PREFIX_NAME + this.getClass().getName(), LIST_LOADED_ATTRIBUTE_VALUE);
+		}
         return list;
 	}
 

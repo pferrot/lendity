@@ -34,7 +34,7 @@ public class CustomErrorPageWriter {
 			message += " for user: " + userInfo;
 			log.error(message, pException);
 		}
-        JsfUtils.redirect(PagesURL.ERROR);
+        JsfUtils.redirect(PagesURL.ERROR_GENERAL_ERROR);
     }	
 }
 

@@ -12,6 +12,7 @@ import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.exception.PersonException;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -40,6 +41,7 @@ public class PersonService {
 	}
 
 	public void updatePerson(final Person pPerson) {
+		assertCurrentUserAuthorizedToEdit(pPerson);
 		personDao.updatePerson(pPerson);
 		PersonUtils.updatePersonInSession(pPerson, JsfUtils.getHttpServletRequest());
 	}
@@ -71,6 +73,7 @@ public class PersonService {
 			CoreUtils.assertNotNull(pBannedPersonId);
 			
 			final Person bannerPerson = personDao.findPerson(pBannerPersonId);
+			assertCurrentUserAuthorizedToEdit(bannerPerson);
 			final Person bannedPerson = personDao.findPerson(pBannedPersonId);
 			if (bannedPerson != null) {
 				bannerPerson.removeBannedPerson(bannedPerson);
@@ -95,6 +98,7 @@ public class PersonService {
 			CoreUtils.assertNotNull(pConnectionToBeRemovedId);
 			
 			final Person connectionRemover = personDao.findPerson(pConnectionRemoverId);
+			assertCurrentUserAuthorizedToEdit(connectionRemover);
 			final Person connectionToBeRemoved = personDao.findPerson(pConnectionToBeRemovedId);
 			if (connectionToBeRemoved != null) {
 				connectionRemover.removeConnection(connectionToBeRemoved);
@@ -120,6 +124,12 @@ public class PersonService {
 		return false;
 	}
 
+	public void assertCurrentUserAuthorizedToView(final Person pPerson) {
+		if (!isCurrentUserAuthorizedToView(pPerson)) {
+			throw new SecurityException("Current user is not authorized to view person");
+		}
+	}
+
 	public boolean isCurrentUserAuthorizedToEdit(final Person pPerson) {
 		CoreUtils.assertNotNull(pPerson);
 		final Person currentPerson = getCurrentPerson();
@@ -135,6 +145,12 @@ public class PersonService {
 		}
 		return false;
 	}
+	
+	public void assertCurrentUserAuthorizedToEdit(final Person pPerson) {
+		if (!isCurrentUserAuthorizedToEdit(pPerson)) {
+			throw new SecurityException("Current user is not authorized to edit person");
+		}
+	}
 
 	public boolean isCurrentUserAuthorizedToAdd() {
 		final Person currentPerson = getCurrentPerson();
@@ -147,6 +163,7 @@ public class PersonService {
 		}
 		return false;
 	}
+	
 
 	private Person getCurrentPerson() {
 //		final String username = SecurityUtils.getCurrentUsername();

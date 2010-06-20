@@ -6,7 +6,6 @@ import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import org.springframework.security.AccessDeniedException;
 
-import com.pferrot.security.SecurityUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
@@ -31,9 +30,13 @@ public class PersonOverviewController
 			if (personIdString != null) {
 				personId = Long.parseLong(personIdString);
 				person = personService.findPerson(personId);
-				if (person != null && !personService.isCurrentUserAuthorizedToView(person)) {
-					throw new AccessDeniedException("User '" + SecurityUtils.getCurrentUsername() + 
-							"' is not allowed to view '" + person +"'.");
+				// Access control check.
+				if (!personService.isCurrentUserAuthorizedToView(person)) {
+					JsfUtils.redirect(PagesURL.ERROR_ACCESS_DENIED);
+					if (log.isWarnEnabled()) {
+						log.warn("Access denied (person view): user = " + PersonUtils.getCurrentPersonDisplayName() + " (" + PersonUtils.getCurrentPersonId() + "), person = " + personIdString);
+					}
+					return;
 				}
 				setPerson(person);
 			}

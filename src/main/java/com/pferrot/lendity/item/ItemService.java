@@ -344,7 +344,8 @@ public class ItemService {
 		return itemDao.createItem(item);
 	}
 	
-	public void deleteInternalItem(final InternalItem pInternalItem)  {		
+	public void deleteInternalItem(final InternalItem pInternalItem)  {
+		assertCurrentUserAuthorizedToDelete(pInternalItem);
 		// Delete lend requests.
 		lendRequestDao.deleteLendRequestsForItem(pInternalItem.getId());
 		itemDao.deleteItem(pInternalItem);
@@ -364,6 +365,7 @@ public class ItemService {
 	}
 
 	public void updateItemWithCategory(final Item pItem, final Long pCategoryId) {
+		assertCurrentUserAuthorizedToEdit(pItem);
 		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, listValueDao));
 		updateItem(pItem);
 	}
