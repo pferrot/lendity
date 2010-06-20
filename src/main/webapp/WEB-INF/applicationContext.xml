@@ -517,6 +517,7 @@
 	<bean id="itemServiceTarget" class="com.pferrot.lendity.item.ItemService">
 		<property name="itemDao" ref="itemDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
+		<property name="lendRequestDao" ref="lendRequestDao"/>
 		<property name="personDao" ref="personDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
 	</bean>
@@ -563,6 +564,11 @@
 	</bean>
 	
 	<bean id="internalItemLendBackTooltipController" class="com.pferrot.lendity.item.jsf.InternalItemLendBackTooltipController"
+	      scope="request">
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+	
+	<bean id="deleteInternalItemTooltipController" class="com.pferrot.lendity.item.jsf.DeleteInternalItemTooltipController"
 	      scope="request">
 	      <property name="itemService" ref="itemService"/>
 	</bean>

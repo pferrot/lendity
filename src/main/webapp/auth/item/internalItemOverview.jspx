@@ -32,6 +32,7 @@
 
 <ui:include src="lendTooltip.jspx"/>
 <ui:include src="lendBackTooltip.jspx"/>
+<ui:include src="deleteInternalItemTooltip.jspx"/>
 
 <h2 class="gt-table-head"><h:outputText value="#{messages.item_internalItemOverviewTitle}"/></h2>
 
@@ -87,6 +88,10 @@
 					<h:outputText value="#{messages.item_lendBack}"/>
 				</span>
 			</c:if>
+		</td><td>
+			<span class="gt-btn-green-medium" onclick="deleteInternalItemTooltip(this, '#{itemOverviewController.item.id}', 1)">
+				<h:outputText rendered="#{itemOverviewController.editAvailable}" value="#{messages.item_delete}"/>
+			</span>
 		</td></tr></table>		
 	</div>
 </div>

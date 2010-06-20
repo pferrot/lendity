@@ -313,6 +313,57 @@ function cancelLendBackItem() {
 
 /***************************************************************************************************
  * 
+ * DELETE INTERNAL ITEM
+ * 
+ ***************************************************************************************************/
+function hideDeleteInternalItemTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#deleteInternalItemForm'), $j('#deleteInternalItemDiv'));
+}
+
+function deleteInternalItemQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#deleteInternalItemDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip that is used to lend an item.
+ */
+var mDeleteInternalItemTooltip;
+var mDeleteInternalItemTarget;
+function deleteInternalItemTooltip(pTooltipTarget, pItemID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideDeleteInternalItemTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('deleteInternalItemForm').reset();
+		// Set the correct itemID.
+		$j('#deleteInternalItemId').val(pItemID);
+		// Set the correct redirectID.
+		$j('#deleteInternalItemRedirectId').val(pRedirectID);
+		
+	  	mDeleteInternalItemTooltipTarget = pTooltipTarget;
+	  	mDeleteInternalItemTooltip = createFormTooltip($j(pTooltipTarget), $j('#deleteInternalItemForm'), deleteInternalItemQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip when an item is back.
+ */
+function submitDeleteInternalItem() {	
+	document.getElementById("deleteInternalItemActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the lend back item tooltip.
+ */
+function cancelDeleteInternalItem() {
+	hideDeleteInternalItemTooltip(mDeleteInternalItemTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
  * REQUEST CONNECTION
  * 
  ***************************************************************************************************/

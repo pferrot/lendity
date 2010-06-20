@@ -14,4 +14,6 @@ public interface LendRequestDao {
 	void updateLendRequest(LendRequest pLendRequest);
 	
 	void deleteLendRequest(LendRequest pLendRequest);
+	
+	void deleteLendRequestsForItem(Long pItemId);
 }

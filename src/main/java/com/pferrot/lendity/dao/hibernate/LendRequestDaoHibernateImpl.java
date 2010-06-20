@@ -22,6 +22,10 @@ public class LendRequestDaoHibernateImpl extends HibernateDaoSupport implements 
 	public void deleteLendRequest(final LendRequest pLendRequest) {
 		getHibernateTemplate().delete(pLendRequest);		
 	}
+	
+	public void deleteLendRequestsForItem(final Long pItemId) {		
+		getHibernateTemplate().bulkUpdate("delete from LendRequest where item.id = ?", pItemId); 		
+	}
 
 	public void updateLendRequest(final LendRequest pLendRequest) {
 		getHibernateTemplate().update(pLendRequest);

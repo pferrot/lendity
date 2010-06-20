@@ -13,6 +13,7 @@ import com.pferrot.core.CoreUtils;
 import com.pferrot.emailsender.manager.MailManager;
 import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.dao.ItemDao;
+import com.pferrot.lendity.dao.LendRequestDao;
 import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
@@ -32,6 +33,7 @@ public class ItemService {
 	
 	private ItemDao itemDao;
 	private ListValueDao listValueDao;
+	private LendRequestDao lendRequestDao;
 	private PersonDao personDao;
 	private MailManager mailManager;
 	
@@ -45,6 +47,10 @@ public class ItemService {
 
 	public void setListValueDao(ListValueDao listValueDao) {
 		this.listValueDao = listValueDao;
+	}
+
+	public void setLendRequestDao(LendRequestDao lendRequestDao) {
+		this.lendRequestDao = lendRequestDao;
 	}
 
 	public void setPersonDao(PersonDao personDao) {
@@ -336,6 +342,16 @@ public class ItemService {
 	
 	public Long createItem(final Item item) {
 		return itemDao.createItem(item);
+	}
+	
+	public void deleteInternalItem(final InternalItem pInternalItem)  {		
+		// Delete lend requests.
+		lendRequestDao.deleteLendRequestsForItem(pInternalItem.getId());
+		itemDao.deleteItem(pInternalItem);
+	}
+	
+	public void deleteInternalItem(final Long pInternalItemId) {
+		deleteInternalItem(itemDao.findInternalItem(pInternalItemId));
 	}
 
 	public Long createItemWithCategory(final Item pItem, final Long pCategoryId) {
