@@ -4,6 +4,12 @@ File:		custom.css - Use this file to add any custom styles you need
 
 If you add styles to this template, be sure to include it in your template files.
 */
+
+div.contentContent {
+	background-color: #efefef;
+	padding-bottom: 20px;	
+}
+
 .gt-form-text-login {
 	width: 180px!important;	
 	font-size: 92%!important;
@@ -99,7 +105,7 @@ input.grayColor {
 }
 
 span.linkStyleAction {
-	color: #47790a;
+	color: #ff6600;
 	text-decoration: none;
 	font-weight: bold;
 	font-size:100%;
@@ -111,7 +117,7 @@ span.linkStyleAction:hover {
 }
 
 span.linkStyleActionSmall {
-	color: #47790a;
+	color: #ff6600;
 	text-decoration: none;
 	font-weight: normal;
 	font-size:90%;

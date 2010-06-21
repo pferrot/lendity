@@ -112,7 +112,7 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row">
-						<h:commandButton styleClass="gt-btn-green-medium gt-btn-left" type="submit" id="login" action="#{loginController.doLogin}" value="#{messages.login_login}" />
+						<h:commandButton styleClass="stylishButton" type="submit" id="login" action="#{loginController.doLogin}" value="#{messages.login_login}" />
 					</div>
 					<!-- /form row -->				
 					<p class="gt-forgot-password">

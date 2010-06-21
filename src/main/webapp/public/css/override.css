@@ -7,15 +7,6 @@ You can then use !important to override the style.
 If you add styles to this template, be sure to include it in your template files.
 */
 
-.gt-hd {
-	/*background: url(../images/gt/hd-bkg.jpg) repeat-x 0 100%;*/
-	/*background: url(../images/top-green-smudge.jpg) repeat-x 0 100%;*/
-	background: url(../images/top_background.jpg) repeat 0 0;
-	/*background-color: #47710f;*/
-
-	padding-top: 1px;
-}
-
 /*
 Overridden for the cursor property.
 */
@@ -62,8 +53,8 @@ Overridden for width.
 	margin-left: auto;
 	margin-right: auto;
 	padding: 1.5em 3em;
-	border: 1px solid #ccc;
-	background-color: #fff;
+	border: 2px solid #073351;
+	background-color: #094e62;
 	border-radius: 5px;
 }
 
@@ -88,7 +79,8 @@ Overridden color.
 }
 
 a:link, a:visited {
-	color: #47790a;
+	color: #ff6600;
+	font-weight: bold;
 	text-decoration: none!important;
 }
 
@@ -98,7 +90,7 @@ a:hover {
 
 .gt-content-box {
 	word-wrap:break-word!important;
-	background-color: #fff;
+	background-color: #FF9F00;
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	padding: 1px;
@@ -113,6 +105,12 @@ a:hover {
 }
 
 .gt-nav a:hover, .gt-nav a.gt-active:link, .gt-nav a.gt-active:visited, .gt-nav .gt-active a:link, .gt-nav .gt-active a:visited {
+	text-decoration: none!important;
+}
+
+a.stylishButton, .stylishButton {
+	color: black!important;
+	font-weight: bold!important;
 	text-decoration: none!important;
 }
 

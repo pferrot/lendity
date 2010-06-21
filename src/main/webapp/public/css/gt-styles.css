@@ -20,39 +20,46 @@ Misc - anything that doesn't fit elsewhere
 
 /* @group HTML, Body */
 html {
-	background-color: #f1f4e2;
+	background-color: #efefef;/*#ff6600;*/
+	
 }
 body {
-	font-family: Helvetica, sans-serif;
+	font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
 }
 /* @end */
 
 /* @group Layout */
 /* Heading Styles */
 .gt-hd {
-	background: url(../images/gt/hd-bkg.jpg) repeat-x 0 100%;
 	padding-top: 1px;
 }
 .gt-hd-top {
 	overflow: hidden;
-	border-bottom: 1px solid #2b4d00;
 	padding: 0 0 10px 0;
 }
 .gt-hd .gt-logo {
 	margin-left: 35px;
 	margin-bottom: 0;
 	padding-top: 10px;
-	color: #fff;
+	color: #073351;
 	font-size: 215%;
 	font-weight: normal;
 	float: left;
 	display: inline;
 }
+.gt-hd .gt-logo a {
+	color: #ff6600;
+	font-weight: bold;
+}
+
+.gt-hd .gt-logo a:hover {
+	text-decoration: none!important;
+}
+
 .gt-hd .gt-logo .gt-leaf {
 	vertical-align: top;
 }
 .gt-hd .gt-leaf-watermark {
-	background: url(../images/gt/leaves-watermark.png) no-repeat 99% 0;
 }
 
 /* Body Styles */
@@ -137,17 +144,16 @@ body {
 
 /* Footer Styles */
 .gt-footer {
-	clear: both;
-	border: 1px solid #ccc;
-	border-radius: 5px;
 	font-size: 93%;
-	color: #666666;
-	margin: 20px 35px;
+	color: #073351;
+	margin: 20px 0px;
 	text-align: center;
-	background-color: #fafcef;
+	width: 100%;
+	float: left;
+	display: inline;
 }
 .gt-footer-inner {
-	padding: 10px;
+	padding: 10px; 
 }
 .gt-footer p {
 	margin: 0;
@@ -182,7 +188,7 @@ body {
 /* Utility Box Styles */
 .gt-util-box {
 	margin-right: 20px;
-	color: #eee;
+	color: #073351;
 	font-size: 93%;
 	float: right;
 	display: inline;
@@ -191,7 +197,7 @@ body {
 	margin: 0;
 }
 .gt-util-box a:link, .gt-util-box a:visited {
-	color: #eee;
+	color: #ff6600;
 	text-decoration: none;
 }
 .gt-util-box a:hover {
@@ -207,7 +213,7 @@ body {
 
 /* Default List Table */
 .gt-content-box {
-	background-color: #fff;
+	background-color: #87b0e6;
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	padding: 1px;
@@ -391,7 +397,7 @@ body {
 	margin-bottom: 10px;
 	font-size: 161.6%;
 	font-weight: bold;
-	color: #47790a;
+	color: #ff6600;
 }
 .gt-login-box {
 	width: 350px;
@@ -410,9 +416,12 @@ body {
 	padding: 12px 0 0 0;
 	font-size: 85%;
 	font-weight: normal;
-	color: #666666;
+	color: #efefef;
 	float: left;
 	display: inline;
+}
+.gt-login-box label {
+	color: #efefef!important;	
 }
 .gt-forgot-password {
 	font-size: 85%;
@@ -578,8 +587,8 @@ body {
 /* @group Nav */
 /* Navbar */
 .gt-navbar {
-	background: url(../images/gt/navbar-bkg.png) repeat 0 0;
-	margin-bottom: 2px;
+	background-color: #073351;
+	margin-bottom: 0px;
 }
 
 /* Main Navigation */
@@ -679,14 +688,14 @@ body {
 /* @group Headings */
 h1 {
 	font-size: 182%;
-	color: #47790a;
+	color: #ff6600;
 	margin-bottom: 10px;
 }
 
 /* H2 */
 h2 {
 	font-size: 161.6%;
-	color: #47790a;
+	color: #073351;
 	margin-bottom: 10px;
 	font-weight: bold;
 }
@@ -695,7 +704,7 @@ h2.gt-table-head, h2.gt-form-head {
 }
 h3 {
 	font-size: 138.5%;
-	color: #47790a;
+	color: #ff6600;
 	margin-bottom: 10px;
 	font-weight: bold;
 }
@@ -712,7 +721,7 @@ h5 {
 }
 h6 {
 	font-size: 100%;
-	color: #47790a;
+	color: #ff6600;
 	margin-bottom: 10px;
 	font-weight: bold;
 }
@@ -781,7 +790,7 @@ tt {
 	background-color: #fff;
 }
 .gt-success {
-	background-color: #47790a;
+	background-color: #ff6600;
 	padding: .5em 1em;
 	color: #fff;
 }
@@ -823,11 +832,11 @@ ul li {
 	width: 99%;
 }
 .gt-form .gt-form-text:focus, .gt-form .gt-form-textarea:focus {
-	background-color: #fff;
+	background-color: #87b0e6;
 }
 .gt-form label {
 	font-size: 100%;
-	color: #654926;
+	color: #073351;
 	display: block;
 	margin-bottom: 3px;
 	font-weight: bold;
@@ -926,7 +935,7 @@ ul li {
 
 /* @group Links - link visited hover active */
 a:link, a:visited {
-	color: #47790a;
+	color: #ff6600;
 	text-decoration: underline;
 }
 a:hover {

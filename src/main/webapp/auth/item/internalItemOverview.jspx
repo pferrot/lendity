@@ -74,23 +74,23 @@
 	</c:if>
 	<div class="gt-form-row gt-width-100">
 		<table><tr><td>
-			<h:outputLink rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.itemEditHref}" styleClass="gt-btn-green-medium">
+			<h:outputLink rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.itemEditHref}" styleClass="stylishButton">
 	    		<h:outputText rendered="#{itemOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
 	    	</h:outputLink>
     	</td><td>
     		<c:if test="#{itemOverviewController.lendAvailable}">
-				<span class="gt-btn-green-medium" onclick="lendItemTooltip(this, '#{itemOverviewController.item.id}', 2)">
+				<span class="stylishButton" onclick="lendItemTooltip(this, '#{itemOverviewController.item.id}', 2)">
 					<h:outputText value="#{messages.item_lend}"/>
 				</span>
 			</c:if>
 			<c:if test="#{itemOverviewController.lendBackAvailable}">
-				<span class="gt-btn-green-large" onclick="lendBackItemTooltip(this, '#{itemOverviewController.item.id}', 2)">
+				<span class="stylishButton" onclick="lendBackItemTooltip(this, '#{itemOverviewController.item.id}', 2)">
 					<h:outputText value="#{messages.item_lendBack}"/>
 				</span>
 			</c:if>
 		</td><td>
 			<c:if test="#{itemOverviewController.editAvailable}">
-				<span class="gt-btn-green-medium" onclick="deleteInternalItemTooltip(this, '#{itemOverviewController.item.id}', 1)">
+				<span class="stylishButton" onclick="deleteInternalItemTooltip(this, '#{itemOverviewController.item.id}', 1)">
 					<h:outputText value="#{messages.item_delete}"/>
 				</span>
 			</c:if>
