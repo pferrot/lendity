@@ -11,6 +11,10 @@ public class AuthenticationController {
 	public boolean isLoggedIn() {
 		return SecurityUtils.isLoggedIn();
 	}
+	
+	public boolean isLoginPage() {
+		return JsfUtils.isCurrentPage(PagesURL.LOGIN);
+	}
 
 	public String getCurrentUserFirstName() {
 		return PersonUtils.getCurrentPersonFirstName();

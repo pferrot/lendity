@@ -93,7 +93,7 @@
 				         		</h:outputLink>
 		         			</p>
 	         			</c:if>
-	         			<c:if test="${not (loggedInUser)}">
+	         			<c:if test="${not (loggedInUser) and not(authenticationController.loginPage)}">
 		         			<p>
                         		<h:outputLink value="#{authenticationController.loginURL}">
                         			<h:outputText value="#{messages.login_login2}"/>

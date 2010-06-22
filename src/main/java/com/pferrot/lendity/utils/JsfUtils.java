@@ -323,4 +323,8 @@ public class JsfUtils {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public static boolean isCurrentPage(final String pPage) {
+		return getRequest().getRequestURI().indexOf(pPage) >= 0;
+	}
 }
