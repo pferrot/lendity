@@ -6,7 +6,7 @@ If you add styles to this template, be sure to include it in your template files
 */
 
 div.contentContent {
-	background-color: #efefef;
+	background-color: #eaeaf2;
 	padding-bottom: 20px;	
 }
 
@@ -20,7 +20,7 @@ div.contentContent {
 	background: url(../images/famfamfam/icons/exclamation.png) no-repeat 0 0;
 	*/
 	font-size: 80%;
-	color: #c2462c;
+	color: #ff5555;
 	padding-left:0px;
 	margin-top:0px;
 	margin-left:0px;
@@ -29,6 +29,10 @@ div.contentContent {
 	
 	font-weight: bold;
 	display: block;
+}
+
+.validationError {
+	background-color: #ff5555!important;
 }
 
 .gt-btn-green-medium-25 {
@@ -65,12 +69,8 @@ text-decoration: none!important;
 .gt-btn-brown-large:hover {
 }
 
-.validationError {
-	background-color: #f8b6a1!important;
-}
-
 .filterActive {
-	background-color: #93e0b8!important;
+	background-color: #e1e1e9!important;
 }
 
 .small {
@@ -87,7 +87,7 @@ text-decoration: none!important;
 }
 
 div.highlightedBg {
-	background-color: #f1f4e2;
+	background-color: #e1e1e9;
 	width: 100%;
 }
 
@@ -113,7 +113,7 @@ span.linkStyleAction {
 }
 
 span.linkStyleAction:hover {
-	text-decoration: underline;
+	color: #ff9900;
 }
 
 span.linkStyleActionSmall {
@@ -125,7 +125,7 @@ span.linkStyleActionSmall {
 }
 
 span.linkStyleActionSmall:hover {
-	text-decoration: underline;
+	color: #ff9900;
 }
 
 /*
@@ -151,7 +151,7 @@ See http://craigsworks.com/projects/qtip/docs/#structure
 }
 
 .qtip-contentWrapper {	
-	background-color: #bad19b;
+	background-color: #094e62;
 }
 
 .qtip-title {
@@ -162,11 +162,11 @@ See http://craigsworks.com/projects/qtip/docs/#structure
 
 .qtip-content {
 	font-size:90%;
-	background-color: #bad19b;	
+	background-color: #094e62;	
 }
 
 #lendForm {
-	background-color: #bad19b;	
+	background-color: #094e62;	
 }
 
 #lendForm td {
@@ -176,24 +176,25 @@ See http://craigsworks.com/projects/qtip/docs/#structure
 
 .qtip-content div {	
 	padding: 10px;
-	background-color: #bad19b;
+	background-color: #094e62;
 }
 
 .qtip-content table {	
 	border-width: 0px;
-	background-color: #bad19b;
+	background-color: #094e62;
+	color: #eaeaf2!important;
 }
 
 .qtip-content th {
 	text-align: right;
 	padding: 5px;	
-	background-color: #bad19b;
+	background-color: #094e62;
 }
 
 .qtip-content td {
 	text-align: left;
 	padding: 5px;
-	background-color: #bad19b;
+	background-color: #094e62;
 }
 
 .qtip-borderBottom {

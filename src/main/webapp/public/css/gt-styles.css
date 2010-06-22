@@ -20,7 +20,7 @@ Misc - anything that doesn't fit elsewhere
 
 /* @group HTML, Body */
 html {
-	background-color: #efefef;/*#ff6600;*/
+	background-color: #eaeaf2;/*#ff6600;*/
 	
 }
 body {
@@ -201,7 +201,7 @@ body {
 	text-decoration: none;
 }
 .gt-util-box a:hover {
-	text-decoration: underline;
+	color: #ff9900
 }
 .gt-util-box-inner {
 	padding: .35em 2em;
@@ -248,10 +248,7 @@ body {
 	color: #654926;
 	margin-bottom: 0;
 }
-.gt-table a:link, .gt-table a:visited {
-	color: #654926;
-	text-decoration: none;
-}
+
 .gt-table td a:hover {
 	text-decoration: underline;
 }
@@ -354,11 +351,11 @@ body {
 	border: none;
 }
 .gt-table-categories a:link, .gt-table-categories a:visited {
-	color: #666666;
+	color: #ff6600;
 	text-decoration: none;
 }
 .gt-table-categories a:hover {
-	text-decoration: underline;
+	color: #ff9900;
 }
 
 /* Action Links */
@@ -416,12 +413,12 @@ body {
 	padding: 12px 0 0 0;
 	font-size: 85%;
 	font-weight: normal;
-	color: #efefef;
+	color: #eaeaf2;
 	float: left;
 	display: inline;
 }
 .gt-login-box label {
-	color: #efefef!important;	
+	color: #eaeaf2!important;	
 }
 .gt-forgot-password {
 	font-size: 85%;
@@ -647,7 +644,7 @@ body {
 	padding: .6em .6em .6em 1.8em;
 }
 .gt-sidebar-nav a:link, .gt-sidebar-nav a:visited {
-	color: #f1f4e2;
+	color: #e1e1e9;
 	text-decoration: none;
 }
 .gt-sidebar-nav a:hover {
@@ -658,7 +655,7 @@ body {
 	font-size: 108%;
 	margin: 0;
 	padding: .6em .6em .6em 1.2em;
-	color: #f1f4e2;
+	color: #e1e1e9;
 	font-weight: bold;
 }
 
@@ -832,7 +829,7 @@ ul li {
 	width: 99%;
 }
 .gt-form .gt-form-text:focus, .gt-form .gt-form-textarea:focus {
-	background-color: #87b0e6;
+	background-color: #fafcef;
 }
 .gt-form label {
 	font-size: 100%;

@@ -88,8 +88,8 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row">
-						<br/><h:commandButton styleClass="gt-btn-green-medium gt-btn-left" value="#{messages.navigation_save}" action="#{itemEditController.submit}" />
-						<h:outputLink styleClass="gt-btn-green-medium gt-btn-left"  value="#{itemEditController.itemOverviewHref}">
+						<br/><h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{itemEditController.submit}" />
+						<h:outputLink styleClass="stylishButton"  value="#{itemEditController.itemOverviewHref}">
            					<h:outputText value="#{messages.navigation_cancel}"/>
          				</h:outputLink>
 					</div>

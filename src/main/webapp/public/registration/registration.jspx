@@ -140,7 +140,7 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row">
-						<br/><h:commandButton styleClass="gt-btn-green-large gt-btn-left" value="#{messages.registration_submit}" action="#{registrationStep1.submit}" />
+						<br/><h:commandButton styleClass="stylishButton" value="#{messages.registration_submit}" action="#{registrationStep1.submit}" />
 					</div>
 					<!-- /form row -->
 					

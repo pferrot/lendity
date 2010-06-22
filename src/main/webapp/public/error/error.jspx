@@ -28,6 +28,7 @@
 			<div class="gt-content">
 
 				<h2 class="gt-table-head"><h:outputText value="#{messages.error_errorPageTitle}"/></h2>
+				<div class="gt-form gt-content-box">
 
 				<p><h:outputText value="#{messages.error_errorPageDescription}"/></p>	
 				<p>
@@ -37,6 +38,7 @@
 				</p>
 				<p><h:outputText value="#{messages.error_errorPageDescription2}"/></p>
 				<p><b><h:outputText value="#{messages.error_supportEmailAntiSpam}"/></b><br/><h:outputText value="#{messages.error_supportEmailAntiSpamHelp}"/></p>
+				</div>
 			</div>
 			<!-- /main content -->
 

@@ -27,18 +27,16 @@
 			<!-- main content -->
 			<div class="gt-content">
 				
-				<div style="padding-left: 30px;">
-					<ul>
-					<li><h4><h:outputText value="#{messages.login_text1}"/></h4></li>
-					<li><h4><h:outputText value="#{messages.login_text2}"/></h4></li>
-					<li><h4><h:outputText value="#{messages.login_text3}"/></h4></li>
-					</ul>
+				<div style="padding-left: 0px;">
+					<h4><h:outputText value="#{messages.login_text1}"/></h4>
+					<h4><h:outputText value="#{messages.login_text2}"/></h4>
+					<h4><h:outputText value="#{messages.login_text3}"/></h4>
 				</div>
-				<div style="padding-left: 50px;">	
+				<div style="padding-left: 0px;">	
 					<br/>
 					<i><h:outputText value="#{messages.login_textExample}"/></i>
 					<br/><br/><br/>
-					<h:outputLink value="#{authenticationController.registrationURL}">
+					<h:outputLink value="#{authenticationController.registrationURL}" styleClass="stylishButton">
 						<h:outputText value="#{messages.login_registerForFree}"/>
 					</h:outputLink>
 				</div>				

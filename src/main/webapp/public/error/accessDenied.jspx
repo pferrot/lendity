@@ -28,13 +28,14 @@
 			<div class="gt-content">
 
 				<h2 class="gt-table-head"><h:outputText value="#{messages.error_accessDeniedTitle}"/></h2>
-
-				<p><h:outputText value="#{messages.error_accessDeniedDescription}"/></p>	
-				<p>
-					<h:outputLink value="#{authenticationController.homeURL}">
-						<h:outputText value="#{messages.menu_home}" />
-					</h:outputLink>
-				</p>
+				<div class="gt-form gt-content-box">
+					<p><h:outputText value="#{messages.error_accessDeniedDescription}"/></p>	
+					<p>
+						<h:outputLink value="#{authenticationController.homeURL}">
+							<h:outputText value="#{messages.menu_home}" />
+						</h:outputLink>
+					</p>
+				</div>
 			</div>
 			<!-- /main content -->
 

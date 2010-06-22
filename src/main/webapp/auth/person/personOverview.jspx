@@ -50,11 +50,11 @@
 	<br/>	
 	<div class="gt-form-row gt-width-100">
 		<table><tr><td>
-		<h:outputLink rendered="#{personOverviewController.editAvailable}" value="#{personOverviewController.personEditHref}" styleClass="gt-btn-green-medium">
+		<h:outputLink rendered="#{personOverviewController.editAvailable}" value="#{personOverviewController.personEditHref}" styleClass="stylishButton">
     		<h:outputText rendered="#{personOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
     	</h:outputLink>
     	</td><td>
-    	<h:outputLink rendered="#{personOverviewController.editAvailable}" value="#{personOverviewController.changePasswordHref}" styleClass="gt-btn-green-large">
+    	<h:outputLink rendered="#{personOverviewController.editAvailable}" value="#{personOverviewController.changePasswordHref}" styleClass="stylishButton">
     		<h:outputText rendered="#{personOverviewController.editAvailable}" value="#{messages.changePassword_changePassword}"/>
     	</h:outputLink>
     	</td></tr></table>

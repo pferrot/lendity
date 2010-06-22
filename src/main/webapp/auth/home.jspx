@@ -29,8 +29,7 @@
 
 <h2 class="gt-table-head"><h:outputText value="#{messages.menu_home}"/></h2>
 
-			<div style="padding-left: 50px;">	
-					<br/>
+				<div class="gt-form gt-content-box">
 					<p>
 						<h:outputFormat value="#{messages.home_welcome}">
 							<f:param value="#{authenticationController.currentUserFirstName}" />
@@ -49,6 +48,7 @@
 						<h:outputText value="#{messages.home_signature}"/>
 					</p>
 				</div>
+				
 			</div>
 			<!-- /main content -->
 

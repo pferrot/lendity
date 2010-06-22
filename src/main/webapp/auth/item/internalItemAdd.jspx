@@ -87,8 +87,8 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row">
-						<br/><h:commandButton styleClass="gt-btn-green-medium gt-btn-left" value="#{messages.navigation_save}" action="#{itemAddController.submit}" />
-						<h:outputLink styleClass="gt-btn-green-medium gt-btn-left"  value="#{authenticationController.myItemsURL}">
+						<br/><h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{itemAddController.submit}" />
+						<h:outputLink styleClass="stylishButton"  value="#{authenticationController.myItemsURL}">
            					<h:outputText value="#{messages.navigation_cancel}"/>
          				</h:outputLink>
 					</div>

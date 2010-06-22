@@ -31,29 +31,33 @@
 				<c:if test="#{registrationValidationController.validationSuccessful}" var="validationOk"/>
 	
 				<c:if test="${validationOk}">
-					<h2 class="gt-form-head">#{messages.registration_validationOk}</h2>				
-				    <p>
-		            <h:outputFormat value="#{messages.registration_validationOk1}">
-				      <f:param value="#{registrationValidationController.username}" />
-			        </h:outputFormat>
-			        </p>
-			        <p>#{messages.registration_validationOk2}</p>
-			        <p>
-                   	<h:outputLink value="#{authenticationController.loginURL}">
-        				<h:outputText value="#{messages.login_login}"/>
-	         		</h:outputLink>
-			        </p>
-				    <p>
-		            <h:outputFormat value="#{messages.registration_validationOk3}">
-				      <f:param value="#{registrationValidationController.username}" /> 
-			        </h:outputFormat>
-			        </p>
-					<p>#{messages.registration_validationOk4}</p>			
+					<h2 class="gt-form-head">#{messages.registration_validationOk}</h2>
+					<div class="gt-form gt-content-box">			
+					    <p>
+			            <h:outputFormat value="#{messages.registration_validationOk1}">
+					      <f:param value="#{registrationValidationController.username}" />
+				        </h:outputFormat>
+				        </p>
+				        <p>#{messages.registration_validationOk2}</p>
+				        <p>
+	                   	<h:outputLink value="#{authenticationController.loginURL}">
+	        				<h:outputText value="#{messages.login_login}"/>
+		         		</h:outputLink>
+				        </p>
+					    <p>
+			            <h:outputFormat value="#{messages.registration_validationOk3}">
+					      <f:param value="#{registrationValidationController.username}" /> 
+				        </h:outputFormat>
+				        </p>
+						<p>#{messages.registration_validationOk4}</p>
+					</div>
 				</c:if>
 				
 				<c:if test="${not (validationOk)}">
-					<h2 class="gt-form-head">#{messages.registration_validationFailed}</h2>				
-				    <p><h:outputFormat value="#{messages.registration_validationFailed1}"/></p>			
+					<h2 class="gt-form-head">#{messages.registration_validationFailed}</h2>
+					<div class="gt-form gt-content-box">		
+				    	<p><h:outputFormat value="#{messages.registration_validationFailed1}"/></p>
+				    </div>			
 				</c:if>
 								
 			</div>

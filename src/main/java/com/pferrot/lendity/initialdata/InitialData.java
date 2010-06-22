@@ -5,11 +5,6 @@ import java.util.Date;
 import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.security.providers.encoding.MessageDigestPasswordEncoder;
 
-import com.pferrot.security.dao.RoleDao;
-import com.pferrot.security.dao.UserDao;
-import com.pferrot.security.model.Role;
-import com.pferrot.security.model.User;
-import com.pferrot.security.passwordgenerator.PasswordGenerator;
 import com.pferrot.lendity.dao.ItemDao;
 import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.dao.PersonDao;
@@ -18,11 +13,15 @@ import com.pferrot.lendity.model.ConnectionRequestResponse;
 import com.pferrot.lendity.model.Country;
 import com.pferrot.lendity.model.Gender;
 import com.pferrot.lendity.model.InternalItem;
-import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.Language;
 import com.pferrot.lendity.model.LendRequestResponse;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.security.dao.RoleDao;
+import com.pferrot.security.dao.UserDao;
+import com.pferrot.security.model.Role;
+import com.pferrot.security.model.User;
+import com.pferrot.security.passwordgenerator.PasswordGenerator;
 
 /**
  * Creates initial data necessary for the application (list values, user roles,...).
@@ -78,8 +77,8 @@ public class InitialData {
 		createLendRequestResponse();
 		
 		createPersonsAndUsers();
-		//createItems();
-		//createRandomPersonsAndUsers(20, personDao.findPersonFromUsername("patrice.ferrot@gmail.com"));	
+		createItems();
+		createRandomPersonsAndUsers(5000, personDao.findPersonFromUsername("patrice.ferrot@gmail.com"));	
 	}
 
 	/**
@@ -190,7 +189,7 @@ public class InitialData {
 			
 			personDao.createPerson(person);
 			
-			createItems(person, PasswordGenerator.getRandom(0, 10));
+			createItems(person, PasswordGenerator.getRandom(0, 20));
 			
 			// Connect to Patrice?
 			if (PasswordGenerator.getRandom(0, 3) == 0) {
@@ -276,21 +275,34 @@ public class InitialData {
 		Person person = null;
 		
 		// Create random items.
-		createItems(personDao.findPersonFromUsername("patrice.ferrot@gmail.com"), 50);
+		createItems(personDao.findPersonFromUsername("patrice.ferrot@gmail.com"), 100);
 		
 		// Create random items.
-		createItems(personDao.findPersonFromUsername("stupid.illusion@gmail.com"), 30);
+		createItems(personDao.findPersonFromUsername("stupid.illusion@gmail.com"), 50);
 	}
 
 	private void createItems(final Person pPerson, final int pNbItems) {
 		for (int i = 0; i < pNbItems; i++) {
 			InternalItem item = new InternalItem();
-			item.setTitle(PasswordGenerator.getNewPassword(PasswordGenerator.getRandom(10, 40)));
-			item.setDescription(PasswordGenerator.getNewPassword(PasswordGenerator.getRandom(0, 255)));
+			item.setTitle(getRandomText(1, 4, 3, 15));
+			item.setDescription(getRandomText(0, 50, 3, 20));
 			item.setCategory((ItemCategory) listValueDao.findListValue(ItemCategory.LABEL_CODES[PasswordGenerator.getRandom(0, ItemCategory.LABEL_CODES.length - 1)]));
 			item.setOwner(pPerson);
 			item.setVisible(PasswordGenerator.getRandom(0, 1) == 0? Boolean.FALSE:Boolean.TRUE);
 			itemDao.createItem(item);
 		}		
+	}
+	
+	private String getRandomText(final int pMinNbWords, final int pMaxNbWords, final int pMinWordSize, final int pMaxWordSize) {
+		final int nbWords = PasswordGenerator.getRandom(pMinNbWords, pMaxNbWords);
+		final StringBuffer result = new StringBuffer();
+		for (int i = 0; i < nbWords; i++) {
+			result.append(PasswordGenerator.getNewPassword(PasswordGenerator.getRandom(pMinWordSize, pMaxWordSize)));
+			if (i < nbWords - 1) {
+				result.append(" ");
+			}
+		}
+		return result.toString();
+		
 	}
 }

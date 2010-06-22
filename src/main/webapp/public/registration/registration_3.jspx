@@ -23,22 +23,23 @@
 		<div class="gt-bd gt-cols clearfix">
 			
 			<!-- main content -->
-			<div class="gt-content">
-			
-				<h2 class="gt-form-head">#{messages.registration_registrationCompleted}</h2>				
-			    <p>
-	            <h:outputFormat value="#{messages.registration_confirmation1}">
-			      <f:param value="#{registrationController.email}" />
-		        </h:outputFormat>
-		        </p>
-		        <p>
-		        <b>
-		        <h:outputFormat value="#{messages.registration_confirmation2}">
-			      <f:param value="#{registrationController.nbDaysToValidateRegistration}" />
-		        </h:outputFormat>
-		        </b>
-		        </p>
-				<p>#{messages.registration_confirmation3}</p>								
+			<div class="gt-content">			
+				<h2 class="gt-form-head">#{messages.registration_registrationCompleted}</h2>
+				<div class="gt-form gt-content-box">			
+				    <p>
+		            <h:outputFormat value="#{messages.registration_confirmation1}">
+				      <f:param value="#{registrationController.email}" />
+			        </h:outputFormat>
+			        </p>
+			        <p>
+			        <b>
+			        <h:outputFormat value="#{messages.registration_confirmation2}">
+				      <f:param value="#{registrationController.nbDaysToValidateRegistration}" />
+			        </h:outputFormat>
+			        </b>
+			        </p>
+					<p>#{messages.registration_confirmation3}</p>	
+				</div>							
 			</div>
 			<!-- /main content -->
 

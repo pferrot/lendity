@@ -50,7 +50,7 @@
 .ui-widget { font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif; font-size: 1.1em; }
 .ui-widget .ui-widget { font-size: 1em; }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif; font-size: 1em; }
-.ui-widget-content { border: 1px solid #aaaaaa; background: #efefef url(images/ui-bg_flat_75_efefef_40x100.png) 50% 50% repeat-x; color: #000000; }
+.ui-widget-content { border: 1px solid #aaaaaa; background: #eaeaf2 url(images/ui-bg_flat_75_efefef_40x100.png) 50% 50% repeat-x; color: #000000; }
 .ui-widget-content a { color: #000000; }
 .ui-widget-header { border: 1px solid #ff6600; background: #ff6600 url(images/ui-bg_highlight-soft_75_ff6600_1x100.png) 50% 50% repeat-x; color: #000000; font-weight: bold; }
 .ui-widget-header a { color: #000000; }
