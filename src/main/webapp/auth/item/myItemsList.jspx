@@ -144,11 +144,11 @@
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 			<td>
-				<span class="linkStyleAction" onclick="lendItemTooltip(this, '#{item.id}', 1)">
-					<h:outputText value="#{messages.item_lend}" rendered="#{myItemsListController.lendAvailable}"/>
+				<span onclick="lendItemTooltip(this, '#{item.id}', 1)">
+					<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.item_lend}" rendered="#{myItemsListController.lendAvailable}"/>
 				</span>
-				<span class="linkStyleAction" onclick="lendBackItemTooltip(this, '#{item.id}', 1)">
-					<h:outputText value="#{messages.item_lendBack}" rendered="#{myItemsListController.lendBackAvailable}"/>
+				<span  onclick="lendBackItemTooltip(this, '#{item.id}', 1)">
+					<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.item_lendBack}" rendered="#{myItemsListController.lendBackAvailable}"/>
 				</span>		
 			</td>
 			</tr>

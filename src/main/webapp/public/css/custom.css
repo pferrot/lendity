@@ -10,6 +10,39 @@ div.contentContent {
 	padding-bottom: 20px;	
 }
 
+table.pagingTable {
+	border: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+table.pagingTable td {
+	padding-bottom: 4px;	
+} 
+
+table.pagingTable ul {
+	margin: 0; 
+	padding: 0;
+}
+table.pagingTable li {
+	margin: 2px; 
+	position: relative; 
+	padding: 4px 0; 
+	float: left;  
+	list-style: none;
+}
+
+table.pagingTable span {
+	float: left; 
+	margin: 0 4px;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
 .gt-form-text-login {
 	width: 180px!important;	
 	font-size: 92%!important;
@@ -114,6 +147,10 @@ span.linkStyleAction {
 
 span.linkStyleAction:hover {
 	color: #ff9900;
+}
+
+span.fontSizeSmall {
+	font-size:90%!important;
 }
 
 span.linkStyleActionSmall {

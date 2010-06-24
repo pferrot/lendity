@@ -11,42 +11,108 @@
 <!-- Table Controls -->
 <c:if test="#{!empty(theBean.list)}">
 
+<script type="text/javascript">
+	$j(function(){
+		$j('.ui-state-default').hover(
+			function(){ $j(this).addClass('ui-state-hover'); }, 
+			function(){ $j(this).removeClass('ui-state-hover'); }
+		);		
+	});
+</script>
+
+
 <div class="gt-table-controls gt-table-controls-btm clearfix">
 <h:form> 
 <p class="gt-table-pager">
 
+<table class="pagingTable">
+<!-- 
+To make the buttons display on the right hand side...
+-->
+<tr><td width="100%;">
+
+</td><td>
 
 <!--	The paging buttons-->
 <h:commandLink action="#{theBean.pageFirst}"
     rendered="#{theBean.firstRow != 0}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"/>
+	<c:if test="#{theBean.firstRow != 0}">
+		<ul class="ui-widget ui-helper-clearfix">
+			<li class="ui-state-default ui-corner-all">
+				<span class="ui-icon ui-icon-triangle-1-w pointer" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"></span>
+			</li>
+		</ul>
+	</c:if>
 </h:commandLink>
-<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" rendered="#{theBean.firstRow == 0}" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"/>
-
+<c:if test="#{theBean.firstRow == 0}">
+	<ul class="ui-widget ui-helper-clearfix">
+		<li class="ui-state-disabled ui-corner-all">
+			<span class="ui-icon ui-icon-triangle-1-w" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"></span>
+		</li>
+	</ul>
+</c:if>
+</td><td>
 <h:commandLink action="#{theBean.pagePrevious}"
     rendered="#{theBean.firstRow != 0}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}" />
+	<c:if test="#{theBean.firstRow != 0}">
+		<ul class="ui-widget ui-helper-clearfix">
+			<li class="ui-state-default ui-corner-all">
+				<span class="ui-icon ui-icon-carat-1-w pointer" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}"></span>
+			</li>
+		</ul>
+	</c:if>
 </h:commandLink>
-<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" rendered="#{theBean.firstRow == 0}" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}"/>
+<c:if test="#{theBean.firstRow == 0}">
+	<ul class="ui-widget ui-helper-clearfix">
+		<li class="ui-state-disabled ui-corner-all">
+			<span class="ui-icon ui-icon-carat-1-w" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}"></span>
+		</li>
+	</ul>
+</c:if>
+
+</td><td>
 
 <h:commandLink action="#{theBean.pageNext}"
     rendered="#{theBean.firstRow + theBean.rowsPerPage lt theBean.totalRows}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}" />
+	<c:if test="#{theBean.firstRow + theBean.rowsPerPage lt theBean.totalRows}">
+		<ul class="ui-widget ui-helper-clearfix">
+			<li class="ui-state-default ui-corner-all">
+				<span class="ui-icon ui-icon-carat-1-e pointer" alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}"></span>
+			</li>
+		</ul>
+	</c:if>
 </h:commandLink>
-<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" 
-                rendered="#{theBean.firstRow + theBean.rowsPerPage >= theBean.totalRows}"
-                alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}"/>
-
+<c:if test="#{theBean.firstRow + theBean.rowsPerPage >= theBean.totalRows}">
+	<ul class="ui-widget ui-helper-clearfix">
+		<li class="ui-state-disabled ui-corner-all">
+			<span class="ui-icon ui-icon-carat-1-e" alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}"></span>
+		</li>
+	</ul>
+</c:if>
+                
+</td><td>
 
 <h:commandLink action="#{theBean.pageLast}"
     rendered="#{theBean.firstRow + theBean.rowsPerPage lt theBean.totalRows}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}" />
+	<c:if test="#{theBean.firstRow + theBean.rowsPerPage lt theBean.totalRows}">
+		<ul class="ui-widget ui-helper-clearfix">
+			<li class="ui-state-default ui-corner-all">
+				<span class="ui-icon ui-icon-triangle-1-e pointer" alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}"></span>
+			</li>
+		</ul>
+	</c:if>	
 </h:commandLink>
-<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" 
-                rendered="#{theBean.firstRow + theBean.rowsPerPage >= theBean.totalRows}"
-                alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}"/>
+<c:if test="#{theBean.firstRow + theBean.rowsPerPage >= theBean.totalRows}">
+	<ul class="ui-widget ui-helper-clearfix">
+		<li class="ui-state-disabled ui-corner-all">
+			<span class="ui-icon ui-icon-triangle-1-e" alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}"></span>
+		</li>
+	</ul>
+</c:if>
 
-<br/>
+</td></tr>
+</table>
+
 <h:outputText value="#{messages.navigation_page} "/> 
 <h:selectOneMenu id="goToPage" value="#{theBean.goToPageNumber}" valueChangeListener="#{theBean.page}" onchange="submit()" required="true">
 	<f:selectItems value="#{theBean.goToPageNumberSelectItems}"/>

@@ -41,7 +41,7 @@ body {
 	margin-left: 35px;
 	margin-bottom: 0;
 	padding-top: 10px;
-	color: #073351;
+	color: #094e62;
 	font-size: 215%;
 	font-weight: normal;
 	float: left;
@@ -145,7 +145,7 @@ body {
 /* Footer Styles */
 .gt-footer {
 	font-size: 93%;
-	color: #073351;
+	color: #094e62;
 	margin: 20px 0px;
 	text-align: center;
 	width: 100%;
@@ -188,7 +188,7 @@ body {
 /* Utility Box Styles */
 .gt-util-box {
 	margin-right: 20px;
-	color: #073351;
+	color: #094e62;
 	font-size: 93%;
 	float: right;
 	display: inline;
@@ -296,6 +296,7 @@ body {
 .gt-content-box .gt-table-controls-btm {
 	border-bottom: none!important;
 	border-top: 1px solid #ccc;
+	text-align: right; 
 }
 .gt-table-controls .gt-table-picker {
 	float: left;
@@ -584,7 +585,7 @@ body {
 /* @group Nav */
 /* Navbar */
 .gt-navbar {
-	background-color: #073351;
+	background-color: #094e62;
 	margin-bottom: 0px;
 }
 
@@ -692,7 +693,7 @@ h1 {
 /* H2 */
 h2 {
 	font-size: 161.6%;
-	color: #073351;
+	color: #094e62;
 	margin-bottom: 10px;
 	font-weight: bold;
 }
@@ -833,7 +834,7 @@ ul li {
 }
 .gt-form label {
 	font-size: 100%;
-	color: #073351;
+	color: #094e62;
 	display: block;
 	margin-bottom: 3px;
 	font-weight: bold;

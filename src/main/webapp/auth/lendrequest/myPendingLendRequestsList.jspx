@@ -79,14 +79,14 @@
 		<table border="0" class="gt-table-categories" width="75" align="right">
 			<tr>
 				<td>
-					<span class="linkStyleAction" onclick="acceptLendTooltip(this, '#{lendRequest.id}', 1)">
+					<span class="stylishButton fontSizeSmall" onclick="acceptLendTooltip(this, '#{lendRequest.id}', 1)">
 						<h:outputText value="#{messages.lendRequest_responseAccept}"/>
 					</span>
 				</td>
 		    </tr>
 		    <tr>
 				<td>
-					<span class="linkStyleAction" onclick="refuseLendTooltip(this, '#{lendRequest.id}', 1)">
+					<span class="stylishButton fontSizeSmall" onclick="refuseLendTooltip(this, '#{lendRequest.id}', 1)">
 						<h:outputText value="#{messages.lendRequest_responseRefuse}"/>
 					</span>
 				</td>

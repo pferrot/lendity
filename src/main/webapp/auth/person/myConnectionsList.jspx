@@ -88,7 +88,7 @@
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 				<td>
-					<span class="linkStyleAction" onclick="removeConnectionTooltip(this, '#{person.id}', 1)">
+					<span class="stylishButton fontSizeSmall" onclick="removeConnectionTooltip(this, '#{person.id}', 1)">
 						<h:outputText value="#{messages.person_removeConnection}"/>
 					</span>
 				</td>
@@ -98,56 +98,9 @@
 
 </h:dataTable>
 
-<c:if test="#{!empty(myConnectionsListController.list)}">
-
-<!-- Table Controls -->
-<div class="gt-table-controls gt-table-controls-btm clearfix">
-<h:form> 
-<p class="gt-table-pager">
-
-
-<!--	The paging buttons-->
-<h:commandLink action="#{myConnectionsListController.pageFirst}"
-    rendered="#{myConnectionsListController.firstRow != 0}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"/>
-</h:commandLink>
-<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_first.png" rendered="#{myConnectionsListController.firstRow == 0}" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"/>
-
-<h:commandLink action="#{myConnectionsListController.pagePrevious}"
-    rendered="#{myConnectionsListController.firstRow != 0}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}" />
-</h:commandLink>
-<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_previous.png" rendered="#{myConnectionsListController.firstRow == 0}" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}"/>
-
-<h:commandLink action="#{myConnectionsListController.pageNext}"
-    rendered="#{myConnectionsListController.firstRow + myConnectionsListController.rowsPerPage lt myConnectionsListController.totalRows}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}" />
-</h:commandLink>
-<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_next.png" 
-                rendered="#{myConnectionsListController.firstRow + myConnectionsListController.rowsPerPage >= myConnectionsListController.totalRows}"
-                alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}"/>
-
-
-<h:commandLink action="#{myConnectionsListController.pageLast}"
-    rendered="#{myConnectionsListController.firstRow + myConnectionsListController.rowsPerPage lt myConnectionsListController.totalRows}">
-	<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}" />
-</h:commandLink>
-<h:graphicImage value="/public/images/famfamfam/icons/bullet_arrow_last.png" 
-                rendered="#{myConnectionsListController.firstRow + myConnectionsListController.rowsPerPage >= myConnectionsListController.totalRows}"
-                alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}"/>
-
-<br/>
-<h:outputText value="#{messages.navigation_page} "/> 
-<h:selectOneMenu id="goToPage" value="#{myConnectionsListController.goToPageNumber}" valueChangeListener="#{myConnectionsListController.page}" onchange="submit()" required="true">
-	<f:selectItems value="#{myConnectionsListController.goToPageNumberSelectItems}"/>
-</h:selectOneMenu>
-<h:outputText value=" / #{myConnectionsListController.totalPages}" />
-
-</p>
-</h:form>
-</div><!-- /Table Controls -->
-
-</c:if><!-- /not empty  -->
+<ui:include src="../table/tableControls.jspx">
+	<ui:param name="theBean" value="#{myConnectionsListController}"/>
+</ui:include>
 
 </div><!-- /content box -->
 

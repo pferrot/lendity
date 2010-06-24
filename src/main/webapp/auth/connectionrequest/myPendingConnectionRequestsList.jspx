@@ -73,21 +73,21 @@
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 				<td>
-					<span class="linkStyleAction" onclick="acceptConnectionTooltip(this, '#{connectionRequest.id}', 1)">
+					<span class="stylishButton fontSizeSmall" onclick="acceptConnectionTooltip(this, '#{connectionRequest.id}', 1)">
 						<h:outputText value="#{messages.connectionRequest_responseAccept}"/>
 					</span>
 				</td>
 		    </tr>
 		    <tr>
 				<td>
-					<span class="linkStyleAction" onclick="refuseConnectionTooltip(this, '#{connectionRequest.id}', 1)">
+					<span class="stylishButton fontSizeSmall" onclick="refuseConnectionTooltip(this, '#{connectionRequest.id}', 1)">
 						<h:outputText value="#{messages.connectionRequest_responseRefuse}"/>
 					</span>
 				</td>
 		    </tr>
 		    <tr>
 				<td>
-					<span class="linkStyleAction" onclick="banConnectionTooltip(this, '#{connectionRequest.id}', 1)">
+					<span class="stylishButton fontSizeSmall" onclick="banConnectionTooltip(this, '#{connectionRequest.id}', 1)">
 						<h:outputText value="#{messages.connectionRequest_responseBan}"/>
 					</span>
 				</td>
