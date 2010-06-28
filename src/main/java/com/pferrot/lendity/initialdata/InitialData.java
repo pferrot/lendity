@@ -77,8 +77,8 @@ public class InitialData {
 		createLendRequestResponse();
 		
 		createPersonsAndUsers();
-		createItems();
-		createRandomPersonsAndUsers(5000, personDao.findPersonFromUsername("patrice.ferrot@gmail.com"));	
+		//createItems();
+		//createRandomPersonsAndUsers(5000, personDao.findPersonFromUsername("patrice.ferrot@gmail.com"));	
 	}
 
 	/**

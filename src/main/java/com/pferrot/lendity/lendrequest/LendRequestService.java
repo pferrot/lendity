@@ -62,6 +62,10 @@ public class LendRequestService {
 		return lendRequestDao.findLendRequests(null, PersonUtils.getCurrentPersonId(), null, Boolean.FALSE, pFirstResult, pMaxResults);
 	}
 	
+	public long countCurrentUserPendingLendRequests() {		
+		return lendRequestDao.countLendRequests(null, PersonUtils.getCurrentPersonId(), null, Boolean.FALSE);
+	}
+	
 	public ListWithRowCount findCurrentUserPendingLendRequestsOut(final int pFirstResult, final int pMaxResults) {		
 		return lendRequestDao.findLendRequests(PersonUtils.getCurrentPersonId(), null, null, Boolean.FALSE, pFirstResult, pMaxResults);
 	}

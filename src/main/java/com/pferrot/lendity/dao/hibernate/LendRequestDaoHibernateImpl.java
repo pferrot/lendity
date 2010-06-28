@@ -43,7 +43,7 @@ public class LendRequestDaoHibernateImpl extends HibernateDaoSupport implements 
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
 	}
 
-	private long countLendRequests(final Long pRequesterId, final Long pOwnerId, final Long pItemId, final Boolean pCompleted) {
+	public long countLendRequests(final Long pRequesterId, final Long pOwnerId, final Long pItemId, final Boolean pCompleted) {
 		final DetachedCriteria criteria = getLendRequestDetachedCriteria(pRequesterId, pOwnerId, pItemId, pCompleted);
 		return rowCount(criteria);
 	}

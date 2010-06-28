@@ -1,5 +1,7 @@
 package com.pferrot.lendity.item.jsf;
 
+import java.util.Date;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
@@ -24,6 +26,7 @@ public class InternalItemAddController extends AbstractInternalItemAddEditContro
 		internalItem.setDescription(getDescription());
 		internalItem.setVisible(getVisible());
 		internalItem.setOwner(getItemService().getCurrentPerson());
+		internalItem.setCreationDate(new Date());
 				
 		return getItemService().createItemWithCategory(internalItem, getCategoryId());		
 	}

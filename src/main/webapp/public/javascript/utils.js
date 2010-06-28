@@ -131,6 +131,8 @@ function createFormTooltip(pJqueryTooltipTarget, pForm, pOnHideCallbackMethod) {
 			}
 		},
 		style: {
+			background: '#094e62',
+		    color: '#eaeaf2',
 			border: {
 				width: 1,
 				radius: 5,

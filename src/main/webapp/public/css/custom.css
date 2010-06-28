@@ -66,6 +66,7 @@ table.pagingTable span {
 
 .validationError {
 	background-color: #ff5555!important;
+	color: #000000!important;
 }
 
 .gt-btn-green-medium-25 {
@@ -150,7 +151,11 @@ span.linkStyleAction:hover {
 }
 
 span.fontSizeSmall {
-	font-size:90%!important;
+	font-size:92%!important;
+}
+
+span.fontSizeSmallSmall {
+	font-size:86%!important;
 }
 
 span.linkStyleActionSmall {
@@ -188,7 +193,6 @@ See http://craigsworks.com/projects/qtip/docs/#structure
 }
 
 .qtip-contentWrapper {	
-	background-color: #094e62;
 }
 
 .qtip-title {
@@ -199,7 +203,8 @@ See http://craigsworks.com/projects/qtip/docs/#structure
 
 .qtip-content {
 	font-size:90%;
-	background-color: #094e62;	
+	background-color: #094e62;
+	border: 0px;
 }
 
 #lendForm {

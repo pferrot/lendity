@@ -107,7 +107,26 @@
 						    maxlength="255"
 						    autocomplete="off">
 						</h:inputSecret>												
-					</div><!-- /form row -->	
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-66">
+						<label><h:outputText value="#{messages.registration_betaCodeTitle}"/> *</label>
+						<span style="font-size: 82%;">
+						<h:outputText value="#{messages.registration_betaCodeExplanation}"/>
+						<br/><br/>
+						</span>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="betaCode"></h:message>
+						<h:inputText id="betaCode" styleClass="gt-form-text"
+						    value="#{registrationController.betaCode}"
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}"
+						    validator="#{registrationStep1.validateBetaCode}"
+						    maxlength="255"
+						    autocomplete="off">
+						</h:inputText>						
+					</div><!-- /form row -->
 
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">
@@ -129,6 +148,21 @@
 						  	 autocomplete="off"/>
 						<br/>
 					  	
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-66">
+						<label><h:outputText value="#{messages.registration_termsAndConditionsTitle}"/> *</label>						
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="termsAndConditionsAccepted"></h:message>
+						<label class="gt-form-element-label">
+						<h:selectBooleanCheckbox id="termsAndConditionsAccepted" 
+												 value="#{registrationController.termsAndConditionsAccepted}"
+												 validator="#{registrationStep1.validateTermsAndConditions}"
+												 styleClass="gt-form-element-checkbox"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputText value="#{messages.registration_termsAndConditionsLabel}"/>
+						</label>						  	
 					</div><!-- /form row -->
 					
 					<!-- 

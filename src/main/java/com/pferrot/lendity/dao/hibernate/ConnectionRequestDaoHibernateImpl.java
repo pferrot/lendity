@@ -39,7 +39,7 @@ public class ConnectionRequestDaoHibernateImpl extends HibernateDaoSupport imple
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
 	}
 
-	private long countConnectionRequests(final Long pConnectionId, final Long pRequesterId, final Boolean pCompleted) {
+	public long countConnectionRequests(final Long pConnectionId, final Long pRequesterId, final Boolean pCompleted) {
 		final DetachedCriteria criteria = getConnectionRequestDetachedCriteria(pConnectionId, pRequesterId, pCompleted);
 		return rowCount(criteria);
 	}

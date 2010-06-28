@@ -12,6 +12,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.core.CoreUtils;
+import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.registration.RegistrationConsts;
 import com.pferrot.lendity.registration.RegistrationService;
@@ -19,6 +21,7 @@ import com.pferrot.lendity.registration.RegistrationService;
 public class RegistrationStep1 {
 	
 	private final static Log log = LogFactory.getLog(RegistrationStep1.class);
+	private final static long BETA_CODE_KEY_NUMBER= 792634469435l;
 	
 	private RegistrationController registrationController;
 	private RegistrationService registrationService;
@@ -92,6 +95,38 @@ public class RegistrationStep1 {
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
 	}
+	
+	public void validateBetaCode(FacesContext context, UIComponent toValidate, Object value) {
+		String message = "";
+		final String betaCodeUserValue = (String) value;
+
+		// Get the email.
+		final UIComponent emailComponent = toValidate.findComponent("email");
+		final EditableValueHolder emailEditableValueHolder = (EditableValueHolder)emailComponent;
+		final String email = (String)emailEditableValueHolder.getValue();
+		
+		String betaCodeCorrectValue = null;
+		if (!StringUtils.isNullOrEmpty(email)) {
+			betaCodeCorrectValue = getBetaCodeCorrectValue(email);
+		}		 
+		if (betaCodeCorrectValue == null ||
+			! betaCodeCorrectValue.equals(betaCodeUserValue)) {
+			((UIInput)toValidate).setValid(false);
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			message = I18nUtils.getMessageResourceString("validation_betaCodeWrong", locale);
+			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
+		}
+	}
+	
+	private static String getBetaCodeCorrectValue(final String pUsername) {
+		CoreUtils.assertNotNullOrEmptyString(pUsername);
+		long result = 0;
+		for (int i = 0; i < pUsername.length(); i++) {
+			char c = pUsername.charAt(i);
+			result = result + (BETA_CODE_KEY_NUMBER * c);
+		}
+		return String.valueOf(result);
+	}
 
 	public void validatePasswordRepeat(FacesContext context, UIComponent toValidate, Object value) {
 		String message = "";
@@ -105,6 +140,19 @@ public class RegistrationStep1 {
 			((UIInput)toValidate).setValid(false);
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 			message = I18nUtils.getMessageResourceString("validation_passwordsNotMatch", locale);
+			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
+		}
+	}
+
+	public void validateTermsAndConditions(FacesContext context, UIComponent toValidate, Object value) {
+		String message = "";
+		Boolean termsAndConditionsAccepted = (Boolean) value;
+		
+		if (termsAndConditionsAccepted == null ||
+			!termsAndConditionsAccepted.booleanValue()) {
+			((UIInput)toValidate).setValid(false);
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			message = I18nUtils.getMessageResourceString("validation_termsAndConditionsNotAccepted", locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
 	}

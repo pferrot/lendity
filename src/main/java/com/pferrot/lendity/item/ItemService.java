@@ -107,7 +107,7 @@ public class ItemService {
 		}
 		Long[] ownerId = new Long[]{PersonUtils.getCurrentPersonId()};
 		
-		return itemDao.findItems(connectionsIds, Boolean.TRUE, ownerId, null, pTitle, getCategoryIds(pCategoryId), null, null, pFirstResult, pMaxResults);
+		return itemDao.findInternalItems(connectionsIds, Boolean.TRUE, ownerId, null, pTitle, getCategoryIds(pCategoryId), null, null, "title", Boolean.TRUE, pFirstResult, pMaxResults);
 	}
 	
 	public ListWithRowCount findMyItems(final String pTitle, final Long pCategoryId, final Boolean pVisible,
@@ -116,7 +116,7 @@ public class ItemService {
 		CoreUtils.assertNotNull(currentPersonId);
 		final Long[] personIds = new Long[]{currentPersonId};
 		
-		return itemDao.findItems(personIds, Boolean.TRUE, null, null, pTitle, getCategoryIds(pCategoryId), pVisible, pBorrowed, pFirstResult, pMaxResults);
+		return itemDao.findInternalItems(personIds, Boolean.TRUE, null, null, pTitle, getCategoryIds(pCategoryId), pVisible, pBorrowed, "title", Boolean.TRUE, pFirstResult, pMaxResults);
 	}
 
 	public ListWithRowCount findMyConnectionsItems(final Long pConnectionId, final String pTitle, final Long pCategoryId,
@@ -125,7 +125,15 @@ public class ItemService {
 		if (connectionsIds == null || connectionsIds.length == 0) {
 			return ListWithRowCount.emptyListWithRowCount();
 		}
-		return itemDao.findItems(connectionsIds, Boolean.TRUE, null, null, pTitle, getCategoryIds(pCategoryId), Boolean.TRUE, pBorrowed, pFirstResult, pMaxResults);
+		return itemDao.findInternalItems(connectionsIds, Boolean.TRUE, null, null, pTitle, getCategoryIds(pCategoryId), Boolean.TRUE, pBorrowed, "title", Boolean.TRUE, pFirstResult, pMaxResults);
+	}
+	
+	public ListWithRowCount findMyLatestAvailableConnectionsItems() {
+		Long[] connectionsIds = getConnectionIds(null);
+		if (connectionsIds == null || connectionsIds.length == 0) {
+			return ListWithRowCount.emptyListWithRowCount();
+		}
+		return itemDao.findInternalItems(connectionsIds, Boolean.TRUE, null, null, null, null, Boolean.TRUE, Boolean.FALSE, "creationDate", Boolean.FALSE, 0, 5);
 	}
 	
 	private Long[] getConnectionIds(final Long pConnectionId) {

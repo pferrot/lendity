@@ -31,22 +31,75 @@
 
 				<div class="gt-form gt-content-box">
 					<p>
-						<h:outputFormat value="#{messages.home_welcome}">
-							<f:param value="#{authenticationController.currentUserFirstName}" />
-						</h:outputFormat>
+						<c:if test="#{homeController.nbPendingLendRequests > 0}">
+							<h:outputLink value="#{authenticationController.myPendingLendRequestsURL}">
+								<b>
+								<h:outputFormat value="#{messages.home_pendingLendRequests}">
+							    	<f:param value="#{homeController.nbPendingLendRequests}" />
+						        </h:outputFormat>
+						        </b>
+					        </h:outputLink>
+				        </c:if>
+				        <c:if test="#{homeController.nbPendingLendRequests == 0}">
+				        	<h:outputFormat value="#{messages.home_pendingLendRequests}">
+						    	<f:param value="#{homeController.nbPendingLendRequests}" />
+					        </h:outputFormat>
+				        </c:if>
 					</p>
 					<p>
-						<h:outputText value="#{messages.home_text2}"/>
+						<c:if test="#{homeController.nbPendingConnectionRequests > 0}">
+							<h:outputLink value="#{authenticationController.myPendingConnectionRequestsURL}">
+								<b>
+								<h:outputFormat value="#{messages.home_pendingConnectionRequests}">
+							    	<f:param value="#{homeController.nbPendingConnectionRequests}" />
+						        </h:outputFormat>
+						        </b>
+					        </h:outputLink>
+				        </c:if>
+				        <c:if test="#{homeController.nbPendingConnectionRequests == 0}">
+				        	<h:outputFormat value="#{messages.home_pendingConnectionRequests}">
+						    	<f:param value="#{homeController.nbPendingConnectionRequests}" />
+					        </h:outputFormat>
+				        </c:if>
 					</p>
-					<ul>
-					<li><h:outputLink value="#{authenticationController.myItemsURL}"><h:outputText value="#{messages.home_link1}"/></h:outputLink></li>
-					<li><h:outputLink value="#{authenticationController.myBorrowedItemsURL}"><h:outputText value="#{messages.home_link2}"/></h:outputLink></li>
-					<li><h:outputLink value="#{authenticationController.myConnectionsItemsURL}"><h:outputText value="#{messages.home_link3}"/></h:outputLink></li>
-					<li><h:outputLink value="#{authenticationController.personsURL}"><h:outputText value="#{messages.home_link4}"/></h:outputLink></li>
-					</ul>
-					<p>
-						<h:outputText value="#{messages.home_signature}"/>
-					</p>
+
+					<c:if test="#{!empty(homeController.list)}">
+						<br/>
+						<p>
+							<b><h:outputText value="#{messages.home_latestConnectionItems}"/></b>
+						</p>										
+						<h:dataTable value="#{homeController.list}" binding="#{homeController.table}" var="item">
+						    <h:column>
+								<h:outputLink value="#{homeController.itemOverviewHref}">
+									<h:outputText value="#{item.title}" />
+								</h:outputLink>
+								<span class="fontSizeSmallSmall"><h:outputFormat value="#{messages.home_pendingConnectionRequestsDetails}">
+								    	<f:param value="#{item.owner.displayName}" />
+								    	<f:param value="#{homeController.creationDateLabel}" />
+							        </h:outputFormat>
+						        </span>
+						    </h:column>
+						</h:dataTable>
+						<br/>
+						<h:outputLink value="#{authenticationController.myConnectionsItemsURL}">
+							<span class="fontSizeSmallSmall">
+								<h:outputText value="#{messages.home_searchMoreItems}"/>
+							</span>
+						</h:outputLink>
+						<br/>
+					</c:if>
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
 				</div>
 				
 			</div>

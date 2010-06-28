@@ -21,7 +21,6 @@ import com.pferrot.lendity.model.ConnectionRequest;
 import com.pferrot.lendity.model.ConnectionRequestResponse;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonUtils;
-import com.pferrot.lendity.utils.JsfUtils;
 
 public class ConnectionRequestService {
 
@@ -54,7 +53,10 @@ public class ConnectionRequestService {
 
 	public ListWithRowCount findCurrentUserPendingConnectionRequests(final int pFirstResult, final int pMaxResults) {		
 		return connectionRequestDao.findConnectionRequests(PersonUtils.getCurrentPersonId(), null, Boolean.FALSE, pFirstResult, pMaxResults);
-		
+	}
+	
+	public long countCurrentUserPendingConnectionRequests() {
+		return connectionRequestDao.countConnectionRequests(PersonUtils.getCurrentPersonId(), null, Boolean.FALSE);
 	}
 	
 	public ListWithRowCount findCurrentUserPendingConnectionRequestsOut(final int pFirstResult, final int pMaxResults) {		

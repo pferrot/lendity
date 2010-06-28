@@ -11,6 +11,8 @@ public interface ConnectionRequestDao {
 	
 	ListWithRowCount findConnectionRequests(Long pConnectionId, Long pRequesterId, Boolean pCompleted, int pFirstResult, int pMaxResults);	
 	
+	long countConnectionRequests(Long pConnectionId, Long pRequesterId, Boolean pCompleted);
+	
 	void updateConnectionRequest(ConnectionRequest pConnectionRequest);
 	
 	void deleteConnectionRequest(ConnectionRequest pConnectionRequest);

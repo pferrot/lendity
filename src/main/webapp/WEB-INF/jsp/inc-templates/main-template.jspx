@@ -123,11 +123,12 @@
 
 
 <ul class="sf-menu">
+	
 	<li class="sf-menu-first-li">
 	    <h:outputLink value="#{authenticationController.homeURL}">
 	        <h:outputText value="#{messages.menu_home}" />
 	    </h:outputLink>
-	</li>
+	</li>	
 	<c:if test="${loggedInUser}">
     <li>
         <h:outputLink value="#{authenticationController.myItemsURL}">

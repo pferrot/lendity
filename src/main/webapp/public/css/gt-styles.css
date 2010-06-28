@@ -238,7 +238,7 @@ body {
 	vertical-align: top;
 }
 .gt-table tr:hover td {
-	background-color: #fafcef;
+	background-color: #ffffff;
 }
 .gt-table tr:first-child td {
 	border: none;
@@ -492,7 +492,7 @@ body {
 	clear: both;
 }
 .gt-sidebar-list .gt-sidebar-list-row:hover {
-	background-color: #fafcef;
+	background-color: #ffffff;
 }
 .gt-sidebar-list .gt-sidebar-list-row:first-child {
 	border: none;
@@ -824,13 +824,13 @@ ul li {
 }
 .gt-form .gt-form-text, .gt-form .gt-form-textarea {
 	border: 1px solid #ccc;
-	background-color: #fafcef;
+	background-color: #ffffff;
 	padding: 5px 2px;
 	font-size: 108%;
 	width: 99%;
 }
 .gt-form .gt-form-text:focus, .gt-form .gt-form-textarea:focus {
-	background-color: #fafcef;
+	background-color: #ffffff;
 }
 .gt-form label {
 	font-size: 100%;

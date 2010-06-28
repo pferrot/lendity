@@ -1,12 +1,9 @@
 package com.pferrot.lendity.dao;
 
-import java.util.List;
-
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.model.ExternalItem;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Item;
-import com.pferrot.lendity.model.Person;
 
 public interface ItemDao {
 	
@@ -30,7 +27,9 @@ public interface ItemDao {
 //	ListWithRowCount findItemsByTitleOwnedByPerson(String pTitle, Person pPerson, int pFirstResult, int pMaxResults);
 //	ListWithRowCount findItemsByTitleOwnedByPerson(String pTitle, Long pPersonId, int pFirstResult, int pMaxResults);
 	
-	ListWithRowCount findItems(Long[] pOwnerIds, Boolean pOwnerEnabled, Long[] pBorrowerIds, Boolean pBorrowerEnabled, String pTitle, Long[] categoriesId, Boolean pVisible, Boolean pBorrowed, int pFirstResult, int pMaxResults);
+	ListWithRowCount findInternalItems(Long[] pOwnerIds, Boolean pOwnerEnabled, Long[] pBorrowerIds, Boolean pBorrowerEnabled, String pTitle, Long[] categoriesId, Boolean pVisible, Boolean pBorrowed, String pOrderBy, Boolean pOrderByAscending, int pFirstResult, int pMaxResults);
+	
+	long countInternalItems(Long[] pOwnerIds, Boolean pOwnerEnabled, Long[] pBorrowerIds, Boolean pBorrowerEnabled, String pTitle, Long[] categoriesId, Boolean pVisible, Boolean pBorrowed);
 	
 //	List<InternalItem> findItemsOwnedByPerson(Person pPerson, int pFirstResult, int pMaxResults);
 //	long countItemsOwnedByPerson(Person pPerson);

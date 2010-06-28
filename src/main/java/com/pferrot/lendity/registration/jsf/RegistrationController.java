@@ -42,6 +42,8 @@ public class RegistrationController {
 	private String password;
 	private String passwordRepeat;
 	private String captcha;
+	private String betaCode;
+	private Boolean termsAndConditionsAccepted;
 	
 	private RegistrationService registrationService;
 
@@ -178,6 +180,22 @@ public class RegistrationController {
 
 	public void setCaptcha(String captcha) {
 		this.captcha = captcha;
+	}
+
+	public String getBetaCode() {
+		return betaCode;
+	}
+
+	public void setBetaCode(String betaCode) {
+		this.betaCode = betaCode;
+	}
+
+	public Boolean getTermsAndConditionsAccepted() {
+		return termsAndConditionsAccepted;
+	}
+
+	public void setTermsAndConditionsAccepted(Boolean termsAndConditionsAccepted) {
+		this.termsAndConditionsAccepted = termsAndConditionsAccepted;
 	}
 
 	public String getCaptchaSessionKeyName() {

@@ -10,6 +10,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.dao.ItemDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.model.ExternalItem;
@@ -167,14 +168,24 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 //
 //
 	private List<InternalItem> findInternalItemsList(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrwoerIds, final Boolean pBorrowerEnabled,
-			final String pTitle, final Long[] pCategoryIds, final Boolean pVisible, final Boolean pBorrowed, final int pFirstResult, final int pMaxResults) {
+			final String pTitle, final Long[] pCategoryIds, final Boolean pVisible, final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
 		final DetachedCriteria criteria = getInternalItemsDetachedCriteria(pOwnerIds, pOwnerEnabled, pBorrwoerIds, pBorrowerEnabled, pTitle, pCategoryIds, pVisible, pBorrowed);
-		criteria.addOrder(Order.asc("title").ignoreCase());
+		
+		if (!StringUtils.isNullOrEmpty(pOrderBy)) {
+			// Ascending.
+			if (pOrderByAscending == null || pOrderByAscending.booleanValue()) {
+				criteria.addOrder(Order.asc(pOrderBy).ignoreCase());
+			}
+			// Descending.
+			else {
+				criteria.addOrder(Order.desc(pOrderBy).ignoreCase());
+			}
+		}
 		
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
 	}
 
-	private long countInternalItems(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrwoerIds, final Boolean pBorrowerEnabled, final String pTitle, final Long[] pCategoryIds,
+	public long countInternalItems(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrwoerIds, final Boolean pBorrowerEnabled, final String pTitle, final Long[] pCategoryIds,
 			final Boolean pVisible, final Boolean pBorrowed) {
 		final DetachedCriteria criteria = getInternalItemsDetachedCriteria(pOwnerIds, pOwnerEnabled, pBorrwoerIds, pBorrowerEnabled, pTitle, pCategoryIds, pVisible, pBorrowed);
 		return rowCount(criteria);
@@ -282,9 +293,9 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 		return ((Long)getHibernateTemplate().findByCriteria(pCriteria).get(0)).longValue();
 	}
 
-	public ListWithRowCount findItems(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrowerIds, final Boolean pBorrowerEnabled, final String pTitle,
-			final Long[] categoriesId, final Boolean pVisible, final Boolean pBorrowed, final int pFirstResult, final int pMaxResults) {
-		final List list = findInternalItemsList(pOwnerIds, pOwnerEnabled, pBorrowerIds, pBorrowerEnabled, pTitle, categoriesId, pVisible, pBorrowed, pFirstResult, pMaxResults);
+	public ListWithRowCount findInternalItems(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrowerIds, final Boolean pBorrowerEnabled, final String pTitle,
+			final Long[] categoriesId, final Boolean pVisible, final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+		final List list = findInternalItemsList(pOwnerIds, pOwnerEnabled, pBorrowerIds, pBorrowerEnabled, pTitle, categoriesId, pVisible, pBorrowed, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
 		final long count = countInternalItems(pOwnerIds, pOwnerEnabled, pBorrowerIds, pBorrowerEnabled, pTitle, categoriesId, pVisible, pBorrowed);
 		
 		return new ListWithRowCount(list, count);

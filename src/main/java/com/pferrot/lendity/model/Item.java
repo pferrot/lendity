@@ -49,6 +49,9 @@ public abstract class Item implements Borrowable, Serializable {
 	@Column(name = "BORROW_DATE", nullable = true)
 	private Date borrowDate;
 	
+	@Column(name = "CREATION_DATE", nullable = false)
+	private Date creationDate;
+	
 	@Version
 	@Column(name = "OBJ_VERSION")
 	private int version;	
@@ -109,6 +112,14 @@ public abstract class Item implements Borrowable, Serializable {
 		return getBorrowDate() != null;
 	}
 
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
 
 	/**
 	 * Reset the lend date and set the borrowerName / borrowerId to null.

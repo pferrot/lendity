@@ -11,6 +11,8 @@ public interface LendRequestDao {
 	
 	ListWithRowCount findLendRequests(Long pRequesterId, Long pOwnerId, Long pItemId, Boolean pCompleted, int pFirstResult, int pMaxResults);	
 	
+	long countLendRequests(Long pRequesterId, Long pOwnerId, Long pItemId, Boolean pCompleted);
+	
 	void updateLendRequest(LendRequest pLendRequest);
 	
 	void deleteLendRequest(LendRequest pLendRequest);
