@@ -27,6 +27,10 @@ public class AuthenticationController {
 	public String getCurrentUserDisplayName() {
 		return PersonUtils.getCurrentPersonDisplayName();
 	}
+	
+	public String getTermsAndConditionsURL() {
+		return JsfUtils.getContextRoot() + PagesURL.TERMS_AND_CONDITIONS;
+	}
 
 	public String getLoginURL() {
 		return JsfUtils.getContextRoot() + PagesURL.LOGIN;

@@ -152,7 +152,7 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">
-						<label><h:outputText value="#{messages.registration_termsAndConditionsTitle}"/> *</label>						
+						<label><h:outputText value="#{messages.termsAndConditions_termsAndConditionsTitle}"/> *</label>						
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="termsAndConditionsAccepted"></h:message>
 						<label class="gt-form-element-label">
@@ -161,7 +161,11 @@
 												 validator="#{registrationStep1.validateTermsAndConditions}"
 												 styleClass="gt-form-element-checkbox"/>
 						<h:outputText value=" " escape="false" />
-						<h:outputText value="#{messages.registration_termsAndConditionsLabel}"/>
+						<h:outputText value="#{messages.registration_termsAndConditionsLabel1}"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputLink value="#{authenticationController.termsAndConditionsURL}" target="_blank">
+							<h:outputText value="#{messages.registration_termsAndConditionsLabel2}"/>
+						</h:outputLink>
 						</label>						  	
 					</div><!-- /form row -->
 					
