@@ -91,6 +91,14 @@ public class Person implements Serializable {
 	)
 	private Set<Person> bannedPersons = new HashSet<Person>();
 	
+	@ManyToMany(targetEntity = com.pferrot.lendity.model.Person.class)
+	@JoinTable(
+			name = "PERSONS_BANNED_BY",
+			joinColumns = {@JoinColumn(name = "PERSON_ID")},
+			inverseJoinColumns = {@JoinColumn(name = "BANNED_BY_ID")}
+	)
+	private Set<Person> bannedByPersons = new HashSet<Person>();
+	
 	@Embedded
 	private Address address;	
 
@@ -237,14 +245,34 @@ public class Person implements Serializable {
 	public void addBannedPerson(final Person pPerson) {
 		CoreUtils.assertNotNull(pPerson);
 		bannedPersons.add(pPerson);
+		pPerson.getBannedByPersons().add(this);
 	}
 		
 	public void removeBannedPerson(final Person pPerson) {
 		CoreUtils.assertNotNull(pPerson);
 		bannedPersons.remove(pPerson);
+		pPerson.getBannedByPersons().remove(this);
+	}
+	
+	public Set<Person> getBannedByPersons() {
+		return bannedByPersons;
 	}
 
-	
+	public void setBannedByPersons(final Set<Person> pPersons) {
+		this.bannedByPersons = pPersons;
+	}
+
+	public void addBannedByPerson(final Person pPerson) {
+		CoreUtils.assertNotNull(pPerson);
+		bannedByPersons.add(pPerson);
+		pPerson.getBannedPersons().add(this);
+	}
+		
+	public void removeBannedByPerson(final Person pPerson) {
+		CoreUtils.assertNotNull(pPerson);
+		bannedByPersons.remove(pPerson);
+		pPerson.getBannedPersons().remove(this);
+	}	
 
 	@Override
 	public int hashCode() {

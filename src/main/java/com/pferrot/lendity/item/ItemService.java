@@ -62,7 +62,7 @@ public class ItemService {
 	}
 	
 	public List<Person> getCurrentPersonEnabledConnections() {
-		final ListWithRowCount listWithRowCount = personDao.findPersons(PersonUtils.getCurrentPersonId(), "connections", null, Boolean.TRUE, true, 0, 0);
+		final ListWithRowCount listWithRowCount = personDao.findPersons(PersonUtils.getCurrentPersonId(), PersonDao.CONNECTIONS_LINK, null, Boolean.TRUE, true, 0, 0);
 		return listWithRowCount.getList();
 	}
 	

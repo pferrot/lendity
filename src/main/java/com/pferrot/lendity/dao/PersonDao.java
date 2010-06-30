@@ -5,6 +5,11 @@ import com.pferrot.lendity.model.Person;
 
 public interface PersonDao {
 	
+	int UNSPECIFIED_LINK = 0;
+	int CONNECTIONS_LINK = 1;
+	int BANNED_PERSONS_LINK = 2;
+	int BANNED_BY_PERSONS_LINK = 3;
+	
 	Long createPerson(Person person);
 	
 	Person findPerson(Long personId);
@@ -23,7 +28,7 @@ public interface PersonDao {
 	 * @param pMaxResults
 	 * @return
 	 */
-	ListWithRowCount findPersons(Long pPersonId, String pConnectionLink, String pSearchString, Boolean pEnabled, boolean pEmailExactMatch, int pFirstResult, int pMaxResults);
+	ListWithRowCount findPersons(Long pPersonId, int pConnectionLink, String pSearchString, Boolean pEnabled, boolean pEmailExactMatch, int pFirstResult, int pMaxResults);
 		
 	void updatePerson(Person person);
 	

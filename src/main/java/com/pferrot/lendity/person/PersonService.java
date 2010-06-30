@@ -47,17 +47,18 @@ public class PersonService {
 	}
 	
 	public ListWithRowCount findEnabledPersons(final String pSearchString, final int pFirstResult, final int pMaxResults) {
-		return personDao.findPersons(null, null, pSearchString, Boolean.TRUE, true, pFirstResult, pMaxResults);
+		return personDao.findPersons(null, PersonDao.UNSPECIFIED_LINK, pSearchString, Boolean.TRUE, true, pFirstResult, pMaxResults);
 	}
 
 	public ListWithRowCount findConnections(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNull(pPersonId);
-		return personDao.findPersons(pPersonId, "connections", pSearchString, Boolean.TRUE, false, pFirstResult, pMaxResults);
+		return personDao.findPersons(pPersonId, PersonDao.CONNECTIONS_LINK, pSearchString, Boolean.TRUE, false, pFirstResult, pMaxResults);
 	}
 	
 	public ListWithRowCount findBannedPersons(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNull(pPersonId);
-		return personDao.findPersons(pPersonId, "bannedPersons", pSearchString, Boolean.TRUE, false, pFirstResult, pMaxResults);
+		// It is correct to search on the BANNED_BY_PERSONS_LINK: one actually search for that where ban by the current user.
+		return personDao.findPersons(pPersonId, PersonDao.BANNED_BY_PERSONS_LINK, pSearchString, Boolean.TRUE, false, pFirstResult, pMaxResults);
 	}
 
 	/**

@@ -51,26 +51,26 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 			throw new DataIntegrityViolationException("More that one person with username '" + pUsername + "'");
 		}
 	}	
-	private List<Person> findPersonsList(final Long pPersonId, final String pConnectionLink, final String pSearchString, final Boolean pEnabled, boolean pEmailExactMatch, int pFirstResult, int pMaxResults) {
+	private List<Person> findPersonsList(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEnabled, boolean pEmailExactMatch, int pFirstResult, int pMaxResults) {
 		final DetachedCriteria criteria = getPersonsDetachedCriteria(pPersonId, pConnectionLink, pSearchString, pEnabled, pEmailExactMatch).addOrder(Order.asc("displayName").ignoreCase());
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
 	}
 	
-	private long countPersons(final Long pPersonId, final String pConnectionLink, final String pSearchString, final Boolean pEnabled, boolean pEmailExactMatch) {
+	private long countPersons(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEnabled, boolean pEmailExactMatch) {
 		final DetachedCriteria criteria = getPersonsDetachedCriteria(pPersonId, pConnectionLink, pSearchString, pEnabled, pEmailExactMatch).addOrder(Order.asc("displayName").ignoreCase());
 		return rowCount(criteria);
 	}
 
-	public ListWithRowCount findPersons(final Long pPersonId, final String pConnectionLink, final String pSearchString, final Boolean pEnabled, final boolean pEmailExactMatch, int pFirstResult, int pMaxResults) {
+	public ListWithRowCount findPersons(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEnabled, final boolean pEmailExactMatch, int pFirstResult, int pMaxResults) {
 		final List list = findPersonsList(pPersonId, pConnectionLink, pSearchString, pEnabled, pEmailExactMatch, pFirstResult, pMaxResults);
 		final long count = countPersons(pPersonId, pConnectionLink, pSearchString, pEnabled, pEmailExactMatch);
 
 		return new ListWithRowCount(list, count);
 	}
 
-	private DetachedCriteria getPersonsDetachedCriteria(final Long pPersonId, final String pConnectionLink, final String pSearchString, final Boolean pEnabled, boolean pEmailExactMatch) {
-		if ((pPersonId == null && pConnectionLink != null) ||
-			(pPersonId != null && pConnectionLink == null)) {
+	private DetachedCriteria getPersonsDetachedCriteria(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEnabled, boolean pEmailExactMatch) {
+		if ((pPersonId == null && pConnectionLink != PersonDao.UNSPECIFIED_LINK) ||
+			(pPersonId != null && pConnectionLink == PersonDao.UNSPECIFIED_LINK)) {
 			throw new AssertionError("Cannot define only one of 'pPersonId' and 'pConnectionLink'.");
 		}
 		
@@ -80,8 +80,22 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 			criteria.add(getEmailLastNameFirstNameDisplayNameLogicalExpression(pSearchString, pEmailExactMatch?MatchMode.EXACT:MatchMode.ANYWHERE));
 		}
 		
-		if (pPersonId != null) {
-			criteria.createCriteria(pConnectionLink, CriteriaSpecification.INNER_JOIN).
+		if (pPersonId != null) {			
+			String realConnectionLink = null;
+			switch (pConnectionLink) {
+				case PersonDao.CONNECTIONS_LINK:
+					realConnectionLink = "connections";
+					break;
+				case PersonDao.BANNED_PERSONS_LINK:
+					realConnectionLink = "bannedPersons";
+					break;
+				case PersonDao.BANNED_BY_PERSONS_LINK:
+					realConnectionLink = "bannedByPersons";
+					break;
+				default:
+					throw new AssertionError("Unknown connection link: " + pConnectionLink);
+			}			
+			criteria.createCriteria(realConnectionLink, CriteriaSpecification.INNER_JOIN).
 				add(Restrictions.eq("id", pPersonId));
 		}
 		
