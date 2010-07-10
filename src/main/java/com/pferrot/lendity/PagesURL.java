@@ -76,11 +76,11 @@ public interface PagesURL {
 	String INTERNAL_ITEM_LEND_TOOLTIP_PARAM_ITEM_ID = INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID;
 	
 	String EXTERNAL_ITEM_OVERVIEW = "/auth/item/externalItemOverview.faces";
-	String EXTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID = "itemID";
+	String EXTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID = INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID;
 	
-	String EXTERNAL_ITEM_ADD = "/auth/item/externalAdd.faces";
+	String EXTERNAL_ITEM_ADD = "/auth/item/externalItemAdd.faces";
 	
-	String EXTERNAL_ITEM_EDIT = "/auth/item/externalEdit.faces";
+	String EXTERNAL_ITEM_EDIT = "/auth/item/externalItemEdit.faces";
 	String EXTERNAL_ITEM_EDIT_PARAM_ITEM_ID = EXTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID;	
 	
 	String ITEMS_LIST = "/auth/item/itemsList.faces";

@@ -85,8 +85,8 @@
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 				<td>
-					<span class="stylishButton fontSizeSmall" onclick="requestConnectionTooltip(this, '#{person.id}', 1)">
-						<h:outputText value="#{messages.connectionRequest_requestConnection}" rendered="#{!personsListController.requestConnectionDisabled}"/>
+					<span onclick="requestConnectionTooltip(this, '#{person.id}', 1)">
+						<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.connectionRequest_requestConnection}" rendered="#{!personsListController.requestConnectionDisabled}"/>
 					</span>	
 				</td>
 		    </tr>

@@ -8,7 +8,7 @@
 	                    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
 	                    http://myfaces.apache.org/orchestra http://myfaces.apache.org/orchestra/orchestra.xsd">
 	
-	
+	<!--
 	<bean id="initialData" class="com.pferrot.lendity.initialdata.InitialData">
 		<property name="userDao" ref="security.userDao"/>
 		<property name="roleDao" ref="security.roleDao"/>
@@ -17,19 +17,20 @@
 		<property name="itemDao" ref="itemDao"/>
 		<property name="passwordEncoder" ref="security.passwordEncoder"/>
 	</bean>
-	
+	 -->
+	 
 	<bean id="configuration" class="com.pferrot.lendity.configuration.Configuration" lazy-init="false">
 		<property name="siteName">
-			<value>lendity.com</value>
+			<value>lendity</value>
 		</property>		
 		<property name="rootURL">
-			<value>http://localhost:8080/lendity</value>
+			<value>http://www.lendity.com</value>
 		</property>
 		<property name="noReplyEmailAddress">
 			<value>no_reply@lendity.com</value>
 		</property>
 		<property name="noReplySenderName">
-			<value>lendity.com</value>
+			<value>lendity</value>
 		</property>
 		<property name="supportEmailAddress">
 			<value>support@lendity.com</value>
@@ -539,17 +540,33 @@
 		<property name="mailManager" ref="emailSender.mailManager"/>
 	</bean>
 	
-	<bean id="itemOverviewController" class="com.pferrot.lendity.item.jsf.InternalItemOverviewController"
+	<bean id="internalItemOverviewController" class="com.pferrot.lendity.item.jsf.InternalItemOverviewController"
+	      scope="conversation.access">
+	      <property name="itemService" ref="itemService"/>
+	      <property name="lendRequestService" ref="lendRequestService"/>
+	</bean>
+	
+	<bean id="externalItemOverviewController" class="com.pferrot.lendity.item.jsf.ExternalItemOverviewController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="itemAddController" class="com.pferrot.lendity.item.jsf.InternalItemAddController"
+	<bean id="internalItemAddController" class="com.pferrot.lendity.item.jsf.InternalItemAddController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="itemEditController" class="com.pferrot.lendity.item.jsf.InternalItemEditController"
+	<bean id="externalItemAddController" class="com.pferrot.lendity.item.jsf.ExternalItemAddController"
+	      scope="conversation.access">
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+	
+	<bean id="internalItemEditController" class="com.pferrot.lendity.item.jsf.InternalItemEditController"
+	      scope="conversation.access">
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+	
+	<bean id="externalItemEditController" class="com.pferrot.lendity.item.jsf.ExternalItemEditController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
@@ -586,6 +603,11 @@
 	</bean>
 	
 	<bean id="deleteInternalItemTooltipController" class="com.pferrot.lendity.item.jsf.DeleteInternalItemTooltipController"
+	      scope="request">
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+	
+	<bean id="deleteExternalItemTooltipController" class="com.pferrot.lendity.item.jsf.DeleteExternalItemTooltipController"
 	      scope="request">
 	      <property name="itemService" ref="itemService"/>
 	</bean>

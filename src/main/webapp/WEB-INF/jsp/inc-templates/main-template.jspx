@@ -75,7 +75,7 @@
 				<!-- logo -->
 				<div class="gt-logo">
 					<h:outputLink value="#{authenticationController.homeURL}">
-						lendity.com
+						<img src="#{facesContext.externalContext.requestContextPath}/public/images/title_lendity.gif"/>
 					</h:outputLink>
 				</div>
 				<!-- / logo -->
@@ -229,7 +229,7 @@
   		<ui:insert name="content">Default Content</ui:insert>
 		<!-- footer -->
 		<div class="gt-footer clearfix"><div class="gt-footer-inner clearfix">
-			<p>&#169; 2010 lendity.com -
+			<p>&#169; 2010 lendity -
 				<h:outputText value=" " escape="false" />
 				<h:outputLink value="#{authenticationController.termsAndConditionsURL}" target="_blank">
 					<h:outputText value="#{messages.termsAndConditions_termsAndConditionsTitle}"/>

@@ -17,7 +17,8 @@ public class RequestLendTooltipController implements Serializable {
 	
 	private Long itemId;
 	
-	// Not used for now - always redirects to the persons list.
+	// 1 == my connections items page
+	// 2 == item overview page
 	private Long redirectId;
 
 	public  LendRequestService getLendRequestService() {
@@ -45,15 +46,20 @@ public class RequestLendTooltipController implements Serializable {
 	}
 
 	public String submit() {
-		inviteAsFriend();
+		requestLend();
 		
-		JsfUtils.redirect(PagesURL.MY_CONNECTIONS_ITEMS_LIST);
+		if (getRedirectId().longValue() == 1) {
+			JsfUtils.redirect(PagesURL.MY_CONNECTIONS_ITEMS_LIST);
+		}
+		else if (getRedirectId().longValue() == 2) {
+			JsfUtils.redirect(PagesURL.INTERNAL_ITEM_OVERVIEW, PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID, getItemId().toString());
+		}
 	
 		// As a redirect is used, this is actually useless.
 		return null;
 	}
 
-	private void inviteAsFriend() {
+	private void requestLend() {
 		try {
 			getLendRequestService().createLendRequestFromCurrentUser(getItemId());
 		} 

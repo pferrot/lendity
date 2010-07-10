@@ -4,12 +4,10 @@ package com.pferrot.lendity.model;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 /**
  * This is an item that belongs to a person in the system.
@@ -18,19 +16,15 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "INTERNAL_ITEMS")
+@DiscriminatorValue("Internal")
 public class InternalItem extends Item implements Ownable {
-	
-	@Id @GeneratedValue
-	@Column(name = "ID")
-    private Long id;
 
 	// Whether the item can be seen by connections or not.
-	@Column(name = "VISIBLE", nullable = false)
+	@Column(name = "VISIBLE")
 	private Boolean visible = Boolean.TRUE;
 
 	@OneToOne(targetEntity = Person.class)
-	@JoinColumn(name = "OWNER_ID", nullable = false)
+	@JoinColumn(name = "OWNER_ID")
 	private Person owner;
 	
 	@Column(name = "NB_REMINDERS_SENT")
@@ -42,15 +36,7 @@ public class InternalItem extends Item implements Ownable {
     public InternalItem() {
     	super();
     }
-
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+    
 	public Boolean getVisible() {
 		return visible;
 	}
@@ -129,7 +115,7 @@ public class InternalItem extends Item implements Ownable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
 		return result;
 	}
 
@@ -144,7 +130,7 @@ public class InternalItem extends Item implements Ownable {
 		}
 		else {
 			final InternalItem other = (InternalItem)obj;
-			return id != null && id.equals(other.getId());
+			return getId() != null && getId().equals(other.getId());
 		}
 	}
 }

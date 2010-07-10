@@ -167,9 +167,11 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 //
 //
 //
-	private List<InternalItem> findInternalItemsList(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrwoerIds, final Boolean pBorrowerEnabled,
-			final String pTitle, final Long[] pCategoryIds, final Boolean pVisible, final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
-		final DetachedCriteria criteria = getInternalItemsDetachedCriteria(pOwnerIds, pOwnerEnabled, pBorrwoerIds, pBorrowerEnabled, pTitle, pCategoryIds, pVisible, pBorrowed);
+	private List<InternalItem> findItemsList(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrwoerIds, final Boolean pBorrowerEnabled,
+			final String pTitle, final Long[] pCategoryIds, final Boolean pVisible, final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult,
+			final int pMaxResults, final Class pClass) {
+		
+		final DetachedCriteria criteria = getItemsDetachedCriteria(pOwnerIds, pOwnerEnabled, pBorrwoerIds, pBorrowerEnabled, pTitle, pCategoryIds, pVisible, pBorrowed, pClass);
 		
 		if (!StringUtils.isNullOrEmpty(pOrderBy)) {
 			// Ascending.
@@ -185,16 +187,27 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
 	}
 
-	public long countInternalItems(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrwoerIds, final Boolean pBorrowerEnabled, final String pTitle, final Long[] pCategoryIds,
-			final Boolean pVisible, final Boolean pBorrowed) {
-		final DetachedCriteria criteria = getInternalItemsDetachedCriteria(pOwnerIds, pOwnerEnabled, pBorrwoerIds, pBorrowerEnabled, pTitle, pCategoryIds, pVisible, pBorrowed);
+	private long countItems(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrwoerIds, final Boolean pBorrowerEnabled, final String pTitle, final Long[] pCategoryIds,
+			final Boolean pVisible, final Boolean pBorrowed, final Class pClass) {
+		final DetachedCriteria criteria = getItemsDetachedCriteria(pOwnerIds, pOwnerEnabled, pBorrwoerIds, pBorrowerEnabled, pTitle, pCategoryIds, pVisible, pBorrowed, pClass);
 		return rowCount(criteria);
 	}
 	
-	private DetachedCriteria getInternalItemsDetachedCriteria(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrwoerIds,
-			final Boolean pBorrowerEnabled, final String pTitle, final Long[] pCategoryIds,
+	public long countInternalItems(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrwoerIds, final Boolean pBorrowerEnabled, final String pTitle, final Long[] pCategoryIds,
 			final Boolean pVisible, final Boolean pBorrowed) {
-		DetachedCriteria criteria = DetachedCriteria.forClass(InternalItem.class);
+		return countItems(pOwnerIds, pOwnerEnabled, pBorrwoerIds, pBorrowerEnabled, pTitle, pCategoryIds, pVisible, pBorrowed, InternalItem.class);
+	}
+	
+	private DetachedCriteria getItemsDetachedCriteria(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrwoerIds,
+			final Boolean pBorrowerEnabled, final String pTitle, final Long[] pCategoryIds,
+			final Boolean pVisible, final Boolean pBorrowed, final Class pClass) {
+		
+		Class theClass = pClass;
+		// Only internal items have an owner.
+		if (pOwnerIds != null && pOwnerIds.length > 0) {
+			theClass = InternalItem.class;
+		}
+		DetachedCriteria criteria = DetachedCriteria.forClass(theClass);
 	
 		if (pTitle != null && pTitle.trim().length() > 0) {
 			criteria.add(Restrictions.ilike("title", pTitle, MatchMode.ANYWHERE));
@@ -295,9 +308,22 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 
 	public ListWithRowCount findInternalItems(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrowerIds, final Boolean pBorrowerEnabled, final String pTitle,
 			final Long[] categoriesId, final Boolean pVisible, final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
-		final List list = findInternalItemsList(pOwnerIds, pOwnerEnabled, pBorrowerIds, pBorrowerEnabled, pTitle, categoriesId, pVisible, pBorrowed, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
-		final long count = countInternalItems(pOwnerIds, pOwnerEnabled, pBorrowerIds, pBorrowerEnabled, pTitle, categoriesId, pVisible, pBorrowed);
+		final List list = findItemsList(pOwnerIds, pOwnerEnabled, pBorrowerIds, pBorrowerEnabled, pTitle,
+				categoriesId, pVisible, pBorrowed, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults, InternalItem.class);
+		final long count = countItems(pOwnerIds, pOwnerEnabled, pBorrowerIds, pBorrowerEnabled, pTitle, categoriesId, pVisible, pBorrowed, InternalItem.class);
 		
 		return new ListWithRowCount(list, count);
 	}
+	
+	public ListWithRowCount findInternalAndExternalItems(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final Long[] pBorrowerIds, final Boolean pBorrowerEnabled, final String pTitle,
+			final Long[] categoriesId, final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+		final List list = findItemsList(pOwnerIds, pOwnerEnabled, pBorrowerIds, pBorrowerEnabled, pTitle, categoriesId, null,
+				pBorrowed, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults, Item.class);
+		final long count = countItems(pOwnerIds, pOwnerEnabled, pBorrowerIds, pBorrowerEnabled, pTitle, categoriesId, null, pBorrowed, Item.class);
+		
+		return new ListWithRowCount(list, count);
+	}
+
+
+	
 }

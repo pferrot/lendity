@@ -41,7 +41,7 @@
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="title"></h:message>			
 						<h:inputText id="title" styleClass="gt-form-text"
-							value="#{itemEditController.title}" 
+							value="#{internalItemEditController.title}" 
 							required="true" 
 							requiredMessage="#{messages.validation_requiredMessage}"
 							maxlength="255"/>			
@@ -55,9 +55,9 @@
 						<h:inputTextarea id="description" 
 						    styleClass="gt-form-textarea"
 						    rows="10"
-							value="#{itemEditController.description}" 
+							value="#{internalItemEditController.description}" 
 							maxlength="1333"
-							validator="#{itemEditController.validateDescriptionSize}"/>			
+							validator="#{internalItemEditController.validateDescriptionSize}"/>			
 					</div><!-- /form row -->		
 
 					<!-- form row -->
@@ -66,11 +66,11 @@
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="category"></h:message>
 						<h:selectOneMenu id="category" 
-						    value="#{itemEditController.categoryId}" 
+						    value="#{internalItemEditController.categoryId}" 
 						    converter="javax.faces.Long" 
 						    required="true"
 						    requiredMessage="#{messages.validation_requiredMessage}">
-							<f:selectItems value="#{itemEditController.categoriesSelectItems}"/>
+							<f:selectItems value="#{internalItemEditController.categoriesSelectItems}"/>
 						</h:selectOneMenu>					
 					</div><!-- /form row -->
 					
@@ -80,7 +80,7 @@
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="visible"></h:message>
 						<label class="gt-form-element-label">
-						<h:selectBooleanCheckbox id="visible" value="#{itemEditController.visible}" styleClass="gt-form-element-checkbox"/>
+						<h:selectBooleanCheckbox id="visible" value="#{internalItemEditController.visible}" styleClass="gt-form-element-checkbox"/>
 						<h:outputText value=" " escape="false" />
 						<h:outputText value="#{messages.item_visibilityConnectionsCanSee}"/>
 						</label>
@@ -88,8 +88,8 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row">
-						<br/><h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{itemEditController.submit}" />
-						<h:outputLink styleClass="stylishButton"  value="#{itemEditController.itemOverviewHref}">
+						<br/><h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{internalItemEditController.submit}" />
+						<h:outputLink styleClass="stylishButton"  value="#{internalItemEditController.itemOverviewHref}">
            					<h:outputText value="#{messages.navigation_cancel}"/>
          				</h:outputLink>
 					</div>

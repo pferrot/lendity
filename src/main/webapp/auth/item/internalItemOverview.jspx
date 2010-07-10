@@ -33,6 +33,7 @@
 <ui:include src="lendTooltip.jspx"/>
 <ui:include src="lendBackTooltip.jspx"/>
 <ui:include src="deleteInternalItemTooltip.jspx"/>
+<ui:include src="../lendrequest/requestLendTooltip.jspx"/>
 
 <h2 class="gt-table-head"><h:outputText value="#{messages.item_internalItemOverviewTitle}"/></h2>
 
@@ -40,58 +41,78 @@
 <div class="gt-form gt-content-box">
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_title}:" /></label></div>
-		<h4><h:outputText value="#{itemOverviewController.title}" /></h4>
+		<h4><h:outputText value="#{internalItemOverviewController.title}" /></h4>
 	</div>
 	<br/>
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_description}:" /></label></div>
-		<h:outputText value="#{itemOverviewController.description}" escape="false" />
+		<h:outputText value="#{internalItemOverviewController.description}" escape="false" />
 	</div>
 	<br/>
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_category}:" /></label></div>
-		<h:outputText value="#{itemOverviewController.categoryLabel}" />
-	</div>
-	<br/>	
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText rendered="#{itemOverviewController.owner}" value="#{messages.item_visibility}:" /></label></div>
-		<h:outputText rendered="#{itemOverviewController.owner}" value="#{itemOverviewController.visibleLabel}" />
-	</div>
-	<c:if test="#{itemOverviewController.owner and itemOverviewController.borrowed}">
-	<br/>
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText rendered="#{itemOverviewController.owner and itemOverviewController.borrowed}" value="#{messages.item_lentTo}:" /></label></div>
-		<h:outputLink rendered="#{itemOverviewController.owner and itemOverviewController.borrowerHrefAvailable}" value="#{itemOverviewController.borrowerHref}">
-			<h:outputText value="#{itemOverviewController.borrowerLabel}"/>
-		</h:outputLink>
-		<h:outputText rendered="#{itemOverviewController.owner and itemOverviewController.borrowed and !itemOverviewController.borrowerHrefAvailable}" value="#{itemOverviewController.borrowerLabel}:"/>
+		<h:outputText value="#{internalItemOverviewController.categoryLabel}" />
 	</div>
 	<br/>
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText rendered="#{itemOverviewController.owner and itemOverviewController.borrowed}" value="#{messages.item_lentSince}" /></label></div>
-		<h:outputText rendered="#{itemOverviewController.owner and itemOverviewController.borrowed}" value="#{itemOverviewController.borrowDateLabel}" />
-	</div>
+	<c:if test="#{internalItemOverviewController.owner}">
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_visibility}:" /></label></div>
+			<h:outputText value="#{internalItemOverviewController.visibleLabel}" />
+		</div>
+		<br/>
 	</c:if>
 	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_owner}:" /></label></div>
+		<h:outputLink value="#{internalItemOverviewController.ownerHref}">
+			<h:outputText value="#{internalItemOverviewController.item.owner.displayName}" />
+		</h:outputLink>
+	</div>
+	<br/>
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_creationDate}:" /></label></div>
+		<h:outputText value="#{internalItemOverviewController.creationDateLabel}" />
+	</div>
+	<br/>
+	<c:if test="#{internalItemOverviewController.owner and internalItemOverviewController.borrowed}">
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_lentTo}:" /></label></div>
+			<h:outputLink rendered="#{internalItemOverviewController.owner and internalItemOverviewController.borrowerHrefAvailable}" value="#{internalItemOverviewController.borrowerHref}">
+				<h:outputText value="#{internalItemOverviewController.borrowerLabel}"/>
+			</h:outputLink>
+			<h:outputText rendered="#{internalItemOverviewController.owner and internalItemOverviewController.borrowed and !internalItemOverviewController.borrowerHrefAvailable}" value="#{internalItemOverviewController.borrowerLabel}:"/>
+		</div>
+		<br/>
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_lentSince}" /></label></div>
+			<h:outputText value="#{internalItemOverviewController.borrowDateLabel}" />
+		</div>
+		<br/>
+	</c:if>	
+	<div class="gt-form-row gt-width-100">
 		<table><tr><td>
-			<h:outputLink rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.itemEditHref}" styleClass="stylishButton">
-	    		<h:outputText rendered="#{itemOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
+			<h:outputLink rendered="#{internalItemOverviewController.editAvailable}" value="#{internalItemOverviewController.itemEditHref}" styleClass="stylishButton">
+	    		<h:outputText rendered="#{internalItemOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
 	    	</h:outputLink>
     	</td><td>
-    		<c:if test="#{itemOverviewController.lendAvailable}">
-				<span class="stylishButton" onclick="lendItemTooltip(this, '#{itemOverviewController.item.id}', 2)">
-					<h:outputText value="#{messages.item_lend}"/>
+    		<c:if test="#{internalItemOverviewController.lendAvailable}">
+				<span onclick="lendItemTooltip(this, '#{internalItemOverviewController.item.id}', 2)">
+					<h:outputText styleClass="stylishButton" value="#{messages.item_lend}"/>
 				</span>
 			</c:if>
-			<c:if test="#{itemOverviewController.lendBackAvailable}">
-				<span class="stylishButton" onclick="lendBackItemTooltip(this, '#{itemOverviewController.item.id}', 2)">
-					<h:outputText value="#{messages.item_lendBack}"/>
+			<c:if test="#{internalItemOverviewController.lendBackAvailable}">
+				<span onclick="lendBackItemTooltip(this, '#{internalItemOverviewController.item.id}', 2)">
+					<h:outputText styleClass="stylishButton" value="#{messages.item_lendBack}"/>
+				</span>
+			</c:if>
+			<c:if test="#{internalItemOverviewController.requestLendAvailable}">
+				<span onclick="requestLendTooltip(this, '#{internalItemOverviewController.item.id}', 2)">
+					<h:outputText styleClass="stylishButton" value="#{messages.lendRequest_requestLend}"/>
 				</span>
 			</c:if>
 		</td><td>
-			<c:if test="#{itemOverviewController.editAvailable}">
-				<span class="stylishButton" onclick="deleteInternalItemTooltip(this, '#{itemOverviewController.item.id}', 1)">
-					<h:outputText value="#{messages.item_delete}"/>
+			<c:if test="#{internalItemOverviewController.editAvailable}">
+				<span onclick="deleteInternalItemTooltip(this, '#{internalItemOverviewController.item.id}', 1)">
+					<h:outputText styleClass="stylishButton" value="#{messages.item_delete}"/>
 				</span>
 			</c:if>
 		</td></tr></table>		

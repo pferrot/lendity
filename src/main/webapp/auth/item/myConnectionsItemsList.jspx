@@ -122,8 +122,8 @@
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 				<td>
-					<span class="stylishButton fontSizeSmall" onclick="requestLendTooltip(this, '#{item.id}', 1)">
-						<h:outputText value="#{messages.lendRequest_requestLend}" rendered="#{myConnectionsItemsListController.requestLendAvailable}"/>
+					<span onclick="requestLendTooltip(this, '#{item.id}', 1)">
+						<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.lendRequest_requestLend}" rendered="#{myConnectionsItemsListController.requestLendAvailable}"/>
 					</span>	
 				</td>
 		    </tr>

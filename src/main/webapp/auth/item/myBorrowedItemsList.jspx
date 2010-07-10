@@ -54,6 +54,14 @@
 </ui:include>
 </td>
 
+<td>
+<div class="gt-table-buttons">
+	<h:outputLink value="#{myItemsListController.externalItemAddHref}" styleClass="stylishButton">
+  		<h:outputText value="#{messages.item_addExternalItem}" />
+   	</h:outputLink>
+</div>
+</td>
+
 </tr>
 </table>
 
@@ -69,6 +77,8 @@
 	</center>
 	<br/>
 </c:if>
+
+<ui:include src="deleteExternalItemTooltip.jspx"/>
 
 <h:dataTable value="#{myBorrowedItemsListController.list}" binding="#{myBorrowedItemsListController.table}" var="item" styleClass="gt-table gt-user-table">
 
@@ -100,8 +110,20 @@
 				</td>
 			</tr>
 			<tr>
-				<th><h:outputText value="#{messages.item_lentSince}:" /></th>
+				<th><h:outputText value="#{messages.item_borrowedSince}:" /></th>
 				<td><h:outputText value="#{myBorrowedItemsListController.borrowDateLabel}"/></td>
+			</tr>
+		</table>
+    </h:column>
+    
+    <h:column>
+		<table border="0" class="gt-table-categories" width="150" align="right">
+			<tr>
+			<td>
+				<span onclick="deleteExternalItemTooltip(this, '#{item.id}', 1)">
+					<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.item_delete}" rendered="#{myBorrowedItemsListController.deleteItemAvailable}"/>
+				</span>	
+			</td>
 			</tr>
 		</table>
     </h:column>

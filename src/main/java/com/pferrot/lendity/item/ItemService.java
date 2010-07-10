@@ -98,16 +98,16 @@ public class ItemService {
 //		return itemDao.findItemsByTitleOwnedByPerson(pTitle, pPersonId, pFirstResult, pMaxResults);
 //	}
 
-	public ListWithRowCount findMyBorrowedItems(final Long pConnectionId, final String pTitle, final Long pCategoryId, final int pFirstResult, final int pMaxResults) {
+	public ListWithRowCount findMyBorrowedItems(final Long pOwnerId, final String pTitle, final Long pCategoryId, final int pFirstResult, final int pMaxResults) {
 		final Long currentPersonId = PersonUtils.getCurrentPersonId();
 		CoreUtils.assertNotNull(currentPersonId);
-		Long[] connectionsIds = getConnectionIds(pConnectionId);
-		if (connectionsIds == null || connectionsIds.length == 0) {
-			return ListWithRowCount.emptyListWithRowCount();
+		Long[] ownerIds = null;
+		if (pOwnerId != null) {
+			ownerIds = new Long[]{pOwnerId};
 		}
-		Long[] ownerId = new Long[]{PersonUtils.getCurrentPersonId()};
+		Long[] borrowersIds = new Long[]{PersonUtils.getCurrentPersonId()};
 		
-		return itemDao.findInternalItems(connectionsIds, Boolean.TRUE, ownerId, null, pTitle, getCategoryIds(pCategoryId), null, null, "title", Boolean.TRUE, pFirstResult, pMaxResults);
+		return itemDao.findInternalAndExternalItems(ownerIds, Boolean.TRUE, borrowersIds, null, pTitle, getCategoryIds(pCategoryId), null, "title", Boolean.TRUE, pFirstResult, pMaxResults);
 	}
 	
 	public ListWithRowCount findMyItems(final String pTitle, final Long pCategoryId, final Boolean pVisible,
@@ -348,8 +348,9 @@ public class ItemService {
 		
 	}
 	
-	public Long createItem(final Item item) {
-		return itemDao.createItem(item);
+	public Long createItem(final Item pItem) {
+		pItem.setCreationDate(new Date());
+		return itemDao.createItem(pItem);
 	}
 	
 	public void deleteInternalItem(final InternalItem pInternalItem)  {
@@ -359,11 +360,26 @@ public class ItemService {
 		itemDao.deleteItem(pInternalItem);
 	}
 	
+	public void deleteExternalItem(final Long pExternalItemId) {
+		deleteExternalItem(itemDao.findExternalItem(pExternalItemId));
+	}
+
+	public void deleteExternalItem(final ExternalItem pExternalItem)  {
+		assertCurrentUserAuthorizedToDelete(pExternalItem);
+		itemDao.deleteItem(pExternalItem);
+	}
+	
 	public void deleteInternalItem(final Long pInternalItemId) {
 		deleteInternalItem(itemDao.findInternalItem(pInternalItemId));
 	}
 
 	public Long createItemWithCategory(final Item pItem, final Long pCategoryId) {
+		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, listValueDao));
+		return createItem(pItem);
+	}
+	
+	public Long createExternalItemWithCategory(final ExternalItem pItem, final Long pCategoryId) {
+		pItem.setBorrower(getCurrentPerson());
 		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, listValueDao));
 		return createItem(pItem);
 	}
@@ -457,13 +473,16 @@ public class ItemService {
 		}
 	}
 	
-	public boolean isCurrentUserOwner(final InternalItem pInternalItem) {
-		CoreUtils.assertNotNull(pInternalItem);
+	public boolean isCurrentUserOwner(final Item pItem) {
+		if (! (pItem instanceof InternalItem)) {
+			return false;
+		}
+		final InternalItem internalItem = (InternalItem)pItem;
 		final Person currentPerson = getCurrentPerson();
 		if (currentPerson == null) {
 			return false;
 		}
-		return currentPerson.equals(pInternalItem.getOwner());
+		return currentPerson.equals(internalItem.getOwner());
 	}
 
 	public Person getCurrentPerson() {

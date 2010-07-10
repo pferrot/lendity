@@ -25,10 +25,11 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
+
 	<bean id="initialDataController" class="com.pferrot.lendity.initialdata.InitialDataController">
 		<property name="initialData"><ref bean="initialData"/></property>
 	</bean>
-	
+	 
 <!--<bean id="homePageCo" class="org.springframework.aop.framework.ProxyFactoryBean">-->
 <!--<property name="target"><ref bean="homePageCoTarget"/></property>-->
 <!--<property name="proxyInterfaces">-->

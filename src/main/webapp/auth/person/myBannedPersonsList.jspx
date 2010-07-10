@@ -74,8 +74,8 @@
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 				<td>
-					<span class="stylishButton fontSizeSmall" onclick="removeBannedPersonTooltip(this, '#{person.id}', 1)">
-						<h:outputText value="#{messages.person_unbanPerson}"/>
+					<span onclick="removeBannedPersonTooltip(this, '#{person.id}', 1)">
+						<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.person_unbanPerson}"/>
 					</span>
 				</td>
 		    </tr>

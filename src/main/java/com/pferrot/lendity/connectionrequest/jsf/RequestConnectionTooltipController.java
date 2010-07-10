@@ -17,7 +17,8 @@ public class RequestConnectionTooltipController implements Serializable {
 	
 	private Long personId;
 	
-	// Not used for now - always redirects to the persons list.
+	// 1 == persons list page
+	// 2 == person overview page
 	private Long redirectId;
 
 	public ConnectionRequestService getConnectionRequestService() {
@@ -48,7 +49,12 @@ public class RequestConnectionTooltipController implements Serializable {
 	public String submit() {
 		inviteAsFriend();
 		
-		JsfUtils.redirect(PagesURL.PERSONS_LIST);
+		if (getRedirectId().longValue() == 1) {
+			JsfUtils.redirect(PagesURL.PERSONS_LIST);
+		}
+		else if (getRedirectId().longValue() == 2) {
+			JsfUtils.redirect(PagesURL.PERSON_OVERVIEW, PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID, getPersonId().toString());
+		}
 	
 		// As a redirect is used, this is actually useless.
 		return null;

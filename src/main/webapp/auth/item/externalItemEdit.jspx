@@ -7,8 +7,8 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.item_internalItemAddTitle}" />
-	<ui:param name="contentHeader" value="#{messages.item_internalItemAddTitle}" />
+	<ui:param name="pageTitle" value="#{messages.item_externalItemEditTitle}" />
+	<ui:param name="contentHeader" value="#{messages.item_externalItemEditTitle}" />
 
 		<ui:define name="content">
 
@@ -27,7 +27,8 @@
 			<div class="gt-content">
 				
 				<!-- Item Edit Form -->
-				<h2 class="gt-form-head"><h:outputText value="#{messages.item_internalItemAddTitle}"/></h2>
+				<h2 class="gt-form-head"><h:outputText value="#{messages.item_externalItemEditTitle}"/></h2>
+				<p><h:outputText value="#{messages.item_externalItemExplanation}"/></p>
 				<div class="gt-form gt-content-box">
 				
 				<f:view>
@@ -41,10 +42,10 @@
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="title"></h:message>			
 						<h:inputText id="title" styleClass="gt-form-text"
-							value="#{internalItemAddController.title}" 
+							value="#{externalItemEditController.title}" 
 							required="true" 
 							requiredMessage="#{messages.validation_requiredMessage}"
-							maxlength="255"	/>			
+							maxlength="255"/>			
 					</div><!-- /form row -->					
 					
 					<!-- form row -->
@@ -55,8 +56,9 @@
 						<h:inputTextarea id="description" 
 						    styleClass="gt-form-textarea"
 						    rows="10"
-							value="#{internalItemAddController.description}"
-							validator="#{internalItemAddController.validateDescriptionSize}"/>						
+							value="#{externalItemEditController.description}" 
+							maxlength="1333"
+							validator="#{externalItemEditController.validateDescriptionSize}"/>			
 					</div><!-- /form row -->		
 
 					<!-- form row -->
@@ -65,35 +67,53 @@
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="category"></h:message>
 						<h:selectOneMenu id="category" 
-						    value="#{internalItemAddController.categoryId}" 
+						    value="#{externalItemEditController.categoryId}" 
 						    converter="javax.faces.Long" 
 						    required="true"
 						    requiredMessage="#{messages.validation_requiredMessage}">
-							<f:selectItems value="#{internalItemAddController.categoriesSelectItems}"/>
+							<f:selectItems value="#{externalItemEditController.categoriesSelectItems}"/>
 						</h:selectOneMenu>					
 					</div><!-- /form row -->
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">
-						<label><h:outputText value="#{messages.item_visibility}"/></label>
+						<label><h:outputText value="#{messages.item_owner}"/> *</label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
-							for="visible"></h:message>
-						<label class="gt-form-element-label">
-						<h:selectBooleanCheckbox id="visible" value="#{internalItemAddController.visible}" styleClass="gt-form-element-checkbox"/>
-						<h:outputText value=" " escape="false" />
-						<h:outputText value="#{messages.item_visibilityConnectionsCanSee}"/>
-						</label>
-					</div><!-- /form row -->					
+							for="ownerName"></h:message>			
+						<h:inputText id="ownerName" styleClass="gt-form-text"
+							value="#{externalItemEditController.ownerName}" 
+							required="true" 
+							requiredMessage="#{messages.validation_requiredMessage}"
+							maxlength="255"	/>			
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.item_borrowDate}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="borrowDateAsString"></h:message>			
+						<h:inputText id="borrowDateAsString" styleClass="datepicker gt-form-text"
+							value="#{externalItemEditController.borrowDateAsString}" 
+							required="true" 
+							requiredMessage="#{messages.validation_requiredMessage}"
+							maxlength="255"/>			
+					</div><!-- /form row -->				
 					
 					<!-- form row -->
 					<div class="gt-form-row">
-						<br/><h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{internalItemAddController.submit}" />
-						<h:outputLink styleClass="stylishButton"  value="#{authenticationController.myItemsURL}">
+						<br/><h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{externalItemEditController.submit}" />
+						<h:outputLink styleClass="stylishButton"  value="#{externalItemEditController.itemOverviewHref}">
            					<h:outputText value="#{messages.navigation_cancel}"/>
          				</h:outputLink>
 					</div>
 					<!-- /form row -->
-					
+	<script type="text/javascript">
+	// create date pickers
+	$j(document).ready(function() {
+		createDatePicker($j('.datepicker'));
+	});
+	</script>
+						
 					</h:form>
 				</f:view>		
 				</div>			
