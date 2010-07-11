@@ -26,7 +26,7 @@
 					<h:selectOneMenu id="lendBorrowerId" value="#{internalItemLendTooltipController.borrowerId}" converter="javax.faces.Long" style="width: 100%;">
 						<f:selectItems value="#{internalItemLendTooltipController.borrowerSelectItems}"/>
 					</h:selectOneMenu>
-					<h:inputText id="lendBorrowerName" value="#{internalItemLendTooltipController.borrowerName}" style="display: none; width: 100%;"></h:inputText>
+					<h:inputText id="lendBorrowerName" value="#{internalItemLendTooltipController.borrowerName}" style="display: none; width: 100%; height: 20px;"></h:inputText>
 				</td>
 			</tr>
 			<tr style="padding-top: 0px; vertical-align: top;">
@@ -45,8 +45,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<span onclick="submitLendItem()"><h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.navigation_ok}"/></span>
-					<span onclick="cancelLendItem()"><h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.navigation_cancel}"/></span>
+					<span onclick="submitLendItem()"><h:outputText styleClass="fontSizeSmall stylishButton" value="#{messages.navigation_ok}"/></span>
+					<span onclick="cancelLendItem()"><h:outputText styleClass="fontSizeSmall stylishButton" value="#{messages.navigation_cancel}"/></span>
 					<h:commandButton id="lendActionButton" action="#{internalItemLendTooltipController.submit}" style="display: none"  value="not_displayed"/>
 				</td>
 			</tr>

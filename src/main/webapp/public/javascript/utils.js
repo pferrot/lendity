@@ -149,8 +149,14 @@ function createFormTooltip(pJqueryTooltipTarget, pForm, pOnHideCallbackMethod) {
 	api.onHide = pOnHideCallbackMethod;
 	// Remove the form from its previous location - it must never be duplicated.
 	formParent.empty();
-	// Not sure why but the hover effect does not work if the button() function is not called again from here.
-	$j(".stylishButton").button();
+	// Not sure why but the hover effect of the buttons in the tooltip does not work without this.	
+	$j('.stylishButton').removeClass('ui-state-hover');
+	$j('.stylishButton').hover(
+		function(){ $j(this).addClass('ui-state-hover'); }, 
+		function(){ $j(this).removeClass('ui-state-hover'); }
+	);
+	
+	
 }
 
 

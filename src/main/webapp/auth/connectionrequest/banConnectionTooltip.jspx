@@ -20,8 +20,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<input type="button" onclick="submitBanConnection()" value="#{messages.navigation_ok}"/>
-					<input type="button" onclick="cancelBanConnection()" value="#{messages.navigation_cancel}"/>
+					<input type="button" class="fontSizeSmall stylishButton" onclick="submitBanConnection()" value="#{messages.navigation_ok}"/>
+					<input type="button" class="fontSizeSmall stylishButton" onclick="cancelBanConnection()" value="#{messages.navigation_cancel}"/>
 					<h:commandButton id="banConnectionActionButton" action="#{banConnectionTooltipController.submit}" style="display: none" value="not_displayed"/>
 				</td>
 			</tr>

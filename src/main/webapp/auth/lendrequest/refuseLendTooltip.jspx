@@ -20,8 +20,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<input type="button" onclick="submitRefuseLend()" value="#{messages.navigation_ok}"/>
-					<input type="button" onclick="cancelRefuseLend()" value="#{messages.navigation_cancel}"/>
+					<input type="button" class="fontSizeSmall stylishButton" onclick="submitRefuseLend()" value="#{messages.navigation_ok}"/>
+					<input type="button" class="fontSizeSmall stylishButton" onclick="cancelRefuseLend()" value="#{messages.navigation_cancel}"/>
 					<h:commandButton id="refuseLendActionButton" action="#{refuseLendTooltipController.submit}" style="display: none" value="not_displayed"/>
 				</td>
 			</tr>

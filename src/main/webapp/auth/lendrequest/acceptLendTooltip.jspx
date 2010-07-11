@@ -21,8 +21,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<input type="button" onclick="submitAcceptLend()" value="#{messages.navigation_ok}"/>
-					<input type="button" onclick="cancelAcceptLend()" value="#{messages.navigation_cancel}"/>
+					<input type="button" class="fontSizeSmall stylishButton" onclick="submitAcceptLend()" value="#{messages.navigation_ok}"/>
+					<input type="button" class="fontSizeSmall stylishButton" onclick="cancelAcceptLend()" value="#{messages.navigation_cancel}"/>
 					<h:commandButton id="acceptLendActionButton" action="#{acceptLendTooltipController.submit}" style="display: none" value="not_displayed"/>
 				</td>
 			</tr>

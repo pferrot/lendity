@@ -73,7 +73,7 @@
 								<h:outputLink value="#{homeController.itemOverviewHref}">
 									<h:outputText value="#{item.title}" />
 								</h:outputLink>
-								<span class="fontSizeSmallSmall"><h:outputFormat value="#{messages.home_pendingConnectionRequestsDetails}">
+								<span class="fontSizeSmall"><h:outputFormat value="#{messages.home_pendingConnectionRequestsDetails}">
 								    	<f:param value="#{item.owner.displayName}" />
 								    	<f:param value="#{homeController.creationDateLabel}" />
 							        </h:outputFormat>
@@ -82,7 +82,7 @@
 						</h:dataTable>
 						<br/>
 						<h:outputLink value="#{authenticationController.myConnectionsItemsURL}">
-							<span class="fontSizeSmallSmall">
+							<span class="fontSizeSmall">
 								<h:outputText value="#{messages.home_searchMoreItems}"/>
 							</span>
 						</h:outputLink>

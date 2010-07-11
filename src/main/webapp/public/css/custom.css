@@ -104,7 +104,8 @@ text-decoration: none!important;
 }
 
 .filterActive {
-	background-color: #e1e1e9!important;
+	background-color: #094e62!important;
+	color: #eaeaf2!important;
 }
 
 .small {
@@ -150,12 +151,8 @@ span.linkStyleAction:hover {
 	color: #ff9900;
 }
 
-span.fontSizeSmall {
-	font-size:92%!important;
-}
-
-span.fontSizeSmallSmall {
-	font-size:86%!important;
+.fontSizeSmall {
+	font-size:85%!important;
 }
 
 span.linkStyleActionSmall {
