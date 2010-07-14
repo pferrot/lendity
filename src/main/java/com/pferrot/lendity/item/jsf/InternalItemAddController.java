@@ -1,7 +1,5 @@
 package com.pferrot.lendity.item.jsf;
 
-import java.util.Date;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;

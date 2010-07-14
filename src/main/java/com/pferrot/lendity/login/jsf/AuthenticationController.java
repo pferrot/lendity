@@ -31,6 +31,10 @@ public class AuthenticationController {
 	public String getTermsAndConditionsURL() {
 		return JsfUtils.getContextRoot() + PagesURL.TERMS_AND_CONDITIONS;
 	}
+	
+	public String getContactURL() {
+		return JsfUtils.getContextRoot() + PagesURL.CONTACT;
+	}
 
 	public String getLoginURL() {
 		return JsfUtils.getContextRoot() + PagesURL.LOGIN;
@@ -78,6 +82,10 @@ public class AuthenticationController {
 
 	public String getMyPendingLendRequestsOutURL() {
 		return JsfUtils.getContextRoot() + PagesURL.MY_PENDING_LEND_REQUESTS_OUT_LIST;
+	}
+	
+	public String getImportInternalItemsURL() {
+		return JsfUtils.getContextRoot() + PagesURL.INTERNAL_ITEMS_IMPORT;
 	}
 
 	public String getMyItemsURL() {

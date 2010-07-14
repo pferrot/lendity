@@ -23,6 +23,7 @@
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/jquery-ui-1.8.2.custom.min.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/qtip/jquery.qtip-1.0.min_rev54.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/utils.js"></script>
+	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/si.files.js"></script>
 	
 	
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/superfish/superfish.js"></script>
@@ -50,7 +51,13 @@
 			$j(".stylishButton").button();
 		});
 	</script>
-
+	
+	<script type="text/javascript">
+		$j(function() {
+			//SI.Files.stylizeAll();
+			//SI.Files.stylizeById('file');
+		});
+	</script>
 
 <!-- 	
   <script type="text/javascript">
@@ -160,6 +167,11 @@
 		                        	<h:outputText value="#{messages.menu_myPendingLendRequestsOut}"/>
 		                        </h:outputLink>
 			</li>
+			<li>
+			   <h:outputLink value="#{authenticationController.importInternalItemsURL}">
+		                        	<h:outputText value="#{messages.menu_importInternalItems}"/>
+		                        </h:outputLink>
+			</li>			
 	    </ul>
 	</li>
 	<li>
@@ -229,10 +241,14 @@
   		<ui:insert name="content">Default Content</ui:insert>
 		<!-- footer -->
 		<div class="gt-footer clearfix"><div class="gt-footer-inner clearfix">
-			<p>&#169; 2010 lendity -
+			<p>&#169; 2010 lendity |
 				<h:outputText value=" " escape="false" />
 				<h:outputLink value="#{authenticationController.termsAndConditionsURL}" target="_blank">
 					<h:outputText value="#{messages.termsAndConditions_termsAndConditionsTitle}"/>
+				</h:outputLink>
+				<h:outputText value=" " escape="false" />|<h:outputText value=" " escape="false" />
+				<h:outputLink value="#{authenticationController.contactURL}">
+					<h:outputText value="#{messages.contact_contactTitle}"/>
 				</h:outputLink>
 			</p>
 		</div></div>

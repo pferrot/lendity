@@ -12,12 +12,20 @@ public interface PagesURL {
 	// ERROR - end
 	/////////////////////////////////////////////////////////////////////////
 	
-	/////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
 	// TERMS AND CONDITIONS - start
 	
 	String TERMS_AND_CONDITIONS = "/public/termsandconditions/termsAndConditions.faces";
 	
 	// TERMS AND CONDITIONS - end
+	/////////////////////////////////////////////////////////////////////////
+	
+	/////////////////////////////////////////////////////////////////////////
+	// CONTACT - start
+	
+	String CONTACT = "/public/contact/contact.faces";
+	
+	// CONTACT - end
 	/////////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////////////////////////////////////////////////
@@ -74,6 +82,8 @@ public interface PagesURL {
 	
 	String INTERNAL_ITEM_LEND_TOOLTIP = "/auth/item/internalItemLendTooltip.faces";
 	String INTERNAL_ITEM_LEND_TOOLTIP_PARAM_ITEM_ID = INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID;
+	
+	String INTERNAL_ITEMS_IMPORT = "/auth/item/internalItemsImport.faces";
 	
 	String EXTERNAL_ITEM_OVERVIEW = "/auth/item/externalItemOverview.faces";
 	String EXTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID = INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID;

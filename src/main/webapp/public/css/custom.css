@@ -257,3 +257,26 @@ table.ui-datepicker-calendar a:hover {
 }
 
 
+table.twoColumns {
+	border-width: 0px!important;
+	border-color: black!important;
+	border-style: solid!important;
+}
+
+table.twoColumns td {
+	vertical-align: top;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-right: 10px;
+	padding-left: 10px;
+	
+	border-width: 0px!important;
+	border-color: black!important;
+	border-style: solid!important;
+}
+
+span.linkColor {
+	color: #ff6600;	
+}
+
+

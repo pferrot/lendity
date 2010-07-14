@@ -8,7 +8,6 @@
 	                    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
 	                    http://myfaces.apache.org/orchestra http://myfaces.apache.org/orchestra/orchestra.xsd">
 	
-	<!--
 	<bean id="initialData" class="com.pferrot.lendity.initialdata.InitialData">
 		<property name="userDao" ref="security.userDao"/>
 		<property name="roleDao" ref="security.roleDao"/>
@@ -17,7 +16,6 @@
 		<property name="itemDao" ref="itemDao"/>
 		<property name="passwordEncoder" ref="security.passwordEncoder"/>
 	</bean>
-	 -->
 	 
 	<bean id="configuration" class="com.pferrot.lendity.configuration.Configuration" lazy-init="false">
 		<property name="siteName">
@@ -31,6 +29,9 @@
 		</property>
 		<property name="noReplySenderName">
 			<value>lendity</value>
+		</property>
+		<property name="contactEmailAddress">
+			<value>contact@lendity.com</value>
 		</property>
 		<property name="supportEmailAddress">
 			<value>support@lendity.com</value>
@@ -611,6 +612,28 @@
 	      scope="request">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
+	
+	<bean id="internalItemsImportController" class="com.pferrot.lendity.item.jsf.InternalItemsImportController"
+	      scope="conversation.access" orchestra:conversationName="internalItemsImport">
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+	
+	<bean id="internalItemsImportStep1" class="com.pferrot.lendity.item.jsf.InternalItemsImportStep1"
+	      scope="request">
+		<property name="internalItemsImportController" ref="internalItemsImportController"/>
+		<property name="itemService" ref="itemService"/>
+	</bean>
+	
+	<bean id="internalItemsImportStep2" class="com.pferrot.lendity.item.jsf.InternalItemsImportStep2"
+	      scope="request">
+		<property name="internalItemsImportController" ref="internalItemsImportController"/>
+	</bean>
+	
+	<bean id="internalItemsImportStep3" class="com.pferrot.lendity.item.jsf.InternalItemsImportStep3"
+	      scope="request">
+		<property name="internalItemsImportController" ref="internalItemsImportController"/>
+	</bean>
+	
 
 	<!-- 
 	ITEM - end

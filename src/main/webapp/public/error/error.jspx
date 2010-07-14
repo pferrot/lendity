@@ -37,7 +37,8 @@
 					</h:outputLink>
 				</p>
 				<p><h:outputText value="#{messages.error_errorPageDescription2}"/></p>
-				<p><b><h:outputText value="#{messages.error_supportEmailAntiSpam}"/></b><br/><h:outputText value="#{messages.error_supportEmailAntiSpamHelp}"/></p>
+				<p><b><span class="linkColor"><h:outputText value="#{messages.contact_supportEmailAntiSpam}"/></span></b>*<br/>
+				*<span class="fontSizeSmall"><h:outputText value="#{messages.contact_emailAntiSpamHelp}"/></span></p>
 				</div>
 			</div>
 			<!-- /main content -->

@@ -92,7 +92,7 @@
 	    <filter-class>org.apache.myfaces.webapp.filter.ExtensionsFilter</filter-class>
         <init-param>
             <param-name>uploadMaxFileSize</param-name>
-            <param-value>20m</param-value>
+            <param-value>2m</param-value>
             <description>Set the size limit for uploaded files.
             Format: 10 - 10 bytes
                     10k - 10 KB
@@ -100,6 +100,27 @@
                     1g - 1 GB
             </description>
         </init-param>
+	    <init-param>
+	        <description>
+	            Set the threshold size - files below this limit are stored 
+	            in memory, files above this limit are stored on disk.
+	                Format: 10  - 10 bytes
+	                        10k - 10 KB
+	                        10m - 10 MB
+	                        1g  - 1 GB
+	        </description>
+	        <param-name>uploadThresholdSize</param-name>
+	        <param-value>100k</param-value>
+	    </init-param>
+	    <!-- 
+	    <init-param>
+	        <description>
+	            Set the path where the intermediary files will be stored.
+	        </description>
+	        <param-name>uploadRepositoryPath</param-name>
+	        <param-value>/temp</param-value>
+	    </init-param>
+         -->
     </filter>	
 	<filter-mapping>
 	    <filter-name>utf8Filter</filter-name>
@@ -176,13 +197,13 @@
 	 
 	<!-- 
 	Never in production !!!
+	-->
 	<servlet>		
 		<servlet-name>initialdata</servlet-name>
 		<description>Servlet to create initial data in the DB</description>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
-	 -->
 	 
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -190,12 +211,11 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 	
-	<!-- 
 	<servlet-mapping>
 		<servlet-name>initialdata</servlet-name>
 		<url-pattern>*.htm</url-pattern>
 	</servlet-mapping>
-	 -->
+	
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.faces</url-pattern>

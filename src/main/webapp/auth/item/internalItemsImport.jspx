@@ -1,0 +1,120 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="#{messages.item_internalItemsImportTitleStep1}" />
+	<ui:param name="contentHeader" value="#{messages.item_internalItemsImportTitleStep1}" />
+
+		<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				
+				<!-- Item Edit Form -->
+				<h2 class="gt-form-head"><h:outputText value="#{messages.item_internalItemsImportTitleStep1}"/></h2>
+				<div class="gt-form gt-content-box">
+				
+				<f:view>
+
+					<h:form enctype="multipart/form-data" prependId="false">
+
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<ul>
+							<li><h:outputText value="#{messages.item_internalItemsImportExplanation1}"/></li>
+							<li><h:outputText value="#{messages.item_internalItemsImportExplanation2}"/></li>
+							<li><h:outputText value="#{messages.item_internalItemsImportExplanation3}"/></li>
+							<li><h:outputText value="#{messages.item_internalItemsImportExplanation4}"/></li>
+							<li><h:outputText value="#{messages.item_internalItemsImportExplanation5}"/></li>
+							<li><h:outputText value="#{messages.item_internalItemsImportExplanation6}"/></li>
+						</ul>
+					
+						<label><h:outputText value="#{messages.item_importFile}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="file"></h:message>
+						<c:if test="#{internalItemsImportStep1.fileTooLargeErrorMessage != null}">
+							<h:outputText value="#{internalItemsImportStep1.fileTooLargeErrorMessage}" styleClass="error"/>
+						</c:if>
+						<t:inputFileUpload id="file"
+										   styleClass="file"
+						                   value="#{internalItemsImportController.uploadFile}"
+						                   required="true"
+						                   accept="text/plain"
+						                   requiredMessage="#{messages.validation_requiredMessage}"
+						                   validator="#{internalItemsImportStep1.validateFile}"/>
+							
+					</div><!-- /form row -->					
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.item_category}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="category"></h:message>
+						<h:selectOneMenu id="category" 
+						    value="#{internalItemsImportController.categoryId}" 
+						    converter="javax.faces.Long" 
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}">
+							<f:selectItems value="#{internalItemsImportController.categoriesSelectItems}"/>
+						</h:selectOneMenu>					
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.item_visibility}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="visible"></h:message>
+						<label class="gt-form-element-label">
+						<h:selectBooleanCheckbox id="visible" value="#{internalItemsImportController.visible}" styleClass="gt-form-element-checkbox"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputText value="#{messages.item_visibilityConnectionsCanSeePlural}"/>
+						</label>
+					</div><!-- /form row -->
+										
+					<!-- form row -->
+					<div class="gt-form-row">
+						<br/><h:commandButton styleClass="stylishButton" value="#{messages.item_internalItemsImportSubmit}" action="#{internalItemsImportStep1.submit}" />
+					</div>
+					<!-- /form row -->
+					
+					</h:form>
+				</f:view>		
+				</div>			
+				<!-- /Item Edit Form -->
+				
+			</div>
+			<!-- /main content -->
+
+			<!-- sidebar -->
+			<div class="gt-sidebar">
+				
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

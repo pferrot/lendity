@@ -7,6 +7,10 @@ function colorErrorFields() {
   });
 }
 
+function toggleVisibility(pElementId) {
+	$j("#" + pElementId).toggle();
+}
+
 /*
  * That function setup an input text field so that:
  * - the default content is the text parameter if empty (use to indicate what that

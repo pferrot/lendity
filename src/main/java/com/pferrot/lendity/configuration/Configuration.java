@@ -20,6 +20,7 @@ public class Configuration {
 	private static String noReplyEmailAddress;
 	private static String noReplySenderName;
 	private static String supportEmailAddress;
+	private static String contactEmailAddress;
 	private static int nbDaysToValidateRegistration;
 
 	public static String getRootURL() {
@@ -64,6 +65,18 @@ public class Configuration {
 
 	public void setSupportEmailAddress(String supportEmailAddress) {
 		this.supportEmailAddress = supportEmailAddress;
+	}
+
+	public static String getContactEmailAddress() {
+		return contactEmailAddress;
+	}
+	
+	public String getContactEmailAddressNotStatic() {
+		return contactEmailAddress;
+	}
+
+	public void setContactEmailAddress(String contactEmailAddress) {
+		this.contactEmailAddress = contactEmailAddress;
 	}
 
 	public static int getNbDaysToValidateRegistration() {

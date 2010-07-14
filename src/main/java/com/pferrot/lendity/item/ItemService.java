@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.ObjectNotFoundException;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.emailsender.manager.MailManager;
@@ -26,6 +27,7 @@ import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.ListValueUtils;
+import com.pferrot.lendity.utils.UiUtils;
 
 public class ItemService {
 
@@ -487,6 +489,15 @@ public class ItemService {
 
 	public Person getCurrentPerson() {
 		return personDao.findPerson(PersonUtils.getCurrentPersonId());
+	}
+	
+	public ListValue getListValue(final Long pListValueId) {
+		CoreUtils.assertNotNull(pListValueId);
+		final ListValue listValue = listValueDao.findListValue(pListValueId);
+		if (listValue == null) {
+			throw new ObjectNotFoundException(pListValueId, ListValue.class.getName());
+		}
+		return listValue;		
 	}
 	
 }

@@ -1,0 +1,73 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="#{messages.contact_contactTitle}" />
+	<ui:param name="contentHeader" value="#{messages.contact_contactTitle}" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+
+
+		<!-- body -->
+		<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				
+
+				<h2 class="gt-table-head"><h:outputText value="#{messages.contact_contactTitle}"/></h2>
+				<div class="gt-form gt-content-box">
+					<table class="twoColumns">
+					
+					<tr>
+						<td width="50%"><h4><h:outputText value="#{messages.contact_contactInfo}"/></h4></td>
+						<td width="50%"><h4><h:outputText value="#{messages.contact_contactSupport}"/></h4></td>
+					</tr>
+					<tr>
+						<td><h:outputText value="#{messages.contact_contactInfoDescription}"/></td>
+						<td><h:outputText value="#{messages.contact_contactSupportDescription}"/></td>
+					</tr>
+					<tr>
+						<td><b><span class="linkColor"><h:outputText value="#{messages.contact_infoEmailAntiSpam}"/></span></b>*</td>
+						<td><b><span class="linkColor"><h:outputText value="#{messages.contact_supportEmailAntiSpam}"/></span></b>*</td>
+					</tr>
+					<tr>
+						<td colspan="2">*<span class="fontSizeSmall"><h:outputText value="#{messages.contact_emailAntiSpamHelp}"/></span></td>
+					</tr>
+										
+					</table>
+				</div>
+				
+			</div>
+			<!-- /main content -->
+
+			<!-- sidebar -->
+			<div class="gt-sidebar">
+								
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+				
+						
+						
+						
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
