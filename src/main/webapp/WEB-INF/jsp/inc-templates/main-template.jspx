@@ -23,7 +23,6 @@
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/jquery-ui-1.8.2.custom.min.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/qtip/jquery.qtip-1.0.min_rev54.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/utils.js"></script>
-	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/si.files.js"></script>
 	
 	
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/superfish/superfish.js"></script>
