@@ -22,49 +22,28 @@
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/jquery-1.4.2.min.js"></script>	
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/jquery-ui-1.8.2.custom.min.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/qtip/jquery.qtip-1.0.min_rev54.js"></script>
+	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/marquee/jquery.marquee.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/utils.js"></script>
 	
 	
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/superfish/superfish.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/superfish/hoverIntent.js"></script>
 	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/jquery/superfish/superfish.css" type="text/css" media="screen, projection" />
-	
-	
-	<script type="text/javascript">
-	  var $j = jQuery.noConflict();
-	</script>	
 
 	<script type="text/javascript">
+		var $j = jQuery.noConflict();
 		colorErrorFields();
-	</script>
-	
-	<script type="text/javascript">
-	// initialise plugins
-	$j(document).ready(function() {
-		$j('ul.sf-menu').superfish();
-	});
-	</script>
-
-	<script type="text/javascript">
+		draggableMarquee();
+		focusFirtTextInputField();
+		// initialise plugins
+		$j(document).ready(function() {
+			$j('ul.sf-menu').superfish();
+		});
+		// Create jQuery buttons.
 		$j(function() {
 			$j(".stylishButton").button();
 		});
 	</script>
-	
-	<script type="text/javascript">
-		$j(function() {
-			//SI.Files.stylizeAll();
-			//SI.Files.stylizeById('file');
-		});
-	</script>
-
-<!-- 	
-  <script type="text/javascript">
-    $j(document).ready(function() {
-        $j(":text:first").focus();
-    });  
-  </script>
- -->	
 	
 </head>
 <body class="gt-fixed">

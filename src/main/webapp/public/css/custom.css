@@ -279,4 +279,37 @@ span.linkColor {
 	color: #ff6600;	
 }
 
+div.loginSquares {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 300px;
+	height: 200px;
+	border: 1px;
+	border-style: solid;
+	border-color: #073351; 
+	-webkit-border-radius: 5px; 
+	-moz-border-radius: 5px;"
+	padding: 5px;
+	color: #094e62;
+	line-height: 140%;
+	overflow: hidden;
+}
 
+div.loginSquares h2 {
+	color: black;
+	font-size: 130%;
+}
+
+.backgroundColor1 {
+	background-color: #d3d3e1;
+}
+
+.backgroundColor2 {
+    background-color: #ff9900;
+}
+
+.backgroundColor3 {
+	background-color: #094e62;
+	color: #eaeaf2;
+}

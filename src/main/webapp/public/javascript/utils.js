@@ -11,6 +11,31 @@ function toggleVisibility(pElementId) {
 	$j("#" + pElementId).toggle();
 }
 
+function focusFirtTextInputField() {
+	$j(document).ready(function() {
+		// This will not include the search filter, which is good.
+        $j(".gt-form-text:first").focus();
+    });
+}
+
+function draggableMarquee() {
+	$j(document).ready(function() {
+		$j('marquee').marquee('pointer').mouseover(function () {
+		  $j(this).trigger('stop');
+		}).mouseout(function () {
+		  $j(this).trigger('start');
+		}).mousemove(function (event) {
+		  if ($j(this).data('drag') == true) {
+		    this.scrollTop = $j(this).data('scrollY') + ($j(this).data('y') - event.clientY);
+		  }
+		}).mousedown(function (event) {
+		  $j(this).data('drag', true).data('y', event.clientY).data('scrollY', this.scrollTop);
+		}).mouseup(function () {
+		  $j(this).data('drag', false);
+		});
+	});	
+}
+
 /*
  * That function setup an input text field so that:
  * - the default content is the text parameter if empty (use to indicate what that

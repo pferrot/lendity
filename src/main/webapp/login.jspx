@@ -26,20 +26,49 @@
 			
 			<!-- main content -->
 			<div class="gt-content">
-				
-				<div style="padding-left: 0px;">
-					<h4><h:outputText value="#{messages.login_text1}"/></h4>
-					<h4><h:outputText value="#{messages.login_text2}"/></h4>
-					<h4><h:outputText value="#{messages.login_text3}"/></h4>
+			
+			<!--  
+			<div class="gt-form gt-content-box" style="position: relative; height: 255px;">
+			-->
+			<div style="position: relative; height: 500px;">			
+			
+			
+			<div id="square2" class="loginSquares backgroundColor1" style="
+			top: 0px;
+			left: 0px;
+			width: 400px;
+			height: 470px;">
+				<div style="padding: 20px; vertical-align: bottom; height: 190px; top: 220px;">
+				<center><h2><h:outputText value="#{messages.login_whatIsThat}"/></h2></center>
+				<h:outputText value="#{messages.login_whatIsThatExplain}"/><br/><br/>
+				<h:outputText value="#{messages.login_whatIsThatExample}"/><br/><br/>
+				<center>
+				<h:outputLink value="#{authenticationController.registrationURL}" styleClass="stylishButton">
+					<h:outputText value="#{messages.login_registerForFree}"/>
+				</h:outputLink>
+				<br/><br/>
+				<img src="#{facesContext.externalContext.requestContextPath}/public/images/image_login.jpg"/>
+				</center>				
 				</div>
-				<div style="padding-left: 0px;">	
-					<br/>
-					<i><h:outputText value="#{messages.login_textExample}"/></i>
-					<br/><br/><br/>
-					<h:outputLink value="#{authenticationController.registrationURL}" styleClass="stylishButton">
-						<h:outputText value="#{messages.login_registerForFree}"/>
-					</h:outputLink>
-				</div>				
+			</div>			
+			
+			<div class="loginSquares" style="
+			background-color: #ffffff;
+			top: 0px;
+			left: 430px;
+			width: 220px;
+			height: 470px;">
+				<div style="padding: 20px; vertical-align: bottom;">
+				<center><h2><h:outputText value="#{messages.login_didYouKnow}"/></h2></center>
+				<div class="marqueeContainer" style="padding-top: 10px; font-size: 90%;">
+					<marquee behavior="scroll" direction="up" scrollamount="1" height="420" width="180">
+							<h:outputText value="#{loginRandomTextController.textInRandomOrder}" escape="false"/>
+					</marquee>
+				</div>
+				</div>
+			</div>
+			
+			</div>		
 			</div>
 			<!-- /main content -->
 
