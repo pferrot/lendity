@@ -7,13 +7,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.CoreUtils;
-import com.pferrot.emailsender.Consts;
 import com.pferrot.emailsender.manager.MailManager;
-import com.pferrot.security.dao.UserDao;
-import com.pferrot.security.model.User;
 import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.security.dao.UserDao;
+import com.pferrot.security.model.User;
 
 public class LostPasswordService {
 	

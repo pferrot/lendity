@@ -27,7 +27,6 @@ import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.ListValueUtils;
-import com.pferrot.lendity.utils.UiUtils;
 
 public class ItemService {
 

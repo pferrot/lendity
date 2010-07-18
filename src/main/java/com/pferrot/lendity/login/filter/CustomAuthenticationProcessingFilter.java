@@ -9,11 +9,10 @@ import org.springframework.security.Authentication;
 import org.springframework.security.ui.webapp.AuthenticationProcessingFilter;
 
 import com.pferrot.core.StringUtils;
-import com.pferrot.security.SecurityUtils;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.model.Person;
-import com.pferrot.lendity.person.PersonConsts;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.security.SecurityUtils;
 
 /**
  * This custom filter allows setting / removing custom attribute when

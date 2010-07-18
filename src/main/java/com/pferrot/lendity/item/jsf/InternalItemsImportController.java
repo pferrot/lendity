@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -13,12 +12,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.fileupload.UploadedFile;
 
-import com.pferrot.lendity.i18n.I18nConsts;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.ItemCategory;
-import com.pferrot.lendity.utils.ListValueUtils;
 import com.pferrot.lendity.utils.UiUtils;
 
 public class InternalItemsImportController  {

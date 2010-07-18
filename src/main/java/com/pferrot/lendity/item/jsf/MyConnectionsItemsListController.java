@@ -10,13 +10,11 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.lendrequest.LendRequestService;
 import com.pferrot.lendity.lendrequest.exception.LendRequestException;
 import com.pferrot.lendity.model.InternalItem;
-import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.utils.UiUtils;
 
 public class MyConnectionsItemsListController extends AbstractItemsWithOwnerListController {

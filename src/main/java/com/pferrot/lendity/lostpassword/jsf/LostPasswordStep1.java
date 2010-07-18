@@ -12,7 +12,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.lendity.i18n.I18nUtils;
-import com.pferrot.lendity.item.ItemConsts;
 import com.pferrot.lendity.lostpassword.LostPasswordService;
 
 public class LostPasswordStep1 {
