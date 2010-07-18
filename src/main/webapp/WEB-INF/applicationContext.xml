@@ -8,6 +8,7 @@
 	                    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
 	                    http://myfaces.apache.org/orchestra http://myfaces.apache.org/orchestra/orchestra.xsd">
 	
+	<!-- 
 	<bean id="initialData" class="com.pferrot.lendity.initialdata.InitialData">
 		<property name="userDao" ref="security.userDao"/>
 		<property name="roleDao" ref="security.roleDao"/>
@@ -16,7 +17,8 @@
 		<property name="itemDao" ref="itemDao"/>
 		<property name="passwordEncoder" ref="security.passwordEncoder"/>
 	</bean>
-	 
+    -->
+    
 	<bean id="configuration" class="com.pferrot.lendity.configuration.Configuration" lazy-init="false">
 		<property name="siteName">
 			<value>lendity</value>
@@ -64,7 +66,7 @@
 			<value>com.mysql.jdbc.Driver</value>
 		</property>
 		<property name="url">
-			<value>jdbc:mysql://localhost:3306/lendity2?characterEncoding=UTF-8</value>
+			<value>jdbc:mysql://localhost:3306/lendity?characterEncoding=UTF-8</value>
 		</property>
 		<property name="username">
 			<value>pferrot</value>

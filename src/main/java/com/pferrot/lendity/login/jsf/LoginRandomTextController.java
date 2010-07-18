@@ -11,7 +11,7 @@ import com.pferrot.lendity.i18n.I18nUtils;
 
 public class LoginRandomTextController {
 	
-	private static final int NB_BACKGROUND_TEXTS = 8;
+	private static final int NB_BACKGROUND_TEXTS = 3;
 	private static final String KEY_PREFIX = "login_backgroundText";
 	
 	private static List<Integer> getShufflList() {
@@ -31,7 +31,9 @@ public class LoginRandomTextController {
 		final StringBuffer text = new StringBuffer();
 		for (Integer textNb: nbInRandomOrder) {
 			text.append(getText(textNb.intValue()));
-			text.append("<br/><br/><br/><br/>");
+			text.append("<br/><br/><br/>");
+			text.append("<center>---------</center>");
+			text.append("<br/><br/>");
 		}
 		return text.toString();
 	}

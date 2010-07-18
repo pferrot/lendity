@@ -30,7 +30,7 @@
 			<!--  
 			<div class="gt-form gt-content-box" style="position: relative; height: 255px;">
 			-->
-			<div style="position: relative; height: 500px;">			
+			<div style="position: relative; height: 470px;">			
 			
 			
 			<div id="square2" class="loginSquares backgroundColor1" style="
@@ -58,10 +58,10 @@
 			left: 430px;
 			width: 220px;
 			height: 470px;">
-				<div style="padding: 20px; vertical-align: bottom;">
+				<div style="padding: 20px; vertical-align: bottom; width: 180px;">
 				<center><h2><h:outputText value="#{messages.login_didYouKnow}"/></h2></center>
-				<div class="marqueeContainer" style="padding-top: 10px; font-size: 90%;">
-					<marquee behavior="scroll" direction="up" scrollamount="1" height="420" width="180">
+				<div class="marqueeContainer" style="padding-top: 10px; padding-right: 20px; font-size: 90%; border: 0px; border-color: black; border-style: solid;">
+					<marquee behavior="scroll" direction="up" scrollamount="1" height="420" width="190">
 							<h:outputText value="#{loginRandomTextController.textInRandomOrder}" escape="false"/>
 					</marquee>
 				</div>

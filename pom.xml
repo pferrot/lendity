@@ -7,6 +7,25 @@
 	<version>0.1-SNAPSHOT</version>
 	<name>lendity</name>
 	<url>http://maven.apache.org</url>
+	<scm>
+		<connection>scm:svn:svn://patrice-ws/svn/lendity/trunk</connection>
+		<developerConnection>scm:svn:svn://patrice-ws/lendity/trunk</developerConnection>
+		<url>http://patrice-ws/websvn/lendity/trunk</url>
+	</scm>
+	<distributionManagement>
+		<repository>
+	      <id>releases-repo</id>
+	      <name>releases-repo</name>
+	      <url>file://C:/dev/repositories/releases</url>
+	      <layout>default</layout>
+	    </repository>
+	    <snapshotRepository>
+	      <id>snapshots-repo</id>
+	      <name>snapshots-repo</name>
+	      <url>file://C:/dev/repositories/snapshots</url>
+	      <layout>default</layout>
+	    </snapshotRepository>
+	</distributionManagement>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -84,19 +103,19 @@
 		<dependency>
 			<groupId>com.pferrot</groupId>
 			<artifactId>core</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>0.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.pferrot</groupId>
 			<artifactId>security</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>0.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.pferrot</groupId>
 			<artifactId>email-sender</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>0.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<!-- 
@@ -343,7 +362,15 @@
 		                <warDirectory>${project.build.directory}/${project.build.finalName}</warDirectory>
 		                -->
 			        </configuration>
-				</plugin>				
+				</plugin>
+				<plugin>
+			        <groupId>org.apache.maven.plugins</groupId>
+			        <artifactId>maven-release-plugin</artifactId>
+			        <version>2.0</version>
+			        <configuration>
+			          <tagBase>svn://patrice-ws/lendity/tags</tagBase>
+			        </configuration>
+			    </plugin>				
 			</plugins>
 		</pluginManagement>
 		<extensions>

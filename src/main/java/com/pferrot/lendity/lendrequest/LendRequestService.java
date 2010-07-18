@@ -133,7 +133,7 @@ public class LendRequestService {
 					         to,
 					         null, 
 					         null,
-					         Configuration.getSiteName() + ": demande de prêt",
+					         Configuration.getSiteName() + ": demande d'emprunt",
 					         objects, 
 					         velocityTemplateLocation);		
 			

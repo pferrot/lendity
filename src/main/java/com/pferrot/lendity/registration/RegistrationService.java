@@ -105,7 +105,7 @@ public class RegistrationService {
 			pPerson.getUser().addRole(userRole);
 	
 			// Activation code.
-			final String activationCode = PasswordGenerator.getNewPassword(30);
+			final String activationCode = PasswordGenerator.getNewPassword(12);
 			pPerson.getUser().setActivationCode(activationCode);
 			
 			
