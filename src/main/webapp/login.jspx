@@ -62,7 +62,9 @@
 				<center><h2><h:outputText value="#{messages.login_didYouKnow}"/></h2></center>
 				<div class="marqueeContainer" style="padding-top: 10px; padding-right: 20px; font-size: 90%; border: 0px; border-color: black; border-style: solid;">
 					<marquee behavior="scroll" direction="up" scrollamount="1" height="420" width="190">
+						<div style="width: 190px;">
 							<h:outputText value="#{loginRandomTextController.textInRandomOrder}" escape="false"/>
+						</div>
 					</marquee>
 				</div>
 				</div>
