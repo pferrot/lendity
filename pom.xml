@@ -1,16 +1,15 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.pferrot.webapp</groupId>
 	<artifactId>lendity</artifactId>
 	<packaging>war</packaging>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<name>lendity</name>
 	<url>http://maven.apache.org</url>
 	<scm>
-		<connection>scm:svn:svn://patrice-ws/svn/lendity/trunk</connection>
-		<developerConnection>scm:svn:svn://patrice-ws/lendity/trunk</developerConnection>
-		<url>http://patrice-ws/websvn/lendity/trunk</url>
+		<connection>scm:svn:svn://patrice-ws/svn/lendity/tags/lendity-0.1</connection>
+		<developerConnection>scm:svn:svn://patrice-ws/lendity/tags/lendity-0.1</developerConnection>
+		<url>http://patrice-ws/websvn/lendity/tags/lendity-0.1</url>
 	</scm>
 	<distributionManagement>
 		<repository>
@@ -350,7 +349,7 @@
 			        	
 			        	<?xml version='1.0' encoding='utf-8'?>
 						<tomcat-users>
-						  <user username="pferrot" password="pferrot" roles="manager"/>
+						  <user username="pferrot" password="pferrot" roles="manager" />
 						</tomcat-users>
 			        	 -->			        	 
 			        	<server>lendity_server</server>
