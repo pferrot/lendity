@@ -238,5 +238,9 @@
 		<error-code>404</error-code>
 		<location>/public/error/error_404.faces</location>
 	</error-page>
+	
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
 		
 </web-app>

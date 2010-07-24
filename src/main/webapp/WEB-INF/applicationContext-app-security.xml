@@ -58,13 +58,55 @@ security module.
 		<logout />
  		-->
 		<logout logout-success-url="/auth/home.faces" />
+		<!-- 
 		<remember-me user-service-ref="security.customUserDetailsService"/>
+		 -->
 		<!--
 			Uncomment to limit the number of sessions a user can have
 			<concurrent-session-control max-sessions="1"
 			exception-if-maximum-exceeded="true"/>
 		-->
 	</http>
+	
+	<beans:bean id="rememberMeProcessingFilter" class="com.pferrot.lendity.login.filter.CustomRememberMeProcessingFilter"> 
+	  <custom-filter position="REMEMBER_ME_FILTER" /> 
+	  <beans:property name="rememberMeServices" ref="rememberMeServices"/> 
+	  <beans:property name="authenticationManager" ref="authenticationManager" />
+	  <beans:property name="personDao" ref="personDao"/>
+	</beans:bean>
+	
+	
+	<!-- Defines which remember me implementation to use - in this case using a database table to log 'remembered' tokens --> 
+	<beans:bean id="rememberMeServices" class="org.springframework.security.ui.rememberme.PersistentTokenBasedRememberMeServices"> 
+	    <beans:property name="tokenRepository" ref="jdbcTokenRepository" /> 
+	    <beans:property name="userDetailsService" ref="security.customUserDetailsService" /> 
+	    <beans:property name="key" value="yeahYeahLendity" />
+	    <!-- 2678400 seconds = 31 days 
+	    !!! Setting that property breaks the remember me function. Not sure why...
+	    <beans:property name="tokenValiditySeconds" value="2678400" />
+	    --> 
+	    <beans:property name="alwaysRemember" value="false" /> 
+	</beans:bean>
+
+	<!--
+	Uses a database table to maintain a set of persistent login data
+	
+	Need the following table to exist:
+	create table persistent_logins (username varchar(64) not null, series varchar(64) primary key, token varchar(64) not null, last_used timestamp not null);
+	
+	See http://static.springsource.org/spring-security/site/docs/2.0.x/reference/remember-me.html
+	 -->
+	<beans:bean id="jdbcTokenRepository" class="org.springframework.security.ui.rememberme.JdbcTokenRepositoryImpl"> 
+	    <beans:property name="createTableOnStartup" value="false" /> 
+	    <beans:property name="dataSource" ref="dataSource" /> 
+	</beans:bean>
+	
+	
+	<beans:bean id="rememberMeAuthenticationProvider" class="org.springframework.security.providers.rememberme.RememberMeAuthenticationProvider"> 
+		<!-- This ensures that remember-me is added as an authentication provider --> 
+		<custom-authentication-provider /> 
+		<beans:property name="key" value="yeahYeahLendity"/> 
+	</beans:bean>     
 	
 	<beans:bean id="loginController" class="com.pferrot.lendity.login.jsf.LoginController"
 	      scope="request">
@@ -79,6 +121,7 @@ security module.
 		<beans:property name="defaultTargetUrl" value="/auth/home.faces" />
 		<beans:property name="authenticationManager" ref="authenticationManager" />
 		<beans:property name="personDao" ref="personDao"/>
+		<beans:property name="rememberMeServices" ref="rememberMeServices" />  
 	</beans:bean>
 
 	<beans:bean id="authenticationProcessingFilterEntryPoint"	class="org.springframework.security.ui.webapp.AuthenticationProcessingFilterEntryPoint">
