@@ -137,7 +137,7 @@ public class InternalItemsImportController  {
 	
 	public String getVisibilityLabel() {
 		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-		if (visible != null || visible.booleanValue()) {
+		if (visible != null && visible.booleanValue()) {
 			return I18nUtils.getMessageResourceString("item_visible", locale);
 		}
 		else {
