@@ -101,13 +101,25 @@ public class InternalItemsImportStep1 extends AbstractInternalItemsImportStep {
 					log.debug(line);
 				}
 				if (!StringUtils.isNullOrEmpty(line)) {
-					line = line.trim();
-					counter++;
-					if (counter > MAX_NB_ITEMS_TO_IMPORT) {
-						tooManyEntriesInFile(MAX_NB_ITEMS_TO_IMPORT);
-						return "error";
+					// Fix bug when the first character of the first line is the BOM (Byte Order Mark), unicode = 65279.
+					int firstCharUnicode = line.charAt(0);
+					if (firstCharUnicode == 65279) {
+						if (line.length() > 1) {
+							line = line.substring(1);
+						}
+						else {
+							line = null;
+						}
 					}
-					allItems.add(line);
+					// Still not null or empty !?
+					if (!StringUtils.isNullOrEmpty(line)) {
+						counter++;
+						if (counter > MAX_NB_ITEMS_TO_IMPORT) {
+							tooManyEntriesInFile(MAX_NB_ITEMS_TO_IMPORT);
+							return "error";
+						}
+						allItems.add(line);
+					}
 				}
 			}			
 			Set<String> validItemsToImport = new TreeSet<String>(new StringCaseInsensitiveComparator());
