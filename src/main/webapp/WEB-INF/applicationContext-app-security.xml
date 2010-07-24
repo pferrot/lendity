@@ -57,7 +57,9 @@ security module.
 		<http-basic />
 		<logout />
  		-->
+ 		<!-- 
 		<logout logout-success-url="/auth/home.faces" />
+		 -->
 		<!-- 
 		<remember-me user-service-ref="security.customUserDetailsService"/>
 		 -->
@@ -106,7 +108,20 @@ security module.
 		<!-- This ensures that remember-me is added as an authentication provider --> 
 		<custom-authentication-provider /> 
 		<beans:property name="key" value="yeahYeahLendity"/> 
-	</beans:bean>     
+	</beans:bean>
+
+
+	<beans:bean id="logoutFilter" class="org.springframework.security.ui.logout.LogoutFilter"> 
+	    <custom-filter position="LOGOUT_FILTER" /> 
+	    <beans:constructor-arg value="/auth/home.faces" /> 
+	    <!-- URL redirected to after logout --> 
+	    <beans:constructor-arg> 
+	        <beans:list> 
+	            <beans:ref bean="rememberMeServices" />
+	            <beans:bean class="org.springframework.security.ui.logout.SecurityContextLogoutHandler"/>
+	        </beans:list> 
+	    </beans:constructor-arg> 
+	</beans:bean>      
 	
 	<beans:bean id="loginController" class="com.pferrot.lendity.login.jsf.LoginController"
 	      scope="request">
