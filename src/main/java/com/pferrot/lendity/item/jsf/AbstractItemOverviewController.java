@@ -64,7 +64,7 @@ public abstract class AbstractItemOverviewController
 	public String getDescription() {
 		final String itemDescription = item.getDescription();
 		if (itemDescription != null) {
-			return HtmlUtils.escapeHtmlAndReplaceCrAndWhiteSpaces(itemDescription);
+			return HtmlUtils.escapeHtmlAndReplaceCr(itemDescription);
 		}
 		return "";
 	}

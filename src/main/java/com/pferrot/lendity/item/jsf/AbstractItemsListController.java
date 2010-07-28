@@ -244,7 +244,7 @@ public abstract class AbstractItemsListController extends AbstractListController
 				description = description.substring(0, ItemConsts.NB_CHARACTERS_DESCRIPTION_IN_LISTS - 3);
 				description = description + "...";
 			}
-			return HtmlUtils.escapeHtmlAndReplaceCrAndWhiteSpaces(description);
+			return HtmlUtils.escapeHtmlAndReplaceCr(description);
 		}
 		else {
 			return "";
