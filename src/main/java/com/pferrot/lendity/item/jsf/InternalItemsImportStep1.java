@@ -34,7 +34,7 @@ public class InternalItemsImportStep1 extends AbstractInternalItemsImportStep {
 	private final static String TEXT_PLAIN_MIME_TYPE = "text/plain";
 	
 	private final static int MAX_TITLE_LENGTH = 255;
-	private final static int MAX_NB_ITEMS_TO_IMPORT = 250;
+	private final static int MAX_NB_ITEMS_TO_IMPORT = 1000;
 	
 	private ItemService itemService;
 	
