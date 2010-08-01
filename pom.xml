@@ -13,15 +13,15 @@
 	</scm>
 	<distributionManagement>
 		<repository>
-	      <id>releases-repo</id>
-	      <name>releases-repo</name>
-	      <url>file://C:/dev/repositories/releases</url>
+	      <id>ftp-releases-repo</id>
+	      <name>ftp-releases-repo</name>
+	      <url>ftp://patrice-ws/releases</url>
 	      <layout>default</layout>
 	    </repository>
 	    <snapshotRepository>
-	      <id>snapshots-repo</id>
-	      <name>snapshots-repo</name>
-	      <url>file://C:/dev/repositories/snapshots</url>
+	      <id>ftp-snapshots-repo</id>
+	      <name>ftp-snapshots-repo</name>
+	      <url>ftp://patrice-ws/snapshots</url>
 	      <layout>default</layout>
 	    </snapshotRepository>
 	</distributionManagement>
@@ -114,7 +114,7 @@
 		<dependency>
 			<groupId>com.pferrot</groupId>
 			<artifactId>email-sender</artifactId>
-			<version>0.1</version>
+			<version>0.2-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<!-- 
