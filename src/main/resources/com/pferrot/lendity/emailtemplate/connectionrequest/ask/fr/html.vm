@@ -1,3 +1,5 @@
+#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+
 Hello $connectionFirstName,<br/><br/>
 
 $requesterFirstName $requesterLastName souhaite t'ajouter en tant qu'ami<br/><br/>
@@ -7,3 +9,5 @@ Merci de suivre le lien ci-dessous afin de répondre à sa demande.<br/><br/>
 <a href="$invitationsUrl">Invitations reçues</a><br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
+
+#include("com/pferrot/lendity/emailtemplate/html_footer.vm")

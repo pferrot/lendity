@@ -1,3 +1,5 @@
+#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+
 Hello $ownerFirstName,<br/><br/>
 
 <b>$requesterFirstName $requesterLastName</b> souhaite t'emprunter l'objet suivant:<br/><br/>
@@ -9,3 +11,5 @@ Rends-toi sur la page suivante pour lui rendre réponse:<br/><br/>
 <a href="$pendingRequestsUrl">Demandes d'emprunt reçues</a><br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
+
+#include("com/pferrot/lendity/emailtemplate/html_footer.vm")

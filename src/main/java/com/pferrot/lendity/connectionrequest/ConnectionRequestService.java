@@ -179,6 +179,9 @@ public class ConnectionRequestService {
 			Map<String, String> to = new HashMap<String, String>();
 			to.put(pConnection.getEmail(), pConnection.getEmail());
 			
+			Map<String, String> inlineResources = new HashMap<String, String>();
+			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+			
 			mailManager.send(Configuration.getNoReplySenderName(), 
 					         Configuration.getNoReplyEmailAddress(),
 					         to,
@@ -186,7 +189,8 @@ public class ConnectionRequestService {
 					         null,
 					         Configuration.getSiteName() + ": invitation à devenir ami",
 					         objects, 
-					         velocityTemplateLocation);		
+					         velocityTemplateLocation,
+					         inlineResources);		
 			
 			return connectionRequestId;
 		} 
@@ -440,6 +444,9 @@ public class ConnectionRequestService {
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(pConnectionRequest.getRequester().getEmail(), pConnectionRequest.getRequester().getEmail());
 		
+		Map<String, String> inlineResources = new HashMap<String, String>();
+		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+		
 		mailManager.send(Configuration.getNoReplySenderName(), 
 						 Configuration.getNoReplyEmailAddress(),
 				         to,
@@ -447,7 +454,8 @@ public class ConnectionRequestService {
 				         null,
 				         pEmailSubject,
 				         objects, 
-				         pTemplateLocation);			
+				         pTemplateLocation,
+				         inlineResources);			
 	}
 	
 	private void assertRequesterIsCurrentUser(final ConnectionRequest pConnectionRequest) throws ConnectionRequestException {

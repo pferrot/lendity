@@ -128,6 +128,9 @@ public class LendRequestService {
 			Map<String, String> to = new HashMap<String, String>();
 			to.put(pItem.getOwner().getEmail(), pItem.getOwner().getEmail());
 			
+			Map<String, String> inlineResources = new HashMap<String, String>();
+			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+			
 			mailManager.send(Configuration.getNoReplySenderName(), 
 					         Configuration.getNoReplyEmailAddress(),
 					         to,
@@ -135,7 +138,8 @@ public class LendRequestService {
 					         null,
 					         Configuration.getSiteName() + ": demande d'emprunt",
 					         objects, 
-					         velocityTemplateLocation);		
+					         velocityTemplateLocation,
+					         inlineResources);		
 			
 			return lendRequestId;
 		} 
@@ -225,6 +229,9 @@ public class LendRequestService {
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(pLendRequest.getRequester().getEmail(), pLendRequest.getRequester().getEmail());
 		
+		Map<String, String> inlineResources = new HashMap<String, String>();
+		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+		
 		mailManager.send(pLendRequest.getOwner().getDisplayName(), 
 						 pLendRequest.getOwner().getEmail(),
 				         to,
@@ -232,7 +239,8 @@ public class LendRequestService {
 				         null,
 				         pEmailSubject,
 				         objects, 
-				         pTemplateLocation);			
+				         pTemplateLocation,
+				         inlineResources);			
 	}
 
 	public void updateAcceptLendRequest(final Long pLendRequestId) throws LendRequestException {

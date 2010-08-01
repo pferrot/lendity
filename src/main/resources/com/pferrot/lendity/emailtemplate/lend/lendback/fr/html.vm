@@ -1,7 +1,11 @@
+#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+
 Hello $borrowerFirstName,<br/><br/>
 
-<b>$lenderFirstName $lenderLastName</b> a indiqué que tu lui a retourné l'objet suivant:<br/><br/>
+<b>$lenderFirstName $lenderLastName</b> a indiqué que tu lui as retourné l'objet suivant:<br/><br/>
 
 <b>$itemTitle</b><br/><br/> 
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
+
+#include("com/pferrot/lendity/emailtemplate/html_footer.vm")

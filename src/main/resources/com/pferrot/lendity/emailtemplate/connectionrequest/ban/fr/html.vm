@@ -1,5 +1,9 @@
+#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+
 Hello $requesterFirstName,<br/><br/>
 
 $connectionFirstName $connectionLastName a refusé de t'ajouter comme ami et t'a exclu de ses contacts.<br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
+
+#include("com/pferrot/lendity/emailtemplate/html_footer.vm")

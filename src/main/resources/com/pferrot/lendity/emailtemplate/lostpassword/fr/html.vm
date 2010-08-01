@@ -1,3 +1,5 @@
+#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+
 Hello $firstName,<br/><br/>
 
 Tu as demandé un rappel de ton mot de passe pour $siteName. Si ce n'est pas le cas, ignore simplement ce message.<br/><br/>
@@ -8,3 +10,5 @@ Nom d'utilisateur: <b>$username</b><br/>
 Mot de passe: <b>$password</b><br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
+
+#include("com/pferrot/lendity/emailtemplate/html_footer.vm")

@@ -86,6 +86,9 @@ public class LostPasswordService {
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(person.getEmail(), person.getEmail());
 		
+		Map<String, String> inlineResources = new HashMap<String, String>();
+		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+		
 		mailManager.send(Configuration.getNoReplySenderName(), 
 						 Configuration.getNoReplyEmailAddress(),
 				         to,
@@ -93,7 +96,8 @@ public class LostPasswordService {
 				         null,
 				         Configuration.getSiteName() + ": rappel du mot de passe", 
 				         objects, 
-				         velocityTemplateLocation);		
+				         velocityTemplateLocation,
+				         inlineResources);		
 		
 		return true;		
 	}

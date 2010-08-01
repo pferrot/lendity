@@ -1,3 +1,5 @@
+#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+
 Hello $firstName,<br/><br/>
 
 Ton compte pour $siteName a été validé avec succès.<br/><br/>
@@ -8,3 +10,5 @@ Username: <b>$username</b><br/>
 Password: <b>$password</b><br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
+
+#include("com/pferrot/lendity/emailtemplate/html_footer.vm")

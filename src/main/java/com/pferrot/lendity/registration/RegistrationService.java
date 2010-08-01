@@ -147,6 +147,9 @@ public class RegistrationService {
 			Map<String, String> to = new HashMap<String, String>();
 			to.put(pPerson.getEmail(), pPerson.getEmail());
 			
+			Map<String, String> inlineResources = new HashMap<String, String>();
+			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+			
 			mailManager.send(Configuration.getNoReplySenderName(), 
 					 		 Configuration.getNoReplyEmailAddress(),
 					         to,
@@ -154,7 +157,8 @@ public class RegistrationService {
 					         null,
 					         Configuration.getSiteName() + ": validation de l'enregistrement",
 					         objects, 
-					         velocityTemplateLocation);		
+					         velocityTemplateLocation,
+					         inlineResources);		
 			
 			return personId;
 		} catch (UnsupportedEncodingException e) {
@@ -210,6 +214,9 @@ public class RegistrationService {
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(person.getEmail(), person.getEmail());
 		
+		Map<String, String> inlineResources = new HashMap<String, String>();
+		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+		
 		mailManager.send(Configuration.getNoReplySenderName(), 
 						 Configuration.getNoReplyEmailAddress(),
 				         to,
@@ -217,7 +224,8 @@ public class RegistrationService {
 				         null,
 				         Configuration.getSiteName() + ": enregistrement terminé",
 				         objects, 
-				         velocityTemplateLocation);		
+				         velocityTemplateLocation,
+				         inlineResources);		
 
 	}
 	

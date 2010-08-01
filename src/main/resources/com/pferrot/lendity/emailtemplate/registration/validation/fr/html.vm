@@ -1,3 +1,5 @@
+#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+
 Hello $firstName,<br/><br/>
 
 Merci de cliquer sur le lien ci-dessous afin de finaliser ton enregistrement pour $siteName:<br/><br/>
@@ -5,3 +7,5 @@ Merci de cliquer sur le lien ci-dessous afin de finaliser ton enregistrement pou
 <a href="$activationUrl">Lien d'activation</a><br/><br/>
 
 Merci pour ton enregistrement et à bientôt sur <a href="$siteUrl">$siteName</a>.
+
+#include("com/pferrot/lendity/emailtemplate/html_footer.vm")

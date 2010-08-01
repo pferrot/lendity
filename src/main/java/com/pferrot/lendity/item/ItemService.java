@@ -226,6 +226,9 @@ public class ItemService {
 			Map<String, String> to = new HashMap<String, String>();
 			to.put(borrower.getEmail(), borrower.getEmail());
 			
+			Map<String, String> inlineResources = new HashMap<String, String>();
+			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+			
 			mailManager.send(Configuration.getNoReplySenderName(), 
 					         Configuration.getNoReplyEmailAddress(),
 					         to,
@@ -233,7 +236,8 @@ public class ItemService {
 					         null,
 					         Configuration.getSiteName() + ": objet rendu",
 					         objects, 
-					         velocityTemplateLocation);
+					         velocityTemplateLocation,
+					         inlineResources);
 			
 		}
 	}
@@ -273,6 +277,9 @@ public class ItemService {
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(borrower.getEmail(), borrower.getEmail());
 		
+		Map<String, String> inlineResources = new HashMap<String, String>();
+		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+		
 		mailManager.send(Configuration.getNoReplySenderName(), 
 				         Configuration.getNoReplyEmailAddress(),
 				         to,
@@ -280,7 +287,8 @@ public class ItemService {
 				         null,
 				         Configuration.getSiteName() + ": objet emprunté",
 				         objects, 
-				         velocityTemplateLocation);
+				         velocityTemplateLocation,
+				         inlineResources);
 	}
 
 	/**
@@ -338,6 +346,9 @@ public class ItemService {
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(borrower.getEmail(), borrower.getEmail());
 		
+		Map<String, String> inlineResources = new HashMap<String, String>();
+		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+		
 		mailManager.send(Configuration.getNoReplySenderName(), 
 				         Configuration.getNoReplyEmailAddress(),
 				         to,
@@ -345,7 +356,8 @@ public class ItemService {
 				         null,
 				         Configuration.getSiteName() + ": rappel pour objet emprunté",
 				         objects, 
-				         velocityTemplateLocation);		
+				         velocityTemplateLocation,
+				         inlineResources);		
 		
 	}
 	
