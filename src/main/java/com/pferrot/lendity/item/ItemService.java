@@ -134,7 +134,7 @@ public class ItemService {
 		if (connectionsIds == null || connectionsIds.length == 0) {
 			return ListWithRowCount.emptyListWithRowCount();
 		}
-		return itemDao.findInternalItems(connectionsIds, Boolean.TRUE, null, null, null, null, Boolean.TRUE, Boolean.FALSE, "creationDate", Boolean.FALSE, 0, 15);
+		return itemDao.findInternalItems(connectionsIds, Boolean.TRUE, null, null, null, null, Boolean.TRUE, Boolean.FALSE, "creationDate", Boolean.FALSE, 0, 5);
 	}
 	
 	private Long[] getConnectionIds(final Long pConnectionId) {
