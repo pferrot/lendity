@@ -36,7 +36,7 @@
 <table class="filtersTable">
 <tr>
 
-<td>
+<td class="personSearchCell">
 <ui:include src="filter/searchFilter.jspx">
 	<ui:param name="theBean" value="#{myBannedPersonsListController}"/>
 </ui:include>
@@ -50,7 +50,15 @@
 <!-- content box -->
 <div class="gt-content-box">
 
-<c:if test="#{empty(myBannedPersonsListController.list)}">
+<c:if test="#{empty(myBannedPersonsListController.list) and not(myBannedPersonsListController.filteredList)}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText value="#{messages.person_noBannedPerson}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<c:if test="#{empty(myBannedPersonsListController.list) and myBannedPersonsListController.filteredList}">
 	<br/><br/>
 	<center>
 	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>

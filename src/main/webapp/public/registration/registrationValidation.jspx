@@ -39,17 +39,6 @@
 				        </h:outputFormat>
 				        </p>
 				        <p>#{messages.registration_validationOk2}</p>
-				        <p>
-	                   	<h:outputLink value="#{authenticationController.loginURL}">
-	        				<h:outputText value="#{messages.login_login}"/>
-		         		</h:outputLink>
-				        </p>
-					    <p>
-			            <h:outputFormat value="#{messages.registration_validationOk3}">
-					      <f:param value="#{registrationValidationController.username}" /> 
-				        </h:outputFormat>
-				        </p>
-						<p>#{messages.registration_validationOk4}</p>
 					</div>
 				</c:if>
 				

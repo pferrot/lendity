@@ -36,11 +36,13 @@
 <table class="filtersTable">
 <tr>
 
-<td>
+<td class="itemSearchCell">
 <ui:include src="filter/searchFilter.jspx">
 	<ui:param name="theBean" value="#{myBorrowedItemsListController}"/>
 </ui:include>
 </td>
+
+<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
 
 <td>
 <ui:include src="filter/categoryFilter.jspx">
@@ -48,12 +50,12 @@
 </ui:include>
 </td>
 
+<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
+
 <td>
 <ui:include src="filter/ownerFilter.jspx">
 	<ui:param name="theBean" value="#{myBorrowedItemsListController}"/>
 </ui:include>
-</td>
-
 </td>
 
 </tr>
@@ -64,7 +66,15 @@
 <!-- content box -->
 <div class="gt-content-box">
 
-<c:if test="#{empty(myBorrowedItemsListController.list)}">
+<c:if test="#{empty(myBorrowedItemsListController.list) and not(myBorrowedItemsListController.filteredList)}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText value="#{messages.item_noItemBorrowed}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<c:if test="#{empty(myBorrowedItemsListController.list) and myBorrowedItemsListController.filteredList}">
 	<br/><br/>
 	<center>
 	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>

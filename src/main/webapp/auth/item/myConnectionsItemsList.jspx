@@ -35,11 +35,13 @@
 <table class="filtersTable">
 <tr>
 
-<td>
+<td class="itemSearchCell">
 <ui:include src="filter/searchFilter.jspx">
 	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
 </ui:include>
 </td>
+
+<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
 
 <td>
 <ui:include src="filter/categoryFilter.jspx">
@@ -47,12 +49,16 @@
 </ui:include>
 </td>
 
+<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
+
 <td>
 <ui:include src="filter/borrowStatusFilter.jspx">
 	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
 	<ui:param name="borrowStatusTitle" value="#{messages.item_availableStatus}"/>	
 </ui:include>
 </td>
+
+<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
 
 <td>
 <ui:include src="filter/ownerFilter.jspx">

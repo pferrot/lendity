@@ -38,14 +38,20 @@
 
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">
-						<ul>
-							<li><h:outputText value="#{messages.item_internalItemsImportExplanation1}"/></li>
-							<li><h:outputText value="#{messages.item_internalItemsImportExplanation2}"/></li>
-							<li><h:outputText value="#{messages.item_internalItemsImportExplanation3}"/></li>
-							<li><h:outputText value="#{messages.item_internalItemsImportExplanation4}"/></li>
-							<li><h:outputText value="#{messages.item_internalItemsImportExplanation5}"/></li>
-							<li><h:outputText value="#{messages.item_internalItemsImportExplanation6}"/></li>
-						</ul>
+						<span id="instructionsOn" class="linkStyleAction" onClick="toggleVisibility('instructions'); toggleVisibility('instructionsOn'); toggleVisibility('instructionsOff');"><h:outputText value="#{messages.item_internalItemsImportInstructionsShow}"/></span>
+						<span id="instructionsOff" style="display: none;" class="linkStyleAction" onClick="toggleVisibility('instructions'); toggleVisibility('instructionsOn'); toggleVisibility('instructionsOff');"><h:outputText value="#{messages.item_internalItemsImportInstructionsHide}"/></span>
+						<div id="instructions" style="display: none;">
+							<br/>
+							<ul>
+								<li><h:outputText value="#{messages.item_internalItemsImportExplanation1}"/></li>
+								<li><h:outputText value="#{messages.item_internalItemsImportExplanation2}"/></li>
+								<li><h:outputText value="#{messages.item_internalItemsImportExplanation3}"/></li>
+								<li><h:outputText value="#{messages.item_internalItemsImportExplanation4}"/></li>
+								<li><h:outputText value="#{messages.item_internalItemsImportExplanation5}"/></li>
+								<li><h:outputText value="#{messages.item_internalItemsImportExplanation6}"/></li>
+							</ul>
+						</div>
+						<br/><br/>
 					
 						<label><h:outputText value="#{messages.item_importFile}"/> *</label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"

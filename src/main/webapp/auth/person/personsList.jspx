@@ -37,7 +37,7 @@
 <table class="filtersTable">
 <tr>
 
-<td width="100%">
+<td class="personSearchCell">
 <ui:include src="filter/searchFilter.jspx">
 	<ui:param name="theBean" value="#{personsListController}"/>
 </ui:include>

@@ -128,11 +128,22 @@ div.highlightedBg {
 
 table.filtersTable {
 	vertical-align: top;
-	width: 100%;
+}
+
+table.filtersTable td.separatorCell {
+	width: 15px;
+}
+
+table.filtersTable td.itemSearchCell {
+	width: 200px;
+}
+
+table.filtersTable td.personSearchCell {
+	width: 350px;
 }
 
 input.listerSearchInput {
-	width: 90%;	
+	width: 100%;	
 }
 
 input.grayColor {
@@ -153,6 +164,14 @@ span.linkStyleAction:hover {
 
 .fontSizeSmall {
 	font-size:85%!important;
+}
+
+.fontSizeLarge {
+	font-size:115%!important;
+}
+
+.fontSizeLargeLarge {
+	font-size:130%!important;
 }
 
 span.linkStyleActionSmall {

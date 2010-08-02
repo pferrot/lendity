@@ -91,6 +91,8 @@
 						<h:outputLink styleClass="stylishButton"  value="#{authenticationController.myItemsURL}">
            					<h:outputText value="#{messages.navigation_cancel}"/>
          				</h:outputLink>
+         				<br/><br/>
+         				<p><h:outputLink value="#{authenticationController.importInternalItemsURL}"><h:outputText value="#{messages.item_internalItemsImportLink}"/></h:outputLink></p>
 					</div>
 					<!-- /form row -->
 					

@@ -36,7 +36,7 @@
 <table class="filtersTable">
 <tr>
 
-<td>
+<td class="personSearchCell">
 <ui:include src="filter/searchFilter.jspx">
 	<ui:param name="theBean" value="#{myConnectionsListController}"/>
 </ui:include>

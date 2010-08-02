@@ -13,13 +13,7 @@ public class PersonsListController extends AbstractPersonsListController {
 	
 	@Override
 	protected ListWithRowCount getListWithRowCount() {
-		// Is there a search string specified?
-//		if (getSearchString() != null  && getSearchString().trim().length() > 0) {
-			return getPersonService().findEnabledPersons(getSearchString(), getFirstRow(), getRowsPerPage());
-//		}
-//		else {
-//			return ListWithRowCount.emptyListWithRowCount();
-//		}
+		return getPersonService().findEnabledPersons(getSearchString(), getFirstRow(), getRowsPerPage());
 	}
 
 	public String requestConnection() {

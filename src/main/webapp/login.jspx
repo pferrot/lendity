@@ -39,35 +39,26 @@
 			width: 400px;
 			height: 470px;">
 				<div style="padding: 20px; vertical-align: bottom; height: 190px; top: 220px;">
-				<center><h2><h:outputText value="#{messages.login_whatIsThat}"/></h2></center>
+				<center><h2><h:outputText value="#{messages.login_lendBorrowExchange}"/></h2></center>
 				<h:outputText value="#{messages.login_whatIsThatExplain}"/><br/><br/>
-				<h:outputText value="#{messages.login_whatIsThatExample}"/><br/><br/>
 				<center>
+				<img src="#{facesContext.externalContext.requestContextPath}/public/images/login_shadows.gif"/>
+				<br/><br/><br/>
 				<h:outputLink value="#{authenticationController.registrationURL}" styleClass="stylishButton">
 					<h:outputText value="#{messages.login_registerForFree}"/>
 				</h:outputLink>
-				<br/><br/>
-				<img src="#{facesContext.externalContext.requestContextPath}/public/images/image_login.jpg"/>
 				</center>				
 				</div>
 			</div>			
 			
-			<div class="loginSquares" style="
-			background-color: #ffffff;
-			top: 0px;
+			<div style="
+			position: absolute;
+			top: 50px;
 			left: 430px;
 			width: 220px;
-			height: 470px;">
-				<div style="padding: 20px; vertical-align: bottom; width: 180px;">
-				<center><h2><h:outputText value="#{messages.login_didYouKnow}"/></h2></center>
-				<div class="marqueeContainer" style="padding-top: 10px; padding-right: 20px; font-size: 90%; border: 0px; border-color: black; border-style: solid;">
-					<marquee behavior="scroll" direction="up" scrollamount="1" height="420" width="190">
-						<div style="width: 190px;">
-							<h:outputText value="#{loginRandomTextController.textInRandomOrder}" escape="false"/>
-						</div>
-					</marquee>
-				</div>
-				</div>
+			height: 134px;">
+			<img src="#{facesContext.externalContext.requestContextPath}/public/images/login_tags.gif"/>
+			
 			</div>
 			
 			</div>		
