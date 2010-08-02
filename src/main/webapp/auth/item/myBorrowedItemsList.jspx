@@ -54,12 +54,6 @@
 </ui:include>
 </td>
 
-<td>
-<div class="gt-table-buttons">
-	<h:outputLink value="#{myItemsListController.externalItemAddHref}" styleClass="stylishButton">
-  		<h:outputText value="#{messages.item_addExternalItem}" />
-   	</h:outputLink>
-</div>
 </td>
 
 </tr>

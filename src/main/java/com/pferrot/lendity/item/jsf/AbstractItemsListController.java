@@ -382,14 +382,6 @@ public abstract class AbstractItemsListController extends AbstractListController
 			return ItemUtils.getExternalItemOverviewPageUrl(((ExternalItem)item).getId().toString());
 		}		
 	}
-	
-	public String getInternalItemAddHref() {
-		return ItemUtils.getInternalItemAddPageUrl();
-	}
-	
-	public String getExternalItemAddHref() {
-		return ItemUtils.getExternalItemAddPageUrl();
-	}
 
 	public String getItemEditHref() {
 		final Item item = (Item)getTable().getRowData();

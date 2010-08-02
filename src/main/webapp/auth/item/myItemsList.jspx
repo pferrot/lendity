@@ -60,14 +60,6 @@
 	<ui:param name="theBean" value="#{myItemsListController}"/>
 </ui:include>
 </td>
-
-<td>
-<div class="gt-table-buttons">
-	<h:outputLink rendered="#{myItemsListController.addAvailable}" value="#{myItemsListController.internalItemAddHref}" styleClass="stylishButton">
-  		<h:outputText rendered="#{myItemsListController.addAvailable}" value="#{messages.item_addInternalItem}" />
-   	</h:outputLink>
-</div>
-</td>
 </tr>
 
 </table>

@@ -1,6 +1,7 @@
 package com.pferrot.lendity.login.jsf;
 
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.item.ItemUtils;
 import com.pferrot.lendity.login.AuthenticationConsts;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -98,6 +99,14 @@ public class AuthenticationController {
 
 	public String getMyConnectionsItemsURL() {
 		return JsfUtils.getContextRoot() + PagesURL.MY_CONNECTIONS_ITEMS_LIST;
+	}
+	
+	public String getInternalItemAddURL() {
+		return ItemUtils.getInternalItemAddPageUrl();
+	}
+
+	public String getExternalItemAddURL() {
+		return ItemUtils.getExternalItemAddPageUrl();
 	}
 	
 	public String getMyProfileURL() {
