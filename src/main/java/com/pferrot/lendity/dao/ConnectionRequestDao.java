@@ -9,9 +9,24 @@ public interface ConnectionRequestDao {
 	
 	ConnectionRequest findConnectionRequest(Long pConnectionRequestId);
 	
-	ListWithRowCount findConnectionRequests(Long[] pConnectionIds, Long[] pRequesterIds, Boolean pCompleted, Long[] pResponseIds, int pFirstResult, int pMaxResults);	
+	/**
+	 * 
+	 * @param pConnectionIds: IDs of the connections, all if null, 
+	 * @param pRequesterIds: IDs of the requesters, all if null.
+	 * @param pOrCriteria: if TRUE, then pConnectionIds and pRequesterIds will be dealt with as OR - otherwise a AND is made.
+	 * @param pExcludedConnectionIds: Connection requests with those connections will be excluded. 
+	 * @param pExcludedRequesterIds: Connection requests with those requesters will be excluded.
+	 * @param pCompleted: only returns completed connection requests if TRUE
+	 * @param pResponseIds: IDs of the responses, all if null
+	 * @param pOrderByField: responseDate or requestDate
+	 * @param pOrderByAsc 
+	 * @param pFirstResult
+	 * @param pMaxResults
+	 * @return
+	 */
+	ListWithRowCount findConnectionRequests(Long[] pConnectionIds, Long[] pRequesterIds, Boolean pOrCriteria, Long[] pExcludedConnectionIds, Long[] pExcludedRequesterIds, Boolean pCompleted, Long[] pResponseIds, String pOrderByField, Boolean pOrderByAsc, int pFirstResult, int pMaxResults);	
 	
-	long countConnectionRequests(Long[] pConnectionIds, Long[] pRequesterIds, Boolean pCompleted, Long[] pResponseIds);
+	long countConnectionRequests(Long[] pConnectionIds, Long[] pRequesterIds, Boolean pOrCriteria, Long[] pExcludedConnectionIds, Long[] pExcludedRequesterIds, Boolean pCompleted, Long[] pResponseIds);
 	
 	void updateConnectionRequest(ConnectionRequest pConnectionRequest);
 	

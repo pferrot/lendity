@@ -76,6 +76,10 @@ public class AuthenticationController {
 	public String getMyPendingConnectionRequestsOutURL() {
 		return JsfUtils.getContextRoot() + PagesURL.MY_PENDING_CONNECTION_REQUESTS_OUT_LIST;
 	}
+	
+	public String getMyConnectionsUpdatesURL() {
+		return JsfUtils.getContextRoot() + PagesURL.MY_CONNECTIONS_UPDATES_LIST;
+	}
 
 	public String getMyPendingLendRequestsURL() {
 		return JsfUtils.getContextRoot() + PagesURL.MY_PENDING_LEND_REQUESTS_LIST;

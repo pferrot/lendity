@@ -66,7 +66,7 @@
 					<c:if test="#{!empty(homeController.list)}">
 						<br/>
 						<p>
-							<b><h:outputText value="#{messages.home_latestConnectionItems}"/></b>
+							<div class="highlightedBg"><b><h:outputText value="#{messages.home_latestConnectionItems}"/></b></div>
 						</p>										
 						<h:dataTable value="#{homeController.list}" binding="#{homeController.table}" var="item">
 						    <h:column>
@@ -74,30 +74,47 @@
 									<h:outputText value="#{item.title}" />
 								</h:outputLink>
 								<span class="fontSizeSmall"><h:outputFormat value="#{messages.home_pendingConnectionRequestsDetails}">
+								    	<f:param value="#{homeController.categoryLabel}" />
 								    	<f:param value="#{item.owner.displayName}" />
 								    	<f:param value="#{homeController.creationDateLabel}" />
 							        </h:outputFormat>
 						        </span>
 						    </h:column>
 						</h:dataTable>
-						<br/>
 						<h:outputLink value="#{authenticationController.myConnectionsItemsURL}">
 							<span class="fontSizeSmall">
+								<br/>
 								<h:outputText value="#{messages.home_searchMoreItems}"/>
 							</span>
 						</h:outputLink>
 						<br/>
 					</c:if>
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
+										
+					<c:if test="#{!empty(homeController.connectionsUpdatesList)}">
+						<br/>
+						<p>
+							<div class="highlightedBg"><b><h:outputText value="#{messages.home_latestConnectionsUpdates}"/></b></div>
+						</p>
+						<h:dataTable value="#{homeController.connectionsUpdatesList}" binding="#{homeController.connectionsUpdatesTable}" var="connectionRequest">
+						    <h:column>
+								<h:outputLink value="#{homeController.requesterOverviewHref}">
+									<h:outputText value="#{connectionRequest.requester.displayName}" />
+								</h:outputLink>
+								<h:outputText value=" " escape="false" /><h:outputText value="#{messages.connectionRequest_isFriendWithAnd}" /><h:outputText value=" " escape="false" />
+								<h:outputLink value="#{homeController.connectionOverviewHref}">
+									<h:outputText value="#{connectionRequest.connection.displayName}" />
+								</h:outputLink>
+								<h:outputText value=" " escape="false" /><h:outputText value="#{messages.connectionRequest_isFriendWith}" />
+						    </h:column>
+						</h:dataTable>
+						<h:outputLink value="#{authenticationController.myConnectionsUpdatesURL}">
+							<span class="fontSizeSmall">
+								<br/>
+								<h:outputText value="#{messages.home_seeAllConnectionsUpdates}"/>
+							</span>
+						</h:outputLink>
+						<br/>
+					</c:if>
 					
 					
 				</div>

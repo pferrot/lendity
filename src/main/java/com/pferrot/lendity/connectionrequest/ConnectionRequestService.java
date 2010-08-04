@@ -2,7 +2,6 @@ package com.pferrot.lendity.connectionrequest;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -19,7 +18,9 @@ import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.model.ConnectionRequest;
 import com.pferrot.lendity.model.ConnectionRequestResponse;
+import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
 
 public class ConnectionRequestService {
@@ -30,10 +31,15 @@ public class ConnectionRequestService {
 	private ListValueDao listValueDao;
 	private PersonDao personDao;
 	private MailManager mailManager;
+	private PersonService personService;
 
 	public void setMailManager(final MailManager pMailManager) {
 		this.mailManager = pMailManager;
 	}	
+	
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
+	}
 	
 	public void setConnectionRequestDao(final ConnectionRequestDao pConnectionRequestDao) {
 		this.connectionRequestDao = pConnectionRequestDao;
@@ -52,16 +58,28 @@ public class ConnectionRequestService {
 	}
 
 	public ListWithRowCount findCurrentUserPendingConnectionRequests(final int pFirstResult, final int pMaxResults) {		
-		return connectionRequestDao.findConnectionRequests(new Long[]{PersonUtils.getCurrentPersonId()}, null, Boolean.FALSE, null, pFirstResult, pMaxResults);
+		return connectionRequestDao.findConnectionRequests(new Long[]{PersonUtils.getCurrentPersonId()}, null, null, null, null, Boolean.FALSE, null, "requestDate", Boolean.FALSE, pFirstResult, pMaxResults);
 	}
 	
 	public long countCurrentUserPendingConnectionRequests() {
-		return connectionRequestDao.countConnectionRequests(new Long[]{PersonUtils.getCurrentPersonId()}, null, Boolean.FALSE, null);
+		return connectionRequestDao.countConnectionRequests(new Long[]{PersonUtils.getCurrentPersonId()}, null, null, null, null, Boolean.FALSE, null);
 	}
 	
 	public ListWithRowCount findCurrentUserPendingConnectionRequestsOut(final int pFirstResult, final int pMaxResults) {		
-		return connectionRequestDao.findConnectionRequests(null, new Long[]{PersonUtils.getCurrentPersonId()}, Boolean.FALSE, null, pFirstResult, pMaxResults);
+		return connectionRequestDao.findConnectionRequests(null, new Long[]{PersonUtils.getCurrentPersonId()}, null, null, null, Boolean.FALSE, null, "requestDate", Boolean.FALSE, pFirstResult, pMaxResults);
 		
+	}
+	
+	public ListWithRowCount findCurrentUserConnectionsUpdates(final int pFirstResult, final int pMaxResults) {
+		final Long[] connectionsIds = personService.getCurrentPersonConnectionIds(null);
+		// Make sure one do not show all connections updates for someone who has no friend.
+		if (connectionsIds == null || connectionsIds.length == 0) {
+			return ListWithRowCount.emptyListWithRowCount();
+		}
+		final ListValue acceptLV = listValueDao.findListValue(ConnectionRequestResponse.ACCEPT_LABEL_CODE);
+		
+		return connectionRequestDao.findConnectionRequests(connectionsIds, connectionsIds, Boolean.TRUE, new Long[]{PersonUtils.getCurrentPersonId()}, new Long[]{PersonUtils.getCurrentPersonId()}, Boolean.TRUE, new Long[]{acceptLV.getId()},
+				"responseDate", Boolean.FALSE, pFirstResult, pMaxResults);
 	}
 
 	/**
@@ -213,16 +231,13 @@ public class ConnectionRequestService {
 		final Long person1Id = pPerson1.getId();
 		final Long person2Id = pPerson2.getId();
 		
-//		final List<ConnectionRequest> existingUncompletedRequests = connectionRequestDao.findUncompletedConnectionRequestByRequesterAndConnection(pPerson1, pPerson2, 0, 0);
-		ListWithRowCount listWithRowCount = connectionRequestDao.findConnectionRequests(new Long[]{person1Id}, new Long[]{person2Id}, Boolean.FALSE, null, 0, 1);
-		List list = listWithRowCount.getList();
-		if (list != null && !list.isEmpty()) {
+		long nbHits = connectionRequestDao.countConnectionRequests(new Long[]{person1Id}, new Long[]{person2Id}, null, null, null, Boolean.FALSE, null);
+		if (nbHits > 0) {
 			return true;
 		}
 		
-		listWithRowCount = connectionRequestDao.findConnectionRequests(new Long[]{person2Id}, new Long[]{person1Id}, Boolean.FALSE, null, 0, 1);
-		list = listWithRowCount.getList();
-		return list != null && !list.isEmpty();
+		nbHits = connectionRequestDao.countConnectionRequests(new Long[]{person2Id}, new Long[]{person1Id}, null, null, null, Boolean.FALSE, null);
+		return nbHits > 0;
 	}
 	
 

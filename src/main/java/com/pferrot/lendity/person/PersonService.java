@@ -1,5 +1,7 @@
 package com.pferrot.lendity.person;
 
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -53,6 +55,51 @@ public class PersonService {
 		CoreUtils.assertNotNull(pPersonId);
 		// It is correct to search on the BANNED_BY_PERSONS_LINK: one actually search for that where ban by the current user.
 		return personDao.findPersons(pPersonId, PersonDao.BANNED_BY_PERSONS_LINK, pSearchString, Boolean.TRUE, false, pFirstResult, pMaxResults);
+	}
+
+	/**
+	 * Returns an array containing the IDs of all connections of the user if
+	 * null is passed as a parameter or of one connection if the parameter is not null.
+	 * 
+	 * @param pConnectionId
+	 * @return
+	 */
+	public Long[] getCurrentPersonConnectionIds(final Long pConnectionId) {
+		Long[] connectionsIds = null;
+		// All connections
+		if (pConnectionId == null) {
+			final Person person = getCurrentPerson();
+			final Set<Person> connections = person.getConnections();
+			if (connections == null || connections.isEmpty()) {
+				return null;
+			}
+			connectionsIds = new Long[connections.size()];
+			int counter = 0;
+			for(Person connection: connections) {			
+				connectionsIds[counter] = connection.getId();
+				counter++;
+			}
+		}
+		// Only one connection - make sure that it is a connection of the user. If not, it is someone trying to hack...
+		else {
+			final Person person = getCurrentPerson();
+			final Set<Person> connections = person.getConnections();
+			boolean connectionFound = false;
+			if (connections != null) {
+				for(Person connection: connections) {			
+					if (pConnectionId.equals(connection.getId())) {
+						connectionFound = true;
+						break;
+					}
+				}
+			}
+			if (!connectionFound) {
+				throw new SecurityException("Person with ID '" + PersonUtils.getCurrentPersonId() + "' tried to display details about person with " +
+						"ID '" + pConnectionId.toString() + "' but is not a connection.");
+			}
+			connectionsIds = new Long[]{pConnectionId};
+		}
+		return connectionsIds;
 	}
 
 	/**
@@ -169,4 +216,6 @@ public class PersonService {
 //		return personDao.findPersonFromUsername(username);
 		return personDao.findPerson(PersonUtils.getCurrentPersonId());
 	}
+
+	
 }

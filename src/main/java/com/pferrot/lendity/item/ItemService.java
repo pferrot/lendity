@@ -25,6 +25,7 @@ import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.Language;
 import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.ListValueUtils;
 
@@ -36,10 +37,16 @@ public class ItemService {
 	private ListValueDao listValueDao;
 	private LendRequestDao lendRequestDao;
 	private PersonDao personDao;
+	private PersonService personService;
 	private MailManager mailManager;
+	
 	
 	public void setMailManager(final MailManager pMailManager) {
 		this.mailManager = pMailManager;
+	}
+
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
 	}
 
 	public void setItemDao(ItemDao itemDao) {
@@ -122,7 +129,7 @@ public class ItemService {
 
 	public ListWithRowCount findMyConnectionsItems(final Long pConnectionId, final String pTitle, final Long pCategoryId,
 			final Boolean pBorrowed, final int pFirstResult, final int pMaxResults) {
-		Long[] connectionsIds = getConnectionIds(pConnectionId);
+		Long[] connectionsIds = personService.getCurrentPersonConnectionIds(pConnectionId);
 		if (connectionsIds == null || connectionsIds.length == 0) {
 			return ListWithRowCount.emptyListWithRowCount();
 		}
@@ -130,50 +137,14 @@ public class ItemService {
 	}
 	
 	public ListWithRowCount findMyLatestAvailableConnectionsItems() {
-		Long[] connectionsIds = getConnectionIds(null);
+		Long[] connectionsIds = personService.getCurrentPersonConnectionIds(null);
 		if (connectionsIds == null || connectionsIds.length == 0) {
 			return ListWithRowCount.emptyListWithRowCount();
 		}
 		return itemDao.findInternalItems(connectionsIds, Boolean.TRUE, null, null, null, null, Boolean.TRUE, Boolean.FALSE, "creationDate", Boolean.FALSE, 0, 5);
 	}
 	
-	private Long[] getConnectionIds(final Long pConnectionId) {
-		Long[] connectionsIds = null;
-		// All connections
-		if (pConnectionId == null) {
-			final Person person = getCurrentPerson();
-			final Set<Person> connections = person.getConnections();
-			if (connections == null || connections.isEmpty()) {
-				return null;
-			}
-			connectionsIds = new Long[connections.size()];
-			int counter = 0;
-			for(Person connection: connections) {			
-				connectionsIds[counter] = connection.getId();
-				counter++;
-			}
-		}
-		// Only one connection - make sure that it is a connection of the user. If not, it is someone trying to hack...
-		else {
-			final Person person = getCurrentPerson();
-			final Set<Person> connections = person.getConnections();
-			boolean connectionFound = false;
-			if (connections != null) {
-				for(Person connection: connections) {			
-					if (pConnectionId.equals(connection.getId())) {
-						connectionFound = true;
-						break;
-					}
-				}
-			}
-			if (!connectionFound) {
-				throw new SecurityException("Person with ID '" + PersonUtils.getCurrentPersonId() + "' tried to display details about person with " +
-						"ID '" + pConnectionId.toString() + "' but is not a connection.");
-			}
-			connectionsIds = new Long[]{pConnectionId};
-		}
-		return connectionsIds;
-	}
+	
 	
 	private Long[] getCategoryIds(final Long pCategoryId) {
 		Long[] categoryIds = null;

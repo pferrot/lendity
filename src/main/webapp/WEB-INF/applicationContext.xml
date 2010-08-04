@@ -468,6 +468,7 @@
 		<property name="listValueDao" ref="listValueDao"/>
 		<property name="personDao" ref="personDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
+		<property name="personService" ref="personService"/>
 	</bean>
 
 	<bean id="myPendingConnectionRequestsListController" class="com.pferrot.lendity.connectionrequest.jsf.MyPendingConnectionRequestsListController"
@@ -476,6 +477,11 @@
 	</bean>
 	
 	<bean id="myPendingConnectionRequestsOutListController" class="com.pferrot.lendity.connectionrequest.jsf.MyPendingConnectionRequestsOutListController"
+	      scope="conversation.access">
+	      <property name="connectionRequestService" ref="connectionRequestService"/>
+	</bean>
+	
+	<bean id="myConnectionsUpdatesListController" class="com.pferrot.lendity.connectionrequest.jsf.MyConnectionsUpdatesListController"
 	      scope="conversation.access">
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
@@ -542,6 +548,7 @@
 		<property name="lendRequestDao" ref="lendRequestDao"/>
 		<property name="personDao" ref="personDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
+		<property name="personService" ref="personService"/>
 	</bean>
 	
 	<bean id="internalItemOverviewController" class="com.pferrot.lendity.item.jsf.InternalItemOverviewController"

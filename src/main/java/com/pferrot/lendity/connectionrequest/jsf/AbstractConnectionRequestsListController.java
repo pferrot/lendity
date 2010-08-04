@@ -41,4 +41,9 @@ public abstract class AbstractConnectionRequestsListController extends AbstractL
 		final ConnectionRequest connectionRequest = (ConnectionRequest)getTable().getRowData();
 		return UiUtils.getDateAsString(connectionRequest.getRequestDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
 	}
+	
+	public String getResponseDateLabel() {
+		final ConnectionRequest connectionRequest = (ConnectionRequest)getTable().getRowData();
+		return UiUtils.getDateAsString(connectionRequest.getResponseDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+	}
 }

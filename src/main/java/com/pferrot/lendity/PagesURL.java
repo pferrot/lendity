@@ -110,6 +110,8 @@ public interface PagesURL {
 	// Connection requests I have made.
 	String MY_PENDING_CONNECTION_REQUESTS_OUT_LIST = "/auth/connectionrequest/myPendingConnectionRequestsOutList.faces";
 	
+	String MY_CONNECTIONS_UPDATES_LIST = "/auth/connectionrequest/myConnectionsUpdatesList.faces";
+	
 	// CONNECTION REQUEST - end
 	/////////////////////////////////////////////////////////////////////////
 
