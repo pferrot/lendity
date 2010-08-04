@@ -107,7 +107,7 @@ public class PersonService {
 	}
 
 		
-	public boolean isCurrentUserAuthorizedToView(final Person pPerson) {
+	public boolean isCurrentUserAuthorizedToViewEmail(final Person pPerson) {
 		CoreUtils.assertNotNull(pPerson);
 		if (isCurrentUserAuthorizedToEdit(pPerson)) {
 			return true;
@@ -117,6 +117,10 @@ public class PersonService {
 			return true;
 		}
 		return false;
+	}
+	
+	public boolean isCurrentUserAuthorizedToView(final Person pPerson) {
+		return true;
 	}
 
 	public void assertCurrentUserAuthorizedToView(final Person pPerson) {

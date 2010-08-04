@@ -1,5 +1,7 @@
 package com.pferrot.lendity.person.jsf;
 
+import javax.faces.context.FacesContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
@@ -7,10 +9,13 @@ import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import org.springframework.security.AccessDeniedException;
 
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
+import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.lendity.utils.UiUtils;
 
 @ViewController(viewIds={"/auth/person/personOverview.jspx"})
 public class PersonOverviewController
@@ -18,6 +23,7 @@ public class PersonOverviewController
 	private final static Log log = LogFactory.getLog(PersonOverviewController.class);
 	
 	private PersonService personService;
+	private ConnectionRequestService connectionRequestService;
 	private Long personId;
 	private Person person;
 	
@@ -58,12 +64,21 @@ public class PersonOverviewController
 		this.personService = pPersonService;
 	}
 
+	public void setConnectionRequestService(
+			ConnectionRequestService connectionRequestService) {
+		this.connectionRequestService = connectionRequestService;
+	}
+
 	public Person getPerson() {
 		return person;
 	}
 
 	public void setPerson(final Person pPerson) {
 		this.person = pPerson;
+	}
+	
+	public String getMemberSinceLabel() {
+		return UiUtils.getDateAsString(person.getUser().getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
 	}
 
 	public String getPersonEditHref() {		
@@ -76,5 +91,18 @@ public class PersonOverviewController
 
 	public boolean isEditAvailable() {
 		return personService.isCurrentUserAuthorizedToEdit(person);
+	}
+	
+	public boolean isEmailAvailable() {
+		return personService.isCurrentUserAuthorizedToViewEmail(person);
+	}
+	
+	public boolean isRequestConnectionDisabled() {
+		try {
+			return !connectionRequestService.isConnectionRequestAllowedFromCurrentUser(person);
+		}
+		catch (ConnectionRequestException e) {
+			throw new RuntimeException(e);
+		}			
 	}
 }

@@ -29,7 +29,7 @@
     	         value="#{theBean.searchString}"/>
 </h:form>
 <script type="text/javascript">
-	setupSearchField('searchString', 'clearSearchString', '#{messages.person_searchPerson}');
+	setupSearchField('searchString', 'clearSearchString', '#{defaultSearchString}');
 </script>	
 <!-- /search -->
 

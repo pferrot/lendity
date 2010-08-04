@@ -39,6 +39,7 @@
 <td class="personSearchCell">
 <ui:include src="filter/searchFilter.jspx">
 	<ui:param name="theBean" value="#{myBannedPersonsListController}"/>
+	<ui:param name="defaultSearchString" value="#{messages.person_searchPersonMyBannedPersons}"/>
 </ui:include>
 </td>
 

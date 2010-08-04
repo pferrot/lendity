@@ -38,7 +38,8 @@
 
 <td class="itemSearchCell">
 <ui:include src="filter/searchFilter.jspx">
-	<ui:param name="theBean" value="#{myBorrowedItemsListController}"/>
+	<ui:param name="theBean" value="#{myBorrowedItemsListController}"/>	
+	<ui:param name="defaultSearchString" value="#{messages.item_searchItemMyBorrowedItems}"/>
 </ui:include>
 </td>
 

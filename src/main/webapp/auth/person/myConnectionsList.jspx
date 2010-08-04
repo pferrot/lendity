@@ -38,7 +38,8 @@
 
 <td class="personSearchCell">
 <ui:include src="filter/searchFilter.jspx">
-	<ui:param name="theBean" value="#{myConnectionsListController}"/>
+	<ui:param name="theBean" value="#{myConnectionsListController}"/>	
+	<ui:param name="defaultSearchString" value="#{messages.person_searchPersonMyConnections}"/>
 </ui:include>
 </td>
 

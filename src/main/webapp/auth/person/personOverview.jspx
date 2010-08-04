@@ -29,6 +29,8 @@
 			
 				<f:view>
 
+<ui:include src="../connectionrequest/requestConnectionTooltip.jspx"/>
+
 <h2 class="gt-table-head"><h:outputText value="#{messages.person_personOverviewTitle}"/></h2>
 
 <!-- content box -->
@@ -43,16 +45,26 @@
 		<h:outputText value="#{personOverviewController.person.lastName}" />
 	</div>
 	<br/>
+	<c:if test="#{personOverviewController.emailAvailable}">
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_email}:" /></label></div>
+			<a href="mailto:#{personOverviewController.person.email}"><h:outputText value="#{personOverviewController.person.email}" /></a>
+		</div>
+		<br/>
+	</c:if>
 	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_email}:" /></label></div>
-		<a href="mailto:#{personOverviewController.person.email}"><h:outputText value="#{personOverviewController.person.email}" /></a>
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_memberSince}:" /></label></div>
+		<h:outputText value="#{personOverviewController.memberSinceLabel}" />
 	</div>
-	<br/>	
+	<br/>
 	<div class="gt-form-row gt-width-100">
 		<table><tr><td>
 		<h:outputLink rendered="#{personOverviewController.editAvailable}" value="#{personOverviewController.personEditHref}" styleClass="stylishButton">
     		<h:outputText rendered="#{personOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
     	</h:outputLink>
+    	<span onclick="requestConnectionTooltip(this, '#{personOverviewController.person.id}', 2)">
+			<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.connectionRequest_requestConnection}" rendered="#{!personOverviewController.requestConnectionDisabled}"/>
+		</span>
     	</td><td>
     	<h:outputLink rendered="#{personOverviewController.editAvailable}" value="#{personOverviewController.changePasswordHref}" styleClass="stylishButton">
     		<h:outputText rendered="#{personOverviewController.editAvailable}" value="#{messages.changePassword_changePassword}"/>

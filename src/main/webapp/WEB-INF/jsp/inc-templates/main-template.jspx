@@ -111,15 +111,21 @@
 
 <ul class="sf-menu">
 	
-    
-	<li class="sf-menu-first-li">
-	    <h:outputLink value="#{authenticationController.homeURL}">
-	        <h:outputText value="#{messages.menu_home}" />
-	    </h:outputLink>
-	</li>
+    <c:if test="${not loggedInUser}">
+		<li class="sf-menu-first-li">
+		    <h:outputLink value="#{authenticationController.homeURL}">
+	        	<h:outputText value="#{messages.menu_welcome}" />
+		    </h:outputLink>
+		</li>
+	</c:if>
 		
 	<c:if test="${loggedInUser}">
     <li>
+    	<h:outputLink value="#{authenticationController.homeURL}">
+        	<h:outputText value="#{messages.menu_home}" />
+	    </h:outputLink>
+	</li>    
+	<li>
         <h:outputLink value="#{authenticationController.myItemsURL}">
         	<h:outputText value="#{messages.menu_items}"/>
         </h:outputLink>

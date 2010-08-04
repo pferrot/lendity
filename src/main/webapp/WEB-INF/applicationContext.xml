@@ -340,6 +340,7 @@
 	<bean id="personOverviewController" class="com.pferrot.lendity.person.jsf.PersonOverviewController"
 	      scope="conversation.access">
 	      <property name="personService" ref="personService"/>
+	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
 	
 	<bean id="personEditController" class="com.pferrot.lendity.person.jsf.PersonEditController"

@@ -28,7 +28,9 @@
 				
 <f:view>
 
-<h2 class="gt-table-head"><h:outputText value="#{messages.item_myItemsListTitle}"/></h2>
+<h2 class="gt-table-head">
+<h:outputText value="#{messages.item_myItemsListTitle}"/>
+</h2>
 
 <br/>
 
@@ -39,6 +41,7 @@
 <td class="itemSearchCell">
 <ui:include src="filter/searchFilter.jspx">
 	<ui:param name="theBean" value="#{myItemsListController}"/>
+	<ui:param name="defaultSearchString" value="#{messages.item_searchItemMyItems}"/>
 </ui:include>
 </td>
 
