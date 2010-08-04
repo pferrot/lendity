@@ -9,9 +9,9 @@ public interface ConnectionRequestDao {
 	
 	ConnectionRequest findConnectionRequest(Long pConnectionRequestId);
 	
-	ListWithRowCount findConnectionRequests(Long pConnectionId, Long pRequesterId, Boolean pCompleted, int pFirstResult, int pMaxResults);	
+	ListWithRowCount findConnectionRequests(Long[] pConnectionIds, Long[] pRequesterIds, Boolean pCompleted, Long[] pResponseIds, int pFirstResult, int pMaxResults);	
 	
-	long countConnectionRequests(Long pConnectionId, Long pRequesterId, Boolean pCompleted);
+	long countConnectionRequests(Long[] pConnectionIds, Long[] pRequesterIds, Boolean pCompleted, Long[] pResponseIds);
 	
 	void updateConnectionRequest(ConnectionRequest pConnectionRequest);
 	

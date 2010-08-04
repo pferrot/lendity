@@ -52,15 +52,15 @@ public class ConnectionRequestService {
 	}
 
 	public ListWithRowCount findCurrentUserPendingConnectionRequests(final int pFirstResult, final int pMaxResults) {		
-		return connectionRequestDao.findConnectionRequests(PersonUtils.getCurrentPersonId(), null, Boolean.FALSE, pFirstResult, pMaxResults);
+		return connectionRequestDao.findConnectionRequests(new Long[]{PersonUtils.getCurrentPersonId()}, null, Boolean.FALSE, null, pFirstResult, pMaxResults);
 	}
 	
 	public long countCurrentUserPendingConnectionRequests() {
-		return connectionRequestDao.countConnectionRequests(PersonUtils.getCurrentPersonId(), null, Boolean.FALSE);
+		return connectionRequestDao.countConnectionRequests(new Long[]{PersonUtils.getCurrentPersonId()}, null, Boolean.FALSE, null);
 	}
 	
 	public ListWithRowCount findCurrentUserPendingConnectionRequestsOut(final int pFirstResult, final int pMaxResults) {		
-		return connectionRequestDao.findConnectionRequests(null, PersonUtils.getCurrentPersonId(), Boolean.FALSE, pFirstResult, pMaxResults);
+		return connectionRequestDao.findConnectionRequests(null, new Long[]{PersonUtils.getCurrentPersonId()}, Boolean.FALSE, null, pFirstResult, pMaxResults);
 		
 	}
 
@@ -214,13 +214,13 @@ public class ConnectionRequestService {
 		final Long person2Id = pPerson2.getId();
 		
 //		final List<ConnectionRequest> existingUncompletedRequests = connectionRequestDao.findUncompletedConnectionRequestByRequesterAndConnection(pPerson1, pPerson2, 0, 0);
-		ListWithRowCount listWithRowCount = connectionRequestDao.findConnectionRequests(person1Id, person2Id, Boolean.FALSE, 0, 1);
+		ListWithRowCount listWithRowCount = connectionRequestDao.findConnectionRequests(new Long[]{person1Id}, new Long[]{person2Id}, Boolean.FALSE, null, 0, 1);
 		List list = listWithRowCount.getList();
 		if (list != null && !list.isEmpty()) {
 			return true;
 		}
 		
-		listWithRowCount = connectionRequestDao.findConnectionRequests(person2Id, person1Id, Boolean.FALSE, 0, 1);
+		listWithRowCount = connectionRequestDao.findConnectionRequests(new Long[]{person2Id}, new Long[]{person1Id}, Boolean.FALSE, null, 0, 1);
 		list = listWithRowCount.getList();
 		return list != null && !list.isEmpty();
 	}

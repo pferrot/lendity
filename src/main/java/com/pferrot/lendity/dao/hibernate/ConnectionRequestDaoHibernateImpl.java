@@ -31,20 +31,21 @@ public class ConnectionRequestDaoHibernateImpl extends HibernateDaoSupport imple
 		return (ConnectionRequest)getHibernateTemplate().load(ConnectionRequest.class, pConnectionRequestId);
 	}
 	
-	private List<ConnectionRequest> findConnectionRequestsList(final Long pConnectionId, final Long pRequesterId, 
-			final Boolean pCompleted, final int pFirstResult, final int pMaxResults) {
-		final DetachedCriteria criteria = getConnectionRequestDetachedCriteria(pConnectionId, pRequesterId, pCompleted);
+	private List<ConnectionRequest> findConnectionRequestsList(final Long[] pConnectionIds, final Long[] pRequesterIds, 
+			final Boolean pCompleted, final Long[] pResponseIds, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria criteria = getConnectionRequestDetachedCriteria(pConnectionIds, pRequesterIds, pCompleted, pResponseIds);
 		criteria.addOrder(Order.desc("requestDate"));
 		
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
 	}
 
-	public long countConnectionRequests(final Long pConnectionId, final Long pRequesterId, final Boolean pCompleted) {
-		final DetachedCriteria criteria = getConnectionRequestDetachedCriteria(pConnectionId, pRequesterId, pCompleted);
+	public long countConnectionRequests(final Long[] pConnectionIds, final Long[] pRequesterIds, final Boolean pCompleted, Long[] pResponseIds) {
+		final DetachedCriteria criteria = getConnectionRequestDetachedCriteria(pConnectionIds, pRequesterIds, pCompleted, pResponseIds);
 		return rowCount(criteria);
 	}
 
-	private DetachedCriteria getConnectionRequestDetachedCriteria(final Long pConnectionId, final Long pRequesterId, final Boolean pCompleted) {
+	private DetachedCriteria getConnectionRequestDetachedCriteria(final Long[] pConnectionIds, final Long[] pRequesterIds,
+			final Boolean pCompleted, final Long[] pResponseIds) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(ConnectionRequest.class);
 	
 		if (pCompleted != null) {
@@ -56,14 +57,19 @@ public class ConnectionRequestDaoHibernateImpl extends HibernateDaoSupport imple
 			}			
 		}
 		
-		if (pConnectionId != null) {
-			final DetachedCriteria connectionCriteria = criteria.createCriteria("connection", CriteriaSpecification.INNER_JOIN);
-			connectionCriteria.add(Restrictions.eq("id", pConnectionId));
+		if (pResponseIds != null && pRequesterIds.length > 0) {
+			final DetachedCriteria responseCriteria = criteria.createCriteria("response", CriteriaSpecification.INNER_JOIN);
+			responseCriteria.add(Restrictions.in("id", pResponseIds));
 		}
 		
-		if (pRequesterId != null) {
+		if (pConnectionIds != null && pConnectionIds.length > 0) {
+			final DetachedCriteria connectionCriteria = criteria.createCriteria("connection", CriteriaSpecification.INNER_JOIN);
+			connectionCriteria.add(Restrictions.in("id", pConnectionIds));
+		}
+		
+		if (pRequesterIds != null && pRequesterIds.length > 0) {
 			final DetachedCriteria requesterCriteria = criteria.createCriteria("requester", CriteriaSpecification.INNER_JOIN);
-			requesterCriteria.add(Restrictions.eq("id", pRequesterId));
+			requesterCriteria.add(Restrictions.in("id", pRequesterIds));
 		}
 		
 		return criteria;	
@@ -79,12 +85,12 @@ public class ConnectionRequestDaoHibernateImpl extends HibernateDaoSupport imple
 		pCriteria.setProjection(Projections.rowCount());
 		return ((Long)getHibernateTemplate().findByCriteria(pCriteria).get(0)).longValue();
 	}
-	
-	public ListWithRowCount findConnectionRequests(final Long pConnectionId, final Long pRequesterId, 
-			final Boolean pCompleted, final int pFirstResult, final int pMaxResults) {
-		final List list = findConnectionRequestsList(pConnectionId, pRequesterId, pCompleted, pFirstResult, pMaxResults);
-		final long count = countConnectionRequests(pConnectionId, pRequesterId, pCompleted);
+
+	public ListWithRowCount findConnectionRequests(final Long[] pConnectionIds, final Long[] pRequesterIds, 
+			final Boolean pCompleted, final Long[] pResponseIds, final int pFirstResult, final int pMaxResults) {
+		final List list = findConnectionRequestsList(pConnectionIds, pRequesterIds, pCompleted, pResponseIds, pFirstResult, pMaxResults);
+		final long count = countConnectionRequests(pConnectionIds, pRequesterIds, pCompleted, pRequesterIds);
 		
 		return new ListWithRowCount(list, count);
-	}	
+	}
 }
