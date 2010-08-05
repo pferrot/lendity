@@ -127,4 +127,16 @@ public class HomeController extends AbstractItemsListController {
 		final ConnectionRequest connectionRequest = (ConnectionRequest)getConnectionsUpdatesTable().getRowData();
 		return PersonUtils.getPersonOverviewPageUrl(connectionRequest.getConnection().getId().toString());
 	}
+	
+	public String getConnectionUpdateDateLabel() {
+		final ConnectionRequest connectionRequest = (ConnectionRequest)getConnectionsUpdatesTable().getRowData();
+		return UiUtils.getDateAsString(connectionRequest.getResponseDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+	}
+	
+	public boolean isEmptyHomepage() {
+		return getConnectionsUpdatesList().isEmpty() && 
+			getList().isEmpty() && 
+			getNbPendingConnectionRequests() == 0 && 
+			getNbPendingLendRequests() == 0;
+	}
 }

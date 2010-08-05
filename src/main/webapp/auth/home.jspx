@@ -30,90 +30,122 @@
 <h2 class="gt-table-head"><h:outputText value="#{messages.menu_home}"/></h2>
 
 				<div class="gt-form gt-content-box">
-					<p>
-						<c:if test="#{homeController.nbPendingLendRequests > 0}">
-							<h:outputLink value="#{authenticationController.myPendingLendRequestsURL}">
+				
+					<h:outputFormat value="#{messages.home_greetings}">
+				    	<f:param value="#{authenticationController.currentUserFirstName}" />
+			        </h:outputFormat>
+					<br/><br/>
+				
+					<c:if test="#{homeController.emptyHomepage}">
+						<p>
+							<h:outputLink value="#{authenticationController.internalItemAddURL}">
 								<b>
-								<h:outputFormat value="#{messages.home_pendingLendRequests}">
+								<h:outputText value="#{messages.home_addObject}"/>
+						        </b>
+					        </h:outputLink>
+						</p>
+						<p>
+							<h:outputLink value="#{authenticationController.personsURL}">
+								<b>
+								<h:outputText value="#{messages.home_searchConnections}"/>
+						        </b>
+					        </h:outputLink>
+						</p>
+					</c:if>
+					
+					<c:if test="#{not homeController.emptyHomepage}">
+						<p>
+							<div class="highlightedBg"><b><h:outputText value="#{messages.home_pendingRequests}"/></b></div>
+						</p>				
+						<p>
+							<c:if test="#{homeController.nbPendingLendRequests > 0}">
+								<h:outputLink value="#{authenticationController.myPendingLendRequestsURL}">
+									<b>
+									<h:outputFormat value="#{messages.home_pendingLendRequests}">
+								    	<f:param value="#{homeController.nbPendingLendRequests}" />
+							        </h:outputFormat>
+							        </b>
+						        </h:outputLink>
+					        </c:if>
+					        <c:if test="#{homeController.nbPendingLendRequests == 0}">
+					        	<h:outputFormat value="#{messages.home_pendingLendRequests}">
 							    	<f:param value="#{homeController.nbPendingLendRequests}" />
 						        </h:outputFormat>
-						        </b>
-					        </h:outputLink>
-				        </c:if>
-				        <c:if test="#{homeController.nbPendingLendRequests == 0}">
-				        	<h:outputFormat value="#{messages.home_pendingLendRequests}">
-						    	<f:param value="#{homeController.nbPendingLendRequests}" />
-					        </h:outputFormat>
-				        </c:if>
-					</p>
-					<p>
-						<c:if test="#{homeController.nbPendingConnectionRequests > 0}">
-							<h:outputLink value="#{authenticationController.myPendingConnectionRequestsURL}">
-								<b>
-								<h:outputFormat value="#{messages.home_pendingConnectionRequests}">
+					        </c:if>
+						</p>
+						<p>
+							<c:if test="#{homeController.nbPendingConnectionRequests > 0}">
+								<h:outputLink value="#{authenticationController.myPendingConnectionRequestsURL}">
+									<b>
+									<h:outputFormat value="#{messages.home_pendingConnectionRequests}">
+								    	<f:param value="#{homeController.nbPendingConnectionRequests}" />
+							        </h:outputFormat>
+							        </b>
+						        </h:outputLink>
+					        </c:if>
+					        <c:if test="#{homeController.nbPendingConnectionRequests == 0}">
+					        	<h:outputFormat value="#{messages.home_pendingConnectionRequests}">
 							    	<f:param value="#{homeController.nbPendingConnectionRequests}" />
 						        </h:outputFormat>
-						        </b>
-					        </h:outputLink>
-				        </c:if>
-				        <c:if test="#{homeController.nbPendingConnectionRequests == 0}">
-				        	<h:outputFormat value="#{messages.home_pendingConnectionRequests}">
-						    	<f:param value="#{homeController.nbPendingConnectionRequests}" />
-					        </h:outputFormat>
-				        </c:if>
-					</p>
-
-					<c:if test="#{!empty(homeController.list)}">
-						<br/>
-						<p>
-							<div class="highlightedBg"><b><h:outputText value="#{messages.home_latestConnectionItems}"/></b></div>
-						</p>										
-						<h:dataTable value="#{homeController.list}" binding="#{homeController.table}" var="item">
-						    <h:column>
-								<h:outputLink value="#{homeController.itemOverviewHref}">
-									<h:outputText value="#{item.title}" />
-								</h:outputLink>
-								<span class="fontSizeSmall"><h:outputFormat value="#{messages.home_pendingConnectionRequestsDetails}">
-								    	<f:param value="#{homeController.categoryLabel}" />
-								    	<f:param value="#{item.owner.displayName}" />
-								    	<f:param value="#{homeController.creationDateLabel}" />
-							        </h:outputFormat>
-						        </span>
-						    </h:column>
-						</h:dataTable>
-						<h:outputLink value="#{authenticationController.myConnectionsItemsURL}">
-							<span class="fontSizeSmall">
-								<br/>
-								<h:outputText value="#{messages.home_searchMoreItems}"/>
-							</span>
-						</h:outputLink>
-						<br/>
-					</c:if>
-										
-					<c:if test="#{!empty(homeController.connectionsUpdatesList)}">
-						<br/>
-						<p>
-							<div class="highlightedBg"><b><h:outputText value="#{messages.home_latestConnectionsUpdates}"/></b></div>
+					        </c:if>
 						</p>
-						<h:dataTable value="#{homeController.connectionsUpdatesList}" binding="#{homeController.connectionsUpdatesTable}" var="connectionRequest">
-						    <h:column>
-								<h:outputLink value="#{homeController.requesterOverviewHref}">
-									<h:outputText value="#{connectionRequest.requester.displayName}" />
-								</h:outputLink>
-								<h:outputText value=" " escape="false" /><h:outputText value="#{messages.connectionRequest_isFriendWithAnd}" /><h:outputText value=" " escape="false" />
-								<h:outputLink value="#{homeController.connectionOverviewHref}">
-									<h:outputText value="#{connectionRequest.connection.displayName}" />
-								</h:outputLink>
-								<h:outputText value=" " escape="false" /><h:outputText value="#{messages.connectionRequest_isFriendWith}" />
-						    </h:column>
-						</h:dataTable>
-						<h:outputLink value="#{authenticationController.myConnectionsUpdatesURL}">
-							<span class="fontSizeSmall">
-								<br/>
-								<h:outputText value="#{messages.home_seeAllConnectionsUpdates}"/>
-							</span>
-						</h:outputLink>
-						<br/>
+	
+						<c:if test="#{!empty(homeController.list)}">
+							<br/>
+							<p>
+								<div class="highlightedBg"><b><h:outputText value="#{messages.home_latestConnectionItems}"/></b></div>
+							</p>										
+							<h:dataTable value="#{homeController.list}" binding="#{homeController.table}" var="item">
+							    <h:column>
+									<h:outputLink value="#{homeController.itemOverviewHref}">
+										<h:outputText value="#{item.title}" />
+									</h:outputLink>
+									<span class="fontSizeSmall"><h:outputFormat value="#{messages.home_latestConnectionItemsDetails}">
+									    	<f:param value="#{homeController.categoryLabel}" />
+									    	<f:param value="#{item.owner.displayName}" />
+									    	<f:param value="#{homeController.creationDateLabel}" />
+								        </h:outputFormat>
+							        </span>
+							    </h:column>
+							</h:dataTable>
+							<h:outputLink value="#{authenticationController.myConnectionsItemsURL}">
+								<span class="fontSizeSmall">
+									<br/>
+									<h:outputText value="#{messages.home_searchMoreItems}"/>
+								</span>
+							</h:outputLink>
+							<br/>
+						</c:if>
+											
+						<c:if test="#{!empty(homeController.connectionsUpdatesList)}">
+							<br/>
+							<p>
+								<div class="highlightedBg"><b><h:outputText value="#{messages.home_latestConnectionsUpdates}"/></b></div>
+							</p>
+							<h:dataTable value="#{homeController.connectionsUpdatesList}" binding="#{homeController.connectionsUpdatesTable}" var="connectionRequest">
+							    <h:column>
+									<h:outputLink value="#{homeController.requesterOverviewHref}">
+										<h:outputText value="#{connectionRequest.requester.displayName}" />
+									</h:outputLink>
+									<h:outputText value=" " escape="false" /><h:outputText value="#{messages.connectionRequest_isFriendWithAnd}" /><h:outputText value=" " escape="false" />
+									<h:outputLink value="#{homeController.connectionOverviewHref}">
+										<h:outputText value="#{connectionRequest.connection.displayName}" />
+									</h:outputLink>
+									<h:outputText value=" " escape="false" /><h:outputText value="#{messages.connectionRequest_isFriendWith}" />
+									<span class="fontSizeSmall"><h:outputFormat value="#{messages.home_connectionsUpdatesDetails}">
+									    	<f:param value="#{homeController.connectionUpdateDateLabel}" />
+								        </h:outputFormat>
+							        </span>
+							    </h:column>
+							</h:dataTable>
+							<h:outputLink value="#{authenticationController.myConnectionsUpdatesURL}">
+								<span class="fontSizeSmall">
+									<br/>
+									<h:outputText value="#{messages.home_seeAllConnectionsUpdates}"/>
+								</span>
+							</h:outputLink>
+							<br/>
+						</c:if>
 					</c:if>
 					
 					
