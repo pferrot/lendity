@@ -1,0 +1,21 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<!-- borrow status -->
+<h:form prependId="false">
+<h:outputText value="#{messages.navigation_sort}" styleClass="small"/>
+<br/>
+<h:selectOneMenu id="orderBy" value="#{theBean.orderBy}" valueChangeListener="#{theBean.orderBy}" converter="javax.faces.Long" onchange="submit()">
+	<f:selectItems value="#{theBean.orderBySelectItems}"/>
+</h:selectOneMenu>
+</h:form>
+<!-- /borrow status -->
+
+</ui:composition>

@@ -60,9 +60,15 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">
-						<label><h:outputText value="#{messages.person_email}"/></label>
-						<a href="mailto:#{personEditController.person.email}"><h:outputText value="#{personEditController.person.email}" /></a>		
-					</div><!-- /form row -->	
+						<label><h:outputText value="#{messages.person_emailNotificationSettings}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="emailSubscriber"></h:message>
+						<label class="gt-form-element-label">
+						<h:selectBooleanCheckbox id="emailSubscriber" value="#{personEditController.emailSubscriber}" styleClass="gt-form-element-checkbox"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputText value="#{messages.person_emailSubscriber}"/>
+						</label>
+					</div><!-- /form row -->
 					
 					<!-- form row -->
 					<div class="gt-form-row">

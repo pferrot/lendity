@@ -44,11 +44,13 @@
 		<h4><h:outputText value="#{internalItemOverviewController.title}" /></h4>
 	</div>
 	<br/>
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_description}:" /></label></div>
-		<h:outputText value="#{internalItemOverviewController.description}" escape="false" />
-	</div>
-	<br/>
+	<c:if test="#{internalItemOverviewController.descriptionAvailable}">
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_description}:" /></label></div>
+			<h:outputText value="#{internalItemOverviewController.description}" escape="false" />
+		</div>
+		<br/>
+	</c:if>
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_category}:" /></label></div>
 		<h:outputText value="#{internalItemOverviewController.categoryLabel}" />

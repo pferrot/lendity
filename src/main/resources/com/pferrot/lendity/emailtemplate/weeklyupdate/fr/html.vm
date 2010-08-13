@@ -1,0 +1,79 @@
+#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+
+Bonjour $firstName,<br/><br/>
+
+Dernières activités dans ton réseau:<br/><br/>
+
+<div style="background-color: #d3d3e1; width: 100%;">
+Objets ajoutés
+#if( $latestUpdateDateLabel )
+(depuis le $latestUpdateDateLabel)
+#end
+</div>
+#if( !$itemTitle1 )
+Aucun nouvel objet
+<br/>
+#end
+#if( $itemTitle1 )
+<a href="$itemUrl1">$itemTitle1</a> $itemDetails1<br/>
+#end
+#if( $itemTitle2 )
+<a href="$itemUrl2">$itemTitle2</a> $itemDetails2<br/>
+#end
+#if( $itemTitle3 )
+<a href="$itemUrl3">$itemTitle3</a> $itemDetails3<br/>
+#end
+#if( $itemTitle4 )
+<a href="$itemUrl4">$itemTitle4</a> $itemDetails4<br/>
+#end
+#if( $itemTitle5 )
+<a href="$itemUrl5">$itemTitle5</a> $itemDetails5<br/>
+#end
+#if( $itemNbExtra )
+Plus $itemNbExtra objets(s) supplémentaire(s)
+#if( $latestUpdateDateLabel )
+depuis le $latestUpdateDateLabel
+#end
+<br/>
+#end
+<a href="$itemUrl">Voir la liste complète</a><br/>
+
+<br/>
+<div style="background-color: #d3d3e1; width: 100%;">
+Amis
+#if( $latestUpdateDateLabel )
+(depuis le $latestUpdateDateLabel)
+#end
+</div>
+#if( !$requester1 )
+Aucune update dans ton réseau<br/>
+#end
+#if( $requester1 )
+<a href="$requesterUrl1">$requester1</a> et <a href="$connectionUrl1">$connection1</a> sont maintenant amis $connectionUpdateDetails1<br/>
+#end
+#if( $requester2 )
+<a href="$requesterUrl2">$requester2</a> et <a href="$connectionUrl2">$connection2</a> sont maintenant amis $connectionUpdateDetails2<br/>
+#end
+#if( $requester3 )
+<a href="$requesterUrl3">$requester3</a> et <a href="$connectionUrl3">$connection3</a> sont maintenant amis $connectionUpdateDetails3<br/>
+#end
+#if( $requester4 )
+<a href="$requesterUrl4">$requester4</a> et <a href="$connectionUrl4">$connection4</a> sont maintenant amis $connectionUpdateDetails4<br/>
+#end
+#if( $requester5 )
+<a href="$requesterUrl5">$requester5</a> et <a href="$connectionUrl5">$connection5</a> sont maintenant amis $connectionUpdateDetails5<br/>
+#end
+#if( $connectionUpdateNbExtra )
+Plus $connectionUpdateNbExtra activité(s) similaire(s)
+#if( $latestUpdateDateLabel )
+depuis le $latestUpdateDateLabel
+#end
+<br/>
+#end
+<a href="$connectionUpdateUrl">Voir la liste complète</a><br/>
+
+<br/>A bientôt sur <a href="$siteUrl">$siteName</a>.<br/>
+
+<br/><span style="font-size: 80%;">Afin de ne plus recevoir cet email, mets à jour <a href="$profileUrl">ton profil.</a></span>
+
+#include("com/pferrot/lendity/emailtemplate/html_footer.vm")

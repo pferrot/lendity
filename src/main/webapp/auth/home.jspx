@@ -57,7 +57,6 @@
 						<p>
 							<div class="highlightedBg"><b><h:outputText value="#{messages.home_pendingRequests}"/></b></div>
 						</p>				
-						<p>
 							<c:if test="#{homeController.nbPendingLendRequests > 0}">
 								<h:outputLink value="#{authenticationController.myPendingLendRequestsURL}">
 									<b>
@@ -72,8 +71,7 @@
 							    	<f:param value="#{homeController.nbPendingLendRequests}" />
 						        </h:outputFormat>
 					        </c:if>
-						</p>
-						<p>
+					        <br/>
 							<c:if test="#{homeController.nbPendingConnectionRequests > 0}">
 								<h:outputLink value="#{authenticationController.myPendingConnectionRequestsURL}">
 									<b>
@@ -88,7 +86,7 @@
 							    	<f:param value="#{homeController.nbPendingConnectionRequests}" />
 						        </h:outputFormat>
 					        </c:if>
-						</p>
+					        <br/>
 	
 						<c:if test="#{!empty(homeController.list)}">
 							<br/>
@@ -108,7 +106,7 @@
 							        </span>
 							    </h:column>
 							</h:dataTable>
-							<h:outputLink value="#{authenticationController.myConnectionsItemsURL}">
+							<h:outputLink value="#{authenticationController.myConnectionsItemsOrderByCreationDateURL}">
 								<span class="fontSizeSmall">
 									<br/>
 									<h:outputText value="#{messages.home_searchMoreItems}"/>

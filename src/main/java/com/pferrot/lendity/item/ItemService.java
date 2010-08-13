@@ -1,10 +1,10 @@
 package com.pferrot.lendity.item;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -70,7 +70,7 @@ public class ItemService {
 	}
 	
 	public List<Person> getCurrentPersonEnabledConnections() {
-		final ListWithRowCount listWithRowCount = personDao.findPersons(PersonUtils.getCurrentPersonId(), PersonDao.CONNECTIONS_LINK, null, Boolean.TRUE, true, 0, 0);
+		final ListWithRowCount listWithRowCount = personDao.findPersons(PersonUtils.getCurrentPersonId(), PersonDao.CONNECTIONS_LINK, null, Boolean.TRUE, true, null, null, 0, 0);
 		return listWithRowCount.getList();
 	}
 	
@@ -85,63 +85,59 @@ public class ItemService {
 	public ExternalItem findExternalItem(final Long itemId) {
 		return itemDao.findExternalItem(itemId);
 	}
-	
-//	public List<InternalItem> findAllInternalItems() {
-//		return itemDao.findAllInternalItems();
-//	}
-//	
-//	public List<InternalItem> findItems(final int pFirstResult, final int pMaxResults) {
-//		return itemDao.findInternalItems(pFirstResult, pMaxResults);
-//	}
-//	
-//	public List<InternalItem> findItemsByTitle(final String pTitle, final int pFirstResult, final int pMaxResults) {
-//		return itemDao.findInternalItemsByTitle(pTitle, pFirstResult, pMaxResults);
-//	}
-	
-//	public ListWithRowCount findItemsOwnedByPersonId(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
-//		return itemDao.findItemsOwnedByPerson(pPersonId, pFirstResult, pMaxResults);
-//	}
-//
-//	public ListWithRowCount findItemsByTitleOwnedByPersonId(final String pTitle, final Long pPersonId, final int pFirstResult, final int pMaxResults) {
-//		return itemDao.findItemsByTitleOwnedByPerson(pTitle, pPersonId, pFirstResult, pMaxResults);
-//	}
 
 	public ListWithRowCount findMyBorrowedItems(final Long pOwnerId, final String pTitle, final Long pCategoryId, final int pFirstResult, final int pMaxResults) {
-		final Long currentPersonId = PersonUtils.getCurrentPersonId();
+		return findBorrowedItems(PersonUtils.getCurrentPersonId(), pOwnerId, pTitle, pCategoryId, pFirstResult, pMaxResults);
+	}
+
+	public ListWithRowCount findBorrowedItems(final Long pPersonId, final Long pOwnerId, final String pTitle, final Long pCategoryId, final int pFirstResult, final int pMaxResults) {
+		final Long currentPersonId = pPersonId;
 		CoreUtils.assertNotNull(currentPersonId);
 		Long[] ownerIds = null;
 		if (pOwnerId != null) {
 			ownerIds = new Long[]{pOwnerId};
 		}
-		Long[] borrowersIds = new Long[]{PersonUtils.getCurrentPersonId()};
+		Long[] borrowersIds = new Long[]{currentPersonId};
 		
-		return itemDao.findInternalAndExternalItems(ownerIds, Boolean.TRUE, borrowersIds, null, pTitle, getCategoryIds(pCategoryId), null, "title", Boolean.TRUE, pFirstResult, pMaxResults);
+		return itemDao.findInternalAndExternalItems(ownerIds, Boolean.TRUE, borrowersIds, null, pTitle, getCategoryIds(pCategoryId), null, null, "title", Boolean.TRUE, pFirstResult, pMaxResults);
 	}
 	
 	public ListWithRowCount findMyItems(final String pTitle, final Long pCategoryId, final Boolean pVisible,
-			final Boolean pBorrowed, final int pFirstResult, final int pMaxResults) {
-		final Long currentPersonId = PersonUtils.getCurrentPersonId();
+			final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+		return findItems(PersonUtils.getCurrentPersonId(), pTitle, pCategoryId, pVisible, pBorrowed, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
+	}
+
+	public ListWithRowCount findItems(final Long pPersonId, final String pTitle, final Long pCategoryId, final Boolean pVisible,
+			final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+		final Long currentPersonId = pPersonId;
 		CoreUtils.assertNotNull(currentPersonId);
-		final Long[] personIds = new Long[]{currentPersonId};
-		
-		return itemDao.findInternalItems(personIds, Boolean.TRUE, null, null, pTitle, getCategoryIds(pCategoryId), pVisible, pBorrowed, "title", Boolean.TRUE, pFirstResult, pMaxResults);
+		final Long[] personIds = new Long[]{currentPersonId};		
+		return itemDao.findInternalItems(personIds, Boolean.TRUE, null, null, pTitle, getCategoryIds(pCategoryId), pVisible, pBorrowed, null, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
 	}
 
 	public ListWithRowCount findMyConnectionsItems(final Long pConnectionId, final String pTitle, final Long pCategoryId,
-			final Boolean pBorrowed, final int pFirstResult, final int pMaxResults) {
+			final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
 		Long[] connectionsIds = personService.getCurrentPersonConnectionIds(pConnectionId);
 		if (connectionsIds == null || connectionsIds.length == 0) {
 			return ListWithRowCount.emptyListWithRowCount();
 		}
-		return itemDao.findInternalItems(connectionsIds, Boolean.TRUE, null, null, pTitle, getCategoryIds(pCategoryId), Boolean.TRUE, pBorrowed, "title", Boolean.TRUE, pFirstResult, pMaxResults);
+		return itemDao.findInternalItems(connectionsIds, Boolean.TRUE, null, null, pTitle, getCategoryIds(pCategoryId), Boolean.TRUE, pBorrowed, null, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
 	}
 	
-	public ListWithRowCount findMyLatestAvailableConnectionsItems() {
+	public ListWithRowCount findMyLatestConnectionsItems() {
 		Long[] connectionsIds = personService.getCurrentPersonConnectionIds(null);
 		if (connectionsIds == null || connectionsIds.length == 0) {
 			return ListWithRowCount.emptyListWithRowCount();
 		}
-		return itemDao.findInternalItems(connectionsIds, Boolean.TRUE, null, null, null, null, Boolean.TRUE, Boolean.FALSE, "creationDate", Boolean.FALSE, 0, 5);
+		return itemDao.findInternalItems(connectionsIds, Boolean.TRUE, null, null, null, null, Boolean.TRUE, null, null, "creationDate", Boolean.FALSE, 0, 5);
+	}
+	
+	public ListWithRowCount findPersonLatestConnectionsItemsSince(final Person pPerson, final Date pDate) {
+		Long[] connectionsIds = personService.getPersonConnectionIds(pPerson, null);
+		if (connectionsIds == null || connectionsIds.length == 0) {
+			return ListWithRowCount.emptyListWithRowCount();
+		}
+		return itemDao.findInternalItems(connectionsIds, Boolean.TRUE, null, null, null, null, Boolean.TRUE, null, pDate, "creationDate", Boolean.FALSE, 0, 5);
 	}
 	
 	

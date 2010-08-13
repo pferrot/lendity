@@ -28,7 +28,6 @@
 <f:view>
 
 <h2 class="gt-table-head"><h:outputText value="#{messages.item_myConnectionsItemsListTitle}"/></h2>
-<p><h:outputText value="#{messages.item_myConnectionsItemsListDescription}"/></p>
 
 <br/>
 
@@ -72,6 +71,17 @@
 </table>
 
 <br/>
+<table class="filtersTable">
+<tr>
+<td >
+<ui:include src="sort/orderBy.jspx">
+	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
+</ui:include>
+</td>
+</tr>
+</table>
+
+<br/>
 
 <!-- content box -->
 <div class="gt-content-box">
@@ -112,6 +122,14 @@
 					<h:outputLink value="#{myConnectionsItemsListController.ownerHref}">
 						<h:outputText value="#{myConnectionsItemsListController.ownerLabel}"/>
 					</h:outputLink>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<h:outputText value="#{messages.item_creationDate}:" />
+				</th>
+				<td>					
+					<h:outputText value="#{myConnectionsItemsListController.creationDateLabel}" />
 				</td>
 			</tr>
 			<tr>

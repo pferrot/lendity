@@ -16,6 +16,7 @@ public abstract class AbstractPersonAddEditController {
 	private String firstName;
 	private String lastName;
 	private String displayName;
+	private Boolean emailSubscriber;
 	
 	public PersonService getPersonService() {
 		return personService;
@@ -47,6 +48,14 @@ public abstract class AbstractPersonAddEditController {
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
+	}	
+
+	public Boolean getEmailSubscriber() {
+		return emailSubscriber;
+	}
+
+	public void setEmailSubscriber(Boolean emailSubscriber) {
+		this.emailSubscriber = emailSubscriber;
 	}
 
 	public abstract Long processPerson();

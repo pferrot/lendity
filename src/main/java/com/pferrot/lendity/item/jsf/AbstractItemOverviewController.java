@@ -68,6 +68,11 @@ public abstract class AbstractItemOverviewController
 		}
 		return "";
 	}
+
+	public boolean isDescriptionAvailable() {
+		final String itemDescription = item.getDescription();
+		return !StringUtils.isNullOrEmpty(itemDescription);
+	}	
 	
 	public boolean isEditAvailable() {
 		return itemService.isCurrentUserAuthorizedToEdit(item);

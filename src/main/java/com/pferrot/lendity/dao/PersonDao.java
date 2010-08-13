@@ -1,5 +1,8 @@
 package com.pferrot.lendity.dao;
 
+import java.util.Date;
+import java.util.List;
+
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.model.Person;
 
@@ -24,11 +27,18 @@ public interface PersonDao {
 	 * @param pSearchString
 	 * @param pEnabled
 	 * @param pEmailExactMatch
+	 * @param pEmailSubscriber
+	 * @param pEmailSubscriberLastSentDateMaxint
 	 * @param pFirstResult
 	 * @param pMaxResults
 	 * @return
 	 */
-	ListWithRowCount findPersons(Long pPersonId, int pConnectionLink, String pSearchString, Boolean pEnabled, boolean pEmailExactMatch, int pFirstResult, int pMaxResults);
+	ListWithRowCount findPersons(Long pPersonId, int pConnectionLink, String pSearchString, Boolean pEnabled,
+			boolean pEmailExactMatch, Boolean pEmailSubscriber, Date pEmailSubscriberLastUpdateMax, int pFirstResult, int pMaxResults);
+	
+	
+	List<Person> findPersonsList(Long pPersonId, int pConnectionLink, String pSearchString, Boolean pEnabled,
+			boolean pEmailExactMatch, Boolean pEmailSubscriber, Date pEmailSubscriberLastUpdateMax, int pFirstResult, int pMaxResults);
 		
 	void updatePerson(Person person);
 	

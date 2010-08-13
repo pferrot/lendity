@@ -7,8 +7,8 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.person_personOverviewTitle}" />
-	<ui:param name="contentHeader" value="#{messages.person_personOverviewTitle}" />
+	<ui:param name="pageTitle" value="#{personOverviewController.pageTitle}" />
+	<ui:param name="contentHeader" value="#{personOverviewController.pageTitle}" />
 
 		<ui:define name="content">
 
@@ -31,7 +31,7 @@
 
 <ui:include src="../connectionrequest/requestConnectionTooltip.jspx"/>
 
-<h2 class="gt-table-head"><h:outputText value="#{messages.person_personOverviewTitle}"/></h2>
+<h2 class="gt-table-head"><h:outputText value="#{personOverviewController.pageTitle}"/></h2>
 
 <!-- content box -->
 <div class="gt-form gt-content-box">
@@ -49,6 +49,17 @@
 		<div class="gt-form-row gt-width-100">
 			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_email}:" /></label></div>
 			<a href="mailto:#{personOverviewController.person.email}"><h:outputText value="#{personOverviewController.person.email}" /></a>
+		</div>
+		<br/>
+	</c:if>
+	<c:if test="#{personOverviewController.editAvailable}">
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_emailNotificationSettings}:" /></label></div>
+			<label class="gt-form-element-label">
+			<h:selectBooleanCheckbox id="emailSubscriber" value="#{personOverviewController.person.emailSubscriber}" styleClass="gt-form-element-checkbox" disabled="true"/>
+			<h:outputText value=" " escape="false" />
+			<h:outputText value="#{messages.person_emailSubscriber}"/>
+			</label>
 		</div>
 		<br/>
 	</c:if>

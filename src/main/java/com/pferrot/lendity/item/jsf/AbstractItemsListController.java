@@ -48,11 +48,17 @@ public abstract class AbstractItemsListController extends AbstractListController
 	// 2 = False = not visible by connections.
 	// null = all items
 	private Long visibleStatus;
+
+	private List<SelectItem> orderBySelectItems;
+	// 1 = by title ascending
+	// 2 = by creationDate descending
+	private Long orderBy;
 	
 	
 	public AbstractItemsListController() {
 		super();
 		setRowsPerPage(ItemConsts.NB_ITEMS_PER_PAGE);
+		setOrderBy(new Long(1));
 	}
 
 	public void setItemService(final ItemService pItemService) {
@@ -170,7 +176,58 @@ public abstract class AbstractItemsListController extends AbstractListController
         // event on the h:selectOneMenu. Not sure why!?
         reloadList();
     }
+    
+    public List<SelectItem> getOrderBySelectItems() {
+		if (orderBySelectItems == null) {
+			final List result = new ArrayList<SelectItem>();
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			
+			result.add(new SelectItem(new Long(1), I18nUtils.getMessageResourceString("item_orderByTitleAsc", locale)));
+			result.add(new SelectItem(new Long(2), I18nUtils.getMessageResourceString("item_orderByCreationDateDesc", locale)));
+			
+			orderBySelectItems = result;
+		}		
+		return orderBySelectItems;	
+	}
 	
+	public Long getOrderBy() {
+		return orderBy;
+	}
+	
+	public void setOrderBy(Long orderBy) {
+		this.orderBy = orderBy;
+	}
+
+	public void orderBy(final ValueChangeEvent pEevent) {
+    	final Long orderBy = (Long) ((HtmlSelectOneMenu) pEevent.getComponent()).getValue();
+        setOrderBy(orderBy);
+        // loadDataList() is not called by getList() when the page is submitted with the onchange
+        // event on the h:selectOneMenu. Not sure why!?
+        reloadList();
+    }
+	
+	protected String getOrderByField() {
+		final long orderByLong = getOrderBy().longValue();
+		if (orderByLong == 1) {
+			return "title";
+		}
+		else if (orderByLong == 2) {
+			return "creationDate";
+		}
+		throw new RuntimeException("Unsupported orderBy value: " + orderByLong);
+	}
+	
+	protected Boolean getOrderByAscending() {
+		final long orderByLong = getOrderBy().longValue();
+		if (orderByLong == 1) {
+			return Boolean.TRUE;
+		}
+		else if (orderByLong == 2) {
+			return Boolean.FALSE;
+		}
+		throw new RuntimeException("Unsupported orderBy value: " + orderByLong);
+	}
+
 	public String clearBorrowStatus() {
 		setBorrowStatus(null);
 		return "clearBorrowStatus";
@@ -337,6 +394,11 @@ public abstract class AbstractItemsListController extends AbstractListController
 		else {
 			return false;
 		}
+	}
+	
+	public String getCreationDateLabel() {
+		final Item item = (Item)getTable().getRowData();
+		return UiUtils.getDateAsString(item.getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
 	}
 
 	public String getBorrowerHref() {

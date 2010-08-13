@@ -131,7 +131,7 @@ public class InternalItemsImportStep1 extends AbstractInternalItemsImportStep {
 				if (oneItem.length() > MAX_TITLE_LENGTH) {
 					titleTooLongItemsToImport.add(oneItem);
 				}
-				else if (getItemService().findMyItems(oneItem, null, null, null, 0, 1).getRowCount() > 0) {
+				else if (getItemService().findMyItems(oneItem, null, null, null, null, null, 0, 1).getRowCount() > 0) {
 					alreadyExistItemsToImport.add(oneItem);
 				}
 				else {

@@ -1,0 +1,71 @@
+Bonjour $firstName,
+
+Dernières activités dans ton réseau:
+
+Objets ajoutés
+#if( $latestUpdateDateLabel )
+(depuis le $latestUpdateDateLabel)
+#end
+#if( !$itemTitle1 )
+Aucun nouvel objet
+#end
+#if( $itemTitle1 )
+$itemTitle1 $itemDetails1
+#end
+#if( $itemTitle2 )
+$itemTitle2 $itemDetails2
+#end
+#if( $itemTitle3 )
+$itemTitle3 $itemDetails3
+#end
+#if( $itemTitle4 )
+$itemTitle4 $itemDetails4
+#end
+#if( $itemTitle5 )
+$itemTitle5 $itemDetails5
+#end
+#if( $itemNbExtra )
+Plus $itemNbExtra objets(s) supplémentaire(s)
+#if( $latestUpdateDateLabel )
+depuis le $latestUpdateDateLabel
+#end
+#end
+Voir la liste complète: $itemUrl
+
+
+Amis
+#if( $latestUpdateDateLabel )
+(depuis le $latestUpdateDateLabel)
+#end
+#if( !$requester1 )
+Aucune update dans ton réseau
+#end
+#if( $requester1 )
+$requester1 et $connection1 sont maintenant amis $connectionUpdateDetails1
+#end
+#if( $requester2 )
+$requester2 et $connection2 sont maintenant amis $connectionUpdateDetails2
+#end
+#if( $requester3 )
+$requester3 et $connection3 sont maintenant amis $connectionUpdateDetails3
+#end
+#if( $requester4 )
+$requester4 et $connection4 sont maintenant amis $connectionUpdateDetails4
+#end
+#if( $requester5 )
+$requester5 et $connection5 sont maintenant amis $connectionUpdateDetails5
+#end
+#if( $connectionUpdateNbExtra )
+Plus $connectionUpdateNbExtra activité(s) similaire(s)
+#if( $latestUpdateDateLabel )
+depuis le $latestUpdateDateLabel
+#end
+#end
+Voir la liste complète: $connectionUpdateUrl 
+
+A bientôt sur $siteName.
+
+$siteUrl
+
+Afin de ne plus recevoir cet email, mets à jour ton profil: $profileUrl
+

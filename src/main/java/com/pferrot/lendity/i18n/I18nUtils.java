@@ -19,6 +19,8 @@ public class I18nUtils {
 	
 	private final static Log log = LogFactory.getLog(I18nUtils.class);
 	
+	private final static Locale SWISS_FRENCH_LOCALE = new Locale("fr", "CH");
+	
 	private static ClassLoader getCurrentClassLoader(Object defaultObject){
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		if(loader == null){
@@ -124,7 +126,15 @@ public class I18nUtils {
 			}
 		}
 		return lang;
-	}	
+	}
+
+	public static Locale getSwissFrenchLocale() {
+		return SWISS_FRENCH_LOCALE;
+	}
+	
+	public static Locale getDefaultLocale() {
+		return SWISS_FRENCH_LOCALE;
+	}
 	
 	
 

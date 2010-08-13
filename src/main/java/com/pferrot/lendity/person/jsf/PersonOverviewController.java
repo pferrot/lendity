@@ -1,5 +1,7 @@
 package com.pferrot.lendity.person.jsf;
 
+import java.util.Locale;
+
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
@@ -11,6 +13,8 @@ import org.springframework.security.AccessDeniedException;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
 import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
+import com.pferrot.lendity.i18n.I18nUtils;
+import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
@@ -105,4 +109,27 @@ public class PersonOverviewController
 			throw new RuntimeException(e);
 		}			
 	}
+	
+	public String getPageTitle() {
+		if (isEditAvailable()) {
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			return I18nUtils.getMessageResourceString("menu_profile", locale);
+		}
+		else {
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			return I18nUtils.getMessageResourceString("person_personOverviewTitle", locale);
+		}		
+	}
+	
+//	public String getEmailSubscriberStatusLabel() {
+//		if (Boolean.TRUE.equals(person.getEmailSubscriber())) {
+//			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+//			return I18nUtils.getMessageResourceString("person_emailNotificationOn", locale);
+//		}
+//		else if (Boolean.FALSE.equals(person.getEmailSubscriber())) {
+//			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+//			return I18nUtils.getMessageResourceString("person_emailNotificationOff", locale);
+//		}
+//		return "";
+//	}
 }

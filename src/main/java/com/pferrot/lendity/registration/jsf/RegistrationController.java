@@ -242,6 +242,7 @@ public class RegistrationController {
 	//		person.setPhoneMobile(getPhoneMobile());
 	//		person.setPhoneProfessional(getPhoneProfessional());
 			person.setUser(user);
+			person.setEmailSubscriber(Boolean.TRUE);
 			
 			final Address address = new Address();
 	//		address.setAddress1(getAddress1());

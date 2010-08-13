@@ -1,7 +1,9 @@
 package com.pferrot.lendity.connectionrequest;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -58,15 +60,18 @@ public class ConnectionRequestService {
 	}
 
 	public ListWithRowCount findCurrentUserPendingConnectionRequests(final int pFirstResult, final int pMaxResults) {		
-		return connectionRequestDao.findConnectionRequests(new Long[]{PersonUtils.getCurrentPersonId()}, null, null, null, null, Boolean.FALSE, null, "requestDate", Boolean.FALSE, pFirstResult, pMaxResults);
+		return connectionRequestDao.findConnectionRequests(new Long[]{PersonUtils.getCurrentPersonId()}, null, null, null, null,
+				Boolean.FALSE, null, null, "requestDate", Boolean.FALSE, pFirstResult, pMaxResults);
 	}
 	
 	public long countCurrentUserPendingConnectionRequests() {
-		return connectionRequestDao.countConnectionRequests(new Long[]{PersonUtils.getCurrentPersonId()}, null, null, null, null, Boolean.FALSE, null);
+		return connectionRequestDao.countConnectionRequests(new Long[]{PersonUtils.getCurrentPersonId()}, null, null, null, null,
+				Boolean.FALSE, null, null);
 	}
 	
 	public ListWithRowCount findCurrentUserPendingConnectionRequestsOut(final int pFirstResult, final int pMaxResults) {		
-		return connectionRequestDao.findConnectionRequests(null, new Long[]{PersonUtils.getCurrentPersonId()}, null, null, null, Boolean.FALSE, null, "requestDate", Boolean.FALSE, pFirstResult, pMaxResults);
+		return connectionRequestDao.findConnectionRequests(null, new Long[]{PersonUtils.getCurrentPersonId()}, null, null, null,
+				Boolean.FALSE, null, null, "requestDate", Boolean.FALSE, pFirstResult, pMaxResults);
 		
 	}
 	
@@ -78,8 +83,22 @@ public class ConnectionRequestService {
 		}
 		final ListValue acceptLV = listValueDao.findListValue(ConnectionRequestResponse.ACCEPT_LABEL_CODE);
 		
-		return connectionRequestDao.findConnectionRequests(connectionsIds, connectionsIds, Boolean.TRUE, new Long[]{PersonUtils.getCurrentPersonId()}, new Long[]{PersonUtils.getCurrentPersonId()}, Boolean.TRUE, new Long[]{acceptLV.getId()},
+		return connectionRequestDao.findConnectionRequests(connectionsIds, connectionsIds, Boolean.TRUE, new Long[]{PersonUtils.getCurrentPersonId()},
+				new Long[]{PersonUtils.getCurrentPersonId()}, Boolean.TRUE, new Long[]{acceptLV.getId()},  null,
 				"responseDate", Boolean.FALSE, pFirstResult, pMaxResults);
+	}
+
+	public ListWithRowCount findPersonConnectionsUpdatesSince(final Person pPerson, final Date pResponseDateMin) {
+		final Long[] connectionsIds = personService.getPersonConnectionIds(pPerson, null);
+		// Make sure one do not show all connections updates for someone who has no friend.
+		if (connectionsIds == null || connectionsIds.length == 0) {
+			return ListWithRowCount.emptyListWithRowCount();
+		}
+		final ListValue acceptLV = listValueDao.findListValue(ConnectionRequestResponse.ACCEPT_LABEL_CODE);
+		
+		return connectionRequestDao.findConnectionRequests(connectionsIds, connectionsIds, Boolean.TRUE, new Long[]{pPerson.getId()},
+				new Long[]{pPerson.getId()}, Boolean.TRUE, new Long[]{acceptLV.getId()}, pResponseDateMin,
+				"responseDate", Boolean.FALSE, 0, 5);		
 	}
 
 	/**
@@ -231,12 +250,12 @@ public class ConnectionRequestService {
 		final Long person1Id = pPerson1.getId();
 		final Long person2Id = pPerson2.getId();
 		
-		long nbHits = connectionRequestDao.countConnectionRequests(new Long[]{person1Id}, new Long[]{person2Id}, null, null, null, Boolean.FALSE, null);
+		long nbHits = connectionRequestDao.countConnectionRequests(new Long[]{person1Id}, new Long[]{person2Id}, null, null, null, Boolean.FALSE, null, null);
 		if (nbHits > 0) {
 			return true;
 		}
 		
-		nbHits = connectionRequestDao.countConnectionRequests(new Long[]{person2Id}, new Long[]{person1Id}, null, null, null, Boolean.FALSE, null);
+		nbHits = connectionRequestDao.countConnectionRequests(new Long[]{person2Id}, new Long[]{person1Id}, null, null, null, Boolean.FALSE, null, null);
 		return nbHits > 0;
 	}
 	

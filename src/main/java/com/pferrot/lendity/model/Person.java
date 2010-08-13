@@ -2,6 +2,7 @@ package com.pferrot.lendity.model;
 // Generated 10 oct. 2008 00:01:18 by Hibernate Tools 3.2.0.b9
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -74,7 +75,6 @@ public class Person implements Serializable {
 	@JoinColumn(name = "GENDER_ID", nullable = true)
 	private Gender gender;
 	
-	
 	@ManyToMany(targetEntity = com.pferrot.lendity.model.Person.class)
 	@JoinTable(
 			name = "PERSONS_CONNECTIONS",
@@ -101,6 +101,18 @@ public class Person implements Serializable {
 	
 	@Embedded
 	private Address address;	
+	
+	@Column(name = "EMAIL_SUBSC", nullable = false)
+	@Audited
+	private Boolean emailSubscriber;
+	
+	
+	/**
+	 * Updated when e-mail is sent OR when there is nothing to
+	 * send but the subscriber is "verified".
+	 */
+	@Column(name = "EMAIL_SUBSC_LAST_UPDATE", nullable = true)
+	private Date emailSubscriberLastUpdate;
 
     public Person() {
     	super();
@@ -272,7 +284,23 @@ public class Person implements Serializable {
 		CoreUtils.assertNotNull(pPerson);
 		bannedByPersons.remove(pPerson);
 		pPerson.getBannedPersons().remove(this);
-	}	
+	}
+
+	public Boolean getEmailSubscriber() {
+		return emailSubscriber;
+	}
+
+	public void setEmailSubscriber(Boolean emailSubscriber) {
+		this.emailSubscriber = emailSubscriber;
+	}
+
+	public Date getEmailSubscriberLastUpdate() {
+		return emailSubscriberLastUpdate;
+	}
+
+	public void setEmailSubscriberLastUpdate(Date emailSubscriberLastUpdate) {
+		this.emailSubscriberLastUpdate = emailSubscriberLastUpdate;
+	}
 
 	@Override
 	public int hashCode() {

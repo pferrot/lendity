@@ -9,34 +9,54 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.orchestra.viewController.annotations.InitView;
+import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.lendrequest.LendRequestService;
 import com.pferrot.lendity.lendrequest.exception.LendRequestException;
 import com.pferrot.lendity.model.InternalItem;
+import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
 
+@ViewController(viewIds={"/auth/item/myConnectionsItemsList.jspx"})
 public class MyConnectionsItemsListController extends AbstractItemsWithOwnerListController {
 	
 	private final static Log log = LogFactory.getLog(MyConnectionsItemsListController.class);
+
+	public final static String FORCE_VIEW_PARAM_NAME = "view";
+	public final static String FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE = "allByCr";
 	
 	private LendRequestService lendRequestService;	
 	
 	public MyConnectionsItemsListController() {
 		super();
 		// Display available items by default.
-		setBorrowStatus(UiUtils.getLongFromBoolean(Boolean.FALSE));
+		//setBorrowStatus(UiUtils.getLongFromBoolean(Boolean.FALSE));
 	}
 	
 	public void setLendRequestService(final LendRequestService pLendRequestService) {
 		this.lendRequestService = pLendRequestService;
 	}
 
+	@InitView
+	public void initView() {		
+		final String orderBy = JsfUtils.getRequestParameter(FORCE_VIEW_PARAM_NAME);
+		if (FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE.equals(orderBy)) {
+			setOrderBy(new Long(2));
+			setSearchString(null);
+			setCategoryId(null);			
+			setBorrowStatus(null);
+			setVisibleStatus(null);
+			setOwnerId(null);
+		}
+	}
+
 	@Override
 	protected ListWithRowCount getListWithRowCount() {
 		return getItemService().findMyConnectionsItems(getOwnerId(), getSearchString(), getCategoryId(), 
-				getBorrowStatusBoolean(), getFirstRow(), getRowsPerPage());
+				getBorrowStatusBoolean(), getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
 	}
 
 	@Override

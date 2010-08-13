@@ -1,5 +1,7 @@
 package com.pferrot.lendity.person;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -35,6 +37,14 @@ public class PersonService {
 	public Long createPerson(final Person pPerson) {
 		return personDao.createPerson(pPerson);
 	}
+	
+	/**
+	 * No access control check.
+	 * @param pPerson
+	 */
+	public void updatePersonPrivileged(final Person pPerson) {
+		personDao.updatePerson(pPerson);
+	}
 
 	public void updatePerson(final Person pPerson) {
 		assertCurrentUserAuthorizedToEdit(pPerson);
@@ -42,34 +52,42 @@ public class PersonService {
 		PersonUtils.updatePersonInSession(pPerson, JsfUtils.getHttpServletRequest());
 	}
 	
+	public List<Person> findEmailSubscribers(final Date pEmailSubscriberLastUpdateMax, final int pMaxNbToFind) {
+		return personDao.findPersonsList(null, PersonDao.UNSPECIFIED_LINK, null, Boolean.TRUE, true, Boolean.TRUE, pEmailSubscriberLastUpdateMax, 0, pMaxNbToFind);
+	}
+		
 	public ListWithRowCount findEnabledPersons(final String pSearchString, final int pFirstResult, final int pMaxResults) {
-		return personDao.findPersons(null, PersonDao.UNSPECIFIED_LINK, pSearchString, Boolean.TRUE, true, pFirstResult, pMaxResults);
+		return personDao.findPersons(null, PersonDao.UNSPECIFIED_LINK, pSearchString, Boolean.TRUE, true, null, null, pFirstResult, pMaxResults);
 	}
 
 	public ListWithRowCount findConnections(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNull(pPersonId);
-		return personDao.findPersons(pPersonId, PersonDao.CONNECTIONS_LINK, pSearchString, Boolean.TRUE, false, pFirstResult, pMaxResults);
+		return personDao.findPersons(pPersonId, PersonDao.CONNECTIONS_LINK, pSearchString, Boolean.TRUE, false, null, null, pFirstResult, pMaxResults);
 	}
 	
 	public ListWithRowCount findBannedPersons(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNull(pPersonId);
 		// It is correct to search on the BANNED_BY_PERSONS_LINK: one actually search for that where ban by the current user.
-		return personDao.findPersons(pPersonId, PersonDao.BANNED_BY_PERSONS_LINK, pSearchString, Boolean.TRUE, false, pFirstResult, pMaxResults);
+		return personDao.findPersons(pPersonId, PersonDao.BANNED_BY_PERSONS_LINK, pSearchString, Boolean.TRUE, false, null, null, pFirstResult, pMaxResults);
 	}
 
+	public Long[] getCurrentPersonConnectionIds(final Long pConnectionId) {
+		return getPersonConnectionIds(getCurrentPerson(), pConnectionId);		
+	}
+	
 	/**
 	 * Returns an array containing the IDs of all connections of the user if
 	 * null is passed as a parameter or of one connection if the parameter is not null.
 	 * 
+	 * @param pPerson
 	 * @param pConnectionId
 	 * @return
 	 */
-	public Long[] getCurrentPersonConnectionIds(final Long pConnectionId) {
+	public Long[] getPersonConnectionIds(final Person pPerson, final Long pConnectionId) {
 		Long[] connectionsIds = null;
 		// All connections
 		if (pConnectionId == null) {
-			final Person person = getCurrentPerson();
-			final Set<Person> connections = person.getConnections();
+			final Set<Person> connections = pPerson.getConnections();
 			if (connections == null || connections.isEmpty()) {
 				return null;
 			}

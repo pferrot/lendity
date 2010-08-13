@@ -210,6 +210,7 @@ public class InitialData {
 		person.setFirstName(firstName);
 		person.setLastName(lastName);
 		person.setEmail(email);
+		person.setEmailSubscriber(Boolean.TRUE);
 		person.setEnabled(Boolean.TRUE);
 		
 		Address address = new Address();

@@ -74,7 +74,7 @@ public class HomeController extends AbstractItemsListController {
 
 	@Override
 	protected ListWithRowCount getListWithRowCount() {
-		return itemService.findMyLatestAvailableConnectionsItems();
+		return itemService.findMyLatestConnectionsItems();
 	}
 	
 	public String getCreationDateLabel() {

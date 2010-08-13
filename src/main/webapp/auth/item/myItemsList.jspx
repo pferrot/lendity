@@ -73,6 +73,17 @@
 
 </table>
 
+<br/>
+<table class="filtersTable">
+<tr>
+<td >
+<ui:include src="sort/orderBy.jspx">
+	<ui:param name="theBean" value="#{myItemsListController}"/>
+</ui:include>
+</td>
+</tr>
+</table>
+
 
 <br/>
 
@@ -115,6 +126,14 @@
 			    <th width="50%"><h:outputText id="id_1" value="#{messages.item_category}:" /></th>
 				<td width="50%"><h:outputText id="id_2" value="#{myItemsListController.categoryLabel}"/></td>
 		    </tr>
+			<tr>
+				<th>
+					<h:outputText value="#{messages.item_creationDate}:" />
+				</th>
+				<td>					
+					<h:outputText value="#{myItemsListController.creationDateLabel}" />
+				</td>
+			</tr>
 			<tr>
 				<th>
 					<h:outputText id="id_3" value="#{messages.item_visibility}:" />

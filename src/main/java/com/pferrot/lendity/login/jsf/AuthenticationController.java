@@ -2,6 +2,8 @@ package com.pferrot.lendity.login.jsf;
 
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.item.ItemUtils;
+import com.pferrot.lendity.item.jsf.MyConnectionsItemsListController;
+import com.pferrot.lendity.item.jsf.MyItemsListController;
 import com.pferrot.lendity.login.AuthenticationConsts;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -102,7 +104,19 @@ public class AuthenticationController {
 	}
 
 	public String getMyConnectionsItemsURL() {
-		return JsfUtils.getContextRoot() + PagesURL.MY_CONNECTIONS_ITEMS_LIST;
+		return JsfUtils.getFullUrl(PagesURL.MY_CONNECTIONS_ITEMS_LIST);
+	}
+
+	public String getMyConnectionsItemsOrderByCreationDateURL() {
+		return JsfUtils.getFullUrl(PagesURL.MY_CONNECTIONS_ITEMS_LIST,
+				MyConnectionsItemsListController.FORCE_VIEW_PARAM_NAME,
+				MyConnectionsItemsListController.FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE);
+	}
+
+	public String getMyLentItemsURL() {
+		return JsfUtils.getFullUrl(PagesURL.MY_ITEMS_LIST,
+				MyItemsListController.FORCE_VIEW_PARAM_NAME,
+				MyItemsListController.FORCE_VIEW_ALL_LENT_ITEMS_BY_NAME);
 	}
 	
 	public String getInternalItemAddURL() {
@@ -114,7 +128,6 @@ public class AuthenticationController {
 	}
 	
 	public String getMyProfileURL() {
-//		return JsfUtils.getContextRoot() + PagesURL.MY_PROFILE;
-		return JsfUtils.getFullUrl(PagesURL.PERSON_OVERVIEW, PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID, PersonUtils.getCurrentPersonId().toString());
+		return JsfUtils.getFullUrl(PagesURL.MY_PROFILE);
 	}
 }

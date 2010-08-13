@@ -1,5 +1,6 @@
 package com.pferrot.lendity.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.CriteriaSpecification;
@@ -33,12 +34,12 @@ public class ConnectionRequestDaoHibernateImpl extends HibernateDaoSupport imple
 		return (ConnectionRequest)getHibernateTemplate().load(ConnectionRequest.class, pConnectionRequestId);
 	}
 	
-	private List<ConnectionRequest> findConnectionRequestsList(final Long[] pConnectionIds, final Long[] pRequesterIds, 
+	public List<ConnectionRequest> findConnectionRequestsList(final Long[] pConnectionIds, final Long[] pRequesterIds, 
 			final Boolean pOrCriteria, final Long[] pExcludedConnectionIds, final Long[] pExcludedRequesterIds, final Boolean pCompleted, 
-			final Long[] pResponseIds, final String pOrderByField, final Boolean pOrderByAsc,
+			final Long[] pResponseIds, final Date pResponseDateMin, final String pOrderByField, final Boolean pOrderByAsc,
 			final int pFirstResult, final int pMaxResults) {
 		final DetachedCriteria criteria = getConnectionRequestDetachedCriteria(pConnectionIds, pRequesterIds, pOrCriteria, pExcludedConnectionIds, pExcludedRequesterIds,
-				pCompleted, pResponseIds);
+				pCompleted, pResponseIds, pResponseDateMin);
 		if (!StringUtils.isNullOrEmpty(pOrderByField)) {
 			if (Boolean.FALSE.equals(pOrderByAsc)) {
 				criteria.addOrder(Order.desc(pOrderByField));
@@ -52,14 +53,14 @@ public class ConnectionRequestDaoHibernateImpl extends HibernateDaoSupport imple
 	}
 
 	public long countConnectionRequests(final Long[] pConnectionIds, final Long[] pRequesterIds, final Boolean pOrCriteria, 
-			final Long[] pExcludedConnectionIds, final Long[] pExcludedRequesterIds, final Boolean pCompleted, Long[] pResponseIds) {
+			final Long[] pExcludedConnectionIds, final Long[] pExcludedRequesterIds, final Boolean pCompleted, Long[] pResponseIds, final Date pResponseDateMin) {
 		final DetachedCriteria criteria = getConnectionRequestDetachedCriteria(pConnectionIds, pRequesterIds, pOrCriteria, pExcludedConnectionIds,
-				pExcludedRequesterIds, pCompleted, pResponseIds);
+				pExcludedRequesterIds, pCompleted, pResponseIds, pResponseDateMin);
 		return rowCount(criteria);
 	}
 
 	private DetachedCriteria getConnectionRequestDetachedCriteria(final Long[] pConnectionIds, final Long[] pRequesterIds, final Boolean pOrCriteria,
-			final Long[] pExcludedConnectionIds, final Long[] pExcludedRequesterIds, final Boolean pCompleted, final Long[] pResponseIds) {
+			final Long[] pExcludedConnectionIds, final Long[] pExcludedRequesterIds, final Boolean pCompleted, final Long[] pResponseIds, final Date pResponseDateMin) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(ConnectionRequest.class);
 	
 		if (pCompleted != null) {
@@ -69,6 +70,10 @@ public class ConnectionRequestDaoHibernateImpl extends HibernateDaoSupport imple
 			else {
 				criteria.add(Restrictions.isNull("responseDate"));
 			}			
+		}
+		
+		if (pResponseDateMin != null) {
+			criteria.add(Restrictions.gt("responseDate", pResponseDateMin));
 		}
 		
 		if (pResponseIds != null && pResponseIds.length > 0) {
@@ -120,10 +125,10 @@ public class ConnectionRequestDaoHibernateImpl extends HibernateDaoSupport imple
 	}
 
 	public ListWithRowCount findConnectionRequests(final Long[] pConnectionIds, final Long[] pRequesterIds, final Boolean pOrCriteria, final Long[] pExcludedConnectionIds, final Long[] pExcludedRequesterIds, 
-			final Boolean pCompleted, final Long[] pResponseIds, final String pOrderByField, final Boolean pOrderByAsc,
+			final Boolean pCompleted, final Long[] pResponseIds, final Date pResponseDateMin, final String pOrderByField, final Boolean pOrderByAsc,
 			final int pFirstResult, final int pMaxResults) {
-		final List list = findConnectionRequestsList(pConnectionIds, pRequesterIds, pOrCriteria, pExcludedConnectionIds, pExcludedRequesterIds, pCompleted, pResponseIds, pOrderByField, pOrderByAsc, pFirstResult, pMaxResults);
-		final long count = countConnectionRequests(pConnectionIds, pRequesterIds, pOrCriteria, pExcludedConnectionIds, pExcludedRequesterIds, pCompleted, pRequesterIds);
+		final List list = findConnectionRequestsList(pConnectionIds, pRequesterIds, pOrCriteria, pExcludedConnectionIds, pExcludedRequesterIds, pCompleted, pResponseIds, pResponseDateMin, pOrderByField, pOrderByAsc, pFirstResult, pMaxResults);
+		final long count = countConnectionRequests(pConnectionIds, pRequesterIds, pOrCriteria, pExcludedConnectionIds, pExcludedRequesterIds, pCompleted, pResponseIds, pResponseDateMin);
 		
 		return new ListWithRowCount(list, count);
 	}

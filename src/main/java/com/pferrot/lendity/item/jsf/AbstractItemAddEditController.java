@@ -12,6 +12,7 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemConsts;
@@ -29,7 +30,6 @@ public abstract class AbstractItemAddEditController {
 	private Long categoryId;
 	private String title;
 	private String description;
-	private Boolean visible;
 	
 	public void setItemService(ItemService itemService) {
 		this.itemService = itemService;
@@ -72,12 +72,8 @@ public abstract class AbstractItemAddEditController {
 		this.description = description;
 	}
 	
-	public Boolean getVisible() {
-		return visible;
-	}
-
-	public void setVisible(Boolean visible) {
-		this.visible = visible;
+	public boolean isDescriptionAvailable() {
+		return !StringUtils.isNullOrEmpty(description);
 	}
 
 	public abstract Long processItem();

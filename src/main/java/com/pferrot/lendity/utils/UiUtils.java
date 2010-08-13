@@ -127,6 +127,13 @@ public class UiUtils {
 		}
 		return getDateFormat(pLocale).format(pDate);		
 	}
+	
+	public static String getListValueLabel(final ListValue pListValue, final Locale pLocale) {
+		if (pListValue == null) {
+			return "";
+		}
+		return I18nUtils.getMessageResourceString(pListValue.getLabelCode(), I18nUtils.getDefaultLocale());
+	}
 
 	private static DateFormat getDateFormat(final Locale pLocale) {
 		if (pLocale == null) {

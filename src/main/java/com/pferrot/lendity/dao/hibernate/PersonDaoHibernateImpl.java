@@ -1,5 +1,6 @@
 package com.pferrot.lendity.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.CriteriaSpecification;
@@ -50,25 +51,36 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 		else {
 			throw new DataIntegrityViolationException("More that one person with username '" + pUsername + "'");
 		}
-	}	
-	private List<Person> findPersonsList(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEnabled, boolean pEmailExactMatch, int pFirstResult, int pMaxResults) {
-		final DetachedCriteria criteria = getPersonsDetachedCriteria(pPersonId, pConnectionLink, pSearchString, pEnabled, pEmailExactMatch).addOrder(Order.asc("displayName").ignoreCase());
+	}
+	
+	public List<Person> findPersonsList(final Long pPersonId, final int pConnectionLink, final String pSearchString,
+			final Boolean pEnabled, boolean pEmailExactMatch, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax,
+			int pFirstResult, int pMaxResults) {
+		final DetachedCriteria criteria = getPersonsDetachedCriteria(pPersonId, pConnectionLink, pSearchString, pEnabled,
+				pEmailExactMatch, pEmailSubscriber, pEmailSubscriberLastUpdateMax).addOrder(Order.asc("displayName").ignoreCase());
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
 	}
 	
-	private long countPersons(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEnabled, boolean pEmailExactMatch) {
-		final DetachedCriteria criteria = getPersonsDetachedCriteria(pPersonId, pConnectionLink, pSearchString, pEnabled, pEmailExactMatch).addOrder(Order.asc("displayName").ignoreCase());
+	private long countPersons(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEnabled,
+			boolean pEmailExactMatch, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax) {
+		final DetachedCriteria criteria = getPersonsDetachedCriteria(pPersonId, pConnectionLink, pSearchString, pEnabled,
+				pEmailExactMatch, pEmailSubscriber, pEmailSubscriberLastUpdateMax);
 		return rowCount(criteria);
 	}
 
-	public ListWithRowCount findPersons(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEnabled, final boolean pEmailExactMatch, int pFirstResult, int pMaxResults) {
-		final List list = findPersonsList(pPersonId, pConnectionLink, pSearchString, pEnabled, pEmailExactMatch, pFirstResult, pMaxResults);
-		final long count = countPersons(pPersonId, pConnectionLink, pSearchString, pEnabled, pEmailExactMatch);
+	public ListWithRowCount findPersons(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEnabled,
+			final boolean pEmailExactMatch, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax,
+			int pFirstResult, int pMaxResults) {
+		final List list = findPersonsList(pPersonId, pConnectionLink, pSearchString, pEnabled, pEmailExactMatch,
+				pEmailSubscriber, pEmailSubscriberLastUpdateMax, pFirstResult, pMaxResults);
+		final long count = countPersons(pPersonId, pConnectionLink, pSearchString, pEnabled, pEmailExactMatch,
+				pEmailSubscriber, pEmailSubscriberLastUpdateMax);
 
 		return new ListWithRowCount(list, count);
 	}
 
-	private DetachedCriteria getPersonsDetachedCriteria(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEnabled, boolean pEmailExactMatch) {
+	private DetachedCriteria getPersonsDetachedCriteria(final Long pPersonId, final int pConnectionLink, final String pSearchString,
+			final Boolean pEnabled, boolean pEmailExactMatch, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax) {
 		if ((pPersonId == null && pConnectionLink != PersonDao.UNSPECIFIED_LINK) ||
 			(pPersonId != null && pConnectionLink == PersonDao.UNSPECIFIED_LINK)) {
 			throw new AssertionError("Cannot define only one of 'pPersonId' and 'pConnectionLink'.");
@@ -101,6 +113,17 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 		
 		if (pEnabled != null) {
 			criteria.add(Restrictions.eq("enabled", pEnabled));
+		}
+		
+		if (pEmailSubscriber != null) {
+			criteria.add(Restrictions.eq("emailSubscriber", pEmailSubscriber));
+		}
+		
+		if (pEmailSubscriberLastUpdateMax != null) {
+			criteria.add(Restrictions.or(
+					Restrictions.lt("emailSubscriberLastUpdate", pEmailSubscriberLastUpdateMax),
+					Restrictions.isNull("emailSubscriberLastUpdate")
+				)); 
 		}
 		
 		return criteria;

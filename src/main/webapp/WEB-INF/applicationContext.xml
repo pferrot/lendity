@@ -337,6 +337,11 @@
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
 	
+	
+	<bean id="myProfileController" class="com.pferrot.lendity.person.jsf.MyProfileController"
+	      scope="request">
+	</bean>
+	
 	<bean id="personOverviewController" class="com.pferrot.lendity.person.jsf.PersonOverviewController"
 	      scope="conversation.access">
 	      <property name="personService" ref="personService"/>
@@ -647,6 +652,61 @@
 
 	<!-- 
 	ITEM - end
+	========================================================================================================================
+	 -->
+
+	<!-- 
+	========================================================================================================================
+	EMAIL SUBSCRIBER - start
+	 -->
+
+	<bean name="emailSubscriberJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="com.pferrot.lendity.jobs.emailsubscriber.EmailSubscriberJob" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="frequencyInDays" value="9" />
+			</map>
+		</property>
+		
+	</bean>
+	
+	<bean id="emailSubscriberCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	    <property name="jobDetail" ref="emailSubscriberJob" />
+	    <!-- run every night at 3 AM -->
+	    <property name="cronExpression" value="0 0 3 * * ?" />
+		<!-- Every minute -->
+<!--	    <property name="cronExpression" value="0 * * * * ?" />-->
+	</bean>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	    <property name="triggers">
+	        <list>
+	            <ref bean="emailSubscriberCronTrigger" />
+	        </list>
+	    </property>
+	    <property name="schedulerContextAsMap">
+	      <map>
+	      	 <entry key="hibernateSessionFactory">
+	            <ref bean="sessionFactory"/>
+	         </entry>
+	         <entry key="mailManager">
+	            <ref bean="emailSender.mailManager"/>
+	         </entry>
+	         <entry key="itemService">
+	            <ref bean="itemService"/>
+	         </entry>
+	         <entry key="personService">
+	            <ref bean="personService"/>
+	         </entry>
+	         <entry key="connectionRequestService">
+	            <ref bean="connectionRequestService"/>
+	         </entry>
+	      </map>
+	   </property>
+	</bean>
+
+	<!-- 
+	EMAIL SUBSCRIBER - end
 	========================================================================================================================
 	 -->
 

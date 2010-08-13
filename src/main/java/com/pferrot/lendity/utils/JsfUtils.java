@@ -127,21 +127,18 @@ public class JsfUtils {
 		}
 		return null;
 	}
-
+	
 	/**
-	 * Returns the full URL to a page, i.e. with context path and parameters.
+	 * Returns the desired full URL with the specified "prefix", usually the application's root URL, e.g. http://www.lendity.com
 	 * 
+	 * @param pPrefix
 	 * @param pUrl
 	 * @param pParametersValues
 	 * @return
 	 */
-	public static String getFullUrl(final String pUrl, final String[][] pParametersValues) {
-		try {
-			final ExternalContext externalContext = getExternalContext(); 
-			
-			final String contextPath = externalContext.getRequestContextPath();
-			
-			final StringBuffer finalUrl = new StringBuffer(contextPath);
+	public static String getFullUrlWithPrefix(final String pPrefix, final String pUrl, final String[][] pParametersValues) {
+		try {		
+			final StringBuffer finalUrl = new StringBuffer(pPrefix);
 			finalUrl.append(pUrl);
 			
 			if (pParametersValues != null) {
@@ -166,7 +163,28 @@ public class JsfUtils {
 		}
 		catch (UnsupportedEncodingException e) {
 			throw new JsfException(e);
-		}		
+		}	
+	}
+	
+	public static String getFullUrlWithPrefix(final String pPrefix, final String pUrl, final String pParam, final String pValue) {
+		return getFullUrlWithPrefix(pPrefix, pUrl, constructParametersValues(pParam, pValue));
+	}
+
+	public static String getFullUrlWithPrefix(final String pPrefix, final String pUrl) {
+		return getFullUrlWithPrefix(pPrefix, pUrl, null);
+	}
+
+	/**
+	 * Returns the full URL to a page, i.e. with context path and parameters.
+	 * 
+	 * @param pUrl
+	 * @param pParametersValues
+	 * @return
+	 */
+	public static String getFullUrl(final String pUrl, final String[][] pParametersValues) {
+		final ExternalContext externalContext = getExternalContext();		
+		final String contextPath = externalContext.getRequestContextPath();
+		return getFullUrlWithPrefix(contextPath, pUrl, pParametersValues);			
 	}
 	
 	public static String getFullUrl(final String pUrl) {
