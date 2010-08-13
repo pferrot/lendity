@@ -114,7 +114,7 @@
 		<dependency>
 			<groupId>com.pferrot</groupId>
 			<artifactId>email-sender</artifactId>
-			<version>0.2-SNAPSHOT</version>
+			<version>0.2</version>
 			<scope>compile</scope>
 		</dependency>
 		<!-- 
