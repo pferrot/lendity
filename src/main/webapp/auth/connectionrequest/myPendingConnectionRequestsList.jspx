@@ -55,7 +55,9 @@
 
     <h:column>
 		<h4>
-			<h:outputText value="#{connectionRequest.requester.displayName}" />
+			<h:outputLink value="#{myPendingConnectionRequestsListController.requesterOverviewHref}">
+				<h:outputText value="#{connectionRequest.requester.displayName}" />
+			</h:outputLink>
 		</h4>
     </h:column>
 

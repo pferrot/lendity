@@ -96,11 +96,9 @@
 						<label><h:outputText value="#{messages.item_visibility}"/></label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="visible"></h:message>
-						<label class="gt-form-element-label">
 						<h:selectBooleanCheckbox id="visible" value="#{internalItemAddController.visible}" styleClass="gt-form-element-checkbox"/>
 						<h:outputText value=" " escape="false" />
 						<h:outputText value="#{messages.item_visibilityConnectionsCanSee}"/>
-						</label>
 					</div><!-- /form row -->					
 					
 					<!-- form row -->

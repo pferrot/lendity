@@ -63,11 +63,9 @@
 						<label><h:outputText value="#{messages.person_emailNotificationSettings}"/></label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="emailSubscriber"></h:message>
-						<label class="gt-form-element-label">
 						<h:selectBooleanCheckbox id="emailSubscriber" value="#{personEditController.emailSubscriber}" styleClass="gt-form-element-checkbox"/>
 						<h:outputText value=" " escape="false" />
 						<h:outputText value="#{messages.person_emailSubscriber}"/>
-						</label>
 					</div><!-- /form row -->
 					
 					<!-- form row -->

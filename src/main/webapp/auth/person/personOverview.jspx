@@ -55,11 +55,9 @@
 	<c:if test="#{personOverviewController.editAvailable}">
 		<div class="gt-form-row gt-width-100">
 			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_emailNotificationSettings}:" /></label></div>
-			<label class="gt-form-element-label">
 			<h:selectBooleanCheckbox id="emailSubscriber" value="#{personOverviewController.person.emailSubscriber}" styleClass="gt-form-element-checkbox" disabled="true"/>
 			<h:outputText value=" " escape="false" />
 			<h:outputText value="#{messages.person_emailSubscriber}"/>
-			</label>
 		</div>
 		<br/>
 	</c:if>

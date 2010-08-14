@@ -155,7 +155,7 @@
 						<label><h:outputText value="#{messages.termsAndConditions_termsAndConditionsTitle}"/> *</label>						
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="termsAndConditionsAccepted"></h:message>
-						<label class="gt-form-element-label">
+						<span>
 						<h:selectBooleanCheckbox id="termsAndConditionsAccepted" 
 												 value="#{registrationController.termsAndConditionsAccepted}"
 												 validator="#{registrationStep1.validateTermsAndConditions}"
@@ -166,7 +166,7 @@
 						<h:outputLink value="#{authenticationController.termsAndConditionsURL}" target="_blank">
 							<h:outputText value="#{messages.registration_termsAndConditionsLabel2}"/>
 						</h:outputLink>
-						</label>						  	
+						</span>		  	
 					</div><!-- /form row -->
 					
 					<!-- 

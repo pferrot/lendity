@@ -75,7 +75,9 @@
 
     <h:column>
 		<h4>
-			<h:outputText value="#{person.displayName}" />
+			<h:outputLink value="#{myBannedPersonsListController.personOverviewHref}">
+				<h:outputText value="#{person.displayName}" />
+			</h:outputLink>
 		</h4>
     </h:column>
 
