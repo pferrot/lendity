@@ -195,9 +195,12 @@ public class RegistrationService {
 		}
 		
 		// All check done - we can activate the user.
-		user.setActivationDate(new Date());
+		final Date now = new Date();
+		user.setActivationDate(now);
 		user.setEnabled(Boolean.TRUE);
 		person.setEnabled(Boolean.TRUE);
+		// Do not send update the first night after the validation...
+		person.setEmailSubscriberLastUpdate(now);
 			
 		// Send email (will actually create a JMS message, i.e. it is async).
 		Map<String, String> objects = new HashMap<String, String>();
