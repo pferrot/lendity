@@ -655,6 +655,86 @@
 	========================================================================================================================
 	 -->
 
+
+	<!-- 
+	========================================================================================================================
+	NEED - start
+	 --> 
+	 
+	<bean id="needDaoTarget" class="com.pferrot.lendity.dao.hibernate.NeedDaoHibernateImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	
+	<bean id="needDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target">
+			<ref local="needDaoTarget"/>
+		</property>
+		<property name="proxyInterfaces">
+           <value>com.pferrot.lendity.dao.NeedDao</value>
+         </property>		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>	
+		
+	<bean id="needService" parent="baseTransactionProxy">
+		<property name="target" ref="needServiceTarget" />
+	</bean>
+		
+	<bean id="needServiceTarget" class="com.pferrot.lendity.need.NeedService">
+		<property name="needDao" ref="needDao"/>
+		<property name="listValueDao" ref="listValueDao"/>
+		<property name="personDao" ref="personDao"/>
+		<property name="mailManager" ref="emailSender.mailManager"/>
+		<property name="personService" ref="personService"/>
+	</bean>
+	
+	<bean id="needOverviewController" class="com.pferrot.lendity.need.jsf.NeedOverviewController"
+	      scope="conversation.access">
+	      <property name="needService" ref="needService"/>
+	</bean>
+	
+	<bean id="needAddController" class="com.pferrot.lendity.need.jsf.NeedAddController"
+	      scope="conversation.access">
+	      <property name="needService" ref="needService"/>
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+	
+	<bean id="needEditController" class="com.pferrot.lendity.need.jsf.NeedEditController"
+	      scope="conversation.access">
+	      <property name="needService" ref="needService"/>
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+	
+	<bean id="myNeedsListController" class="com.pferrot.lendity.need.jsf.MyNeedsListController"
+	      scope="session">
+	      <property name="needService" ref="needService"/>
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+
+	<bean id="myConnectionsNeedsListController" class="com.pferrot.lendity.need.jsf.MyConnectionsNeedsListController"
+	      scope="conversation.access">
+	      <property name="needService" ref="needService"/>
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+
+	<bean id="deleteNeedTooltipController" class="com.pferrot.lendity.need.jsf.DeleteNeedTooltipController"
+	      scope="request">
+	      <property name="needService" ref="needService"/>
+	</bean>
+	
+	
+	<!-- 
+	NEED - end
+	========================================================================================================================
+	 -->
+
 	<!-- 
 	========================================================================================================================
 	EMAIL SUBSCRIBER - start

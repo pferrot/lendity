@@ -1,9 +1,7 @@
 package com.pferrot.lendity.item;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -11,71 +9,40 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.ObjectNotFoundException;
 
 import com.pferrot.core.CoreUtils;
-import com.pferrot.emailsender.manager.MailManager;
 import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.dao.ItemDao;
 import com.pferrot.lendity.dao.LendRequestDao;
-import com.pferrot.lendity.dao.ListValueDao;
-import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.model.ExternalItem;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
-import com.pferrot.lendity.model.Language;
 import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Person;
-import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.ListValueUtils;
 
-public class ItemService {
+public class ItemService extends ObjectService {
 
 	private final static Log log = LogFactory.getLog(ItemService.class);
 	
-	private ItemDao itemDao;
-	private ListValueDao listValueDao;
 	private LendRequestDao lendRequestDao;
-	private PersonDao personDao;
-	private PersonService personService;
-	private MailManager mailManager;
+	private ItemDao itemDao;
 	
+	public LendRequestDao getLendRequestDao() {
+		return lendRequestDao;
+	}
 	
-	public void setMailManager(final MailManager pMailManager) {
-		this.mailManager = pMailManager;
-	}
-
-	public void setPersonService(PersonService personService) {
-		this.personService = personService;
-	}
-
-	public void setItemDao(ItemDao itemDao) {
-		this.itemDao = itemDao;
-	}
-
-	public void setListValueDao(ListValueDao listValueDao) {
-		this.listValueDao = listValueDao;
-	}
-
 	public void setLendRequestDao(LendRequestDao lendRequestDao) {
 		this.lendRequestDao = lendRequestDao;
 	}
 
-	public void setPersonDao(PersonDao personDao) {
-		this.personDao = personDao;
+	public ItemDao getItemDao() {
+		return itemDao;
 	}
 
-	public List<ListValue> getCategories() {
-		return listValueDao.findListValue(ItemCategory.class);
-	}
-	
-	public List<Person> getCurrentPersonEnabledConnections() {
-		final ListWithRowCount listWithRowCount = personDao.findPersons(PersonUtils.getCurrentPersonId(), PersonDao.CONNECTIONS_LINK, null, Boolean.TRUE, true, null, null, 0, 0);
-		return listWithRowCount.getList();
-	}
-	
-	public Language findLanguage(final String languageLabelCode) {
-		return (Language)listValueDao.findListValue(languageLabelCode);
+	public void setItemDao(ItemDao itemDao) {
+		this.itemDao = itemDao;
 	}
 
 	public InternalItem findInternalItem(final Long itemId) {
@@ -117,7 +84,7 @@ public class ItemService {
 
 	public ListWithRowCount findMyConnectionsItems(final Long pConnectionId, final String pTitle, final Long pCategoryId,
 			final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
-		Long[] connectionsIds = personService.getCurrentPersonConnectionIds(pConnectionId);
+		Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(pConnectionId);
 		if (connectionsIds == null || connectionsIds.length == 0) {
 			return ListWithRowCount.emptyListWithRowCount();
 		}
@@ -125,7 +92,7 @@ public class ItemService {
 	}
 	
 	public ListWithRowCount findMyLatestConnectionsItems() {
-		Long[] connectionsIds = personService.getCurrentPersonConnectionIds(null);
+		Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(null);
 		if (connectionsIds == null || connectionsIds.length == 0) {
 			return ListWithRowCount.emptyListWithRowCount();
 		}
@@ -133,37 +100,13 @@ public class ItemService {
 	}
 	
 	public ListWithRowCount findPersonLatestConnectionsItemsSince(final Person pPerson, final Date pDate) {
-		Long[] connectionsIds = personService.getPersonConnectionIds(pPerson, null);
+		Long[] connectionsIds = getPersonService().getPersonConnectionIds(pPerson, null);
 		if (connectionsIds == null || connectionsIds.length == 0) {
 			return ListWithRowCount.emptyListWithRowCount();
 		}
 		return itemDao.findInternalItems(connectionsIds, Boolean.TRUE, null, null, null, null, Boolean.TRUE, null, pDate, "creationDate", Boolean.FALSE, 0, 5);
 	}
-	
-	
-	
-	private Long[] getCategoryIds(final Long pCategoryId) {
-		Long[] categoryIds = null;
-		if (pCategoryId != null) {
-			categoryIds = new Long[1];
-			categoryIds[0] = pCategoryId;
-		}
-		return categoryIds;		
-	}
 
-//	public List<Item> findItemsBorrowedByPersonId(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
-//		return itemDao.findItemsBorrowedByPerson(pPersonId, pFirstResult, pMaxResults);
-//	}
-//
-//	public List<InternalItem> findItemsLentByPersonId(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
-//		return itemDao.findItemsLentByPerson(pPersonId, pFirstResult, pMaxResults);
-//	}
-//	
-//	public List<InternalItem> findVisibleItemsOwnedByCurrentPersonConnections(final int pFirstResult, final int pMaxResults) {
-//		return itemDao.findVisibleItemsOwnedByConnections(getCurrentPerson(), pFirstResult, pMaxResults);
-//	}
-
-	
 	/**
 	 * When an internal item is no more lent.
 	 *
@@ -196,7 +139,7 @@ public class ItemService {
 			Map<String, String> inlineResources = new HashMap<String, String>();
 			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
 			
-			mailManager.send(Configuration.getNoReplySenderName(), 
+			getMailManager().send(Configuration.getNoReplySenderName(), 
 					         Configuration.getNoReplyEmailAddress(),
 					         to,
 					         null, 
@@ -223,7 +166,7 @@ public class ItemService {
 		final InternalItem internalItem = findInternalItem(pItemId);
 		assertCurrentUserAuthorizedToEdit(internalItem);
 		// TODO: check if enabled and allowed to borrow !?
-		final Person borrower = personDao.findPerson(pBorrowerId);
+		final Person borrower = getPersonDao().findPerson(pBorrowerId);
 		internalItem.setBorrowed(borrower, pBorrowDate);
 		
 		updateItem(internalItem);
@@ -247,7 +190,7 @@ public class ItemService {
 		Map<String, String> inlineResources = new HashMap<String, String>();
 		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
 		
-		mailManager.send(Configuration.getNoReplySenderName(), 
+		getMailManager().send(Configuration.getNoReplySenderName(), 
 				         Configuration.getNoReplyEmailAddress(),
 				         to,
 				         null, 
@@ -316,7 +259,7 @@ public class ItemService {
 		Map<String, String> inlineResources = new HashMap<String, String>();
 		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
 		
-		mailManager.send(Configuration.getNoReplySenderName(), 
+		getMailManager().send(Configuration.getNoReplySenderName(), 
 				         Configuration.getNoReplyEmailAddress(),
 				         to,
 				         null, 
@@ -354,13 +297,13 @@ public class ItemService {
 	}
 
 	public Long createItemWithCategory(final Item pItem, final Long pCategoryId) {
-		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, listValueDao));
+		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
 		return createItem(pItem);
 	}
 	
 	public Long createExternalItemWithCategory(final ExternalItem pItem, final Long pCategoryId) {
 		pItem.setBorrower(getCurrentPerson());
-		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, listValueDao));
+		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
 		return createItem(pItem);
 	}
 
@@ -370,10 +313,13 @@ public class ItemService {
 
 	public void updateItemWithCategory(final Item pItem, final Long pCategoryId) {
 		assertCurrentUserAuthorizedToEdit(pItem);
-		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, listValueDao));
+		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
 		updateItem(pItem);
 	}
 
+    /////////////////////////////////////////////////////////
+	// Access control
+	
 	public boolean isCurrentUserAuthorizedToView(final Item pItem) {
 		CoreUtils.assertNotNull(pItem);
 		if (isCurrentUserAuthorizedToEdit(pItem)) {
@@ -466,12 +412,12 @@ public class ItemService {
 	}
 
 	public Person getCurrentPerson() {
-		return personDao.findPerson(PersonUtils.getCurrentPersonId());
+		return getPersonDao().findPerson(PersonUtils.getCurrentPersonId());
 	}
 	
 	public ListValue getListValue(final Long pListValueId) {
 		CoreUtils.assertNotNull(pListValueId);
-		final ListValue listValue = listValueDao.findListValue(pListValueId);
+		final ListValue listValue = getListValueDao().findListValue(pListValueId);
 		if (listValue == null) {
 			throw new ObjectNotFoundException(pListValueId, ListValue.class.getName());
 		}

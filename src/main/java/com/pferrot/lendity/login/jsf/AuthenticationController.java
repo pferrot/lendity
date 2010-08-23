@@ -127,6 +127,18 @@ public class AuthenticationController {
 		return ItemUtils.getExternalItemAddPageUrl();
 	}
 	
+	public String getMyNeedsURL() {
+		return JsfUtils.getContextRoot() + PagesURL.MY_NEEDS_LIST;
+	}
+
+	public String getMyConnectionsNeedsURL() {
+		return JsfUtils.getContextRoot() + PagesURL.MY_CONNECTIONS_NEEDS_LIST;
+	}
+	
+	public String getNeedAddURL() {
+		return JsfUtils.getContextRoot() + PagesURL.NEED_ADD;
+	}
+	
 	public String getMyProfileURL() {
 		return JsfUtils.getFullUrl(PagesURL.MY_PROFILE);
 	}

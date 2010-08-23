@@ -454,6 +454,57 @@ function cancelDeleteExternalItem() {
 
 /***************************************************************************************************
  * 
+ * DELETE NEED
+ * 
+ ***************************************************************************************************/
+function hideDeleteNeedTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#deleteNeedForm'), $j('#deleteNeedDiv'));
+}
+
+function deleteNeedQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#deleteNeedDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip that is used to delete a need.
+ */
+var mDeleteNeedTooltip;
+var mDeleteNeedTarget;
+function deleteNeedTooltip(pTooltipTarget, pNeedID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideDeleteNeedTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('deleteNeedForm').reset();
+		// Set the correct needID.
+		$j('#deleteNeedId').val(pNeedID);
+		// Set the correct redirectID.
+		$j('#deleteNeedRedirectId').val(pRedirectID);
+		
+	  	mDeleteNeedTooltipTarget = pTooltipTarget;
+	  	mDeleteNeedTooltip = createFormTooltip($j(pTooltipTarget), $j('#deleteNeedForm'), deleteNeedQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button.
+ */
+function submitDeleteNeed() {	
+	document.getElementById("deleteNeedActionButton").click();
+}
+
+/*
+ * Click the cancel button.
+ */
+function cancelDeleteNeed() {
+	hideDeleteNeedTooltip(mDeleteNeedTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
  * REQUEST CONNECTION
  * 
  ***************************************************************************************************/

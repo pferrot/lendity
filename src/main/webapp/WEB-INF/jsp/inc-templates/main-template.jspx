@@ -168,6 +168,29 @@
 	    </ul>
 	</li>
 	<li>
+        <h:outputLink value="#{authenticationController.myNeedsURL}">
+        	<h:outputText value="#{messages.menu_needs}"/>
+        </h:outputLink>
+		<ul class="sf-menu-sub1">
+			<li>
+			    <h:outputLink value="#{authenticationController.myNeedsURL}">
+				    <h:outputText value="#{messages.menu_myNeeds}" />
+			    </h:outputLink>
+			</li>
+			<li>
+			    <h:outputLink value="#{authenticationController.needAddURL}">
+				    <h:outputText value="#{messages.menu_addNeed}" />
+			    </h:outputLink>
+			</li>
+			<li>
+			   <h:outputLink value="#{authenticationController.myConnectionsNeedsURL}">
+		       		<h:outputText value="#{messages.menu_myConnectionsNeeds}"/>
+		       </h:outputLink>
+			</li>	
+	    </ul>
+	</li>
+
+	<li>
       	<h:outputLink value="#{authenticationController.myConnectionsURL}">
             <h:outputText value="#{messages.menu_friends}"/>
         </h:outputLink>

@@ -1,0 +1,98 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="#{messages.need_needOverviewTitle}" />
+	<ui:param name="contentHeader" value="#{messages.need_needOverviewTitle}" />
+
+		<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+						
+			
+			
+				<f:view>
+
+<ui:include src="deleteNeedTooltip.jspx"/>
+
+<h2 class="gt-table-head"><h:outputText value="#{messages.need_needOverviewTitle}"/></h2>
+
+<!-- content box -->
+<div class="gt-form gt-content-box">
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_title}:" /></label></div>
+		<h4><h:outputText value="#{needOverviewController.need.title}" /></h4>
+	</div>
+	<br/>
+	<c:if test="#{needOverviewController.descriptionAvailable}">
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_description}:" /></label></div>
+			<h:outputText value="#{needOverviewController.description}" escape="false" />
+		</div>
+		<br/>
+	</c:if>
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_category}:" /></label></div>
+		<h:outputText value="#{needOverviewController.categoryLabel}" />
+	</div>
+	<br/>
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.need_owner}:" /></label></div>
+		<h:outputLink value="#{needOverviewController.ownerHref}">
+			<h:outputText value="#{needOverviewController.need.owner.displayName}" />
+		</h:outputLink>
+	</div>
+	<br/>
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_creationDate}:" /></label></div>
+		<h:outputText value="#{needOverviewController.creationDateLabel}" />
+	</div>
+	<br/>
+	<div class="gt-form-row gt-width-100">
+		<table><tr><td>
+			<h:outputLink rendered="#{needOverviewController.editAvailable}" value="#{needOverviewController.needEditHref}" styleClass="stylishButton">
+	    		<h:outputText rendered="#{needOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
+	    	</h:outputLink>
+    	</td><td>
+			<c:if test="#{needOverviewController.editAvailable}">
+				<span onclick="deleteNeedTooltip(this, '#{needOverviewController.need.id}', 1)">
+					<h:outputText styleClass="stylishButton" value="#{messages.item_delete}"/>
+				</span>
+			</c:if>
+		</td></tr></table>		
+	</div>
+</div>
+<!-- /content box -->
+					
+				</f:view>	
+			
+			</div>
+			<!-- /main content -->
+
+
+			
+			</div>
+			<!-- /body -->
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

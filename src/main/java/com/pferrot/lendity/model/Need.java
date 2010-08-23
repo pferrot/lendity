@@ -1,48 +1,62 @@
 package com.pferrot.lendity.model;
 // Generated 10 oct. 2008 00:01:18 by Hibernate Tools 3.2.0.b9
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import org.hibernate.envers.Audited;
 
 import com.pferrot.core.CoreUtils;
 
 /**
- * This is an item that belongs to a person in the system.
- *
  * @author Patrice
  *
  */
 @Entity
-@DiscriminatorValue("Internal")
-public class InternalItem extends Item implements Ownable, Commentable {
-
-	// Whether the item can be seen by connections or not.
-	@Column(name = "VISIBLE")
-	private Boolean visible = Boolean.TRUE;
+@Table(name = "NEEDS")
+public class Need implements CategoryEnabled, Ownable, Commentable, Serializable {
+	
+	@Id @GeneratedValue
+	@Column(name = "ID")
+    private Long id;
 
 	@OneToOne(targetEntity = Person.class)
 	@JoinColumn(name = "OWNER_ID")
 	private Person owner;
 	
-	@Column(name = "NB_REMINDERS_SENT")
-    private Integer nbRemindersSent;
+	@Column(name = "TITLE", nullable = false, length = 255)
+	@Audited
+	private String title;
+
+	@Column(name = "DESCRIPTION", nullable = true, length = 3999)
+	@Audited
+	private String description;
 	
-	@Column(name = "LATEST_REMINDER_DATE")
-	private Date latestReminderDate;
+	@ManyToOne(targetEntity = ItemCategory.class)
+	@JoinColumn(name = "CATEGORY_ID", nullable = false)
+	private ItemCategory category;
 	
+	@Column(name = "CREATION_DATE", nullable = false)
+	private Date creationDate;
+
 	@ManyToMany(targetEntity = com.pferrot.lendity.model.Comment.class)
 	@JoinTable(
-			name = "ITEMS_COMMENTS",
-			joinColumns = {@JoinColumn(name = "ITEM_ID")},
+			name = "NEEDS_COMMENTS",
+			joinColumns = {@JoinColumn(name = "NEED_ID")},
 			inverseJoinColumns = {@JoinColumn(name = "COMMENT_ID")}
 	)
 	private Set<Comment> comments = new HashSet<Comment>();
@@ -52,26 +66,27 @@ public class InternalItem extends Item implements Ownable, Commentable {
 	 */
 	@ManyToMany(targetEntity = com.pferrot.lendity.model.Person.class)
 	@JoinTable(
-			name = "ITEMS_COMMENTS_RECIPIENTS",
-			joinColumns = {@JoinColumn(name = "ITEM_ID")},
+			name = "NEEDS_COMMENTS_RECIPIENTS",
+			joinColumns = {@JoinColumn(name = "NEED_ID")},
 			inverseJoinColumns = {@JoinColumn(name = "COMMENT_RECIPIENT_ID")}
 	)
 	private Set<Person> commentsRecipients = new HashSet<Person>();
 
-    public InternalItem() {
+	
+	@Version
+	@Column(name = "OBJ_VERSION")
+	private int version;	
+	
+    public Need() {
     	super();
     }
-    
-	public Boolean getVisible() {
-		return visible;
+   	
+	public Long getId() {
+		return id;
 	}
 
-	public void setVisible(Boolean visible) {
-		this.visible = visible;
-	}
-
-	public boolean isVisible() {
-		return Boolean.TRUE.equals(getVisible());
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Person getOwner() {
@@ -81,48 +96,39 @@ public class InternalItem extends Item implements Ownable, Commentable {
 	public void setOwner(Person owner) {
 		this.owner = owner;
 	}
-
-	public Integer getNbRemindersSent() {
-		return nbRemindersSent;
-	}
-
-	public void setNbRemindersSent(Integer nbRemindersSent) {
-		this.nbRemindersSent = nbRemindersSent;
-	}
-
-	public Date getLatestReminderDate() {
-		return latestReminderDate;
-	}
-
-	public void setLatestReminderDate(Date latestReminderDate) {
-		this.latestReminderDate = latestReminderDate;
-	}
-
-	public boolean isAvailable() {
-		return !isBorrowed() && isVisible();
-	}
-
-	@Override
-	public void setLendBack() {
-		super.setLendBack();
-		setLatestReminderDate(null);
-		setNbRemindersSent(null);
-	}
-
-	@Override
-	public void setBorrowed(Person pBorrower, Date pBorrowDate) {
-		super.setBorrowed(pBorrower, pBorrowDate);
-		setLatestReminderDate(null);
-		setNbRemindersSent(Integer.valueOf(0));
-	}
-
-	@Override
-	public void setBorrowed(String pBorrowerName, Date pBorrowDate) {
-		super.setBorrowed(pBorrowerName, pBorrowDate);
-		setLatestReminderDate(null);
-		setNbRemindersSent(Integer.valueOf(0));
-	}
 	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public ItemCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(ItemCategory category) {
+		this.category = category;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
 	public Set<Comment> getComments() {
 		return comments;
 	}
@@ -159,19 +165,6 @@ public class InternalItem extends Item implements Ownable, Commentable {
 		commentsRecipients.remove(pCommentRecipient);
 	}
 
-	/**
-	 * Update latestReminderDate and nbRemindersSent.
-	 */
-	public void reminderSentNow() {
-		setLatestReminderDate(new Date());
-		if (getNbRemindersSent() == null) {
-			setNbRemindersSent(Integer.valueOf(1));
-		}
-		else {
-			setNbRemindersSent(Integer.valueOf(getNbRemindersSent().intValue() + 1));
-		}
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -186,13 +179,28 @@ public class InternalItem extends Item implements Ownable, Commentable {
 			return true;
 		}
 		// This tests if null at the same time.
-		else if (!(obj instanceof InternalItem)){
+		else if (!(obj instanceof Need)){
 			return false;
 		}
 		else {
-			final InternalItem other = (InternalItem)obj;
+			final Need other = (Need)obj;
 			return getId() != null && getId().equals(other.getId());
 		}
+	}
+
+
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer();
+		
+		if (this instanceof Need) {
+			sb.append("Need, ");
+			sb.append("ID: ");
+			sb.append(getId());
+		}
+		sb.append(", title: ");
+		sb.append(getTitle());
+		return sb.toString();
 	}
 }
 

@@ -33,7 +33,7 @@ import com.pferrot.core.CoreUtils;
 		discriminatorType = DiscriminatorType.STRING
 )
 @Table(name = "ITEMS")
-public abstract class Item implements Borrowable, Serializable {
+public abstract class Item implements CategoryEnabled, Borrowable, Serializable {
 	
 	@Id @GeneratedValue
 	@Column(name = "ID")

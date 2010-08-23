@@ -48,6 +48,10 @@
         <mapping class="com.pferrot.lendity.model.LendRequest"/>
         <mapping class="com.pferrot.lendity.model.LendRequestResponse"/>
         
+        <mapping class="com.pferrot.lendity.model.Comment"/>
+        <mapping class="com.pferrot.lendity.model.Need"/>
+         
+        
         <mapping class="com.pferrot.envers.model.UserRevisionEntity"/>
         
     </session-factory>

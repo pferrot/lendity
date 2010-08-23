@@ -101,6 +101,23 @@ public interface PagesURL {
 	// ITEM - end
 	/////////////////////////////////////////////////////////////////////////
 
+	/////////////////////////////////////////////////////////////////////////
+	// NEED - start
+	
+	String NEED_OVERVIEW = "/auth/need/needOverview.faces";
+	String NEED_OVERVIEW_PARAM_NEED_ID = "needID";
+	
+	String NEED_ADD = "/auth/need/needAdd.faces";
+	
+	String NEED_EDIT = "/auth/need/needEdit.faces";
+	String NEED_EDIT_PARAM_NEED_ID = NEED_OVERVIEW_PARAM_NEED_ID;
+	
+	String MY_NEEDS_LIST = "/auth/need/myNeedsList.faces";
+	String MY_CONNECTIONS_NEEDS_LIST = "/auth/need/myConnectionsNeedsList.faces";
+	
+	// NEED - end
+	/////////////////////////////////////////////////////////////////////////
+	
 	
 	/////////////////////////////////////////////////////////////////////////
 	// CONNECTION REQUEST - start	
