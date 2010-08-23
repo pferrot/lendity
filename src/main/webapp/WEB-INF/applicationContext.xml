@@ -549,6 +549,7 @@
 		
 	<bean id="itemServiceTarget" class="com.pferrot.lendity.item.ItemService">
 		<property name="itemDao" ref="itemDao"/>
+		<property name="documentDao" ref="documentDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
 		<property name="lendRequestDao" ref="lendRequestDao"/>
 		<property name="personDao" ref="personDao"/>
@@ -559,6 +560,7 @@
 	<bean id="internalItemOverviewController" class="com.pferrot.lendity.item.jsf.InternalItemOverviewController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
+	      <property name="documentService" ref="documentService"/>
 	      <property name="lendRequestService" ref="lendRequestService"/>
 	</bean>
 	
@@ -732,6 +734,46 @@
 	
 	<!-- 
 	NEED - end
+	========================================================================================================================
+	 -->
+
+	<!-- 
+	========================================================================================================================
+	DOCUMENT - start
+	 -->
+
+	<bean id="documentDaoTarget" class="com.pferrot.lendity.dao.hibernate.DocumentDaoHibernateImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	
+	<bean id="documentDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target">
+			<ref local="documentDaoTarget"/>
+		</property>
+		<property name="proxyInterfaces">
+           <value>com.pferrot.lendity.dao.DocumentDao</value>
+         </property>		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="documentService" parent="baseTransactionProxy">
+		<property name="target" ref="documentServiceTarget" />
+	</bean>
+		
+	<bean id="documentServiceTarget" class="com.pferrot.lendity.document.DocumentService">
+		<property name="documentDao" ref="documentDao"/>
+	</bean>
+	
+	<!-- 
+	DOCUMENT - end
 	========================================================================================================================
 	 -->
 

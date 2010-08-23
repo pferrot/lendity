@@ -51,6 +51,14 @@
 		</div>
 		<br/>
 	</c:if>
+	
+	<c:if test="#{internalItemOverviewController.image1URL != null}">
+		<center>
+		<img style="max-width: 550px; max-height: 800px;" src="#{internalItemOverviewController.image1URL}"/>
+		<br/><br/><br/>
+		</center>
+	</c:if>
+
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_category}:" /></label></div>
 		<h:outputText value="#{internalItemOverviewController.categoryLabel}" />

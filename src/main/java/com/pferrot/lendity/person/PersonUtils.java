@@ -2,6 +2,7 @@ package com.pferrot.lendity.person;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.lendity.PagesURL;
@@ -18,6 +19,10 @@ public class PersonUtils {
 	public static Long getCurrentPersonId() {
 		return (Long)FacesContext.getCurrentInstance().getExternalContext().
 					getSessionMap().get(PersonConsts.CURRENT_PERSON_ID_SESSION_ATTRIBUTE_NAME);
+	}
+	
+	public static Long getCurrentPersonId(final HttpSession pSession) {
+		return (Long)pSession.getAttribute(PersonConsts.CURRENT_PERSON_ID_SESSION_ATTRIBUTE_NAME);
 	}
 	
 	public static String getCurrentPersonFirstName() {

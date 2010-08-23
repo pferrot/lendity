@@ -4,7 +4,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:o="http://myfaces.apache.org/orchestra"
-	xmlns:c="http://java.sun.com/jstl/core">
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<!-- params for page titles-->
 	<ui:param name="pageTitle" value="#{messages.item_internalItemEditTitle}" />
@@ -32,7 +33,7 @@
 				
 				<f:view>
 
-					<h:form>
+					<h:form enctype="multipart/form-data">
 
 
 					<!-- form row -->
@@ -80,7 +81,21 @@
 						</div><!-- /form row -->
 					</c:if>
 					
-						
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.image_image}"/> 1</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="image1"></h:message>
+						<c:if test="#{internalItemEditController.imageFile1TooLargeErrorMessage != null}">
+							<h:outputText value="#{internalItemEditController.imageFile1TooLargeErrorMessage}" styleClass="error"/>
+						</c:if>
+						<t:inputFileUpload id="image1"
+										   styleClass="file"
+						                   value="#{internalItemEditController.imageFile1}"
+						                   required="false"
+						                   accept="image/*" 
+						                   validator="#{internalItemEditController.validateImageFile1}"/>					
+					</div><!-- /form row -->						
 
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">

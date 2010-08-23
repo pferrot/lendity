@@ -152,5 +152,11 @@ public class UiUtils {
 		}
 		return result;
 	}
+
+	public static String getFileTooLargeErrorMessageFromResource(final Locale pLocale) {
+		String message = "";
+		message = I18nUtils.getMessageResourceString("validation_fileTooLarge", pLocale);
+		return message;
+	}
 		
 }

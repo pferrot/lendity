@@ -47,6 +47,19 @@ public abstract class Item implements CategoryEnabled, Borrowable, Serializable 
 	@Audited
 	private String description;
 	
+	
+	@OneToOne(targetEntity = Document.class)
+	@JoinColumn(name = "IMAGE_1_ID", nullable = true)
+	private Document image1;
+	
+	@OneToOne(targetEntity = Document.class)
+	@JoinColumn(name = "IMAGE_2_ID", nullable = true)
+	private Document image2;
+	
+	@OneToOne(targetEntity = Document.class)
+	@JoinColumn(name = "IMAGE_3_ID", nullable = true)
+	private Document image3;
+	
 	@ManyToOne(targetEntity = ItemCategory.class)
 	@JoinColumn(name = "CATEGORY_ID", nullable = false)
 	private ItemCategory category;
@@ -96,6 +109,30 @@ public abstract class Item implements CategoryEnabled, Borrowable, Serializable 
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Document getImage1() {
+		return image1;
+	}
+
+	public void setImage1(Document image1) {
+		this.image1 = image1;
+	}
+
+	public Document getImage2() {
+		return image2;
+	}
+
+	public void setImage2(Document image2) {
+		this.image2 = image2;
+	}
+
+	public Document getImage3() {
+		return image3;
+	}
+
+	public void setImage3(Document image3) {
+		this.image3 = image3;
 	}
 
 	public ItemCategory getCategory() {

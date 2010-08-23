@@ -19,7 +19,7 @@
 		<property name="connection.username">pferrot</property>
 		<property name="connection.password">klop</property>
         
-        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.show_sql">true</property>
 <!--        <property name="hibernate.hbm2ddl.auto">create-drop</property>-->
 <!--        <property name="hibernate.hbm2ddl.auto">create</property>-->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
@@ -41,6 +41,8 @@
         <mapping class="com.pferrot.lendity.model.InternalItem"/>
         <mapping class="com.pferrot.lendity.model.ExternalItem"/>
         <mapping class="com.pferrot.lendity.model.ItemCategory"/>
+        
+        <mapping class="com.pferrot.lendity.model.Document"/>
         
         <mapping class="com.pferrot.lendity.model.ConnectionRequest"/>
         <mapping class="com.pferrot.lendity.model.ConnectionRequestResponse"/>
