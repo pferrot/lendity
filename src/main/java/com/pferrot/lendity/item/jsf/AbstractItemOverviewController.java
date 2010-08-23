@@ -8,11 +8,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.StringUtils;
+import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.document.DocumentService;
+import com.pferrot.lendity.document.DocumentUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.HtmlUtils;
+import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
 
 public abstract class AbstractItemOverviewController
@@ -21,6 +25,7 @@ public abstract class AbstractItemOverviewController
 
 	private Item item;
 	private ItemService itemService;
+	private DocumentService documentService;
 	private Long itemId;
 
 	public void setItemService(ItemService itemService) {
@@ -29,6 +34,14 @@ public abstract class AbstractItemOverviewController
 	
 	public ItemService getItemService() {
 		return itemService;
+	}
+
+	public DocumentService getDocumentService() {
+		return documentService;
+	}
+
+	public void setDocumentService(DocumentService documentService) {
+		this.documentService = documentService;
 	}
 
 	public String getTitle() {
@@ -49,6 +62,16 @@ public abstract class AbstractItemOverviewController
 
 	public void setItem(Item item) {
 		this.item = item;
+		if (item.getImage1() != null) {
+			documentService.authorizeDownloadOneMinute(JsfUtils.getSession(), item.getImage1().getId());
+		}
+	}
+
+	public String getImage1URL() {
+		if (item.getImage1() == null) {
+			return null;
+		}
+		return JsfUtils.getFullUrl(PagesURL.DOCUMENT_DOWNLOAD, PagesURL.DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ID, item.getImage1().getId().toString());
 	}
 
 	public String getCategoryLabel() {

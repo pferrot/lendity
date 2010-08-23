@@ -25,6 +25,7 @@ import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.StringCaseInsensitiveComparator;
+import com.pferrot.lendity.utils.UiUtils;
 
 @ViewController(viewIds={"/auth/item/internalItemsImport.jspx"})
 public class InternalItemsImportStep1 extends AbstractInternalItemsImportStep {
@@ -66,7 +67,7 @@ public class InternalItemsImportStep1 extends AbstractInternalItemsImportStep {
 			log.debug("File upload exception: " + fileUploadException);
 		}
 		if (fileUploadException != null) {
-			setFileTooLargeErrorMessage(getFileTooLargeErrorMessageFromResource());
+			setFileTooLargeErrorMessage(UiUtils.getFileTooLargeErrorMessageFromResource(I18nUtils.getDefaultLocale()));
 		}
 		else {
 			setFileTooLargeErrorMessage(null);
@@ -172,14 +173,6 @@ public class InternalItemsImportStep1 extends AbstractInternalItemsImportStep {
 		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 		message = I18nUtils.getMessageResourceString("validation_importIoError", locale);
 		context.addMessage(getFileUIComponent().getClientId(context), new FacesMessage(message));
-	}
-	
-	private String getFileTooLargeErrorMessageFromResource() {
-		String message = "";
-		FacesContext context = FacesContext.getCurrentInstance();
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-		message = I18nUtils.getMessageResourceString("validation_fileTooLarge", locale);
-		return message;
 	}
 	
 	private void tooManyEntriesInFile(final int pMaxNbEntries) {

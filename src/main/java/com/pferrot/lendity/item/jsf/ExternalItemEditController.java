@@ -67,7 +67,7 @@ public class ExternalItemEditController extends AbstractExternalItemAddEditContr
 		getItem().setDescription(getDescription());
 		getItem().setOwnerName(getOwnerName());
 		getItem().setBorrowDate(getBorrowDate());
-		getItemService().updateItemWithCategory(getItem(), getCategoryId());
+		getItemService().updateItemWithCategory(getItem(), getCategoryId(), null);
 
 		return getItem().getId();
 	}
