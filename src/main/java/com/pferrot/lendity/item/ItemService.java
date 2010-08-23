@@ -10,7 +10,6 @@ import org.hibernate.ObjectNotFoundException;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.lendity.configuration.Configuration;
-import com.pferrot.lendity.dao.DocumentDao;
 import com.pferrot.lendity.dao.ItemDao;
 import com.pferrot.lendity.dao.LendRequestDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
@@ -311,19 +310,15 @@ public class ItemService extends ObjectService {
 
 	public void updateItemWithCategory(final Item pItem, final Long pCategoryId, final Document pNewImage1) {
 		assertCurrentUserAuthorizedToEdit(pItem);
-<<<<<<< .mine
 		if (pNewImage1 != null) {
 			Document currentImage = pItem.getImage1();
 			if (currentImage != null) {
-				documentDao.deleteDocument(currentImage);
+				getDocumentDao().deleteDocument(currentImage);
 			}
-			documentDao.createDocument(pNewImage1);
+			getDocumentDao().createDocument(pNewImage1);
 			pItem.setImage1(pNewImage1);
 		}
-		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, listValueDao));
-=======
 		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
->>>>>>> .r277
 		updateItem(pItem);
 	}
 

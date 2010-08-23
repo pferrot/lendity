@@ -8,6 +8,7 @@ import org.hibernate.ObjectNotFoundException;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.emailsender.manager.MailManager;
+import com.pferrot.lendity.dao.DocumentDao;
 import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
@@ -25,6 +26,7 @@ public class ObjectService {
 	private PersonDao personDao;
 	private PersonService personService;
 	private MailManager mailManager;
+	private DocumentDao documentDao;
 	
 	
 	public ListValueDao getListValueDao() {
@@ -41,6 +43,14 @@ public class ObjectService {
 
 	public void setPersonDao(PersonDao personDao) {
 		this.personDao = personDao;
+	}
+
+	public DocumentDao getDocumentDao() {
+		return documentDao;
+	}
+
+	public void setDocumentDao(DocumentDao documentDao) {
+		this.documentDao = documentDao;
 	}
 
 	public PersonService getPersonService() {

@@ -1,44 +1,24 @@
 package com.pferrot.lendity.item.jsf;
 
-<<<<<<< .mine
-import java.util.List;
-import java.util.Locale;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 
-=======
->>>>>>> .r277
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.fileupload.UploadedFile;
 import org.apache.myfaces.orchestra.viewController.annotations.PreRenderView;
 
 import com.pferrot.lendity.PagesURL;
-<<<<<<< .mine
 import com.pferrot.lendity.document.DocumentUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
-import com.pferrot.lendity.item.ItemConsts;
-import com.pferrot.lendity.item.ItemService;
-=======
->>>>>>> .r277
 import com.pferrot.lendity.utils.JsfUtils;
 
 public abstract class AbstractItemAddEditController extends AbstractObjectAddEditController {
 	
 	private final static Log log = LogFactory.getLog(AbstractItemAddEditController.class);
 	
-<<<<<<< .mine
-	private ItemService itemService;
-	
-	private List<SelectItem> categoriesSelectItems;
-	private Long categoryId;
-	private String title;
-	private String description;
 	
 	private UploadedFile imageFile1;
 	private UIComponent imageFile1UIComponent;
@@ -52,53 +32,6 @@ public abstract class AbstractItemAddEditController extends AbstractObjectAddEdi
 	private UIComponent imageFile3UIComponent;
 	private String imageFile3TooLargeErrorMessage;
 	
-	public void setItemService(ItemService itemService) {
-		this.itemService = itemService;
-	}	
-	
-	public ItemService getItemService() {
-		return itemService;
-	}
-
-	public List<SelectItem> getCategoriesSelectItems() {
-		if (categoriesSelectItems == null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			categoriesSelectItems = UiUtils.getSelectItemsForListValue(itemService.getCategories(), locale);
-			categoriesSelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
-		}		
-		return categoriesSelectItems;	
-	}	
-
-	public Long getCategoryId() {
-		return categoryId;
-	}
-
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = UiUtils.getPositiveLongOrNull(categoryId);
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	public boolean isDescriptionAvailable() {
-		return !StringUtils.isNullOrEmpty(description);
-	}
-
-=======
->>>>>>> .r277
 	public UploadedFile getImageFile1() {
 		return imageFile1;
 	}
