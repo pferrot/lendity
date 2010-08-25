@@ -5,6 +5,7 @@ import com.pferrot.lendity.item.ItemUtils;
 import com.pferrot.lendity.item.jsf.MyConnectionsItemsListController;
 import com.pferrot.lendity.item.jsf.MyItemsListController;
 import com.pferrot.lendity.login.AuthenticationConsts;
+import com.pferrot.lendity.need.jsf.MyConnectionsNeedsListController;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.security.SecurityUtils;
@@ -133,6 +134,12 @@ public class AuthenticationController {
 
 	public String getMyConnectionsNeedsURL() {
 		return JsfUtils.getContextRoot() + PagesURL.MY_CONNECTIONS_NEEDS_LIST;
+	}
+
+	public String getMyConnectionsNeedsOrderByCreationDateURL() {
+		return JsfUtils.getFullUrl(PagesURL.MY_CONNECTIONS_NEEDS_LIST,
+				MyConnectionsNeedsListController.FORCE_VIEW_PARAM_NAME,
+				MyConnectionsNeedsListController.FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE);
 	}
 	
 	public String getNeedAddURL() {

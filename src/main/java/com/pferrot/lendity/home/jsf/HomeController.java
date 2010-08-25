@@ -1,6 +1,7 @@
 package com.pferrot.lendity.home.jsf;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
@@ -9,13 +10,18 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.item.jsf.AbstractItemsListController;
 import com.pferrot.lendity.lendrequest.LendRequestService;
+import com.pferrot.lendity.model.CategoryEnabled;
 import com.pferrot.lendity.model.ConnectionRequest;
 import com.pferrot.lendity.model.Item;
+import com.pferrot.lendity.model.Need;
+import com.pferrot.lendity.need.NeedService;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
@@ -27,16 +33,22 @@ public class HomeController extends AbstractItemsListController {
 	private final static String CONNECTIONS_UPDATES_LIST_LOADED_ATTRIBUTE_VALUE = "connUpListAttrValue";
 	private final static String CONNECTIONS_UPDATES_LIST_LOADED_ATTRIBUTE_PREFIX_NAME = "connUpListAttrPrefix";
 	
+	private final static String CONNECTIONS_NEEDS_LIST_LOADED_ATTRIBUTE_VALUE = "connNeListAttrValue";
+	private final static String CONNECTIONS_NEEDS_LIST_LOADED_ATTRIBUTE_PREFIX_NAME = "connNeListAttrPrefix";
+	
 	private ConnectionRequestService connectionRequestService;
 	private LendRequestService lendRequestService;
-	private ItemService itemService;
+	private NeedService needService;
 	
 	// Keep variables to not hit the DB every time.
 	private long nbPendingLendRequests = -1;
 	private long nbPendingConnectionRequests = -1;
 	
-	private List connectionsUpdatesList;
+	private List<ConnectionRequest> connectionsUpdatesList;
 	private HtmlDataTable connectionsUpdatesTable;
+	
+	private List<Need> connectionsNeedsList;
+	private HtmlDataTable connectionsNeedsTable;
 	
 	public ConnectionRequestService getConnectionRequestService() {
 		return connectionRequestService;
@@ -51,13 +63,15 @@ public class HomeController extends AbstractItemsListController {
 	public void setLendRequestService(LendRequestService lendRequestService) {
 		this.lendRequestService = lendRequestService;
 	}
-	public ItemService getItemService() {
-		return itemService;
-	}
-	public void setItemService(ItemService itemService) {
-		this.itemService = itemService;
-	}
 
+	public NeedService getNeedService() {
+		return needService;
+	}
+	
+	public void setNeedService(NeedService needService) {
+		this.needService = needService;
+	}
+	
 	public long getNbPendingConnectionRequests() {
 		if (nbPendingConnectionRequests < 0) {
 			nbPendingConnectionRequests = connectionRequestService.countCurrentUserPendingConnectionRequests(); 
@@ -74,12 +88,7 @@ public class HomeController extends AbstractItemsListController {
 
 	@Override
 	protected ListWithRowCount getListWithRowCount() {
-		return itemService.findMyLatestConnectionsItems();
-	}
-	
-	public String getCreationDateLabel() {
-		final Item item = (Item)getTable().getRowData();
-		return UiUtils.getDateAsString(item.getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		return getItemService().findMyLatestConnectionsItems();
 	}
 	
 	public List getConnectionsUpdatesList() {
@@ -117,6 +126,62 @@ public class HomeController extends AbstractItemsListController {
 	private ListWithRowCount getConnectionsUpdatesListWithRowCount() {
 		return connectionRequestService.findCurrentUserConnectionsUpdates(0, 5);
 	}
+
+	
+	
+	public List<Need> getConnectionsNeedsList() {
+		// See http://balusc.blogspot.com/2006/06/using-datatables.html
+		// Doing this since using session bean.
+		
+		HttpServletRequest request = JsfUtils.getRequest();
+		if (FacesContext.getCurrentInstance().getRenderResponse()
+			&& ! CONNECTIONS_NEEDS_LIST_LOADED_ATTRIBUTE_VALUE.equals(
+					request.getAttribute(CONNECTIONS_NEEDS_LIST_LOADED_ATTRIBUTE_PREFIX_NAME + this.getClass().getName()))) {
+	    		// Reload to get most recent data.
+				final ListWithRowCount listWithRowCount = getConnectionsNeedsListWithRowCount();
+				connectionsNeedsList = listWithRowCount.getList();
+				// Flag the request so that the list is only loaded once. 
+				// The "FacesContext.getCurrentInstance().getRenderResponse()" is not enough since
+				// the getList method is called several times during the same phase - because of the tableControls
+				// for instance.
+				request.setAttribute(CONNECTIONS_NEEDS_LIST_LOADED_ATTRIBUTE_PREFIX_NAME + this.getClass().getName(), CONNECTIONS_NEEDS_LIST_LOADED_ATTRIBUTE_VALUE);
+		}
+        return connectionsNeedsList;
+	}
+	public void setConnectionsNeedsList(List<Need> connectionsNeedsList) {
+		this.connectionsNeedsList = connectionsNeedsList;
+	}
+	public HtmlDataTable getConnectionsNeedsTable() {
+		return connectionsNeedsTable;
+	}
+	public void setConnectionsNeedsTable(HtmlDataTable connectionsNeedsTable) {
+		this.connectionsNeedsTable = connectionsNeedsTable;
+	}
+	
+	public String getNeedCategoryLabel() {
+		final CategoryEnabled ce = (CategoryEnabled)getConnectionsNeedsTable().getRowData();
+		if (ce != null && ce.getCategory() != null) {
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			return I18nUtils.getMessageResourceString(ce.getCategory().getLabelCode(), locale);
+		}
+		else {
+			return "";
+		}
+	}
+
+	public String getNeedCreationDateLabel() {
+		final Need need = (Need)getConnectionsNeedsTable().getRowData();
+		return UiUtils.getDateAsString(need.getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+	}
+	
+	public String getNeedOverviewHref() {
+		final Need need = (Need)getConnectionsNeedsTable().getRowData();
+		return JsfUtils.getFullUrl(PagesURL.NEED_OVERVIEW, PagesURL.NEED_OVERVIEW_PARAM_NEED_ID, need.getId().toString());
+	}
+	
+	private ListWithRowCount getConnectionsNeedsListWithRowCount() {
+		return getNeedService().findMyLatestConnectionsNeeds();
+	}
 	
 	public String getRequesterOverviewHref() {
 		final ConnectionRequest connectionRequest = (ConnectionRequest)getConnectionsUpdatesTable().getRowData();
@@ -136,6 +201,7 @@ public class HomeController extends AbstractItemsListController {
 	public boolean isEmptyHomepage() {
 		return getConnectionsUpdatesList().isEmpty() && 
 			getList().isEmpty() && 
+			getConnectionsNeedsList().isEmpty() &&
 			getNbPendingConnectionRequests() == 0 && 
 			getNbPendingLendRequests() == 0;
 	}

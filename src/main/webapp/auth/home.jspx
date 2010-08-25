@@ -114,6 +114,33 @@
 							</h:outputLink>
 							<br/>
 						</c:if>
+
+						<c:if test="#{!empty(homeController.connectionsNeedsList)}">
+							<br/>
+							<p>
+								<div class="highlightedBg"><b><h:outputText value="#{messages.home_latestConnectionNeeds}"/></b></div>
+							</p>										
+							<h:dataTable value="#{homeController.connectionsNeedsList}" binding="#{homeController.connectionsNeedsTable}" var="need">
+							    <h:column>
+									<h:outputLink value="#{homeController.needOverviewHref}">
+										<h:outputText value="#{need.title}" />
+									</h:outputLink>
+									<span class="fontSizeSmall"><h:outputFormat value="#{messages.home_latestConnectionItemsDetails}">
+									    	<f:param value="#{homeController.needCategoryLabel}" />
+									    	<f:param value="#{need.owner.displayName}" />
+									    	<f:param value="#{homeController.needCreationDateLabel}" />
+								        </h:outputFormat>
+							        </span>
+							    </h:column>
+							</h:dataTable>
+							<h:outputLink value="#{authenticationController.myConnectionsNeedsOrderByCreationDateURL}">
+								<span class="fontSizeSmall">
+									<br/>
+									<h:outputText value="#{messages.home_searchMoreItems}"/>
+								</span>
+							</h:outputLink>
+							<br/>
+						</c:if>
 											
 						<c:if test="#{!empty(homeController.connectionsUpdatesList)}">
 							<br/>

@@ -274,6 +274,7 @@
 	<bean id="homeController" class="com.pferrot.lendity.home.jsf.HomeController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
+	      <property name="needService" ref="needService"/>
 	      <property name="lendRequestService" ref="lendRequestService"/>
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
@@ -816,6 +817,9 @@
 	         </entry>
 	         <entry key="itemService">
 	            <ref bean="itemService"/>
+	         </entry>
+	         <entry key="needService">
+	            <ref bean="needService"/>
 	         </entry>
 	         <entry key="personService">
 	            <ref bean="personService"/>

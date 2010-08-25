@@ -8,6 +8,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -133,9 +134,10 @@ public class I18nUtils {
 	}
 	
 	public static Locale getDefaultLocale() {
-		return SWISS_FRENCH_LOCALE;
+		return getSwissFrenchLocale();
 	}
-	
-	
 
+	public static Locale getCurrentLocale(final HttpSession pSession) {
+		return getDefaultLocale();
+	}
 }

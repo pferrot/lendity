@@ -36,6 +36,7 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 	
 	private MailManager mailManager;
 	private ItemService itemService;
+	private NeedService needService;
 	private ConnectionRequestService connectionRequestService;
 	private PersonService personService;
 
@@ -45,6 +46,10 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 
 	public void setItemService(ItemService itemService) {
 		this.itemService = itemService;
+	}
+
+	public void setNeedService(NeedService needService) {
+		this.needService = needService;
 	}
 
 	public void setConnectionRequestService(
@@ -160,6 +165,27 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 		}
 		objects.put("itemUrl", getConnectionsItemsByDateUrl());
 		
+		// Needs.
+		final ListWithRowCount needs = needService.findPersonLatestConnectionsNeedsSince(pPerson, latestUpdate);
+		if (log.isDebugEnabled()) {
+			log.debug("Needs: " + needs.getRowCount());
+		}
+		list = needs.getList();
+		ite = list.iterator();
+		int needsCounter = 0;
+		while (ite.hasNext()) {
+			needsCounter++;
+			final Need need = (Need)ite.next();
+			objects.put("needTitle" + needsCounter, need.getTitle());
+			objects.put("needDetails" + needsCounter, getNeedDetails(need));
+			objects.put("needUrl" + needsCounter, getNeedUrl(need));
+		}
+		nbExtra = needs.getRowCount() > needsCounter ? needs.getRowCount()-needsCounter : 0;
+		if (nbExtra > 0) {
+			objects.put("needNbExtra", String.valueOf(nbExtra));
+		}
+		objects.put("needUrl", getConnectionsNeedsByDateUrl());
+		
 		// Connection updates.
 		final ListWithRowCount connectionsUpdates = connectionRequestService.findPersonConnectionsUpdatesSince(pPerson, latestUpdate);
 		if (log.isDebugEnabled()) {
@@ -256,6 +282,17 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 		return I18nUtils.getMessageResourceString("home_latestConnectionItemsDetails", new Object[]{param1, param2, param3}, locale);	
 	}
 	
+	private String getNeedDetails(final Need pNeed) {
+		if (pNeed == null) {
+			return "";
+		}
+		final Locale locale = I18nUtils.getDefaultLocale();
+		final String param1 = UiUtils.getListValueLabel(pNeed.getCategory(), locale) ;
+		final String param2 = pNeed.getOwner().getDisplayName() ;
+		final String param3 = UiUtils.getDateAsString(pNeed.getCreationDate(), locale);
+		return I18nUtils.getMessageResourceString("home_latestConnectionItemsDetails", new Object[]{param1, param2, param3}, locale);	
+	}
+	
 	private String getConnectionUpdateDetails(final ConnectionRequest pConnectionRequest) {
 		if (pConnectionRequest == null) {
 			return "";
@@ -271,6 +308,14 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 				PagesURL.INTERNAL_ITEM_OVERVIEW,
 				PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID,
 				pItem.getId().toString());
+	}
+	
+	private String getNeedUrl(final Need pNeed) {
+		return JsfUtils.getFullUrlWithPrefix(
+				Configuration.getRootURL(),
+				PagesURL.NEED_OVERVIEW,
+				PagesURL.NEED_OVERVIEW_PARAM_NEED_ID,
+				pNeed.getId().toString());
 	}
 	
 	private String getPersonUrl(final Person pPerson) {
@@ -292,6 +337,14 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 				PagesURL.MY_CONNECTIONS_ITEMS_LIST,
 				MyConnectionsItemsListController.FORCE_VIEW_PARAM_NAME,
 				MyConnectionsItemsListController.FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE);
+	}
+	
+	private String getConnectionsNeedsByDateUrl() {
+		return JsfUtils.getFullUrlWithPrefix(
+				Configuration.getRootURL(),
+				PagesURL.MY_CONNECTIONS_NEEDS_LIST,
+				MyConnectionsNeedsListController.FORCE_VIEW_PARAM_NAME,
+				MyConnectionsNeedsListController.FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE);
 	}
 	
 //	private String getBorrowedItemsUrl() {

@@ -38,6 +38,40 @@ depuis le $latestUpdateDateLabel
 #end
 <a href="$itemUrl">Voir la liste complète</a><br/>
 
+<div style="background-color: #d3d3e1; width: 100%;">
+Besoins ajoutés
+#if( $latestUpdateDateLabel )
+(depuis le $latestUpdateDateLabel)
+#end
+</div>
+#if( !$needTitle1 )
+Aucun nouveau besoin
+<br/>
+#end
+#if( $needTitle1 )
+<a href="$needUrl1">$needTitle1</a> $needDetails1<br/>
+#end
+#if( $needTitle2 )
+<a href="$needUrl2">$needTitle2</a> $needDetails2<br/>
+#end
+#if( $needTitle3 )
+<a href="$needUrl3">$needTitle3</a> $needDetails3<br/>
+#end
+#if( $needTitle4 )
+<a href="$needUrl4">$needTitle4</a> $needDetails4<br/>
+#end
+#if( $needTitle5 )
+<a href="$needUrl5">$needTitle5</a> $needDetails5<br/>
+#end
+#if( $itemNbExtra )
+Plus $itemNbExtra besoins(s) supplémentaire(s)
+#if( $latestUpdateDateLabel )
+depuis le $latestUpdateDateLabel
+#end§
+<br/>
+#end
+<a href="$needUrl">Voir la liste complète</a><br/>
+
 <br/>
 <div style="background-color: #d3d3e1; width: 100%;">
 Amis
