@@ -32,6 +32,36 @@ depuis le $latestUpdateDateLabel
 #end
 Voir la liste complète: $itemUrl
 
+Besoins ajoutés
+#if( $latestUpdateDateLabel )
+(depuis le $latestUpdateDateLabel)
+#end
+#if( !$needTitle1 )
+Aucun nouvel objet
+#end
+#if( $needTitle1 )
+$needTitle1 $needDetails1
+#end
+#if( $needTitle2 )
+$needTitle2 $needDetails2
+#end
+#if( $needTitle3 )
+$needTitle3 $needDetails3
+#end
+#if( $needTitle4 )
+$needTitle4 $needDetails4
+#end
+#if( $needTitle5 )
+$needTitle5 $needDetails5
+#end
+#if( $needNbExtra )
+Plus $needNbExtra besoin(s) supplémentaire(s)
+#if( $latestUpdateDateLabel )
+depuis le $latestUpdateDateLabel
+#end
+#end
+Voir la liste complète: $needUrl
+
 
 Amis
 #if( $latestUpdateDateLabel )

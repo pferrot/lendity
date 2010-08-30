@@ -67,7 +67,7 @@ public class JsfUtils {
 	 * @return
 	 */
 	public static String getRequestParameter(final String pParameterName) {
-		HttpServletRequest request = (HttpServletRequest)getExternalContext().getRequest();
+		HttpServletRequest request = (HttpServletRequest)getExternalContext().getRequest();		
 		return request.getParameter(pParameterName);
 	}
 	
@@ -155,7 +155,8 @@ public class JsfUtils {
 					
 					finalUrl.append(paramValue[0]);
 					finalUrl.append("=");
-					finalUrl.append(URLEncoder.encode(paramValue[1], URL_ENCODING));				
+//					finalUrl.append(paramValue[1]);
+					finalUrl.append(URLEncoder.encode(paramValue[1], URL_ENCODING));
 				}
 			}
 			
@@ -205,9 +206,10 @@ public class JsfUtils {
 	 */
 	public static void redirect(final String pUrl, final String[][] pParametersValues) {
 		try {
-			final ExternalContext externalContext = getExternalContext();			
-			
-			externalContext.redirect(getFullUrl(pUrl, pParametersValues));
+			final ExternalContext externalContext = getExternalContext();
+			final String redirectUrl = getFullUrl(pUrl, pParametersValues);
+//			((HttpServletResponse)externalContext.getResponse()).sendRedirect(redirectUrl);
+			externalContext.redirect(redirectUrl);
 		}
 		catch (IOException e) {
 			throw new JsfException(e);

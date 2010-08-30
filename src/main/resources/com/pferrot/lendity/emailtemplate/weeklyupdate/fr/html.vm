@@ -38,6 +38,7 @@ depuis le $latestUpdateDateLabel
 #end
 <a href="$itemUrl">Voir la liste complète</a><br/>
 
+<br/>
 <div style="background-color: #d3d3e1; width: 100%;">
 Besoins ajoutés
 #if( $latestUpdateDateLabel )

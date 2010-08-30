@@ -163,7 +163,7 @@ public class ItemService extends ObjectService {
 		final InternalItem internalItem = findInternalItem(pItemId);
 		assertCurrentUserAuthorizedToEdit(internalItem);
 		// TODO: check if enabled and allowed to borrow !?
-		final Person borrower = getPersonDao().findPerson(pBorrowerId);
+		final Person borrower = getPersonService().findPerson(pBorrowerId);
 		internalItem.setBorrowed(borrower, pBorrowDate);
 		
 		updateItem(internalItem);
@@ -286,6 +286,7 @@ public class ItemService extends ObjectService {
 
 	public void deleteExternalItem(final ExternalItem pExternalItem)  {
 		assertCurrentUserAuthorizedToDelete(pExternalItem);
+		// Delete documents
 		itemDao.deleteItem(pExternalItem);
 	}
 	
@@ -414,10 +415,6 @@ public class ItemService extends ObjectService {
 			return false;
 		}
 		return currentPerson.equals(internalItem.getOwner());
-	}
-
-	public Person getCurrentPerson() {
-		return getPersonDao().findPerson(PersonUtils.getCurrentPersonId());
 	}
 	
 	public ListValue getListValue(final Long pListValueId) {

@@ -6,6 +6,7 @@ import com.pferrot.lendity.item.jsf.MyConnectionsItemsListController;
 import com.pferrot.lendity.item.jsf.MyItemsListController;
 import com.pferrot.lendity.login.AuthenticationConsts;
 import com.pferrot.lendity.need.jsf.MyConnectionsNeedsListController;
+import com.pferrot.lendity.need.jsf.NeedAddController;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.security.SecurityUtils;
@@ -143,7 +144,11 @@ public class AuthenticationController {
 	}
 	
 	public String getNeedAddURL() {
-		return JsfUtils.getContextRoot() + PagesURL.NEED_ADD;
+		return JsfUtils.getFullUrl(PagesURL.NEED_ADD);
+	}
+	
+	public String getNeedAddNoConfirmURL() {
+		return JsfUtils.getFullUrl(PagesURL.NEED_ADD, NeedAddController.NO_CONFIRM_PARAMETER_NAME, "true");
 	}
 	
 	public String getMyProfileURL() {

@@ -102,10 +102,13 @@ public class Person implements Serializable {
 	@Embedded
 	private Address address;	
 	
+	@Column(name = "RECEIVE_NEEDS_NOTIF", nullable = false)
+	@Audited
+	private Boolean receiveNeedsNotifications;
+	
 	@Column(name = "EMAIL_SUBSC", nullable = false)
 	@Audited
 	private Boolean emailSubscriber;
-	
 	
 	/**
 	 * Updated when e-mail is sent OR when there is nothing to
@@ -284,6 +287,14 @@ public class Person implements Serializable {
 		CoreUtils.assertNotNull(pPerson);
 		bannedByPersons.remove(pPerson);
 		pPerson.getBannedPersons().remove(this);
+	}
+
+	public Boolean getReceiveNeedsNotifications() {
+		return receiveNeedsNotifications;
+	}
+
+	public void setReceiveNeedsNotifications(Boolean receiveNeedsNotifications) {
+		this.receiveNeedsNotifications = receiveNeedsNotifications;
 	}
 
 	public Boolean getEmailSubscriber() {

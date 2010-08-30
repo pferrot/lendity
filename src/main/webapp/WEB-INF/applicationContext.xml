@@ -321,7 +321,7 @@
 	</bean>
 	
 	<bean id="personsListController" class="com.pferrot.lendity.person.jsf.PersonsListController"
-	      scope="conversation.access">
+	      scope="session">
 	      <property name="personService" ref="personService"/>
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
@@ -406,15 +406,16 @@
 		<property name="personDao" ref="personDao"/>
 		<property name="itemDao" ref="itemDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
+		<property name="personService" ref="personService"/>
 	</bean>
 
     <bean id="myPendingLendRequestsListController" class="com.pferrot.lendity.lendrequest.jsf.MyPendingLendRequestsListController"
-	      scope="conversation.access">
+	      scope="session">
 	      <property name="lendRequestService" ref="lendRequestService"/>
 	</bean>
 	
 	<bean id="myPendingLendRequestsOutListController" class="com.pferrot.lendity.lendrequest.jsf.MyPendingLendRequestsOutListController"
-	      scope="conversation.access">
+	      scope="session">
 	      <property name="lendRequestService" ref="lendRequestService"/>
 	</bean>
 	
@@ -478,17 +479,17 @@
 	</bean>
 
 	<bean id="myPendingConnectionRequestsListController" class="com.pferrot.lendity.connectionrequest.jsf.MyPendingConnectionRequestsListController"
-	      scope="conversation.access">
+	      scope="session">
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
 	
 	<bean id="myPendingConnectionRequestsOutListController" class="com.pferrot.lendity.connectionrequest.jsf.MyPendingConnectionRequestsOutListController"
-	      scope="conversation.access">
+	      scope="session">
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
 	
 	<bean id="myConnectionsUpdatesListController" class="com.pferrot.lendity.connectionrequest.jsf.MyConnectionsUpdatesListController"
-	      scope="conversation.access">
+	      scope="session">
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
 	
@@ -553,7 +554,6 @@
 		<property name="documentDao" ref="documentDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
 		<property name="lendRequestDao" ref="lendRequestDao"/>
-		<property name="personDao" ref="personDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
 		<property name="personService" ref="personService"/>
 	</bean>
@@ -590,11 +590,6 @@
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="itemsListController" class="com.pferrot.lendity.item.jsf.ItemsListController"
-	      scope="session">
-	      <property name="itemService" ref="itemService"/>
-	</bean>
-	
 	<bean id="myItemsListController" class="com.pferrot.lendity.item.jsf.MyItemsListController"
 	      scope="session">
 	      <property name="itemService" ref="itemService"/>
@@ -606,7 +601,7 @@
 	</bean>
 
 	<bean id="myConnectionsItemsListController" class="com.pferrot.lendity.item.jsf.MyConnectionsItemsListController"
-	      scope="conversation.access">
+	      scope="session">
 	      <property name="itemService" ref="itemService"/>
 	      <property name="lendRequestService" ref="lendRequestService"/>
 	</bean>
@@ -652,6 +647,10 @@
 		<property name="internalItemsImportController" ref="internalItemsImportController"/>
 	</bean>
 	
+	<bean id="shortcutSearchController" class="com.pferrot.lendity.item.jsf.ShortcutSearchController"
+	      scope="request">
+	</bean>
+	
 
 	<!-- 
 	ITEM - end
@@ -693,7 +692,6 @@
 	<bean id="needServiceTarget" class="com.pferrot.lendity.need.NeedService">
 		<property name="needDao" ref="needDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
-		<property name="personDao" ref="personDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
 		<property name="personService" ref="personService"/>
 	</bean>
@@ -722,7 +720,7 @@
 	</bean>
 
 	<bean id="myConnectionsNeedsListController" class="com.pferrot.lendity.need.jsf.MyConnectionsNeedsListController"
-	      scope="conversation.access">
+	      scope="session">
 	      <property name="needService" ref="needService"/>
 	      <property name="itemService" ref="itemService"/>
 	</bean>

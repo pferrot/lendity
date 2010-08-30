@@ -193,6 +193,12 @@ public abstract class AbstractListController implements Serializable {
 					request.getAttribute(LIST_LOADED_ATTRIBUTE_PREFIX_NAME + this.getClass().getName()))) {
 	    		// Reload to get most recent data.
 				loadDataList();
+				// No item to display but not the first page (e.g. last item of a page deleted), then
+				// go to previous page.
+				while (list.isEmpty() && getFirstRow() > 0) {
+					firstRow = firstRow - getRowsPerPage();
+					loadDataList();
+				}
 				// Flag the request so that the list is only loaded once. 
 				// The "FacesContext.getCurrentInstance().getRenderResponse()" is not enough since
 				// the getList method is called several times during the same phase - because of the tableControls

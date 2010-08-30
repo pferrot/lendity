@@ -1,5 +1,6 @@
 package com.pferrot.lendity.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.CriteriaSpecification;
@@ -34,9 +35,9 @@ public class NeedDaoHibernateImpl extends HibernateDaoSupport implements NeedDao
 	}
 
 	private List<Need> findNeedsList(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final String pTitle, final Long[] pCategoryIds,
-			final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+			final Date pCreationDateMin, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
 		
-		final DetachedCriteria criteria = getNeedsDetachedCriteria(pOwnerIds, pOwnerEnabled, pTitle, pCategoryIds);
+		final DetachedCriteria criteria = getNeedsDetachedCriteria(pOwnerIds, pOwnerEnabled, pTitle, pCategoryIds, pCreationDateMin);
 		
 		if (!StringUtils.isNullOrEmpty(pOrderBy)) {
 			// Ascending.
@@ -52,13 +53,13 @@ public class NeedDaoHibernateImpl extends HibernateDaoSupport implements NeedDao
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
 	}
 
-	public long countNeeds(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final String pTitle, final Long[] pCategoryIds) {
-		final DetachedCriteria criteria = getNeedsDetachedCriteria(pOwnerIds, pOwnerEnabled, pTitle, pCategoryIds);
+	public long countNeeds(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final String pTitle, final Long[] pCategoryIds, final Date pCreationDateMin) {
+		final DetachedCriteria criteria = getNeedsDetachedCriteria(pOwnerIds, pOwnerEnabled, pTitle, pCategoryIds, pCreationDateMin);
 		return rowCount(criteria);
 	}
 	
 	private DetachedCriteria getNeedsDetachedCriteria(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final String pTitle,
-			final Long[] pCategoryIds) {
+			final Long[] pCategoryIds, final Date pCreationDateMin) {
 
 		DetachedCriteria criteria = DetachedCriteria.forClass(Need.class);
 	
@@ -76,6 +77,10 @@ public class NeedDaoHibernateImpl extends HibernateDaoSupport implements NeedDao
 				ownerCriteria.add(Restrictions.eq("enabled", pOwnerEnabled));
 			}
 		}
+
+		if (pCreationDateMin != null) {
+			criteria.add(Restrictions.gt("creationDate", pCreationDateMin));
+		}
 		
 		return criteria;	
 	}
@@ -92,10 +97,11 @@ public class NeedDaoHibernateImpl extends HibernateDaoSupport implements NeedDao
 	}
 
 	public ListWithRowCount findNeeds(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final String pTitle,
-			final Long[] categoriesId, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+			final Long[] categoriesId, final Date pCreationDateMin,
+			final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
 		final List list = findNeedsList(pOwnerIds, pOwnerEnabled, pTitle,
-				categoriesId, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
-		final long count = countNeeds(pOwnerIds, pOwnerEnabled, pTitle, categoriesId);
+				categoriesId, pCreationDateMin, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
+		final long count = countNeeds(pOwnerIds, pOwnerEnabled, pTitle, categoriesId, pCreationDateMin);
 		
 		return new ListWithRowCount(list, count);
 	}	

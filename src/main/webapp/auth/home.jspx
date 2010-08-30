@@ -125,8 +125,7 @@
 									<h:outputLink value="#{homeController.needOverviewHref}">
 										<h:outputText value="#{need.title}" />
 									</h:outputLink>
-									<span class="fontSizeSmall"><h:outputFormat value="#{messages.home_latestConnectionItemsDetails}">
-									    	<f:param value="#{homeController.needCategoryLabel}" />
+									<span class="fontSizeSmall"><h:outputFormat value="#{messages.home_latestConnectionNeedsDetails}">
 									    	<f:param value="#{need.owner.displayName}" />
 									    	<f:param value="#{homeController.needCreationDateLabel}" />
 								        </h:outputFormat>

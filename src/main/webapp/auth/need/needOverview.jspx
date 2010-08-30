@@ -49,11 +49,6 @@
 		<br/>
 	</c:if>
 	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_category}:" /></label></div>
-		<h:outputText value="#{needOverviewController.categoryLabel}" />
-	</div>
-	<br/>
-	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.need_owner}:" /></label></div>
 		<h:outputLink value="#{needOverviewController.ownerHref}">
 			<h:outputText value="#{needOverviewController.need.owner.displayName}" />

@@ -25,20 +25,21 @@ public interface PersonDao {
 	 * @param pPersonId
 	 * @param pConnectionLink
 	 * @param pSearchString
-	 * @param pEnabled
 	 * @param pEmailExactMatch
+	 * @param pEnabled
+	 * @param pReceiveNeedsNotification
 	 * @param pEmailSubscriber
 	 * @param pEmailSubscriberLastSentDateMaxint
 	 * @param pFirstResult
 	 * @param pMaxResults
 	 * @return
 	 */
-	ListWithRowCount findPersons(Long pPersonId, int pConnectionLink, String pSearchString, Boolean pEnabled,
-			boolean pEmailExactMatch, Boolean pEmailSubscriber, Date pEmailSubscriberLastUpdateMax, int pFirstResult, int pMaxResults);
+	ListWithRowCount findPersons(Long pPersonId, int pConnectionLink, String pSearchString, Boolean pEmailExactMatch,
+			 Boolean pEnabled, Boolean pReceiveNeedsNotification, Boolean pEmailSubscriber, Date pEmailSubscriberLastUpdateMax, int pFirstResult, int pMaxResults);
 	
 	
-	List<Person> findPersonsList(Long pPersonId, int pConnectionLink, String pSearchString, Boolean pEnabled,
-			boolean pEmailExactMatch, Boolean pEmailSubscriber, Date pEmailSubscriberLastUpdateMax, int pFirstResult, int pMaxResults);
+	List<Person> findPersonsList(Long pPersonId, int pConnectionLink, String pSearchString, Boolean pEmailExactMatch,
+			Boolean pEnabled, Boolean pReceiveNeedsNotification, Boolean pEmailSubscriber, Date pEmailSubscriberLastUpdateMax, int pFirstResult, int pMaxResults);
 		
 	void updatePerson(Person person);
 	

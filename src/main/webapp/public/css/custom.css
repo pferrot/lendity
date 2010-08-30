@@ -150,6 +150,20 @@ table.filtersTable td.personSearchCell {
 	width: 350px;
 }
 
+table.menuTable {
+	width: 940px;
+	padding: 0;
+	vertical-align: middle;
+}
+
+.gt-search {
+	width: 160px!important;	
+}
+
+input.shortcutSearchInput {
+	width: 170px;	
+}
+
 input.listerSearchInput {
 	width: 100%;	
 }

@@ -14,10 +14,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.envers.Audited;
 
 import com.pferrot.core.CoreUtils;
@@ -28,7 +31,7 @@ import com.pferrot.core.CoreUtils;
  */
 @Entity
 @Table(name = "NEEDS")
-public class Need implements CategoryEnabled, Ownable, Commentable, Serializable {
+public class Need implements CategoryEnabled, Ownable, Commentable<NeedComment>, Serializable {
 	
 	@Id @GeneratedValue
 	@Column(name = "ID")
@@ -36,6 +39,7 @@ public class Need implements CategoryEnabled, Ownable, Commentable, Serializable
 
 	@OneToOne(targetEntity = Person.class)
 	@JoinColumn(name = "OWNER_ID")
+	@LazyToOne(LazyToOneOption.FALSE)
 	private Person owner;
 	
 	@Column(name = "TITLE", nullable = false, length = 255)
@@ -47,19 +51,15 @@ public class Need implements CategoryEnabled, Ownable, Commentable, Serializable
 	private String description;
 	
 	@ManyToOne(targetEntity = ItemCategory.class)
-	@JoinColumn(name = "CATEGORY_ID", nullable = false)
+	@JoinColumn(name = "CATEGORY_ID", nullable = true)
+	@LazyToOne(LazyToOneOption.FALSE)
 	private ItemCategory category;
 	
 	@Column(name = "CREATION_DATE", nullable = false)
 	private Date creationDate;
 
-	@ManyToMany(targetEntity = com.pferrot.lendity.model.Comment.class)
-	@JoinTable(
-			name = "NEEDS_COMMENTS",
-			joinColumns = {@JoinColumn(name = "NEED_ID")},
-			inverseJoinColumns = {@JoinColumn(name = "COMMENT_ID")}
-	)
-	private Set<Comment> comments = new HashSet<Comment>();
+	@OneToMany(targetEntity = com.pferrot.lendity.model.NeedComment.class, mappedBy = "need")
+	private Set<NeedComment> comments = new HashSet<NeedComment>();
 	
 	/**
 	 * Persons who get an email when a comment is added.
@@ -129,20 +129,20 @@ public class Need implements CategoryEnabled, Ownable, Commentable, Serializable
 		this.creationDate = creationDate;
 	}
 
-	public Set<Comment> getComments() {
+	public Set<NeedComment> getComments() {
 		return comments;
 	}
 
-	public void setComments(final Set<Comment> pComments) {
+	public void setComments(final Set<NeedComment> pComments) {
 		this.comments = pComments;
 	}
 
-	public void addComment(final Comment pComment) {
+	public void addComment(final NeedComment pComment) {
 		CoreUtils.assertNotNull(pComment);
 		comments.add(pComment);
 	}
 		
-	public void removeComment(final Comment pComment) {
+	public void removeComment(final NeedComment pComment) {
 		CoreUtils.assertNotNull(pComment);
 		comments.remove(pComment);
 	}

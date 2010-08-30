@@ -6,16 +6,17 @@ import java.util.Locale;
 
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
+import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.lendrequest.LendRequestService;
-import com.pferrot.lendity.lendrequest.exception.LendRequestException;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
@@ -24,9 +25,13 @@ import com.pferrot.lendity.utils.UiUtils;
 public class MyConnectionsItemsListController extends AbstractItemsWithOwnerListController {
 	
 	private final static Log log = LogFactory.getLog(MyConnectionsItemsListController.class);
-
+	
+	private final static String REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX = "REQUEST_LEND_AVAILABLE_";
+	
 	public final static String FORCE_VIEW_PARAM_NAME = "view";
 	public final static String FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE = "allByCr";
+	
+	public final static String SEARCH_TEXT_PARAM_NAME = "search";	
 	
 	private LendRequestService lendRequestService;	
 	
@@ -50,7 +55,19 @@ public class MyConnectionsItemsListController extends AbstractItemsWithOwnerList
 			setBorrowStatus(null);
 			setVisibleStatus(null);
 			setOwnerId(null);
+			return;
 		}
+		// Note the return above...
+		final String searchString = JsfUtils.getRequestParameter(SEARCH_TEXT_PARAM_NAME);
+		if (!StringUtils.isNullOrEmpty(searchString)) {
+			setOrderBy(new Long(1));
+			setSearchString(searchString);
+			setCategoryId(null);			
+			setBorrowStatus(null);
+			setVisibleStatus(null);
+			setOwnerId(null);
+			return;
+		}		
 	}
 
 	@Override
@@ -62,7 +79,7 @@ public class MyConnectionsItemsListController extends AbstractItemsWithOwnerList
 	@Override
 	public List<SelectItem> getBorrowStatusSelectItems() {
 		if (getBorrowStatusSelectItemsInternal() == null) {
-			final List result = new ArrayList<SelectItem>();
+			final List<SelectItem> result = new ArrayList<SelectItem>();
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 			
 			result.add(new SelectItem(UiUtils.getLongFromBoolean(null), I18nUtils.getMessageResourceString("item_availableStatusAll", locale)));
@@ -74,21 +91,16 @@ public class MyConnectionsItemsListController extends AbstractItemsWithOwnerList
 		return getBorrowStatusSelectItemsInternal();	
 	}
 	
-	public boolean isRequestLendAvailable() {
+	public boolean isRequestLendAvailable() {		
 		final InternalItem item = (InternalItem)getTable().getRowData();
-		
-		return lendRequestService.isLendRequestAllowedFromCurrentUser(item);	
-	}
-	
-	public String requestLend() {
-		try {
-			final InternalItem item = (InternalItem)getTable().getRowData();
-			lendRequestService.createLendRequestFromCurrentUser(item);
-			return "requestLend";
+		// Not sure why this is called 3 times per item !? Avoid hitting DB.
+		final HttpServletRequest request = JsfUtils.getRequest();
+		final Boolean requestResult = (Boolean)request.getAttribute(REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX + item.getId());
+		if (requestResult != null) {
+			return requestResult.booleanValue();
 		}
-		catch (LendRequestException e) {
-			// TODO redirect to error page instead.
-			throw new RuntimeException(e);
-		}
+		boolean result = lendRequestService.isLendRequestAllowedFromCurrentUser(item);
+		request.setAttribute(REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX + item.getId(), Boolean.valueOf(result));
+		return result;
 	}
 }

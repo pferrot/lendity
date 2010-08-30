@@ -90,7 +90,7 @@ public class InternalItemsImportStep1 extends AbstractInternalItemsImportStep {
 		
 		
 			final InputStream is = getInternalItemsImportController().getUploadFile().getInputStream();
-			final InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+			final InputStreamReader isr = new InputStreamReader(is);
 			final BufferedReader bufferedReader = new BufferedReader(isr);
 			String line = null;
 			int counter = 0;

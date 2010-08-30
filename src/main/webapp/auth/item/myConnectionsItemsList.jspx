@@ -86,7 +86,18 @@
 <!-- content box -->
 <div class="gt-content-box">
 
-<c:if test="#{empty(myConnectionsItemsListController.list)}">
+<c:if test="#{empty(myConnectionsItemsListController.list) and myConnectionsItemsListController.filteredList}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	<h4>
+		<h:outputLink value="#{authenticationController.needAddNoConfirmURL}"><h:outputText value="#{messages.need_needAddFromItemSearch}"></h:outputText></h:outputLink>
+	</h4>
+	</center>
+	<br/>
+</c:if>
+
+<c:if test="#{empty(myConnectionsItemsListController.list) and not(myConnectionsItemsListController.filteredList)}">
 	<br/><br/>
 	<center>
 	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>

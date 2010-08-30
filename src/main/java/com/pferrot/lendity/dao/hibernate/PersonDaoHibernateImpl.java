@@ -54,33 +54,33 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 	}
 	
 	public List<Person> findPersonsList(final Long pPersonId, final int pConnectionLink, final String pSearchString,
-			final Boolean pEnabled, boolean pEmailExactMatch, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax,
+			final Boolean pEmailExactMatch, Boolean pEnabled, final Boolean pReceiveNeedsNotification, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax,
 			int pFirstResult, int pMaxResults) {
-		final DetachedCriteria criteria = getPersonsDetachedCriteria(pPersonId, pConnectionLink, pSearchString, pEnabled,
-				pEmailExactMatch, pEmailSubscriber, pEmailSubscriberLastUpdateMax).addOrder(Order.asc("displayName").ignoreCase());
+		final DetachedCriteria criteria = getPersonsDetachedCriteria(pPersonId, pConnectionLink, pSearchString, pEmailExactMatch, 
+				pEnabled, pReceiveNeedsNotification, pEmailSubscriber, pEmailSubscriberLastUpdateMax).addOrder(Order.asc("displayName").ignoreCase());
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
 	}
 	
-	private long countPersons(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEnabled,
-			boolean pEmailExactMatch, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax) {
-		final DetachedCriteria criteria = getPersonsDetachedCriteria(pPersonId, pConnectionLink, pSearchString, pEnabled,
-				pEmailExactMatch, pEmailSubscriber, pEmailSubscriberLastUpdateMax);
+	private long countPersons(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEmailExactMatch,
+			final Boolean pEnabled, final Boolean pReceiveNeedsNotification, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax) {
+		final DetachedCriteria criteria = getPersonsDetachedCriteria(pPersonId, pConnectionLink, pSearchString, pEmailExactMatch,
+				pEnabled, pReceiveNeedsNotification, pEmailSubscriber, pEmailSubscriberLastUpdateMax);
 		return rowCount(criteria);
 	}
 
-	public ListWithRowCount findPersons(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEnabled,
-			final boolean pEmailExactMatch, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax,
+	public ListWithRowCount findPersons(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEmailExactMatch,
+			final Boolean pEnabled, final Boolean pReceiveNeedsNotification, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax,
 			int pFirstResult, int pMaxResults) {
-		final List list = findPersonsList(pPersonId, pConnectionLink, pSearchString, pEnabled, pEmailExactMatch,
-				pEmailSubscriber, pEmailSubscriberLastUpdateMax, pFirstResult, pMaxResults);
-		final long count = countPersons(pPersonId, pConnectionLink, pSearchString, pEnabled, pEmailExactMatch,
-				pEmailSubscriber, pEmailSubscriberLastUpdateMax);
+		final List list = findPersonsList(pPersonId, pConnectionLink, pSearchString, pEmailExactMatch, pEnabled,
+				pReceiveNeedsNotification, pEmailSubscriber, pEmailSubscriberLastUpdateMax, pFirstResult, pMaxResults);
+		final long count = countPersons(pPersonId, pConnectionLink, pSearchString, pEmailExactMatch, pEnabled,
+				pReceiveNeedsNotification, pEmailSubscriber, pEmailSubscriberLastUpdateMax);
 
 		return new ListWithRowCount(list, count);
 	}
 
 	private DetachedCriteria getPersonsDetachedCriteria(final Long pPersonId, final int pConnectionLink, final String pSearchString,
-			final Boolean pEnabled, boolean pEmailExactMatch, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax) {
+			final Boolean pEmailExactMatch, final Boolean pEnabled, final Boolean pReceiveNeedsNotification, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax) {
 		if ((pPersonId == null && pConnectionLink != PersonDao.UNSPECIFIED_LINK) ||
 			(pPersonId != null && pConnectionLink == PersonDao.UNSPECIFIED_LINK)) {
 			throw new AssertionError("Cannot define only one of 'pPersonId' and 'pConnectionLink'.");
@@ -89,7 +89,8 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 		DetachedCriteria criteria = DetachedCriteria.forClass(Person.class);
 		
 		if (pSearchString != null && pSearchString.trim().length() > 0) {
-			criteria.add(getEmailLastNameFirstNameDisplayNameLogicalExpression(pSearchString, pEmailExactMatch?MatchMode.EXACT:MatchMode.ANYWHERE));
+			final boolean emailExactMatch = Boolean.TRUE.equals(pEmailExactMatch);
+			criteria.add(getEmailLastNameFirstNameDisplayNameLogicalExpression(pSearchString, emailExactMatch?MatchMode.EXACT:MatchMode.ANYWHERE));
 		}
 		
 		if (pPersonId != null) {			
@@ -113,6 +114,10 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 		
 		if (pEnabled != null) {
 			criteria.add(Restrictions.eq("enabled", pEnabled));
+		}
+		
+		if (pReceiveNeedsNotification != null) {
+			criteria.add(Restrictions.eq("receiveNeedsNotification", pReceiveNeedsNotification));
 		}
 		
 		if (pEmailSubscriber != null) {

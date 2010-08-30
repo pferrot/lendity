@@ -28,6 +28,8 @@
 				
 <f:view>
 
+<ui:include src="deleteNeedTooltip.jspx"/>
+
 <h2 class="gt-table-head">
 <h:outputText value="#{messages.need_myNeedsListTitle}"/>
 </h2>
@@ -42,14 +44,6 @@
 <ui:include src="../item/filter/searchFilter.jspx">
 	<ui:param name="theBean" value="#{myNeedsListController}"/>
 	<ui:param name="defaultSearchString" value="#{messages.need_searchNeedMyNeeds}"/>
-</ui:include>
-</td>
-
-<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
-
-<td>
-<ui:include src="../item/filter/categoryFilter.jspx">
-	<ui:param name="theBean" value="#{myNeedsListController}"/>
 </ui:include>
 </td>
 
@@ -104,16 +98,24 @@
 	<h:column>
 		<table border="0" class="gt-table-categories" width="300" align="right">
 			<tr>
-			    <th width="50%"><h:outputText id="id_1" value="#{messages.item_category}:" /></th>
-				<td width="50%"><h:outputText id="id_2" value="#{myNeedsListController.categoryLabel}"/></td>
-		    </tr>
-			<tr>
 				<th>
 					<h:outputText value="#{messages.item_creationDate}:" />
 				</th>
 				<td>					
 					<h:outputText value="#{myNeedsListController.creationDateLabel}" />
 				</td>
+			</tr>
+		</table>
+    </h:column>
+
+	<h:column>
+		<table border="0" class="gt-table-categories" width="150" align="right">
+			<tr>
+			<td>
+				<span onclick="deleteNeedTooltip(this, '#{need.id}', 1)">
+					<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.item_delete}"/>
+				</span>		
+			</td>
 			</tr>
 		</table>
     </h:column>

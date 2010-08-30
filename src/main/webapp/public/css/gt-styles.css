@@ -925,8 +925,8 @@ ul li {
 }
 .gt-navbar .gt-search {
 	width: 20%;
-	margin-top: 9px;
-	margin-right: 35px;
+	margin-top: 2px;
+	margin-right: 0px;
 	float: right;
 	display: inline;
 }

@@ -53,22 +53,38 @@ public class PersonService {
 	}
 	
 	public List<Person> findEmailSubscribers(final Date pEmailSubscriberLastUpdateMax, final int pMaxNbToFind) {
-		return personDao.findPersonsList(null, PersonDao.UNSPECIFIED_LINK, null, Boolean.TRUE, true, Boolean.TRUE, pEmailSubscriberLastUpdateMax, 0, pMaxNbToFind);
+		return personDao.findPersonsList(null, PersonDao.UNSPECIFIED_LINK, null, null, Boolean.TRUE, null, Boolean.TRUE, pEmailSubscriberLastUpdateMax, 0, pMaxNbToFind);
 	}
 		
 	public ListWithRowCount findEnabledPersons(final String pSearchString, final int pFirstResult, final int pMaxResults) {
-		return personDao.findPersons(null, PersonDao.UNSPECIFIED_LINK, pSearchString, Boolean.TRUE, true, null, null, pFirstResult, pMaxResults);
+		return personDao.findPersons(null, PersonDao.UNSPECIFIED_LINK, pSearchString, Boolean.TRUE, Boolean.TRUE, null, null, null, pFirstResult, pMaxResults);
 	}
 
 	public ListWithRowCount findConnections(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNull(pPersonId);
-		return personDao.findPersons(pPersonId, PersonDao.CONNECTIONS_LINK, pSearchString, Boolean.TRUE, false, null, null, pFirstResult, pMaxResults);
+		return personDao.findPersons(pPersonId, PersonDao.CONNECTIONS_LINK, pSearchString, Boolean.FALSE, Boolean.TRUE, null, null, null, pFirstResult, pMaxResults);
+	}
+	
+	public List<Person> findConnectionsList(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {
+		CoreUtils.assertNotNull(pPersonId);
+		return personDao.findPersonsList(pPersonId, PersonDao.CONNECTIONS_LINK, pSearchString, Boolean.FALSE, Boolean.TRUE, null, null, null, pFirstResult, pMaxResults);
+	}
+	
+	public List<Person> findConnectionsRecevingNeedsNotificationsList(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {
+		CoreUtils.assertNotNull(pPersonId);
+		return personDao.findPersonsList(pPersonId, PersonDao.CONNECTIONS_LINK, pSearchString, Boolean.FALSE, Boolean.TRUE, Boolean.TRUE, null, null, pFirstResult, pMaxResults);
 	}
 	
 	public ListWithRowCount findBannedPersons(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNull(pPersonId);
 		// It is correct to search on the BANNED_BY_PERSONS_LINK: one actually search for that where ban by the current user.
-		return personDao.findPersons(pPersonId, PersonDao.BANNED_BY_PERSONS_LINK, pSearchString, Boolean.TRUE, false, null, null, pFirstResult, pMaxResults);
+		return personDao.findPersons(pPersonId, PersonDao.BANNED_BY_PERSONS_LINK, pSearchString, Boolean.FALSE, Boolean.TRUE, null, null, null, pFirstResult, pMaxResults);
+	}
+	
+	public List<Person> findBannedPersonsList(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {
+		CoreUtils.assertNotNull(pPersonId);
+		// It is correct to search on the BANNED_BY_PERSONS_LINK: one actually search for that where ban by the current user.
+		return personDao.findPersonsList(pPersonId, PersonDao.BANNED_BY_PERSONS_LINK, pSearchString, Boolean.FALSE, Boolean.TRUE, null, null, null, pFirstResult, pMaxResults);
 	}
 
 	public Long[] getCurrentPersonConnectionIds(final Long pConnectionId) {
@@ -229,9 +245,7 @@ public class PersonService {
 	}
 	
 
-	private Person getCurrentPerson() {
-//		final String username = SecurityUtils.getCurrentUsername();
-//		return personDao.findPersonFromUsername(username);
+	public Person getCurrentPerson() {
 		return personDao.findPerson(PersonUtils.getCurrentPersonId());
 	}
 

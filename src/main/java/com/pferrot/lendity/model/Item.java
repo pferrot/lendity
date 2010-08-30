@@ -18,6 +18,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.envers.Audited;
 
 import com.pferrot.core.CoreUtils;
@@ -62,6 +64,7 @@ public abstract class Item implements CategoryEnabled, Borrowable, Serializable 
 	
 	@ManyToOne(targetEntity = ItemCategory.class)
 	@JoinColumn(name = "CATEGORY_ID", nullable = false)
+	@LazyToOne(LazyToOneOption.FALSE)
 	private ItemCategory category;
 
 	// If the borrower if a user of the system.

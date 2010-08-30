@@ -10,8 +10,6 @@ import com.pferrot.core.CoreUtils;
 import com.pferrot.emailsender.manager.MailManager;
 import com.pferrot.lendity.dao.DocumentDao;
 import com.pferrot.lendity.dao.ListValueDao;
-import com.pferrot.lendity.dao.PersonDao;
-import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Person;
@@ -23,7 +21,6 @@ public class ObjectService {
 	private final static Log log = LogFactory.getLog(ObjectService.class);
 	
 	private ListValueDao listValueDao;
-	private PersonDao personDao;
 	private PersonService personService;
 	private MailManager mailManager;
 	private DocumentDao documentDao;
@@ -35,14 +32,6 @@ public class ObjectService {
 
 	public void setListValueDao(ListValueDao listValueDao) {
 		this.listValueDao = listValueDao;
-	}
-
-	public PersonDao getPersonDao() {
-		return personDao;
-	}
-
-	public void setPersonDao(PersonDao personDao) {
-		this.personDao = personDao;
 	}
 
 	public DocumentDao getDocumentDao() {
@@ -74,8 +63,7 @@ public class ObjectService {
 	}
 	
 	public List<Person> getCurrentPersonEnabledConnections() {
-		final ListWithRowCount listWithRowCount = personDao.findPersons(PersonUtils.getCurrentPersonId(), PersonDao.CONNECTIONS_LINK, null, Boolean.TRUE, true, null, null, 0, 0);
-		return listWithRowCount.getList();
+		return getPersonService().findConnectionsList(PersonUtils.getCurrentPersonId(), null, 0, 0);
 	}
 		
 	protected Long[] getCategoryIds(final Long pCategoryId) {
@@ -88,7 +76,7 @@ public class ObjectService {
 	}
 	
 	public Person getCurrentPerson() {
-		return personDao.findPerson(PersonUtils.getCurrentPersonId());
+		return getPersonService().getCurrentPerson();
 	}
 	
 	public ListValue getListValue(final Long pListValueId) {

@@ -28,6 +28,11 @@
 		</locale-config>
 
 	</application>
+	
+<!--	<lifecycle>-->
+<!--        <phase-listener>com.pferrot.lendity.listener.UTF8Listener</phase-listener>-->
+<!--    </lifecycle>-->
+
 <!--	<managed-bean>-->
 <!--		<description>Registration Bean</description>-->
 <!--		<managed-bean-name>registrationBean</managed-bean-name>-->

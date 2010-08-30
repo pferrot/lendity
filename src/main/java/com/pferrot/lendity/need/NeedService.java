@@ -1,14 +1,12 @@
 package com.pferrot.lendity.need;
 
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.lendity.dao.NeedDao;
-import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.item.ObjectService;
 import com.pferrot.lendity.model.ItemCategory;
@@ -41,7 +39,7 @@ public class NeedService extends ObjectService {
 		CoreUtils.assertNotNull(currentPersonId);
 		final Long[] personIds = new Long[]{currentPersonId};
 		
-		return needDao.findNeeds(personIds, Boolean.TRUE, pTitle, getCategoryIds(pCategoryId), pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
+		return needDao.findNeeds(personIds, Boolean.TRUE, pTitle, getCategoryIds(pCategoryId), null, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
 	}
 
 	public ListWithRowCount findMyConnectionsNeeds(final Long pConnectionId, final String pTitle, final Long pCategoryId, final String pOrderBy,
@@ -50,7 +48,7 @@ public class NeedService extends ObjectService {
 		if (connectionsIds == null || connectionsIds.length == 0) {
 			return ListWithRowCount.emptyListWithRowCount();
 		}
-		return needDao.findNeeds(connectionsIds, Boolean.TRUE, pTitle, getCategoryIds(pCategoryId), pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
+		return needDao.findNeeds(connectionsIds, Boolean.TRUE, pTitle, getCategoryIds(pCategoryId), null, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
 	}
 
 	public ListWithRowCount findMyLatestConnectionsNeeds() {
@@ -58,7 +56,15 @@ public class NeedService extends ObjectService {
 		if (connectionsIds == null || connectionsIds.length == 0) {
 			return ListWithRowCount.emptyListWithRowCount();
 		}
-		return needDao.findNeeds(connectionsIds, Boolean.TRUE, null, null, "creationDate", Boolean.FALSE, 0, 5);
+		return needDao.findNeeds(connectionsIds, Boolean.TRUE, null, null, null, "creationDate", Boolean.FALSE, 0, 5);
+	}
+
+	public ListWithRowCount findPersonLatestConnectionsNeedsSince(final Person pPerson, final Date pDate) {
+		Long[] connectionsIds = getPersonService().getPersonConnectionIds(pPerson, null);
+		if (connectionsIds == null || connectionsIds.length == 0) {
+			return ListWithRowCount.emptyListWithRowCount();
+		}
+		return needDao.findNeeds(connectionsIds, Boolean.TRUE, null, null, pDate, "creationDate", Boolean.FALSE, 0, 5);
 	}
 	
 	public void deleteNeed(final Long pNeedId) {
@@ -89,17 +95,8 @@ public class NeedService extends ObjectService {
 		updateNeed(pNeed);
 	}
 	
-	public List<Person> getCurrentPersonEnabledConnections() {
-		final ListWithRowCount listWithRowCount = getPersonDao().findPersons(PersonUtils.getCurrentPersonId(), PersonDao.CONNECTIONS_LINK, null, Boolean.TRUE, true, null, null, 0, 0);
-		return listWithRowCount.getList();
-	}
-	
 	/////////////////////////////////////////////////////////
 	// Access control
-	
-	public Person getCurrentPerson() {
-		return getPersonDao().findPerson(PersonUtils.getCurrentPersonId());
-	}	
 	
 	public boolean isCurrentUserAuthorizedToView(final Need pNeed) {
 		CoreUtils.assertNotNull(pNeed);

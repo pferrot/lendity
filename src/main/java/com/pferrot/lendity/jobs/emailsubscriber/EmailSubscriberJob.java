@@ -23,7 +23,10 @@ import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.item.jsf.MyConnectionsItemsListController;
 import com.pferrot.lendity.model.ConnectionRequest;
 import com.pferrot.lendity.model.InternalItem;
+import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.need.NeedService;
+import com.pferrot.lendity.need.jsf.MyConnectionsNeedsListController;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
@@ -287,10 +290,9 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 			return "";
 		}
 		final Locale locale = I18nUtils.getDefaultLocale();
-		final String param1 = UiUtils.getListValueLabel(pNeed.getCategory(), locale) ;
-		final String param2 = pNeed.getOwner().getDisplayName() ;
-		final String param3 = UiUtils.getDateAsString(pNeed.getCreationDate(), locale);
-		return I18nUtils.getMessageResourceString("home_latestConnectionItemsDetails", new Object[]{param1, param2, param3}, locale);	
+		final String param1 = pNeed.getOwner().getDisplayName() ;
+		final String param2 = UiUtils.getDateAsString(pNeed.getCreationDate(), locale);
+		return I18nUtils.getMessageResourceString("home_latestConnectionNeedsDetails", new Object[]{param1, param2}, locale);	
 	}
 	
 	private String getConnectionUpdateDetails(final ConnectionRequest pConnectionRequest) {

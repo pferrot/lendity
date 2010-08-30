@@ -11,7 +11,11 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import com.pferrot.core.CoreUtils;
 
@@ -23,7 +27,7 @@ import com.pferrot.core.CoreUtils;
  */
 @Entity
 @DiscriminatorValue("Internal")
-public class InternalItem extends Item implements Ownable, Commentable {
+public class InternalItem extends Item implements Ownable, Commentable<ItemComment> {
 
 	// Whether the item can be seen by connections or not.
 	@Column(name = "VISIBLE")
@@ -31,6 +35,7 @@ public class InternalItem extends Item implements Ownable, Commentable {
 
 	@OneToOne(targetEntity = Person.class)
 	@JoinColumn(name = "OWNER_ID")
+	@LazyToOne(LazyToOneOption.FALSE)
 	private Person owner;
 	
 	@Column(name = "NB_REMINDERS_SENT")
@@ -39,13 +44,8 @@ public class InternalItem extends Item implements Ownable, Commentable {
 	@Column(name = "LATEST_REMINDER_DATE")
 	private Date latestReminderDate;
 	
-	@ManyToMany(targetEntity = com.pferrot.lendity.model.Comment.class)
-	@JoinTable(
-			name = "ITEMS_COMMENTS",
-			joinColumns = {@JoinColumn(name = "ITEM_ID")},
-			inverseJoinColumns = {@JoinColumn(name = "COMMENT_ID")}
-	)
-	private Set<Comment> comments = new HashSet<Comment>();
+	@OneToMany(targetEntity = com.pferrot.lendity.model.ItemComment.class, mappedBy = "item")
+	private Set<ItemComment> comments = new HashSet<ItemComment>();
 	
 	/**
 	 * Persons who get an email when a comment is added.
@@ -123,20 +123,20 @@ public class InternalItem extends Item implements Ownable, Commentable {
 		setNbRemindersSent(Integer.valueOf(0));
 	}
 	
-	public Set<Comment> getComments() {
+	public Set<ItemComment> getComments() {
 		return comments;
 	}
 
-	public void setComments(final Set<Comment> pComments) {
+	public void setComments(final Set<ItemComment> pComments) {
 		this.comments = pComments;
 	}
 
-	public void addComment(final Comment pComment) {
+	public void addComment(final ItemComment pComment) {
 		CoreUtils.assertNotNull(pComment);
 		comments.add(pComment);
 	}
 		
-	public void removeComment(final Comment pComment) {
+	public void removeComment(final ItemComment pComment) {
 		CoreUtils.assertNotNull(pComment);
 		comments.remove(pComment);
 	}

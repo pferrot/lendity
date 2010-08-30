@@ -30,78 +30,86 @@
 				<h2 class="gt-form-head"><h:outputText value="#{messages.need_needAddTitle}"/></h2>
 				<div class="gt-form gt-content-box">
 				
-				<f:view>
-
-					<h:form>
-
-
-					<!-- form row -->
-					<div class="gt-form-row gt-width-100">
-						<label><h:outputText value="#{messages.item_title}"/> *</label>
-						<h:message styleClass="error" showSummary="true" showDetail="false"
-							for="title"></h:message>			
-						<h:inputText id="title" styleClass="gt-form-text"
-							value="#{needAddController.title}" 
-							required="true" 
-							requiredMessage="#{messages.validation_requiredMessage}"
-							maxlength="255"	/>			
-					</div><!-- /form row -->					
-					
-					<c:if test="#{not needAddController.descriptionAvailable}">
-						<span id="addDescription" class="linkStyleActionSmall" onClick="toggleVisibility('description'); toggleVisibility('addDescription');"><h:outputText value="#{messages.item_addDescription}"/><br/><br/></span>
-						<div id="description" style="display: none;">
-						<div class="gt-form-row gt-width-100">
-							<label><h:outputText value="#{messages.item_description}"/></label>
-							<h:message styleClass="error" showSummary="true" showDetail="false"
-								for="description"></h:message>			
-							<h:inputTextarea id="description" 
-							    styleClass="gt-form-textarea"
-							    rows="10"
-								value="#{needAddController.description}"
-								validator="#{needAddController.validateDescriptionSize}"/>						
-						</div><!-- /form row -->
-						</div>
-					</c:if>
-					
-					<c:if test="#{needAddController.descriptionAvailable}">
-						<div class="gt-form-row gt-width-100">
-							<label><h:outputText value="#{messages.item_description}"/></label>
-							<h:message styleClass="error" showSummary="true" showDetail="false"
-								for="description"></h:message>			
-							<h:inputTextarea id="description" 
-							    styleClass="gt-form-textarea"
-							    rows="10"
-								value="#{needAddController.description}"
-								validator="#{needAddController.validateDescriptionSize}"/>						
-						</div><!-- /form row -->
-					</c:if>
+					<c:if test="#{not(needAddController.noConfirm)}">
+					<div id="validateContent">		
+						<h:outputText value="#{messages.need_needAddConfirmText}"/>
+						<br/><br/>
 						
-
-					<!-- form row -->
-					<div class="gt-form-row gt-width-100">
-						<label><h:outputText value="#{messages.item_category}"/> *</label>
-						<h:message styleClass="error" showSummary="true" showDetail="false"
-							for="category"></h:message>
-						<h:selectOneMenu id="category" 
-						    value="#{needAddController.categoryId}" 
-						    converter="javax.faces.Long" 
-						    required="true"
-						    requiredMessage="#{messages.validation_requiredMessage}">
-							<f:selectItems value="#{needAddController.categoriesSelectItems}"/>
-						</h:selectOneMenu>					
-					</div><!-- /form row -->
-					
-					<!-- form row -->
-					<div class="gt-form-row">
-						<br/><h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{needAddController.submit}" />
-						<h:outputLink styleClass="stylishButton"  value="#{authenticationController.myNeedsURL}">
-           					<h:outputText value="#{messages.navigation_cancel}"/>
-         				</h:outputLink>
+						<!-- form row -->
+						<div class="gt-form-row">
+							<h:outputLink styleClass="stylishButton" value="#{authenticationController.myConnectionsItemsURL}">
+								<h:outputText value="#{messages.need_needAddConfirmGoTo}"/>
+							</h:outputLink>
+							<h:outputText value=" " escape="false" />
+							<span onClick="toggleVisibility('realContent'); toggleVisibility('validateContent'); $j('#noConfirmId').val('true');">
+								<h:outputText styleClass="stylishButton" value="#{messages.need_needAddConfirmOk}"/>						
+							</span>
+						</div>
 					</div>
-					<!-- /form row -->
+					</c:if>
 					
-					</h:form>
-				</f:view>		
+					<div id="realContent" style="display: none;">
+					
+					<f:view>
+	
+						<h:form prependId="false">
+						
+						<h:inputHidden id="noConfirmId" value="#{needAddController.noConfirm}" />
+	
+	
+						<!-- form row -->
+						<div class="gt-form-row gt-width-100">
+							<label><h:outputText value="#{messages.need_titleAddPage}"/> *</label>
+							<h:message styleClass="error" showSummary="true" showDetail="false"
+								for="title"></h:message>			
+							<h:inputText id="title" styleClass="gt-form-text"
+								value="#{needAddController.title}" 
+								required="true" 
+								requiredMessage="#{messages.validation_requiredMessage}"
+								maxlength="255"	/>			
+						</div><!-- /form row -->					
+						
+						<c:if test="#{not needAddController.descriptionAvailable}">
+							<span id="addDescription" class="linkStyleActionSmall" onClick="toggleVisibility('description'); toggleVisibility('addDescription');"><h:outputText value="#{messages.item_addDescription}"/><br/><br/></span>
+							<div id="description" style="display: none;">
+							<div class="gt-form-row gt-width-100">
+								<label><h:outputText value="#{messages.item_description}"/></label>
+								<h:message styleClass="error" showSummary="true" showDetail="false"
+									for="description"></h:message>			
+								<h:inputTextarea id="description" 
+								    styleClass="gt-form-textarea"
+								    rows="10"
+									value="#{needAddController.description}"
+									validator="#{needAddController.validateDescriptionSize}"/>						
+							</div><!-- /form row -->
+							</div>
+						</c:if>
+						
+						<c:if test="#{needAddController.descriptionAvailable}">
+							<div class="gt-form-row gt-width-100">
+								<label><h:outputText value="#{messages.item_description}"/></label>
+								<h:message styleClass="error" showSummary="true" showDetail="false"
+									for="description"></h:message>			
+								<h:inputTextarea id="description" 
+								    styleClass="gt-form-textarea"
+								    rows="10"
+									value="#{needAddController.description}"
+									validator="#{needAddController.validateDescriptionSize}"/>						
+							</div><!-- /form row -->
+						</c:if>
+						
+						<!-- form row -->
+						<div class="gt-form-row">
+							<br/><h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{needAddController.submit}" />
+							<h:outputLink styleClass="stylishButton"  value="#{authenticationController.myNeedsURL}">
+	           					<h:outputText value="#{messages.navigation_cancel}"/>
+	         				</h:outputLink>
+						</div>
+						<!-- /form row -->
+						
+						</h:form>
+					</f:view>
+					</div>	
 				</div>			
 				<!-- /Item Edit Form -->
 				

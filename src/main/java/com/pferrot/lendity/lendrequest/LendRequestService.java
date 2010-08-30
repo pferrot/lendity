@@ -1,11 +1,16 @@
 package com.pferrot.lendity.lendrequest;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import net.sf.cglib.proxy.LazyLoader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.LazyInitializationException;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.emailsender.manager.MailManager;
@@ -22,6 +27,7 @@ import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.LendRequest;
 import com.pferrot.lendity.model.LendRequestResponse;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
 
 public class LendRequestService {
@@ -33,6 +39,7 @@ public class LendRequestService {
 	private PersonDao personDao;
 	private ItemDao itemDao;
 	private MailManager mailManager;
+	private PersonService personService;
 
 	public void setMailManager(final MailManager pMailManager) {
 		this.mailManager = pMailManager;
@@ -52,6 +59,10 @@ public class LendRequestService {
 	
 	public void setItemDao(ItemDao itemDao) {
 		this.itemDao = itemDao;
+	}
+
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
 	}
 
 	public LendRequest findLendRequest(final Long pLendRequestId) {
@@ -79,9 +90,11 @@ public class LendRequestService {
 	 * @return
 	 */
 	public boolean isLendRequestAllowed(final Person pRequester, final InternalItem pItem) {
+		// Avoid LazyInitializationException
+		Collection<Person> connections = personService.findConnectionsList(pItem.getOwner().getId(), null, 0, 0);
 		return pItem.isAvailable() && 
-			pItem.getOwner().getConnections().contains(pRequester) &&
-			!isUncompletedLendRequestAvailable(pRequester, pItem);
+			connections.contains(pRequester) &&
+			!isUncompletedLendRequestAvailable(pRequester, pItem);		
 	}
 
 	public boolean isLendRequestAllowedFromCurrentUser(final InternalItem pItem) {

@@ -1,9 +1,8 @@
 package com.pferrot.lendity.connectionrequest;
 
-import java.util.Collections;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -136,7 +135,9 @@ public class ConnectionRequestService {
 		}
 		
 		// Request is banned.
-		if (pConnection.getBannedPersons().contains(pRequester)) {
+		// Avoid LazyInitializationException
+		final Collection<Person> bannedPersons = personService.findBannedPersonsList(pConnection.getId(), null, 0, 0);
+		if (bannedPersons.contains(pRequester)) {
 			if (log.isDebugEnabled()) {
 				log.debug("Requester (" + pRequester + ") is banned by connection (" + pConnection + ") .");
 			}			
@@ -144,7 +145,9 @@ public class ConnectionRequestService {
 		}
 		
 		// Already a connection.
-		if (pRequester.getConnections().contains(pConnection)) {
+		// Avoid LazyInitializationException
+		final Collection<Person> connections = personService.findConnectionsList(pRequester.getId(), null, 0, 0);
+		if (connections.contains(pConnection)) {
 			if (log.isDebugEnabled()) {
 				log.debug("Requester (" + pRequester + ") and connection (" + pConnection + ") are already connected.");
 			}			

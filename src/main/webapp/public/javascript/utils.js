@@ -53,8 +53,10 @@ function setupSearchField(pFieldId, pClearSearchId, pText) {
       //$j("#" + pClearSearchId).hide();
     }
     else {
-      $j("#" + pClearSearchId).show();
-      $j("#" + pFieldId).addClass("filterActive");
+      if (pClearSearchId) {
+        $j("#" + pClearSearchId).show();
+        $j("#" + pFieldId).addClass("filterActive");
+      }
     }
     $j("#" + pFieldId).focus(function() {
 	  if(this.value == pText ) {
