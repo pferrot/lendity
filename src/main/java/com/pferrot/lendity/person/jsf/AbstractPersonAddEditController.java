@@ -17,6 +17,7 @@ public abstract class AbstractPersonAddEditController {
 	private String lastName;
 	private String displayName;
 	private Boolean emailSubscriber;
+	private Boolean receiveNeedsNotifications;
 	
 	public PersonService getPersonService() {
 		return personService;
@@ -56,6 +57,14 @@ public abstract class AbstractPersonAddEditController {
 
 	public void setEmailSubscriber(Boolean emailSubscriber) {
 		this.emailSubscriber = emailSubscriber;
+	}
+
+	public Boolean getReceiveNeedsNotifications() {
+		return receiveNeedsNotifications;
+	}
+
+	public void setReceiveNeedsNotifications(Boolean receiveNeedsNotifications) {
+		this.receiveNeedsNotifications = receiveNeedsNotifications;
 	}
 
 	public abstract Long processPerson();

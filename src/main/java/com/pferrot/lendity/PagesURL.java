@@ -76,6 +76,7 @@ public interface PagesURL {
 	String INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID = "itemID";
 	
 	String INTERNAL_ITEM_ADD = "/auth/item/internalItemAdd.faces";
+	String INTERNAL_ITEM_ADD_PARAM_NEED_ID = "needID";
 	
 	String INTERNAL_ITEM_EDIT = "/auth/item/internalItemEdit.faces";
 	String INTERNAL_ITEM_EDIT_PARAM_ITEM_ID = INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID;

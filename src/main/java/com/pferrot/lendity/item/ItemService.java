@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.ObjectNotFoundException;
 
 import com.pferrot.core.CoreUtils;
+import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.dao.ItemDao;
 import com.pferrot.lendity.dao.LendRequestDao;
@@ -19,8 +20,11 @@ import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ListValue;
+import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.need.exception.NeedException;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.ListValueUtils;
 
 public class ItemService extends ObjectService {
@@ -424,6 +428,52 @@ public class ItemService extends ObjectService {
 			throw new ObjectNotFoundException(pListValueId, ListValue.class.getName());
 		}
 		return listValue;		
+	}
+
+	public void sendNotificationForNeed(Need need, InternalItem internalItem) {
+		CoreUtils.assertNotNull(pNeed);
+		CoreUtils.assertNotNull(pConnection);
+		try {	
+			// Send email (will actually create a JMS message, i.e. it is async).
+			Map<String, String> objects = new HashMap<String, String>();
+			objects.put("connectionFirstName", pConnection.getFirstName());
+			objects.put("requesterFirstName", pNeed.getOwner().getFirstName());
+			objects.put("requesterLastName", pNeed.getOwner().getLastName());
+			objects.put("needTitle", pNeed.getTitle());
+			objects.put("needUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
+					PagesURL.NEED_OVERVIEW,
+					PagesURL.NEED_OVERVIEW_PARAM_NEED_ID,
+					pNeed.getId().toString()));
+			objects.put("itemAddUrl",  JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
+					PagesURL.INTERNAL_ITEM_ADD,
+					PagesURL.INTERNAL_ITEM_ADD_PARAM_NEED_ID,
+					pNeed.getId().toString()));
+			objects.put("signature", Configuration.getSiteName());
+			objects.put("siteName", Configuration.getSiteName());
+			objects.put("siteUrl", Configuration.getRootURL());
+			
+			// TODO: localization
+			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/need/notification/fr";
+			
+			Map<String, String> to = new HashMap<String, String>();
+			to.put(pConnection.getEmail(), pConnection.getEmail());
+			
+			Map<String, String> inlineResources = new HashMap<String, String>();
+			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+			
+			getMailManager().send(Configuration.getNoReplySenderName(), 
+					         Configuration.getNoReplyEmailAddress(),
+					         to,
+					         null, 
+					         null,
+					         Configuration.getSiteName() + ": recherché par un ami",
+					         objects, 
+					         velocityTemplateLocation,
+					         inlineResources);		
+		} 
+		catch (Exception e) {
+			throw new NeedException(e);
+		}		
 	}
 	
 }

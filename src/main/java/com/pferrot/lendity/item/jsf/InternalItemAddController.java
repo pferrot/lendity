@@ -4,17 +4,59 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
+import org.springframework.security.AccessDeniedException;
 
+import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.model.InternalItem;
+import com.pferrot.lendity.model.Need;
+import com.pferrot.lendity.need.NeedService;
+import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.utils.JsfUtils;
 
 @ViewController(viewIds={"/auth/item/internalItemAdd.jspx"})
 public class InternalItemAddController extends AbstractInternalItemAddEditController {
 	
 	private final static Log log = LogFactory.getLog(InternalItemAddController.class);
 
+	private NeedService needService;
+	private Need need;
+	
+	public NeedService getNeedService() {
+		return needService;
+	}
+
+	public void setNeedService(NeedService needService) {
+		this.needService = needService;
+	}
+
+	public Need getNeed() {
+		return need;
+	}
+
+	public void setNeed(Need need) {
+		this.need = need;
+	}
+
 	@InitView
 	public void initView() {
 		setVisible(Boolean.TRUE);
+		String needIdString = null;
+		try {
+			needIdString = JsfUtils.getRequestParameter(PagesURL.INTERNAL_ITEM_ADD_PARAM_NEED_ID);
+			if (needIdString != null) {
+				final Need needTemp = getNeedService().findNeed(Long.parseLong(needIdString));
+				getNeedService().assertCurrentUserAuthorizedToView(needTemp);
+				setNeed(needTemp);
+			}
+				
+		}
+		catch (Exception e) {
+			JsfUtils.redirect(PagesURL.ERROR_ACCESS_DENIED);
+			if (log.isWarnEnabled()) {
+				log.warn("Access denied (item add from need): user = " + PersonUtils.getCurrentPersonDisplayName() + " (" + PersonUtils.getCurrentPersonId() + "), need = " + needIdString);
+			}
+			return;
+		}
 	}
 
 	public Long createItem() {
@@ -25,7 +67,13 @@ public class InternalItemAddController extends AbstractInternalItemAddEditContro
 		internalItem.setVisible(getVisible());
 		internalItem.setOwner(getItemService().getCurrentPerson());
 				
-		return getItemService().createItemWithCategory(internalItem, getCategoryId());		
+		final Long result = getItemService().createItemWithCategory(internalItem, getCategoryId());
+		
+		if (getNeed() != null) {
+			getItemService().sendNotificationForNeed(getNeed(), internalItem);
+		}
+		
+		return result;
 	}
 	
 	@Override

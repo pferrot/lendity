@@ -1,18 +1,28 @@
 package com.pferrot.lendity.need;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.CoreUtils;
+import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.configuration.Configuration;
+import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
 import com.pferrot.lendity.dao.NeedDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.item.ObjectService;
+import com.pferrot.lendity.lendrequest.exception.LendRequestException;
 import com.pferrot.lendity.model.ItemCategory;
+import com.pferrot.lendity.model.LendRequest;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.need.exception.NeedException;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.ListValueUtils;
 
 public class NeedService extends ObjectService {
@@ -76,10 +86,71 @@ public class NeedService extends ObjectService {
 	}
 	
 	public Long createNeed(final Need pNeed) {
-		pNeed.setCreationDate(new Date());
-		return needDao.createNeed(pNeed);
+		try {
+			pNeed.setCreationDate(new Date());
+			final Long result = needDao.createNeed(pNeed);
+			sendNotificationToAllConnections(pNeed);
+			return result;
+		}
+		catch (NeedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
+	private void sendNotificationToAllConnections(final Need pNeed) throws NeedException {
+		final List<Person> connections = getPersonService().findConnectionsRecevingNeedsNotificationsList(pNeed.getOwner().getId(), null, 0, 0);
+		for (Person connection: connections) {
+			sendNotificationToOneConnection(pNeed, connection);
+		}
+	}
+	
+	private void sendNotificationToOneConnection(final Need pNeed, final Person pConnection) throws NeedException {
+		CoreUtils.assertNotNull(pNeed);
+		CoreUtils.assertNotNull(pConnection);
+		try {	
+			// Send email (will actually create a JMS message, i.e. it is async).
+			Map<String, String> objects = new HashMap<String, String>();
+			objects.put("connectionFirstName", pConnection.getFirstName());
+			objects.put("requesterFirstName", pNeed.getOwner().getFirstName());
+			objects.put("requesterLastName", pNeed.getOwner().getLastName());
+			objects.put("needTitle", pNeed.getTitle());
+			objects.put("needUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
+					PagesURL.NEED_OVERVIEW,
+					PagesURL.NEED_OVERVIEW_PARAM_NEED_ID,
+					pNeed.getId().toString()));
+			objects.put("itemAddUrl",  JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
+					PagesURL.INTERNAL_ITEM_ADD,
+					PagesURL.INTERNAL_ITEM_ADD_PARAM_NEED_ID,
+					pNeed.getId().toString()));
+			objects.put("signature", Configuration.getSiteName());
+			objects.put("siteName", Configuration.getSiteName());
+			objects.put("siteUrl", Configuration.getRootURL());
+			
+			// TODO: localization
+			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/need/notification/fr";
+			
+			Map<String, String> to = new HashMap<String, String>();
+			to.put(pConnection.getEmail(), pConnection.getEmail());
+			
+			Map<String, String> inlineResources = new HashMap<String, String>();
+			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+			
+			getMailManager().send(Configuration.getNoReplySenderName(), 
+					         Configuration.getNoReplyEmailAddress(),
+					         to,
+					         null, 
+					         null,
+					         Configuration.getSiteName() + ": recherché par un ami",
+					         objects, 
+					         velocityTemplateLocation,
+					         inlineResources);		
+		} 
+		catch (Exception e) {
+			throw new NeedException(e);
+		}
+		
+	}
+
 	public Long createNeedWithCategory(final Need pNeed, final Long pCategoryId) {
 		pNeed.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
 		return createNeed(pNeed);

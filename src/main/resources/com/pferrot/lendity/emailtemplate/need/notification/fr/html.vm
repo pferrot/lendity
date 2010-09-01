@@ -1,0 +1,13 @@
+#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+
+Bonjour $connectionFirstName,<br/><br/>
+
+<b>$requesterFirstName $requesterLastName</b> recherche l'objet suivant:<br/><br/>
+
+<b><a href="$needUrl">$needTitle</a></b><br/><br/>
+
+<a href="$itemAddUrl">Si tu possèdes cet objet, clique ici afin l'ajouter dans lendity</a>. $requesterFirstName sera notifié de ton ajout automatiquement.<br/><br/>
+
+A bientôt sur <a href="$siteUrl">$siteName</a>.
+
+#include("com/pferrot/lendity/emailtemplate/html_footer.vm")

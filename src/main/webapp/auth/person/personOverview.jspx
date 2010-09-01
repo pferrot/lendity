@@ -58,6 +58,10 @@
 			<h:selectBooleanCheckbox id="emailSubscriber" value="#{personOverviewController.person.emailSubscriber}" styleClass="gt-form-element-checkbox" disabled="true"/>
 			<h:outputText value=" " escape="false" />
 			<h:outputText value="#{messages.person_emailSubscriber}"/>
+			<br/>
+			<h:selectBooleanCheckbox id="receiveNeedsNotifications" value="#{personOverviewController.person.receiveNeedsNotifications}" styleClass="gt-form-element-checkbox" disabled="true"/>
+			<h:outputText value=" " escape="false" />
+			<h:outputText value="#{messages.person_receiveNeedsNotifications}"/>
 		</div>
 		<br/>
 	</c:if>

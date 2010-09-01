@@ -30,7 +30,12 @@
 				<h2 class="gt-form-head"><h:outputText value="#{messages.need_needAddTitle}"/></h2>
 				<div class="gt-form gt-content-box">
 				
-					<c:if test="#{not(needAddController.noConfirm)}">
+					<c:if test="#{facesContext.externalContext.requestMap['noConfirm'] != 'true'}">
+					<script type="text/javascript">
+					$j(document).ready(function() {
+						$j('#realContent').hide();
+					});
+					</script>
 					<div id="validateContent">		
 						<h:outputText value="#{messages.need_needAddConfirmText}"/>
 						<br/><br/>
@@ -41,22 +46,21 @@
 								<h:outputText value="#{messages.need_needAddConfirmGoTo}"/>
 							</h:outputLink>
 							<h:outputText value=" " escape="false" />
-							<span onClick="toggleVisibility('realContent'); toggleVisibility('validateContent'); $j('#noConfirmId').val('true');">
+							<span onClick="toggleVisibility('realContent'); toggleVisibility('validateContent');">
 								<h:outputText styleClass="stylishButton" value="#{messages.need_needAddConfirmOk}"/>						
 							</span>
 						</div>
 					</div>
 					</c:if>
 					
-					<div id="realContent" style="display: none;">
+					<div id="realContent">
 					
 					<f:view>
 	
-						<h:form prependId="false">
-						
-						<h:inputHidden id="noConfirmId" value="#{needAddController.noConfirm}" />
+						<h:form prependId="false">	
 	
-	
+						<h:inputHidden name="noConfirm2" value="true"/>	
+							
 						<!-- form row -->
 						<div class="gt-form-row gt-width-100">
 							<label><h:outputText value="#{messages.need_titleAddPage}"/> *</label>

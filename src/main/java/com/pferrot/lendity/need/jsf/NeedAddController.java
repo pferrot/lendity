@@ -18,8 +18,6 @@ public class NeedAddController extends AbstractNeedAddEditController {
 	
 	public final static String TITLE_PARAMETER_NAME = "title";
 	public final static String NO_CONFIRM_PARAMETER_NAME = "noConfirm";
-	
-	private boolean noConfirm;
 
 	@InitView
 	public void initView() {
@@ -30,7 +28,7 @@ public class NeedAddController extends AbstractNeedAddEditController {
 		}
 		final String noConfirm = request.getParameter(NO_CONFIRM_PARAMETER_NAME);
 		if ("true".equals(noConfirm)) {
-			setNoConfirm(true);
+			request.setAttribute(NO_CONFIRM_PARAMETER_NAME, "true");
 		}
 	}
 
@@ -47,13 +45,5 @@ public class NeedAddController extends AbstractNeedAddEditController {
 	@Override
 	public Long processNeed() {
 		return createNeed();
-	}
-
-	public boolean isNoConfirm() {
-		return noConfirm;
-	}
-
-	public void setNoConfirm(boolean noConfirm) {
-		this.noConfirm = noConfirm;
 	}
 }
