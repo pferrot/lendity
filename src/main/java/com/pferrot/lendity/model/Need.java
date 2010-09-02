@@ -71,6 +71,14 @@ public class Need implements CategoryEnabled, Ownable, Commentable<NeedComment>,
 			inverseJoinColumns = {@JoinColumn(name = "COMMENT_RECIPIENT_ID")}
 	)
 	private Set<Person> commentsRecipients = new HashSet<Person>();
+	
+	@ManyToMany(targetEntity = com.pferrot.lendity.model.InternalItem.class)
+	@JoinTable(
+			name = "ITEMS_NEEDS",
+			joinColumns = {@JoinColumn(name = "NEED_ID")},
+			inverseJoinColumns = {@JoinColumn(name = "ITEM_ID")}
+	)
+	private Set<InternalItem> relatedItems = new HashSet<InternalItem>();
 
 	
 	@Version
@@ -163,6 +171,24 @@ public class Need implements CategoryEnabled, Ownable, Commentable<NeedComment>,
 	public void removeCommentRecipient(final Person pCommentRecipient) {
 		CoreUtils.assertNotNull(pCommentRecipient);
 		commentsRecipients.remove(pCommentRecipient);
+	}
+
+	public Set<InternalItem> getRelatedItems() {
+		return relatedItems;
+	}
+
+	public void setRelatedItems(final Set<InternalItem> pRelatedItems) {
+		this.relatedItems = pRelatedItems;
+	}
+
+	public void addRelatedItem(final InternalItem pRelatedItem) {
+		CoreUtils.assertNotNull(pRelatedItem);
+		relatedItems.add(pRelatedItem);
+	}
+		
+	public void removeRelatedItem(final InternalItem pRelatedItem) {
+		CoreUtils.assertNotNull(pRelatedItem);
+		relatedItems.remove(pRelatedItem);
 	}
 
 	@Override

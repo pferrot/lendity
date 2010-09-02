@@ -14,6 +14,7 @@ import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.dao.ItemDao;
 import com.pferrot.lendity.dao.LendRequestDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.item.exception.ItemException;
 import com.pferrot.lendity.model.Document;
 import com.pferrot.lendity.model.ExternalItem;
 import com.pferrot.lendity.model.InternalItem;
@@ -22,7 +23,6 @@ import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.Person;
-import com.pferrot.lendity.need.exception.NeedException;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.ListValueUtils;
@@ -272,11 +272,29 @@ public class ItemService extends ObjectService {
 		
 	}
 	
-	public Long createItem(final Item pItem) {
-		pItem.setCreationDate(new Date());
-		return itemDao.createItem(pItem);
+	public Long createItem(final Item pItem, final Need pNeed) {
+		try {
+			pItem.setCreationDate(new Date());
+			if (pNeed != null && 
+				pItem instanceof InternalItem) {
+				((InternalItem)pItem).addRelatedNeed(pNeed);
+			}
+			final Long result = itemDao.createItem(pItem);
+			// Send the notification after the dao is called !
+			if (pNeed != null && 
+				pItem instanceof InternalItem) {
+				final InternalItem internalItem = (InternalItem)pItem;
+				if (internalItem.isVisible()) {
+					sendNotificationForNeed(pNeed, internalItem);
+				}
+			}
+			return result;
+		}
+		catch (ItemException e) {
+			throw new RuntimeException(e);
+		}
 	}
-	
+ 	
 	public void deleteInternalItem(final InternalItem pInternalItem)  {
 		assertCurrentUserAuthorizedToDelete(pInternalItem);
 		// Delete lend requests.
@@ -297,16 +315,20 @@ public class ItemService extends ObjectService {
 	public void deleteInternalItem(final Long pInternalItemId) {
 		deleteInternalItem(itemDao.findInternalItem(pInternalItemId));
 	}
-
+	
 	public Long createItemWithCategory(final Item pItem, final Long pCategoryId) {
+		return createItemWithCategory(pItem, pCategoryId, null);
+	}
+
+	public Long createItemWithCategory(final Item pItem, final Long pCategoryId, final Need pNeed) {
 		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
-		return createItem(pItem);
+		return createItem(pItem, pNeed);
 	}
 	
 	public Long createExternalItemWithCategory(final ExternalItem pItem, final Long pCategoryId) {
 		pItem.setBorrower(getCurrentPerson());
 		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
-		return createItem(pItem);
+		return createItem(pItem, null);
 	}
 
 	public void updateItem(final Item item) {
@@ -430,33 +452,37 @@ public class ItemService extends ObjectService {
 		return listValue;		
 	}
 
-	public void sendNotificationForNeed(Need need, InternalItem internalItem) {
+	public void sendNotificationForNeed(final Need pNeed, final InternalItem pInternalItem) throws ItemException {
 		CoreUtils.assertNotNull(pNeed);
-		CoreUtils.assertNotNull(pConnection);
+		CoreUtils.assertNotNull(pInternalItem);
+		if (pNeed.getOwner() == null || !pNeed.getOwner().isEnabled()) {
+			return;
+		}
 		try {	
 			// Send email (will actually create a JMS message, i.e. it is async).
 			Map<String, String> objects = new HashMap<String, String>();
-			objects.put("connectionFirstName", pConnection.getFirstName());
+			objects.put("connectionFirstName", pInternalItem.getOwner().getFirstName());
+			objects.put("connectionLastName", pInternalItem.getOwner().getLastName());
 			objects.put("requesterFirstName", pNeed.getOwner().getFirstName());
-			objects.put("requesterLastName", pNeed.getOwner().getLastName());
 			objects.put("needTitle", pNeed.getTitle());
 			objects.put("needUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
 					PagesURL.NEED_OVERVIEW,
 					PagesURL.NEED_OVERVIEW_PARAM_NEED_ID,
 					pNeed.getId().toString()));
-			objects.put("itemAddUrl",  JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
-					PagesURL.INTERNAL_ITEM_ADD,
-					PagesURL.INTERNAL_ITEM_ADD_PARAM_NEED_ID,
-					pNeed.getId().toString()));
+			objects.put("itemTitle", pInternalItem.getTitle());
+			objects.put("itemUrl",  JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
+					PagesURL.INTERNAL_ITEM_OVERVIEW,
+					PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID,
+					pInternalItem.getId().toString()));
 			objects.put("signature", Configuration.getSiteName());
 			objects.put("siteName", Configuration.getSiteName());
 			objects.put("siteUrl", Configuration.getRootURL());
 			
 			// TODO: localization
-			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/need/notification/fr";
+			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/need/objectadded/fr";
 			
 			Map<String, String> to = new HashMap<String, String>();
-			to.put(pConnection.getEmail(), pConnection.getEmail());
+			to.put(pNeed.getOwner().getEmail(), pNeed.getOwner().getEmail());
 			
 			Map<String, String> inlineResources = new HashMap<String, String>();
 			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
@@ -466,13 +492,13 @@ public class ItemService extends ObjectService {
 					         to,
 					         null, 
 					         null,
-					         Configuration.getSiteName() + ": recherché par un ami",
+					         Configuration.getSiteName() + ": object répondant à une ping-cherche",
 					         objects, 
 					         velocityTemplateLocation,
 					         inlineResources);		
 		} 
 		catch (Exception e) {
-			throw new NeedException(e);
+			throw new ItemException(e);
 		}		
 	}
 	

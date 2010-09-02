@@ -92,6 +92,16 @@ public class NeedOverviewController {
 	public boolean isDeleteAvailable() {
 		return needService.isCurrentUserAuthorizedToDelete(need);
 	}
+
+	public boolean isGotItAvailable() {
+		return !getNeed().getOwner().getId().equals(PersonUtils.getCurrentPersonId());
+	}
+	
+	public String getGotItHref() {
+		return JsfUtils.getFullUrl(PagesURL.INTERNAL_ITEM_ADD, 
+				PagesURL.INTERNAL_ITEM_ADD_PARAM_NEED_ID,
+				getNeed().getId().toString());
+	}
 		
 	public String getDescription() {
 		final String needDescription = need.getDescription();

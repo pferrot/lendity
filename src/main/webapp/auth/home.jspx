@@ -23,9 +23,6 @@
 
 		<!-- body -->
 		<div class="gt-bd gt-cols clearfix">
-			
-			<!-- main content -->
-			<div class="gt-content">
 
 <h2 class="gt-table-head"><h:outputText value="#{messages.menu_home}"/></h2>
 
@@ -92,18 +89,68 @@
 							<br/>
 							<p>
 								<div class="highlightedBg"><b><h:outputText value="#{messages.home_latestConnectionItems}"/></b></div>
-							</p>										
-							<h:dataTable value="#{homeController.list}" binding="#{homeController.table}" var="item">
+							</p>
+							<ui:include src="lendrequest/requestLendTooltip.jspx"/>										
+							<h:dataTable value="#{homeController.list}" binding="#{homeController.table}" var="item" styleClass="gt-table gt-user-table">
 							    <h:column>
+							    	<table border="0" width="410">
+										<tr>
+											<td>
 									<h:outputLink value="#{homeController.itemOverviewHref}">
 										<h:outputText value="#{item.title}" />
 									</h:outputLink>
-									<span class="fontSizeSmall"><h:outputFormat value="#{messages.home_latestConnectionItemsDetails}">
-									    	<f:param value="#{homeController.categoryLabel}" />
-									    	<f:param value="#{item.owner.displayName}" />
-									    	<f:param value="#{homeController.creationDateLabel}" />
-								        </h:outputFormat>
-							        </span>
+											</td>
+										</tr>
+									</table>
+								</h:column>
+								<h:column>
+									<table border="0" class="gt-table-categories" width="300" align="right">
+										<tr>
+											<th width="50%">
+												<h:outputText value="#{messages.item_category}:" />
+											</th>
+											<td width="50%">
+												<h:outputText value="#{homeController.categoryLabel}"/>
+											</td>
+										</tr>
+										<tr>
+											<th>
+												<h:outputText value="#{messages.item_owner}:" />
+											</th>
+											<td>
+												<h:outputLink value="#{homeController.ownerHref}">				
+													<h:outputText value="#{item.owner.displayName}" />
+												</h:outputLink>
+											</td>
+										</tr>
+										<tr>
+											<th>
+												<h:outputText value="#{messages.item_creationDate}:" />
+											</th>
+											<td>					
+												<h:outputText value="#{homeController.creationDateLabel}" />
+											</td>
+										</tr>
+										<tr>
+											<th>
+												<h:outputText value="#{messages.item_available}:" />
+											</th>
+											<td>					
+												<h:outputText value="#{homeController.availableLabel}" />
+											</td>
+										</tr>
+									</table>
+								</h:column>
+								<h:column>
+									<table border="0" class="gt-table-categories" width="150" align="right">
+										<tr>
+											<td>
+												<span onclick="requestLendTooltip(this, '#{item.id}', 3)">
+													<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.lendRequest_requestLend}" rendered="#{homeController.requestLendAvailable}"/>
+												</span>	
+											</td>
+									    </tr>
+									</table>
 							    </h:column>
 							</h:dataTable>
 							<h:outputLink value="#{authenticationController.myConnectionsItemsOrderByCreationDateURL}">
@@ -120,16 +167,50 @@
 							<p>
 								<div class="highlightedBg"><b><h:outputText value="#{messages.home_latestConnectionNeeds}"/></b></div>
 							</p>										
-							<h:dataTable value="#{homeController.connectionsNeedsList}" binding="#{homeController.connectionsNeedsTable}" var="need">
+							<h:dataTable value="#{homeController.connectionsNeedsList}" binding="#{homeController.connectionsNeedsTable}" var="need"  styleClass="gt-table gt-user-table">
 							    <h:column>
+							    	<table border="0" width="410">
+										<tr>
+											<td>
 									<h:outputLink value="#{homeController.needOverviewHref}">
 										<h:outputText value="#{need.title}" />
 									</h:outputLink>
-									<span class="fontSizeSmall"><h:outputFormat value="#{messages.home_latestConnectionNeedsDetails}">
-									    	<f:param value="#{need.owner.displayName}" />
-									    	<f:param value="#{homeController.needCreationDateLabel}" />
-								        </h:outputFormat>
-							        </span>
+											</td>
+										</tr>
+									</table>
+								</h:column>
+								<h:column>
+									<table border="0" class="gt-table-categories" width="300" align="right">
+										<tr>
+											<th width="50%">
+												<h:outputText value="#{messages.need_owner}:" />
+											</th>
+											<td width="50%">
+												<h:outputLink value="#{homeController.needOwnerHref}">
+													<h:outputText value="#{need.owner.displayName}"/>
+												</h:outputLink>
+											</td>
+										</tr>
+										<tr>
+											<th>
+												<h:outputText value="#{messages.item_creationDate}:" />
+											</th>
+											<td>					
+												<h:outputText value="#{homeController.needCreationDateLabel}" />
+											</td>
+										</tr>
+									</table>
+								</h:column>
+							    <h:column>
+							    	<table border="0" class="gt-table-categories" width="150" align="right">
+										<tr>
+											<td>
+							        <h:outputLink styleClass="stylishButton fontSizeSmall" value="#{homeController.needGotItHref}">
+										<h:outputText value="#{messages.need_gotIt}" />
+									</h:outputLink>
+											</td>
+										</tr>
+									</table>
 							    </h:column>
 							</h:dataTable>
 							<h:outputLink value="#{authenticationController.myConnectionsNeedsOrderByCreationDateURL}">
@@ -146,7 +227,7 @@
 							<p>
 								<div class="highlightedBg"><b><h:outputText value="#{messages.home_latestConnectionsUpdates}"/></b></div>
 							</p>
-							<h:dataTable value="#{homeController.connectionsUpdatesList}" binding="#{homeController.connectionsUpdatesTable}" var="connectionRequest">
+							<h:dataTable value="#{homeController.connectionsUpdatesList}" binding="#{homeController.connectionsUpdatesTable}" var="connectionRequest"  styleClass="gt-table gt-user-table">
 							    <h:column>
 									<h:outputLink value="#{homeController.requesterOverviewHref}">
 										<h:outputText value="#{connectionRequest.requester.displayName}" />
@@ -174,15 +255,6 @@
 					
 					
 				</div>
-				
-			</div>
-			<!-- /main content -->
-
-			<!-- sidebar -->
-			<div class="gt-sidebar">
-								
-			</div>
-			<!-- / sidebar -->
 
 		</div>
 		<!-- /body -->

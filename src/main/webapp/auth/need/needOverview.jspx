@@ -65,6 +65,9 @@
 			<h:outputLink rendered="#{needOverviewController.editAvailable}" value="#{needOverviewController.needEditHref}" styleClass="stylishButton">
 	    		<h:outputText rendered="#{needOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
 	    	</h:outputLink>
+	    	<h:outputLink rendered="#{needOverviewController.gotItAvailable}" value="#{needOverviewController.gotItHref}" styleClass="stylishButton" >
+			    <h:outputText value="#{messages.need_gotIt}" />
+		    </h:outputLink>
     	</td><td>
 			<c:if test="#{needOverviewController.editAvailable}">
 				<span onclick="deleteNeedTooltip(this, '#{needOverviewController.need.id}', 1)">

@@ -8,6 +8,7 @@ import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,14 +16,21 @@ import org.apache.commons.logging.LogFactory;
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemUtils;
+import com.pferrot.lendity.lendrequest.LendRequestService;
 import com.pferrot.lendity.model.ExternalItem;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
 
 public abstract class AbstractItemsListController extends AbstractObjectsListController {
+	
 	private final static Log log = LogFactory.getLog(AbstractItemsListController.class);
+	
+	private final static String REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX = "REQUEST_LEND_AVAILABLE_";
+	
+	private LendRequestService lendRequestService;
 	
 	private List<SelectItem> borrowStatusSelectItems;
 	// Cannot use Boolean because selecting the SelectItem with value null actually
@@ -44,6 +52,14 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 		super();
 	}
 	
+	public LendRequestService getLendRequestService() {
+		return lendRequestService;
+	}
+
+	public void setLendRequestService(LendRequestService lendRequestService) {
+		this.lendRequestService = lendRequestService;
+	}
+
 	public List<SelectItem> getBorrowStatusSelectItems() {
 		if (getBorrowStatusSelectItemsInternal() == null) {
 			final List<SelectItem> result = new ArrayList<SelectItem>();
@@ -306,6 +322,19 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 		else {
 			return ItemUtils.getExternalItemOverviewPageUrl(((ExternalItem)item).getId().toString());
 		}		
+	}
+
+	public boolean isRequestLendAvailable() {		
+		final InternalItem item = (InternalItem)getTable().getRowData();
+		// Not sure why this is called 3 times per item !? Avoid hitting DB.
+		final HttpServletRequest request = JsfUtils.getRequest();
+		final Boolean requestResult = (Boolean)request.getAttribute(REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX + item.getId());
+		if (requestResult != null) {
+			return requestResult.booleanValue();
+		}
+		boolean result = lendRequestService.isLendRequestAllowedFromCurrentUser(item);
+		request.setAttribute(REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX + item.getId(), Boolean.valueOf(result));
+		return result;
 	}
 
 //	public String getItemEditHref() {

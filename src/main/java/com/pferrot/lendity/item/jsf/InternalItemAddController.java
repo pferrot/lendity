@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
-import org.springframework.security.AccessDeniedException;
 
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.model.InternalItem;
@@ -47,6 +46,7 @@ public class InternalItemAddController extends AbstractInternalItemAddEditContro
 				final Need needTemp = getNeedService().findNeed(Long.parseLong(needIdString));
 				getNeedService().assertCurrentUserAuthorizedToView(needTemp);
 				setNeed(needTemp);
+				setTitle(needTemp.getTitle());
 			}
 				
 		}
@@ -67,13 +67,7 @@ public class InternalItemAddController extends AbstractInternalItemAddEditContro
 		internalItem.setVisible(getVisible());
 		internalItem.setOwner(getItemService().getCurrentPerson());
 				
-		final Long result = getItemService().createItemWithCategory(internalItem, getCategoryId());
-		
-		if (getNeed() != null) {
-			getItemService().sendNotificationForNeed(getNeed(), internalItem);
-		}
-		
-		return result;
+		return getItemService().createItemWithCategory(internalItem, getCategoryId(), getNeed());
 	}
 	
 	@Override

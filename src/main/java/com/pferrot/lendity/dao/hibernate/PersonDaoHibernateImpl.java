@@ -54,33 +54,33 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 	}
 	
 	public List<Person> findPersonsList(final Long pPersonId, final int pConnectionLink, final String pSearchString,
-			final Boolean pEmailExactMatch, Boolean pEnabled, final Boolean pReceiveNeedsNotification, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax,
+			final Boolean pEmailExactMatch, Boolean pEnabled, final Boolean pReceiveNeedsNotifications, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax,
 			int pFirstResult, int pMaxResults) {
 		final DetachedCriteria criteria = getPersonsDetachedCriteria(pPersonId, pConnectionLink, pSearchString, pEmailExactMatch, 
-				pEnabled, pReceiveNeedsNotification, pEmailSubscriber, pEmailSubscriberLastUpdateMax).addOrder(Order.asc("displayName").ignoreCase());
+				pEnabled, pReceiveNeedsNotifications, pEmailSubscriber, pEmailSubscriberLastUpdateMax).addOrder(Order.asc("displayName").ignoreCase());
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
 	}
 	
 	private long countPersons(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEmailExactMatch,
-			final Boolean pEnabled, final Boolean pReceiveNeedsNotification, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax) {
+			final Boolean pEnabled, final Boolean pReceiveNeedsNotifications, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax) {
 		final DetachedCriteria criteria = getPersonsDetachedCriteria(pPersonId, pConnectionLink, pSearchString, pEmailExactMatch,
-				pEnabled, pReceiveNeedsNotification, pEmailSubscriber, pEmailSubscriberLastUpdateMax);
+				pEnabled, pReceiveNeedsNotifications, pEmailSubscriber, pEmailSubscriberLastUpdateMax);
 		return rowCount(criteria);
 	}
 
 	public ListWithRowCount findPersons(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEmailExactMatch,
-			final Boolean pEnabled, final Boolean pReceiveNeedsNotification, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax,
+			final Boolean pEnabled, final Boolean pReceiveNeedsNotifications, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax,
 			int pFirstResult, int pMaxResults) {
 		final List list = findPersonsList(pPersonId, pConnectionLink, pSearchString, pEmailExactMatch, pEnabled,
-				pReceiveNeedsNotification, pEmailSubscriber, pEmailSubscriberLastUpdateMax, pFirstResult, pMaxResults);
+				pReceiveNeedsNotifications, pEmailSubscriber, pEmailSubscriberLastUpdateMax, pFirstResult, pMaxResults);
 		final long count = countPersons(pPersonId, pConnectionLink, pSearchString, pEmailExactMatch, pEnabled,
-				pReceiveNeedsNotification, pEmailSubscriber, pEmailSubscriberLastUpdateMax);
+				pReceiveNeedsNotifications, pEmailSubscriber, pEmailSubscriberLastUpdateMax);
 
 		return new ListWithRowCount(list, count);
 	}
 
 	private DetachedCriteria getPersonsDetachedCriteria(final Long pPersonId, final int pConnectionLink, final String pSearchString,
-			final Boolean pEmailExactMatch, final Boolean pEnabled, final Boolean pReceiveNeedsNotification, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax) {
+			final Boolean pEmailExactMatch, final Boolean pEnabled, final Boolean pReceiveNeedsNotifications, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax) {
 		if ((pPersonId == null && pConnectionLink != PersonDao.UNSPECIFIED_LINK) ||
 			(pPersonId != null && pConnectionLink == PersonDao.UNSPECIFIED_LINK)) {
 			throw new AssertionError("Cannot define only one of 'pPersonId' and 'pConnectionLink'.");
@@ -116,8 +116,8 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 			criteria.add(Restrictions.eq("enabled", pEnabled));
 		}
 		
-		if (pReceiveNeedsNotification != null) {
-			criteria.add(Restrictions.eq("receiveNeedsNotification", pReceiveNeedsNotification));
+		if (pReceiveNeedsNotifications != null) {
+			criteria.add(Restrictions.eq("receiveNeedsNotifications", pReceiveNeedsNotifications));
 		}
 		
 		if (pEmailSubscriber != null) {

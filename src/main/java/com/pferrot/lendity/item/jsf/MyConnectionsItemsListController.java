@@ -6,7 +6,6 @@ import java.util.Locale;
 
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,8 +15,6 @@ import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
-import com.pferrot.lendity.lendrequest.LendRequestService;
-import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
 
@@ -26,23 +23,17 @@ public class MyConnectionsItemsListController extends AbstractItemsWithOwnerList
 	
 	private final static Log log = LogFactory.getLog(MyConnectionsItemsListController.class);
 	
-	private final static String REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX = "REQUEST_LEND_AVAILABLE_";
-	
 	public final static String FORCE_VIEW_PARAM_NAME = "view";
 	public final static String FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE = "allByCr";
 	
 	public final static String SEARCH_TEXT_PARAM_NAME = "search";	
 	
-	private LendRequestService lendRequestService;	
+		
 	
 	public MyConnectionsItemsListController() {
 		super();
 		// Display available items by default.
 		//setBorrowStatus(UiUtils.getLongFromBoolean(Boolean.FALSE));
-	}
-	
-	public void setLendRequestService(final LendRequestService pLendRequestService) {
-		this.lendRequestService = pLendRequestService;
 	}
 
 	@InitView
@@ -89,18 +80,5 @@ public class MyConnectionsItemsListController extends AbstractItemsWithOwnerList
 			setBorrowStatusSelectItemsInternal(result);
 		}		
 		return getBorrowStatusSelectItemsInternal();	
-	}
-	
-	public boolean isRequestLendAvailable() {		
-		final InternalItem item = (InternalItem)getTable().getRowData();
-		// Not sure why this is called 3 times per item !? Avoid hitting DB.
-		final HttpServletRequest request = JsfUtils.getRequest();
-		final Boolean requestResult = (Boolean)request.getAttribute(REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX + item.getId());
-		if (requestResult != null) {
-			return requestResult.booleanValue();
-		}
-		boolean result = lendRequestService.isLendRequestAllowedFromCurrentUser(item);
-		request.setAttribute(REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX + item.getId(), Boolean.valueOf(result));
-		return result;
 	}
 }

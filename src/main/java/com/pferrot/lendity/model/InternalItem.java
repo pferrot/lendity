@@ -57,6 +57,14 @@ public class InternalItem extends Item implements Ownable, Commentable<ItemComme
 			inverseJoinColumns = {@JoinColumn(name = "COMMENT_RECIPIENT_ID")}
 	)
 	private Set<Person> commentsRecipients = new HashSet<Person>();
+	
+	@ManyToMany(targetEntity = com.pferrot.lendity.model.Need.class)
+	@JoinTable(
+			name = "ITEMS_NEEDS",
+			joinColumns = {@JoinColumn(name = "ITEM_ID")},
+			inverseJoinColumns = {@JoinColumn(name = "NEED_ID")}
+	)
+	private Set<Need> relatedNeeds = new HashSet<Need>();
 
     public InternalItem() {
     	super();
@@ -157,6 +165,24 @@ public class InternalItem extends Item implements Ownable, Commentable<ItemComme
 	public void removeCommentRecipient(final Person pCommentRecipient) {
 		CoreUtils.assertNotNull(pCommentRecipient);
 		commentsRecipients.remove(pCommentRecipient);
+	}
+
+	public Set<Need> getRelatedNeeds() {
+		return relatedNeeds;
+	}
+
+	public void setRelatedNeeds(final Set<Need> pRelatedNeeds) {
+		this.relatedNeeds = pRelatedNeeds;
+	}
+
+	public void addRelatedNeed(final Need pRelatedNeed) {
+		CoreUtils.assertNotNull(pRelatedNeed);
+		relatedNeeds.add(pRelatedNeed);
+	}
+		
+	public void removeRelatedNeed(final Need pRelatedNeed) {
+		CoreUtils.assertNotNull(pRelatedNeed);
+		relatedNeeds.remove(pRelatedNeed);
 	}
 
 	/**

@@ -19,6 +19,7 @@ public class RequestLendTooltipController implements Serializable {
 	
 	// 1 == my connections items page
 	// 2 == item overview page
+	// 3 == homepage
 	private Long redirectId;
 
 	public  LendRequestService getLendRequestService() {
@@ -53,6 +54,9 @@ public class RequestLendTooltipController implements Serializable {
 		}
 		else if (getRedirectId().longValue() == 2) {
 			JsfUtils.redirect(PagesURL.INTERNAL_ITEM_OVERVIEW, PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID, getItemId().toString());
+		}
+		else if (getRedirectId().longValue() == 3) {
+			JsfUtils.redirect(PagesURL.HOME);
 		}
 	
 		// As a redirect is used, this is actually useless.

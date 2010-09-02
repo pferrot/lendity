@@ -95,7 +95,7 @@
 		<table border="0" class="gt-table-categories" width="300" align="right">
 			<tr>
 				<th width="50%">
-					<h:outputText value="#{messages.item_owner}:" />
+					<h:outputText value="#{messages.need_owner}:" />
 				</th>
 				<td width="50%">
 					<h:outputLink value="#{myConnectionsNeedsListController.ownerHref}">
@@ -110,6 +110,18 @@
 				<td>					
 					<h:outputText value="#{myConnectionsNeedsListController.creationDateLabel}" />
 				</td>
+			</tr>
+		</table>
+    </h:column>
+
+	<h:column>
+		<table border="0" class="gt-table-categories" width="150" align="right">
+			<tr>
+			<td>
+				<h:outputLink styleClass="stylishButton fontSizeSmall" value="#{myConnectionsNeedsListController.gotItHref}">
+					<h:outputText value="#{messages.need_gotIt}" />
+				</h:outputLink>
+			</td>
 			</tr>
 		</table>
     </h:column>

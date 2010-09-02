@@ -5,7 +5,9 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
+import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.utils.JsfUtils;
 
 @ViewController(viewIds={"/auth/need/myConnectionsNeedsList.jspx"})
@@ -37,5 +39,12 @@ public class MyConnectionsNeedsListController extends AbstractNeedsWithOwnerList
 	protected ListWithRowCount getListWithRowCount() {
 		return getNeedService().findMyConnectionsNeeds(getOwnerId(), getSearchString(), getCategoryId(), 
 				getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
+	}
+
+	public String getGotItHref() {
+		final Need need = (Need)getTable().getRowData();
+		return JsfUtils.getFullUrl(PagesURL.INTERNAL_ITEM_ADD, 
+				PagesURL.INTERNAL_ITEM_ADD_PARAM_NEED_ID,
+				need.getId().toString());
 	}
 }

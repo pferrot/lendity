@@ -69,6 +69,7 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		getPerson().setFirstName(getFirstName());
 		getPerson().setLastName(getLastName());
 		getPerson().setEmailSubscriber(getEmailSubscriber());
+		getPerson().setReceiveNeedsNotifications(getReceiveNeedsNotifications());
 		
 		getPersonService().updatePerson(getPerson());
 		

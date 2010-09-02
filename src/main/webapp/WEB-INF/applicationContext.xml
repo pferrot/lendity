@@ -24,7 +24,8 @@
 			<value>lendity</value>
 		</property>		
 		<property name="rootURL">
-			<value>http://www.lendity.com</value>
+<!--			<value>http://www.lendity.com</value>-->
+			<value>http://localhost:8080/lendity</value>
 		</property>
 		<property name="noReplyEmailAddress">
 			<value>no_reply@lendity.com</value>
@@ -573,6 +574,7 @@
 	<bean id="internalItemAddController" class="com.pferrot.lendity.item.jsf.InternalItemAddController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
+	      <property name="needService" ref="needService"/>
 	</bean>
 	
 	<bean id="externalItemAddController" class="com.pferrot.lendity.item.jsf.ExternalItemAddController"

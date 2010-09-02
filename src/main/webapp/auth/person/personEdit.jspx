@@ -75,12 +75,6 @@
 					</div><!-- /form row -->
 					
 					<!-- form row -->
-					<div class="gt-form-row gt-width-100">
-						<label><h:outputText value="#{messages.person_receiveNeedsNotifSetting}"/></label>
-						
-					</div><!-- /form row -->
-					
-					<!-- form row -->
 					<div class="gt-form-row">
 						<br/><h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{personEditController.submit}" />
 						<h:outputLink styleClass="stylishButton"  value="#{personEditController.personOverviewHref}">

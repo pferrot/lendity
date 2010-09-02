@@ -14,12 +14,9 @@ import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
-import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.item.jsf.AbstractItemsListController;
-import com.pferrot.lendity.lendrequest.LendRequestService;
 import com.pferrot.lendity.model.CategoryEnabled;
 import com.pferrot.lendity.model.ConnectionRequest;
-import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.need.NeedService;
 import com.pferrot.lendity.person.PersonUtils;
@@ -37,7 +34,6 @@ public class HomeController extends AbstractItemsListController {
 	private final static String CONNECTIONS_NEEDS_LIST_LOADED_ATTRIBUTE_PREFIX_NAME = "connNeListAttrPrefix";
 	
 	private ConnectionRequestService connectionRequestService;
-	private LendRequestService lendRequestService;
 	private NeedService needService;
 	
 	// Keep variables to not hit the DB every time.
@@ -53,15 +49,10 @@ public class HomeController extends AbstractItemsListController {
 	public ConnectionRequestService getConnectionRequestService() {
 		return connectionRequestService;
 	}
+	
 	public void setConnectionRequestService(
 			ConnectionRequestService connectionRequestService) {
 		this.connectionRequestService = connectionRequestService;
-	}
-	public LendRequestService getLendRequestService() {
-		return lendRequestService;
-	}
-	public void setLendRequestService(LendRequestService lendRequestService) {
-		this.lendRequestService = lendRequestService;
 	}
 
 	public NeedService getNeedService() {
@@ -81,7 +72,7 @@ public class HomeController extends AbstractItemsListController {
 	
 	public long getNbPendingLendRequests() {
 		if (nbPendingLendRequests < 0) {
-			nbPendingLendRequests = lendRequestService.countCurrentUserPendingLendRequests();
+			nbPendingLendRequests = getLendRequestService().countCurrentUserPendingLendRequests();
 		}
 		return nbPendingLendRequests;
 	}
@@ -177,6 +168,18 @@ public class HomeController extends AbstractItemsListController {
 	public String getNeedOverviewHref() {
 		final Need need = (Need)getConnectionsNeedsTable().getRowData();
 		return JsfUtils.getFullUrl(PagesURL.NEED_OVERVIEW, PagesURL.NEED_OVERVIEW_PARAM_NEED_ID, need.getId().toString());
+	}
+
+	public String getNeedOwnerHref() {
+		final Need need = (Need)getConnectionsNeedsTable().getRowData();
+		return PersonUtils.getPersonOverviewPageUrl(need.getOwner().getId().toString());		
+	}
+	
+	public String getNeedGotItHref() {
+		final Need need = (Need)getConnectionsNeedsTable().getRowData();
+		return JsfUtils.getFullUrl(PagesURL.INTERNAL_ITEM_ADD, 
+				PagesURL.INTERNAL_ITEM_ADD_PARAM_NEED_ID,
+				need.getId().toString());
 	}
 	
 	private ListWithRowCount getConnectionsNeedsListWithRowCount() {

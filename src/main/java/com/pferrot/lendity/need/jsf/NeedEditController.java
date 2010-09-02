@@ -6,6 +6,7 @@ import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.need.NeedUtils;
 import com.pferrot.lendity.person.PersonUtils;
@@ -55,7 +56,10 @@ public class NeedEditController extends AbstractNeedAddEditController {
 		// Initialize the model to be edited.
 		setTitle(pNeed.getTitle());
 		setDescription(pNeed.getDescription());
-		setCategoryId(pNeed.getCategory().getId());
+		final ItemCategory category = pNeed.getCategory();
+		if (category != null) {
+			setCategoryId(category.getId());
+		}
 	}	
 
 	public Long updateNeed() {		
