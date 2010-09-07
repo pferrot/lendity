@@ -65,6 +65,17 @@ public class PersonUtils {
 	
 	/**
 	 * 
+	 * @param pPersonId
+	 * @return
+	 */
+	public static String getPersonEditPicturePageUrl(final String pPersonId) {
+		CoreUtils.assertNotNullOrEmptyString(pPersonId);
+		
+		return JsfUtils.getFullUrl(PagesURL.PERSON_EDIT_PICTURE, PagesURL.PERSON_EDIT_PICTURE_PARAM_PERSON_ID, pPersonId);
+	}
+	
+	/**
+	 * 
 	 * @return
 	 */
 	public static String getPersonsListUrl() {		

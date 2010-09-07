@@ -23,6 +23,8 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.envers.Audited;
 
 import com.pferrot.core.CoreUtils;
+import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.security.model.User;
 
 @Entity
@@ -36,6 +38,14 @@ public class Person implements Serializable {
 	@Column(name = "ENABLED", nullable = false)
 	@Audited
 	private Boolean enabled;
+
+	@OneToOne(targetEntity = Document.class)
+	@JoinColumn(name = "IMAGE_ID", nullable = true)
+	private Document image;
+	
+	@OneToOne(targetEntity = Document.class)
+	@JoinColumn(name = "THUMBNAIL_ID", nullable = true)
+	private Document thumbnail;
 	
 	@Column(name = "FIRST_NAME", nullable = false, length = 255)
 	@Audited
@@ -135,7 +145,23 @@ public class Person implements Serializable {
         this.id = id;
     }
 
-    public Boolean getEnabled() {
+    public Document getImage() {
+		return image;
+	}
+
+	public void setImage(Document image) {
+		this.image = image;
+	}
+
+	public Document getThumbnail() {
+		return thumbnail;
+	}
+
+	public void setThumbnail(Document thumbnail) {
+		this.thumbnail = thumbnail;
+	}
+
+	public Boolean getEnabled() {
 		return enabled;
 	}
 

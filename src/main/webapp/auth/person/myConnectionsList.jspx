@@ -75,14 +75,23 @@
 <h:dataTable value="#{myConnectionsListController.list}" binding="#{myConnectionsListController.table}" var="person" 
    styleClass="gt-table gt-user-table">
 
-
     <h:column>
+		<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink value="#{myConnectionsListController.personOverviewHref}">
+					<div class="thumbnailDiv">
+						<img src="#{myConnectionsListController.profileThumbnailSrc}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
 		<h4>
 			<h:outputLink value="#{myConnectionsListController.personOverviewHref}">
 				<h:outputText value="#{person.displayName}" />
 			</h:outputLink>
 		</h4>
 		<p><a href="mailto:#{person.email}"><h:outputText value="#{person.email}" /></a></p>
+		</td></tr></table>
     </h:column>
 
 	<h:column>

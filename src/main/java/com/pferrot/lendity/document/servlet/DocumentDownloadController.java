@@ -1,5 +1,7 @@
 package com.pferrot.lendity.document.servlet;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 
 import javax.servlet.ServletOutputStream;
@@ -49,33 +51,62 @@ public class DocumentDownloadController extends AbstractController {
 	protected ModelAndView handleRequestInternal(final HttpServletRequest pRequest, final HttpServletResponse pResponse) throws Exception {
 		try {
 			final String documentIdAsString = pRequest.getParameter(PagesURL.DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ID);
-			if (documentIdAsString == null) {
-				return null;
+			final String documentPath = pRequest.getParameter(PagesURL.DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_PATH);
+			final Long currentPersonId = PersonUtils.getCurrentPersonId(pRequest.getSession());	
+			if (documentIdAsString != null) {
+				final Long documentId = Long.parseLong(documentIdAsString);		
+				
+				if (documentService.isAuthorizedDownload(pRequest.getSession(), documentId)) {
+					final Document document = documentService.findDocument(documentId);
+					
+					pResponse.setContentType(document.getMimeType());
+					if ("true".equals(pRequest.getParameter(PagesURL.DOCUMENT_DOWNLOAD_PARAM_AS_ATTACHMENT))) {
+						pResponse.setHeader("Content-Disposition", "attachment; filename="+ document.getName());
+					}
+					final ServletOutputStream out = pResponse.getOutputStream();
+					
+					final InputStream in = document.getContent().getBinaryStream();
+					final byte[] buffer = new byte[in.available()];
+					while(in.read(buffer) != -1) {
+						out.write(buffer);
+					}
+					out.flush();
+				}
+				else {
+					if (log.isDebugEnabled()) {
+						log.debug("Forbidden access person ID: " + currentPersonId + " for document : " + documentIdAsString);
+					}
+				}
 			}
-			final Long documentId = Long.parseLong(documentIdAsString);
-			
-			final Long currentPersonId = PersonUtils.getCurrentPersonId(pRequest.getSession());			
-			
-			if (documentService.isAuthorizedDownload(pRequest.getSession(), documentId)) {
-				final Document document = documentService.findDocument(documentId);
-				
-				pResponse.setContentType(document.getMimeType());
-				if ("true".equals(pRequest.getParameter(PagesURL.DOCUMENT_DOWNLOAD_PARAM_AS_ATTACHMENT))) {
-					pResponse.setHeader("Content-Disposition", "attachment; filename="+ document.getName());
+			// Download filesytem file
+			else if (documentPath != null) {
+				final String mimeType = pRequest.getParameter(PagesURL.DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_MIME_TYPE);
+				final String originalFileName = pRequest.getParameter(PagesURL.DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ORIGINAL_FILE_NAME);
+				final Long documentFakeId = Long.valueOf(documentPath.hashCode());
+				if (documentService.isAuthorizedDownload(pRequest.getSession(), documentFakeId)) {
+
+					
+					pResponse.setContentType(mimeType);
+					if ("true".equals(pRequest.getParameter(PagesURL.DOCUMENT_DOWNLOAD_PARAM_AS_ATTACHMENT))) {
+						pResponse.setHeader("Content-Disposition", "attachment; filename="+ originalFileName);
+					}
+					final ServletOutputStream out = pResponse.getOutputStream();
+					final File tmpFile = new File(documentPath);
+					final FileInputStream in = new FileInputStream(tmpFile);
+					final byte[] buffer = new byte[in.available()];
+					while(in.read(buffer) != -1) {
+						out.write(buffer);
+					}
+					out.flush();
 				}
-				final ServletOutputStream out = pResponse.getOutputStream();
-				
-				final InputStream in = document.getContent().getBinaryStream();
-				final byte[] buffer = new byte[in.available()];
-				while(in.read(buffer) != -1) {
-					out.write(buffer);
-				}
-				out.flush();
+				else {
+					if (log.isDebugEnabled()) {
+						log.debug("Forbidden access person ID: " + currentPersonId + " for document : " + documentPath);
+					}
+				}				
 			}
 			else {
-				if (log.isDebugEnabled()) {
-					log.debug("Forbidden access person ID: " + currentPersonId + " for document : " + documentIdAsString);
-				}
+				return null;
 			}
 		}
 		catch (Exception e) {

@@ -1,0 +1,107 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="#{messages.person_personEditPictureTitle}" />
+	<ui:param name="contentHeader" value="#{messages.person_personEditPictureTitle}" />
+
+		<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				
+				<!-- Item Edit Form -->
+				<h2 class="gt-form-head"><h:outputText value="#{messages.person_personEditPictureTitle}"/></h2>
+				<div class="gt-form gt-content-box">
+				
+				<f:view>
+
+					<h:form prependId="false" enctype="multipart/form-data">
+					
+					<table><tr><td>
+						<center>
+						<label><h:outputText value="#{messages.person_profilePicture}"/></label>						
+						<img src="#{personEditPictureController.imgSrc}"/>
+						</center>
+					</td><td style="padding-left: 30px;">
+						<center>
+						<label><h:outputText value="#{messages.person_profileThumbnail}"/></label>
+						<img src="#{personEditPictureController.thumbnailSrc}"/>
+						</center>
+					</td></tr></table>
+					
+					<br/><br/>
+					
+					<c:if test="#{personEditPictureController.tempFileLocation != null or 
+					((not personEditPictureController.removeCurrentImage) and personEditPictureController.person.image != null)}">
+						<span class="linkStyleAction" onclick="document.getElementById('removeCurrentImage').click();"><h:outputText value="#{messages.person_profilePictureRemove}"/></span>
+						<h:commandButton id="removeCurrentImage" style="display: none;" value="#{messages.navigation_save}" action="#{personEditPictureController.removeCurrentImage}" />
+						<br/><br/>				
+					</c:if>
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.image_image}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="image1"></h:message>
+						<c:if test="#{personEditPictureController.imageFile1TooLargeErrorMessage != null}">
+							<h:outputText value="#{personEditPictureController.imageFile1TooLargeErrorMessage}" styleClass="error"/>
+						</c:if>
+						<t:inputFileUpload id="image1"
+										   styleClass="file"
+						                   value="#{personEditPictureController.imageFile1}"
+						                   required="false"
+						                   accept="image/*" 
+						                   validator="#{personEditPictureController.validateImageFile1}"
+						                   onchange="document.getElementById('processImageButton').click();"/>					
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row">
+						<h:commandButton id="processImageButton" style="display: none;" value="#{messages.navigation_save}" action="#{personEditPictureController.processImage}" />
+						<br/><h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{personEditPictureController.submit}" />
+						<h:outputLink styleClass="stylishButton"  value="#{personEditPictureController.personOverviewHref}">
+           					<h:outputText value="#{messages.navigation_cancel}"/>
+         				</h:outputLink>
+					</div>
+					<!-- /form row -->
+					
+					</h:form>
+				</f:view>		
+				</div>			
+				<!-- /Item Edit Form -->
+				
+			</div>
+			<!-- /main content -->
+
+			<!-- sidebar -->
+			<div class="gt-sidebar">				
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

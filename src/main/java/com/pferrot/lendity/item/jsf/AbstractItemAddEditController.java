@@ -132,7 +132,7 @@ public abstract class AbstractItemAddEditController extends AbstractObjectAddEdi
 	protected void errorImageFile(final UIComponent pUiComponent) {
 		String message = "";
 		FacesContext context = FacesContext.getCurrentInstance();
-		message = I18nUtils.getMessageResourceString("validation_imageIoError", I18nUtils.getDefaultLocale());
+		message = I18nUtils.getMessageResourceString("validation_imageItemIoError", I18nUtils.getDefaultLocale());
 		context.addMessage(pUiComponent.getClientId(context), new FacesMessage(message));
 	}
 	

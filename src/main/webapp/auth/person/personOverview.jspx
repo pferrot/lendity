@@ -34,7 +34,10 @@
 <h2 class="gt-table-head"><h:outputText value="#{personOverviewController.pageTitle}"/></h2>
 
 <!-- content box -->
-<div class="gt-form gt-content-box">
+<div class="gt-form gt-content-box" style="position: relative;">
+	<div class="profilePictureDiv">
+		<img src="#{personOverviewController.profilePictureSrc}"/>
+	</div>
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_firstName}:" /></label></div>
 		<h:outputText value="#{personOverviewController.person.firstName}" />
@@ -78,6 +81,10 @@
     	<span onclick="requestConnectionTooltip(this, '#{personOverviewController.person.id}', 2)">
 			<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.connectionRequest_requestConnection}" rendered="#{!personOverviewController.requestConnectionDisabled}"/>
 		</span>
+    	</td><td>
+    	<h:outputLink rendered="#{personOverviewController.editAvailable}" value="#{personOverviewController.personEditPictureHref}" styleClass="stylishButton">
+    		<h:outputText rendered="#{personOverviewController.editAvailable}" value="#{messages.person_changeProfilePicure}"/>
+    	</h:outputLink>
     	</td><td>
     	<h:outputLink rendered="#{personOverviewController.editAvailable}" value="#{personOverviewController.changePasswordHref}" styleClass="stylishButton">
     		<h:outputText rendered="#{personOverviewController.editAvailable}" value="#{messages.changePassword_changePassword}"/>

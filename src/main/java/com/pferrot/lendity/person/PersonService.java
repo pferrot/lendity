@@ -9,8 +9,12 @@ import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.emailsender.manager.MailManager;
+import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.dao.DocumentDao;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.document.DocumentService;
+import com.pferrot.lendity.model.Document;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.exception.PersonException;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -21,6 +25,8 @@ public class PersonService {
 	
 	private PersonDao personDao;
 	private MailManager mailManager;
+	private DocumentDao documentDao;
+	private DocumentService documentService;
 
 	public void setPersonDao(final PersonDao pPersonDao) {
 		this.personDao = pPersonDao;
@@ -28,6 +34,14 @@ public class PersonService {
 	
 	public void setMailManager(MailManager mailManager) {
 		this.mailManager = mailManager;
+	}
+
+	public void setDocumentDao(DocumentDao documentDao) {
+		this.documentDao = documentDao;
+	}
+
+	public void setDocumentService(DocumentService documentService) {
+		this.documentService = documentService;
 	}
 
 	public Person findPerson(final Long pPersonId) {
@@ -51,6 +65,29 @@ public class PersonService {
 		personDao.updatePerson(pPerson);
 		PersonUtils.updatePersonInSession(pPerson, JsfUtils.getHttpServletRequest());
 	}
+	
+	public void updatePersonPicture(final Person pPerson, final Document pPicture, final Document pThumbnail) {
+		assertCurrentUserAuthorizedToEdit(pPerson);
+		final Document oldPic = pPerson.getImage();
+		final Document oldThumbnail = pPerson.getImage();		
+		if (pPicture != null) {
+			documentDao.createDocument(pPicture);
+		}
+		pPerson.setImage(pPicture);
+		if (pThumbnail != null) {
+			documentDao.createDocument(pThumbnail);
+		}
+		pPerson.setThumbnail(pThumbnail);
+		
+		if (oldPic != null) {
+			documentDao.deleteDocument(oldPic);
+		}
+		if (oldThumbnail != null) {
+			documentDao.deleteDocument(oldThumbnail);
+		}
+		
+		personDao.updatePerson(pPerson);
+ 	}
 	
 	public List<Person> findEmailSubscribers(final Date pEmailSubscriberLastUpdateMax, final int pMaxNbToFind) {
 		return personDao.findPersonsList(null, PersonDao.UNSPECIFIED_LINK, null, null, Boolean.TRUE, null, Boolean.TRUE, pEmailSubscriberLastUpdateMax, 0, pMaxNbToFind);
@@ -89,6 +126,38 @@ public class PersonService {
 
 	public Long[] getCurrentPersonConnectionIds(final Long pConnectionId) {
 		return getPersonConnectionIds(getCurrentPerson(), pConnectionId);		
+	}
+
+	public String getProfilePictureSrc(final Person pPerson, final boolean pAuthorizeDocumentAccess) {
+		final Document picture = pPerson.getImage();
+		if (picture == null ) {
+			return JsfUtils.getFullUrl(PersonConsts.DUMMY_PROFILE_PICTURE_URL);
+		}
+		else {
+			if (pAuthorizeDocumentAccess) {
+				documentService.authorizeDownloadOneMinute(JsfUtils.getSession(), picture.getId());
+			}
+			return JsfUtils.getFullUrl(
+					PagesURL.DOCUMENT_DOWNLOAD, 
+					PagesURL.DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ID, 
+					picture.getId().toString());
+		}			
+	}
+	
+	public String getProfileThumbnailSrc(final Person pPerson, final boolean pAuthorizeDocumentAccess) {
+		final Document thumbnail = pPerson.getThumbnail();
+		if (thumbnail == null ) {
+			return JsfUtils.getFullUrl(PersonConsts.DUMMY_PROFILE_THUMBNAIL_URL);
+		}
+		else {
+			if (pAuthorizeDocumentAccess) {
+				documentService.authorizeDownloadOneMinute(JsfUtils.getSession(), thumbnail.getId());
+			}
+			return JsfUtils.getFullUrl(
+					PagesURL.DOCUMENT_DOWNLOAD, 
+					PagesURL.DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ID, 
+					thumbnail.getId().toString());
+		}		
 	}
 	
 	/**

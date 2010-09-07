@@ -88,7 +88,7 @@ public class InternalItemEditController extends AbstractInternalItemAddEditContr
 					return null;
 				}
 				final long size = getImageFile1().getSize();
-				if (size > DocumentConsts.MAX_IMAGE_SIZE) {
+				if (size > DocumentConsts.MAX_ITEM_IMAGE_SIZE) {
 					errorImageFile();
 					return null;
 				}

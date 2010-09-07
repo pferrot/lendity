@@ -88,6 +88,10 @@ public class PersonOverviewController
 	public String getPersonEditHref() {		
 		return PersonUtils.getPersonEditPageUrl(person.getId().toString());
 	}
+	
+	public String getPersonEditPictureHref() {		
+		return PersonUtils.getPersonEditPicturePageUrl(person.getId().toString());
+	}
 
 	public String getChangePasswordHref() {		
 		return JsfUtils.getFullUrl(PagesURL.CHANGE_PASSWORD);
@@ -119,6 +123,20 @@ public class PersonOverviewController
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 			return I18nUtils.getMessageResourceString("person_personOverviewTitle", locale);
 		}		
+	}
+	
+	public String getProfilePictureSrc() {
+		if (FacesContext.getCurrentInstance().getRenderResponse()) {
+			return personService.getProfilePictureSrc(getPerson(), true);
+		}
+		return null;
+	}
+	
+	public String getProfileThumbnailSrc() {
+		if (FacesContext.getCurrentInstance().getRenderResponse()) {
+			return personService.getProfileThumbnailSrc(getPerson(), true);
+		}
+		return null;
 	}
 	
 //	public String getEmailSubscriberStatusLabel() {

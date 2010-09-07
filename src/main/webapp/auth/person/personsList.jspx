@@ -75,13 +75,22 @@
 <h:dataTable value="#{personsListController.list}" binding="#{personsListController.table}" var="person" 
    styleClass="gt-table gt-user-table">
 
-
     <h:column>
+		<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink value="#{personsListController.personOverviewHref}">
+					<div class="thumbnailDiv">
+						<img src="#{personsListController.profileThumbnailSrc}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
 		<h4>
 			<h:outputLink value="#{personsListController.personOverviewHref}">
 				<h:outputText value="#{person.displayName}" />
 			</h:outputLink>
 		</h4>
+		</td></tr></table>
     </h:column>
 
 	<h:column>

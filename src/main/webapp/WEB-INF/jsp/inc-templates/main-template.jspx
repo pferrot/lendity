@@ -33,7 +33,6 @@
 	<script type="text/javascript">
 		var $j = jQuery.noConflict();
 		colorErrorFields();
-		draggableMarquee();
 		focusFirtTextInputField();
 		// initialise plugins
 		$j(document).ready(function() {

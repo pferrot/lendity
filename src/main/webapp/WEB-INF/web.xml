@@ -92,7 +92,7 @@
 	    <filter-class>org.apache.myfaces.webapp.filter.ExtensionsFilter</filter-class>
         <init-param>
             <param-name>uploadMaxFileSize</param-name>
-            <param-value>2m</param-value>
+            <param-value>4m</param-value>
             <description>Set the size limit for uploaded files.
             Format: 10 - 10 bytes
                     10k - 10 KB

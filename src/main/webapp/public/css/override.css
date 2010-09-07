@@ -78,14 +78,14 @@ a:hover {
 
 .gt-content-box {
 	word-wrap:break-word!important;
-	background-color: #eaeaf2;
+	background-color: #fcfcfc;
 	border: 1px solid #073351;
 	border-radius: 5px;
 	padding: 1px;
 }
 
 .gt-table tr:hover td {
-	background-color: #e1e1e9!important;
+	background-color: #f3f3f3!important;
 }
 
 .gt-nav ul li a {

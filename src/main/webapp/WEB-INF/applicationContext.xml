@@ -318,6 +318,8 @@
 	
 	<bean id="personServiceTarget" class="com.pferrot.lendity.person.PersonService">
 		<property name="personDao" ref="personDao"/>
+		<property name="documentDao" ref="documentDao"/>
+		<property name="documentService" ref="documentService"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
 	</bean>
 	
@@ -353,6 +355,12 @@
 	<bean id="personEditController" class="com.pferrot.lendity.person.jsf.PersonEditController"
 	      scope="conversation.access">
 	      <property name="personService" ref="personService"/>
+	</bean>
+	
+	<bean id="personEditPictureController" class="com.pferrot.lendity.person.jsf.PersonEditPictureController"
+	      scope="conversation.access">
+	      <property name="personService" ref="personService"/>
+	      <property name="documentService" ref="documentService"/>
 	</bean>
 	
 	<bean id="removeConnectionTooltipController" class="com.pferrot.lendity.person.jsf.RemoveConnectionTooltipController"

@@ -1,5 +1,7 @@
 package com.pferrot.lendity.person.jsf;
 
+import javax.faces.context.FacesContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -40,5 +42,21 @@ public abstract class AbstractPersonsListController extends AbstractListControll
 	public String getPersonOverviewHref() {
 		final Person person = (Person)getTable().getRowData();
 		return PersonUtils.getPersonOverviewPageUrl(person.getId().toString());
+	}
+
+	public String getProfilePictureSrc() {
+		final Person person = (Person)getTable().getRowData();
+		if (FacesContext.getCurrentInstance().getRenderResponse()) {
+			return personService.getProfilePictureSrc(person, true);
+		}
+		return null;
+	}
+	
+	public String getProfileThumbnailSrc() {
+		final Person person = (Person)getTable().getRowData();
+		if (FacesContext.getCurrentInstance().getRenderResponse()) {
+			return personService.getProfileThumbnailSrc(person, true);
+		}
+		return null;
 	}
 }

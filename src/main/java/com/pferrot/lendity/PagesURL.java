@@ -158,7 +158,10 @@ public interface PagesURL {
 	String PERSON_OVERVIEW_PARAM_PERSON_ID = "personID";
 	
 	String PERSON_EDIT = "/auth/person/personEdit.faces";
-	String PERSON_EDIT_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;	
+	String PERSON_EDIT_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;
+	
+	String PERSON_EDIT_PICTURE = "/auth/person/personEditPicture.faces";
+	String PERSON_EDIT_PICTURE_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;
 	
 	// PERSON - end
 	/////////////////////////////////////////////////////////////////////////
@@ -167,7 +170,13 @@ public interface PagesURL {
 	// DOCUMENT - start
 	
 	String DOCUMENT_DOWNLOAD = "/auth/document/documentDownload.htm";
+	
 	String DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ID = "documentID";
+	
+	String DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_PATH = "documentPath";
+	String DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ORIGINAL_FILE_NAME = "documentOriginalFileName";
+	String DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_MIME_TYPE = "documentMimeType";
+	
 	String DOCUMENT_DOWNLOAD_PARAM_AS_ATTACHMENT = "attachment";
 	
 	// DOCUMENT - end
