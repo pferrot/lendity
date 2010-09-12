@@ -9,7 +9,7 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
 <!-- borrow status -->
-<h:form prependId="false">
+<h:form id="orderByForm" prependId="false">
 <h:outputText value="#{messages.navigation_sort}" styleClass="small"/>
 <br/>
 <h:selectOneMenu id="orderBy" value="#{theBean.orderBy}" valueChangeListener="#{theBean.orderBy}" converter="javax.faces.Long" onchange="submit()">

@@ -18,22 +18,12 @@ function focusFirtTextInputField() {
     });
 }
 
-function draggableMarquee() {
-	$j(document).ready(function() {
-		$j('marquee').marquee('pointer').mouseover(function () {
-		  $j(this).trigger('stop');
-		}).mouseout(function () {
-		  $j(this).trigger('start');
-		}).mousemove(function (event) {
-		  if ($j(this).data('drag') == true) {
-		    this.scrollTop = $j(this).data('scrollY') + ($j(this).data('y') - event.clientY);
-		  }
-		}).mousedown(function (event) {
-		  $j(this).data('drag', true).data('y', event.clientY).data('scrollY', this.scrollTop);
-		}).mouseup(function () {
-		  $j(this).data('drag', false);
-		});
-	});	
+function editPictureOnChange(pContextPath) {
+	document.getElementById('contentDiv').style.display = 'none';
+    var inProgressDiv = document.getElementById('inProgressDiv');
+    inProgressDiv.innerHTML = '<center><img src="' + pContextPath + '/public/images/icons/inprogress1.gif"/></center>';
+    inProgressDiv.style.display = 'block';
+    document.getElementById('processImageButton').click();	
 }
 
 /*

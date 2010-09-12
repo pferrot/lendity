@@ -58,7 +58,7 @@
 <td>
 <ui:include src="filter/borrowStatusFilter.jspx">
 	<ui:param name="theBean" value="#{myItemsListController}"/>
-	<ui:param name="borrowStatusTitle" value="#{messages.item_borrowStatus}"/>	
+	<ui:param name="borrowStatusTitle" value="#{messages.item_borrowStatus}"/>
 </ui:include>
 </td>
 
@@ -112,15 +112,25 @@
 
 <h:dataTable value="#{myItemsListController.list}" binding="#{myItemsListController.table}" var="item" styleClass="gt-table gt-user-table">
 
-    <h:column>
+    <h:column id="column1">
+    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink value="#{myItemsListController.itemOverviewHref}" rendered="#{myItemsListController.thumbnail1Src != null}">
+					<div class="thumbnailDiv">
+					    <img src="#{myItemsListController.thumbnail1Src}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
 		<h4>
 			<h:outputLink value="#{myItemsListController.itemOverviewHref}">
 				<h:outputText value="#{item.title}" />
 			</h:outputLink>
 		</h4>
+		</td></tr></table>
     </h:column>
     
-	<h:column>
+	<h:column id="column2">
 		<table border="0" class="gt-table-categories" width="300" align="right">
 			<tr>
 			    <th width="50%"><h:outputText id="id_1" value="#{messages.item_category}:" /></th>
@@ -160,15 +170,15 @@
 		</table>
     </h:column>
 
-	<h:column>
+	<h:column id="column3">
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 			<td>
 				<span onclick="lendItemTooltip(this, '#{item.id}', 1)">
-					<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.item_lend}" rendered="#{myItemsListController.lendAvailable}"/>
+					<h:outputText styleClass="stylishButton" value="#{messages.item_lend}" rendered="#{myItemsListController.lendAvailable}"/>
 				</span>
 				<span  onclick="lendBackItemTooltip(this, '#{item.id}', 1)">
-					<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.item_lendBack}" rendered="#{myItemsListController.lendBackAvailable}"/>
+					<h:outputText styleClass="stylishButton" value="#{messages.item_lendBack}" rendered="#{myItemsListController.lendBackAvailable}"/>
 				</span>		
 			</td>
 			</tr>

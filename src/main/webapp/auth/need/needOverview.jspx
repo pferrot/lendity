@@ -61,7 +61,7 @@
 	</div>
 	<br/>
 	<div class="gt-form-row gt-width-100">
-		<table><tr><td>
+		<table class="buttonsTable"><tr><td>
 			<h:outputLink rendered="#{needOverviewController.editAvailable}" value="#{needOverviewController.needEditHref}" styleClass="stylishButton">
 	    		<h:outputText rendered="#{needOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
 	    	</h:outputLink>

@@ -24,8 +24,6 @@
 			
 			<!-- body -->
 			<div class="gt-bd gt-cols clearfix">
-			<!-- main content -->
-			<div class="gt-content">
 
 				
 <f:view>
@@ -48,7 +46,24 @@
 
 <h:dataTable value="#{myConnectionsUpdatesListController.list}" binding="#{myConnectionsUpdatesListController.table}" var="connectionRequest" styleClass="gt-table gt-user-table">
 
-    <h:column>
+    <h:column id="column1">
+    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink value="#{myConnectionsUpdatesListController.requesterOverviewHref}">
+					<div class="thumbnailDiv">
+						<img src="#{myConnectionsUpdatesListController.requesterThumbnailSrc}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink value="#{myConnectionsUpdatesListController.connectionOverviewHref}">
+					<div class="thumbnailDiv">
+						<img src="#{myConnectionsUpdatesListController.connectionThumbnailSrc}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
 			<h:outputLink value="#{myConnectionsUpdatesListController.requesterOverviewHref}">
 				<h:outputText value="#{connectionRequest.requester.displayName}" />
 			</h:outputLink>
@@ -57,9 +72,10 @@
 				<h:outputText value="#{connectionRequest.connection.displayName}" />
 			</h:outputLink>
 			<span style="font-weight: normal;"><h:outputText value="#{messages.connectionRequest_isFriendWith}" /></span>
+		</td></tr></table>
     </h:column>
 
-	<h:column>
+	<h:column id="column2">
 		<table border="0" class="gt-table-categories" width="75" align="right">
 			<tr>
 				<td><nobr><h:outputText id="id_2" value="#{myConnectionsUpdatesListController.responseDateLabel}"/></nobr></td>
@@ -76,8 +92,6 @@
 </div><!-- /content box -->
 
 </f:view>
-			</div>
-			<!-- /main content -->
 			</div>
 			<!-- /body -->
 			

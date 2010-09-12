@@ -276,6 +276,7 @@
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
 	      <property name="needService" ref="needService"/>
+	      <property name="personService" ref="personService"/>
 	      <property name="lendRequestService" ref="lendRequestService"/>
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
@@ -421,11 +422,13 @@
     <bean id="myPendingLendRequestsListController" class="com.pferrot.lendity.lendrequest.jsf.MyPendingLendRequestsListController"
 	      scope="session">
 	      <property name="lendRequestService" ref="lendRequestService"/>
+	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
 	<bean id="myPendingLendRequestsOutListController" class="com.pferrot.lendity.lendrequest.jsf.MyPendingLendRequestsOutListController"
 	      scope="session">
 	      <property name="lendRequestService" ref="lendRequestService"/>
+	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
 	<bean id="requestLendTooltipController" class="com.pferrot.lendity.lendrequest.jsf.RequestLendTooltipController"
@@ -490,16 +493,19 @@
 	<bean id="myPendingConnectionRequestsListController" class="com.pferrot.lendity.connectionrequest.jsf.MyPendingConnectionRequestsListController"
 	      scope="session">
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
+	      <property name="personService" ref="personService"/>
 	</bean>
 	
 	<bean id="myPendingConnectionRequestsOutListController" class="com.pferrot.lendity.connectionrequest.jsf.MyPendingConnectionRequestsOutListController"
 	      scope="session">
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
+	      <property name="personService" ref="personService"/>
 	</bean>
 	
 	<bean id="myConnectionsUpdatesListController" class="com.pferrot.lendity.connectionrequest.jsf.MyConnectionsUpdatesListController"
 	      scope="session">
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
+	      <property name="personService" ref="personService"/>
 	</bean>
 	
 	<bean id="requestConnectionTooltipController" class="com.pferrot.lendity.connectionrequest.jsf.RequestConnectionTooltipController"
@@ -565,6 +571,7 @@
 		<property name="lendRequestDao" ref="lendRequestDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
 		<property name="personService" ref="personService"/>
+		<property name="documentService" ref="documentService"/>
 	</bean>
 	
 	<bean id="internalItemOverviewController" class="com.pferrot.lendity.item.jsf.InternalItemOverviewController"
@@ -593,6 +600,12 @@
 	<bean id="internalItemEditController" class="com.pferrot.lendity.item.jsf.InternalItemEditController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
+	</bean>
+	
+	<bean id="internalItemEditPictureController" class="com.pferrot.lendity.item.jsf.InternalItemEditPictureController"
+	      scope="conversation.access">
+	      <property name="itemService" ref="itemService"/>
+	      <property name="documentService" ref="documentService"/>
 	</bean>
 	
 	<bean id="externalItemEditController" class="com.pferrot.lendity.item.jsf.ExternalItemEditController"

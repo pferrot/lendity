@@ -42,11 +42,13 @@
 		<h4><h:outputText value="#{externalItemOverviewController.title}" /></h4>
 	</div>
 	<br/>
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_description}:" /></label></div>
-		<h:outputText value="#{externalItemOverviewController.description}" escape="false" />
-	</div>
-	<br/>
+	<c:if test="#{externalItemOverviewController.descriptionAvailable}">
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_description}:" /></label></div>
+			<h:outputText value="#{externalItemOverviewController.description}" escape="false" />
+		</div>
+		<br/>
+	</c:if>
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_category}:" /></label></div>
 		<h:outputText value="#{externalItemOverviewController.categoryLabel}" />
@@ -63,9 +65,9 @@
 	</div>
 	<br/>	
 	<div class="gt-form-row gt-width-100">
-		<table><tr><td>
+		<table class="buttonsTable"><tr><td>
 			<h:outputLink rendered="#{externalItemOverviewController.editAvailable}" value="#{externalItemOverviewController.itemEditHref}" styleClass="stylishButton">
-	    		<h:outputText rendered="#{externalItemOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
+	    		<h:outputText rendered="#{externalItemOverviewController.editAvailable}" value="#{messages.navigation_editDetails}"/>
 	    	</h:outputLink>
     	</td><td>
 		</td><td>

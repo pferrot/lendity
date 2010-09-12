@@ -75,7 +75,7 @@
 <h:dataTable value="#{personsListController.list}" binding="#{personsListController.table}" var="person" 
    styleClass="gt-table gt-user-table">
 
-    <h:column>
+    <h:column id="column1">
 		<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
 			<table class="thumbnailInnerTable"><tr><td>
 				<h:outputLink value="#{personsListController.personOverviewHref}">
@@ -93,12 +93,12 @@
 		</td></tr></table>
     </h:column>
 
-	<h:column>
+	<h:column id="column2">
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 				<td>
 					<span onclick="requestConnectionTooltip(this, '#{person.id}', 1)">
-						<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.connectionRequest_requestConnection}" rendered="#{!personsListController.requestConnectionDisabled}"/>
+						<h:outputText styleClass="stylishButton" value="#{messages.connectionRequest_requestConnection}" rendered="#{!personsListController.requestConnectionDisabled}"/>
 					</span>	
 				</td>
 		    </tr>

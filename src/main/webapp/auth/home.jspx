@@ -92,18 +92,28 @@
 							</p>
 							<ui:include src="lendrequest/requestLendTooltip.jspx"/>										
 							<h:dataTable value="#{homeController.list}" binding="#{homeController.table}" var="item" styleClass="gt-table gt-user-table">
-							    <h:column>
+							    <h:column id="column1">
 							    	<table border="0" width="410">
 										<tr>
 											<td>
-									<h:outputLink value="#{homeController.itemOverviewHref}">
-										<h:outputText value="#{item.title}" />
-									</h:outputLink>
+											<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+												<table class="thumbnailInnerTable"><tr><td>
+													<h:outputLink value="#{homeController.itemOverviewHref}" rendered="#{homeController.thumbnail1Src != null}">
+														<div class="thumbnailDiv">
+														    <img src="#{homeController.thumbnail1Src}"/>
+														</div>
+													</h:outputLink>
+											</td></tr></table>
+											</td><td>
+												<h:outputLink value="#{homeController.itemOverviewHref}">
+													<h:outputText value="#{item.title}" />
+												</h:outputLink>
+											</td></tr></table>
 											</td>
 										</tr>
 									</table>
 								</h:column>
-								<h:column>
+								<h:column id="column2">
 									<table border="0" class="gt-table-categories" width="300" align="right">
 										<tr>
 											<th width="50%">
@@ -141,12 +151,12 @@
 										</tr>
 									</table>
 								</h:column>
-								<h:column>
+								<h:column id="column3">
 									<table border="0" class="gt-table-categories" width="150" align="right">
 										<tr>
 											<td>
 												<span onclick="requestLendTooltip(this, '#{item.id}', 3)">
-													<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.lendRequest_requestLend}" rendered="#{homeController.requestLendAvailable}"/>
+													<h:outputText styleClass="stylishButton" value="#{messages.lendRequest_requestLend}" rendered="#{homeController.requestLendAvailable}"/>
 												</span>	
 											</td>
 									    </tr>
@@ -168,7 +178,7 @@
 								<div class="highlightedBg"><b><h:outputText value="#{messages.home_latestConnectionNeeds}"/></b></div>
 							</p>										
 							<h:dataTable value="#{homeController.connectionsNeedsList}" binding="#{homeController.connectionsNeedsTable}" var="need"  styleClass="gt-table gt-user-table">
-							    <h:column>
+							    <h:column id="column4">
 							    	<table border="0" width="410">
 										<tr>
 											<td>
@@ -179,7 +189,7 @@
 										</tr>
 									</table>
 								</h:column>
-								<h:column>
+								<h:column id="column5">
 									<table border="0" class="gt-table-categories" width="300" align="right">
 										<tr>
 											<th width="50%">
@@ -201,11 +211,11 @@
 										</tr>
 									</table>
 								</h:column>
-							    <h:column>
+							    <h:column id="column6">
 							    	<table border="0" class="gt-table-categories" width="150" align="right">
 										<tr>
 											<td>
-							        <h:outputLink styleClass="stylishButton fontSizeSmall" value="#{homeController.needGotItHref}">
+							        <h:outputLink styleClass="stylishButton" value="#{homeController.needGotItHref}">
 										<h:outputText value="#{messages.need_gotIt}" />
 									</h:outputLink>
 											</td>
@@ -228,19 +238,37 @@
 								<div class="highlightedBg"><b><h:outputText value="#{messages.home_latestConnectionsUpdates}"/></b></div>
 							</p>
 							<h:dataTable value="#{homeController.connectionsUpdatesList}" binding="#{homeController.connectionsUpdatesTable}" var="connectionRequest"  styleClass="gt-table gt-user-table">
-							    <h:column>
-									<h:outputLink value="#{homeController.requesterOverviewHref}">
-										<h:outputText value="#{connectionRequest.requester.displayName}" />
-									</h:outputLink>
-									<h:outputText value=" " escape="false" /><h:outputText value="#{messages.connectionRequest_isFriendWithAnd}" /><h:outputText value=" " escape="false" />
-									<h:outputLink value="#{homeController.connectionOverviewHref}">
-										<h:outputText value="#{connectionRequest.connection.displayName}" />
-									</h:outputLink>
-									<h:outputText value=" " escape="false" /><h:outputText value="#{messages.connectionRequest_isFriendWith}" />
-									<span class="fontSizeSmall"><h:outputFormat value="#{messages.home_connectionsUpdatesDetails}">
-									    	<f:param value="#{homeController.connectionUpdateDateLabel}" />
-								        </h:outputFormat>
-							        </span>
+							    <h:column id="column7">
+									<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+											<table class="thumbnailInnerTable"><tr><td>
+												<h:outputLink value="#{homeController.requesterOverviewHref}">
+													<div class="thumbnailDiv">
+														<img src="#{homeController.requesterThumbnailSrc}"/>
+													</div>
+												</h:outputLink>
+											</td></tr></table>
+										</td><td class="thumbnailOutterTd">
+											<table class="thumbnailInnerTable"><tr><td>
+												<h:outputLink value="#{homeController.connectionOverviewHref}">
+													<div class="thumbnailDiv">
+														<img src="#{homeController.connectionThumbnailSrc}"/>
+													</div>
+												</h:outputLink>
+											</td></tr></table>
+										</td><td>
+											<h:outputLink value="#{homeController.requesterOverviewHref}">
+												<h:outputText value="#{connectionRequest.requester.displayName}" />
+											</h:outputLink>
+											<h:outputText value=" " escape="false" /><h:outputText value="#{messages.connectionRequest_isFriendWithAnd}" /><h:outputText value=" " escape="false" />
+											<h:outputLink value="#{homeController.connectionOverviewHref}">
+												<h:outputText value="#{connectionRequest.connection.displayName}" />
+											</h:outputLink>
+											<h:outputText value=" " escape="false" /><h:outputText value="#{messages.connectionRequest_isFriendWith}" />
+											<span class="fontSizeSmall"><h:outputFormat value="#{messages.home_connectionsUpdatesDetails}">
+											    	<f:param value="#{homeController.connectionUpdateDateLabel}" />
+										        </h:outputFormat>
+									        </span>
+							        </td></tr></table>
 							    </h:column>
 							</h:dataTable>
 							<h:outputLink value="#{authenticationController.myConnectionsUpdatesURL}">

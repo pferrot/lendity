@@ -9,7 +9,7 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
 <!-- borrow status -->
-<h:form prependId="false">
+<h:form id="borrowStatusFilterForm" prependId="false">
 <h:outputText value="#{borrowStatusTitle}" styleClass="small"/>
 <c:if test="#{theBean.borrowStatus != null}">
 	<h:outputText value=" " escape="false" />

@@ -52,20 +52,30 @@
 
 <h:dataTable value="#{myPendingLendRequestsListController.list}" binding="#{myPendingLendRequestsListController.table}" var="lendRequest" styleClass="gt-table gt-user-table">
 
-    <h:column>
+    <h:column id="column1">
+    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink id="link1" value="#{myPendingLendRequestsListController.itemOverviewHref}" rendered="#{myPendingLendRequestsListController.thumbnail1Src != null}">
+					<div class="thumbnailDiv">
+					    <img src="#{myPendingLendRequestsListController.thumbnail1Src}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
 		<h4>
-			<h:outputLink value="#{myPendingLendRequestsListController.itemOverviewHref}">
+			<h:outputLink id="link2" value="#{myPendingLendRequestsListController.itemOverviewHref}">
 				<h:outputText value="#{lendRequest.item.title}" />
 			</h:outputLink>
 		</h4>
 		<p>
-			<h:outputLink value="#{myPendingLendRequestsListController.requesterOverviewHref}">
+			<h:outputLink id="link3" value="#{myPendingLendRequestsListController.requesterOverviewHref}">
 				<h:outputText value="#{lendRequest.requester.displayName}" />
 			</h:outputLink>
 		</p>
+		</td></tr></table>
     </h:column>
 
-	<h:column>
+	<h:column id="column2">
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 			    <th width="50%"><nobr><h:outputText id="id_1" value="#{messages.lendRequest_requestDate}:" /></nobr></th>
@@ -74,25 +84,25 @@
 		</table>
     </h:column>
 
-	<h:column>
-	<h:form>
-		<table border="0" class="gt-table-categories" width="75" align="right">
-			<tr>
-				<td>
-					<span onclick="acceptLendTooltip(this, '#{lendRequest.id}', 1)">
-						<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.lendRequest_responseAccept}"/>
-					</span>
-				</td>
-		    </tr>
-		    <tr>
-				<td>
-					<span onclick="refuseLendTooltip(this, '#{lendRequest.id}', 1)">
-						<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.lendRequest_responseRefuse}"/>
-					</span>
-				</td>
-		    </tr>
-		</table>
-	</h:form>
+	<h:column id="column3">
+		<h:form id="form1">
+			<table border="0" class="gt-table-categories" width="75" align="right">
+				<tr>
+					<td>
+						<span onclick="acceptLendTooltip(this, '#{lendRequest.id}', 1)">
+							<h:outputText styleClass="stylishButton" value="#{messages.lendRequest_responseAccept}"/>
+						</span>
+					</td>
+			    </tr>
+			    <tr>
+					<td>
+						<span onclick="refuseLendTooltip(this, '#{lendRequest.id}', 1)">
+							<h:outputText styleClass="stylishButton" value="#{messages.lendRequest_responseRefuse}"/>
+						</span>
+					</td>
+			    </tr>
+			</table>
+		</h:form>
     </h:column>
 
 </h:dataTable>

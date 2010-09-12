@@ -74,12 +74,12 @@
 	</div>
 	<br/>
 	<div class="gt-form-row gt-width-100">
-		<table><tr><td>
+		<table class="buttonsTable"><tr><td>
 		<h:outputLink rendered="#{personOverviewController.editAvailable}" value="#{personOverviewController.personEditHref}" styleClass="stylishButton">
-    		<h:outputText rendered="#{personOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
+    		<h:outputText rendered="#{personOverviewController.editAvailable}" value="#{messages.navigation_editDetails}"/>
     	</h:outputLink>
     	<span onclick="requestConnectionTooltip(this, '#{personOverviewController.person.id}', 2)">
-			<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.connectionRequest_requestConnection}" rendered="#{!personOverviewController.requestConnectionDisabled}"/>
+			<h:outputText styleClass="stylishButton" value="#{messages.connectionRequest_requestConnection}" rendered="#{!personOverviewController.requestConnectionDisabled}"/>
 		</span>
     	</td><td>
     	<h:outputLink rendered="#{personOverviewController.editAvailable}" value="#{personOverviewController.personEditPictureHref}" styleClass="stylishButton">

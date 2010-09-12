@@ -1,10 +1,14 @@
 package com.pferrot.lendity.need.jsf;
 
+import java.util.Locale;
+
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.jsf.AbstractObjectsListController;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.need.NeedService;
@@ -28,6 +32,8 @@ public abstract class AbstractNeedsListController extends AbstractObjectsListCon
 	public NeedService getNeedService() {
 		return needService;
 	}
+	
+	
 
 //	public boolean isEditAvailable() {
 //		final Need need = (Need)getTable().getRowData();
@@ -42,6 +48,12 @@ public abstract class AbstractNeedsListController extends AbstractObjectsListCon
 //		final Need need = (Need)getTable().getRowData();
 //		return getNeedService().isCurrentUserAuthorizedToDelete(need);
 //	}
+
+	@Override
+	protected String getOrderBySelectItemsByCreationDateLabel() {
+		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    	return I18nUtils.getMessageResourceString("need_orderByCreationDateDesc", locale);
+	}
 
 	@Override
 	public boolean isOwner() {

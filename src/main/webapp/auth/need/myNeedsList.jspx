@@ -87,7 +87,7 @@
 
 <h:dataTable value="#{myNeedsListController.list}" binding="#{myNeedsListController.table}" var="need" styleClass="gt-table gt-user-table">
 
-    <h:column>
+    <h:column id="column1">
 		<h4>
 			<h:outputLink value="#{myNeedsListController.needOverviewHref}">
 				<h:outputText value="#{need.title}" />
@@ -95,7 +95,7 @@
 		</h4>
     </h:column>
     
-	<h:column>
+	<h:column id="column2">
 		<table border="0" class="gt-table-categories" width="300" align="right">
 			<tr>
 				<th>
@@ -108,12 +108,12 @@
 		</table>
     </h:column>
 
-	<h:column>
+	<h:column id="column3">
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 			<td>
 				<span onclick="deleteNeedTooltip(this, '#{need.id}', 1)">
-					<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.item_delete}"/>
+					<h:outputText styleClass="stylishButton" value="#{messages.item_delete}"/>
 				</span>		
 			</td>
 			</tr>

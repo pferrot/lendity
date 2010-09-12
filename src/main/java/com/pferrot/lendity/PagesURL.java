@@ -81,6 +81,9 @@ public interface PagesURL {
 	String INTERNAL_ITEM_EDIT = "/auth/item/internalItemEdit.faces";
 	String INTERNAL_ITEM_EDIT_PARAM_ITEM_ID = INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID;
 	
+	String INTERNAL_ITEM_EDIT_PICTURE = "/auth/item/internalItemEditPicture.faces";
+	String INTERNAL_ITEM_EDIT_PICTURE_PARAM_ITEM_ID = INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID;
+	
 	String INTERNAL_ITEM_LEND_TOOLTIP = "/auth/item/internalItemLendTooltip.faces";
 	String INTERNAL_ITEM_LEND_TOOLTIP_PARAM_ITEM_ID = INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID;
 	

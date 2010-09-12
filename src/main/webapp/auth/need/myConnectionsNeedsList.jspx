@@ -46,6 +46,7 @@
 <td>
 <ui:include src="../item/filter/ownerFilter.jspx">
 	<ui:param name="theBean" value="#{myConnectionsNeedsListController}"/>
+	<ui:param name="label" value="#{messages.need_owner}"/>
 </ui:include>
 </td>
 
@@ -83,7 +84,7 @@
    styleClass="gt-table gt-user-table">
 
 
-    <h:column>
+    <h:column id="column1">
 		<h4>
 			<h:outputLink value="#{myConnectionsNeedsListController.needOverviewHref}">
 				<h:outputText value="#{need.title}" />
@@ -91,7 +92,7 @@
 		</h4>
     </h:column>
 
-	<h:column>
+	<h:column id="column2">
 		<table border="0" class="gt-table-categories" width="300" align="right">
 			<tr>
 				<th width="50%">
@@ -114,11 +115,11 @@
 		</table>
     </h:column>
 
-	<h:column>
+	<h:column id="column3">
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 			<td>
-				<h:outputLink styleClass="stylishButton fontSizeSmall" value="#{myConnectionsNeedsListController.gotItHref}">
+				<h:outputLink styleClass="stylishButton" value="#{myConnectionsNeedsListController.gotItHref}">
 					<h:outputText value="#{messages.need_gotIt}" />
 				</h:outputLink>
 			</td>

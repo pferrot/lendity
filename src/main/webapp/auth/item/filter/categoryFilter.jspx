@@ -9,7 +9,7 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
 <!-- categories -->
-<h:form prependId="false">
+<h:form id="categoryFilterForm" prependId="false">
 <h:outputText value="#{messages.item_category}" styleClass="small"/>
 <c:if test="#{theBean.categoryId != null}">
 	<h:outputText value=" " escape="false" />

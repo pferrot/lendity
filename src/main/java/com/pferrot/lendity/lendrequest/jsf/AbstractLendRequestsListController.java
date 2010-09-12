@@ -2,6 +2,7 @@ package com.pferrot.lendity.lendrequest.jsf;
 
 import javax.faces.context.FacesContext;
 
+import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.item.ItemUtils;
 import com.pferrot.lendity.jsf.list.AbstractListController;
 import com.pferrot.lendity.lendrequest.LendRequestConsts;
@@ -13,6 +14,7 @@ import com.pferrot.lendity.utils.UiUtils;
 public abstract class AbstractLendRequestsListController extends AbstractListController {
 	
 	private LendRequestService lendRequestService;
+	private ItemService itemService;
 
 	
 	public AbstractLendRequestsListController() {
@@ -22,6 +24,14 @@ public abstract class AbstractLendRequestsListController extends AbstractListCon
 
 	public LendRequestService getLendRequestService() {
 		return lendRequestService;
+	}
+
+	public ItemService getItemService() {
+		return itemService;
+	}
+
+	public void setItemService(ItemService itemService) {
+		this.itemService = itemService;
 	}
 
 	public void setLendRequestService(LendRequestService lendRequestService) {
@@ -46,6 +56,15 @@ public abstract class AbstractLendRequestsListController extends AbstractListCon
 	public String getRequestDateLabel() {
 		final LendRequest lendRequest = (LendRequest)getTable().getRowData();
 		return UiUtils.getDateAsString(lendRequest.getRequestDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
-		
+	}
+
+	public String getImage1Src() {
+		final LendRequest lendRequest = (LendRequest)getTable().getRowData();
+		return getItemService().getItemPicture1Src(lendRequest.getItem(), true);
+	}
+	
+	public String getThumbnail1Src() {
+		final LendRequest lendRequest = (LendRequest)getTable().getRowData();
+		return getItemService().getItemThumbnail1Src(lendRequest.getItem(), true);
 	}
 }

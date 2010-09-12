@@ -85,12 +85,17 @@ public abstract class AbstractObjectsListController extends AbstractListControll
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 			
 			result.add(new SelectItem(new Long(1), I18nUtils.getMessageResourceString("item_orderByTitleAsc", locale)));
-			result.add(new SelectItem(new Long(2), I18nUtils.getMessageResourceString("item_orderByCreationDateDesc", locale)));
+			result.add(new SelectItem(new Long(2), getOrderBySelectItemsByCreationDateLabel()));
 			
 			orderBySelectItems = result;
 		}		
 		return orderBySelectItems;	
 	}
+    
+    protected String getOrderBySelectItemsByCreationDateLabel() {
+    	final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    	return I18nUtils.getMessageResourceString("item_orderByCreationDateDesc", locale);
+    }
 	
 	public Long getOrderBy() {
 		return orderBy;

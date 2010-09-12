@@ -31,6 +31,17 @@ public class ItemUtils {
 	
 	/**
 	 * 
+	 * @param pItemId
+	 * @return
+	 */
+	public static String getInternalItemEditPicturePageUrl(final String pItemId) {
+		CoreUtils.assertNotNull(pItemId);
+		
+		return JsfUtils.getFullUrl(PagesURL.INTERNAL_ITEM_EDIT_PICTURE, PagesURL.INTERNAL_ITEM_EDIT_PICTURE_PARAM_ITEM_ID, pItemId);
+	}
+	
+	/**
+	 * 
 	 * @return
 	 */
 	public static String getInternalItemAddPageUrl() {		

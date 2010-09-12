@@ -10,6 +10,7 @@ import com.pferrot.core.CoreUtils;
 import com.pferrot.emailsender.manager.MailManager;
 import com.pferrot.lendity.dao.DocumentDao;
 import com.pferrot.lendity.dao.ListValueDao;
+import com.pferrot.lendity.document.DocumentService;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Person;
@@ -24,6 +25,7 @@ public class ObjectService {
 	private PersonService personService;
 	private MailManager mailManager;
 	private DocumentDao documentDao;
+	private DocumentService documentService;
 	
 	
 	public ListValueDao getListValueDao() {
@@ -40,6 +42,14 @@ public class ObjectService {
 
 	public void setDocumentDao(DocumentDao documentDao) {
 		this.documentDao = documentDao;
+	}
+
+	public DocumentService getDocumentService() {
+		return documentService;
+	}
+
+	public void setDocumentService(DocumentService documentService) {
+		this.documentService = documentService;
 	}
 
 	public PersonService getPersonService() {

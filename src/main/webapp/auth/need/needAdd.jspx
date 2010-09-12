@@ -37,7 +37,8 @@
 					});
 					</script>
 					<div id="validateContent">		
-						<h:outputText value="#{messages.need_needAddConfirmText}"/>
+						<h:outputText value="#{messages.need_needAddConfirmText}"/><br/>
+						<h:outputText value="#{messages.need_needAddConfirmText2}"/>
 						<br/><br/>
 						
 						<!-- form row -->
@@ -57,7 +58,7 @@
 					
 					<f:view>
 	
-						<h:form prependId="false">	
+						<h:form id="needAddForm" prependId="false">	
 	
 						<h:inputHidden name="noConfirm2" value="true"/>	
 							
@@ -104,10 +105,14 @@
 						
 						<!-- form row -->
 						<div class="gt-form-row">
-							<br/><h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{needAddController.submit}" />
+							<br/>
+							<table class="buttonsTable"><tr><td>
+							<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{needAddController.submit}" />
+							</td><td>
 							<h:outputLink styleClass="stylishButton"  value="#{authenticationController.myNeedsURL}">
 	           					<h:outputText value="#{messages.navigation_cancel}"/>
 	         				</h:outputLink>
+	         				</td></tr></table>
 						</div>
 						<!-- /form row -->
 						

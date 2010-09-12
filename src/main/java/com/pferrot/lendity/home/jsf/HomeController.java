@@ -19,6 +19,7 @@ import com.pferrot.lendity.model.CategoryEnabled;
 import com.pferrot.lendity.model.ConnectionRequest;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.need.NeedService;
+import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
@@ -35,6 +36,7 @@ public class HomeController extends AbstractItemsListController {
 	
 	private ConnectionRequestService connectionRequestService;
 	private NeedService needService;
+	private PersonService personService;
 	
 	// Keep variables to not hit the DB every time.
 	private long nbPendingLendRequests = -1;
@@ -63,6 +65,14 @@ public class HomeController extends AbstractItemsListController {
 		this.needService = needService;
 	}
 	
+	public PersonService getPersonService() {
+		return personService;
+	}
+
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
+	}
+
 	public long getNbPendingConnectionRequests() {
 		if (nbPendingConnectionRequests < 0) {
 			nbPendingConnectionRequests = connectionRequestService.countCurrentUserPendingConnectionRequests(); 
@@ -194,6 +204,22 @@ public class HomeController extends AbstractItemsListController {
 	public String getConnectionOverviewHref() {
 		final ConnectionRequest connectionRequest = (ConnectionRequest)getConnectionsUpdatesTable().getRowData();
 		return PersonUtils.getPersonOverviewPageUrl(connectionRequest.getConnection().getId().toString());
+	}
+
+	public String getRequesterThumbnailSrc() {
+		final ConnectionRequest connectionRequest = (ConnectionRequest)getConnectionsUpdatesTable().getRowData();
+		if (FacesContext.getCurrentInstance().getRenderResponse()) {
+			return personService.getProfileThumbnailSrc(connectionRequest.getRequester(), true);
+		}
+		return null;
+	}
+
+	public String getConnectionThumbnailSrc() {
+		final ConnectionRequest connectionRequest = (ConnectionRequest)getConnectionsUpdatesTable().getRowData();
+		if (FacesContext.getCurrentInstance().getRenderResponse()) {
+			return personService.getProfileThumbnailSrc(connectionRequest.getConnection(), true);
+		}
+		return null;
 	}
 	
 	public String getConnectionUpdateDateLabel() {

@@ -11,6 +11,7 @@ import org.hibernate.ObjectNotFoundException;
 import com.pferrot.core.CoreUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.configuration.Configuration;
+import com.pferrot.lendity.dao.DocumentDao;
 import com.pferrot.lendity.dao.ItemDao;
 import com.pferrot.lendity.dao.LendRequestDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
@@ -23,6 +24,7 @@ import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.person.PersonConsts;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.ListValueUtils;
@@ -335,18 +337,79 @@ public class ItemService extends ObjectService {
 		itemDao.updateItem(item);
 	}
 
-	public void updateItemWithCategory(final Item pItem, final Long pCategoryId, final Document pNewImage1) {
+	public void updateItemWithCategory(final Item pItem, final Long pCategoryId) {
 		assertCurrentUserAuthorizedToEdit(pItem);
-		if (pNewImage1 != null) {
-			Document currentImage = pItem.getImage1();
-			if (currentImage != null) {
-				getDocumentDao().deleteDocument(currentImage);
-			}
-			getDocumentDao().createDocument(pNewImage1);
-			pItem.setImage1(pNewImage1);
-		}
 		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
 		updateItem(pItem);
+	}
+
+	public void updateItemPicture1(final Item pItem, final Document pPicture, final Document pThumbnail) {
+		assertCurrentUserAuthorizedToEdit(pItem);
+		final Document oldPic = pItem.getImage1();
+		final Document oldThumbnail = pItem.getThumbnail1();		
+		if (pPicture != null) {
+			getDocumentDao().createDocument(pPicture);
+		}
+		pItem.setImage1(pPicture);
+		if (pThumbnail != null) {
+			getDocumentDao().createDocument(pThumbnail);
+		}
+		pItem.setThumbnail1(pThumbnail);
+		
+		if (oldPic != null) {
+			getDocumentDao().deleteDocument(oldPic);
+		}
+		if (oldThumbnail != null) {
+			getDocumentDao().deleteDocument(oldThumbnail);
+		}
+		
+		itemDao.updateItem(pItem);
+ 	}
+	
+	/**
+	 * Returns the URL for image1 or null if no image1.
+	 * 
+	 * @param pItem
+	 * @param pAuthorizeDocumentAccess
+	 * @return
+	 */
+	public String getItemPicture1Src(final Item pItem, final boolean pAuthorizeDocumentAccess) {
+		final Document picture = pItem.getImage1();
+		if (picture == null ) {
+			return null;
+		}
+		else {
+			if (pAuthorizeDocumentAccess) {
+				getDocumentService().authorizeDownloadOneMinute(JsfUtils.getSession(), picture.getId());
+			}
+			return JsfUtils.getFullUrl(
+					PagesURL.DOCUMENT_DOWNLOAD, 
+					PagesURL.DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ID, 
+					picture.getId().toString());
+		}			
+	}
+	
+	/**
+	 * Returns the URL for thumbnail1 or null if no thumbnail1.
+	 * 
+	 * @param pItem
+	 * @param pAuthorizeDocumentAccess
+	 * @return
+	 */
+	public String getItemThumbnail1Src(final Item pItem, final boolean pAuthorizeDocumentAccess) {
+		final Document thumbnail = pItem.getThumbnail1();
+		if (thumbnail == null ) {
+			return null;
+		}
+		else {
+			if (pAuthorizeDocumentAccess) {
+				getDocumentService().authorizeDownloadOneMinute(JsfUtils.getSession(), thumbnail.getId());
+			}
+			return JsfUtils.getFullUrl(
+					PagesURL.DOCUMENT_DOWNLOAD, 
+					PagesURL.DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ID, 
+					thumbnail.getId().toString());
+		}		
 	}
 
     /////////////////////////////////////////////////////////

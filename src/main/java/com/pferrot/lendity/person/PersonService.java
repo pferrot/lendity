@@ -69,7 +69,7 @@ public class PersonService {
 	public void updatePersonPicture(final Person pPerson, final Document pPicture, final Document pThumbnail) {
 		assertCurrentUserAuthorizedToEdit(pPerson);
 		final Document oldPic = pPerson.getImage();
-		final Document oldThumbnail = pPerson.getImage();		
+		final Document oldThumbnail = pPerson.getThumbnail();		
 		if (pPicture != null) {
 			documentDao.createDocument(pPicture);
 		}

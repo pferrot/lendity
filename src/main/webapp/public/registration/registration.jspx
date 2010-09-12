@@ -35,7 +35,7 @@
 				
 				<f:view>
 
-					<h:form prependId="false">
+					<h:form id="registrationForm" prependId="false">
 
 
 					<!-- form row -->
@@ -178,7 +178,10 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row">
-						<br/><h:commandButton styleClass="stylishButton" value="#{messages.registration_submit}" action="#{registrationStep1.submit}" />
+						<br/>
+						<table class="buttonsTable"><tr><td>
+							<h:commandButton styleClass="stylishButton" value="#{messages.registration_submit}" action="#{registrationStep1.submit}" />
+						</td></tr></table>
 					</div>
 					<!-- /form row -->
 					

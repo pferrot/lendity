@@ -27,7 +27,7 @@
 				
 <f:view>
 
-<h2 class="gt-table-head"><h:outputText value="#{messages.item_myConnectionsItemsListTitle}"/></h2>
+<h2 class="gt-table-head"><h:outputText id="pageHeader" value="#{messages.item_myConnectionsItemsListTitle}"/></h2>
 
 <br/>
 
@@ -63,6 +63,7 @@
 <td>
 <ui:include src="filter/ownerFilter.jspx">
 	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
+	<ui:param name="label" value="#{messages.item_owner}"/>
 </ui:include>
 </td>
 
@@ -111,55 +112,65 @@
    styleClass="gt-table gt-user-table">
 
 
-    <h:column>
+    <h:column id="column1">
+    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink id="overviewLink1" value="#{myConnectionsItemsListController.itemOverviewHref}" rendered="#{myConnectionsItemsListController.thumbnail1Src != null}">
+					<div class="thumbnailDiv">
+					    <img src="#{myConnectionsItemsListController.thumbnail1Src}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
 		<h4>
-			<h:outputLink value="#{myConnectionsItemsListController.itemOverviewHref}">
-				<h:outputText value="#{item.title}" />
+			<h:outputLink id="overviewLink2" value="#{myConnectionsItemsListController.itemOverviewHref}">
+				<h:outputText id="title" value="#{item.title}" />
 			</h:outputLink>
 		</h4>
+		</td></tr></table>
     </h:column>
 
-	<h:column>
+	<h:column id="column2">
 		<table border="0" class="gt-table-categories" width="300" align="right">
 			<tr>
-			    <th width="50%"><h:outputText value="#{messages.item_category}:" /></th>
-				<td width="50%"><h:outputText value="#{myConnectionsItemsListController.categoryLabel}"/></td>
+			    <th width="50%"><h:outputText id="categoryTitle" value="#{messages.item_category}:" /></th>
+				<td width="50%"><h:outputText id="categoryLabel" value="#{myConnectionsItemsListController.categoryLabel}"/></td>
 		    </tr>
 			<tr>
 				<th>
-					<h:outputText value="#{messages.item_owner}:" />
+					<h:outputText id="ownerTitle" value="#{messages.item_owner}:" />
 				</th>
 				<td>
-					<h:outputLink value="#{myConnectionsItemsListController.ownerHref}">
-						<h:outputText value="#{myConnectionsItemsListController.ownerLabel}"/>
+					<h:outputLink id="ownerLink" value="#{myConnectionsItemsListController.ownerHref}">
+						<h:outputText id="ownerLabel" value="#{myConnectionsItemsListController.ownerLabel}"/>
 					</h:outputLink>
 				</td>
 			</tr>
 			<tr>
 				<th>
-					<h:outputText value="#{messages.item_creationDate}:" />
+					<h:outputText id="creationDateTitle" value="#{messages.item_creationDate}:" />
 				</th>
 				<td>					
-					<h:outputText value="#{myConnectionsItemsListController.creationDateLabel}" />
+					<h:outputText id="creationDateLabel" value="#{myConnectionsItemsListController.creationDateLabel}" />
 				</td>
 			</tr>
 			<tr>
 				<th>
-					<h:outputText value="#{messages.item_available}:" />
+					<h:outputText id="availableTitle" value="#{messages.item_available}:" />
 				</th>
 				<td>					
-					<h:outputText value="#{myConnectionsItemsListController.availableLabel}" />
+					<h:outputText id="availableLabel" value="#{myConnectionsItemsListController.availableLabel}" />
 				</td>
 			</tr>
 		</table>
     </h:column>
     
-	<h:column>
+	<h:column id="column3">
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 				<td>
 					<span onclick="requestLendTooltip(this, '#{item.id}', 1)">
-						<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.lendRequest_requestLend}" rendered="#{myConnectionsItemsListController.requestLendAvailable}"/>
+						<h:outputText id="requestLendLabel" styleClass="stylishButton" value="#{messages.lendRequest_requestLend}" rendered="#{myConnectionsItemsListController.requestLendAvailable}"/>
 					</span>	
 				</td>
 		    </tr>

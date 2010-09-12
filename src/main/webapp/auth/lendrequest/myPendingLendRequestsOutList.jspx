@@ -49,20 +49,30 @@
 
 <h:dataTable value="#{myPendingLendRequestsOutListController.list}" binding="#{myPendingLendRequestsOutListController.table}" var="lendRequest" styleClass="gt-table gt-user-table">
 
-    <h:column>
+    <h:column id="column1">
+    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink id="link1" value="#{myPendingLendRequestsOutListController.itemOverviewHref}" rendered="#{myPendingLendRequestsOutListController.thumbnail1Src != null}">
+					<div class="thumbnailDiv">
+					    <img src="#{myPendingLendRequestsOutListController.thumbnail1Src}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
 		<h4>
-			<h:outputLink value="#{myPendingLendRequestsOutListController.itemOverviewHref}">
+			<h:outputLink id="link2" value="#{myPendingLendRequestsOutListController.itemOverviewHref}">
 				<h:outputText value="#{lendRequest.item.title}" />
 			</h:outputLink>
 		</h4>
 		<p>
-			<h:outputLink value="#{myPendingLendRequestsOutListController.ownerOverviewHref}">
+			<h:outputLink id="link3" value="#{myPendingLendRequestsOutListController.ownerOverviewHref}">
 				<h:outputText value="#{lendRequest.owner.displayName}" />
 			</h:outputLink>
 		</p>
+		</td></tr></table>
     </h:column>
 
-	<h:column>
+	<h:column id="column2">
 		<table border="0" class="gt-table-categories" width="250" align="right">
 			<tr>
 			    <th width="50%"><nobr><h:outputText id="id_1" value="#{messages.lendRequest_requestDate}:" /></nobr></th>

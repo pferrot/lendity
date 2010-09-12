@@ -20,6 +20,7 @@ import com.pferrot.lendity.lendrequest.LendRequestService;
 import com.pferrot.lendity.model.ExternalItem;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Item;
+import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
@@ -346,4 +347,14 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 //			return ItemUtils.getInternalItemEditPageUrl(((ExternalItem)item).getId().toString());
 //		}
 //	}
+	
+	public String getImage1Src() {
+		final Item item = (Item)getTable().getRowData();
+		return getItemService().getItemPicture1Src(item, true);
+	}
+	
+	public String getThumbnail1Src() {
+		final Item item = (Item)getTable().getRowData();
+		return getItemService().getItemThumbnail1Src(item, true);
+	}
 }

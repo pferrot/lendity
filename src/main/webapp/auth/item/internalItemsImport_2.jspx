@@ -50,7 +50,7 @@
 							<h:dataTable value="#{internalItemsImportController.validItemsToImportAsList}"
 							             var="itemTitle"
 							             styleClass="gt-table gt-user-table">
-							    <h:column>
+							    <h:column id="column1">
 									<h:outputText value="#{itemTitle}" />
 							    </h:column>
 						    </h:dataTable>
@@ -75,7 +75,7 @@
 							<h:dataTable value="#{internalItemsImportController.alreadyExistItemsToImportAsList}"
 							             var="itemTitle"
 							             styleClass="gt-table gt-user-table">
-							    <h:column>
+							    <h:column id="column2">
 									<h:outputText value="#{itemTitle}" />
 							    </h:column>
 						    </h:dataTable>
@@ -96,7 +96,7 @@
 							<h:dataTable value="#{internalItemsImportController.titleTooLongItemsToImportAsList}"
 							             var="itemTitle"
 							             styleClass="gt-table gt-user-table">
-							    <h:column>
+							    <h:column id="column3">
 									<h:outputText value="#{itemTitle}" />
 							    </h:column>
 						    </h:dataTable>		
@@ -106,10 +106,14 @@
 
 					<!-- form row -->
 					<div class="gt-form-row">
-						<br/><h:commandButton styleClass="stylishButton" value="#{messages.navigation_back}"	action="#{internalItemsImportStep2.back}" />
+						<br/>
+						<table class="buttonsTable"><tr><td>
+						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_back}"	action="#{internalItemsImportStep2.back}" />
+						</td><td>
 						<c:if test="#{internalItemsImportController.nbValidItemsToImport > 0}">
 							<h:commandButton styleClass="stylishButton" value="#{messages.registration_confirm}"	action="#{internalItemsImportStep2.confirm}" />
 						</c:if>
+						</td></tr></table>
 					</div>
 					<!-- /form row -->
 				    

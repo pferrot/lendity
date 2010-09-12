@@ -6,6 +6,7 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.util.Locale;
 
+import com.pferrot.lendity.document.exception.DocumentException;
 import com.pferrot.lendity.i18n.I18nUtils;
 
 public class DocumentUtils {
@@ -18,8 +19,41 @@ public class DocumentUtils {
 	 */
 	public static final boolean isSupportedImageMimeType(final String pMimeType) {
 		return DocumentConsts.MIME_TYPE_IMAGE_GIF.equals(pMimeType)	||
-			DocumentConsts.MIME_TYPE_IMAGE_JPEG.equals(pMimeType)	||
-			DocumentConsts.MIME_TYPE_IMAGE_PNG.equals(pMimeType);
+			DocumentConsts.MIME_TYPE_IMAGE_JPEG.equals(pMimeType) ||
+			DocumentConsts.MIME_TYPE_IMAGE_PNG.equals(pMimeType) ||
+			DocumentConsts.MIME_TYPE_IMAGE_PJPEG.equals(pMimeType) ||
+			DocumentConsts.MIME_TYPE_IMAGE_XPNG.equals(pMimeType);
+	}
+	
+	public static final boolean isGif(String pMimeType) {
+		return DocumentConsts.MIME_TYPE_IMAGE_GIF.equals(pMimeType);
+	}
+	
+	public static final boolean isJpeg(String pMimeType) {
+		return DocumentConsts.MIME_TYPE_IMAGE_JPEG.equals(pMimeType) ||
+		DocumentConsts.MIME_TYPE_IMAGE_PJPEG.equals(pMimeType);
+	}
+	
+	public static final boolean isPng(String pMimeType) {
+		return DocumentConsts.MIME_TYPE_IMAGE_PNG.equals(pMimeType) ||
+		DocumentConsts.MIME_TYPE_IMAGE_XPNG.equals(pMimeType);
+	}
+	
+	public static final String getFormat(final String pMimeType) throws DocumentException {
+		if (isJpeg(pMimeType)) {
+			return "jpg";
+		}
+		else if (isPng(pMimeType)) {
+			return "png";
+		}
+		else if (isGif(pMimeType)) {
+			return "gif";
+		}
+		else {
+			throw new DocumentException("Unsupported image mime type: " + pMimeType);
+		}
+		
+		
 	}
 	
 	public static String getImageValidationErrorMessage(final Locale pLocale) {
@@ -78,8 +112,8 @@ public class DocumentUtils {
     		return img;
     	}
     	
-    	float widthRatio = currentWidth / maxTargetWidth;
-    	float heightRatio = currentHeight / maxTargetHeight;
+    	float widthRatio = ((float)currentWidth) / ((float)maxTargetWidth);
+    	float heightRatio = ((float)currentHeight) / ((float)maxTargetHeight);
     	
     	int targetHeight;
     	int targetWidth;
@@ -89,8 +123,9 @@ public class DocumentUtils {
     	}
     	else {
     		targetWidth = (int) (((float)currentWidth) / heightRatio);
-    		targetHeight = maxTargetWidth;
+    		targetHeight = maxTargetHeight;
     	}
+    	
     	
     	
     	

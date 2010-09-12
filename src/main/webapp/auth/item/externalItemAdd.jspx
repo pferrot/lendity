@@ -125,10 +125,14 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row">
-						<br/><h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{externalItemAddController.submit}" />
+						<br/>
+						<table class="buttonsTable"><tr><td>
+						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{externalItemAddController.submit}" />
+						</td><td>
 						<h:outputLink styleClass="stylishButton"  value="#{authenticationController.myBorrowedItemsURL}">
            					<h:outputText value="#{messages.navigation_cancel}"/>
          				</h:outputLink>
+         				</td></tr></table>
 					</div>
 					<!-- /form row -->
 					

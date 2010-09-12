@@ -58,8 +58,12 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row">
-						<br/><h:commandButton styleClass="stylishButton" value="#{messages.navigation_back}"	action="#{registrationStep2.back}" />
+						<br/>
+						<table class="buttonsTable"><tr><td>
+						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_back}"	action="#{registrationStep2.back}" />
+						</td><td>
 						<h:commandButton styleClass="stylishButton" value="#{messages.registration_confirm}"	action="#{registrationStep2.confirm}" />
+						</td></tr></table>
 					</div>
 					<!-- /form row -->
 					

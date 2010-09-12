@@ -3,8 +3,10 @@ package com.pferrot.lendity.document;
 public interface DocumentConsts {
 	
 	String MIME_TYPE_IMAGE_JPEG = "image/jpeg";
+	String MIME_TYPE_IMAGE_PJPEG = "image/pjpeg";
 	String MIME_TYPE_IMAGE_GIF = "image/gif";
 	String MIME_TYPE_IMAGE_PNG = "image/png";
+	String MIME_TYPE_IMAGE_XPNG = "image/x-png";
 	
 	// 200 KB
 //	long MAX_ITEM_IMAGE_SIZE = 204800;

@@ -55,12 +55,24 @@ public abstract class Item implements CategoryEnabled, Borrowable, Serializable 
 	private Document image1;
 	
 	@OneToOne(targetEntity = Document.class)
+	@JoinColumn(name = "THUMBNAIL_1_ID", nullable = true)
+	private Document thumbnail1;
+	
+	@OneToOne(targetEntity = Document.class)
 	@JoinColumn(name = "IMAGE_2_ID", nullable = true)
 	private Document image2;
 	
 	@OneToOne(targetEntity = Document.class)
+	@JoinColumn(name = "THUMBNAIL_2_ID", nullable = true)
+	private Document thumbnail2;
+	
+	@OneToOne(targetEntity = Document.class)
 	@JoinColumn(name = "IMAGE_3_ID", nullable = true)
 	private Document image3;
+	
+	@OneToOne(targetEntity = Document.class)
+	@JoinColumn(name = "THUMBNAIL_3_ID", nullable = true)
+	private Document thumbnail3;
 	
 	@ManyToOne(targetEntity = ItemCategory.class)
 	@JoinColumn(name = "CATEGORY_ID", nullable = false)
@@ -136,6 +148,30 @@ public abstract class Item implements CategoryEnabled, Borrowable, Serializable 
 
 	public void setImage3(Document image3) {
 		this.image3 = image3;
+	}
+
+	public Document getThumbnail1() {
+		return thumbnail1;
+	}
+
+	public void setThumbnail1(Document thumbnail1) {
+		this.thumbnail1 = thumbnail1;
+	}
+
+	public Document getThumbnail2() {
+		return thumbnail2;
+	}
+
+	public void setThumbnail2(Document thumbnail2) {
+		this.thumbnail2 = thumbnail2;
+	}
+
+	public Document getThumbnail3() {
+		return thumbnail3;
+	}
+
+	public void setThumbnail3(Document thumbnail3) {
+		this.thumbnail3 = thumbnail3;
 	}
 
 	public ItemCategory getCategory() {

@@ -9,8 +9,8 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
 <!-- owner -->
-<h:form prependId="false">
-<h:outputText value="#{messages.item_owner}" styleClass="small"/>
+<h:form id="ownerStatusFilterForm" prependId="false">
+<h:outputText value="#{label}" styleClass="small"/>
 <c:if test="#{theBean.ownerId != null}">
 	<h:outputText value=" " escape="false" />
 	<h:commandLink id="clearOwner" action="#{theBean.clearOwner}">

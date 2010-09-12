@@ -33,7 +33,7 @@
 				
 				<f:view>
 
-					<h:form enctype="multipart/form-data">
+					<h:form id="internalItemEditForm" enctype="multipart/form-data">
 
 
 					<!-- form row -->
@@ -83,22 +83,6 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">
-						<label><h:outputText value="#{messages.image_image}"/> 1</label>
-						<h:message styleClass="error" showSummary="true" showDetail="false"
-							for="image1"></h:message>
-						<c:if test="#{internalItemEditController.imageFile1TooLargeErrorMessage != null}">
-							<h:outputText value="#{internalItemEditController.imageFile1TooLargeErrorMessage}" styleClass="error"/>
-						</c:if>
-						<t:inputFileUpload id="image1"
-										   styleClass="file"
-						                   value="#{internalItemEditController.imageFile1}"
-						                   required="false"
-						                   accept="image/*" 
-						                   validator="#{internalItemEditController.validateImageFile1}"/>					
-					</div><!-- /form row -->						
-
-					<!-- form row -->
-					<div class="gt-form-row gt-width-100">
 						<label><h:outputText value="#{messages.item_category}"/> *</label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="category"></h:message>
@@ -123,10 +107,14 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row">
-						<br/><h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{internalItemEditController.submit}" />
+						<br/>
+						<table class="buttonsTable"><tr><td>
+						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{internalItemEditController.submit}" />
+						</td><td>
 						<h:outputLink styleClass="stylishButton"  value="#{internalItemEditController.itemOverviewHref}">
            					<h:outputText value="#{messages.navigation_cancel}"/>
          				</h:outputLink>
+         				</td></tr></table>
 					</div>
 					<!-- /form row -->
 					

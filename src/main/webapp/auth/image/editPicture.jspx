@@ -1,0 +1,121 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="#{pageTitle}" />
+	<ui:param name="contentHeader" value="#{pageTitle}" />
+
+		<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				
+				<!-- Item Edit Form -->
+				<h2 class="gt-form-head"><h:outputText value="#{pageTitle}"/></h2>
+				<div class="gt-form gt-content-box">
+				
+				<f:view>
+
+					<h:form id="editPictureForm" prependId="false" enctype="multipart/form-data">
+					
+					<div id="contentDiv">
+					
+						<c:if test="#{controllerBean.imgSrc != null}">
+							<label><h:outputText value="#{messages.image_normalSize}"/></label>						
+							<img src="#{controllerBean.imgSrc}"/>								
+							<br/><br/>
+							
+							<label><h:outputText value="#{messages.image_thumbnail}"/></label>
+							<img src="#{controllerBean.thumbnailSrc}"/>								
+							<br/><br/>
+						</c:if>					
+						
+						<c:if test="#{controllerBean.tempFileLocation != null or 
+						((not controllerBean.removeCurrentImage) and controllerBean.existingImage)}">
+							<span class="stylishButton" onclick="document.getElementById('removeCurrentImage').click();"><h:outputText value="#{messages.image_removeCurrentImage}"/></span>
+							<h:commandButton id="removeCurrentImage" style="display: none;" value="#{messages.navigation_save}" action="#{controllerBean.removeCurrentImage}" />
+							<br/><br/>				
+						</c:if>
+						
+						<!-- form row -->
+						<div class="gt-form-row gt-width-100">
+							<label><h:outputText value="#{messages.image_browseForImage}"/></label>
+							<span style="font-size: 82%;">
+							<h:outputText value="#{messages.image_allowedFormats}"/>
+							<br/><br/>
+							</span>
+							<h:message styleClass="error" showSummary="true" showDetail="false"
+								for="image"></h:message>
+							<c:if test="#{controllerBean.imageFileTooLargeErrorMessage != null}">
+								<h:outputText value="#{controllerBean.imageFileTooLargeErrorMessage}" styleClass="error"/>
+							</c:if>
+							<t:inputFileUpload id="image"
+											   styleClass="file"
+							                   value="#{controllerBean.imageFile}"
+							                   required="false"
+							                   accept="image/*" 
+							                   validator="#{controllerBean.validateImageFile}"
+							                   onchange="editPictureOnChange('#{facesContext.externalContext.requestContextPath}');"/>					
+						</div><!-- /form row -->
+					
+					</div>
+					
+					<div id="inProgressDiv" style="display: none;">
+						<center>
+						<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/inprogress1.gif"/>
+						</center>
+					</div>
+					
+					<!-- form row -->
+					<div class="gt-form-row">
+						<h:commandButton id="processImageButton" style="display: none;" value="#{messages.navigation_save}" action="#{controllerBean.processImage}" />
+						<br/>
+						<table class="buttonsTable"><tr><td>
+						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{controllerBean.submit}" />
+						</td><td>
+						<h:outputLink styleClass="stylishButton"  value="#{controllerBean.cancelHref}">
+           					<h:outputText value="#{messages.navigation_cancel}"/>
+         				</h:outputLink>
+         				</td></tr></table>
+					</div>
+					<!-- /form row -->
+					
+					</h:form>
+				</f:view>		
+				</div>			
+				<!-- /Item Edit Form -->
+				
+			</div>
+			<!-- /main content -->
+
+			<!-- sidebar -->
+			<div class="gt-sidebar">				
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

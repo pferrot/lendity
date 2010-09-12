@@ -53,15 +53,25 @@
 
 <h:dataTable value="#{myPendingConnectionRequestsListController.list}" binding="#{myPendingConnectionRequestsListController.table}" var="connectionRequest" styleClass="gt-table gt-user-table">
 
-    <h:column>
+    <h:column id="column1">
+    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink value="#{myPendingConnectionRequestsListController.requesterOverviewHref}">
+					<div class="thumbnailDiv">
+						<img src="#{myPendingConnectionRequestsListController.requesterThumbnailSrc}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
 		<h4>
 			<h:outputLink value="#{myPendingConnectionRequestsListController.requesterOverviewHref}">
 				<h:outputText value="#{connectionRequest.requester.displayName}" />
 			</h:outputLink>
 		</h4>
+		</td></tr></table>
     </h:column>
 
-	<h:column>
+	<h:column id="column2">
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 			    <th width="50%"><nobr><h:outputText id="id_1" value="#{messages.connectionRequest_requestDate}:" /></nobr></th>
@@ -70,27 +80,27 @@
 		</table>
     </h:column>
 
-	<h:column>
+	<h:column id="column3">
 	<h:form>
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 				<td>
 					<span onclick="acceptConnectionTooltip(this, '#{connectionRequest.id}', 1)">
-						<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.connectionRequest_responseAccept}"/>
+						<h:outputText styleClass="stylishButton" value="#{messages.connectionRequest_responseAccept}"/>
 					</span>
 				</td>
 		    </tr>
 		    <tr>
 				<td>
 					<span onclick="refuseConnectionTooltip(this, '#{connectionRequest.id}', 1)">
-						<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.connectionRequest_responseRefuse}"/>
+						<h:outputText styleClass="stylishButton" value="#{messages.connectionRequest_responseRefuse}"/>
 					</span>
 				</td>
 		    </tr>
 		    <tr>
 				<td>
 					<span onclick="banConnectionTooltip(this, '#{connectionRequest.id}', 1)">
-						<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.connectionRequest_responseBan}"/>
+						<h:outputText styleClass="stylishButton" value="#{messages.connectionRequest_responseBan}"/>
 					</span>
 				</td>
 		    </tr>

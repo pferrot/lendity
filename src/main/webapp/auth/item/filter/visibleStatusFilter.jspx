@@ -9,7 +9,7 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
     
 <!-- visible status -->
-<h:form prependId="false">
+<h:form id="visibleStatusFilterForm" prependId="false">
 <h:outputText value="#{messages.item_visibleStatus}" styleClass="small"/>
 <c:if test="#{theBean.visibleStatus != null}">
 	<h:outputText value=" " escape="false" />

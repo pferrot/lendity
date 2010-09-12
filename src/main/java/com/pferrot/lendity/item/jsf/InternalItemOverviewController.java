@@ -82,7 +82,21 @@ public class InternalItemOverviewController extends AbstractItemOverviewControll
 		return ItemUtils.getInternalItemEditPageUrl(((InternalItem)getItem()).getId().toString());
 	}
 	
+	public String getItemEditPictureHref() {		
+		return ItemUtils.getInternalItemEditPicturePageUrl(((InternalItem)getItem()).getId().toString());
+	}
+	
 	public boolean isRequestLendAvailable() {		
 		return getLendRequestService().isLendRequestAllowedFromCurrentUser((InternalItem)getItem());
+	}
+	
+	public String getImageButtonLabel() {
+		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		if (getItem().getImage1() == null) {
+			return I18nUtils.getMessageResourceString("image_addImage", locale);
+		}
+		else {
+			return I18nUtils.getMessageResourceString("image_changeImage", locale);
+		}
 	}
 }

@@ -23,11 +23,9 @@ public abstract class AbstractInternalItemAddEditController extends AbstractItem
 	public String submit() {
 		Long itemId = processItem();
 		
-		if (itemId != null) {
-			JsfUtils.redirect(PagesURL.INTERNAL_ITEM_OVERVIEW, PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID, itemId.toString());
-		}
+		JsfUtils.redirect(PagesURL.INTERNAL_ITEM_OVERVIEW, PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID, itemId.toString());
 	
-		// Return to the same page.
-		return "error";
+		// As a redirect is used, this is actually useless.
+		return null;
 	}
 }

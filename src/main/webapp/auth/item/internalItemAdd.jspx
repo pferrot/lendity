@@ -103,10 +103,14 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row">
-						<br/><h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{internalItemAddController.submit}" />
+						<br/>
+						<table class="buttonsTable"><tr><td>
+						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{internalItemAddController.submit}" />
+						</td><td>
 						<h:outputLink styleClass="stylishButton"  value="#{authenticationController.myItemsURL}">
            					<h:outputText value="#{messages.navigation_cancel}"/>
          				</h:outputLink>
+         				</td></tr></table>
          				<br/><br/>
          				<p><h:outputLink value="#{authenticationController.importInternalItemsURL}"><h:outputText value="#{messages.item_internalItemsImportLink}"/></h:outputLink></p>
 					</div>

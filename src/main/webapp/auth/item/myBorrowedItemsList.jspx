@@ -56,6 +56,7 @@
 <td>
 <ui:include src="filter/ownerFilter.jspx">
 	<ui:param name="theBean" value="#{myBorrowedItemsListController}"/>
+	<ui:param name="label" value="#{messages.item_owner}"/>
 </ui:include>
 </td>
 
@@ -87,15 +88,25 @@
 
 <h:dataTable value="#{myBorrowedItemsListController.list}" binding="#{myBorrowedItemsListController.table}" var="item" styleClass="gt-table gt-user-table">
 
-    <h:column>
+    <h:column id="column1">
+    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink value="#{myBorrowedItemsListController.itemOverviewHref}" rendered="#{myBorrowedItemsListController.thumbnail1Src != null}">
+					<div class="thumbnailDiv">
+					    <img src="#{myBorrowedItemsListController.thumbnail1Src}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
 		<h4>
 			<h:outputLink value="#{myBorrowedItemsListController.itemOverviewHref}">
 				<h:outputText value="#{item.title}" />
 			</h:outputLink>
 		</h4>
+		</td></tr></table>
     </h:column>
 
-	<h:column>
+	<h:column id="column2">
 		<!-- Categories Sub Table -->
 		<!-- Need to set fake IDs otherwise get sometimes error of the type "id is duplicated in the faces tree" -->
 		<table border="0" class="gt-table-categories" width="300" align="right">
@@ -121,12 +132,12 @@
 		</table>
     </h:column>
     
-    <h:column>
+    <h:column id="column3">
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 			<td>
 				<span onclick="deleteExternalItemTooltip(this, '#{item.id}', 1)">
-					<h:outputText styleClass="stylishButton fontSizeSmall" value="#{messages.item_delete}" rendered="#{myBorrowedItemsListController.deleteItemAvailable}"/>
+					<h:outputText styleClass="stylishButton" value="#{messages.item_delete}" rendered="#{myBorrowedItemsListController.deleteItemAvailable}"/>
 				</span>	
 			</td>
 			</tr>

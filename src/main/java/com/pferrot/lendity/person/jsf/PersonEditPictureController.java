@@ -1,30 +1,15 @@
 package com.pferrot.lendity.person.jsf;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.imageio.ImageIO;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.custom.fileupload.UploadedFile;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import org.springframework.security.AccessDeniedException;
 
 import com.pferrot.lendity.PagesURL;
-import com.pferrot.lendity.document.DocumentConsts;
-import com.pferrot.lendity.document.DocumentService;
-import com.pferrot.lendity.document.DocumentUtils;
-import com.pferrot.lendity.i18n.I18nUtils;
-import com.pferrot.lendity.model.Document;
+import com.pferrot.lendity.image.jsf.AbstractEditPictureController;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonConsts;
 import com.pferrot.lendity.person.PersonService;
@@ -58,7 +43,7 @@ public class PersonEditPictureController  extends AbstractEditPictureController 
 	public void initView() {
 		// Read the person ID from the request parameter and load the correct person.
 		try {
-			final String personIdString = JsfUtils.getRequestParameter(PagesURL.PERSON_EDIT_PARAM_PERSON_ID);
+			final String personIdString = JsfUtils.getRequestParameter(PagesURL.PERSON_EDIT_PICTURE_PARAM_PERSON_ID);
 			if (personIdString != null) {
 				final Long personId = Long.parseLong(personIdString);
 				person = getPersonService().findPerson(personId);				
@@ -107,18 +92,6 @@ public class PersonEditPictureController  extends AbstractEditPictureController 
 		catch (IOException ioe) {
 			throw new RuntimeException(ioe);
 		}
-		finally {
-//			if (fis1 != null) {
-//				try {
-//					fis1.close();
-//				} catch (IOException e) {}
-//			}
-//			if (fis2 != null) {
-//				try {
-//					fis2.close();
-//				} catch (IOException e) {}
-//			}
-		}
 	}
 	
 	public String getPersonOverviewHref() {		
@@ -161,25 +134,32 @@ public class PersonEditPictureController  extends AbstractEditPictureController 
 	}
 
 	@Override
-	protected int getPictureMaxHeight() {
-		return IM
+	protected int getImageMaxHeight() {
+		return IMAGE_MAX_HEIGHT;
 	}
 
 	@Override
-	protected int getPictureMaxWidth() {
-		// TODO Auto-generated method stub
-		return 0;
+	protected int getImageMaxWidth() {
+		return IMAGE_MAX_WIDTH;
 	}
 
 	@Override
 	protected int getThumbnailMaxHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		return THUMBNAIL_MAX_HEIGHT;
 	}
 
 	@Override
 	protected int getThumbnailMaxWidth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return THUMBNAIL_MAX_WIDTH;
+	}
+
+	@Override
+	public String getCancelHref() {
+		return getPersonOverviewHref();
+	}
+
+	@Override
+	public boolean isExistingImage() {
+		return getPerson().getImage() != null;
 	}
 }

@@ -33,7 +33,7 @@
 				
 				<f:view>
 
-					<h:form enctype="multipart/form-data" prependId="false">
+					<h:form id="internalItemsImportForm" enctype="multipart/form-data" prependId="false">
 
 
 					<!-- form row -->
@@ -95,7 +95,10 @@
 										
 					<!-- form row -->
 					<div class="gt-form-row">
-						<br/><h:commandButton styleClass="stylishButton" value="#{messages.item_internalItemsImportSubmit}" action="#{internalItemsImportStep1.submit}" />
+						<br/>
+						<table class="buttonsTable"><tr><td>
+						<h:commandButton styleClass="stylishButton" value="#{messages.item_internalItemsImportSubmit}" action="#{internalItemsImportStep1.submit}" />
+						</td></tr></table>
 					</div>
 					<!-- /form row -->
 					

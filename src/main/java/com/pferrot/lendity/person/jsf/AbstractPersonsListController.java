@@ -46,17 +46,11 @@ public abstract class AbstractPersonsListController extends AbstractListControll
 
 	public String getProfilePictureSrc() {
 		final Person person = (Person)getTable().getRowData();
-		if (FacesContext.getCurrentInstance().getRenderResponse()) {
-			return personService.getProfilePictureSrc(person, true);
-		}
-		return null;
+		return personService.getProfilePictureSrc(person, true);
 	}
 	
 	public String getProfileThumbnailSrc() {
 		final Person person = (Person)getTable().getRowData();
-		if (FacesContext.getCurrentInstance().getRenderResponse()) {
-			return personService.getProfileThumbnailSrc(person, true);
-		}
-		return null;
+		return personService.getProfileThumbnailSrc(person, true);
 	}
 }

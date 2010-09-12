@@ -1,4 +1,4 @@
-package com.pferrot.lendity.person.jsf;
+package com.pferrot.lendity.image.jsf;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -23,10 +23,17 @@ import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.document.DocumentConsts;
 import com.pferrot.lendity.document.DocumentService;
 import com.pferrot.lendity.document.DocumentUtils;
+import com.pferrot.lendity.document.exception.DocumentException;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Document;
 import com.pferrot.lendity.utils.JsfUtils;
 
+/**
+ * Abstract class for handling the upload of an image.
+ *
+ * @author pferrot
+ *
+ */
 public abstract class AbstractEditPictureController  {
 	
 	private final static Log log = LogFactory.getLog(AbstractEditPictureController.class);
@@ -232,41 +239,14 @@ public abstract class AbstractEditPictureController  {
 	 */
 	private Document getDocFromTempFile(final String pFileLocation, final String pMimeType, final String pOriginalFileName) throws FileNotFoundException {
 		final Document document = new Document();
-		final File file1 = new File(getTempFileLocation());
-		document.setMimeType(getTempFileMimeType());
+		final File file1 = new File(pFileLocation);
+		document.setMimeType(pMimeType);
 		document.setSize(file1.length());
-		document.setName(getTempFileOriginalFileName());
-		final FileInputStream fis1 = new FileInputStream(file1);
-		document.setInputStream(fis1);
+		document.setName(pOriginalFileName);
+		final FileInputStream fis = new FileInputStream(file1);
+		document.setInputStream(fis);
 		return document;
 	}
-	
-//	public Long updatePerson() {
-//		try {				
-//			if (getTempFileLocation() != null) {
-//				getPersonService().updatePersonPicture(getPerson(), getImageDocumentFromTempFile(), getThumbnailDocumentFromTempFile());
-//			}
-//			else if (Boolean.TRUE.equals(getRemoveCurrentImage())) {
-//				getPersonService().updatePersonPicture(getPerson(), null, null);
-//			}			
-//			return getPerson().getId();
-//		}
-//		catch (IOException ioe) {
-//			throw new RuntimeException(ioe);
-//		}
-//		finally {
-//			if (fis1 != null) {
-//				try {
-//					fis1.close();
-//				} catch (IOException e) {}
-//			}
-//			if (fis2 != null) {
-//				try {
-//					fis2.close();
-//				} catch (IOException e) {}
-//			}
-//		}
-//	}
 	
 	/**
 	 * Returns true if the uploaded image is of a supported mime type, false otherwise.
@@ -288,12 +268,12 @@ public abstract class AbstractEditPictureController  {
 	/**
 	 * Max width for the image.
 	 */
-	protected abstract int getPictureMaxHeight();
+	protected abstract int getImageMaxHeight();
 	
 	/**
 	 * Max height for the image.
 	 */
-	protected abstract int getPictureMaxWidth();
+	protected abstract int getImageMaxWidth();
 	
 	/**
 	 * Max width for the thumbnail.
@@ -309,19 +289,21 @@ public abstract class AbstractEditPictureController  {
 	 * Create two temporary files: the image and the thumbnail.
 	 * 
 	 * @throws IOException
+	 * @throws DocumentException 
 	 */
-	protected void saveImageInTempFiles() throws IOException {		
+	protected void saveImageInTempFiles() throws IOException, DocumentException {		
 		OutputStream out = null;
 		InputStream is = null;
 		try {
 			is = getImageFile().getInputStream();
 			final BufferedImage originalBufferedImage = ImageIO.read(is);
+			final String mimeType = getImageFile().getContentType();
 			
-			BufferedImage targetBufferedImage = DocumentUtils.getHighQualityScaledInstance(originalBufferedImage, getPictureMaxHeight(), getPictureMaxWidth());
+			BufferedImage targetBufferedImage = DocumentUtils.getHighQualityScaledInstance(originalBufferedImage, getImageMaxHeight(), getImageMaxWidth());
 			File tempFile = File.createTempFile("lendity-", ".tmp");
-			ImageIO.write(targetBufferedImage, "jpg", tempFile);
+			ImageIO.write(targetBufferedImage, DocumentUtils.getFormat(mimeType), tempFile);
 			setTempFileLocation(tempFile.getAbsolutePath());
-			setTempFileMimeType(DocumentConsts.MIME_TYPE_IMAGE_JPEG);
+			setTempFileMimeType(mimeType);
 			setTempFileOriginalFileName(getImageFile().getName());
 			if (log.isDebugEnabled()) {
 				log.debug("Saved picture into temp file: " + getTempFileLocation());
@@ -329,9 +311,9 @@ public abstract class AbstractEditPictureController  {
 			
 			targetBufferedImage = DocumentUtils.getHighQualityScaledInstance(originalBufferedImage, getThumbnailMaxHeight(), getThumbnailMaxWidth());
 			tempFile = File.createTempFile("lendity-", ".tmp");
-			ImageIO.write(targetBufferedImage, "jpg", tempFile);
+			ImageIO.write(targetBufferedImage, DocumentUtils.getFormat(mimeType), tempFile);
 			setTempThumbnailLocation(tempFile.getAbsolutePath());
-			setTempThumbnailMimeType(DocumentConsts.MIME_TYPE_IMAGE_JPEG);
+			setTempThumbnailMimeType(mimeType);
 			setTempThumbnailOriginalFileName(getImageFile().getName());
 			if (log.isDebugEnabled()) {
 				log.debug("Saved thumbnail into temp file: " + getTempThumbnailLocation());
@@ -365,6 +347,8 @@ public abstract class AbstractEditPictureController  {
 		}
 		catch (IOException e) {
 			throw new RuntimeException(e);
+		} catch (DocumentException e) {
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -378,39 +362,18 @@ public abstract class AbstractEditPictureController  {
 		setTempFileLocation(null);
 		return "success";
 	}
-
-//	public String submit() {
-//		Long personId = updatePerson();
-//		
-//		if (personId != null) {
-//			JsfUtils.redirect(PagesURL.PERSON_OVERVIEW, PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID, personId.toString());
-//		}
-//	
-//		// Return to the same page.
-//		return "error";
-//	}
 	
-//	public String getImgSrc() {
-//		if (Boolean.TRUE.equals(removeCurrentImage)) {
-//			return JsfUtils.getFullUrl(PersonConsts.DUMMY_PROFILE_PICTURE_URL);
-//		}
-//		else if (getTempFileLocation() != null) {
-//			return getTempFileImgSrc();
-//		}
-//		else {
-//			return personService.getProfilePictureSrc(getPerson(), true);
-//		}
-//	}
-//	
-//	public String getThumbnailSrc() {
-//		if (Boolean.TRUE.equals(removeCurrentImage)) {
-//			return JsfUtils.getFullUrl(PersonConsts.DUMMY_PROFILE_THUMBNAIL_URL);
-//		}
-//		else if (getTempThumbnailLocation() != null) {
-//			return getTempThumbnailImgSrc();			
-//		}
-//		else {
-//			return personService.getProfileThumbnailSrc(getPerson(), true);
-//		}
-//	}
+	/**
+	 * The page to go to when clicking cancel.
+	 *
+	 * @return
+	 */
+	public abstract String getCancelHref();
+	
+	/**
+	 * Returns true if the image exists, false otherwise.
+	 *
+	 * @return
+	 */
+	public abstract boolean isExistingImage();
 }

@@ -49,15 +49,25 @@
 
 <h:dataTable value="#{myPendingConnectionRequestsOutListController.list}" binding="#{myPendingConnectionRequestsOutListController.table}" var="connectionRequest" styleClass="gt-table gt-user-table">
 
-    <h:column>
+    <h:column id="column1">
+    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink value="#{myPendingConnectionRequestsOutListController.connectionOverviewHref}">
+					<div class="thumbnailDiv">
+						<img src="#{myPendingConnectionRequestsOutListController.connectionThumbnailSrc}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
 		<h4>
 			<h:outputLink value="#{myPendingConnectionRequestsOutListController.connectionOverviewHref}">
 				<h:outputText value="#{connectionRequest.connection.displayName}" />
 			</h:outputLink>
 		</h4>
+		</td></tr></table>
     </h:column>
 
-	<h:column>
+	<h:column id="column2">
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 			    <th width="50%"><nobr><h:outputText id="id_1" value="#{messages.connectionRequest_requestDate}:" /></nobr></th>

@@ -103,4 +103,8 @@ public class ChangePasswordController {
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
 	}
+
+	public String getPersonOverviewHref() {		
+		return PersonUtils.getPersonOverviewPageUrl(PersonUtils.getCurrentPersonId().toString());
+	}
 }

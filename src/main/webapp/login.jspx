@@ -44,7 +44,7 @@
 				<center>
 				<img src="#{facesContext.externalContext.requestContextPath}/public/images/login_shadows.gif"/>
 				<br/><br/><br/>
-				<h:outputLink value="#{authenticationController.registrationURL}" styleClass="stylishButton">
+				<h:outputLink value="#{authenticationController.registrationURL}" styleClass="stylishButtonLarge">
 					<h:outputText value="#{messages.login_registerForFree}"/>
 				</h:outputLink>
 				</center>				
