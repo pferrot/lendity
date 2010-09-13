@@ -4,6 +4,7 @@ package com.pferrot.lendity.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -50,29 +51,13 @@ public abstract class Item implements CategoryEnabled, Borrowable, Serializable 
 	private String description;
 	
 	
-	@OneToOne(targetEntity = Document.class)
+	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "IMAGE_1_ID", nullable = true)
 	private Document image1;
 	
-	@OneToOne(targetEntity = Document.class)
+	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "THUMBNAIL_1_ID", nullable = true)
 	private Document thumbnail1;
-	
-	@OneToOne(targetEntity = Document.class)
-	@JoinColumn(name = "IMAGE_2_ID", nullable = true)
-	private Document image2;
-	
-	@OneToOne(targetEntity = Document.class)
-	@JoinColumn(name = "THUMBNAIL_2_ID", nullable = true)
-	private Document thumbnail2;
-	
-	@OneToOne(targetEntity = Document.class)
-	@JoinColumn(name = "IMAGE_3_ID", nullable = true)
-	private Document image3;
-	
-	@OneToOne(targetEntity = Document.class)
-	@JoinColumn(name = "THUMBNAIL_3_ID", nullable = true)
-	private Document thumbnail3;
 	
 	@ManyToOne(targetEntity = ItemCategory.class)
 	@JoinColumn(name = "CATEGORY_ID", nullable = false)
@@ -134,44 +119,12 @@ public abstract class Item implements CategoryEnabled, Borrowable, Serializable 
 		this.image1 = image1;
 	}
 
-	public Document getImage2() {
-		return image2;
-	}
-
-	public void setImage2(Document image2) {
-		this.image2 = image2;
-	}
-
-	public Document getImage3() {
-		return image3;
-	}
-
-	public void setImage3(Document image3) {
-		this.image3 = image3;
-	}
-
 	public Document getThumbnail1() {
 		return thumbnail1;
 	}
 
 	public void setThumbnail1(Document thumbnail1) {
 		this.thumbnail1 = thumbnail1;
-	}
-
-	public Document getThumbnail2() {
-		return thumbnail2;
-	}
-
-	public void setThumbnail2(Document thumbnail2) {
-		this.thumbnail2 = thumbnail2;
-	}
-
-	public Document getThumbnail3() {
-		return thumbnail3;
-	}
-
-	public void setThumbnail3(Document thumbnail3) {
-		this.thumbnail3 = thumbnail3;
 	}
 
 	public ItemCategory getCategory() {

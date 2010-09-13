@@ -243,6 +243,7 @@ public class RegistrationController {
 	//		person.setPhoneProfessional(getPhoneProfessional());
 			person.setUser(user);
 			person.setEmailSubscriber(Boolean.TRUE);
+			person.setReceiveNeedsNotifications(Boolean.TRUE);
 			
 			final Address address = new Address();
 	//		address.setAddress1(getAddress1());

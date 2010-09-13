@@ -32,7 +32,7 @@ depuis le $latestUpdateDateLabel
 #end
 Voir la liste complète: $itemUrl
 
-Besoins ajoutés
+Recherches ajoutées
 #if( $latestUpdateDateLabel )
 (depuis le $latestUpdateDateLabel)
 #end
@@ -55,7 +55,7 @@ $needTitle4 $needDetails4
 $needTitle5 $needDetails5
 #end
 #if( $needNbExtra )
-Plus $needNbExtra besoin(s) supplémentaire(s)
+Plus $needNbExtra recherche(s) supplémentaire(s)
 #if( $latestUpdateDateLabel )
 depuis le $latestUpdateDateLabel
 #end

@@ -553,7 +553,7 @@ public class ItemService extends ObjectService {
 					         to,
 					         null, 
 					         null,
-					         Configuration.getSiteName() + ": object répondant à une ping-cherche",
+					         Configuration.getSiteName() + ": object répondant à une recherche",
 					         objects, 
 					         velocityTemplateLocation,
 					         inlineResources);		

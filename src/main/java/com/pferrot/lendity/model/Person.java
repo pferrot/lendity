@@ -23,8 +23,6 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.envers.Audited;
 
 import com.pferrot.core.CoreUtils;
-import com.pferrot.lendity.PagesURL;
-import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.security.model.User;
 
 @Entity
@@ -39,11 +37,11 @@ public class Person implements Serializable {
 	@Audited
 	private Boolean enabled;
 
-	@OneToOne(targetEntity = Document.class)
+	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "IMAGE_ID", nullable = true)
 	private Document image;
 	
-	@OneToOne(targetEntity = Document.class)
+	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "THUMBNAIL_ID", nullable = true)
 	private Document thumbnail;
 	
