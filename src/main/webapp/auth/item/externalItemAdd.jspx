@@ -33,7 +33,7 @@
 				
 				<f:view>
 
-					<h:form>
+					<h:form id="externalItemAddForm" prependId="false">
 
 
 					<!-- form row -->
@@ -48,37 +48,10 @@
 							maxlength="255"	/>			
 					</div><!-- /form row -->					
 					
-					<c:if test="#{not externalItemAddControlle.descriptionAvailable}">
-						<span id="addDescription" class="linkStyleActionSmall" onClick="toggleVisibility('description'); toggleVisibility('addDescription');"><h:outputText value="#{messages.item_addDescription}"/><br/><br/></span>
-						<div id="description" style="display: none;">
-							<!-- form row -->
-							<div class="gt-form-row gt-width-100">
-								<label><h:outputText value="#{messages.item_description}"/></label>
-								<h:message styleClass="error" showSummary="true" showDetail="false"
-									for="description"></h:message>			
-								<h:inputTextarea id="description" 
-								    styleClass="gt-form-textarea"
-								    rows="10"
-									value="#{externalItemAddController.description}"
-									validator="#{externalItemAddController.validateDescriptionSize}"/>						
-							</div><!-- /form row -->
-						</div>
-					</c:if>	
-
-					<c:if test="#{externalItemAddControlle.descriptionAvailable}">
-						<!-- form row -->
-						<div class="gt-form-row gt-width-100">
-							<label><h:outputText value="#{messages.item_description}"/></label>
-							<h:message styleClass="error" showSummary="true" showDetail="false"
-								for="description"></h:message>			
-							<h:inputTextarea id="description" 
-							    styleClass="gt-form-textarea"
-							    rows="10"
-								value="#{externalItemAddController.description}"
-								validator="#{externalItemAddController.validateDescriptionSize}"/>						
-						</div><!-- /form row -->
-					</c:if>	
-
+					<ui:include src="component/descriptionEdit.jspx">
+						<ui:param name="controllerBean" value="#{externalItemEditController}"/>
+					</ui:include>
+					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">
 						<label><h:outputText value="#{messages.item_category}"/> *</label>

@@ -143,12 +143,12 @@ public class AuthenticationController {
 				MyConnectionsNeedsListController.FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE);
 	}
 	
-	public String getNeedAddURL() {
-		return JsfUtils.getFullUrl(PagesURL.NEED_ADD);
+	public String getNeedAddWithConfirmURL() {
+		return JsfUtils.getFullUrl(PagesURL.NEED_ADD, NeedAddController.CONFIRM_PARAMETER_NAME, "true");
 	}
 	
-	public String getNeedAddNoConfirmURL() {
-		return JsfUtils.getFullUrl(PagesURL.NEED_ADD, NeedAddController.NO_CONFIRM_PARAMETER_NAME, "true");
+	public String getNeedAddURL() {
+		return JsfUtils.getFullUrl(PagesURL.NEED_ADD);
 	}
 	
 	public String getMyProfileURL() {

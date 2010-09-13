@@ -69,10 +69,6 @@ public abstract class AbstractObjectAddEditController {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	public boolean isDescriptionAvailable() {
-		return !StringUtils.isNullOrEmpty(description);
-	}
 
 	public void validateDescriptionSize(FacesContext context, UIComponent toValidate, Object value) {
 		String message = "";

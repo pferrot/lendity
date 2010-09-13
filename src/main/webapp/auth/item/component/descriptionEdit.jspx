@@ -1,0 +1,34 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+    
+	<script type="text/javascript">
+		$j(document).ready(function() {
+			if ($j('#description').val() == '') {
+				$j('#descriptionDiv').hide();
+				$j('#addDescription').show();
+			}
+		});
+	</script>
+	<span id="addDescription" style="display: none;" class="linkStyleActionSmall" onClick="toggleVisibility('descriptionDiv'); toggleVisibility('addDescription');"><h:outputText value="#{messages.item_addDescription}"/><br/><br/></span>
+	    
+	<div id="descriptionDiv">
+		<div class="gt-form-row gt-width-100">
+			<label><h:outputText value="#{messages.item_description}"/></label>
+			<h:message styleClass="error" showSummary="true" showDetail="false"
+				for="description"></h:message>			
+			<h:inputTextarea id="description" immediate="true" 
+			    styleClass="gt-form-textarea"
+			    rows="10"
+				value="#{controllerBean.description}"
+				validator="#{controllerBean.validateDescriptionSize}"/>						
+		</div><!-- /form row -->
+	</div>
+						
+</ui:composition>

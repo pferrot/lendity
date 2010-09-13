@@ -180,7 +180,7 @@
 			    </h:outputLink>
 			</li>
 			<li>
-			    <h:outputLink id="menuNeedAddLink" value="#{authenticationController.needAddURL}">
+			    <h:outputLink id="menuNeedAddLink" value="#{authenticationController.needAddWithConfirmURL}">
 				    <h:outputText id="menuNeedAddText" value="#{messages.menu_addNeed}" />
 			    </h:outputLink>
 			</li>
