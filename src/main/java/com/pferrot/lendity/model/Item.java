@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -19,8 +20,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.envers.Audited;
 
 import com.pferrot.core.CoreUtils;
@@ -51,17 +50,16 @@ public abstract class Item implements CategoryEnabled, Borrowable, Serializable 
 	private String description;
 	
 	
-	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE)
+	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "IMAGE_1_ID", nullable = true)
 	private Document image1;
 	
-	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE)
+	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "THUMBNAIL_1_ID", nullable = true)
 	private Document thumbnail1;
 	
-	@ManyToOne(targetEntity = ItemCategory.class)
+	@ManyToOne(targetEntity = ItemCategory.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "CATEGORY_ID", nullable = false)
-	@LazyToOne(LazyToOneOption.FALSE)
 	private ItemCategory category;
 
 	// If the borrower if a user of the system.

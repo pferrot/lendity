@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -37,11 +38,11 @@ public class Person implements Serializable {
 	@Audited
 	private Boolean enabled;
 
-	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE)
+	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "IMAGE_ID", nullable = true)
 	private Document image;
 	
-	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE)
+	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "THUMBNAIL_ID", nullable = true)
 	private Document thumbnail;
 	
