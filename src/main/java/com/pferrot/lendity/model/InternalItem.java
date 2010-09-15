@@ -14,9 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
-
 import com.pferrot.core.CoreUtils;
 
 /**
@@ -35,7 +32,6 @@ public class InternalItem extends Item implements Ownable, Commentable<ItemComme
 
 	@OneToOne(targetEntity = Person.class)
 	@JoinColumn(name = "OWNER_ID")
-	@LazyToOne(LazyToOneOption.FALSE)
 	private Person owner;
 	
 	@Column(name = "NB_REMINDERS_SENT")

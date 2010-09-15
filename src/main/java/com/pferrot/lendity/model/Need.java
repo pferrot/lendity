@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -19,8 +20,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.envers.Audited;
 
 import com.pferrot.core.CoreUtils;
@@ -39,7 +38,6 @@ public class Need implements CategoryEnabled, Ownable, Commentable<NeedComment>,
 
 	@OneToOne(targetEntity = Person.class)
 	@JoinColumn(name = "OWNER_ID")
-	@LazyToOne(LazyToOneOption.FALSE)
 	private Person owner;
 	
 	@Column(name = "TITLE", nullable = false, length = 255)
@@ -50,9 +48,8 @@ public class Need implements CategoryEnabled, Ownable, Commentable<NeedComment>,
 	@Audited
 	private String description;
 	
-	@ManyToOne(targetEntity = ItemCategory.class)
+	@ManyToOne(targetEntity = ItemCategory.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "CATEGORY_ID", nullable = true)
-	@LazyToOne(LazyToOneOption.FALSE)
 	private ItemCategory category;
 	
 	@Column(name = "CREATION_DATE", nullable = false)

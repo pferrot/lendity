@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.sql.Blob;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +20,8 @@ public class Document implements Serializable {
 
 	@Id @GeneratedValue
 	@Column(name = "ID")
+	// Allows accessing the ID even when proxy not loaded.
+	@Access(value = AccessType.PROPERTY)
     private Long id;
 	
 	@Lob
