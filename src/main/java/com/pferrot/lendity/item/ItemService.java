@@ -421,10 +421,11 @@ public class ItemService extends ObjectService {
 		// Connections can view.
 		if (pItem instanceof InternalItem) {
 			final InternalItem internalItem = (InternalItem) pItem;
-			if (internalItem.isVisible() && 
-				internalItem.getOwner() != null &&
-				internalItem.getOwner().getConnections() != null &&
-				internalItem.getOwner().getConnections().contains(getCurrentPerson())) {
+			final Person currentPerson = getCurrentPerson();
+			if ((internalItem.isVisible() || (internalItem.getBorrower() != null && internalItem.getBorrower().equals(currentPerson))) && 
+					internalItem.getOwner() != null &&
+					internalItem.getOwner().getConnections() != null &&
+					internalItem.getOwner().getConnections().contains(currentPerson)) {
 				return true;
 			}
 		}
