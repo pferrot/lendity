@@ -48,7 +48,7 @@ public class Need implements CategoryEnabled, Ownable, Commentable<NeedComment>,
 	@Audited
 	private String description;
 	
-	@ManyToOne(targetEntity = ItemCategory.class, fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity = ItemCategory.class)
 	@JoinColumn(name = "CATEGORY_ID", nullable = true)
 	private ItemCategory category;
 	

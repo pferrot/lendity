@@ -75,8 +75,7 @@ public class Person implements Serializable {
 	private String phoneProfessional;
 	
 	@OneToOne(targetEntity = com.pferrot.security.model.User.class,
-			  cascade = {CascadeType.PERSIST},
-			  fetch = FetchType.LAZY)
+			  cascade = {CascadeType.PERSIST})
 	@JoinColumn(name = "USER_ID", nullable = true)
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	private User user;
