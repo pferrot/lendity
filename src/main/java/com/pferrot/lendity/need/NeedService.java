@@ -122,6 +122,7 @@ public class NeedService extends ObjectService {
 			objects.put("signature", Configuration.getSiteName());
 			objects.put("siteName", Configuration.getSiteName());
 			objects.put("siteUrl", Configuration.getRootURL());
+			objects.put("profileUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.MY_PROFILE));
 			
 			// TODO: localization
 			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/need/notification/fr";

@@ -8,6 +8,8 @@ Bonjour $connectionFirstName,<br/><br/>
 
 <a href="$itemAddUrl">Si tu possèdes cet objet, clique ici afin l'ajouter dans lendity</a>. $requesterFirstName sera notifié de ton ajout automatiquement.<br/><br/>
 
-A bientôt sur <a href="$siteUrl">$siteName</a>.
+A bientôt sur <a href="$siteUrl">$siteName</a>.<br/>
+
+<br/><span style="font-size: 80%;">Afin de ne plus recevoir cet email, mets à jour <a href="$profileUrl">ton profil.</a></span>
 
 #include("com/pferrot/lendity/emailtemplate/html_footer.vm")
