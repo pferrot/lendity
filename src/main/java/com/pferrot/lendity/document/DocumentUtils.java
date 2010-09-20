@@ -1,5 +1,6 @@
 package com.pferrot.lendity.document;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
@@ -164,7 +165,7 @@ public class DocumentUtils {
             BufferedImage tmp = new BufferedImage(w, h, type);
             Graphics2D g2 = tmp.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, hint);
-            g2.drawImage(ret, 0, 0, w, h, null);
+            g2.drawImage(ret, 0, 0, w, h, Color.WHITE, null);
             g2.dispose();
 
             ret = tmp;
