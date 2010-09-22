@@ -76,8 +76,8 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		return getPerson().getId();
 	}
 
-	public String getPersonOverviewHref() {		
-		return PersonUtils.getPersonOverviewPageUrl(person.getId().toString());
+	public String getMyProfileHref() {
+		return JsfUtils.getFullUrl(PagesURL.MY_PROFILE);
 	}	
 
 	@Override

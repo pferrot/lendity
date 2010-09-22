@@ -14,7 +14,6 @@ import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
 import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
 import com.pferrot.lendity.i18n.I18nUtils;
-import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
@@ -35,7 +34,7 @@ public class PersonOverviewController
 	public void initView() {
 		// Read the item ID from the request parameter and load the correct item.
 		try {
-			final String personIdString = JsfUtils.getRequestParameter(PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID);
+			final String personIdString = getPersonIdString();
 			Person person = null;
 			if (personIdString != null) {
 				personId = Long.parseLong(personIdString);
@@ -62,6 +61,10 @@ public class PersonOverviewController
 			//TODO display standard error page instead.
 			JsfUtils.redirect(PagesURL.PERSONS_LIST);
 		}		
+	}
+	
+	protected String getPersonIdString() {
+		return JsfUtils.getRequestParameter(PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID);
 	}
 
 	public void setPersonService(final PersonService pPersonService) {

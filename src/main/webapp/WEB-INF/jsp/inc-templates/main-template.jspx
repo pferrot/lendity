@@ -24,11 +24,13 @@
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/qtip/jquery.qtip-1.0.min_rev54.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/marquee/jquery.marquee.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/utils.js"></script>
+	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/menu.js"></script>
 	
 	
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/superfish/superfish.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/superfish/hoverIntent.js"></script>
 	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/jquery/superfish/superfish.css" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/jquery/superfish/superfish2.css" type="text/css" media="screen, projection" />
 
 	<script type="text/javascript">
 		var $j = jQuery.noConflict();
@@ -42,6 +44,10 @@
 		$j(function() {
 			$j(".stylishButton").button();
 			$j(".stylishButtonLarge").button();
+		});
+
+		$j(document).ready(function() {
+			initMenu('#{facesContext.externalContext.requestServletPath}');
 		});
 	</script>
 	
@@ -123,109 +129,28 @@
 		
 	<c:if test="${loggedInUser}">
     <li>
-    	<h:outputLink id="menuHomeLink2" value="#{authenticationController.homeURL}">
+    	<h:outputLink id="menuHomeLink2" value="#{authenticationController.homeURL}" onmouseover="menuHomeOver();">
         	<h:outputText id="menuHomeText2" value="#{messages.menu_home}" />
 	    </h:outputLink>
 	</li>    
 	<li>
-        <h:outputLink id="menuMyItemsLink" value="#{authenticationController.myItemsURL}">
+        <h:outputLink id="menuMyItemsLink" value="#{authenticationController.myItemsURL}" onmouseover="menuItemsOver();">
         	<h:outputText id="menuMyItemsText" value="#{messages.menu_items}"/>
         </h:outputLink>
-		<ul class="sf-menu-sub1">
-			<li>
-			    <h:outputLink id="menuMyItemsLink2" value="#{authenticationController.myItemsURL}">
-				    <h:outputText id="menuMyItemsText2" value="#{messages.menu_myItems}" />
-			    </h:outputLink>
-			</li>
-			<li>
-			    <h:outputLink id="menuInternalItemAddLink" value="#{authenticationController.internalItemAddURL}">
-				    <h:outputText id="menuInternalItemTextLink" value="#{messages.menu_addItem}" />
-			    </h:outputLink>
-			</li>
-			<li>
-			    <h:outputLink id="menuMyBorrowedItemsLink" value="#{authenticationController.myBorrowedItemsURL}">
-                	<h:outputText id="menuMyBorrowedItemsText" value="#{messages.menu_myBorrowedItems}"/>
-                </h:outputLink>
-			</li>
-			<li>
-			    <h:outputLink id="menuExternalItemAddLink" value="#{authenticationController.externalItemAddURL}">
-				    <h:outputText id="menuExternalItemAddText" value="#{messages.menu_addBorrowedItem}" />
-			    </h:outputLink>
-			</li>
-			<li>
-			   <h:outputLink id="menuMyConnectionsItemsLink" value="#{authenticationController.myConnectionsItemsURL}">
-               		<h:outputText id="menuMyConnectionsItemsText" value="#{messages.menu_myConnectionsItems}"/>
-               </h:outputLink>
-			</li>
-			<li>
-			   <h:outputLink id="menuMyPendingLendRequestsLink" value="#{authenticationController.myPendingLendRequestsURL}">
-		       		<h:outputText id="menuMyPendingLendRequestsText" value="#{messages.menu_myPendingLendRequests}"/>
-		       </h:outputLink>
-			</li>
-			<li>
-			   <h:outputLink id="menuMyPendingLendRequestsOutLink" value="#{authenticationController.myPendingLendRequestsOutURL}">
-		           <h:outputText id="menuMyPendingLendRequestsOutText" value="#{messages.menu_myPendingLendRequestsOut}"/>
-		       </h:outputLink>
-			</li>	
-	    </ul>
 	</li>
 	<li>
-        <h:outputLink id="menuMyNeedsLink" value="#{authenticationController.myNeedsURL}">
+        <h:outputLink id="menuMyNeedsLink" value="#{authenticationController.myNeedsURL}" onmouseover="menuNeedsOver();">
         	<h:outputText id="menuMyNeedsText" value="#{messages.menu_needs}"/>
         </h:outputLink>
-		<ul class="sf-menu-sub1">
-			<li>
-			    <h:outputLink id="menuMyNeedsLink2" value="#{authenticationController.myNeedsURL}">
-				    <h:outputText id="menuMyNeedsText2" value="#{messages.menu_myNeeds}" />
-			    </h:outputLink>
-			</li>
-			<li>
-			    <h:outputLink id="menuNeedAddLink" value="#{authenticationController.needAddWithConfirmURL}">
-				    <h:outputText id="menuNeedAddText" value="#{messages.menu_addNeed}" />
-			    </h:outputLink>
-			</li>
-			<li>
-			   <h:outputLink id="menuMyConnectionsNeedsLink" value="#{authenticationController.myConnectionsNeedsURL}">
-		       		<h:outputText id="menuMyConnectionsNeedsText" value="#{messages.menu_myConnectionsNeeds}"/>
-		       </h:outputLink>
-			</li>	
-	    </ul>
 	</li>
 
 	<li>
-      	<h:outputLink id="menuMyConnectionsLink" value="#{authenticationController.myConnectionsURL}">
+      	<h:outputLink id="menuMyConnectionsLink" value="#{authenticationController.myConnectionsURL}" onmouseover="menuConnectionsOver();">
             <h:outputText id="menuMyConnectionsText" value="#{messages.menu_friends}"/>
         </h:outputLink>
-		<ul class="sf-menu-sub1">
-			<li>
-			   <h:outputLink id="menuMyConnectionsLink2" value="#{authenticationController.myConnectionsURL}">
-               	  <h:outputText id="menuMyConnectionsText2" value="#{messages.menu_myConnections}"/>
-               </h:outputLink>
-			</li>
-			<li>
-			    <h:outputLink id="menuPersonsLink" value="#{authenticationController.personsURL}">
-		            <h:outputText id="menuPersonsText" value="#{messages.menu_persons}"/>
-		        </h:outputLink>
-		    </li>
-			<li>
-			    <h:outputLink id="menuMyPendingConnectionRequestsLink" value="#{authenticationController.myPendingConnectionRequestsURL}">
-		        	<h:outputText id="menuMyPendingConnectionRequestsText" value="#{messages.menu_myPendingConnectionRequests}"/>
-		        </h:outputLink>
-			</li>
-			<li>
-			    <h:outputLink id="menuMyPendingConnectionRequestsOutLink" value="#{authenticationController.myPendingConnectionRequestsOutURL}">
-		        	<h:outputText id="menuMyPendingConnectionRequestsOutText" value="#{messages.menu_myPendingConnectionRequestsOut}"/>
-		        </h:outputLink>
-			</li>
-			<li>
-			    <h:outputLink id="menuMyBannedPersonsLink" value="#{authenticationController.myBannedPersonsURL}">
-               		<h:outputText id="menuMyBannedPersonsText" value="#{messages.menu_myBannedPersons}"/>
-                </h:outputLink>
-			</li>
-	    </ul>
 	</li>
 	<li>
-        <h:outputLink id="menuProfileLink" value="#{authenticationController.myProfileURL}">
+        <h:outputLink id="menuProfileLink" value="#{authenticationController.myProfileURL}" onmouseover="menuProfileOver();">
    	        <h:outputText id="menuProfileText" value="#{messages.menu_profile}"/>
    	    </h:outputLink>
 	</li>	
@@ -259,18 +184,152 @@
 </tr>
 </table>
 
-
-
-
-
-
-
-
 				</div><!-- / navigation -->
 				
 				</div>
 				
-			</div><!-- /navbar -->			
+			</div><!-- /navbar -->
+
+<div class="gt-subnavbar clearfix" style="height: 27px;">
+
+<!-- navbar -->
+<div id="divSubMenuItems" class="gt-subnavbar clearfix" style="display: none;"><div class="gt-fixed-wrap clearfix"><div>
+	<table class="subMenuTable">
+	<tr>
+	<td>
+	<ul class="sf-menu2">
+	<li>
+	<h:outputLink id="sideMenuMyItemsLink" class="sideMenuLink" value="#{authenticationController.myItemsURL}">
+		<h:outputText id="sideMenuMyItemsText" value="#{messages.menu_myItems}" />
+	</h:outputLink>
+	</li><li>
+	<h:outputLink id="sideMenuInternalItemAddLink" class="sideMenuLink" value="#{authenticationController.internalItemAddURL}">
+		<h:outputText id="sideMenuInternalItemTextLink" value="#{messages.menu_addItem}" />
+	</h:outputLink>
+	</li><li>
+	<h:outputLink id="sideMenuMyBorrowedItemsLink" class="sideMenuLink" value="#{authenticationController.myBorrowedItemsURL}">
+		<h:outputText id="sideMenuMyBorrowedItemsText" value="#{messages.menu_myBorrowedItems}"/>
+	</h:outputLink>
+	</li><li>
+	<h:outputLink id="sideMenuExternalItemAddLink" class="sideMenuLink" value="#{authenticationController.externalItemAddURL}">
+		<h:outputText id="sideMenuExternalItemAddText" value="#{messages.menu_addBorrowedItem}" />
+	</h:outputLink>
+	</li><li>
+	<h:outputLink id="sideMenuMyConnectionsItemsLink" class="sideMenuLink" value="#{authenticationController.myConnectionsItemsURL}">
+		<h:outputText id="sideMenuMyConnectionsItemsText" value="#{messages.menu_myConnectionsItems}"/>
+	</h:outputLink>
+	</li><li>
+	<h:outputLink id="sideMenuMyPendingLendRequestsLink" class="sideMenuLink" value="#{authenticationController.myPendingLendRequestsURL}">
+		<h:outputText id="sideMenuMyPendingLendRequestsText" value="#{messages.menu_myPendingLendRequests}"/>
+	</h:outputLink>
+	</li><li>
+	<h:outputLink id="sideMenuMyPendingLendRequestsOutLink" class="sideMenuLink" value="#{authenticationController.myPendingLendRequestsOutURL}">
+		<h:outputText id="sideMenuMyPendingLendRequestsOutText" value="#{messages.menu_myPendingLendRequestsOut}"/>
+	</h:outputLink>
+	</li>
+	</ul>	
+	</td>
+	</tr>
+	</table>
+</div></div></div>
+
+<!-- navbar -->
+<div id="divSubMenuNeeds" class="gt-subnavbar clearfix" style="display: none; position: relative;"><div class="gt-fixed-wrap clearfix"><div>
+	<table class="subMenuTable">
+	<tr>
+	<td>
+	<ul class="sf-menu2">
+	<li>
+	    <h:outputLink id="sideMenuMyNeedsLink2" class="sideMenuLink" value="#{authenticationController.myNeedsURL}">
+		    <h:outputText id="sideMenuMyNeedsText2" value="#{messages.menu_myNeeds}" />
+	    </h:outputLink>
+	</li>
+	<li>
+	    <h:outputLink id="sideMenuNeedAddLink" class="sideMenuLink" value="#{authenticationController.needAddWithConfirmURL}">
+		    <h:outputText id="sideMenuNeedAddText" value="#{messages.menu_addNeed}" />
+	    </h:outputLink>
+	</li>
+	<li>
+	   <h:outputLink id="sideMenuMyConnectionsNeedsLink" class="sideMenuLink" value="#{authenticationController.myConnectionsNeedsURL}">
+       		<h:outputText id="sideMenuMyConnectionsNeedsText" value="#{messages.menu_myConnectionsNeeds}"/>
+       </h:outputLink>
+	</li>	
+	</ul>	
+	</td>
+	</tr>
+	</table>
+</div></div></div>
+
+<!-- navbar -->
+<div id="divSubMenuConnections" class="gt-subnavbar clearfix" style="display: none; position: relative;"><div class="gt-fixed-wrap clearfix"><div>
+	<table class="subMenuTable">
+	<tr>
+	<td>
+	<ul class="sf-menu2">
+	<li>
+	   <h:outputLink id="sideMenuMyConnectionsLink2" class="sideMenuLink" value="#{authenticationController.myConnectionsURL}">
+             	  <h:outputText id="sideMenuMyConnectionsText2" value="#{messages.menu_myConnections}"/>
+             </h:outputLink>
+	</li>
+	<li>
+	    <h:outputLink id="sideMenuPersonsLink" class="sideMenuLink" value="#{authenticationController.personsURL}">
+            <h:outputText id="sideMenuPersonsText" value="#{messages.menu_persons}"/>
+        </h:outputLink>
+    </li>
+	<li>
+	    <h:outputLink id="sideMenuMyPendingConnectionRequestsLink" class="sideMenuLink" value="#{authenticationController.myPendingConnectionRequestsURL}">
+        	<h:outputText id="sideMenuMyPendingConnectionRequestsText" value="#{messages.menu_myPendingConnectionRequests}"/>
+        </h:outputLink>
+	</li>
+	<li>
+	    <h:outputLink id="sideMenuMyPendingConnectionRequestsOutLink" class="sideMenuLink" value="#{authenticationController.myPendingConnectionRequestsOutURL}">
+        	<h:outputText id="sideMenuMyPendingConnectionRequestsOutText" value="#{messages.menu_myPendingConnectionRequestsOut}"/>
+        </h:outputLink>
+	</li>
+	<li>
+	    <h:outputLink id="sideMenuMyBannedPersonsLink" class="sideMenuLink" value="#{authenticationController.myBannedPersonsURL}">
+       		<h:outputText id="sideMenuMyBannedPersonsText" value="#{messages.menu_myBannedPersons}"/>
+        </h:outputLink>
+	</li>
+	<li>
+	    <h:outputLink id="sideMenuMyConnectionsUpdates" class="sideMenuLink" value="#{authenticationController.myConnectionsUpdatesURL}">
+       		<h:outputText id="sideMenuMyConnectionsUpdatesText" value="#{messages.menu_myConnectionsUpdates}"/>
+        </h:outputLink>
+	</li>	
+	</ul>	
+	</td>
+	</tr>
+	</table>
+</div></div></div>
+
+<!-- navbar -->
+<div id="divSubMenuHome" class="gt-subnavbar clearfix" style="display: none;"><div class="gt-fixed-wrap clearfix"><div>
+	<table class="subMenuTable">
+	<tr>
+	<td>
+		<img src="#{facesContext.externalContext.requestContextPath}/public/images/transparent.gif" width="1" height="27"/>
+	</td>
+	</tr>
+	</table>
+</div></div></div>
+
+<!-- navbar -->
+<div id="divSubMenuProfile" class="gt-subnavbar clearfix" style="display: none;"><div class="gt-fixed-wrap clearfix"><div>
+	<table class="subMenuTable">
+	<tr>
+	<td>
+		<img src="#{facesContext.externalContext.requestContextPath}/public/images/transparent.gif" width="1" height="27"/>
+	</td>
+	</tr>
+	</table>
+</div></div></div>
+
+</div>
+
+
+
+
+	
 		</div>
 		<!-- / head -->
   		

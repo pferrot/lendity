@@ -1,0 +1,93 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+    
+    			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">			
+			
+			
+				<f:view>
+
+<ui:include src="../connectionrequest/requestConnectionTooltip.jspx"/>
+
+<h2 class="gt-table-head"><h:outputText value="#{theBean.pageTitle}"/></h2>
+
+<!-- content box -->
+<div class="gt-form gt-content-box" style="position: relative;">
+	<div class="profilePictureDiv">
+		<img src="#{theBean.profilePictureSrc}"/>
+	</div>
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_firstName}:" /></label></div>
+		<h:outputText value="#{theBean.person.firstName}" />
+	</div>
+	<br/>
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_lastName}:" /></label></div>
+		<h:outputText value="#{theBean.person.lastName}" />
+	</div>
+	<br/>
+	<c:if test="#{theBean.emailAvailable}">
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_email}:" /></label></div>
+			<a href="mailto:#{theBean.person.email}"><h:outputText value="#{theBean.person.email}" /></a>
+		</div>
+		<br/>
+	</c:if>
+	<c:if test="#{theBean.editAvailable}">
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_emailNotificationSettings}:" /></label></div>
+			<h:selectBooleanCheckbox id="emailSubscriber" value="#{theBean.person.emailSubscriber}" styleClass="gt-form-element-checkbox" disabled="true"/>
+			<h:outputText value=" " escape="false" />
+			<h:outputText value="#{messages.person_emailSubscriber}"/>
+			<br/>
+			<h:selectBooleanCheckbox id="receiveNeedsNotifications" value="#{theBean.person.receiveNeedsNotifications}" styleClass="gt-form-element-checkbox" disabled="true"/>
+			<h:outputText value=" " escape="false" />
+			<h:outputText value="#{messages.person_receiveNeedsNotifications}"/>
+		</div>
+		<br/>
+	</c:if>
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_memberSince}:" /></label></div>
+		<h:outputText value="#{theBean.memberSinceLabel}" />
+	</div>
+	<br/>
+	<div class="gt-form-row gt-width-100">
+		<table class="buttonsTable"><tr><td>
+		<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.personEditHref}" styleClass="stylishButton">
+    		<h:outputText rendered="#{theBean.editAvailable}" value="#{messages.navigation_editDetails}"/>
+    	</h:outputLink>
+    	<span onclick="requestConnectionTooltip(this, '#{theBean.person.id}', 2)">
+			<h:outputText styleClass="stylishButton" value="#{messages.connectionRequest_requestConnection}" rendered="#{!theBean.requestConnectionDisabled}"/>
+		</span>
+    	</td><td>
+    	<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.personEditPictureHref}" styleClass="stylishButton">
+    		<h:outputText rendered="#{theBean.editAvailable}" value="#{messages.person_changeProfilePicure}"/>
+    	</h:outputLink>
+    	</td><td>
+    	<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.changePasswordHref}" styleClass="stylishButton">
+    		<h:outputText rendered="#{theBean.editAvailable}" value="#{messages.changePassword_changePassword}"/>
+    	</h:outputLink>
+    	</td></tr></table>
+	</div>
+</div>
+<!-- /content box -->
+					
+				</f:view>	
+			
+			</div>
+			<!-- /main content -->
+			
+			</div>
+			<!-- /body -->
+			
+</ui:composition>

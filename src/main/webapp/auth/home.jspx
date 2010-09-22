@@ -23,7 +23,7 @@
 
 		<!-- body -->
 		<div class="gt-bd gt-cols clearfix">
-
+		
 <h2 class="gt-table-head"><h:outputText value="#{messages.menu_home}"/></h2>
 
 				<div class="gt-form gt-content-box">

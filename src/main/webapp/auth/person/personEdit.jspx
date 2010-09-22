@@ -80,7 +80,7 @@
 						<table class="buttonsTable"><tr><td>
 						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{personEditController.submit}" />
 						</td><td>
-						<h:outputLink styleClass="stylishButton"  value="#{personEditController.personOverviewHref}">
+						<h:outputLink styleClass="stylishButton"  value="#{personEditController.myProfileHref}">
            					<h:outputText value="#{messages.navigation_cancel}"/>
          				</h:outputLink>
          				</td></tr></table>

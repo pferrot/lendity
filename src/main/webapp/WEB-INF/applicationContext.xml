@@ -344,7 +344,9 @@
 	
 	
 	<bean id="myProfileController" class="com.pferrot.lendity.person.jsf.MyProfileController"
-	      scope="request">
+	      scope="conversation.access">
+	      <property name="personService" ref="personService"/>
+	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
 	
 	<bean id="personOverviewController" class="com.pferrot.lendity.person.jsf.PersonOverviewController"

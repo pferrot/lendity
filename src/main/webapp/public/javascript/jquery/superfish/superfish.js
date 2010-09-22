@@ -85,7 +85,7 @@
 		hoverClass	: 'sfHover',
 		pathClass	: 'overideThisToUse',
 		pathLevels	: 1,
-		delay		: 800,
+		delay		: 0,
 		animation	: {opacity:'show'},
 		speed		: 'normal',
 		autoArrows	: true,
@@ -113,7 +113,8 @@
 					.find('>ul:hidden').css('visibility','visible');
 			sf.IE7fix.call($ul);
 			o.onBeforeShow.call($ul);
-			$ul.animate(o.animation,o.speed,function(){ sf.IE7fix.call($ul); o.onShow.call($ul); });
+			//$ul.animate(o.animation,o.speed,function(){ sf.IE7fix.call($ul); o.onShow.call($ul); });
+			$ul.show();
 			return this;
 		}
 	});

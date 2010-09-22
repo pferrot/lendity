@@ -156,6 +156,41 @@ table.menuTable {
 	vertical-align: middle;
 }
 
+/* @group Nav */
+/* Navbar */
+.gt-subnavbar {
+	background-color: #8888a2;
+	margin-bottom: 0px;
+}
+
+.highlightedMenu {
+	background-color: #8888a2;
+}
+
+.highlightedMenu2:hover {
+	background-color: #b1b1c2!important;
+}
+
+/* When mouse over the submenu. */
+.highlightedMenu3  {
+	background-color: #b1b1c2!important;
+}
+
+.highlightedSubMenu {
+	color: #094e62!important;
+}
+
+.highlightedSubMenu2 {
+	background-color: #b1b1c2;
+}
+	
+
+table.subMenuTable {
+	width: 940px;
+	padding: 0;
+	vertical-align: middle;
+}
+
 .gt-search {
 	width: 160px!important;	
 }

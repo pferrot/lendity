@@ -70,9 +70,9 @@ public abstract class AbstractPersonAddEditController {
 	public abstract Long processPerson();
 	
 	public String submit() {
-		Long personId = processPerson();
+		processPerson();
 		
-		JsfUtils.redirect(PagesURL.PERSON_OVERVIEW, PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID, personId.toString());
+		JsfUtils.redirect(PagesURL.MY_PROFILE);
 	
 		// As a redirect is used, this is actually useless.
 		return null;

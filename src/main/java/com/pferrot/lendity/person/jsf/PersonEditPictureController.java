@@ -94,15 +94,15 @@ public class PersonEditPictureController  extends AbstractEditPictureController 
 		}
 	}
 	
-	public String getPersonOverviewHref() {		
-		return PersonUtils.getPersonOverviewPageUrl(person.getId().toString());
+	public String getMyProfileHref() {
+		return JsfUtils.getFullUrl(PagesURL.MY_PROFILE);
 	}
 
 	public String submit() {
 		Long personId = updatePerson();
 		
 		if (personId != null) {
-			JsfUtils.redirect(PagesURL.PERSON_OVERVIEW, PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID, personId.toString());
+			JsfUtils.redirect(PagesURL.MY_PROFILE);
 		}
 	
 		// Return to the same page.
@@ -155,7 +155,7 @@ public class PersonEditPictureController  extends AbstractEditPictureController 
 
 	@Override
 	public String getCancelHref() {
-		return getPersonOverviewHref();
+		return getMyProfileHref();
 	}
 
 	@Override

@@ -20,87 +20,10 @@
 			<!-- insert content here -->
 			<ui:define name="pageContent">
 			
-			<!-- body -->
-			<div class="gt-bd gt-cols clearfix">
-			
-			<!-- main content -->
-			<div class="gt-content">			
-			
-			
-				<f:view>
+<ui:include src="personOverviewInternal.jspx">
+	<ui:param name="theBean" value="#{personOverviewController}"/>
+</ui:include>
 
-<ui:include src="../connectionrequest/requestConnectionTooltip.jspx"/>
-
-<h2 class="gt-table-head"><h:outputText value="#{personOverviewController.pageTitle}"/></h2>
-
-<!-- content box -->
-<div class="gt-form gt-content-box" style="position: relative;">
-	<div class="profilePictureDiv">
-		<img src="#{personOverviewController.profilePictureSrc}"/>
-	</div>
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_firstName}:" /></label></div>
-		<h:outputText value="#{personOverviewController.person.firstName}" />
-	</div>
-	<br/>
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_lastName}:" /></label></div>
-		<h:outputText value="#{personOverviewController.person.lastName}" />
-	</div>
-	<br/>
-	<c:if test="#{personOverviewController.emailAvailable}">
-		<div class="gt-form-row gt-width-100">
-			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_email}:" /></label></div>
-			<a href="mailto:#{personOverviewController.person.email}"><h:outputText value="#{personOverviewController.person.email}" /></a>
-		</div>
-		<br/>
-	</c:if>
-	<c:if test="#{personOverviewController.editAvailable}">
-		<div class="gt-form-row gt-width-100">
-			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_emailNotificationSettings}:" /></label></div>
-			<h:selectBooleanCheckbox id="emailSubscriber" value="#{personOverviewController.person.emailSubscriber}" styleClass="gt-form-element-checkbox" disabled="true"/>
-			<h:outputText value=" " escape="false" />
-			<h:outputText value="#{messages.person_emailSubscriber}"/>
-			<br/>
-			<h:selectBooleanCheckbox id="receiveNeedsNotifications" value="#{personOverviewController.person.receiveNeedsNotifications}" styleClass="gt-form-element-checkbox" disabled="true"/>
-			<h:outputText value=" " escape="false" />
-			<h:outputText value="#{messages.person_receiveNeedsNotifications}"/>
-		</div>
-		<br/>
-	</c:if>
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_memberSince}:" /></label></div>
-		<h:outputText value="#{personOverviewController.memberSinceLabel}" />
-	</div>
-	<br/>
-	<div class="gt-form-row gt-width-100">
-		<table class="buttonsTable"><tr><td>
-		<h:outputLink rendered="#{personOverviewController.editAvailable}" value="#{personOverviewController.personEditHref}" styleClass="stylishButton">
-    		<h:outputText rendered="#{personOverviewController.editAvailable}" value="#{messages.navigation_editDetails}"/>
-    	</h:outputLink>
-    	<span onclick="requestConnectionTooltip(this, '#{personOverviewController.person.id}', 2)">
-			<h:outputText styleClass="stylishButton" value="#{messages.connectionRequest_requestConnection}" rendered="#{!personOverviewController.requestConnectionDisabled}"/>
-		</span>
-    	</td><td>
-    	<h:outputLink rendered="#{personOverviewController.editAvailable}" value="#{personOverviewController.personEditPictureHref}" styleClass="stylishButton">
-    		<h:outputText rendered="#{personOverviewController.editAvailable}" value="#{messages.person_changeProfilePicure}"/>
-    	</h:outputLink>
-    	</td><td>
-    	<h:outputLink rendered="#{personOverviewController.editAvailable}" value="#{personOverviewController.changePasswordHref}" styleClass="stylishButton">
-    		<h:outputText rendered="#{personOverviewController.editAvailable}" value="#{messages.changePassword_changePassword}"/>
-    	</h:outputLink>
-    	</td></tr></table>
-	</div>
-</div>
-<!-- /content box -->
-					
-				</f:view>	
-			
-			</div>
-			<!-- /main content -->
-			
-			</div>
-			<!-- /body -->
 			</ui:define>
 		</ui:decorate>
 

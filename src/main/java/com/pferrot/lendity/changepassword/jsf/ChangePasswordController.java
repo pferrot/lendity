@@ -14,7 +14,6 @@ import org.apache.commons.logging.LogFactory;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.changepassword.ChangePasswordService;
 import com.pferrot.lendity.i18n.I18nUtils;
-import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.registration.RegistrationConsts;
 import com.pferrot.lendity.utils.JsfUtils;
 
@@ -59,7 +58,7 @@ public class ChangePasswordController {
 		}
 		getChangePasswordService().updateChangeCurrentUserPassword(getPassword());
 		
-		JsfUtils.redirect(PagesURL.PERSON_OVERVIEW, PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID, PersonUtils.getCurrentPersonId().toString());
+		JsfUtils.redirect(PagesURL.MY_PROFILE);
 		
 		// As a redirect is used, this is actually useless.
 		return null;
@@ -104,7 +103,7 @@ public class ChangePasswordController {
 		}
 	}
 
-	public String getPersonOverviewHref() {		
-		return PersonUtils.getPersonOverviewPageUrl(PersonUtils.getCurrentPersonId().toString());
+	public String getMyProfileHref() {		
+		return JsfUtils.getFullUrl(PagesURL.MY_PROFILE);
 	}
 }

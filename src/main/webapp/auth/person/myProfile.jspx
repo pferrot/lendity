@@ -3,7 +3,30 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:c="http://java.sun.com/jstl/core"
-    xmlns:o="http://myfaces.apache.org/orchestra"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="#{personOverviewController.pageTitle}" />
+	<ui:param name="contentHeader" value="#{personOverviewController.pageTitle}" />
+
+		<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+<ui:include src="personOverviewInternal.jspx">
+	<ui:param name="theBean" value="#{myProfileController}"/>
+</ui:include>
+
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
 </ui:composition>
+

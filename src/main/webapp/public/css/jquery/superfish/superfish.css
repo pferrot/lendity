@@ -69,8 +69,8 @@ ul.sf-menu li li li.sfHover ul {
 }
 
 .sf-menu li li a {
-	border-left:	1px solid #073351;
-	border-top:		1px solid #073351;
+	border-left:	1px solid #8888a2;
+	border-top:		1px solid #8888a2;
 }
 
 .sf-menu a, .sf-menu a:visited  { /* visited pseudo selector so IE6 applies text colour*/
@@ -93,10 +93,10 @@ ul.sf-menu li li li.sfHover ul {
 	outline:		0;
 	text-decoration: none!important;
 	color: #fcfcfc;
-	background-color: #073351;
+	background-color: #8888a2;
 }
 .sf-menu li:hover {
-	background-color: #073351;
+	background-color: #8888a2;
 	
 }
 .sf-menu-sub1 li li:hover, .sf-menu-sub1 li li.sfHover,
