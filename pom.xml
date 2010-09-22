@@ -3,13 +3,13 @@
 	<groupId>com.pferrot.webapp</groupId>
 	<artifactId>lendity</artifactId>
 	<packaging>war</packaging>
-	<version>0.6</version>
+	<version>0.7-SNAPSHOT</version>
 	<name>lendity</name>
 	<url>http://maven.apache.org</url>
 	<scm>
-		<connection>scm:svn:svn://patrice-ws/svn/lendity/tags/lendity-0.6</connection>
-		<developerConnection>scm:svn:svn://patrice-ws/lendity/tags/lendity-0.6</developerConnection>
-		<url>http://patrice-ws/websvn/lendity/tags/lendity-0.6</url>
+		<connection>scm:svn:svn://patrice-ws/svn/lendity/trunk</connection>
+		<developerConnection>scm:svn:svn://patrice-ws/lendity/trunk</developerConnection>
+		<url>http://patrice-ws/websvn/lendity/trunk</url>
 	</scm>
 	<distributionManagement>
 		<repository>
