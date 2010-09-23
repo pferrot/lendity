@@ -3,7 +3,6 @@ package com.pferrot.lendity.login.jsf;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.item.ItemUtils;
 import com.pferrot.lendity.item.jsf.MyConnectionsItemsListController;
-import com.pferrot.lendity.item.jsf.MyItemsListController;
 import com.pferrot.lendity.login.AuthenticationConsts;
 import com.pferrot.lendity.need.jsf.MyConnectionsNeedsListController;
 import com.pferrot.lendity.need.jsf.NeedAddController;
@@ -116,9 +115,7 @@ public class AuthenticationController {
 	}
 
 	public String getMyLentItemsURL() {
-		return JsfUtils.getFullUrl(PagesURL.MY_ITEMS_LIST,
-				MyItemsListController.FORCE_VIEW_PARAM_NAME,
-				MyItemsListController.FORCE_VIEW_ALL_LENT_ITEMS_BY_NAME);
+		return JsfUtils.getFullUrl(PagesURL.MY_LENT_ITEMS_LIST);
 	}
 	
 	public String getInternalItemAddURL() {

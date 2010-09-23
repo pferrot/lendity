@@ -139,7 +139,12 @@
         </h:outputLink>
 	</li>
 	<li>
-        <h:outputLink id="menuMyNeedsLink" value="#{authenticationController.myNeedsURL}" onmouseover="menuNeedsOver();">
+        <h:outputLink id="menuMyBorrowedItemsLink" value="#{authenticationController.myConnectionsItemsURL}" onmouseover="menuBorrowedItemsOver();">
+        	<h:outputText id="menuMyBorrowedItemsText" value="#{messages.menu_borrowedItems}"/>
+        </h:outputLink>
+	</li>
+	<li>
+        <h:outputLink id="menuMyNeedsLink" value="#{authenticationController.myConnectionsNeedsURL}" onmouseover="menuNeedsOver();">
         	<h:outputText id="menuMyNeedsText" value="#{messages.menu_needs}"/>
         </h:outputLink>
 	</li>
@@ -202,9 +207,34 @@
 	<h:outputLink id="sideMenuMyItemsLink" class="sideMenuLink" value="#{authenticationController.myItemsURL}">
 		<h:outputText id="sideMenuMyItemsText" value="#{messages.menu_myItems}" />
 	</h:outputLink>
-	</li><li>
+	</li><li>	
 	<h:outputLink id="sideMenuInternalItemAddLink" class="sideMenuLink" value="#{authenticationController.internalItemAddURL}">
 		<h:outputText id="sideMenuInternalItemTextLink" value="#{messages.menu_addItem}" />
+	</h:outputLink>
+	</li><li>
+	<h:outputLink id="sideMenuMyLentItemsLink" class="sideMenuLink" value="#{authenticationController.myLentItemsURL}">
+		<h:outputText id="sideMenuMyLentItemsText" value="#{messages.menu_myLentItems}" />
+	</h:outputLink>	
+	</li><li>
+	<h:outputLink id="sideMenuMyPendingLendRequestsLink" class="sideMenuLink" value="#{authenticationController.myPendingLendRequestsURL}">
+		<h:outputText id="sideMenuMyPendingLendRequestsText" value="#{messages.menu_myPendingLendRequests}"/>
+	</h:outputLink>
+	</li>
+	</ul>	
+	</td>
+	</tr>
+	</table>
+</div></div></div>
+
+<!-- navbar -->
+<div id="divSubMenuBorrowedItems" class="gt-subnavbar clearfix" style="display: none;"><div class="gt-fixed-wrap clearfix"><div>
+	<table class="subMenuTable">
+	<tr>
+	<td>
+	<ul class="sf-menu2">
+	<li>
+	<h:outputLink id="sideMenuMyConnectionsItemsLink" class="sideMenuLink" value="#{authenticationController.myConnectionsItemsURL}">
+		<h:outputText id="sideMenuMyConnectionsItemsText" value="#{messages.menu_myConnectionsItems}"/>
 	</h:outputLink>
 	</li><li>
 	<h:outputLink id="sideMenuMyBorrowedItemsLink" class="sideMenuLink" value="#{authenticationController.myBorrowedItemsURL}">
@@ -213,14 +243,6 @@
 	</li><li>
 	<h:outputLink id="sideMenuExternalItemAddLink" class="sideMenuLink" value="#{authenticationController.externalItemAddURL}">
 		<h:outputText id="sideMenuExternalItemAddText" value="#{messages.menu_addBorrowedItem}" />
-	</h:outputLink>
-	</li><li>
-	<h:outputLink id="sideMenuMyConnectionsItemsLink" class="sideMenuLink" value="#{authenticationController.myConnectionsItemsURL}">
-		<h:outputText id="sideMenuMyConnectionsItemsText" value="#{messages.menu_myConnectionsItems}"/>
-	</h:outputLink>
-	</li><li>
-	<h:outputLink id="sideMenuMyPendingLendRequestsLink" class="sideMenuLink" value="#{authenticationController.myPendingLendRequestsURL}">
-		<h:outputText id="sideMenuMyPendingLendRequestsText" value="#{messages.menu_myPendingLendRequests}"/>
 	</h:outputLink>
 	</li><li>
 	<h:outputLink id="sideMenuMyPendingLendRequestsOutLink" class="sideMenuLink" value="#{authenticationController.myPendingLendRequestsOutURL}">
@@ -240,6 +262,11 @@
 	<td>
 	<ul class="sf-menu2">
 	<li>
+	   <h:outputLink id="sideMenuMyConnectionsNeedsLink" class="sideMenuLink" value="#{authenticationController.myConnectionsNeedsURL}">
+       		<h:outputText id="sideMenuMyConnectionsNeedsText" value="#{messages.menu_myConnectionsNeeds}"/>
+       </h:outputLink>
+	</li>	
+	<li>
 	    <h:outputLink id="sideMenuMyNeedsLink2" class="sideMenuLink" value="#{authenticationController.myNeedsURL}">
 		    <h:outputText id="sideMenuMyNeedsText2" value="#{messages.menu_myNeeds}" />
 	    </h:outputLink>
@@ -249,11 +276,6 @@
 		    <h:outputText id="sideMenuNeedAddText" value="#{messages.menu_addNeed}" />
 	    </h:outputLink>
 	</li>
-	<li>
-	   <h:outputLink id="sideMenuMyConnectionsNeedsLink" class="sideMenuLink" value="#{authenticationController.myConnectionsNeedsURL}">
-       		<h:outputText id="sideMenuMyConnectionsNeedsText" value="#{messages.menu_myConnectionsNeeds}"/>
-       </h:outputLink>
-	</li>	
 	</ul>	
 	</td>
 	</tr>

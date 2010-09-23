@@ -20,7 +20,6 @@ import com.pferrot.lendity.lendrequest.LendRequestService;
 import com.pferrot.lendity.model.ExternalItem;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Item;
-import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;

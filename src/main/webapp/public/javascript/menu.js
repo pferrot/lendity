@@ -5,13 +5,14 @@ var subMenusToMenuLinksMap = new Object();
 subMenusToMenuLinksMap.divSubMenuLogin = 'menuHomeLink';
 subMenusToMenuLinksMap.divSubMenuHome = 'menuHomeLink2';
 subMenusToMenuLinksMap.divSubMenuItems = 'menuMyItemsLink';
+subMenusToMenuLinksMap.divSubMenuBorrowedItems = 'menuMyBorrowedItemsLink';
 subMenusToMenuLinksMap.divSubMenuNeeds = 'menuMyNeedsLink';
 subMenusToMenuLinksMap.divSubMenuConnections = 'menuMyConnectionsLink';
 subMenusToMenuLinksMap.divSubMenuProfile = 'menuProfileLink';
 
 
-var menuLinksArray = ['menuHomeLink', 'menuHomeLink2', 'menuMyItemsLink', 'menuMyNeedsLink', 'menuMyConnectionsLink', 'menuProfileLink'];
-var subMenusArray = ['divSubMenuLogin', 'divSubMenuHome', 'divSubMenuItems', 'divSubMenuNeeds', 'divSubMenuConnections', 'divSubMenuProfile'];
+var menuLinksArray = ['menuHomeLink', 'menuHomeLink2', 'menuMyItemsLink', 'menuMyBorrowedItemsLink', 'menuMyNeedsLink', 'menuMyConnectionsLink', 'menuProfileLink'];
+var subMenusArray = ['divSubMenuLogin', 'divSubMenuHome', 'divSubMenuItems', 'divSubMenuBorrowedItems', 'divSubMenuNeeds', 'divSubMenuConnections', 'divSubMenuProfile'];
 
 function initMenu(pServletPath) {
 	mCurrentServletPath = pServletPath;
@@ -41,8 +42,20 @@ function initMenu(pServletPath) {
 		menuLinkConfig('menuHomeLink2');
 		subMenuConfig('divSubMenuHome');
 	}
+	else if (pServletPath.indexOf('auth/item/external') > 0 ||
+			 pServletPath.indexOf('auth/lendrequest/myPendingLendRequestsOutList') > 0 ||
+			 pServletPath.indexOf('auth/item/myConnectionsItemsList') > 0 ||
+			 pServletPath.indexOf('auth/item/myBorrowedItemsList') > 0) {
+		mCurrentMenuLinkId = 'menuMyBorrowedItemsLink';
+		mCurrentSubMenuId = 'divSubMenuBorrowedItems';
+		menuHighlightBorrowedItems();
+		menuBorrowedItemsOver();
+		
+		menuLinkConfig('menuMyBorrowedItemsLink');
+		subMenuConfig('divSubMenuBorrowedItems');
+	}
 	else if (pServletPath.indexOf('auth/item') > 0 ||
-			 pServletPath.indexOf('auth/lendrequest') > 0) {
+			pServletPath.indexOf('auth/lendrequest/myPendingLendRequestsList') > 0) {
 		mCurrentMenuLinkId = 'menuMyItemsLink';
 		mCurrentSubMenuId = 'divSubMenuItems';
 		menuHighlightItems();
@@ -96,6 +109,10 @@ function menuHighlightItems() {
 	menuHighlight('menuMyItemsLink');
 }
 
+function menuHighlightBorrowedItems() {
+	menuHighlight('menuMyBorrowedItemsLink');
+}
+
 function menuHighlightNeeds() {
 	menuHighlight('menuMyNeedsLink');
 }
@@ -122,6 +139,10 @@ function menuHomeOver() {
 
 function menuItemsOver() {
 	menuOver('divSubMenuItems');
+}
+
+function menuBorrowedItemsOver() {
+	menuOver('divSubMenuBorrowedItems');
 }
 
 function menuNeedsOver() {

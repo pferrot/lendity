@@ -619,6 +619,11 @@
 	      scope="session">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
+	
+	<bean id="myLentItemsListController" class="com.pferrot.lendity.item.jsf.MyLentItemsListController"
+	      scope="session">
+	      <property name="itemService" ref="itemService"/>
+	</bean>
 
 	<bean id="myBorrowedItemsListController" class="com.pferrot.lendity.item.jsf.MyBorrowedItemsListController"
 	      scope="session">
