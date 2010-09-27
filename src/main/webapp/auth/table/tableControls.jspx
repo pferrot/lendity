@@ -25,14 +25,10 @@
 <h:form> 
 <p class="gt-table-pager">
 
-<table class="pagingTable">
-<!-- 
-To make the buttons display on the right hand side...
--->
-<tr><td width="100%;">
-
-</td><td>
-
+<table class="pagingTable" width="100%">
+<tr><td width="100%" align="right" >
+<div style="width: 50px; height: 35px; position: relative;">
+<div style="position: absolute; right: 105px;">
 <!--	The paging buttons-->
 <h:commandLink action="#{theBean.pageFirst}"
     rendered="#{theBean.firstRow != 0}">
@@ -51,7 +47,10 @@ To make the buttons display on the right hand side...
 		</li>
 	</ul>
 </c:if>
-</td><td>
+
+</div>
+<div style="position: absolute; right: 70px;">
+
 <h:commandLink action="#{theBean.pagePrevious}"
     rendered="#{theBean.firstRow != 0}">
 	<c:if test="#{theBean.firstRow != 0}">
@@ -70,7 +69,8 @@ To make the buttons display on the right hand side...
 	</ul>
 </c:if>
 
-</td><td>
+</div>
+<div style="position: absolute; right: 35px;">
 
 <h:commandLink action="#{theBean.pageNext}"
     rendered="#{theBean.firstRow + theBean.rowsPerPage lt theBean.totalRows}">
@@ -88,9 +88,10 @@ To make the buttons display on the right hand side...
 			<span class="ui-icon ui-icon-carat-1-e" alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}"></span>
 		</li>
 	</ul>
-</c:if>
-                
-</td><td>
+</c:if> 
+              
+</div>
+<div style="position: absolute; right: 0px;">
 
 <h:commandLink action="#{theBean.pageLast}"
     rendered="#{theBean.firstRow + theBean.rowsPerPage lt theBean.totalRows}">
@@ -109,6 +110,9 @@ To make the buttons display on the right hand side...
 		</li>
 	</ul>
 </c:if>
+
+</div>
+</div>
 
 </td></tr>
 </table>
