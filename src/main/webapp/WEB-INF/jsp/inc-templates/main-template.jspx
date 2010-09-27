@@ -129,33 +129,33 @@
 		
 	<c:if test="${loggedInUser}">
     <li>
-    	<h:outputLink id="menuHomeLink2" value="#{authenticationController.homeURL}" onmouseover="menuHomeOver();">
+    	<h:outputLink id="menuHomeLink2" value="#{authenticationController.homeURL}" onmouseover="menuHomeOver();" onmouseout="menuOut();">
         	<h:outputText id="menuHomeText2" value="#{messages.menu_home}" />
 	    </h:outputLink>
 	</li>    
 	<li>
-        <h:outputLink id="menuMyItemsLink" value="#{authenticationController.myItemsURL}" onmouseover="menuItemsOver();">
+        <h:outputLink id="menuMyItemsLink" value="#{authenticationController.myItemsURL}" onmouseover="menuItemsOver();" onmouseout="menuOut();">
         	<h:outputText id="menuMyItemsText" value="#{messages.menu_items}"/>
         </h:outputLink>
 	</li>
 	<li>
-        <h:outputLink id="menuMyBorrowedItemsLink" value="#{authenticationController.myConnectionsItemsURL}" onmouseover="menuBorrowedItemsOver();">
+        <h:outputLink id="menuMyBorrowedItemsLink" value="#{authenticationController.myConnectionsItemsURL}" onmouseover="menuBorrowedItemsOver();" onmouseout="menuOut();">
         	<h:outputText id="menuMyBorrowedItemsText" value="#{messages.menu_borrowedItems}"/>
         </h:outputLink>
 	</li>
 	<li>
-        <h:outputLink id="menuMyNeedsLink" value="#{authenticationController.myConnectionsNeedsURL}" onmouseover="menuNeedsOver();">
+        <h:outputLink id="menuMyNeedsLink" value="#{authenticationController.myConnectionsNeedsURL}" onmouseover="menuNeedsOver();" onmouseout="menuOut();">
         	<h:outputText id="menuMyNeedsText" value="#{messages.menu_needs}"/>
         </h:outputLink>
 	</li>
 
 	<li>
-      	<h:outputLink id="menuMyConnectionsLink" value="#{authenticationController.myConnectionsURL}" onmouseover="menuConnectionsOver();">
+      	<h:outputLink id="menuMyConnectionsLink" value="#{authenticationController.myConnectionsURL}" onmouseover="menuConnectionsOver();" onmouseout="menuOut();">
             <h:outputText id="menuMyConnectionsText" value="#{messages.menu_friends}"/>
         </h:outputLink>
 	</li>
 	<li>
-        <h:outputLink id="menuProfileLink" value="#{authenticationController.myProfileURL}" onmouseover="menuProfileOver();">
+        <h:outputLink id="menuProfileLink" value="#{authenticationController.myProfileURL}" onmouseover="menuProfileOver();" onmouseout="menuOut();">
    	        <h:outputText id="menuProfileText" value="#{messages.menu_profile}"/>
    	    </h:outputLink>
 	</li>	

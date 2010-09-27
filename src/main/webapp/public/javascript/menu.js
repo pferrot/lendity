@@ -170,6 +170,18 @@ function menuOver(pSubMenuId) {
 	}
 }
 
+function menuOut() {
+	for (var i = 0; i < subMenusArray.length; i++) {
+		var subMenu = subMenusArray[i];
+		if (subMenu == mCurrentSubMenuId) {
+			$j('#' + subMenu).show();
+		}
+		else {
+			$j('#' + subMenu).hide();
+		}
+	}
+}
+
 function subMenuConfig(pSubMenuId) {
 	for (var i = 0; i < subMenusArray.length; i++) {
 		var subMenu = subMenusArray[i];
