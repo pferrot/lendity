@@ -13,21 +13,24 @@
     Need 2 different forms for the clear search link and the text input field otherwise the
     loadList() method is called twice.
 -->
-<h:form id="searchFilterForm" prependId="false">
-<h:outputText value="#{messages.person_nameOrEmail}" styleClass="small"/>
-<c:if test="#{theBean.searchString != null and !empty(theBean.searchString)}">    
-	<h:outputText value=" " escape="false" />
-	<h:commandLink id="clearSearchString" action="#{theBean.clearSearch}">
-		<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
-	</h:commandLink>
-</c:if>
-</h:form>
-<h:form id="searchFilterForm2" prependId="false">
-	<h:inputText id="searchString"
-	             styleClass="listerSearchInput"
-	             style="width: 100%;"
-    	         value="#{theBean.searchString}"/>
-</h:form>
+<table><tr><td>
+	<h:form id="searchFilterForm" prependId="false">
+	<h:outputText value="#{messages.person_nameOrEmail}" styleClass="small"/>
+	<c:if test="#{theBean.searchString != null and !empty(theBean.searchString)}">    
+		<h:outputText value=" " escape="false" />
+		<h:commandLink id="clearSearchString" action="#{theBean.clearSearch}">
+			<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
+		</h:commandLink>
+	</c:if>
+	</h:form>
+</td></tr><tr><td class="personSearchCell">
+	<h:form id="searchFilterForm2" prependId="false">
+		<h:inputText id="searchString"
+		             styleClass="listerSearchInput"
+		             style="width: 100%;"
+	    	         value="#{theBean.searchString}"/>
+	</h:form>
+</td></tr></table>	
 <script type="text/javascript">
 	setupSearchField('searchString', 'clearSearchString', '#{defaultSearchString}');
 </script>	

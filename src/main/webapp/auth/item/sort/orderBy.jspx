@@ -10,11 +10,13 @@
 
 <!-- borrow status -->
 <h:form id="orderByForm" prependId="false">
-<h:outputText value="#{messages.navigation_sort}" styleClass="small"/>
-<br/>
-<h:selectOneMenu id="orderBy" value="#{theBean.orderBy}" valueChangeListener="#{theBean.orderBy}" converter="javax.faces.Long" onchange="submit()">
-	<f:selectItems value="#{theBean.orderBySelectItems}"/>
-</h:selectOneMenu>
+<table><tr><td>
+	<h:outputText value="#{messages.navigation_sort}" styleClass="small"/>
+</td></tr><tr><td>
+	<h:selectOneMenu id="orderBy" value="#{theBean.orderBy}" valueChangeListener="#{theBean.orderBy}" converter="javax.faces.Long" onchange="submit()">
+		<f:selectItems value="#{theBean.orderBySelectItems}"/>
+	</h:selectOneMenu>
+</td></tr></table>	
 </h:form>
 <!-- /borrow status -->
 
