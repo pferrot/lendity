@@ -15,6 +15,7 @@
 		<property name="personDao" ref="personDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
 		<property name="itemDao" ref="itemDao"/>
+		<property name="itemDao" ref="needDao"/>
 		<property name="passwordEncoder" ref="security.passwordEncoder"/>
 	</bean>
     -->

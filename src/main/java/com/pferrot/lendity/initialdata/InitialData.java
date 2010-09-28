@@ -2,11 +2,11 @@ package com.pferrot.lendity.initialdata;
 
 import java.util.Date;
 
-import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.security.providers.encoding.MessageDigestPasswordEncoder;
 
 import com.pferrot.lendity.dao.ItemDao;
 import com.pferrot.lendity.dao.ListValueDao;
+import com.pferrot.lendity.dao.NeedDao;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.model.Address;
 import com.pferrot.lendity.model.ConnectionRequestResponse;
@@ -16,6 +16,7 @@ import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.Language;
 import com.pferrot.lendity.model.LendRequestResponse;
+import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.security.dao.RoleDao;
 import com.pferrot.security.dao.UserDao;
@@ -38,6 +39,7 @@ public class InitialData {
 	private PersonDao personDao;
 	private ListValueDao listValueDao;
 	private ItemDao itemDao;
+	private NeedDao needDao;
 	private MessageDigestPasswordEncoder passwordEncoder;	
 	
 	public void setRoleDao(RoleDao roleDao) {
@@ -56,6 +58,10 @@ public class InitialData {
 		this.itemDao = itemDao;
 	}
 
+	public void setNeedDao(NeedDao needDao) {
+		this.needDao = needDao;
+	}
+
 	public void setListValueDao(ListValueDao listValueDao) {
 		this.listValueDao = listValueDao;
 	}
@@ -65,20 +71,20 @@ public class InitialData {
 	}
 
 	public void createAll() {
-		if (!isEmptyDB()) {
-			throw new PermissionDeniedDataAccessException("DB is not empty...cannot initialize data.", null);
-		}
-		createCountries();
-		createRoles();
-		createGenders();
-		createItemCategories();
-		createLanguages();
-		createConnectionRequestResponse();
-		createLendRequestResponse();
+//		if (!isEmptyDB()) {
+//			throw new PermissionDeniedDataAccessException("DB is not empty...cannot initialize data.", null);
+//		}
+//		createCountries();
+//		createRoles();
+//		createGenders();
+//		createItemCategories();
+//		createLanguages();
+//		createConnectionRequestResponse();
+//		createLendRequestResponse();
 		
-		//createPersonsAndUsers();
-		//createItems();
-		//createRandomPersonsAndUsers(5000, personDao.findPersonFromUsername("patrice.ferrot@gmail.com"));	
+//		createPersonsAndUsers();
+//		createItems();
+		createRandomPersonsAndUsers(50000, personDao.findPersonFromUsername("patrice.ferrot@gmail.com"));	
 	}
 
 	/**
@@ -190,6 +196,7 @@ public class InitialData {
 			personDao.createPerson(person);
 			
 			createItems(person, PasswordGenerator.getRandom(0, 20));
+			createNeeds(person, PasswordGenerator.getRandom(0, 5));
 			
 			// Connect to Patrice?
 			if (PasswordGenerator.getRandom(0, 3) == 0) {
@@ -211,6 +218,7 @@ public class InitialData {
 		person.setLastName(lastName);
 		person.setEmail(email);
 		person.setEmailSubscriber(Boolean.TRUE);
+		person.setReceiveNeedsNotifications(Boolean.TRUE);
 		person.setEnabled(Boolean.TRUE);
 		
 		Address address = new Address();
@@ -290,7 +298,19 @@ public class InitialData {
 			item.setCategory((ItemCategory) listValueDao.findListValue(ItemCategory.LABEL_CODES[PasswordGenerator.getRandom(0, ItemCategory.LABEL_CODES.length - 1)]));
 			item.setOwner(pPerson);
 			item.setVisible(PasswordGenerator.getRandom(0, 1) == 0? Boolean.FALSE:Boolean.TRUE);
+			item.setCreationDate(new Date());
 			itemDao.createItem(item);
+		}		
+	}
+
+	private void createNeeds(final Person pPerson, final int pNbNeeds) {
+		for (int i = 0; i < pNbNeeds; i++) {
+			Need need = new Need();
+			need.setTitle(getRandomText(1, 4, 3, 15));
+			need.setDescription(getRandomText(0, 50, 3, 20));
+			need.setOwner(pPerson);
+			need.setCreationDate(new Date());
+			needDao.createNeed(need);
 		}		
 	}
 	
