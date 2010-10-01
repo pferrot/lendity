@@ -217,8 +217,8 @@ public class InitialData {
 		person.setFirstName(firstName);
 		person.setLastName(lastName);
 		person.setEmail(email);
-		person.setEmailSubscriber(Boolean.TRUE);
-		person.setReceiveNeedsNotifications(Boolean.TRUE);
+		person.setEmailSubscriber(Boolean.FALSE);
+		person.setReceiveNeedsNotifications(Boolean.FALSE);
 		person.setEnabled(Boolean.TRUE);
 		
 		Address address = new Address();
