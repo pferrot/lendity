@@ -68,7 +68,7 @@ Aucune nouvelle recherche
 Plus $itemNbExtra recherche(s) supplémentaire(s)
 #if( $latestUpdateDateLabel )
 depuis le $latestUpdateDateLabel
-#end§
+#end
 <br/>
 #end
 <a href="$needUrl">Voir la liste complète</a><br/>
