@@ -14,7 +14,7 @@ h2.gt-form-head  {
 }
 
 div.contentContent {
-	background-color: #fcfcfc;
+	background-color: #ffffff;
 	padding-bottom: 20px;	
 }
 
@@ -113,7 +113,7 @@ text-decoration: none!important;
 
 .filterActive {
 	background-color: #094e62!important;
-	color: #fcfcfc!important;
+	color: #ffffff!important;
 }
 
 .small {
@@ -305,7 +305,7 @@ See http://craigsworks.com/projects/qtip/docs/#structure
 .qtip-content table {	
 	border-width: 0px;
 	background-color: #094e62;
-	color: #fcfcfc!important;
+	color: #ffffff!important;
 }
 
 .qtip-content th {
@@ -395,7 +395,7 @@ div.loginSquares h2 {
 
 .backgroundColor3 {
 	background-color: #094e62;
-	color: #fcfcfc;
+	color: #ffffff;
 }
 
 .backgroundColor4 {
@@ -424,7 +424,7 @@ div.thumbnailDiv {
 	border-style: solid;
 	border-width: 1px;
 	padding: 2px;
-	background-color: #fcfcfc; 
+	background-color: #ffffff; 
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 }
@@ -438,7 +438,7 @@ div.profilePictureDiv {
 	border-style: solid;
 	border-width: 1px;
 	padding: 5px;
-	background-color: #fcfcfc;
+	background-color: #ffffff;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 }
@@ -448,7 +448,7 @@ div.itemPictureDiv {
 	border-style: solid;
 	border-width: 1px;
 	padding: 5px;
-	background-color: #fcfcfc;
+	background-color: #ffffff;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 }

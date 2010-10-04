@@ -20,7 +20,7 @@ Misc - anything that doesn't fit elsewhere
 
 /* @group HTML, Body */
 html {
-	background-color: #fcfcfc;/*#ff6600;*/
+	background-color: #ffffff;/*#ff6600;*/
 	height: 101%; /*trick to always display the vertical scroll bar in firefox*/
 	
 }
@@ -415,12 +415,12 @@ body {
 	padding: 12px 0 0 0;
 	font-size: 85%;
 	font-weight: normal;
-	color: #fcfcfc;
+	color: #ffffff;
 	float: left;
 	display: inline;
 }
 .gt-login-box label {
-	color: #fcfcfc!important;	
+	color: #ffffff!important;	
 }
 .gt-forgot-password {
 	font-size: 85%;
