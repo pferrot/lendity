@@ -11,23 +11,37 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.orchestra.viewController.annotations.InitView;
+import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
-import com.pferrot.core.CoreUtils;
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.registration.RegistrationConsts;
 import com.pferrot.lendity.registration.RegistrationService;
+import com.pferrot.lendity.utils.JsfUtils;
 
+@ViewController(viewIds={"/public/registration/registration.jspx"})
 public class RegistrationStep1 {
 	
 	private final static Log log = LogFactory.getLog(RegistrationStep1.class);
-	private final static long BETA_CODE_KEY_NUMBER= 792634469435l;
 	
 	private RegistrationController registrationController;
 	private RegistrationService registrationService;
 	
 	public RegistrationStep1() {
 		super();
+	}
+	
+	@InitView
+	public void initView() {
+		final String email = JsfUtils.getRequestParameter(RegistrationConsts.REGISTRATION_EMAIL_PARAM_NAME);
+		if (!StringUtils.isNullOrEmpty(email)) {
+			getRegistrationController().setEmail(email.trim());
+		}
+		final String code = JsfUtils.getRequestParameter(RegistrationConsts.REGISTRATION_CODE_PARAM_NAME);
+		if (!StringUtils.isNullOrEmpty(code)) {
+			getRegistrationController().setBetaCode(code.trim());
+		}
 	}
 	
 	public RegistrationController getRegistrationController() {
@@ -107,7 +121,7 @@ public class RegistrationStep1 {
 		
 		String betaCodeCorrectValue = null;
 		if (!StringUtils.isNullOrEmpty(email)) {
-			betaCodeCorrectValue = getBetaCodeCorrectValue(email);
+			betaCodeCorrectValue = getRegistrationService().getBetaCodeCorrectValue(email);
 		}		 
 		if (betaCodeCorrectValue == null ||
 			! betaCodeCorrectValue.equals(betaCodeUserValue)) {
@@ -118,15 +132,6 @@ public class RegistrationStep1 {
 		}
 	}
 	
-	private static String getBetaCodeCorrectValue(final String pUsername) {
-		CoreUtils.assertNotNullOrEmptyString(pUsername);
-		long result = 0;
-		for (int i = 0; i < pUsername.length(); i++) {
-			char c = pUsername.charAt(i);
-			result = result + (BETA_CODE_KEY_NUMBER * c);
-		}
-		return String.valueOf(result);
-	}
 
 	public void validatePasswordRepeat(FacesContext context, UIComponent toValidate, Object value) {
 		String message = "";

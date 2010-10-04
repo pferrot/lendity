@@ -1,0 +1,27 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<c:if test="${loggedInUser}">
+	<div class="gt-search"><div class="gt-search-inner">
+		<h:form id="quickSearchForm" prependId="false">
+			<h:inputText id="shortcutSearch"
+						 styleClass="gt-search-text shortcutSearchInput"
+			    	     value="#{shortcutSearchController.searchString}"
+			    	     onkeypress="if(event.keyCode==13){document.getElementById('shortcutSearchStringActionButton').click()}"/>
+			<input id="fake1" type="text" style="display: none;"/>
+			<script type="text/javascript">
+				setupSearchField('shortcutSearch', null, '#{messages.item_searchItemMyConnectionsItems}');
+			</script>
+			<h:commandButton id="shortcutSearchStringActionButton" action="#{shortcutSearchController.submit}" style="display: none" value="not_displayed"/>
+		</h:form>
+	</div></div>
+</c:if>
+
+</ui:composition>

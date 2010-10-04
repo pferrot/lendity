@@ -34,6 +34,8 @@ public class RegistrationService {
 	
 	private final static Log log = LogFactory.getLog(RegistrationService.class);
 	
+	private final static long BETA_CODE_KEY_NUMBER= 792634469435l;
+	
 	private PersonDao personDao;
 	private UserDao userDao;
 	private RoleDao roleDao;
@@ -63,6 +65,16 @@ public class RegistrationService {
 
 	public void setPasswordEncoder(MessageDigestPasswordEncoder passwordEncoder) {
 		this.passwordEncoder = passwordEncoder;
+	}
+
+	public String getBetaCodeCorrectValue(final String pUsername) {
+		CoreUtils.assertNotNullOrEmptyString(pUsername);
+		long result = 0;
+		for (int i = 0; i < pUsername.length(); i++) {
+			char c = pUsername.charAt(i);
+			result = result + (BETA_CODE_KEY_NUMBER * c);
+		}
+		return String.valueOf(result);
 	}
 
 	/**
@@ -251,13 +263,5 @@ public class RegistrationService {
 	public Country findCountry(String labelCode) {
 		return (Country)listValueDao.findListValue(labelCode);
 	}
-	
-	
-//	public boolean isUsernameValid() {
-//		
-//	}
-	
-	
-	
 
 }

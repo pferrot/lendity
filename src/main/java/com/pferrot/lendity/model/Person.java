@@ -125,6 +125,9 @@ public class Person implements Serializable {
 	 */
 	@Column(name = "EMAIL_SUBSC_LAST_UPDATE", nullable = true)
 	private Date emailSubscriberLastUpdate;
+	
+	@Column(name = "NB_INVITATIONS", nullable = false)
+    private Integer nbInvitations;
 
     public Person() {
     	super();
@@ -336,6 +339,14 @@ public class Person implements Serializable {
 
 	public void setEmailSubscriberLastUpdate(Date emailSubscriberLastUpdate) {
 		this.emailSubscriberLastUpdate = emailSubscriberLastUpdate;
+	}
+
+	public Integer getNbInvitations() {
+		return nbInvitations;
+	}
+
+	public void setNbInvitations(Integer nbInvitations) {
+		this.nbInvitations = nbInvitations;
 	}
 
 	@Override

@@ -1,0 +1,15 @@
+#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+
+Hello,<br/><br/>
+
+J'utilise depuis quelques temps "lendity" et je pense que cela pourrait t'intéresser.<br/><br/>
+
+Lendity est un réseau social basé sur le principe du prêt et de l'emprunt. Lendity te permet également de suivre les objets prêtés et de créer des inventaires.<br/><br/>
+
+<a href="$registrationUrl">Clique ici pour ouvrir un compte</a>.<br/><br/>
+
+A bientôt sur <a href="$siteUrl">$siteName</a>.<br/><br/>
+
+$firstName
+
+#include("com/pferrot/lendity/emailtemplate/html_footer.vm")

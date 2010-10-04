@@ -25,8 +25,8 @@
 			<value>lendity</value>
 		</property>		
 		<property name="rootURL">
-			<value>http://www.lendity.com</value>
-<!--			<value>http://localhost:8080/lendity</value>-->
+<!--			<value>http://www.lendity.com</value>-->
+			<value>http://localhost:8080/lendity</value>
 		</property>
 		<property name="noReplyEmailAddress">
 			<value>no_reply@lendity.com</value>
@@ -42,6 +42,9 @@
 		</property>
 		<property name="nbDaysToValidateRegistration">
 			<value>30</value>
+		</property>
+		<property name="nbInvitationsNewUsers">
+			<value>5</value>
 		</property>
 	</bean>
 	 
@@ -206,6 +209,32 @@
 	
 	<!-- 
 	REGISTRATION - end
+	========================================================================================================================
+	 -->
+
+	<!-- 
+	========================================================================================================================
+	INVITATION - start
+	 -->
+	
+	<bean id="invitationService" parent="baseTransactionProxy">
+		<property name="target" ref="invitationServiceTarget" />
+	</bean>
+		
+	<bean id="invitationServiceTarget" class="com.pferrot.lendity.invitation.InvitationService">
+		<property name="personService" ref="personService"/>
+		<property name="registrationService" ref="registrationService"/>
+		<property name="mailManager" ref="emailSender.mailManager"/>
+	</bean>
+
+	<bean id="invitationController" class="com.pferrot.lendity.invitation.jsf.InviteFriendsController"
+	      scope="conversation.access" orchestra:conversationName="invitation">
+	      <property name="registrationService" ref="registrationService"/>
+	      <property name="invitationService" ref="invitationService"/>
+	</bean>
+	
+	<!-- 
+	INVITATION - end
 	========================================================================================================================
 	 -->
 	 

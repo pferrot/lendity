@@ -1,0 +1,68 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<!-- params for page titles-->
+	<ui:param name="pageTitle" value="#{messages.invitation_invitationSentTitle}" />
+	<ui:param name="contentHeader" value="#{messages.invitation_invitationSentTitle}" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+
+
+		<!-- body -->
+		<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">			
+				<h2 class="gt-form-head">#{messages.invitation_invitationSentTitle}</h2>
+				<div class="gt-form gt-content-box">
+					<f:view><h:form>					
+						<h:outputFormat value="#{messages.invitation_invitationSent}">
+							<f:param value="#{invitationController.email}" />			
+						</h:outputFormat>
+						<br/><br/>
+						<c:if test="#{invitationController.nbInvitationsAvailable gt 0}">
+						<o:separateConversationContext>
+							<h:outputLink value="#{authenticationController.inviteFriendsURL}">
+								<h:outputText value="#{messages.invitation_invitationSentInviteMore}"/>
+							</h:outputLink>
+						</o:separateConversationContext>
+						</c:if>
+						<c:if test="#{invitationController.nbInvitationsAvailable lt 1}">
+							<h:outputText value="#{messages.invitation_noInvitation}"/>
+						</c:if>
+					</h:form></f:view>
+				</div>							
+			</div>
+			<!-- /main content -->
+
+			<!-- sidebar -->
+			<div class="gt-sidebar">			
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+
+				
+						
+						
+						
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

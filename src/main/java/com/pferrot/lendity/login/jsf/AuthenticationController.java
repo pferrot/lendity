@@ -19,6 +19,10 @@ public class AuthenticationController {
 	public boolean isLoginPage() {
 		return JsfUtils.isCurrentPage(PagesURL.LOGIN);
 	}
+	
+	public boolean isInviteFriendsPage() {
+		return JsfUtils.isCurrentPage(PagesURL.INVITE_FRIENDS);
+	}
 
 	public String getCurrentUserFirstName() {
 		return PersonUtils.getCurrentPersonFirstName();
@@ -30,6 +34,10 @@ public class AuthenticationController {
 
 	public String getCurrentUserDisplayName() {
 		return PersonUtils.getCurrentPersonDisplayName();
+	}
+
+	public Integer getCurrentUserNbInvitations() {
+		return PersonUtils.getCurrentPersonNbInvitations();
 	}
 	
 	public String getTermsAndConditionsURL() {
@@ -50,6 +58,10 @@ public class AuthenticationController {
 
 	public String getRegistrationURL() {
 		return JsfUtils.getContextRoot() + PagesURL.REGISTRATION;
+	}
+
+	public String getInviteFriendsURL() {
+		return JsfUtils.getContextRoot() + PagesURL.INVITE_FRIENDS;
 	}
 
 	public String getLostPasswordURL() {
