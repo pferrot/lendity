@@ -64,8 +64,8 @@ Aucune nouvelle recherche
 #if( $needTitle5 )
 <a href="$needUrl5">$needTitle5</a> $needDetails5<br/>
 #end
-#if( $itemNbExtra )
-Plus $itemNbExtra recherche(s) supplémentaire(s)
+#if( $needNbExtra )
+Plus $needNbExtra recherche(s) supplémentaire(s)
 #if( $latestUpdateDateLabel )
 depuis le $latestUpdateDateLabel
 #end
