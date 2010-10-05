@@ -66,6 +66,9 @@
 	<br/><br/>
 	<center>
 	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	<h4>
+		<h:outputLink value="#{authenticationController.inviteFriendsURL}"><h:outputText value="#{messages.invitation_inviteFriendsFromPersonSearch}"></h:outputText></h:outputLink>
+	</h4>
 	</center>
 	<br/>
 </c:if>

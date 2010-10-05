@@ -31,17 +31,7 @@
 					<h:outputFormat value="#{messages.home_greetings}">
 				    	<f:param value="#{authenticationController.currentUserFirstName}" />
 			        </h:outputFormat>
-			        
-			        
-					<br/><br/>
-					<table><tr><td width="65">
-						<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/star_new.jpg"/>
-					</td><td>
-						<h:outputLink id="inviteFriendsFromHome" value="#{authenticationController.inviteFriendsURL}">
-							<h:outputText styleClass="fontSizeLargeLarge" value="#{messages.invitation_inviteFromHome}"/>
-						</h:outputLink>								
-					</td></tr></table>
-					<br/><br/>
+					<br/><br/>					
 				
 					<c:if test="#{homeController.emptyHomepage}">
 						<p>
@@ -61,6 +51,15 @@
 					</c:if>
 					
 					<c:if test="#{not homeController.emptyHomepage}">
+						<table><tr><td width="65">
+							<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/star_new.jpg"/>
+						</td><td>
+							<h:outputLink id="inviteFriendsFromHome" value="#{authenticationController.inviteFriendsURL}">
+								<h:outputText styleClass="fontSizeLargeLarge" value="#{messages.invitation_inviteFromHome}"/>
+							</h:outputLink>								
+						</td></tr></table>
+						<br/><br/>
+					
 						<p>
 							<div class="highlightedBg"><b><h:outputText value="#{messages.home_pendingRequests}"/></b></div>
 						</p>				
