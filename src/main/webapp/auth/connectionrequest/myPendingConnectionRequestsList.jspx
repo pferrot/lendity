@@ -51,7 +51,6 @@
 <ui:include src="refuseConnectionTooltip.jspx"/>
 <ui:include src="banConnectionTooltip.jspx"/>
 
-<c:if test="#{not empty(myPendingConnectionRequestsListController.list)}">
 <h:dataTable value="#{myPendingConnectionRequestsListController.list}" binding="#{myPendingConnectionRequestsListController.table}" var="connectionRequest" styleClass="gt-table gt-user-table">
 
     <h:column id="column1">
@@ -110,7 +109,6 @@
     </h:column>
 
 </h:dataTable>
-</c:if>
 
 </div><!-- /content box -->
 

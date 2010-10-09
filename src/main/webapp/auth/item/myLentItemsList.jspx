@@ -89,7 +89,6 @@
 <ui:include src="lendTooltip.jspx"/>
 <ui:include src="lendBackTooltip.jspx"/>
 
-<c:if test="#{not empty(myLentItemsListController.list)}">
 <h:dataTable value="#{myLentItemsListController.list}" binding="#{myLentItemsListController.table}" var="item" styleClass="gt-table gt-user-table">
 
     <h:column id="column1">
@@ -166,7 +165,6 @@
     </h:column>
 
 </h:dataTable>
-</c:if>
 
 
 <ui:include src="../table/tableControls.jspx">

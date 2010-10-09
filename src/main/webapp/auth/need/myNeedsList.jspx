@@ -85,7 +85,6 @@
 	<br/>
 </c:if>
 
-<c:if test="#{not empty(myNeedsListController.list)}">
 <h:dataTable value="#{myNeedsListController.list}" binding="#{myNeedsListController.table}" var="need" styleClass="gt-table gt-user-table">
 
     <h:column id="column1">
@@ -122,7 +121,6 @@
     </h:column>
 
 </h:dataTable>
-</c:if>
 
 
 <ui:include src="../table/tableControls.jspx">

@@ -50,7 +50,6 @@
 <ui:include src="acceptLendTooltip.jspx"/>
 <ui:include src="refuseLendTooltip.jspx"/>
 
-<c:if test="#{not empty(myPendingLendRequestsListController.list)}">
 <h:dataTable value="#{myPendingLendRequestsListController.list}" binding="#{myPendingLendRequestsListController.table}" var="lendRequest" styleClass="gt-table gt-user-table">
 
     <h:column id="column1">
@@ -107,7 +106,6 @@
     </h:column>
 
 </h:dataTable>
-</c:if>
 
 </div><!-- /content box -->
 

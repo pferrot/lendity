@@ -99,7 +99,7 @@
 							<p>
 								<div class="highlightedBg"><b><h:outputText value="#{messages.home_latestConnectionItems}"/></b></div>
 							</p>
-							<ui:include src="lendrequest/requestLendTooltip.jspx"/>										
+							<ui:include src="lendrequest/requestLendTooltip.jspx"/>					
 							<h:dataTable value="#{homeController.list}" binding="#{homeController.table}" var="item" styleClass="gt-table gt-user-table">
 							    <h:column id="column1">
 							    	<table border="0" width="410">

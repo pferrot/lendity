@@ -66,13 +66,16 @@
 	<br/><br/>
 	<center>
 	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	<h4>
+		<h:outputLink value="#{authenticationController.personsURL}"><h:outputText value="#{messages.person_personsListFromMyConnections}"></h:outputText></h:outputLink>
+	</h4>
 	</center>
 	<br/>
 </c:if>
 
 <ui:include src="removeConnectionTooltip.jspx"/>
 
-<c:if test="#{not empty(myConnectionsListController.list)}">
+
 <h:dataTable value="#{myConnectionsListController.list}" binding="#{myConnectionsListController.table}" var="person" 
    styleClass="gt-table gt-user-table">
 
@@ -108,7 +111,6 @@
     </h:column>
 
 </h:dataTable>
-</c:if>
 
 <ui:include src="../table/tableControls.jspx">
 	<ui:param name="theBean" value="#{myConnectionsListController}"/>

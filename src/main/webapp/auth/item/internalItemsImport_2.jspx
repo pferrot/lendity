@@ -99,7 +99,7 @@
 							    <h:column id="column3">
 									<h:outputText value="#{itemTitle}" />
 							    </h:column>
-						    </h:dataTable>		
+						    </h:dataTable>
 						</div>
 						<br/><br/>
 					</c:if>			

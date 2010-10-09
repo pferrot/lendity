@@ -75,7 +75,6 @@
 
 <ui:include src="../connectionrequest/requestConnectionTooltip.jspx"/>
 
-<c:if test="#{not empty(personsListController.list)}">
 <h:dataTable value="#{personsListController.list}" binding="#{personsListController.table}" var="person" 
    styleClass="gt-table gt-user-table">
 
@@ -110,7 +109,6 @@
     </h:column>
 
 </h:dataTable>
-</c:if>
 
 <ui:include src="../table/tableControls.jspx">
 	<ui:param name="theBean" value="#{personsListController}"/>

@@ -47,7 +47,6 @@
 	<br/>
 </c:if>
 
-<c:if test="#{not empty(myPendingLendRequestsOutListController.list)}">
 <h:dataTable value="#{myPendingLendRequestsOutListController.list}" binding="#{myPendingLendRequestsOutListController.table}" var="lendRequest" styleClass="gt-table gt-user-table">
 
     <h:column id="column1">
@@ -83,7 +82,6 @@
     </h:column>
 
 </h:dataTable>
-</c:if>
 
 </div><!-- /content box -->
 
