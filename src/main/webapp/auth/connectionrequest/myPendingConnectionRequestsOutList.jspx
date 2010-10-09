@@ -47,6 +47,7 @@
 	<br/>
 </c:if>
 
+<c:if test="#{not empty(myPendingConnectionRequestsOutListController.list)}">
 <h:dataTable value="#{myPendingConnectionRequestsOutListController.list}" binding="#{myPendingConnectionRequestsOutListController.table}" var="connectionRequest" styleClass="gt-table gt-user-table">
 
     <h:column id="column1">
@@ -77,6 +78,7 @@
     </h:column>
 
 </h:dataTable>
+</c:if>
 
 </div><!-- /content box -->
 

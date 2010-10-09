@@ -86,6 +86,7 @@
 
 <ui:include src="deleteExternalItemTooltip.jspx"/>
 
+<c:if test="#{not empty(myBorrowedItemsListController.list)}">
 <h:dataTable value="#{myBorrowedItemsListController.list}" binding="#{myBorrowedItemsListController.table}" var="item" styleClass="gt-table gt-user-table">
 
     <h:column id="column1">
@@ -145,6 +146,7 @@
     </h:column>
 
 </h:dataTable>
+</c:if>
 
 <ui:include src="../table/tableControls.jspx">
 	<ui:param name="theBean" value="#{myBorrowedItemsListController}"/>

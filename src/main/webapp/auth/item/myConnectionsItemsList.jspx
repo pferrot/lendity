@@ -108,6 +108,7 @@
 
 <ui:include src="../lendrequest/requestLendTooltip.jspx"/>
 
+<c:if test="#{not empty(myConnectionsItemsListController.list)}">
 <h:dataTable value="#{myConnectionsItemsListController.list}" binding="#{myConnectionsItemsListController.table}" var="item" 
    styleClass="gt-table gt-user-table">
 
@@ -178,6 +179,7 @@
     </h:column>
 
 </h:dataTable>
+</c:if>
 
 <ui:include src="../table/tableControls.jspx">
 	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>

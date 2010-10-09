@@ -44,6 +44,7 @@
 	<br/>
 </c:if>
 
+<c:if test="#{not empty(myConnectionsUpdatesListController.list)}">
 <h:dataTable value="#{myConnectionsUpdatesListController.list}" binding="#{myConnectionsUpdatesListController.table}" var="connectionRequest" styleClass="gt-table gt-user-table">
 
     <h:column id="column1">
@@ -84,6 +85,7 @@
     </h:column>
     
 </h:dataTable>
+</c:if>
 
 <ui:include src="../table/tableControls.jspx">
 	<ui:param name="theBean" value="#{myConnectionsUpdatesListController}"/>
