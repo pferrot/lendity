@@ -19,6 +19,17 @@
 		<property name="passwordEncoder" ref="security.passwordEncoder"/>
 	</bean>
     -->
+ 
+	<!-- json -->
+	<bean id="xmlFileViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
+		<property name="location">
+			<value>/WEB-INF/views.xml</value>
+		</property>
+		<property name="order">
+			<value>1</value>
+		</property>
+	</bean>
+
     
 	<bean id="configuration" class="com.pferrot.lendity.configuration.Configuration" lazy-init="false">
 		<property name="siteName">
@@ -482,7 +493,52 @@
 	LEND REQUEST - end
 	========================================================================================================================
 	 -->
+	 
+	<!-- 
+	========================================================================================================================
+	COMMENT - start
+	-->
 
+	<bean id="commentDaoTarget" class="com.pferrot.lendity.dao.hibernate.CommentDaoHibernateImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	
+	<bean id="commentDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target">
+			<ref local="commentDaoTarget"/>
+		</property>
+		<property name="proxyInterfaces">
+           <value>com.pferrot.lendity.dao.CommentDao</value>
+         </property>		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="commentService" parent="baseTransactionProxy">
+		<property name="target" ref="commentServiceTarget" />
+	</bean>
+	
+	<bean id="commentServiceTarget" class="com.pferrot.lendity.comment.CommentService">
+		<property name="commentDao" ref="commentDao"/>
+		<property name="personDao" ref="personDao"/>
+		<property name="mailManager" ref="emailSender.mailManager"/>
+		<property name="personService" ref="personService"/>
+		<property name="itemService" ref="itemService"/>
+		<property name="needService" ref="needService"/>
+	</bean>	
+
+	<!-- 
+	COMMENT - end
+	========================================================================================================================
+	-->	 
+	 
 	<!-- 
 	========================================================================================================================
 	CONNECTION REQUEST - start

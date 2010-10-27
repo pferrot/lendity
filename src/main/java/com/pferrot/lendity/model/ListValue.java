@@ -12,6 +12,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import com.pferrot.lendity.i18n.LabelCodeAware;
 
 @Entity
@@ -21,6 +23,7 @@ import com.pferrot.lendity.i18n.LabelCodeAware;
 		discriminatorType = DiscriminatorType.STRING
 )
 @Table(name = "LIST_VALUES")
+@Audited
 public abstract class ListValue implements Serializable, LabelCodeAware {
 	
 	@Id @GeneratedValue

@@ -29,11 +29,7 @@
 
 				<h2 class="gt-table-head"><h:outputText value="#{messages.termsAndConditions_termsAndConditionsTitle}"/></h2>
 				<div class="gt-form gt-content-box">
-					<ol>
-						<li><h:outputText value="#{messages.termsAndConditions_text1}"/></li>
-						<li><h:outputText value="#{messages.termsAndConditions_text2}"/></li>						
-					</ol>
-					<h:outputText value="#{messages.termsAndConditions_text3}"/>
+					<h:outputText value="#{messages.termsAndConditions_text1}" escape="false"/>					
 				</div>
 			</div>
 			<!-- /main content -->

@@ -17,6 +17,7 @@ import javax.persistence.Table;
 
 import org.hibernate.envers.Audited;
 
+
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(
@@ -24,6 +25,7 @@ import org.hibernate.envers.Audited;
 		discriminatorType = DiscriminatorType.STRING
 )
 @Table(name = "COMMENTS")
+@Audited
 public abstract class Comment implements Serializable {
 
 	@Id @GeneratedValue
@@ -31,7 +33,6 @@ public abstract class Comment implements Serializable {
     private Long id;
 	
 	@Column(name = "TEXT", nullable = false, length = 160)
-	@Audited
     private String text;
 	
 	@OneToOne(targetEntity = Person.class)
@@ -83,6 +84,8 @@ public abstract class Comment implements Serializable {
 	public void setModificationDate(Date modificationDate) {
 		this.modificationDate = modificationDate;
 	}
+	
+	public abstract Commentable getContainer();
 
 	@Override
 	public int hashCode() {

@@ -1,3 +1,7 @@
+function limitTextareaLength(pTextarea, pMaxLength) {
+	pTextarea.value = pTextarea.value.slice(0, pMaxLength);
+}
+
 /*
  * Color the input fields that make an error.
  */

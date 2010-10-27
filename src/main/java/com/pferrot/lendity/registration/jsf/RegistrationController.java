@@ -244,6 +244,8 @@ public class RegistrationController {
 			person.setUser(user);
 			person.setEmailSubscriber(Boolean.TRUE);
 			person.setReceiveNeedsNotifications(Boolean.TRUE);
+			person.setReceiveCommentsOnCommentedNotif(Boolean.TRUE);
+			person.setReceiveCommentsOnOwnNotif(Boolean.TRUE);
 			person.setNbInvitations(Configuration.getNbInvitationsNewUsers());
 			
 			final Address address = new Address();

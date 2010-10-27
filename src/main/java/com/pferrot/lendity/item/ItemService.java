@@ -414,18 +414,21 @@ public class ItemService extends ObjectService {
 	// Access control
 	
 	public boolean isCurrentUserAuthorizedToView(final Item pItem) {
+		return isUserAuthorizedToView(getCurrentPerson(), pItem);
+	}
+
+	public boolean isUserAuthorizedToView(final Person pPerson, final Item pItem) {
 		CoreUtils.assertNotNull(pItem);
-		if (isCurrentUserAuthorizedToEdit(pItem)) {
+		if (isUserAuthorizedToEdit(pPerson, pItem)) {
 			return true;
 		}
 		// Connections can view.
 		if (pItem instanceof InternalItem) {
 			final InternalItem internalItem = (InternalItem) pItem;
-			final Person currentPerson = getCurrentPerson();
-			if ((internalItem.isVisible() || (internalItem.getBorrower() != null && internalItem.getBorrower().equals(currentPerson))) && 
+			if ((internalItem.isVisible() || (internalItem.getBorrower() != null && internalItem.getBorrower().equals(pPerson))) && 
 					internalItem.getOwner() != null &&
 					internalItem.getOwner().getConnections() != null &&
-					internalItem.getOwner().getConnections().contains(currentPerson)) {
+					internalItem.getOwner().getConnections().contains(pPerson)) {
 				return true;
 			}
 		}
@@ -437,26 +440,35 @@ public class ItemService extends ObjectService {
 			throw new SecurityException("Current user is not authorized to view item");
 		}
 	}
-
+	
+	public void assertUserAuthorizedToView(final Person pPerson, final Item pItem) {
+		if (!isUserAuthorizedToView(pPerson, pItem)) {
+			throw new SecurityException("User is not authorized to view item");
+		}
+	}
+	
 	public boolean isCurrentUserAuthorizedToEdit(final Item pItem) {
+		return isUserAuthorizedToEdit(getCurrentPerson(), pItem);
+	}
+	
+	public boolean isUserAuthorizedToEdit(final Person pPerson, final Item pItem) {
 		CoreUtils.assertNotNull(pItem);
-		final Person currentPerson = getCurrentPerson();
-		if (currentPerson == null) {
+		if (pPerson == null) {
 			return false;
 		}
-		if (currentPerson.getUser() != null &&
-		    currentPerson.getUser().isAdmin()) {
+		if (pPerson.getUser() != null &&
+				pPerson.getUser().isAdmin()) {
 			return true;
 		}
 		if (pItem instanceof InternalItem) {
 			final InternalItem internalItem = (InternalItem) pItem;
-			if (currentPerson.equals(internalItem.getOwner())) {
+			if (pPerson.equals(internalItem.getOwner())) {
 				return true;
 			}			
 		}
 		else if (pItem instanceof ExternalItem) {
 			final ExternalItem externalItem = (ExternalItem) pItem;
-			if (currentPerson.equals(externalItem.getBorrower())) {
+			if (pPerson.equals(externalItem.getBorrower())) {
 				return true;
 			}
 		}

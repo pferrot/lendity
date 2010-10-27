@@ -5,8 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.envers.Audited;
+
 @Entity
 @DiscriminatorValue("NeedComment")
+@Audited
 public class NeedComment extends Comment {
 
 	@ManyToOne
@@ -19,5 +22,10 @@ public class NeedComment extends Comment {
 
 	public void setNeed(Need need) {
 		this.need = need;
+	}
+	
+	@Override
+	public Commentable getContainer() {
+		return getNeed();
 	}
 }

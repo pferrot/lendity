@@ -3,8 +3,11 @@ package com.pferrot.lendity.model;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import org.hibernate.envers.Audited;
+
 @Entity
 @DiscriminatorValue("ConnectionRequestResponse")
+@Audited
 public class ConnectionRequestResponse extends OrderedListValue {
 	
 	public static final String ACCEPT_LABEL_CODE = "connectionRequest_responseAccept";

@@ -27,6 +27,7 @@ public class UiUtils {
 	private final static Log log = LogFactory.getLog(UiUtils.class);
 	
 	private final static Map<Locale, DateFormat> DATE_FORMATS = new HashMap<Locale, DateFormat>();
+	private final static Map<Locale, DateFormat> DATE_TIME_FORMATS = new HashMap<Locale, DateFormat>();
 	
 	public static SelectItem getPleaseSelectSelectItem(final Locale locale) {
 		final String label = I18nUtils.getMessageResourceString("general_pleaseSelect", locale);
@@ -120,6 +121,13 @@ public class UiUtils {
 		}
 		return pInput;
 	}
+	
+	public static String getDateTimeAsString(final Date pDate, final Locale pLocale) {
+		if (pDate == null) {
+			return "";
+		}
+		return getDateTimeFormat(pLocale).format(pDate);		
+	}
 
 	public static String getDateAsString(final Date pDate, final Locale pLocale) {
 		if (pDate == null) {
@@ -152,6 +160,24 @@ public class UiUtils {
 		}
 		return result;
 	}
+	
+	private static DateFormat getDateTimeFormat(final Locale pLocale) {
+		if (pLocale == null) {
+			if (log.isDebugEnabled()) {
+				log.debug("No locale specified, returning default date time format");
+			}
+			return DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
+		}
+		DateFormat result = DATE_TIME_FORMATS.get(pLocale);
+		if (result == null) {
+			if (log.isDebugEnabled()) {
+				log.debug("Date time format not available yet. Creating and storing in map.");
+			}
+			result = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, pLocale);
+			DATE_TIME_FORMATS.put(pLocale, result);
+		}
+		return result;
+	}	
 
 	public static String getFileTooLargeErrorMessageFromResource(final Locale pLocale) {
 		String message = "";

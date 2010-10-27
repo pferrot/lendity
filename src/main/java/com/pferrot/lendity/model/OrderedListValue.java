@@ -3,7 +3,10 @@ package com.pferrot.lendity.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import org.hibernate.envers.Audited;
+
 @Entity
+@Audited
 public abstract class OrderedListValue extends ListValue {
 	
 	// POSITION is nullable otherwise exception when creating a ListValue (parent class).

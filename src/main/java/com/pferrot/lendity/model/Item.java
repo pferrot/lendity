@@ -21,6 +21,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import com.pferrot.core.CoreUtils;
 
@@ -35,6 +36,7 @@ import com.pferrot.core.CoreUtils;
 		discriminatorType = DiscriminatorType.STRING
 )
 @Table(name = "ITEMS")
+@Audited
 public abstract class Item implements CategoryEnabled, Borrowable, Serializable {
 	
 	@Id @GeneratedValue
@@ -42,20 +44,20 @@ public abstract class Item implements CategoryEnabled, Borrowable, Serializable 
     private Long id;
 	
 	@Column(name = "TITLE", nullable = false, length = 255)
-	@Audited
 	private String title;
 
 	@Column(name = "DESCRIPTION", nullable = true, length = 3999)
-	@Audited
 	private String description;
 	
 	
 	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "IMAGE_1_ID", nullable = true)
+	@NotAudited
 	private Document image1;
 	
 	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "THUMBNAIL_1_ID", nullable = true)
+	@NotAudited
 	private Document thumbnail1;
 	
 	@ManyToOne(targetEntity = ItemCategory.class, fetch = FetchType.EAGER)

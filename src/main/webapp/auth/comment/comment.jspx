@@ -1,0 +1,82 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+    
+<div class="gt-form gt-content-box">
+	<div id="addCommentBox">
+		<div class="gt-form-row gt-width-100">
+			<textarea id="commentTextarea" rows="3" style="width: 100%;" class="fontSizeSmall"/>
+			<script type="text/javascript">
+				setupSearchField('commentTextarea', null, '<h:outputText value="#{messages.comment_addComment}"/>');
+			</script>
+		</div>
+		<div class="gt-form-row gt-width-100">
+			<table class="buttonsTable">
+				<tr>
+					<td>
+						<span id="commentSubmit" class="stylishButton" onClick="postComment('#{containerID}', '#{containerType}');"><h:outputText value="#{messages.comment_submit}"/></span>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div id="addCommentInProgress" style="display: none;">
+		<div class="gt-form-row gt-width-100">
+			<center>
+				<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/inprogress1.gif"/>
+			</center>
+		</div>
+	</div>
+	<div id="editCommentBox" style="display: none;">
+		<div class="gt-form-row gt-width-100">
+			<textarea id="editCommentTextarea" rows="3" style="width: 100%;" class="fontSizeSmall"/>
+		</div>
+		<div class="gt-form-row gt-width-100">
+			<table class="buttonsTable">
+				<tr>
+					<td>
+						<span id="editCommentSubmit" class="stylishButton" onClick="editCommentSubmit();"><h:outputText value="#{messages.comment_editCommentSubmit}"/></span>
+					</td>
+					<td>
+						<span id="editCommentCancel" class="stylishButton" onClick="editCommentCancel();"><h:outputText value="#{messages.navigation_cancel}"/></span>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div id="editCommentInProgress" style="display: none;">
+		<div class="gt-form-row gt-width-100">
+			<center>
+				<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/inprogress1.gif"/>
+			</center>
+		</div>
+	</div>
+	<div id="commentsContainer">
+		<script type="text/javascript">
+			initComments('#{containerID}',
+					'#{containerType}',
+					'#{facesContext.externalContext.requestContextPath}',
+					'<h:outputText value="#{messages.comment_addComment}"/>',
+					'<h:outputText value="#{messages.comment_editCommentShort}"/>',
+					'<h:outputText value="#{messages.comment_deleteCommentShort}"/>');
+		</script>
+	</div>
+	<div id="loadMoreCommentsContainer" style="display: none;">
+		<br/>
+		<b><span id="nbExtraComments"></span><h:outputText value=" " escape="false" /><h:outputText value="#{messages.comment_nbExtra}"/></b>
+		<br/>
+		<span id="loadMoreComments" class="linkStyleAction" onClick="loadMoreComments('#{containerID}', '#{containerType}');">
+			<h:outputText value="#{messages.comment_loadMore}"/>
+		</span>
+		<br/>
+		<br/>
+	</div>
+</div>
+
+</ui:composition>

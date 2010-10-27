@@ -134,6 +134,11 @@ div.highlightedBg {
 	width: 100%;
 }
 
+div.highlightedBgLight {
+	background-color: #eaeaf2;
+	width: 100%;
+}
+
 table.filtersTable {
 	vertical-align: top;
 }
@@ -203,7 +208,7 @@ input.listerSearchInput {
 	width: 100%;	
 }
 
-input.grayColor {
+.grayColor {
 	color: gray!important;
 }
 
@@ -455,4 +460,18 @@ div.itemPictureDiv {
 
 table.buttonsTable td {
 	padding-right: 8px;
+}
+
+div.lightBorder {
+	border-color: #cccccc;
+}
+
+div.commentBox {
+	border-color: #d3d3e1;
+	border-style: solid;
+	border-width: 0px;
+	padding: 5px;
+	background-color: #ffffff;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
 }

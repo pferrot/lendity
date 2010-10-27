@@ -13,4 +13,7 @@ public interface Commentable<T> {
 	void setCommentsRecipients(final Set<Person> pCommentsRecipients);
 	void addCommentRecipient(final Person pCommentRecipient);	
 	void removeCommentRecipient(final Person pCommentRecipient);
+	
+	Person getOwner();
+	void setOwner(final Person pPerson);
 }

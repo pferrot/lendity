@@ -53,6 +53,14 @@
 			<h:selectBooleanCheckbox id="receiveNeedsNotifications" value="#{theBean.person.receiveNeedsNotifications}" styleClass="gt-form-element-checkbox" disabled="true"/>
 			<h:outputText value=" " escape="false" />
 			<h:outputText value="#{messages.person_receiveNeedsNotifications}"/>
+			<br/>
+			<h:selectBooleanCheckbox id="receiveCommentsOnOwnNorifications" value="#{theBean.person.receiveCommentsOnOwnNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
+			<h:outputText value=" " escape="false" />
+			<h:outputText value="#{messages.person_receiveCommentsOnOwnNotif}"/>
+			<br/>
+			<h:selectBooleanCheckbox id="receiveCommentsOnCommentedNorifications" value="#{theBean.person.receiveCommentsOnCommentedNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
+			<h:outputText value=" " escape="false" />
+			<h:outputText value="#{messages.person_receiveCommentsOnCommentedNotif}"/>
 		</div>
 		<br/>
 	</c:if>

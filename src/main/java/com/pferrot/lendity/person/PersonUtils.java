@@ -35,6 +35,10 @@ public class PersonUtils {
 					getSessionMap().get(PersonConsts.CURRENT_PERSON_LAST_NAME_SESSION_ATTRIBUTE_NAME);
 	}
 	
+	public static String getCurrentPersonDisplayName(final HttpSession pSession) {
+		return (String)pSession.getAttribute(PersonConsts.CURRENT_PERSON_DISPLAY_NAME_SESSION_ATTRIBUTE_NAME);
+	}
+	
 	public static String getCurrentPersonDisplayName() {
 		return (String)FacesContext.getCurrentInstance().getExternalContext().
 					getSessionMap().get(PersonConsts.CURRENT_PERSON_DISPLAY_NAME_SESSION_ATTRIBUTE_NAME);

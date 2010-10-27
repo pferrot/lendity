@@ -62,6 +62,8 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		setDisplayName(pPerson.getDisplayName());
 		setEmailSubscriber(pPerson.getEmailSubscriber());
 		setReceiveNeedsNotifications(pPerson.getReceiveNeedsNotifications());
+		setReceiveCommentsOnCommentedNotif(pPerson.getReceiveCommentsOnCommentedNotif());
+		setReceiveCommentsOnOwnNotif(pPerson.getReceiveCommentsOnOwnNotif());
 	}
 
 	public Long updatePerson() {
@@ -70,6 +72,8 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		getPerson().setLastName(getLastName());
 		getPerson().setEmailSubscriber(getEmailSubscriber());
 		getPerson().setReceiveNeedsNotifications(getReceiveNeedsNotifications());
+		getPerson().setReceiveCommentsOnCommentedNotif(getReceiveCommentsOnCommentedNotif());
+		getPerson().setReceiveCommentsOnOwnNotif(getReceiveCommentsOnOwnNotif());
 		
 		getPersonService().updatePerson(getPerson());
 		

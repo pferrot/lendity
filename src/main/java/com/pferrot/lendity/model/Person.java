@@ -22,12 +22,14 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.security.model.User;
 
 @Entity
 @Table(name = "PERSONS")
+@Audited
 public class Person implements Serializable {
 
 	@Id @GeneratedValue
@@ -35,43 +37,37 @@ public class Person implements Serializable {
     private Long id;
 
 	@Column(name = "ENABLED", nullable = false)
-	@Audited
 	private Boolean enabled;
 
 	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "IMAGE_ID", nullable = true)
+	@NotAudited
 	private Document image;
 	
 	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "THUMBNAIL_ID", nullable = true)
+	@NotAudited
 	private Document thumbnail;
 	
 	@Column(name = "FIRST_NAME", nullable = false, length = 255)
-	@Audited
     private String firstName;
 	
 	@Column(name = "LAST_NAME", nullable = false, length = 255)
-	@Audited
     private String lastName;
 
 	@Column(name = "DISPLAY_NAME", nullable = false, length = 255)
-	@Audited
     private String displayName;
 	
 	@Column(name = "EMAIL", unique = true, nullable = false, length = 255)
-	@Audited
 	private String email;
 	
 	@Column(name = "PHONE_HOME", length = 100)
-	@Audited
 	private String phoneHome;
 	
 	@Column(name = "PHONE_MOBILE", length = 100)
-	@Audited
 	private String phoneMobile;
 
 	@Column(name = "PHONE_PROFESSIONAL", length = 100)
-	@Audited
 	private String phoneProfessional;
 	
 	@OneToOne(targetEntity = com.pferrot.security.model.User.class,
@@ -112,12 +108,18 @@ public class Person implements Serializable {
 	private Address address;	
 	
 	@Column(name = "RECEIVE_NEEDS_NOTIF", nullable = false)
-	@Audited
 	private Boolean receiveNeedsNotifications;
 	
 	@Column(name = "EMAIL_SUBSC", nullable = false)
-	@Audited
 	private Boolean emailSubscriber;
+	
+	// Receive notifications when comments on own objects are added.
+	@Column(name = "RECEIVE_COM_OWN_NOTIF", nullable = false)
+	private Boolean receiveCommentsOnOwnNotif;
+	
+	// Receive notifications when comments on object I commented are added.
+	@Column(name = "RECEIVE_COM_COM_NOTIF", nullable = false)
+	private Boolean receiveCommentsOnCommentedNotif;
 	
 	/**
 	 * Updated when e-mail is sent OR when there is nothing to
@@ -323,6 +325,23 @@ public class Person implements Serializable {
 
 	public void setReceiveNeedsNotifications(Boolean receiveNeedsNotifications) {
 		this.receiveNeedsNotifications = receiveNeedsNotifications;
+	}
+
+	public Boolean getReceiveCommentsOnOwnNotif() {
+		return receiveCommentsOnOwnNotif;
+	}
+
+	public void setReceiveCommentsOnOwnNotif(Boolean receiveCommentsOnOwnNotif) {
+		this.receiveCommentsOnOwnNotif = receiveCommentsOnOwnNotif;
+	}
+
+	public Boolean getReceiveCommentsOnCommentedNotif() {
+		return receiveCommentsOnCommentedNotif;
+	}
+
+	public void setReceiveCommentsOnCommentedNotif(
+			Boolean receiveCommentsOnCommentedNotif) {
+		this.receiveCommentsOnCommentedNotif = receiveCommentsOnCommentedNotif;
 	}
 
 	public Boolean getEmailSubscriber() {

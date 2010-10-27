@@ -5,14 +5,18 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import org.hibernate.envers.Audited;
 
 import com.pferrot.core.CoreUtils;
 
@@ -24,6 +28,7 @@ import com.pferrot.core.CoreUtils;
  */
 @Entity
 @DiscriminatorValue("Internal")
+@Audited
 public class InternalItem extends Item implements Ownable, Commentable<ItemComment> {
 
 	// Whether the item can be seen by connections or not.
@@ -40,7 +45,10 @@ public class InternalItem extends Item implements Ownable, Commentable<ItemComme
 	@Column(name = "LATEST_REMINDER_DATE")
 	private Date latestReminderDate;
 	
-	@OneToMany(targetEntity = com.pferrot.lendity.model.ItemComment.class, mappedBy = "item")
+	@OneToMany(targetEntity = com.pferrot.lendity.model.ItemComment.class,
+			mappedBy = "item",
+			cascade = CascadeType.REMOVE,
+			fetch = FetchType.LAZY)
 	private Set<ItemComment> comments = new HashSet<ItemComment>();
 	
 	/**

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,6 +31,7 @@ import com.pferrot.core.CoreUtils;
  */
 @Entity
 @Table(name = "NEEDS")
+@Audited
 public class Need implements CategoryEnabled, Ownable, Commentable<NeedComment>, Serializable {
 	
 	@Id @GeneratedValue
@@ -41,11 +43,9 @@ public class Need implements CategoryEnabled, Ownable, Commentable<NeedComment>,
 	private Person owner;
 	
 	@Column(name = "TITLE", nullable = false, length = 255)
-	@Audited
 	private String title;
 
 	@Column(name = "DESCRIPTION", nullable = true, length = 3999)
-	@Audited
 	private String description;
 	
 	@ManyToOne(targetEntity = ItemCategory.class)
@@ -55,7 +55,10 @@ public class Need implements CategoryEnabled, Ownable, Commentable<NeedComment>,
 	@Column(name = "CREATION_DATE", nullable = false)
 	private Date creationDate;
 
-	@OneToMany(targetEntity = com.pferrot.lendity.model.NeedComment.class, mappedBy = "need")
+	@OneToMany(targetEntity = com.pferrot.lendity.model.NeedComment.class,
+			mappedBy = "need",
+			cascade = CascadeType.REMOVE,
+			fetch = FetchType.LAZY)
 	private Set<NeedComment> comments = new HashSet<NeedComment>();
 	
 	/**

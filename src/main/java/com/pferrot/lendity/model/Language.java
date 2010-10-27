@@ -3,10 +3,13 @@ package com.pferrot.lendity.model;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import org.hibernate.envers.Audited;
+
 import com.pferrot.lendity.model.ListValue;
 
 @Entity
 @DiscriminatorValue("Language")
+@Audited
 public class Language extends ListValue {
 	
 	public static final String ENGLISH_LABEL_CODE = "language_english";

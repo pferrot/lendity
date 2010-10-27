@@ -33,6 +33,8 @@
 <ui:include src="deleteNeedTooltip.jspx"/>
 
 <h2 class="gt-table-head"><h:outputText value="#{messages.need_needOverviewTitle}"/></h2>
+<a href="#commentsAnchor"><h:outputText styleClass="fontSizeSmall" value="#{messages.comment_addReadComments}"/></a>
+<br/><br/>
 
 <!-- content box -->
 <div class="gt-form gt-content-box">
@@ -79,7 +81,15 @@
 </div>
 <!-- /content box -->
 					
-				</f:view>	
+				</f:view>
+
+<!-- comments -->
+<br/><br/>
+<a name="commentsAnchor"/>
+<ui:include src="../comment/comment.jspx">
+	<ui:param name="containerID" value="#{needOverviewController.need.id}"/>
+	<ui:param name="containerType" value="need"/>
+</ui:include>
 			
 			</div>
 			<!-- /main content -->

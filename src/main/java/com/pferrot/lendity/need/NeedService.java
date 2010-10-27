@@ -168,13 +168,17 @@ public class NeedService extends ObjectService {
 	// Access control
 	
 	public boolean isCurrentUserAuthorizedToView(final Need pNeed) {
+		return isUserAuthorizedToView(getCurrentPerson(), pNeed);
+	}
+	
+	public boolean isUserAuthorizedToView(final Person pPerson, final Need pNeed) {
 		CoreUtils.assertNotNull(pNeed);
-		if (isCurrentUserAuthorizedToEdit(pNeed)) {
+		if (isUserAuthorizedToEdit(pPerson, pNeed)) {
 			return true;
 		}
 		return pNeed.getOwner() != null &&
 			pNeed.getOwner().getConnections() != null &&
-			pNeed.getOwner().getConnections().contains(getCurrentPerson());
+			pNeed.getOwner().getConnections().contains(pPerson);
 	}
 	
 	public void assertCurrentUserAuthorizedToView(final Need pNeed) {
@@ -182,18 +186,27 @@ public class NeedService extends ObjectService {
 			throw new SecurityException("Current user is not authorized to view need");
 		}
 	}
+	
+	public void assertUserAuthorizedToView(final Person pPerson, final Need pNeed) {
+		if (!isUserAuthorizedToView(pPerson, pNeed)) {
+			throw new SecurityException("User is not authorized to view need");
+		}
+	}
 
 	public boolean isCurrentUserAuthorizedToEdit(final Need pNeed) {
+		return isUserAuthorizedToEdit(getCurrentPerson(), pNeed);
+	}
+	
+	public boolean isUserAuthorizedToEdit(final Person pPerson, final Need pNeed) {
 		CoreUtils.assertNotNull(pNeed);
-		final Person currentPerson = getCurrentPerson();
-		if (currentPerson == null) {
+		if (pPerson == null) {
 			return false;
 		}
-		if (currentPerson.getUser() != null &&
-		    currentPerson.getUser().isAdmin()) {
+		if (pPerson.getUser() != null &&
+				pPerson.getUser().isAdmin()) {
 			return true;
 		}
-		return currentPerson.equals(pNeed.getOwner());
+		return pPerson.equals(pNeed.getOwner());
 	}
 
 	public void assertCurrentUserAuthorizedToEdit(final Need pNeed) {

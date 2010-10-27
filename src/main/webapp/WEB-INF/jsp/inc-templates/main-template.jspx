@@ -24,6 +24,7 @@
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/qtip/jquery.qtip-1.0.min_rev54.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/utils.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/menu.js"></script>
+	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/comments.js"></script>
 	
 	
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/superfish/superfish.js"></script>

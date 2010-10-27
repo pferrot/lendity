@@ -3,10 +3,13 @@ package com.pferrot.lendity.model;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import org.hibernate.envers.Audited;
+
 import com.pferrot.lendity.model.ListValue;
 
 @Entity
 @DiscriminatorValue("ItemCategory")
+@Audited
 public class ItemCategory extends ListValue {
 	
 	public static final String DVD_LABEL_CODE = "item_categoryDvd";

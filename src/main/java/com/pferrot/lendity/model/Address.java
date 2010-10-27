@@ -7,7 +7,10 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.envers.Audited;
+
 @Embeddable
+@Audited
 public class Address implements Serializable {
 	
 	@Column(name = "ADDRESS_1", length = 255)
@@ -29,7 +32,7 @@ public class Address implements Serializable {
     private String city;
 	
 	@ManyToOne(targetEntity = com.pferrot.lendity.model.Country.class)
-	@JoinColumn(name = "COUNTRY_ID")	
+	@JoinColumn(name = "COUNTRY_ID")
 	private Country country;
 
 	

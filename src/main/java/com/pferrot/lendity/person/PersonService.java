@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -145,15 +147,21 @@ public class PersonService {
 	}
 	
 	public String getProfileThumbnailSrc(final Person pPerson, final boolean pAuthorizeDocumentAccess) {
+		return getProfileThumbnailSrc(pPerson, pAuthorizeDocumentAccess, JsfUtils.getSession(), JsfUtils.getContextRoot());		
+	}
+	
+	public String getProfileThumbnailSrc(final Person pPerson, final boolean pAuthorizeDocumentAccess,
+			final HttpSession pSession, final String pUrlPrefix) {
 		final Document thumbnail = pPerson.getThumbnail();
 		if (thumbnail == null ) {
-			return JsfUtils.getFullUrl(PersonConsts.DUMMY_PROFILE_THUMBNAIL_URL);
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, PersonConsts.DUMMY_PROFILE_THUMBNAIL_URL);
 		}
 		else {
 			if (pAuthorizeDocumentAccess) {
-				documentService.authorizeDownloadOneMinute(JsfUtils.getSession(), thumbnail.getId());
+				documentService.authorizeDownloadOneMinute(pSession, thumbnail.getId());
 			}
-			return JsfUtils.getFullUrl(
+			return JsfUtils.getFullUrlWithPrefix(
+					pUrlPrefix,
 					PagesURL.DOCUMENT_DOWNLOAD, 
 					PagesURL.DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ID, 
 					thumbnail.getId().toString());

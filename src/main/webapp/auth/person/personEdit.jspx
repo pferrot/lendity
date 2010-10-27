@@ -72,6 +72,18 @@
 						<h:selectBooleanCheckbox id="receiveNeedsNotifications" value="#{personEditController.receiveNeedsNotifications}" styleClass="gt-form-element-checkbox"/>
 						<h:outputText value=" " escape="false" />
 						<h:outputText value="#{messages.person_receiveNeedsNotifications}"/>
+						<br/>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="receiveCommentsOnOwnNotif"></h:message>
+						<h:selectBooleanCheckbox id="receiveCommentsOnOwnNotif" value="#{personEditController.receiveCommentsOnOwnNotif}" styleClass="gt-form-element-checkbox"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputText value="#{messages.person_receiveCommentsOnOwnNotif}"/>
+						<br/>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="receiveCommentsOnCommentedNotif"></h:message>
+						<h:selectBooleanCheckbox id="receiveCommentsOnCommentedNotif" value="#{personEditController.receiveCommentsOnCommentedNotif}" styleClass="gt-form-element-checkbox"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputText value="#{messages.person_receiveCommentsOnCommentedNotif}"/>
 					</div><!-- /form row -->
 					
 					<!-- form row -->

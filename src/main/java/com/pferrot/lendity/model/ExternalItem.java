@@ -5,6 +5,8 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import org.hibernate.envers.Audited;
+
 /**
  * This is an item that does not belong to someone in the system.
  * It will typically be created by a user to list an item that he
@@ -15,6 +17,7 @@ import javax.persistence.Entity;
  */
 @Entity
 @DiscriminatorValue("External")
+@Audited
 public class ExternalItem extends Item {
 
 	@Column(name = "OWNER_NAME", length = 255)

@@ -18,6 +18,8 @@ public abstract class AbstractPersonAddEditController {
 	private String displayName;
 	private Boolean emailSubscriber;
 	private Boolean receiveNeedsNotifications;
+	private Boolean receiveCommentsOnOwnNotif;
+	private Boolean receiveCommentsOnCommentedNotif;
 	
 	public PersonService getPersonService() {
 		return personService;
@@ -65,6 +67,23 @@ public abstract class AbstractPersonAddEditController {
 
 	public void setReceiveNeedsNotifications(Boolean receiveNeedsNotifications) {
 		this.receiveNeedsNotifications = receiveNeedsNotifications;
+	}
+
+	public Boolean getReceiveCommentsOnOwnNotif() {
+		return receiveCommentsOnOwnNotif;
+	}
+
+	public void setReceiveCommentsOnOwnNotif(Boolean receiveCommentsOnOwnNotif) {
+		this.receiveCommentsOnOwnNotif = receiveCommentsOnOwnNotif;
+	}
+
+	public Boolean getReceiveCommentsOnCommentedNotif() {
+		return receiveCommentsOnCommentedNotif;
+	}
+
+	public void setReceiveCommentsOnCommentedNotif(
+			Boolean receiveCommentsOnCommentedNotif) {
+		this.receiveCommentsOnCommentedNotif = receiveCommentsOnCommentedNotif;
 	}
 
 	public abstract Long processPerson();

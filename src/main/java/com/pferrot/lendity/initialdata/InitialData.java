@@ -219,6 +219,8 @@ public class InitialData {
 		person.setEmail(email);
 		person.setEmailSubscriber(Boolean.FALSE);
 		person.setReceiveNeedsNotifications(Boolean.FALSE);
+		person.setReceiveCommentsOnCommentedNotif(Boolean.FALSE);
+		person.setReceiveCommentsOnOwnNotif(Boolean.FALSE);
 		person.setEnabled(Boolean.TRUE);
 		
 		Address address = new Address();
