@@ -1,11 +1,13 @@
-Bonjour,
+Hello,
 
-J'utilise depuis quelques temps "lendity" et je pense que cela pourrait t'intéresser.
+J'utilise "lendity" depuis quelques temps et je t'envoie cette invitation car je pense que cela devrait t'intéresser.
 
-Lendity est un réseau social basé sur le principe du prêt et de l'emprunt. Lendity te permet également de suivre les objets prêtés et de créer des inventaires.
+Lendity est un réseau social basé sur le principe du prêt et de l'emprunt. Uns fois inscrit, tu pourras consulter les objets de tes amis (DVD, livres, outils,...) et emprunter ceux dont tu as besoin.
+Lendity te permet également de suivre les objets prêtés et de créer des inventaires.
 
 Suis le lien suivant pour ouvrir un compte: $registrationUrl
+Ton "code d'activation" est le suivant: $code
 
-A bientôt sur $siteName.
+A bientôt sur $siteUrl.
 
-$firstName
+$firstName $lastName
