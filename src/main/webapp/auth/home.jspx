@@ -54,9 +54,11 @@
 						<table><tr><td width="65">
 							<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/star_new.jpg"/>
 						</td><td>
+							<o:separateConversationContext>
 							<h:outputLink id="inviteFriendsFromHome" value="#{authenticationController.inviteFriendsURL}">
 								<h:outputText styleClass="fontSizeLargeLarge" value="#{messages.invitation_inviteFromHome}"/>
-							</h:outputLink>								
+							</h:outputLink>
+							</o:separateConversationContext>								
 						</td></tr></table>
 						<br/><br/>
 					

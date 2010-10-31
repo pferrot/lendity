@@ -30,8 +30,8 @@
 				
 <f:view>
 
-<h2 class="gt-table-head"><h:outputText value="#{messages.connectionRequest_myPendingConnectionRequestsTitle}"/></h2>
-<p><h:outputText value="#{messages.connectionRequest_onlyThoseWithNoResponse}"/></p>
+<h2 class="gt-table-head"><h:outputText id="id_00" value="#{messages.connectionRequest_myPendingConnectionRequestsTitle}"/></h2>
+<p><h:outputText id="id_01" value="#{messages.connectionRequest_onlyThoseWithNoResponse}"/></p>
 
 <br/>
 
@@ -42,7 +42,7 @@
 <c:if test="#{empty(myPendingConnectionRequestsListController.list)}">
 	<br/><br/>
 	<center>
-	<h4><h:outputText value="#{messages.connectionRequest_noPendingConnectionRequest}"></h:outputText></h4>
+	<h4><h:outputText id="id_02" value="#{messages.connectionRequest_noPendingConnectionRequest}"></h:outputText></h4>
 	</center>
 	<br/>
 </c:if>
@@ -51,12 +51,12 @@
 <ui:include src="refuseConnectionTooltip.jspx"/>
 <ui:include src="banConnectionTooltip.jspx"/>
 
-<h:dataTable value="#{myPendingConnectionRequestsListController.list}" binding="#{myPendingConnectionRequestsListController.table}" var="connectionRequest" styleClass="gt-table gt-user-table">
+<h:dataTable id="id_03" value="#{myPendingConnectionRequestsListController.list}" binding="#{myPendingConnectionRequestsListController.table}" var="connectionRequest" styleClass="gt-table gt-user-table">
 
     <h:column id="column1">
     	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
 			<table class="thumbnailInnerTable"><tr><td>
-				<h:outputLink value="#{myPendingConnectionRequestsListController.requesterOverviewHref}">
+				<h:outputLink  id="id_04" value="#{myPendingConnectionRequestsListController.requesterOverviewHref}">
 					<div class="thumbnailDiv">
 						<img src="#{myPendingConnectionRequestsListController.requesterThumbnailSrc}"/>
 					</div>
@@ -64,8 +64,8 @@
 			</td></tr></table>
 		</td><td>
 		<h4>
-			<h:outputLink value="#{myPendingConnectionRequestsListController.requesterOverviewHref}">
-				<h:outputText value="#{connectionRequest.requester.displayName}" />
+			<h:outputLink id="id_05" value="#{myPendingConnectionRequestsListController.requesterOverviewHref}">
+				<h:outputText id="id_06" value="#{connectionRequest.requester.displayName}" />
 			</h:outputLink>
 		</h4>
 		</td></tr></table>
@@ -74,33 +74,33 @@
 	<h:column id="column2">
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
-			    <th width="50%"><nobr><h:outputText id="id_1" value="#{messages.connectionRequest_requestDate}:" /></nobr></th>
-				<td width="50%"><nobr><h:outputText id="id_2" value="#{myPendingConnectionRequestsListController.requestDateLabel}"/></nobr></td>
+			    <th width="50%"><nobr><h:outputText id="id_07" value="#{messages.connectionRequest_requestDate}:" /></nobr></th>
+				<td width="50%"><nobr><h:outputText id="id_08" value="#{myPendingConnectionRequestsListController.requestDateLabel}"/></nobr></td>
 		    </tr>
 		</table>
     </h:column>
 
 	<h:column id="column3">
-	<h:form>
+	<h:form id="form123">
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 				<td>
 					<span onclick="acceptConnectionTooltip(this, '#{connectionRequest.id}', 1)">
-						<h:outputText styleClass="stylishButton" value="#{messages.connectionRequest_responseAccept}"/>
+						<h:outputText id="id_09" styleClass="stylishButton" value="#{messages.connectionRequest_responseAccept}"/>
 					</span>
 				</td>
 		    </tr>
 		    <tr>
 				<td>
 					<span onclick="refuseConnectionTooltip(this, '#{connectionRequest.id}', 1)">
-						<h:outputText styleClass="stylishButton" value="#{messages.connectionRequest_responseRefuse}"/>
+						<h:outputText id="id_10" styleClass="stylishButton" value="#{messages.connectionRequest_responseRefuse}"/>
 					</span>
 				</td>
 		    </tr>
 		    <tr>
 				<td>
 					<span onclick="banConnectionTooltip(this, '#{connectionRequest.id}', 1)">
-						<h:outputText styleClass="stylishButton" value="#{messages.connectionRequest_responseBan}"/>
+						<h:outputText id="id_11" styleClass="stylishButton" value="#{messages.connectionRequest_responseBan}"/>
 					</span>
 				</td>
 		    </tr>

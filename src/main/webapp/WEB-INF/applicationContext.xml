@@ -55,7 +55,7 @@
 			<value>30</value>
 		</property>
 		<property name="nbInvitationsNewUsers">
-			<value>5</value>
+			<value>10</value>
 		</property>
 	</bean>
 	 

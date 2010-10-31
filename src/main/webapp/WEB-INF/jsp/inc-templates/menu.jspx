@@ -211,9 +211,11 @@
         </h:outputLink>
 	</li>
 	<li>
+		<o:separateConversationContext>
 	    <h:outputLink id="sideMenuInviteFriends" class="sideMenuLink" value="#{authenticationController.inviteFriendsURL}">
        		<h:outputText id="sideMenuInviteFriendsText" value="#{messages.menu_inviteFriends}"/>
         </h:outputLink>
+        </o:separateConversationContext>
 	</li>	
 	</ul>	
 	</td>
