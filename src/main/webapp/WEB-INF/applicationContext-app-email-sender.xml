@@ -6,33 +6,33 @@
 	<bean id="javaMailSender" name="emailSender.javaMailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		
-<!--		<property name="host">-->
-<!--        	<value>localhost</value>-->
-<!--        </property>-->
-<!--		<property name="port">-->
-<!--        	<value>25</value>-->
-<!--        </property>-->
-        
 		<property name="host">
-			<value>smtp.gmail.com</value>
-		</property>
+        	<value>localhost</value>
+        </property>
 		<property name="port">
-			<value>25</value>
-		</property>
-		<property name="username">
-			<value>stupid.illusion</value>
-		</property>
-		<property name="password">
-			<value>stupidone</value>
-		</property>
-		 
-		<property name="javaMailProperties">
-			<props>
-				<prop key="mail.smtp.auth">true</prop>
-				<prop key="mail.smtp.timeout">25000</prop>
-				<prop key="mail.transport.protocol">smtp</prop>
-			</props>
-		</property>
+        	<value>25</value>
+        </property>
+        
+<!--		<property name="host">-->
+<!--			<value>smtp.gmail.com</value>-->
+<!--		</property>-->
+<!--		<property name="port">-->
+<!--			<value>25</value>-->
+<!--		</property>-->
+<!--		<property name="username">-->
+<!--			<value>stupid.illusion</value>-->
+<!--		</property>-->
+<!--		<property name="password">-->
+<!--			<value>stupidone</value>-->
+<!--		</property>-->
+<!--		 -->
+<!--		<property name="javaMailProperties">-->
+<!--			<props>-->
+<!--				<prop key="mail.smtp.auth">true</prop>-->
+<!--				<prop key="mail.smtp.timeout">25000</prop>-->
+<!--				<prop key="mail.transport.protocol">smtp</prop>-->
+<!--			</props>-->
+<!--		</property>-->
 	</bean>	
 		
 </beans>

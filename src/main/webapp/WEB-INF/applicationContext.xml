@@ -36,8 +36,8 @@
 			<value>lendity</value>
 		</property>		
 		<property name="rootURL">
-<!--			<value>http://www.lendity.com</value>-->
-			<value>http://localhost:8080/lendity</value>
+			<value>http://www.lendity.com</value>
+<!--			<value>http://localhost:8080/lendity</value>-->
 		</property>
 		<property name="noReplyEmailAddress">
 			<value>no_reply@lendity.com</value>
