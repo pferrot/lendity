@@ -2,6 +2,33 @@ function limitTextareaLength(pTextarea, pMaxLength) {
 	pTextarea.value = pTextarea.value.slice(0, pMaxLength);
 }
 
+function makeQtipTitles() {
+	$j('.qtipTitle').qtip({
+	    content: {
+	    	text: false // Use each elements title attribute
+	    },
+	    style: {
+			background: '#094e62',
+		    color: '#ffffff',
+			border: {
+				width: 1,
+				radius: 5,
+				color: '#073351'
+			},
+			padding: 0, 
+			textAlign: 'center',
+			tip: true // Give it a speech bubble tip with automatic corner detection
+		},
+		position: {
+			corner: {
+				target: 'topMiddle',
+				tooltip: 'bottomMiddle'
+			}
+		}
+
+	});
+}
+
 /*
  * Color the input fields that make an error.
  */

@@ -79,7 +79,7 @@ public class InviteFriendsController {
 
 		public String submit() {
 			try {
-				getInvitationService().updatePersonAndSendInvitation(PersonUtils.getCurrentPersonId(), getEmail());
+				getInvitationService().sendInvitation(PersonUtils.getCurrentPersonId(), getEmail());
 				return "success";
 			}
 			catch (InvitationException e) {

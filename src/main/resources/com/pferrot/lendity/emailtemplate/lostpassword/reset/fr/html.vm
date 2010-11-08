@@ -1,13 +1,13 @@
 #include("com/pferrot/lendity/emailtemplate/html_header.vm")
 
-Hello $firstName,<br/><br/>
+Bonjour $firstName,<br/><br/>
 
-Tu as demandé un rappel de ton mot de passe pour $siteName. Si ce n'est pas le cas, ignore simplement ce message.<br/><br/>
-
-Utilise les données suivantes pour te connecter:<br/><br/>
+Ton nouveau mot de passe pour te connecter sur $siteName:<br/><br/>
 
 Nom d'utilisateur: <b>$username</b><br/>
 Mot de passe: <b>$password</b><br/><br/>
+
+Une fois connecté sur $siteName, il est recommandé de modifier ce mot de passe depuis ton profil.<br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
 

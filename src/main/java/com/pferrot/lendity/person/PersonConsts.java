@@ -11,4 +11,6 @@ public interface PersonConsts {
 	
 	String DUMMY_PROFILE_PICTURE_URL = "/public/images/icons/dummy_user.png";
 	String DUMMY_PROFILE_THUMBNAIL_URL = "/public/images/icons/dummy_user_small.png";
+	
+	int MAX_ADDRESS_SIZE = 300;
 }

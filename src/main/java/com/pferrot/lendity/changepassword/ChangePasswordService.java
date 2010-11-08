@@ -1,5 +1,7 @@
 package com.pferrot.lendity.changepassword;
 
+import org.springframework.security.providers.encoding.MessageDigestPasswordEncoder;
+
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonUtils;
@@ -8,8 +10,17 @@ import com.pferrot.security.model.User;
 
 public class ChangePasswordService {
 	
-	UserDao userDao;
-	PersonDao personDao;
+	private UserDao userDao;
+	private PersonDao personDao;
+	private MessageDigestPasswordEncoder passwordEncoder;
+
+	public MessageDigestPasswordEncoder getPasswordEncoder() {
+		return passwordEncoder;
+	}
+
+	public void setPasswordEncoder(MessageDigestPasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
+	}
 
 	public UserDao getUserDao() {
 		return userDao;
@@ -31,7 +42,7 @@ public class ChangePasswordService {
 		final Person currentPerson = personDao.findPerson(PersonUtils.getCurrentPersonId());
 		
 		final User currentUser = currentPerson.getUser();
-		currentUser.setPassword(pNewPassword);
+		currentUser.setPassword(passwordEncoder.encodePassword(pNewPassword, null));
 		
 		userDao.updateUser(currentUser);
 	}

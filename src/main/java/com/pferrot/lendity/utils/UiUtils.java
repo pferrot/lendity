@@ -122,6 +122,13 @@ public class UiUtils {
 		return pInput;
 	}
 	
+	public static Integer getPositiveIntegerOrNull(final Integer pInput) {
+		if (pInput == null || pInput.longValue() <= 0) {
+			return null;
+		}
+		return pInput;
+	}
+	
 	public static String getDateTimeAsString(final Date pDate, final Locale pLocale) {
 		if (pDate == null) {
 			return "";

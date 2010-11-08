@@ -42,6 +42,57 @@
 			<a href="mailto:#{theBean.person.email}"><h:outputText value="#{theBean.person.email}" /></a>
 		</div>
 		<br/>
+		<c:if test="#{theBean.person.phoneMobile != null and (not empty(theBean.person.phoneMobile))}">
+			<div class="gt-form-row gt-width-100">
+				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_phoneMobile}:"/></label></div>
+				<h:outputText value="#{theBean.person.phoneMobile}" />
+			</div>
+			<br/>
+		</c:if>
+		<c:if test="#{theBean.person.phoneHome != null and (not empty(theBean.person.phoneHome))}">
+			<div class="gt-form-row gt-width-100">
+				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_phoneHome}:"/></label></div>
+				<h:outputText value="#{theBean.person.phoneHome}" />
+			</div>
+			<br/>
+		</c:if>
+		<c:if test="#{theBean.person.phoneProfessional != null and (not empty(theBean.person.phoneProfessional))}">
+			<div class="gt-form-row gt-width-100">
+				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_phoneProfessional}:"/></label></div>
+				<h:outputText value="#{theBean.person.phoneProfessional}" />
+			</div>
+			<br/>
+		</c:if>
+		<c:if test="#{theBean.addressHomeAvailable}">
+			<div class="gt-form-row gt-width-100">
+				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_addressHome}:"/></label></div>
+				<table><tr><td>
+					<h:outputText value="#{theBean.addressHome}"  escape="false"/>
+				</td><td style="padding-left: 20px;">
+					<o:separateConversationContext>
+						<h:outputLink value="#{theBean.addressHomeGoogleMapsUrl}" target="_blank">
+							<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/google_maps_icon.png" alt="#{messages.geolocation_seeOnMap}" title="#{messages.geolocation_seeOnMap}"/>
+						</h:outputLink>
+					</o:separateConversationContext>
+				</td></tr></table>
+			</div>
+			<br/>
+		</c:if>
+		<c:if test="#{theBean.addressProfessionalAvailable}">
+			<div class="gt-form-row gt-width-100">
+				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_addressProfessional}:"/></label></div>
+				<table><tr><td>
+					<h:outputText value="#{theBean.addressProfessional}"  escape="false"/>
+				</td><td style="padding-left: 20px;">
+					<o:separateConversationContext>
+						<h:outputLink value="#{theBean.addressProfessionalGoogleMapsUrl}" target="_blank">
+							<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/google_maps_icon.png" alt="#{messages.geolocation_seeOnMap}" title="#{messages.geolocation_seeOnMap}"/>
+						</h:outputLink>
+					</o:separateConversationContext>
+				</td></tr></table>
+			</div>
+			<br/>
+		</c:if>
 	</c:if>
 	<c:if test="#{theBean.editAvailable}">
 		<div class="gt-form-row gt-width-100">

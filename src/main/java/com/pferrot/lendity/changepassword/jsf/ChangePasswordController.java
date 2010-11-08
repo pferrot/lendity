@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.providers.encoding.MessageDigestPasswordEncoder;
 
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.changepassword.ChangePasswordService;
@@ -22,20 +23,33 @@ public class ChangePasswordController {
 	private final static Log log = LogFactory.getLog(ChangePasswordController.class);
 	
 	private ChangePasswordService changePasswordService;
+	private MessageDigestPasswordEncoder passwordEncoder;
 	
 	private String oldPassword;
 	private String password;
-	private String passwordRepeat;	
+	private String passwordRepeat;
+	
 	
 	public ChangePasswordService getChangePasswordService() {
 		return changePasswordService;
 	}
+	
 	public void setChangePasswordService(ChangePasswordService changePasswordService) {
 		this.changePasswordService = changePasswordService;
 	}
+	
+	public MessageDigestPasswordEncoder getPasswordEncoder() {
+		return passwordEncoder;
+	}
+
+	public void setPasswordEncoder(MessageDigestPasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
+	}
+
 	public String getOldPassword() {
 		return oldPassword;
 	}
+	
 	public void setOldPassword(String oldPassword) {
 		this.oldPassword = oldPassword;
 	}
@@ -78,8 +92,8 @@ public class ChangePasswordController {
 	public void validateOldPassword(FacesContext context, UIComponent toValidate, Object value) {
 		String message = "";
 		String oldPasswordFromUser = (String) value;
-		String oldPasswordReal = getChangePasswordService().getCurrentUserPassword();
-		if (oldPasswordFromUser == null || !oldPasswordFromUser.equals(oldPasswordReal)) {
+		String oldPasswordEncoded = getChangePasswordService().getCurrentUserPassword();
+		if (oldPasswordFromUser == null || !passwordEncoder.encodePassword(oldPasswordFromUser, null).equals(oldPasswordEncoded)) {
 			((UIInput)toValidate).setValid(false);
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 			message = I18nUtils.getMessageResourceString("validation_oldPasswordNotCorrect", locale);

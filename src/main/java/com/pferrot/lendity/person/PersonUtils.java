@@ -124,7 +124,6 @@ public class PersonUtils {
 			pRequest.getSession().setAttribute(PersonConsts.CURRENT_PERSON_FIRST_NAME_SESSION_ATTRIBUTE_NAME, pPerson.getFirstName());
 			pRequest.getSession().setAttribute(PersonConsts.CURRENT_PERSON_LAST_NAME_SESSION_ATTRIBUTE_NAME, pPerson.getLastName());
 			pRequest.getSession().setAttribute(PersonConsts.CURRENT_PERSON_DISPLAY_NAME_SESSION_ATTRIBUTE_NAME, pPerson.getDisplayName());
-			pRequest.getSession().setAttribute(PersonConsts.CURRENT_PERSON_NB_INVITATIONS_SESSION_ATTRIBUTE_NAME, pPerson.getNbInvitations());
 		}		
 	}
 }

@@ -9,16 +9,10 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.security.providers.encoding.MessageDigestPasswordEncoder;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.core.StringUtils;
 import com.pferrot.emailsender.manager.MailManager;
-import com.pferrot.security.dao.RoleDao;
-import com.pferrot.security.dao.UserDao;
-import com.pferrot.security.model.Role;
-import com.pferrot.security.model.User;
-import com.pferrot.security.passwordgenerator.PasswordGenerator;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.dao.ListValueDao;
@@ -29,18 +23,20 @@ import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.OrderedListValue;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.security.dao.RoleDao;
+import com.pferrot.security.dao.UserDao;
+import com.pferrot.security.model.Role;
+import com.pferrot.security.model.User;
+import com.pferrot.security.passwordgenerator.PasswordGenerator;
 
 public class RegistrationService {
 	
 	private final static Log log = LogFactory.getLog(RegistrationService.class);
 	
-	private final static long BETA_CODE_KEY_NUMBER= 792634469435l;
-	
 	private PersonDao personDao;
 	private UserDao userDao;
 	private RoleDao roleDao;
 	private ListValueDao listValueDao;
-	private MessageDigestPasswordEncoder passwordEncoder;
 	private MailManager mailManager;
 
 	public void setMailManager(MailManager mailManager) {
@@ -61,20 +57,6 @@ public class RegistrationService {
 	
 	public void setRoleDao(RoleDao roleDao) {
 		this.roleDao = roleDao;
-	}
-
-	public void setPasswordEncoder(MessageDigestPasswordEncoder passwordEncoder) {
-		this.passwordEncoder = passwordEncoder;
-	}
-
-	public String getBetaCodeCorrectValue(final String pUsername) {
-		CoreUtils.assertNotNullOrEmptyString(pUsername);
-		long result = 0;
-		for (int i = 0; i < pUsername.length(); i++) {
-			char c = pUsername.charAt(i);
-			result = result + (BETA_CODE_KEY_NUMBER * c);
-		}
-		return String.valueOf(result);
 	}
 
 	/**
@@ -119,16 +101,6 @@ public class RegistrationService {
 			// Activation code.
 			final String activationCode = PasswordGenerator.getNewPassword(12);
 			pPerson.getUser().setActivationCode(activationCode);
-			
-			
-			// If encoding the password, do not forget to update applicationContext-security.xml in the security module.
-	//		final String md5EncodedPassword = passwordEncoder.encodePassword(rawPassword, null);
-	//		if (log.isDebugEnabled()) {
-	//			log.debug("Generated password for user '" + pPerson.getUser().getUsername() + 
-	//					"': '" + rawPassword + "' ('" + md5EncodedPassword + "')");
-	//		}
-	//		pPerson.getUser().setPassword(md5EncodedPassword);
-	//		pPerson.getUser().setPassword(rawPassword);
 	
 			// This will also create the user.
 			Long personId = personDao.createPerson(pPerson);
@@ -213,35 +185,6 @@ public class RegistrationService {
 		person.setEnabled(Boolean.TRUE);
 		// Do not send update the first night after the validation...
 		person.setEmailSubscriberLastUpdate(now);
-			
-		// Send email (will actually create a JMS message, i.e. it is async).
-		Map<String, String> objects = new HashMap<String, String>();
-		objects.put("firstName", person.getFirstName());
-		objects.put("siteName", Configuration.getSiteName());
-		objects.put("siteUrl", Configuration.getRootURL());
-		objects.put("username", user.getUsername());
-		objects.put("password", user.getPassword());
-		objects.put("signature", Configuration.getSiteName());
-		
-		// TODO: localization
-		final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/registration/logindetails/fr";
-		
-		Map<String, String> to = new HashMap<String, String>();
-		to.put(person.getEmail(), person.getEmail());
-		
-		Map<String, String> inlineResources = new HashMap<String, String>();
-		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
-		
-		mailManager.send(Configuration.getNoReplySenderName(), 
-						 Configuration.getNoReplyEmailAddress(),
-				         to,
-				         null, 
-				         null,
-				         Configuration.getSiteName() + ": enregistrement terminé",
-				         objects, 
-				         velocityTemplateLocation,
-				         inlineResources);		
-
 	}
 	
 	public List<OrderedListValue> getGenders() {

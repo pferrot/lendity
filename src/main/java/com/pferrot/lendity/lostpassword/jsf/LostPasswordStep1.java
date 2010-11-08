@@ -39,7 +39,7 @@ public class LostPasswordStep1 {
 	}	
 	
 	public String submit() {
-		getLostPasswordController().sendPassword();
+		getLostPasswordController().updateSendResetPasswordInstructions();
 		return "success";
 	}
 	

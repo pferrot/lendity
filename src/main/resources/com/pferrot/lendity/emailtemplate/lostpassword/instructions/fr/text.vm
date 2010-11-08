@@ -1,0 +1,11 @@
+Bonjour $firstName,
+
+Tu as demandé à obtenir un nouveau mot de passe pour $siteName. Si ce n'est pas le cas, ignore simplement ce message.
+
+Afin d'obtenir un nouveau mot de passe, clique sur le lien suivant:
+
+$resetPasswordUrl
+
+A bientôt sur $siteName.
+
+$siteUrl

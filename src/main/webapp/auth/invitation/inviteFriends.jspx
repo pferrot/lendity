@@ -37,59 +37,30 @@
 				<f:view>
 
 					<h:form id="invitationForm" prependId="false">
-					
-					<c:if test="#{invitationController.nbInvitationsAvailable lt 1}">					
-						<h4>
-						<h:outputText value="#{messages.invitation_noInvitation}"/>
-						</h4>
-						<p><h:outputText value="#{messages.invitation_newInvitationsSoon}"/></p>
-	        		</c:if>
-	        		
-					<c:if test="#{invitationController.nbInvitationsAvailable == 1}">					
-						<h4>
-						<h:outputFormat value="#{messages.invitation_nbInvitation}">
-							<f:param value="#{invitationController.nbInvitationsAvailable}" />
-		        		</h:outputFormat>
-		        		</h4>
-		        		<br/>	        		
-	        		</c:if>
-	        		
-	        		<c:if test="#{invitationController.nbInvitationsAvailable gt 1}">
-		        		<h4>
-		        		<h:outputFormat value="#{messages.invitation_nbInvitations}">
-							<f:param value="#{invitationController.nbInvitationsAvailable}" />
-		        		</h:outputFormat>
-		        		</h4>
-		        		<br/>
-	        		</c:if>
 
-				
-					<c:if test="#{invitationController.nbInvitationsAvailable gt 0}">
-
-						<!-- form row -->
-						<div class="gt-form-row gt-width-66">
-							<label><h:outputText value="#{messages.invitation_email}"/> *</label>
-							<h:message styleClass="error" showSummary="true" showDetail="false"
-								for="email"></h:message>			
-							<h:inputText id="email" styleClass="gt-form-text"
-								value="#{invitationController.email}"
-								required="true"
-								requiredMessage="#{messages.validation_requiredMessage}"
-								validator="#{invitationController.validateEmail}"
-								maxlength="255"
-								autocomplete="off"/>			
-						</div><!-- /form row -->					
-						
-						<!-- form row -->
-						<div class="gt-form-row">
-							<br/>
-							<table class="buttonsTable"><tr><td>
-								<h:commandButton styleClass="stylishButton" value="#{messages.invitation_submit}" action="#{invitationController.submit}" />
-							</td></tr></table>
-						</div>
-						<!-- /form row -->
+					<!-- form row -->
+					<div class="gt-form-row gt-width-66">
+						<label><h:outputText value="#{messages.invitation_email}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="email"></h:message>			
+						<h:inputText id="email" styleClass="gt-form-text"
+							value="#{invitationController.email}"
+							required="true"
+							requiredMessage="#{messages.validation_requiredMessage}"
+							validator="#{invitationController.validateEmail}"
+							maxlength="255"
+							autocomplete="off"/>			
+					</div><!-- /form row -->					
 					
-					</c:if>
+					<!-- form row -->
+					<div class="gt-form-row">
+						<br/>
+						<table class="buttonsTable"><tr><td>
+							<h:commandButton styleClass="stylishButton" value="#{messages.invitation_submit}" action="#{invitationController.submit}" />
+						</td></tr></table>
+					</div>
+					<!-- /form row -->
+					
 					
 					</h:form>
 				</f:view>		

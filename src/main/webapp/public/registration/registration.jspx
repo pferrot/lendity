@@ -66,7 +66,7 @@
 
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">
-						<label><h:outputText value="#{messages.person_email}"/> *</label>
+						<label><h:outputText value="#{messages.person_email}"/> * <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="email"></h:message>
 						<h:inputText id="email" styleClass="gt-form-text"
@@ -109,24 +109,118 @@
 						</h:inputSecret>												
 					</div><!-- /form row -->
 					
-					<!-- form row -->
-					<div class="gt-form-row gt-width-66">
-						<label><h:outputText value="#{messages.registration_betaCodeTitle}"/> *</label>
-						<span style="font-size: 82%;">
-						<h:outputText value="#{messages.registration_betaCodeExplanation}"/>
-						<br/><br/>
-						</span>
-						<h:message styleClass="error" showSummary="true" showDetail="false"
-							for="betaCode"></h:message>
-						<h:inputText id="betaCode" styleClass="gt-form-text"
-						    value="#{registrationController.betaCode}"
-						    required="true"
-						    requiredMessage="#{messages.validation_requiredMessage}"
-						    validator="#{registrationStep1.validateBetaCode}"
-						    maxlength="255"
-						    autocomplete="off">
-						</h:inputText>						
-					</div><!-- /form row -->
+					
+					<script type="text/javascript">
+						$j(document).ready(function() {
+							if ($j('#phoneMobile').val() == '' &amp;&amp;
+								$j('#phoneHome').val() == '' &amp;&amp;
+								$j('#phoneProfessional').val() == '') {
+									$j('#phoneDiv').hide();
+									$j('#addPhone').show();
+							}
+							else {
+								$j('#phoneDiv').show();
+								$j('#addPhone').hide();
+							}
+						});
+						function addPhoneOnClick() {
+							$j('#phoneDiv').show();
+							$j('#addPhone').hide();
+						}
+					</script>
+					<span id="addPhone" style="display: none; font-weight: bold;" class="linkStyleAction" onClick="addPhoneOnClick();"><h:outputText value="#{messages.registration_addPhone}"/><br/><br/></span>
+		
+					<div id="phoneDiv" style="display: none;">
+						<!-- form row -->
+						<div class="gt-form-row gt-width-66">
+							<label><h:outputText value="#{messages.person_phoneMobile}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
+							<h:message styleClass="error" showSummary="true" showDetail="false"
+								for="phoneMobile"></h:message>
+							<h:inputText id="phoneMobile" styleClass="gt-form-text"
+							    value="#{registrationController.phoneMobile}"
+							    required="false"
+							    requiredMessage="#{messages.validation_requiredMessage}"
+							    maxlength="255"
+							    autocomplete="off">
+							</h:inputText>						
+						</div><!-- /form row -->
+						
+						<!-- form row -->
+						<div class="gt-form-row gt-width-66">
+							<label><h:outputText value="#{messages.person_phoneHome}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
+							<h:message styleClass="error" showSummary="true" showDetail="false"
+								for="phoneHome"></h:message>
+							<h:inputText id="phoneHome" styleClass="gt-form-text"
+							    value="#{registrationController.phoneHome}"
+							    required="false"
+							    requiredMessage="#{messages.validation_requiredMessage}"
+							    maxlength="255"
+							    autocomplete="off">
+							</h:inputText>						
+						</div><!-- /form row -->
+						
+						<!-- form row -->
+						<div class="gt-form-row gt-width-66">
+							<label><h:outputText value="#{messages.person_phoneProfessional}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
+							<h:message styleClass="error" showSummary="true" showDetail="false"
+								for="phoneProfessional"></h:message>
+							<h:inputText id="phoneProfessional" styleClass="gt-form-text"
+							    value="#{registrationController.phoneProfessional}"
+							    required="false"
+							    requiredMessage="#{messages.validation_requiredMessage}"
+							    maxlength="255"
+							    autocomplete="off">
+							</h:inputText>						
+						</div><!-- /form row -->
+					</div>
+
+					<script type="text/javascript">
+						$j(document).ready(function() {
+							if ($j('#addressHome').val() == '' &amp;&amp;
+								$j('#addressProfessional').val() == '') {
+									$j('#addressDiv').hide();
+									$j('#addAddress').show();
+							}
+							else {
+								$j('#addressDiv').show();
+								$j('#addAddress').hide();
+							}
+						});
+						function addAddressOnClick() {
+							$j('#addressDiv').show();
+							$j('#addAddress').hide();
+						}
+					</script>
+					<span id="addAddress" style="display: none; font-weight: bold;" class="linkStyleAction" onClick="addAddressOnClick();"><h:outputText value="#{messages.registration_addAddress}"/><br/><br/></span>
+		
+					
+					<div id="addressDiv" style="display: none;">					
+						<!-- form row -->
+						<div class="gt-form-row gt-width-66">
+							<label><h:outputText value="#{messages.person_addressHome}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
+							<h:message styleClass="error" showSummary="true" showDetail="false"
+								for="addressHome"></h:message>			
+							<h:inputTextarea id="addressHome" immediate="true" 
+							    styleClass="gt-form-textarea"
+							    rows="4"
+								value="#{registrationController.addressHome}"
+								validator="#{registrationController.validateAddressSize}"/>						
+						</div><!-- /form row -->
+						
+						<!-- form row -->
+						<div class="gt-form-row gt-width-66">
+							<label><h:outputText value="#{messages.person_addressProfessional}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
+							<h:message styleClass="error" showSummary="true" showDetail="false"
+								for="addressProfessional"></h:message>			
+							<h:inputTextarea id="addressProfessional" immediate="true" 
+							    styleClass="gt-form-textarea"
+							    rows="4"
+								value="#{registrationController.addressProfessional}"
+								validator="#{registrationController.validateAddressSize}"/>						
+						</div><!-- /form row -->
+						
+					</div>
+								
 
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">

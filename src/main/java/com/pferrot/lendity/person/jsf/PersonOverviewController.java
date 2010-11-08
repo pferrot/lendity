@@ -10,13 +10,16 @@ import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import org.springframework.security.AccessDeniedException;
 
+import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
 import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
+import com.pferrot.lendity.geolocation.googlemaps.GoogleMapsUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.utils.HtmlUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
 
@@ -141,16 +144,48 @@ public class PersonOverviewController
 		}
 		return null;
 	}
-	
-//	public String getEmailSubscriberStatusLabel() {
-//		if (Boolean.TRUE.equals(person.getEmailSubscriber())) {
-//			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-//			return I18nUtils.getMessageResourceString("person_emailNotificationOn", locale);
-//		}
-//		else if (Boolean.FALSE.equals(person.getEmailSubscriber())) {
-//			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-//			return I18nUtils.getMessageResourceString("person_emailNotificationOff", locale);
-//		}
-//		return "";
-//	}
+
+	public String getAddressHome() {
+		final String address = person.getAddressHome();
+		if (address != null) {
+			return HtmlUtils.escapeHtmlAndReplaceCr(address);
+		}
+		return "";
+	}
+
+	public boolean isAddressHomeAvailable() {
+		final String address = person.getAddressHome();
+		return !StringUtils.isNullOrEmpty(address);
+	}
+
+	public String getAddressProfessional() {
+		final String address = person.getAddressProfessional();
+		if (address != null) {
+			return HtmlUtils.escapeHtmlAndReplaceCr(address);
+		}
+		return "";
+	}
+
+	public boolean isAddressProfessionalAvailable() {
+		final String address = person.getAddressProfessional();
+		return !StringUtils.isNullOrEmpty(address);
+	}
+
+	public String getAddressHomeGoogleMapsUrl() {
+		try {
+			return GoogleMapsUtils.getLocationUrl(person.getAddressHome());
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public String getAddressProfessionalGoogleMapsUrl() {
+		try {
+			return GoogleMapsUtils.getLocationUrl(person.getAddressProfessional());
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

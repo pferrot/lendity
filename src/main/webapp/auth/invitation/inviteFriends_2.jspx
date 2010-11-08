@@ -33,16 +33,11 @@
 							<f:param value="#{invitationController.email}" />			
 						</h:outputFormat>
 						<br/><br/>
-						<c:if test="#{invitationController.nbInvitationsAvailable gt 0}">
 						<o:separateConversationContext>
 							<h:outputLink value="#{authenticationController.inviteFriendsURL}">
 								<h:outputText value="#{messages.invitation_invitationSentInviteMore}"/>
 							</h:outputLink>
 						</o:separateConversationContext>
-						</c:if>
-						<c:if test="#{invitationController.nbInvitationsAvailable lt 1}">
-							<h:outputText value="#{messages.invitation_noInvitation}"/>
-						</c:if>
 					</h:form></f:view>
 				</div>							
 			</div>

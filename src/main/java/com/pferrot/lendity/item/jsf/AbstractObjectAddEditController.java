@@ -59,7 +59,7 @@ public abstract class AbstractObjectAddEditController {
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		this.title = StringUtils.getNullIfEmpty(title);
 	}
 
 	public String getDescription() {
@@ -67,7 +67,7 @@ public abstract class AbstractObjectAddEditController {
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = StringUtils.getNullIfEmpty(description);
 	}
 
 	public void validateDescriptionSize(FacesContext context, UIComponent toValidate, Object value) {

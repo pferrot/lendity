@@ -57,6 +57,7 @@ public interface PagesURL {
 	// LOST PASSWORD - start
 	
 	String LOST_PASSWORD = "/public/lostpassword/lostpassword.faces";
+	String RESET_PASSWORD = "/public/lostpassword/resetPassword.faces";
 	
 	// LOST PASSWORD - end
 	/////////////////////////////////////////////////////////////////////////

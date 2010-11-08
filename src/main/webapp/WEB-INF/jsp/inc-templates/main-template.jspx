@@ -49,6 +49,10 @@
 		$j(document).ready(function() {
 			initMenu('#{facesContext.externalContext.requestServletPath}');
 		});
+
+		$j(document).ready(function() {
+			makeQtipTitles();
+		});
 	</script>
 	
 </head>

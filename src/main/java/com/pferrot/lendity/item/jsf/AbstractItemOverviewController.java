@@ -10,7 +10,6 @@ import org.apache.commons.logging.LogFactory;
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.document.DocumentService;
-import com.pferrot.lendity.document.DocumentUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.model.Item;

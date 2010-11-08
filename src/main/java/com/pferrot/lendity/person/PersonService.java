@@ -13,10 +13,13 @@ import com.pferrot.core.CoreUtils;
 import com.pferrot.emailsender.manager.MailManager;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.dao.DocumentDao;
+import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.document.DocumentService;
+import com.pferrot.lendity.model.Country;
 import com.pferrot.lendity.model.Document;
+import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.exception.PersonException;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -28,12 +31,17 @@ public class PersonService {
 	private PersonDao personDao;
 	private MailManager mailManager;
 	private DocumentDao documentDao;
+	private ListValueDao listValueDao;
 	private DocumentService documentService;
 
 	public void setPersonDao(final PersonDao pPersonDao) {
 		this.personDao = pPersonDao;
 	}
 	
+	public void setListValueDao(ListValueDao listValueDao) {
+		this.listValueDao = listValueDao;
+	}
+
 	public void setMailManager(MailManager mailManager) {
 		this.mailManager = mailManager;
 	}
@@ -326,5 +334,7 @@ public class PersonService {
 		return personDao.findPerson(PersonUtils.getCurrentPersonId());
 	}
 
-	
+	public List<ListValue> getCountries() {
+		return listValueDao.findListValue(Country.class);
+	}	
 }

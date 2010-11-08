@@ -102,13 +102,13 @@
 		<dependency>
 			<groupId>com.pferrot</groupId>
 			<artifactId>core</artifactId>
-			<version>0.1</version>
+			<version>0.2</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.pferrot</groupId>
 			<artifactId>security</artifactId>
-			<version>0.1</version>
+			<version>0.2</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

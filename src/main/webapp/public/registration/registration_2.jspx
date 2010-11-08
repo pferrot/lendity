@@ -2,7 +2,8 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
 	<ui:param name="pageTitle" value="#{messages.registration_signUpConfirm}" />
@@ -38,23 +39,54 @@
 
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">
-						<label><h:outputText value="#{messages.person_firstName}"/></label>
-						<h4><h:outputText value="#{registrationController.firstName}" /></h4>
+						<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_firstName}:"/></label></div>
+						<h:outputText value="#{registrationController.firstName}" />
 					</div><!-- /form row -->
 					
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">
-						<label><h:outputText value="#{messages.person_lastName}"/></label>
-						<h4><h:outputText value="#{registrationController.lastName}" /></h4>
+						<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_lastName}:"/></label></div>
+						<h:outputText value="#{registrationController.lastName}" />
 					</div><!-- /form row -->
 
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">
-						<label><h:outputText value="#{messages.person_email}"/></label>
-						<h4><h:outputText value="#{registrationController.email}" /></h4>
-					</div><!-- /form row -->				
-					
+						<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_email}:"/></label></div>
+						<h:outputText value="#{registrationController.email}" />
+					</div><!-- /form row -->
+										
+					<c:if test="#{registrationController.phoneMobile != null and (not empty(registrationController.phoneMobile))}">
+						<div class="gt-form-row gt-width-66">
+							<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_phoneMobile}:"/></label></div>
+							<h:outputText value="#{registrationController.phoneMobile}" />
+						</div>
+					</c:if>
+					<c:if test="#{registrationController.phoneHome != null and (not empty(registrationController.phoneHome))}">
+						<div class="gt-form-row gt-width-66">
+							<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_phoneHome}:"/></label></div>
+							<h:outputText value="#{registrationController.phoneHome}" />
+						</div>
+					</c:if>
+					<c:if test="#{registrationController.phoneProfessional != null and (not empty(registrationController.phoneProfessional))}">
+						<div class="gt-form-row gt-width-66">
+							<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_phoneProfessional}:"/></label></div>
+							<h:outputText value="#{registrationController.phoneProfessional}" />
+						</div>
+					</c:if>
+					<c:if test="#{registrationController.addressHomeAvailable}">
+						<div class="gt-form-row gt-width-66">
+							<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_addressHome}:"/></label></div>
+							<h:outputText value="#{registrationController.addressHomeFormated}" escape="false"/>
+						</div>
+					</c:if>
+					<c:if test="#{registrationController.addressProfessionalAvailable}">
+						<div class="gt-form-row gt-width-66">
+							<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_addressProfessional}:"/></label></div>
+							<h:outputText value="#{registrationController.addressProfessionalFormated}" escape="false"/>
+						</div>
+					</c:if>					
+										
 					
 					<!-- form row -->
 					<div class="gt-form-row">
@@ -62,7 +94,7 @@
 						<table class="buttonsTable"><tr><td>
 						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_back}"	action="#{registrationStep2.back}" />
 						</td><td>
-						<h:commandButton styleClass="stylishButton" value="#{messages.registration_confirm}"	action="#{registrationStep2.confirm}" />
+						<h:commandButton styleClass="stylishButton" value="#{messages.registration_confirm}" action="#{registrationStep2.confirm}" />
 						</td></tr></table>
 					</div>
 					<!-- /form row -->

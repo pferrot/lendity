@@ -1,0 +1,13 @@
+#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+
+Bonjour $firstName,<br/><br/>
+
+Tu as demandé à obtenir un nouveau mot de passe pour $siteName. Si ce n'est pas le cas, ignore simplement ce message.<br/><br/>
+
+Afin d'obtenir un nouveau mot de passe, clique sur le lien suivant:<br/><br/>
+
+<a href="$resetPasswordUrl">Obtenir un nouveau mot de passe</a><br/><br/>
+
+A bientôt sur <a href="$siteUrl">$siteName</a>.
+
+#include("com/pferrot/lendity/emailtemplate/html_footer.vm")

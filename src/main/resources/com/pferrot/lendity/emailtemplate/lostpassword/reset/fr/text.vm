@@ -1,0 +1,12 @@
+Bonjour $firstName,
+
+Ton nouveau mot de passe pour te connecter sur $siteName:
+
+Nom d'utilisateur: $username
+Mot de passe: $password
+
+Une fois connecté sur $siteName, il est recommandé de modifier ce mot de passe depuis ton profil.
+
+A bientôt sur $siteName.
+
+$siteUrl

@@ -38,10 +38,6 @@ public class RegistrationStep1 {
 		if (!StringUtils.isNullOrEmpty(email)) {
 			getRegistrationController().setEmail(email.trim());
 		}
-		final String code = JsfUtils.getRequestParameter(RegistrationConsts.REGISTRATION_CODE_PARAM_NAME);
-		if (!StringUtils.isNullOrEmpty(code)) {
-			getRegistrationController().setBetaCode(code.trim());
-		}
 	}
 	
 	public RegistrationController getRegistrationController() {
@@ -108,30 +104,7 @@ public class RegistrationStep1 {
 			message = I18nUtils.getMessageResourceString("validation_captchaWrong", locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
-	}
-	
-	public void validateBetaCode(FacesContext context, UIComponent toValidate, Object value) {
-		String message = "";
-		final String betaCodeUserValue = (String) value;
-
-		// Get the email.
-		final UIComponent emailComponent = toValidate.findComponent("email");
-		final EditableValueHolder emailEditableValueHolder = (EditableValueHolder)emailComponent;
-		final String email = (String)emailEditableValueHolder.getValue();
-		
-		String betaCodeCorrectValue = null;
-		if (!StringUtils.isNullOrEmpty(email)) {
-			betaCodeCorrectValue = getRegistrationService().getBetaCodeCorrectValue(email);
-		}		 
-		if (betaCodeCorrectValue == null ||
-			! betaCodeCorrectValue.equals(betaCodeUserValue)) {
-			((UIInput)toValidate).setValid(false);
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			message = I18nUtils.getMessageResourceString("validation_betaCodeWrong", locale);
-			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
-		}
-	}
-	
+	}	
 
 	public void validatePasswordRepeat(FacesContext context, UIComponent toValidate, Object value) {
 		String message = "";

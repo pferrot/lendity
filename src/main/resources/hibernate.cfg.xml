@@ -29,7 +29,6 @@
         <mapping class="com.pferrot.security.model.Role"/>
         <mapping class="com.pferrot.security.model.User"/>
         
-        <mapping class="com.pferrot.lendity.model.Address"/>
         <mapping class="com.pferrot.lendity.model.Country"/>
         <mapping class="com.pferrot.lendity.model.Gender"/>
         <mapping class="com.pferrot.lendity.model.ListValue"/>

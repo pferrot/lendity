@@ -1,5 +1,12 @@
 package com.pferrot.lendity.person.jsf;
 
+import java.util.Locale;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
@@ -7,7 +14,9 @@ import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import org.springframework.security.AccessDeniedException;
 
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.person.PersonConsts;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 
@@ -59,11 +68,18 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		
 		setFirstName(pPerson.getFirstName());
 		setLastName(pPerson.getLastName());
-		setDisplayName(pPerson.getDisplayName());
+		
 		setEmailSubscriber(pPerson.getEmailSubscriber());
 		setReceiveNeedsNotifications(pPerson.getReceiveNeedsNotifications());
 		setReceiveCommentsOnCommentedNotif(pPerson.getReceiveCommentsOnCommentedNotif());
 		setReceiveCommentsOnOwnNotif(pPerson.getReceiveCommentsOnOwnNotif());
+		
+		setPhoneHome(pPerson.getPhoneHome());
+		setPhoneMobile(pPerson.getPhoneMobile());
+		setPhoneProfessional(pPerson.getPhoneProfessional());
+		
+		setAddressHome(pPerson.getAddressHome());
+		setAddressProfessional(pPerson.getAddressProfessional());
 	}
 
 	public Long updatePerson() {
@@ -75,6 +91,13 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		getPerson().setReceiveCommentsOnCommentedNotif(getReceiveCommentsOnCommentedNotif());
 		getPerson().setReceiveCommentsOnOwnNotif(getReceiveCommentsOnOwnNotif());
 		
+		getPerson().setPhoneHome(getPhoneHome());
+		getPerson().setPhoneMobile(getPhoneMobile());
+		getPerson().setPhoneProfessional(getPhoneProfessional());
+		
+		getPerson().setAddressHome(getAddressHome());
+		getPerson().setAddressProfessional(getAddressProfessional());
+
 		getPersonService().updatePerson(getPerson());
 		
 		return getPerson().getId();
@@ -82,10 +105,21 @@ public class PersonEditController extends AbstractPersonAddEditController {
 
 	public String getMyProfileHref() {
 		return JsfUtils.getFullUrl(PagesURL.MY_PROFILE);
-	}	
+	}
 
 	@Override
 	public Long processPerson() {
 		return updatePerson();
-	}	
+	}
+
+	public void validateAddressSize(FacesContext context, UIComponent toValidate, Object value) {
+		String message = "";
+		String description = (String) value;
+		if (description != null && description.length() > PersonConsts.MAX_ADDRESS_SIZE) {
+			((UIInput)toValidate).setValid(false);
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			message = I18nUtils.getMessageResourceString("validation_maxSizeExceeded", new Object[]{String.valueOf(PersonConsts.MAX_ADDRESS_SIZE)}, locale);
+			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
+		}
+	}
 }

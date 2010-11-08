@@ -3,6 +3,7 @@ package com.pferrot.lendity.person.jsf;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -15,7 +16,14 @@ public abstract class AbstractPersonAddEditController {
 	
 	private String firstName;
 	private String lastName;
-	private String displayName;
+	
+	private String phoneHome;
+	private String phoneMobile;
+	private String phoneProfessional;
+	
+	private String addressHome;
+	private String addressProfessional;
+	
 	private Boolean emailSubscriber;
 	private Boolean receiveNeedsNotifications;
 	private Boolean receiveCommentsOnOwnNotif;
@@ -34,7 +42,7 @@ public abstract class AbstractPersonAddEditController {
 	}
 
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		this.firstName = StringUtils.getNullIfEmpty(firstName);
 	}
 
 	public String getLastName() {
@@ -42,16 +50,48 @@ public abstract class AbstractPersonAddEditController {
 	}
 
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		this.lastName = StringUtils.getNullIfEmpty(lastName);
 	}
 
-	public String getDisplayName() {
-		return displayName;
+	public String getPhoneHome() {
+		return phoneHome;
 	}
 
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
-	}	
+	public void setPhoneHome(String phoneHome) {
+		this.phoneHome = StringUtils.getNullIfEmpty(phoneHome);
+	}
+
+	public String getPhoneMobile() {
+		return phoneMobile;
+	}
+
+	public void setPhoneMobile(String phoneMobile) {
+		this.phoneMobile = StringUtils.getNullIfEmpty(phoneMobile);
+	}
+
+	public String getPhoneProfessional() {
+		return phoneProfessional;
+	}
+
+	public void setPhoneProfessional(String phoneProfessional) {
+		this.phoneProfessional = StringUtils.getNullIfEmpty(phoneProfessional);
+	}
+
+	public String getAddressHome() {
+		return addressHome;
+	}
+
+	public void setAddressHome(String addressHome) {
+		this.addressHome = StringUtils.getNullIfEmpty(addressHome);
+	}
+
+	public String getAddressProfessional() {
+		return addressProfessional;
+	}
+
+	public void setAddressProfessional(String addressProfessional) {
+		this.addressProfessional = StringUtils.getNullIfEmpty(addressProfessional);
+	}
 
 	public Boolean getEmailSubscriber() {
 		return emailSubscriber;

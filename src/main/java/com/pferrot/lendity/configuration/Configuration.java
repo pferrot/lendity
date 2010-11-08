@@ -22,7 +22,6 @@ public class Configuration {
 	private static String supportEmailAddress;
 	private static String contactEmailAddress;
 	private static int nbDaysToValidateRegistration;
-	private static int nbInvitationsNewUsers;
 
 	public static String getRootURL() {
 		return rootURL;
@@ -87,14 +86,5 @@ public class Configuration {
 	public void setNbDaysToValidateRegistration(
 			int nbDaysToValidateRegistration) {
 		this.nbDaysToValidateRegistration = nbDaysToValidateRegistration;
-	}
-
-	public static int getNbInvitationsNewUsers() {
-		return nbInvitationsNewUsers;
-	}
-
-	public void setNbInvitationsNewUsers(
-			int nbInvitationsNewUsers) {
-		this.nbInvitationsNewUsers = nbInvitationsNewUsers;
 	}
 }

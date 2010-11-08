@@ -1,22 +1,25 @@
 package com.pferrot.lendity.registration.jsf;
 
-import java.util.List;
 import java.util.Locale;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.providers.encoding.MessageDigestPasswordEncoder;
 
-import com.pferrot.security.model.User;
+import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.configuration.Configuration;
-import com.pferrot.lendity.model.Address;
-import com.pferrot.lendity.model.Country;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.person.PersonConsts;
 import com.pferrot.lendity.registration.RegistrationException;
 import com.pferrot.lendity.registration.RegistrationService;
-import com.pferrot.lendity.utils.UiUtils;
+import com.pferrot.lendity.utils.HtmlUtils;
+import com.pferrot.security.model.User;
 
 public class RegistrationController {
 	
@@ -24,82 +27,30 @@ public class RegistrationController {
 	
 	private final static String CAPTCHA_SESSION_KEY_NAME = "registrationCaptchaSessionKeyName";
 	
-	private Long genderId;
-	private List<SelectItem> gendersSelectItems;
 	private String firstName;
 	private String lastName;
-	private String displayName;
 	private String email;
 	private String phoneHome;
 	private String phoneMobile;
 	private String phoneProfessional;
-	private String address1;
-	private String address2;
-	private Integer zip;
-	private String city;
-	private Long countryId;
-	private List<SelectItem> countriesSelectItems;
+	private String addressHome;
+	private String addressProfessional;
 	private String password;
 	private String passwordRepeat;
 	private String captcha;
-	private String betaCode;
 	private Boolean termsAndConditionsAccepted;
 	
 	private RegistrationService registrationService;
+	
+	private MessageDigestPasswordEncoder passwordEncoder;
 
+	
+	public void setPasswordEncoder(MessageDigestPasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
+	}
 
 	public void setRegistrationService(RegistrationService registrationService) {
 		this.registrationService = registrationService;
-		// Default country to switzerland.
-		setCountryId(registrationService.findCountry(Country.SWITZERLAND_LABEL_CODE).getId());
-	}	
-
-	public String getAddress1() {
-		return address1;
-	}
-
-	public void setAddress1(String address1) {
-		this.address1 = address1;
-	}
-
-	public String getAddress2() {
-		return address2;
-	}
-
-	public void setAddress2(String address2) {
-		this.address2 = address2;
-	}
-
-	public Integer getZip() {
-		return zip;
-	}
-
-	public void setZip(Integer zip) {
-		this.zip = zip;
-	}	
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-	
-	public Long getCountryId() {
-		return countryId;
-	}
-
-	public void setCountryId(Long countryId) {
-		this.countryId = countryId;
-	}
-
-	public Long getGenderId() {
-		return genderId;
-	}
-
-	public void setGenderId(Long genderId) {
-		this.genderId = genderId;
 	}
 
 	public String getFirstName() {
@@ -107,7 +58,7 @@ public class RegistrationController {
 	}
 
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		this.firstName = StringUtils.getNullIfEmpty(firstName);
 	}
 
 	public String getLastName() {
@@ -115,15 +66,7 @@ public class RegistrationController {
 	}
 
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getDisplayName() {
-		return displayName;
-	}
-
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
+		this.lastName = StringUtils.getNullIfEmpty(lastName);
 	}
 
 	public String getEmail() {
@@ -131,7 +74,7 @@ public class RegistrationController {
 	}
 
 	public void setEmail(String email) {
-		this.email = email;
+		this.email = StringUtils.getNullIfEmpty(email);
 	}	
 	
 	public String getPhoneHome() {
@@ -139,7 +82,7 @@ public class RegistrationController {
 	}
 
 	public void setPhoneHome(String phoneHome) {
-		this.phoneHome = phoneHome;
+		this.phoneHome = StringUtils.getNullIfEmpty(phoneHome);
 	}
 
 	public String getPhoneMobile() {
@@ -147,7 +90,7 @@ public class RegistrationController {
 	}
 
 	public void setPhoneMobile(String phoneMobile) {
-		this.phoneMobile = phoneMobile;
+		this.phoneMobile = StringUtils.getNullIfEmpty(phoneMobile);
 	}
 
 	public String getPhoneProfessional() {
@@ -155,15 +98,31 @@ public class RegistrationController {
 	}
 
 	public void setPhoneProfessional(String phoneProfessional) {
-		this.phoneProfessional = phoneProfessional;
-	}	
+		this.phoneProfessional = StringUtils.getNullIfEmpty(phoneProfessional);
+	}
+
+	public String getAddressHome() {
+		return addressHome;
+	}
+
+	public void setAddressHome(String addressHome) {
+		this.addressHome = StringUtils.getNullIfEmpty(addressHome);
+	}
+	
+	public String getAddressProfessional() {
+		return addressProfessional;
+	}
+
+	public void setAddressProfessional(String addressProfessional) {
+		this.addressProfessional = StringUtils.getNullIfEmpty(addressProfessional);
+	}
 
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = StringUtils.getNullIfEmpty(password);
 	}
 
 	public String getPasswordRepeat() {
@@ -171,7 +130,7 @@ public class RegistrationController {
 	}
 
 	public void setPasswordRepeat(String passwordRepeat) {
-		this.passwordRepeat = passwordRepeat;
+		this.passwordRepeat = StringUtils.getNullIfEmpty(passwordRepeat);
 	}
 
 	public String getCaptcha() {
@@ -179,15 +138,7 @@ public class RegistrationController {
 	}
 
 	public void setCaptcha(String captcha) {
-		this.captcha = captcha;
-	}
-
-	public String getBetaCode() {
-		return betaCode;
-	}
-
-	public void setBetaCode(String betaCode) {
-		this.betaCode = betaCode;
+		this.captcha = StringUtils.getNullIfEmpty(captcha);
 	}
 
 	public Boolean getTermsAndConditionsAccepted() {
@@ -206,55 +157,64 @@ public class RegistrationController {
 		return String.valueOf(Configuration.getNbDaysToValidateRegistration());
 	}
 
-	public List<SelectItem> getGendersSelectItems() {
-		if (gendersSelectItems == null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			gendersSelectItems = UiUtils.getSelectItemsForOrderedListValue(registrationService.getGenders(), locale);
-			// Add "Please select..." first.
-			gendersSelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
-		}		
-		return gendersSelectItems;	
+	public String getAddressHomeFormated() {
+		final String address = getAddressHome();
+		if (address != null) {
+			return HtmlUtils.escapeHtmlAndReplaceCr(address);
+		}
+		return "";
+	}
+
+	public boolean isAddressHomeAvailable() {
+		final String address = getAddressHome();
+		return !StringUtils.isNullOrEmpty(address);
+	}
+
+	public String getAddressProfessionalFormated() {
+		final String address = getAddressProfessional();
+		if (address != null) {
+			return HtmlUtils.escapeHtmlAndReplaceCr(address);
+		}
+		return "";
+	}
+
+	public boolean isAddressProfessionalAvailable() {
+		final String address = getAddressProfessional();
+		return !StringUtils.isNullOrEmpty(address);
 	}
 	
-	public List<SelectItem> getCountriesSelectItems() {
-		if (countriesSelectItems == null) {
+	public void validateAddressSize(FacesContext context, UIComponent toValidate, Object value) {
+		String message = "";
+		String description = (String) value;
+		if (description != null && description.length() > PersonConsts.MAX_ADDRESS_SIZE) {
+			((UIInput)toValidate).setValid(false);
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			countriesSelectItems = UiUtils.getSelectItemsForListValue(registrationService.getCountries(), locale);
-			// Add "Please select..." first.
-			countriesSelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
-		}		
-		return countriesSelectItems;	
-	}	
+			message = I18nUtils.getMessageResourceString("validation_maxSizeExceeded", new Object[]{String.valueOf(PersonConsts.MAX_ADDRESS_SIZE)}, locale);
+			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
+		}
+	}
 	
 	public void createUser() {
 		try {
 			User user = new User();
 			user.setUsername(getEmail());
-			user.setPassword(getPassword());
+			// If encoding the password, do not forget to update applicationContext-security.xml in the security module.
+			user.setPassword(passwordEncoder.encodePassword(getPassword(), null));
 		
 			Person person = new Person();
-	//		person.setGender(registrationService.findGender(getGenderId()));
 			person.setFirstName(getFirstName());
 			person.setLastName(getLastName());
-	//		person.setDisplayName(getDisplayName());
 			person.setEmail(getEmail());
-	//		person.setPhoneHome(getPhoneHome());
-	//		person.setPhoneMobile(getPhoneMobile());
-	//		person.setPhoneProfessional(getPhoneProfessional());
+			person.setPhoneHome(getPhoneHome());
+			person.setPhoneMobile(getPhoneMobile());
+			person.setPhoneProfessional(getPhoneProfessional());
+			person.setAddressHome(getAddressHome());
+			person.setAddressProfessional(getAddressProfessional());
 			person.setUser(user);
 			person.setEmailSubscriber(Boolean.TRUE);
 			person.setReceiveNeedsNotifications(Boolean.TRUE);
 			person.setReceiveCommentsOnCommentedNotif(Boolean.TRUE);
 			person.setReceiveCommentsOnOwnNotif(Boolean.TRUE);
-			person.setNbInvitations(Configuration.getNbInvitationsNewUsers());
-			
-			final Address address = new Address();
-	//		address.setAddress1(getAddress1());
-	//		address.setAddress2(getAddress2());
-	//		address.setZip(getZip());
-	//		address.setCity(getCity());
-	//		address.setCountry(registrationService.findCountry(getCountryId()));
-			person.setAddress(address);		
 			
 			registrationService.createUser(person);
 		} catch (RegistrationException e) {

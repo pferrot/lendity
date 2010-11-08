@@ -8,7 +8,6 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -104,8 +103,14 @@ public class Person implements Serializable {
 	)
 	private Set<Person> bannedByPersons = new HashSet<Person>();
 	
-	@Embedded
-	private Address address;	
+//	@Embedded
+//	private Address address;
+	
+	@Column(name = "ADDRESS_HOME", nullable = true, length = 300)
+	private String addressHome;
+	
+	@Column(name = "ADDRESS_PROFESSIONAL", nullable = true, length = 300)
+	private String addressProfessional;
 	
 	@Column(name = "RECEIVE_NEEDS_NOTIF", nullable = false)
 	private Boolean receiveNeedsNotifications;
@@ -127,9 +132,6 @@ public class Person implements Serializable {
 	 */
 	@Column(name = "EMAIL_SUBSC_LAST_UPDATE", nullable = true)
 	private Date emailSubscriberLastUpdate;
-	
-	@Column(name = "NB_INVITATIONS", nullable = false)
-    private Integer nbInvitations;
 
     public Person() {
     	super();
@@ -251,16 +253,32 @@ public class Person implements Serializable {
 		this.gender = gender;
 	}
 
-	public Address getAddress() {
-		return address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
-	}
+//	public Address getAddress() {
+//		return address;
+//	}
+//
+//	public void setAddress(Address address) {
+//		this.address = address;
+//	}
 	
 	public Set<Person> getConnections() {
 		return connections;
+	}
+
+	public String getAddressHome() {
+		return addressHome;
+	}
+
+	public void setAddressHome(String addressHome) {
+		this.addressHome = addressHome;
+	}
+
+	public String getAddressProfessional() {
+		return addressProfessional;
+	}
+
+	public void setAddressProfessional(String addressProfessional) {
+		this.addressProfessional = addressProfessional;
 	}
 
 	public void setConnections(final Set<Person> pConnections) {
@@ -358,14 +376,6 @@ public class Person implements Serializable {
 
 	public void setEmailSubscriberLastUpdate(Date emailSubscriberLastUpdate) {
 		this.emailSubscriberLastUpdate = emailSubscriberLastUpdate;
-	}
-
-	public Integer getNbInvitations() {
-		return nbInvitations;
-	}
-
-	public void setNbInvitations(Integer nbInvitations) {
-		this.nbInvitations = nbInvitations;
 	}
 
 	@Override

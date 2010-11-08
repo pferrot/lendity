@@ -8,7 +8,6 @@ import com.pferrot.lendity.dao.ItemDao;
 import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.dao.NeedDao;
 import com.pferrot.lendity.dao.PersonDao;
-import com.pferrot.lendity.model.Address;
 import com.pferrot.lendity.model.ConnectionRequestResponse;
 import com.pferrot.lendity.model.Country;
 import com.pferrot.lendity.model.Gender;
@@ -144,7 +143,7 @@ public class InitialData {
 		// Create Stupid Illusion, normal user.
 		person = getNewPerson("Stupid", "Illusion", "Stupid.Illusion", "stupid.illusion@gmail.com",
 				"Main Street", 12345, "Pik City",
-				(Country)listValueDao.findListValue(Country.USA_LABEL_CODE),
+				(Country)listValueDao.findListValue(Country.SWITZERLAND_LABEL_CODE),
 				listValueDao.findGender(Gender.MALE_LABEL_CODE));
 		
 		user = new User();
@@ -223,13 +222,6 @@ public class InitialData {
 		person.setReceiveCommentsOnOwnNotif(Boolean.FALSE);
 		person.setEnabled(Boolean.TRUE);
 		
-		Address address = new Address();
-		address.setAddress1(address1);
-		address.setZip(zip);
-		address.setCity(city);
-		address.setCountry(country);
-		person.setAddress(address);
-		
 		person.setGender(gender);
 		
 		return person;
@@ -239,9 +231,6 @@ public class InitialData {
 	private void createCountries() {
 		Country country = new Country(Country.SWITZERLAND_LABEL_CODE);
 		listValueDao.createListValue(country);
-		
-		country = new Country(Country.USA_LABEL_CODE);
-		listValueDao.createListValue(country);		
 	}
 	
 	private void createConnectionRequestResponse() {

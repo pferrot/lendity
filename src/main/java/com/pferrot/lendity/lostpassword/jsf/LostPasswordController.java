@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.lendity.lostpassword.LostPasswordService;
+import com.pferrot.lendity.lostpassword.exception.LostPasswordException;
 
 public class LostPasswordController {
 	
@@ -40,7 +41,12 @@ public class LostPasswordController {
         return CAPTCHA_SESSION_KEY_NAME;
     }
 	
-	public void sendPassword() {
-		lostPasswordService.sendPassword(getEmail());		
+	public void updateSendResetPasswordInstructions() {
+		try {
+			lostPasswordService.updateSendResetPasswordInstructions(getEmail());
+		}
+		catch (LostPasswordException e) {
+			throw new RuntimeException(e);
+		}
 	}	
 }

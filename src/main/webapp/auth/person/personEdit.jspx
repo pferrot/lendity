@@ -60,6 +60,72 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.person_phoneMobile}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="phoneMobile"></h:message>
+						<h:inputText id="phoneMobile" styleClass="gt-form-text"
+						    value="#{personEditController.phoneMobile}"
+						    required="false"
+						    requiredMessage="#{messages.validation_requiredMessage}"
+						    maxlength="255"
+						    autocomplete="off">
+						</h:inputText>						
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.person_phoneHome}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="phoneHome"></h:message>
+						<h:inputText id="phoneHome" styleClass="gt-form-text"
+						    value="#{personEditController.phoneHome}"
+						    required="false"
+						    requiredMessage="#{messages.validation_requiredMessage}"
+						    maxlength="255"
+						    autocomplete="off">
+						</h:inputText>						
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.person_phoneProfessional}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="phoneProfessional"></h:message>
+						<h:inputText id="phoneProfessional" styleClass="gt-form-text"
+						    value="#{personEditController.phoneProfessional}"
+						    required="false"
+						    requiredMessage="#{messages.validation_requiredMessage}"
+						    maxlength="255"
+						    autocomplete="off">
+						</h:inputText>						
+					</div><!-- /form row -->
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.person_addressHome}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="addressHome"></h:message>			
+						<h:inputTextarea id="addressHome" immediate="true" 
+						    styleClass="gt-form-textarea"
+						    rows="4"
+							value="#{personEditController.addressHome}"
+							validator="#{personEditController.validateAddressSize}"/>						
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.person_addressProfessional}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="addressProfessional"></h:message>			
+						<h:inputTextarea id="addressProfessional" immediate="true" 
+						    styleClass="gt-form-textarea"
+						    rows="4"
+							value="#{personEditController.addressProfessional}"
+							validator="#{personEditController.validateAddressSize}"/>						
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
 						<label><h:outputText value="#{messages.person_emailNotificationSettings}"/></label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="emailSubscriber"></h:message>
