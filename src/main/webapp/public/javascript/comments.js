@@ -70,7 +70,8 @@ function loadComments(pItemId, pNeedId) {
 		dataType: 'json',
 		contentType: 'application/json',
 		data: {action: 'read', itemID: pItemId, needID: pNeedId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
-		success: loadCommentsResponse
+		success: loadCommentsResponse,
+		cache: false
 	});
 }
 
@@ -90,7 +91,8 @@ function addCommentInDbInternal(pItemId, pNeedId) {
 			dataType: 'json',
 			contentType: 'application/json',
 			data: {action: 'create', itemID: pItemId, needID: pNeedId, text: text},
-			success: addCommentInDbResponse
+			success: addCommentInDbResponse,
+			cache: false
 	});
 }
 
@@ -105,7 +107,8 @@ function loadMoreCommentsInternal(pItemId, pNeedId) {
 		dataType: 'json',
 		contentType: 'application/json',
 		data: {action: 'read', itemID: pItemId, needID: pNeedId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
-		success: loadCommentsResponse
+		success: loadCommentsResponse,
+		cache: false
 	});	
 }
 
@@ -275,7 +278,8 @@ function removeComment(pSpanLink) {
 		dataType: 'json',
 		contentType: 'application/json',
 		data: {action: 'delete', commentID: commentId},
-		success: removeCommentFromDbResponse
+		success: removeCommentFromDbResponse,
+		cache: false
 	});	
 }
 
@@ -428,7 +432,8 @@ function editCommentSubmit() {
 		dataType: 'json',
 		contentType: 'application/json',
 		data: {action: 'update', commentID: commentId, text: newText},
-		success: editCommentInDbResponse
+		success: editCommentInDbResponse,
+		cache: false
 	});
 }
 
