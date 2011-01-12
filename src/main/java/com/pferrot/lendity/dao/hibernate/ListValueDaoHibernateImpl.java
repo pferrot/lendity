@@ -25,14 +25,17 @@ public class ListValueDaoHibernateImpl extends HibernateDaoSupport implements Li
 	}
 
 	public ListValue findListValue(final Long id) {
+		getHibernateTemplate().setCacheQueries(true);
 		return (ListValue)getHibernateTemplate().load(ListValue.class, id);
 	}
 
 	public List<ListValue> findListValue(final Class clazz) {
+		getHibernateTemplate().setCacheQueries(true);
 		return getHibernateTemplate().loadAll(clazz);
 	}
 	
 	public List<OrderedListValue> findOrderedListValue(final Class clazz) {
+		getHibernateTemplate().setCacheQueries(true);
 		List<OrderedListValue> list = getHibernateTemplate().find("from " + clazz.getName() + " olv order by position asc");
 		return list;
 	}
@@ -42,6 +45,7 @@ public class ListValueDaoHibernateImpl extends HibernateDaoSupport implements Li
 	}
 
 	public ListValue findListValue(final String labelCode) {
+		getHibernateTemplate().setCacheQueries(true);
 		List<ListValue> list = getHibernateTemplate().find("from ListValue lv where lv.labelCode = ?", labelCode);
 		if (list == null ||
 			list.isEmpty()) {
