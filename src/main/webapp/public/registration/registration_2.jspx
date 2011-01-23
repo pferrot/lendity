@@ -79,14 +79,7 @@
 							<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_addressHome}:"/></label></div>
 							<h:outputText value="#{registrationController.addressHomeFormated}" escape="false"/>
 						</div>
-					</c:if>
-					<c:if test="#{registrationController.addressProfessionalAvailable}">
-						<div class="gt-form-row gt-width-66">
-							<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_addressProfessional}:"/></label></div>
-							<h:outputText value="#{registrationController.addressProfessionalFormated}" escape="false"/>
-						</div>
-					</c:if>					
-										
+					</c:if>										
 					
 					<!-- form row -->
 					<div class="gt-form-row">

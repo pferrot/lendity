@@ -13,6 +13,7 @@ import com.pferrot.lendity.model.Country;
 import com.pferrot.lendity.model.Gender;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.ItemCategory;
+import com.pferrot.lendity.model.ItemVisibility;
 import com.pferrot.lendity.model.Language;
 import com.pferrot.lendity.model.LendRequestResponse;
 import com.pferrot.lendity.model.Need;
@@ -220,6 +221,8 @@ public class InitialData {
 		person.setReceiveNeedsNotifications(Boolean.FALSE);
 		person.setReceiveCommentsOnCommentedNotif(Boolean.FALSE);
 		person.setReceiveCommentsOnOwnNotif(Boolean.FALSE);
+		person.setShowNameOnPublicItems(Boolean.FALSE);
+		person.setShowContactDetailsToAll(Boolean.FALSE);
 		person.setEnabled(Boolean.TRUE);
 		
 		person.setGender(gender);
@@ -288,7 +291,17 @@ public class InitialData {
 			item.setDescription(getRandomText(0, 50, 3, 20));
 			item.setCategory((ItemCategory) listValueDao.findListValue(ItemCategory.LABEL_CODES[PasswordGenerator.getRandom(0, ItemCategory.LABEL_CODES.length - 1)]));
 			item.setOwner(pPerson);
-			item.setVisible(PasswordGenerator.getRandom(0, 1) == 0? Boolean.FALSE:Boolean.TRUE);
+			int tmp = PasswordGenerator.getRandom(0, 2);
+			if (tmp == 0) {
+				item.setVisibility((ItemVisibility)listValueDao.findListValue(ItemVisibility.PRIVATE));
+			}
+			else if (tmp == 1) {
+				item.setVisibility((ItemVisibility)listValueDao.findListValue(ItemVisibility.CONNECTIONS));
+			}
+			else {
+				item.setVisibility((ItemVisibility)listValueDao.findListValue(ItemVisibility.PUBLIC));
+			}
+			
 			item.setCreationDate(new Date());
 			itemDao.createItem(item);
 		}		

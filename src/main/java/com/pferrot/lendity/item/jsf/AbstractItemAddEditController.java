@@ -3,13 +3,14 @@ package com.pferrot.lendity.item.jsf;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.utils.JsfUtils;
 
 public abstract class AbstractItemAddEditController extends AbstractObjectAddEditController {
 	
 	private final static Log log = LogFactory.getLog(AbstractItemAddEditController.class);
-
+	
 	public abstract Long processItem();
 	
 	public String submit() {

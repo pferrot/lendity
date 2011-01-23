@@ -35,10 +35,6 @@ public class AuthenticationController {
 	public String getCurrentUserDisplayName() {
 		return PersonUtils.getCurrentPersonDisplayName();
 	}
-
-	public Integer getCurrentUserNbInvitations() {
-		return PersonUtils.getCurrentPersonNbInvitations();
-	}
 	
 	public String getTermsAndConditionsURL() {
 		return JsfUtils.getContextRoot() + PagesURL.TERMS_AND_CONDITIONS;

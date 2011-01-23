@@ -13,7 +13,11 @@ import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import org.springframework.security.AccessDeniedException;
 
+import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.geolocation.bean.Coordinate;
+import com.pferrot.lendity.geolocation.exception.GeolocalisationException;
+import com.pferrot.lendity.geolocation.googlemaps.GoogleMapsUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonConsts;
@@ -69,34 +73,48 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		setFirstName(pPerson.getFirstName());
 		setLastName(pPerson.getLastName());
 		
+		setWebsite(pPerson.getWebsite());
+		
 		setEmailSubscriber(pPerson.getEmailSubscriber());
 		setReceiveNeedsNotifications(pPerson.getReceiveNeedsNotifications());
 		setReceiveCommentsOnCommentedNotif(pPerson.getReceiveCommentsOnCommentedNotif());
 		setReceiveCommentsOnOwnNotif(pPerson.getReceiveCommentsOnOwnNotif());
+		setShowNameOnPublicItems(pPerson.getShowNameOnPublicItems());
+		setShowContactDetailsToAll(pPerson.getShowContactDetailsToAll());
 		
 		setPhoneHome(pPerson.getPhoneHome());
 		setPhoneMobile(pPerson.getPhoneMobile());
 		setPhoneProfessional(pPerson.getPhoneProfessional());
 		
 		setAddressHome(pPerson.getAddressHome());
-		setAddressProfessional(pPerson.getAddressProfessional());
+		setAddressHomeLatitude(pPerson.getAddressHomeLatitude());
+		setAddressHomeLongitude(pPerson.getAddressHomeLongitude());
 	}
 
 	public Long updatePerson() {
 
 		getPerson().setFirstName(getFirstName());
 		getPerson().setLastName(getLastName());
+		getPerson().setWebsite(getWebsite());
 		getPerson().setEmailSubscriber(getEmailSubscriber());
 		getPerson().setReceiveNeedsNotifications(getReceiveNeedsNotifications());
 		getPerson().setReceiveCommentsOnCommentedNotif(getReceiveCommentsOnCommentedNotif());
 		getPerson().setReceiveCommentsOnOwnNotif(getReceiveCommentsOnOwnNotif());
+		getPerson().setShowNameOnPublicItems(getShowNameOnPublicItems());
+		getPerson().setShowContactDetailsToAll(getShowContactDetailsToAll());
 		
 		getPerson().setPhoneHome(getPhoneHome());
 		getPerson().setPhoneMobile(getPhoneMobile());
 		getPerson().setPhoneProfessional(getPhoneProfessional());
 		
 		getPerson().setAddressHome(getAddressHome());
-		getPerson().setAddressProfessional(getAddressProfessional());
+		// Needed because validateAddressHome() is not called if empty. 
+		if (StringUtils.isNullOrEmpty(getAddressHome())) {
+			setAddressHomeLatitude(null);
+			setAddressHomeLongitude(null);
+		}
+		getPerson().setAddressHomeLatitude(getAddressHomeLatitude());
+		getPerson().setAddressHomeLongitude(getAddressHomeLongitude());
 
 		getPersonService().updatePerson(getPerson());
 		
@@ -112,14 +130,52 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		return updatePerson();
 	}
 
-	public void validateAddressSize(FacesContext context, UIComponent toValidate, Object value) {
+	public void validateAddressHome(FacesContext context, UIComponent toValidate, Object value) {
+		
 		String message = "";
-		String description = (String) value;
-		if (description != null && description.length() > PersonConsts.MAX_ADDRESS_SIZE) {
-			((UIInput)toValidate).setValid(false);
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			message = I18nUtils.getMessageResourceString("validation_maxSizeExceeded", new Object[]{String.valueOf(PersonConsts.MAX_ADDRESS_SIZE)}, locale);
-			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
+		String address = (String) value;
+		if (!StringUtils.isNullOrEmpty(address)) {
+			if (address.length() > PersonConsts.MAX_ADDRESS_SIZE) {
+				((UIInput)toValidate).setValid(false);
+				final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+				message = I18nUtils.getMessageResourceString("validation_maxSizeExceeded", new Object[]{String.valueOf(PersonConsts.MAX_ADDRESS_SIZE)}, locale);
+				context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
+			}
+			
+			else {
+				try {
+					final Coordinate c = GoogleMapsUtils.getCoordinate(address);
+					setAddressHomeLatitude(c.getLatitude());
+					setAddressHomeLongitude(c.getLongitude());
+				}
+				catch (GeolocalisationException e) {
+					setAddressHomeLatitude(null);
+					setAddressHomeLongitude(null);
+					
+					((UIInput)toValidate).setValid(false);
+					final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+					message = I18nUtils.getMessageResourceString("validation_geolocationNotFound", locale);
+					context.addMessage(toValidate.getClientId(context), new FacesMessage(message));					
+				}
+			}
+		}
+		else {
+			setAddressHomeLatitude(null);
+			setAddressHomeLongitude(null);
 		}
 	}
+	
+//	protected boolean isModifiedAddressHome(final String pNewAddress) {
+//		final String oldAddress = getPerson().getAddressHome();
+//		if (pNewAddress == oldAddress) {
+//			return false;
+//		}
+//		// The other is not null according to the first test, so they are now different.
+//		else if (pNewAddress == null) {
+//			return true;
+//		}
+//		else {
+//			return !pNewAddress.equals(oldAddress);
+//		}
+//	}
 }

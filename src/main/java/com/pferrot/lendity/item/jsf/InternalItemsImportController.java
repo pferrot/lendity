@@ -16,6 +16,8 @@ import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.ItemCategory;
+import com.pferrot.lendity.model.ItemVisibility;
+import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.utils.UiUtils;
 
 public class InternalItemsImportController  {
@@ -25,9 +27,13 @@ public class InternalItemsImportController  {
 	private ItemService itemService;
 	
 	private UploadedFile uploadFile;
+	
 	private List<SelectItem> categoriesSelectItems;
 	private Long categoryId;
-	private Boolean visible = Boolean.TRUE;
+	
+	private List<SelectItem> visibilitySelectItems;
+	private Long visibilityId;
+	
 	
 	//private Set<String> itemsToImport = null;
 	
@@ -64,16 +70,25 @@ public class InternalItemsImportController  {
 		return categoryId;
 	}
 
-	public void setCategoryId(Long categoryId) {
+	public void setCategoryId(final Long pCategoryId) {
 		this.categoryId = UiUtils.getPositiveLongOrNull(categoryId);
 	}
-
-	public Boolean getVisible() {
-		return visible;
+	
+	public List<SelectItem> getVisibilitySelectItems() {
+		if (visibilitySelectItems == null) {
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			visibilitySelectItems = UiUtils.getSelectItemsForOrderedListValue(itemService.getVisibilities(), locale);
+			visibilitySelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
+		}		
+		return visibilitySelectItems;	
 	}
 
-	public void setVisible(Boolean visible) {
-		this.visible = visible;
+	public Long getVisibilityId() {
+		return visibilityId;
+	}
+
+	public void setVisibilityId(final Long pVisibilityId) {
+		this.visibilityId = UiUtils.getPositiveLongOrNull(visibilityId);
 	}
 
 	public Set<String> getValidItemsToImport() {
@@ -130,19 +145,17 @@ public class InternalItemsImportController  {
 			final InternalItem internalItem = new InternalItem();
 			internalItem.setTitle(itemTitle);
 			internalItem.setOwner(getItemService().getCurrentPerson());
-			internalItem.setVisible(getVisible());
-			getItemService().createItemWithCategory(internalItem, getCategoryId());
+			getItemService().createItem(internalItem, getCategoryId(), getVisibilityId());
 		}
 	}
 	
 	public String getVisibilityLabel() {
+		final ItemVisibility visibility = (ItemVisibility)getItemService().getListValue(getVisibilityId());
+		if (visibility == null || visibility.getLabelCode() == null) {
+			return null;
+		}
 		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-		if (visible != null && visible.booleanValue()) {
-			return I18nUtils.getMessageResourceString("item_visible", locale);
-		}
-		else {
-			return I18nUtils.getMessageResourceString("item_visibleNo", locale);
-		}
+		return I18nUtils.getMessageResourceString(visibility.getLabelCode(), locale);
 	}
 	
 	public String getCategoryLabel() {

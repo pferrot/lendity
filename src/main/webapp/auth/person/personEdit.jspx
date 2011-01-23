@@ -60,6 +60,20 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.person_website}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="website"></h:message>
+						<h:inputText id="website" styleClass="gt-form-text"
+						    value="#{personEditController.website}"
+						    required="false"
+						    requiredMessage="#{messages.validation_requiredMessage}"
+						    maxlength="255"
+						    autocomplete="off">
+						</h:inputText>						
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
 						<label><h:outputText value="#{messages.person_phoneMobile}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="phoneMobile"></h:message>
@@ -109,19 +123,7 @@
 						    styleClass="gt-form-textarea"
 						    rows="4"
 							value="#{personEditController.addressHome}"
-							validator="#{personEditController.validateAddressSize}"/>						
-					</div><!-- /form row -->
-					
-					<!-- form row -->
-					<div class="gt-form-row gt-width-100">
-						<label><h:outputText value="#{messages.person_addressProfessional}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
-						<h:message styleClass="error" showSummary="true" showDetail="false"
-							for="addressProfessional"></h:message>			
-						<h:inputTextarea id="addressProfessional" immediate="true" 
-						    styleClass="gt-form-textarea"
-						    rows="4"
-							value="#{personEditController.addressProfessional}"
-							validator="#{personEditController.validateAddressSize}"/>						
+							validator="#{personEditController.validateAddressHome}"/>						
 					</div><!-- /form row -->
 					
 					<!-- form row -->
@@ -152,6 +154,22 @@
 						<h:outputText value="#{messages.person_receiveCommentsOnCommentedNotif}"/>
 					</div><!-- /form row -->
 					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.person_settings}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="showContactDetailsToAll"></h:message>
+						<h:selectBooleanCheckbox id="showContactDetailsToAll" value="#{personEditController.showContactDetailsToAll}" styleClass="gt-form-element-checkbox"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputText value="#{messages.person_showContactDetailsToAll}"/>
+						<br/>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="showNameOnPublicItems"></h:message>
+						<h:selectBooleanCheckbox id="showNameOnPublicItems" value="#{personEditController.showNameOnPublicItems}" styleClass="gt-form-element-checkbox"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputText value="#{messages.person_showNameOnPublicItems}"/>						
+					</div><!-- /form row -->
+
 					<!-- form row -->
 					<div class="gt-form-row">
 						<br/>

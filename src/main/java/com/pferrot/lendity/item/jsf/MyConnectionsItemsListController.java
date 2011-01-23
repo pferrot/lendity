@@ -15,6 +15,8 @@ import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
+import com.pferrot.lendity.model.InternalItem;
+import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
 
@@ -27,8 +29,6 @@ public class MyConnectionsItemsListController extends AbstractItemsWithOwnerList
 	public final static String FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE = "allByCr";
 	
 	public final static String SEARCH_TEXT_PARAM_NAME = "search";	
-	
-		
 	
 	public MyConnectionsItemsListController() {
 		super();
@@ -44,7 +44,7 @@ public class MyConnectionsItemsListController extends AbstractItemsWithOwnerList
 			setSearchString(null);
 			setCategoryId(null);			
 			setBorrowStatus(null);
-			setVisibleStatus(null);
+			setVisibilityId(null);
 			setOwnerId(null);
 			return;
 		}
@@ -55,7 +55,7 @@ public class MyConnectionsItemsListController extends AbstractItemsWithOwnerList
 			setSearchString(searchString);
 			setCategoryId(null);			
 			setBorrowStatus(null);
-			setVisibleStatus(null);
+			setVisibilityId(null);
 			setOwnerId(null);
 			return;
 		}		
@@ -63,8 +63,12 @@ public class MyConnectionsItemsListController extends AbstractItemsWithOwnerList
 
 	@Override
 	protected ListWithRowCount getListWithRowCount() {
+		Double maxDistanceDouble = null;
+	    if (getMaxDistance() != null) {
+	    	maxDistanceDouble = Double.valueOf(getMaxDistance());
+	    }
 		return getItemService().findMyConnectionsItems(getOwnerId(), getSearchString(), getCategoryId(), 
-				getBorrowStatusBoolean(), getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
+				getBorrowStatusBoolean(), getShowPublicItems(), maxDistanceDouble, getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
 	}
 
 	@Override
@@ -80,5 +84,29 @@ public class MyConnectionsItemsListController extends AbstractItemsWithOwnerList
 			setBorrowStatusSelectItemsInternal(result);
 		}		
 		return getBorrowStatusSelectItemsInternal();	
+	}
+
+	@Override
+	public String getOwnerLabel() {
+		if (!isOwnerNameAvailable()) {
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			return I18nUtils.getMessageResourceString("item_ownerNotAvailable", locale);
+		}
+		return super.getOwnerLabel();
+	}
+
+	/**
+	 * The name of the owner is available if the current user has RW access or if he is a connection. I.e. users
+	 * cannot see the owner of public items belonging to users they do not know.
+	 * 
+	 * @return
+	 */
+	public boolean isOwnerNameAvailable() {
+		final InternalItem item = (InternalItem)getTable().getRowData();
+		return getItemService().isCurrentUserAuthorizedToViewOwnerName(item);
+	}
+
+	public boolean isSearchByDistanceAvailable() {
+		return PersonUtils.isCurrentPersonIsAddressDefined();
 	}
 }

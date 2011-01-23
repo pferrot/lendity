@@ -1,21 +1,12 @@
 package com.pferrot.lendity.registration.jsf;
 
-import java.util.Locale;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.providers.encoding.MessageDigestPasswordEncoder;
 
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.configuration.Configuration;
-import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Person;
-import com.pferrot.lendity.person.PersonConsts;
 import com.pferrot.lendity.registration.RegistrationException;
 import com.pferrot.lendity.registration.RegistrationService;
 import com.pferrot.lendity.utils.HtmlUtils;
@@ -34,7 +25,8 @@ public class RegistrationController {
 	private String phoneMobile;
 	private String phoneProfessional;
 	private String addressHome;
-	private String addressProfessional;
+	private Double addressHomeLatitude;
+	private Double addressHomeLongitude;
 	private String password;
 	private String passwordRepeat;
 	private String captcha;
@@ -107,14 +99,22 @@ public class RegistrationController {
 
 	public void setAddressHome(String addressHome) {
 		this.addressHome = StringUtils.getNullIfEmpty(addressHome);
-	}
+	}	
 	
-	public String getAddressProfessional() {
-		return addressProfessional;
+	public Double getAddressHomeLatitude() {
+		return addressHomeLatitude;
 	}
 
-	public void setAddressProfessional(String addressProfessional) {
-		this.addressProfessional = StringUtils.getNullIfEmpty(addressProfessional);
+	public void setAddressHomeLatitude(Double addressHomeLatitude) {
+		this.addressHomeLatitude = addressHomeLatitude;
+	}
+
+	public Double getAddressHomeLongitude() {
+		return addressHomeLongitude;
+	}
+
+	public void setAddressHomeLongitude(Double addressHomeLongitude) {
+		this.addressHomeLongitude = addressHomeLongitude;
 	}
 
 	public String getPassword() {
@@ -169,30 +169,6 @@ public class RegistrationController {
 		final String address = getAddressHome();
 		return !StringUtils.isNullOrEmpty(address);
 	}
-
-	public String getAddressProfessionalFormated() {
-		final String address = getAddressProfessional();
-		if (address != null) {
-			return HtmlUtils.escapeHtmlAndReplaceCr(address);
-		}
-		return "";
-	}
-
-	public boolean isAddressProfessionalAvailable() {
-		final String address = getAddressProfessional();
-		return !StringUtils.isNullOrEmpty(address);
-	}
-	
-	public void validateAddressSize(FacesContext context, UIComponent toValidate, Object value) {
-		String message = "";
-		String description = (String) value;
-		if (description != null && description.length() > PersonConsts.MAX_ADDRESS_SIZE) {
-			((UIInput)toValidate).setValid(false);
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			message = I18nUtils.getMessageResourceString("validation_maxSizeExceeded", new Object[]{String.valueOf(PersonConsts.MAX_ADDRESS_SIZE)}, locale);
-			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
-		}
-	}
 	
 	public void createUser() {
 		try {
@@ -209,12 +185,20 @@ public class RegistrationController {
 			person.setPhoneMobile(getPhoneMobile());
 			person.setPhoneProfessional(getPhoneProfessional());
 			person.setAddressHome(getAddressHome());
-			person.setAddressProfessional(getAddressProfessional());
+			// Needed because validateAddressHome() is not called if empty. 
+			if (StringUtils.isNullOrEmpty(getAddressHome())) {
+				setAddressHomeLatitude(null);
+				setAddressHomeLongitude(null);
+			}
+			person.setAddressHomeLatitude(getAddressHomeLatitude());
+			person.setAddressHomeLongitude(getAddressHomeLongitude());
 			person.setUser(user);
 			person.setEmailSubscriber(Boolean.TRUE);
 			person.setReceiveNeedsNotifications(Boolean.TRUE);
 			person.setReceiveCommentsOnCommentedNotif(Boolean.TRUE);
 			person.setReceiveCommentsOnOwnNotif(Boolean.TRUE);
+			person.setShowNameOnPublicItems(Boolean.FALSE);
+			person.setShowContactDetailsToAll(Boolean.FALSE);
 			
 			registrationService.createUser(person);
 		} catch (RegistrationException e) {

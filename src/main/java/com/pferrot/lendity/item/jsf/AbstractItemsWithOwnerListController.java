@@ -12,12 +12,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.lendity.i18n.I18nUtils;
+import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.utils.UiUtils;
 
 public abstract class AbstractItemsWithOwnerListController extends AbstractItemsListController {
 	
 	private final static Log log = LogFactory.getLog(AbstractItemsWithOwnerListController.class);
 	
+	private PersonService personService;
 	private List<SelectItem> ownerSelectItems;
 	private Long ownerId;
 	
@@ -63,5 +65,13 @@ public abstract class AbstractItemsWithOwnerListController extends AbstractItems
 	public boolean isFilteredList() {
 		final boolean tempResult = getOwnerId() != null;
 		return tempResult || super.isFilteredList();
+	}
+
+	public PersonService getPersonService() {
+		return personService;
+	}
+
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
 	}
 }

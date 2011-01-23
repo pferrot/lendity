@@ -87,10 +87,14 @@
 					<div class="gt-form-row gt-width-100">
 						<label><h:outputText value="#{messages.item_visibility}"/></label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
-							for="visible"></h:message>
-						<h:selectBooleanCheckbox id="visible" value="#{internalItemsImportController.visible}" styleClass="gt-form-element-checkbox"/>
-						<h:outputText value=" " escape="false" />
-						<h:outputText value="#{messages.item_visibilityConnectionsCanSeePlural}"/>
+							for="visibility"></h:message>
+						<h:selectOneMenu id="visibility" 
+						    value="#{internalItemsImportController.visibilityId}" 
+						    converter="javax.faces.Long" 
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}">
+							<f:selectItems value="#{internalItemsImportController.visibilitySelectItems}"/>
+						</h:selectOneMenu>	
 					</div><!-- /form row -->
 										
 					<!-- form row -->

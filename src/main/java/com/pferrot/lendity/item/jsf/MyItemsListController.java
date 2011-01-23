@@ -28,14 +28,14 @@ public class MyItemsListController extends AbstractItemsListController {
 			setSearchString(null);
 			setCategoryId(null);			
 			setBorrowStatus(new Long(1));
-			setVisibleStatus(null);
+			setVisibilityId(null);
 		}
 	}
 
 	@Override
 	protected ListWithRowCount getListWithRowCount() {
 		return getItemService().findMyItems(getSearchString(), getCategoryId(), 
-				getVisibleStatusBoolean(), getBorrowStatusBoolean(), getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
+				getVisibilityId(), getBorrowStatusBoolean(), getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
 	}
 	
 

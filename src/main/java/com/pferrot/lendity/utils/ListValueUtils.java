@@ -45,4 +45,8 @@ public class ListValueUtils {
 		}
 		return listValueDao.findListValue(listValueId);
 	}
+
+	public static Long[] getIdsArray(final Long pId) {
+		return new Long[]{pId};		
+	}
 }

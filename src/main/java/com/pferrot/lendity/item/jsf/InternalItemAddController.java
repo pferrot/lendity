@@ -38,7 +38,8 @@ public class InternalItemAddController extends AbstractInternalItemAddEditContro
 
 	@InitView
 	public void initView() {
-		setVisible(Boolean.TRUE);
+		// Default visibility.
+//		setVisibilityId(getItemService().getConnectionsVisibilityId());
 		String needIdString = null;
 		try {
 			needIdString = JsfUtils.getRequestParameter(PagesURL.INTERNAL_ITEM_ADD_PARAM_NEED_ID);
@@ -64,10 +65,11 @@ public class InternalItemAddController extends AbstractInternalItemAddEditContro
 		
 		internalItem.setTitle(getTitle());
 		internalItem.setDescription(getDescription());
-		internalItem.setVisible(getVisible());
+		internalItem.setInfoConnections(getInfoConnections());
+		internalItem.setInfoPublic(getInfoPublic());
 		internalItem.setOwner(getItemService().getCurrentPerson());
 				
-		return getItemService().createItemWithCategory(internalItem, getCategoryId(), getNeed());
+		return getItemService().createItem(internalItem, getCategoryId(), getVisibilityId(), getNeed());
 	}
 	
 	@Override

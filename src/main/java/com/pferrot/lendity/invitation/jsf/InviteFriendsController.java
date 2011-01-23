@@ -55,10 +55,6 @@ public class InviteFriendsController {
 		public void setEmail(String email) {
 			this.email = email;
 		}
-		
-		public Integer getNbInvitationsAvailable() {
-			return PersonUtils.getCurrentPersonNbInvitations();
-		}
 
 		public void validateEmail(FacesContext context, UIComponent toValidate, Object value) {
 			String message = "";

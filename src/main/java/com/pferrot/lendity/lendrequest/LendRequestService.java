@@ -3,14 +3,10 @@ package com.pferrot.lendity.lendrequest;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import net.sf.cglib.proxy.LazyLoader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.LazyInitializationException;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.emailsender.manager.MailManager;
@@ -281,9 +277,8 @@ public class LendRequestService {
 	public boolean isUncompletedLendRequestAvailable(final Person pRequester, final InternalItem pItem) {
 		CoreUtils.assertNotNull(pItem);
 		CoreUtils.assertNotNull(pRequester);
-		
-		ListWithRowCount listWithRowCount = lendRequestDao.findLendRequests(pRequester.getId(), null, pItem.getId(), Boolean.FALSE, 0, 1);
-		return listWithRowCount.getRowCount() > 0;
+
+		return lendRequestDao.countLendRequests(pRequester.getId(), null, pItem.getId(), Boolean.FALSE) > 0;
 	}
 	
 	private void assertOwnerIsCurrentUser(final LendRequest pLendRequest) throws LendRequestException {

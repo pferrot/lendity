@@ -52,17 +52,15 @@ public class InternalItemOverviewController extends AbstractItemOverviewControll
 		}	
 	}
 	
-	public String getVisibleLabel() {
+	public String getVisibilityLabel() {
 		final InternalItem internalItem = (InternalItem)getItem();
-		if (Boolean.TRUE.equals(internalItem.getVisible())) {
+		if (internalItem != null && internalItem.getVisibility() != null) {
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			return I18nUtils.getMessageResourceString("item_visibleYes", locale);
+			return I18nUtils.getMessageResourceString(internalItem.getVisibility().getLabelCode(), locale);
 		}
-		else if (Boolean.FALSE.equals(internalItem.getVisible())) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			return I18nUtils.getMessageResourceString("item_visibleNo", locale);
+		else {
+			return "";
 		}
-		return "";
 	}
 	
 	public boolean isLendAvailable() {
@@ -85,11 +83,11 @@ public class InternalItemOverviewController extends AbstractItemOverviewControll
 	public String getItemEditPictureHref() {		
 		return ItemUtils.getInternalItemEditPicturePageUrl(((InternalItem)getItem()).getId().toString());
 	}
-	
+
 	public boolean isRequestLendAvailable() {		
 		return getLendRequestService().isLendRequestAllowedFromCurrentUser((InternalItem)getItem());
 	}
-	
+
 	public String getImageButtonLabel() {
 		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 		if (getItem().getImage1() == null) {
@@ -98,5 +96,17 @@ public class InternalItemOverviewController extends AbstractItemOverviewControll
 		else {
 			return I18nUtils.getMessageResourceString("image_changeImage", locale);
 		}
+	}
+	
+	public boolean isInfoPublicAvailable() {
+		return isEditAvailable(); 
+	}
+	
+	public boolean isInfoConnectionsAvailable() {
+		return isEditAvailable(); 
+	}
+
+	public boolean isOwnerNameAvailable() {
+		return getItemService().isCurrentUserAuthorizedToViewOwnerName((InternalItem)getItem());
 	}
 }

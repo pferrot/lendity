@@ -176,8 +176,7 @@
 
 					<script type="text/javascript">
 						$j(document).ready(function() {
-							if ($j('#addressHome').val() == '' &amp;&amp;
-								$j('#addressProfessional').val() == '') {
+							if ($j('#addressHome').val() == '') {
 									$j('#addressDiv').hide();
 									$j('#addAddress').show();
 							}
@@ -204,19 +203,7 @@
 							    styleClass="gt-form-textarea"
 							    rows="4"
 								value="#{registrationController.addressHome}"
-								validator="#{registrationController.validateAddressSize}"/>						
-						</div><!-- /form row -->
-						
-						<!-- form row -->
-						<div class="gt-form-row gt-width-66">
-							<label><h:outputText value="#{messages.person_addressProfessional}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
-							<h:message styleClass="error" showSummary="true" showDetail="false"
-								for="addressProfessional"></h:message>			
-							<h:inputTextarea id="addressProfessional" immediate="true" 
-							    styleClass="gt-form-textarea"
-							    rows="4"
-								value="#{registrationController.addressProfessional}"
-								validator="#{registrationController.validateAddressSize}"/>						
+								validator="#{registrationStep1.validateAddressHome}"/>						
 						</div><!-- /form row -->
 						
 					</div>

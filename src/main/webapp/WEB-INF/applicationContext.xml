@@ -55,6 +55,12 @@
 			<value>30</value>
 		</property>
 	</bean>
+
+	<bean id="hibernateUtils" class="com.pferrot.lendity.dao.hibernate.utils.HibernateUtils" lazy-init="false">
+		<property name="sessionFactory">
+			<ref local="sessionFactory"/>
+		</property>
+	</bean>
 	 
 	<!--
 	<bean id="dataSource" name="core.dataSource,security.dataSource" class="org.apache.commons.dbcp.BasicDataSource"
@@ -720,12 +726,14 @@
 	<bean id="myBorrowedItemsListController" class="com.pferrot.lendity.item.jsf.MyBorrowedItemsListController"
 	      scope="session">
 	      <property name="itemService" ref="itemService"/>
+	      <property name="personService" ref="personService"/>
 	</bean>
 
 	<bean id="myConnectionsItemsListController" class="com.pferrot.lendity.item.jsf.MyConnectionsItemsListController"
 	      scope="session">
 	      <property name="itemService" ref="itemService"/>
 	      <property name="lendRequestService" ref="lendRequestService"/>
+	      <property name="personService" ref="personService"/>
 	</bean>
 
 	<bean id="internalItemLendTooltipController" class="com.pferrot.lendity.item.jsf.InternalItemLendTooltipController"

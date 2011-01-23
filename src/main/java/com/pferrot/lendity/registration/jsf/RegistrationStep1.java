@@ -15,7 +15,11 @@ import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.core.StringUtils;
+import com.pferrot.lendity.geolocation.bean.Coordinate;
+import com.pferrot.lendity.geolocation.exception.GeolocalisationException;
+import com.pferrot.lendity.geolocation.googlemaps.GoogleMapsUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
+import com.pferrot.lendity.person.PersonConsts;
 import com.pferrot.lendity.registration.RegistrationConsts;
 import com.pferrot.lendity.registration.RegistrationService;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -134,64 +138,39 @@ public class RegistrationStep1 {
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
 	}
-	
-	// TODO: Does not work: getPassword() always returns null.
-//	public void validatePasswordRepeat(FacesContext context, UIComponent toValidate, Object value) {
-//		String message = "";
-//		String passwordRepeat = (String) value;
-//		if (!passwordRepeat.equals(getPassword())) {
-//			((UIInput)toValidate).setValid(false);
-//			// TODO
-//			message = "Confirmation password does not match password";
-//			//message = CoffeeBreakBean.loadErrorMessage(context, CoffeeBreakBean.CB_RESOURCE_BUNDLE_NAME, "EMailError");
-//			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
-//		}
-//	}	
 
-//	public PersistentFacesState getState() {
-//		return state;
-//	}
-
-//	public void renderingException(RenderingException renderingException) {
-//		if (log. isDebugEnabled()) {			 
-//			log.debug("Rendering exception:  " + renderingException);
-//		}	 
-//		if (renderingException instanceof FatalRenderingException) { 
-//			performCleanup();	 
-//		}		
-//	}
-
-//	protected boolean performCleanup() {
-//		try {
-//			if (clock != null) {	
-//				clock.remove(this);
-//				if (clock.isEmpty() ) { 
-//					clock.dispose();
-//				}
-//				clock = null;
-//			}
-//			return true;
-//		} 
-//		catch (Exception failedCleanup) {
-//			if (log.isErrorEnabled()) {
-//				log.error("Failed to cleanup a clock bean", failedCleanup);
-//			}
-//		}
-//		return false;
-//	}
-	
-//	public void setRenderManager(RenderManager renderManager) {
-//		clock = renderManager.getIntervalRenderer("clock"); 
-//		clock.setInterval(renderInterval); 
-//		clock.add(this);  
-//		clock.requestRender();
-//	}
-
-//	public void dispose() throws Exception {
-//        if (log.isInfoEnabled()) {        	 
-//            log.info("Dispose RegistrationBean for a user - cleaning up"); 
-//        } 
-//        performCleanup();		
-//	}
+	public void validateAddressHome(FacesContext context, UIComponent toValidate, Object value) {
+		String message = "";
+		String address = (String) value;
+		if (!StringUtils.isNullOrEmpty(address)) {
+			if (address.length() > PersonConsts.MAX_ADDRESS_SIZE) {
+				((UIInput)toValidate).setValid(false);
+				final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+				message = I18nUtils.getMessageResourceString("validation_maxSizeExceeded", new Object[]{String.valueOf(PersonConsts.MAX_ADDRESS_SIZE)}, locale);
+				context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
+			}
+			
+			else {
+				try {
+					final Coordinate c = GoogleMapsUtils.getCoordinate(address);
+					getRegistrationController().setAddressHomeLatitude(c.getLatitude());
+					getRegistrationController().setAddressHomeLongitude(c.getLongitude());
+				}
+				catch (GeolocalisationException e) {
+					getRegistrationController().setAddressHomeLatitude(null);
+					getRegistrationController().setAddressHomeLongitude(null);
+					
+					((UIInput)toValidate).setValid(false);
+					final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+					message = I18nUtils.getMessageResourceString("validation_geolocationNotFound", locale);
+					context.addMessage(toValidate.getClientId(context), new FacesMessage(message));					
+				}
+			}
+		}
+		else {
+			getRegistrationController().setAddressHomeLatitude(null);
+			getRegistrationController().setAddressHomeLongitude(null);
+		}
+	}
 
 }

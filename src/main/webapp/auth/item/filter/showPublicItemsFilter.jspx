@@ -1,0 +1,23 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<!-- categories -->
+<h:form id="showPublicItemsFilterForm" prependId="false">
+<table><tr><td>
+	<h:outputText value="#{messages.item_showPublicItems}" styleClass="small"/>
+</td></tr><tr><td>
+	<h:selectBooleanCheckbox id="showPublicItems" value="#{theBean.showPublicItems}" valueChangeListener="#{theBean.showPublicItems}" styleClass="gt-form-element-checkbox" onclick="submit()"/>
+	<input type="hidden" name="fake1"/>
+	<input type="hidden" name="fake2"/>
+</td></tr></table>
+</h:form>
+<!-- /categories -->
+
+</ui:composition>

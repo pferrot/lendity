@@ -75,17 +75,23 @@
 	<c:if test="#{internalItemOverviewController.owner}">
 		<div class="gt-form-row gt-width-100">
 			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_visibility}:" /></label></div>
-			<h:outputText value="#{internalItemOverviewController.visibleLabel}" />
+			<h:outputText value="#{internalItemOverviewController.visibilityLabel}" />
 		</div>
 		<br/>
 	</c:if>
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_owner}:" /></label></div>
-		<h:outputLink value="#{internalItemOverviewController.ownerHref}">
-			<h:outputText value="#{internalItemOverviewController.item.owner.displayName}" />
-		</h:outputLink>
+		<c:if test="#{internalItemOverviewController.ownerNameAvailable}" var="ownerNameAvailable"/>
+		<c:if test="${ownerNameAvailable}">
+			<h:outputLink value="#{internalItemOverviewController.ownerHref}">
+				<h:outputText value="#{internalItemOverviewController.item.owner.displayName}" />
+			</h:outputLink>
+		</c:if>
+		<c:if test="${not (ownerNameAvailable)}">
+			<h:outputText value="#{messages.item_ownerNotAvailable}"/>
+		</c:if>
 	</div>
-	<br/>
+	<br/>	
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_creationDate}:" /></label></div>
 		<h:outputText value="#{internalItemOverviewController.creationDateLabel}" />

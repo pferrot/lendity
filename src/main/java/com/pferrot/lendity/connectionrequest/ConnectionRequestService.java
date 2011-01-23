@@ -17,6 +17,7 @@ import com.pferrot.lendity.dao.ConnectionRequestDao;
 import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.dao.hibernate.utils.HibernateUtils;
 import com.pferrot.lendity.model.ConnectionRequest;
 import com.pferrot.lendity.model.ConnectionRequestResponse;
 import com.pferrot.lendity.model.ListValue;
@@ -399,6 +400,7 @@ public class ConnectionRequestService {
 	public void updateAcceptConnectionRequest(final ConnectionRequest pConnectionRequest) throws ConnectionRequestException {
 		try {
 			CoreUtils.assertNotNull(pConnectionRequest);
+			HibernateUtils.evictQueryCacheRegion("query.connections");
 
 			setConnectionRequestResponse(pConnectionRequest, (ConnectionRequestResponse)listValueDao.findListValue(ConnectionRequestResponse.ACCEPT_LABEL_CODE));
 

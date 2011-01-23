@@ -5,8 +5,6 @@ import javax.persistence.Entity;
 
 import org.hibernate.envers.Audited;
 
-import com.pferrot.lendity.model.ListValue;
-
 @Entity
 @DiscriminatorValue("ItemCategory")
 @Audited

@@ -1,7 +1,5 @@
 package com.pferrot.lendity.person.jsf;
 
-import javax.faces.context.FacesContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

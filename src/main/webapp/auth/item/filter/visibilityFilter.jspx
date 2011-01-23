@@ -8,25 +8,25 @@
     xmlns:o="http://myfaces.apache.org/orchestra"
     xmlns:t="http://myfaces.apache.org/tomahawk">
     
-<!-- visible status -->
-<h:form id="visibleStatusFilterForm" prependId="false">
+<!-- visibility -->
+<h:form id="visibilityFilterForm" prependId="false">
 <table><tr><td>
-	<h:outputText value="#{messages.item_visibleStatus}" styleClass="small"/>
-	<c:if test="#{theBean.visibleStatus != null}">
+	<h:outputText value="#{messages.item_visibility}" styleClass="small"/>
+	<c:if test="#{theBean.visibilityId != null}">
 		<h:outputText value=" " escape="false" />
-		<h:commandLink id="clearVisibleStatus" action="#{theBean.clearVisibleStatus}">
+		<h:commandLink id="clearVisibility" action="#{theBean.clearVisibility}">
 			<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
 		</h:commandLink>	
 	</c:if>
 </td></tr><tr><td>
-	<h:selectOneMenu id="visibleStatus" value="#{theBean.visibleStatus}" valueChangeListener="#{theBean.visibleStatus}" converter="javax.faces.Long" onchange="submit()">
-		<f:selectItems value="#{theBean.visibleStatusSelectItems}"/>
+	<h:selectOneMenu id="visibility" value="#{theBean.visibilityId}" valueChangeListener="#{theBean.visibility}" converter="javax.faces.Long" onchange="submit()">
+		<f:selectItems value="#{theBean.visibilitySelectItems}"/>
 	</h:selectOneMenu>
 </td></tr></table>	
 <script type="text/javascript">
-	setupDropDownFilterField('visibleStatus');
+	setupDropDownFilterField('visibility');
 </script>	
 </h:form>
-<!-- /visible status -->
+<!-- /visibility -->
 
 </ui:composition>

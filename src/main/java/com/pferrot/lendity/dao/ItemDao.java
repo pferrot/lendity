@@ -3,6 +3,7 @@ package com.pferrot.lendity.dao;
 import java.util.Date;
 import java.util.List;
 
+import com.pferrot.lendity.dao.bean.ItemDaoQueryBean;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.model.ExternalItem;
 import com.pferrot.lendity.model.InternalItem;
@@ -18,21 +19,14 @@ public interface ItemDao {
 	ExternalItem findExternalItem(Long itemId);
 	
 	// Returns internal items only.
-	ListWithRowCount findInternalItems(Long[] pOwnerIds, Boolean pOwnerEnabled, Long[] pBorrowerIds, Boolean pBorrowerEnabled,
-			String pTitle, Long[] categoriesId, Boolean pVisible, Boolean pBorrowed, Date pCreationDateMin, String pOrderBy, Boolean pOrderByAscending,
-			int pFirstResult, int pMaxResults);
+	ListWithRowCount findInternalItems(ItemDaoQueryBean itemDaoQueryBean);
 
-	List<InternalItem> findInternalItemsList(Long[] pOwnerIds, Boolean pOwnerEnabled, Long[] pBorrowerIds, Boolean pBorrowerEnabled,
-			String pTitle, Long[] categoriesId, Boolean pVisible, Boolean pBorrowed, Date pCreationDateMin, String pOrderBy, Boolean pOrderByAscending, 
-			int pFirstResult, int pMaxResults);
+	List<InternalItem> findInternalItemsList(ItemDaoQueryBean itemDaoQueryBean);
 	
 	// Returns internal AND external items.
-	ListWithRowCount findInternalAndExternalItems(Long[] pOwnerIds, Boolean pOwnerEnabled, Long[] pBorrowerIds, Boolean pBorrowerEnabled, String pTitle,
-			Long[] categoriesId, Boolean pBorrowed, Date pCreationDateMin, String pOrderBy, Boolean pOrderByAscending,
-			int pFirstResult, int pMaxResults);
+	ListWithRowCount findInternalAndExternalItems(ItemDaoQueryBean itemDaoQueryBean);
 	
-	long countInternalItems(Long[] pOwnerIds, Boolean pOwnerEnabled, Long[] pBorrowerIds, Boolean pBorrowerEnabled, String pTitle, Long[] categoriesId,
-			Boolean pVisible, Boolean pBorrowed, Date pCreationDateMin);
+	long countInternalItems(ItemDaoQueryBean itemDaoQueryBean);
 	
 	void updateItem(Item pItem);
 	

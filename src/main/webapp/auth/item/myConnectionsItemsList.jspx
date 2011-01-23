@@ -79,6 +79,23 @@
 	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
 </ui:include>
 </td>
+
+<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
+
+<td>
+<ui:include src="filter/distanceFilter.jspx">
+	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
+</ui:include>
+</td>
+
+<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
+
+<td>
+<ui:include src="filter/showPublicItemsFilter.jspx">
+	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
+</ui:include>
+</td>
+
 </tr>
 </table>
 
@@ -141,9 +158,10 @@
 					<h:outputText id="ownerTitle" value="#{messages.item_owner}:" />
 				</th>
 				<td>
-					<h:outputLink id="ownerLink" value="#{myConnectionsItemsListController.ownerHref}">
-						<h:outputText id="ownerLabel" value="#{myConnectionsItemsListController.ownerLabel}"/>
+					<h:outputLink id="ownerLink" value="#{myConnectionsItemsListController.ownerHref}" rendered="#{myConnectionsItemsListController.ownerNameAvailable}">
+						<h:outputText id="ownerLabel" value="#{myConnectionsItemsListController.ownerLabel}" rendered="#{myConnectionsItemsListController.ownerNameAvailable}"/>
 					</h:outputLink>
+					<h:outputText id="ownerLabel2" value="#{myConnectionsItemsListController.ownerLabel}" rendered="#{not (myConnectionsItemsListController.ownerNameAvailable)}"/>
 				</td>
 			</tr>
 			<tr>

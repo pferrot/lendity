@@ -1,6 +1,7 @@
 package com.pferrot.lendity.item;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,7 +13,9 @@ import com.pferrot.lendity.dao.DocumentDao;
 import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.document.DocumentService;
 import com.pferrot.lendity.model.ItemCategory;
+import com.pferrot.lendity.model.ItemVisibility;
 import com.pferrot.lendity.model.ListValue;
+import com.pferrot.lendity.model.OrderedListValue;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
@@ -72,17 +75,29 @@ public class ObjectService {
 		return listValueDao.findListValue(ItemCategory.class);
 	}
 	
+	public List<OrderedListValue> getVisibilities() {
+		return listValueDao.findOrderedListValue(ItemVisibility.class);
+	}
+	
 	public List<Person> getCurrentPersonEnabledConnections() {
 		return getPersonService().findConnectionsList(PersonUtils.getCurrentPersonId(), null, 0, 0);
 	}
 		
 	protected Long[] getCategoryIds(final Long pCategoryId) {
-		Long[] categoryIds = null;
-		if (pCategoryId != null) {
-			categoryIds = new Long[1];
-			categoryIds[0] = pCategoryId;
+		return getIds(pCategoryId);
+	}
+	
+	protected Long[] getVisibilityIds(final Long pVisibilityId) {
+		return getIds(pVisibilityId);		
+	}
+	
+	protected Long[] getIds(final Long pId) {
+		Long[] ids = null;
+		if (pId != null) {
+			ids = new Long[1];
+			ids[0] = pId;
 		}
-		return categoryIds;		
+		return ids;			
 	}
 	
 	public Person getCurrentPerson() {

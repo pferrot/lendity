@@ -4,6 +4,7 @@ package com.pferrot.lendity.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -20,6 +21,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -30,6 +33,8 @@ import com.pferrot.core.CoreUtils;
  *
  */
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(
 		name = "ITEM_TYPE",
@@ -48,7 +53,6 @@ public abstract class Item implements CategoryEnabled, Borrowable, Serializable 
 
 	@Column(name = "DESCRIPTION", nullable = true, length = 3999)
 	private String description;
-	
 	
 	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "IMAGE_1_ID", nullable = true)

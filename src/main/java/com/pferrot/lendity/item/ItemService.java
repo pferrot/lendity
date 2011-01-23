@@ -13,6 +13,7 @@ import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.dao.ItemDao;
 import com.pferrot.lendity.dao.LendRequestDao;
+import com.pferrot.lendity.dao.bean.ItemDaoQueryBean;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.item.exception.ItemException;
 import com.pferrot.lendity.model.Document;
@@ -20,6 +21,7 @@ import com.pferrot.lendity.model.ExternalItem;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
+import com.pferrot.lendity.model.ItemVisibility;
 import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.Person;
@@ -33,7 +35,7 @@ public class ItemService extends ObjectService {
 	
 	private LendRequestDao lendRequestDao;
 	private ItemDao itemDao;
-	
+
 	public void setLendRequestDao(LendRequestDao lendRequestDao) {
 		this.lendRequestDao = lendRequestDao;
 	}
@@ -65,47 +67,122 @@ public class ItemService extends ObjectService {
 		if (pOwnerId != null) {
 			ownerIds = new Long[]{pOwnerId};
 		}
-		Long[] borrowersIds = new Long[]{currentPersonId};
+		Long[] borrowerIds = new Long[]{currentPersonId};
 		
-		return itemDao.findInternalAndExternalItems(ownerIds, Boolean.TRUE, borrowersIds, null, pTitle, getCategoryIds(pCategoryId), null, null, "title", Boolean.TRUE, pFirstResult, pMaxResults);
+		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
+		itemQuery.setOwnerIds(ownerIds);
+		itemQuery.setOwnerEnabled(Boolean.TRUE);
+		itemQuery.setBorrowerIds(borrowerIds);
+		itemQuery.setTitle(pTitle);
+		itemQuery.setCategoryIds(getCategoryIds(pCategoryId));
+		itemQuery.setOrderBy("title");
+		itemQuery.setOrderByAscending(Boolean.TRUE);
+		itemQuery.setFirstResult(pFirstResult);
+		itemQuery.setMaxResults(pMaxResults);
+				
+		return itemDao.findInternalAndExternalItems(itemQuery);
 	}
 	
-	public ListWithRowCount findMyItems(final String pTitle, final Long pCategoryId, final Boolean pVisible,
-			final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
-		return findItems(PersonUtils.getCurrentPersonId(), pTitle, pCategoryId, pVisible, pBorrowed, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
+	public ListWithRowCount findMyItems(final String pTitle, final Long pCategoryId, final Long pVisibilityId,
+			final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {		
+		return findItems(PersonUtils.getCurrentPersonId(), pTitle, pCategoryId, getVisibilityIds(pVisibilityId), pBorrowed, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
 	}
 
-	public ListWithRowCount findItems(final Long pPersonId, final String pTitle, final Long pCategoryId, final Boolean pVisible,
+	public ListWithRowCount findItems(final Long pPersonId, final String pTitle, final Long pCategoryId, final Long[] pVisibilityIds,
 			final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
 		final Long currentPersonId = pPersonId;
 		CoreUtils.assertNotNull(currentPersonId);
-		final Long[] personIds = new Long[]{currentPersonId};		
-		return itemDao.findInternalItems(personIds, Boolean.TRUE, null, null, pTitle, getCategoryIds(pCategoryId), pVisible, pBorrowed, null, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
+		final Long[] personIds = new Long[]{currentPersonId};
+		
+		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
+		itemQuery.setOwnerIds(personIds);
+		itemQuery.setOwnerEnabled(Boolean.TRUE);
+		itemQuery.setTitle(pTitle);
+		itemQuery.setCategoryIds(getCategoryIds(pCategoryId));
+		itemQuery.setVisibilityIds(pVisibilityIds);
+		itemQuery.setBorrowed(pBorrowed);
+		itemQuery.setOrderBy(pOrderBy);
+		itemQuery.setOrderByAscending(pOrderByAscending);
+		itemQuery.setFirstResult(pFirstResult);
+		itemQuery.setMaxResults(pMaxResults);
+		
+		return itemDao.findInternalItems(itemQuery);
 	}
 
 	public ListWithRowCount findMyConnectionsItems(final Long pConnectionId, final String pTitle, final Long pCategoryId,
-			final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+			final Boolean pBorrowed, final Boolean pShowPublicItems, final Double pMaxDistanceInKm, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
 		Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(pConnectionId);
-		if (connectionsIds == null || connectionsIds.length == 0) {
-			return ListWithRowCount.emptyListWithRowCount();
+		
+		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
+		itemQuery.setOwnerIds(connectionsIds);
+		itemQuery.setOwnerEnabled(Boolean.TRUE);
+		itemQuery.setTitle(pTitle);
+		itemQuery.setCategoryIds(getCategoryIds(pCategoryId));
+		itemQuery.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
+		itemQuery.setBorrowed(pBorrowed);
+		if (Boolean.TRUE.equals(pShowPublicItems)) {
+			itemQuery.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
+			itemQuery.setOwnerIdsToExcludeForVisibilityIdsToForce(ListValueUtils.getIdsArray(PersonUtils.getCurrentPersonId()));
 		}
-		return itemDao.findInternalItems(connectionsIds, Boolean.TRUE, null, null, pTitle, getCategoryIds(pCategoryId), Boolean.TRUE, pBorrowed, null, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
+		if (pMaxDistanceInKm != null) {
+			final Double latitude = getCurrentPerson().getAddressHomeLatitude();
+			final Double longitude = getCurrentPerson().getAddressHomeLongitude();			
+			if (latitude == null || longitude == null) {
+				throw new RuntimeException("Can only search by distance if geolocation is available.");
+			}
+			itemQuery.setMaxDistanceKm(pMaxDistanceInKm);
+			itemQuery.setOriginLatitude(latitude);
+			itemQuery.setOriginLongitude(longitude);
+		}
+		itemQuery.setOrderBy(pOrderBy);
+		itemQuery.setOrderByAscending(pOrderByAscending);
+		itemQuery.setFirstResult(pFirstResult);
+		itemQuery.setMaxResults(pMaxResults);
+		
+		return itemDao.findInternalItems(itemQuery);
 	}
 	
 	public ListWithRowCount findMyLatestConnectionsItems() {
 		Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(null);
-		if (connectionsIds == null || connectionsIds.length == 0) {
-			return ListWithRowCount.emptyListWithRowCount();
-		}
-		return itemDao.findInternalItems(connectionsIds, Boolean.TRUE, null, null, null, null, Boolean.TRUE, null, null, "creationDate", Boolean.FALSE, 0, 5);
+		
+		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
+		itemQuery.setOwnerIds(connectionsIds);
+		itemQuery.setOwnerEnabled(Boolean.TRUE);
+		itemQuery.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
+		itemQuery.setOrderBy("creationDate");
+		itemQuery.setOrderByAscending(Boolean.FALSE);
+		itemQuery.setFirstResult(0);
+		itemQuery.setMaxResults(5);
+		
+		return itemDao.findInternalItems(itemQuery);
 	}
 	
 	public ListWithRowCount findPersonLatestConnectionsItemsSince(final Person pPerson, final Date pDate) {
 		Long[] connectionsIds = getPersonService().getPersonConnectionIds(pPerson, null);
-		if (connectionsIds == null || connectionsIds.length == 0) {
-			return ListWithRowCount.emptyListWithRowCount();
-		}
-		return itemDao.findInternalItems(connectionsIds, Boolean.TRUE, null, null, null, null, Boolean.TRUE, null, pDate, "creationDate", Boolean.FALSE, 0, 5);
+		
+		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
+		itemQuery.setOwnerIds(connectionsIds);
+		itemQuery.setOwnerEnabled(Boolean.TRUE);
+		itemQuery.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
+		itemQuery.setCreationDateMin(pDate);
+		itemQuery.setOrderBy("creationDate");
+		itemQuery.setOrderByAscending(Boolean.FALSE);
+		itemQuery.setFirstResult(0);
+		itemQuery.setMaxResults(5);
+		
+		return itemDao.findInternalItems(itemQuery);
+	}
+	
+	public Long[] getConnectionsAndPublicVisibilityIds() {
+		return new Long[]{getConnectionsVisibilityId(), getPublicVisibilityId()};
+	}
+	
+	public Long getConnectionsVisibilityId() {
+		return getListValueDao().findListValue(ItemVisibility.CONNECTIONS).getId();
+	}
+	
+	public Long getPublicVisibilityId() {
+		return getListValueDao().findListValue(ItemVisibility.PUBLIC).getId();
 	}
 
 	/**
@@ -284,7 +361,8 @@ public class ItemService extends ObjectService {
 			if (pNeed != null && 
 				pItem instanceof InternalItem) {
 				final InternalItem internalItem = (InternalItem)pItem;
-				if (internalItem.isVisible()) {
+				if (internalItem.isPublicVisibility() || 
+					internalItem.isConnectionsVisibility()) {
 					sendNotificationForNeed(pNeed, internalItem);
 				}
 			}
@@ -316,12 +394,13 @@ public class ItemService extends ObjectService {
 		deleteInternalItem(itemDao.findInternalItem(pInternalItemId));
 	}
 	
-	public Long createItemWithCategory(final Item pItem, final Long pCategoryId) {
-		return createItemWithCategory(pItem, pCategoryId, null);
+	public Long createItem(final InternalItem pItem, final Long pCategoryId, final Long pVisibilityId) {
+		return createItem(pItem, pCategoryId, pVisibilityId, null);
 	}
 
-	public Long createItemWithCategory(final Item pItem, final Long pCategoryId, final Need pNeed) {
+	public Long createItem(final InternalItem pItem, final Long pCategoryId, final Long pVisibilityId, final Need pNeed) {
 		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
+		pItem.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
 		return createItem(pItem, pNeed);
 	}
 	
@@ -335,7 +414,13 @@ public class ItemService extends ObjectService {
 		itemDao.updateItem(item);
 	}
 
-	public void updateItemWithCategory(final Item pItem, final Long pCategoryId) {
+	public void updateItem(final InternalItem pItem, final Long pCategoryId, final Long pVisibilityId) {
+		assertCurrentUserAuthorizedToEdit(pItem);
+		pItem.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
+		updateItem(pItem, pCategoryId);
+	}
+
+	public void updateItem(final Item pItem, final Long pCategoryId) {
 		assertCurrentUserAuthorizedToEdit(pItem);
 		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
 		updateItem(pItem);
@@ -410,6 +495,21 @@ public class ItemService extends ObjectService {
 		}		
 	}
 
+	/**
+	 * Returns true if pPerson is authorized to see the name of the owner of pIternalItem.
+	 *
+	 * @param pInternalItem
+	 * @param pPerson
+	 * @return
+	 */
+	public boolean isCurrentUserAuthorizedToViewOwnerName(final InternalItem pInternalItem) {
+		CoreUtils.assertNotNull(pInternalItem);
+		final Person currentPerson = getCurrentPerson();
+		return isUserAuthorizedToEdit(currentPerson, pInternalItem) || 
+			getPersonService().isConnection(pInternalItem.getOwner().getId(), currentPerson.getId()) ||
+			Boolean.TRUE.equals(pInternalItem.getOwner().getShowNameOnPublicItems());
+	}
+
     /////////////////////////////////////////////////////////
 	// Access control
 	
@@ -425,10 +525,15 @@ public class ItemService extends ObjectService {
 		// Connections can view.
 		if (pItem instanceof InternalItem) {
 			final InternalItem internalItem = (InternalItem) pItem;
-			if ((internalItem.isVisible() || (internalItem.getBorrower() != null && internalItem.getBorrower().equals(pPerson))) && 
-					internalItem.getOwner() != null &&
-					internalItem.getOwner().getConnections() != null &&
-					internalItem.getOwner().getConnections().contains(pPerson)) {
+			if (// Public visibility.
+			    internalItem.isPublicVisibility() ||
+				// Connection visibility.
+			    (internalItem.isConnectionsVisibility() && 
+				internalItem.getOwner() != null &&
+				internalItem.getOwner().getConnections() != null &&
+				internalItem.getOwner().getConnections().contains(pPerson)) ||
+				// Person is the current borrower - then he should always see it. 
+			    internalItem.getBorrower() != null && internalItem.getBorrower().equals(pPerson)) {
 				return true;
 			}
 		}
@@ -453,11 +558,11 @@ public class ItemService extends ObjectService {
 	
 	public boolean isUserAuthorizedToEdit(final Person pPerson, final Item pItem) {
 		CoreUtils.assertNotNull(pItem);
-		if (pPerson == null) {
+		if (pPerson == null || pPerson.getUser() == null) {
 			return false;
 		}
 		if (pPerson.getUser() != null &&
-				pPerson.getUser().isAdmin()) {
+			pPerson.getUser().isAdmin()) {
 			return true;
 		}
 		if (pItem instanceof InternalItem) {

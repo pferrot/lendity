@@ -21,6 +21,7 @@ public interface PersonDao {
 	/**
 	 * pConnectionLink can be null, "connections" or "bannedPersons". If not null, then pPersonId must be set.
 	 * It will then return the connections / banned persons for that person.
+	 * If max distance is specified, then origin latitude and longitude must be specified as well.
 	 *
 	 * @param pPersonId
 	 * @param pConnectionLink
@@ -30,16 +31,23 @@ public interface PersonDao {
 	 * @param pReceiveNeedsNotifications
 	 * @param pEmailSubscriber
 	 * @param pEmailSubscriberLastSentDateMaxint
+	 * @param pMaxDistance
+	 * @param pOriginLatitude
+	 * @param pOriginLongitude
 	 * @param pFirstResult
 	 * @param pMaxResults
 	 * @return
 	 */
 	ListWithRowCount findPersons(Long pPersonId, int pConnectionLink, String pSearchString, Boolean pEmailExactMatch,
-			 Boolean pEnabled, Boolean pReceiveNeedsNotifications, Boolean pEmailSubscriber, Date pEmailSubscriberLastUpdateMax, int pFirstResult, int pMaxResults);
+			 Boolean pEnabled, Boolean pReceiveNeedsNotifications, Boolean pEmailSubscriber, Date pEmailSubscriberLastUpdateMax,
+			 Double pMaxDistance, Double pOriginLatitude, Double pOriginLongitude,
+			 int pFirstResult, int pMaxResults);
 	
 	
 	List<Person> findPersonsList(Long pPersonId, int pConnectionLink, String pSearchString, Boolean pEmailExactMatch,
-			Boolean pEnabled, Boolean pReceiveNeedsNotifications, Boolean pEmailSubscriber, Date pEmailSubscriberLastUpdateMax, int pFirstResult, int pMaxResults);
+			Boolean pEnabled, Boolean pReceiveNeedsNotifications, Boolean pEmailSubscriber, Date pEmailSubscriberLastUpdateMax,
+			Double pMaxDistance, Double pOriginLatitude, Double pOriginLongitude,
+			int pFirstResult, int pMaxResults);
 		
 	void updatePerson(Person person);
 	

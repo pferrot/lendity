@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
@@ -17,6 +18,7 @@ import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemUtils;
 import com.pferrot.lendity.lendrequest.LendRequestService;
+import com.pferrot.lendity.model.CategoryEnabled;
 import com.pferrot.lendity.model.ExternalItem;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Item;
@@ -39,14 +41,16 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 	// 2 = False = not borrowed
 	// null = all items
 	private Long borrowStatus;
-
-	private List<SelectItem> visibleStatusSelectItems;
-	// Cannot use Boolean because selecting the SelectItem with value null actually
-	// sets the value False...
-	// 1 = True = visible by connections
-	// 2 = False = not visible by connections.
-	// null = all items
-	private Long visibleStatus;	
+	
+	private List<SelectItem> visibilitySelectItems;
+	private Long visibilityId;
+	
+	private List<SelectItem> maxDistanceSelectItems;
+	private Long maxDistance;
+	
+	private Boolean showPublicItems = Boolean.FALSE;
+	
+	
 	
 	public AbstractItemsListController() {
 		super();
@@ -100,69 +104,126 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
         // loadDataList() is not called by getList() when the page is submitted with the onchange
         // event on the h:selectOneMenu. Not sure why!?
         reloadList();
-    }    
+    }
 
-	public List<SelectItem> getVisibleStatusSelectItems() {
-		if (visibleStatusSelectItems == null) {
-			final List<SelectItem> result = new ArrayList<SelectItem>();
+	public List<SelectItem> getVisibilitySelectItems() {
+		if (visibilitySelectItems == null) {
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			
-			result.add(new SelectItem(UiUtils.getLongFromBoolean(null), I18nUtils.getMessageResourceString("item_visibleStatusAll", locale)));
-			result.add(new SelectItem(UiUtils.getLongFromBoolean(Boolean.TRUE), I18nUtils.getMessageResourceString("item_visibleStatusVisible", locale)));
-			result.add(new SelectItem(UiUtils.getLongFromBoolean(Boolean.FALSE), I18nUtils.getMessageResourceString("item_visibleStatusNotVisible", locale)));
-			
-			visibleStatusSelectItems = result;
+			visibilitySelectItems = UiUtils.getSelectItemsForOrderedListValue(getItemService().getVisibilities(), locale);
+			// Add all visibilities first.
+			visibilitySelectItems.add(0, getAllVisibilitiesSelectItem(locale));
 		}		
-		return visibleStatusSelectItems;	
+		return visibilitySelectItems;	
+	}
+	
+	private SelectItem getAllVisibilitiesSelectItem(final Locale pLocale) {
+		final String label = I18nUtils.getMessageResourceString("item_visibilityAll", pLocale);
+		final SelectItem si = new SelectItem(null, label);
+		return si;
 	}
 
-	public Long getVisibleStatus() {
-		return visibleStatus;
+	public Long getVisibilityId() {
+		return visibilityId;
 	}
 
-	public Boolean getVisibleStatusBoolean() {
-		return UiUtils.getBooleanFromLong(visibleStatus);
+	public void setVisibilityId(final Long pVisibilityId) {
+		this.visibilityId = UiUtils.getPositiveLongOrNull(pVisibilityId);
 	}
 
-	public void setVisibleStatus(final Long pVisibleStatus) {
-		this.visibleStatus = UiUtils.getPositiveLongOrNull(pVisibleStatus);
-	}
-
-    public void visibleStatus(final ValueChangeEvent pEevent) {
-    	final Long borrowStatus = (Long) ((HtmlSelectOneMenu) pEevent.getComponent()).getValue();
-        setVisibleStatus(borrowStatus);
+	public void visibility(final ValueChangeEvent pEevent) {
+    	final Long visibility = (Long) ((HtmlSelectOneMenu) pEevent.getComponent()).getValue();
+        setVisibilityId(visibility);
         // loadDataList() is not called by getList() when the page is submitted with the onchange
         // event on the h:selectOneMenu. Not sure why!?
         reloadList();
     }
+
+    public Boolean getShowPublicItems() {
+		return showPublicItems;
+	}
+
+	public void setShowPublicItems(Boolean showPublicItems) {
+		this.showPublicItems = showPublicItems;
+	}
+	
+	public void showPublicItems(final ValueChangeEvent pEevent) {
+		final Boolean showPublicItems = (Boolean) ((HtmlSelectBooleanCheckbox) pEevent.getComponent()).getValue();
+        setShowPublicItems(showPublicItems);
+		// loadDataList() is not called by getList() when the page is submitted with the onchange
+        // event on the h:selectOneMenu. Not sure why!?
+        reloadList();	
+	}
+
+	public Long getMaxDistance() {
+		return maxDistance;
+	}
+
+	public void setMaxDistance(Long maxDistance) {
+		this.maxDistance = UiUtils.getPositiveLongOrNull(maxDistance);
+	}
+	
+	public List<SelectItem> getMaxDistanceSelectItems() {
+		if (maxDistanceSelectItems == null) {
+			maxDistanceSelectItems = new ArrayList<SelectItem>();
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			// Add all categories first.
+			maxDistanceSelectItems.add(getNoMaxDistanceSelectItem(locale));
+			maxDistanceSelectItems.add(new SelectItem(Long.valueOf(1), "1 km"));
+			maxDistanceSelectItems.add(new SelectItem(Long.valueOf(5), "5 km"));
+			maxDistanceSelectItems.add(new SelectItem(Long.valueOf(10), "10 km"));
+			maxDistanceSelectItems.add(new SelectItem(Long.valueOf(20), "20 km"));
+			maxDistanceSelectItems.add(new SelectItem(Long.valueOf(50), "50 km"));
+			maxDistanceSelectItems.add(new SelectItem(Long.valueOf(100), "100 km"));
+			maxDistanceSelectItems.add(new SelectItem(Long.valueOf(500), "500 km"));
+		}		
+		return maxDistanceSelectItems;	
+	}
+
+	private SelectItem getNoMaxDistanceSelectItem(final Locale pLocale) {
+		final String label = I18nUtils.getMessageResourceString("geolocation_noMaxDistance", pLocale);
+		final SelectItem si = new SelectItem(null, label);
+		return si;
+	}
+	
+	public void maxDistance(final ValueChangeEvent pEevent) {
+    	final Long maxDistance = (Long) ((HtmlSelectOneMenu) pEevent.getComponent()).getValue();
+    	setMaxDistance(maxDistance);
+        // loadDataList() is not called by getList() when the page is submitted with the onchange
+        // event on the h:selectOneMenu. Not sure why!?
+        reloadList();
+    }
+	
+	public String clearMaxDistance() {
+		setMaxDistance(null);
+		return "clearMaxDistance";
+	}	
     
 	public String clearBorrowStatus() {
 		setBorrowStatus(null);
 		return "clearBorrowStatus";
 	}
 
-	public String clearVisibleStatus() {
-		setVisibleStatus(null);
-		return "clearVisibleStatus";
+	public String clearVisiblility() {
+		setVisibilityId(null);
+		return "clearVisibility";
 	}
 
 	@Override
 	public boolean isFilteredList() {
-		boolean tempResult = getBorrowStatusBoolean() != null || getVisibleStatusBoolean() != null; 
+		boolean tempResult = getBorrowStatusBoolean() != null || getVisibilityId() != null || getMaxDistance() != null; 
 		return tempResult || super.isFilteredList();
 	}
 
-	public String getVisibleLabel() {
+	public String getVisibilityLabel() {
 		final Item item = (Item)getTable().getRowData();
 		if (item instanceof InternalItem) {
-			InternalItem internalItem = (InternalItem) item;
-			if (Boolean.TRUE.equals(internalItem.getVisible())) {
+			final InternalItem internalItem = (InternalItem)getTable().getRowData();
+			if (internalItem != null && internalItem.getVisibility() != null) {
 				final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-				return I18nUtils.getMessageResourceString("item_visibleYes", locale);
+				return I18nUtils.getMessageResourceString(internalItem.getVisibility().getLabelCode(), locale);
 			}
-			else if (Boolean.FALSE.equals(internalItem.getVisible())) {
-				final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-				return I18nUtils.getMessageResourceString("item_visibleNo", locale);
+			else {
+				return "";
 			}
 		}
 		return "";
@@ -324,7 +385,7 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 		}		
 	}
 
-	public boolean isRequestLendAvailable() {		
+	public boolean isRequestLendAvailable() {
 		final InternalItem item = (InternalItem)getTable().getRowData();
 		// Not sure why this is called 3 times per item !? Avoid hitting DB.
 		final HttpServletRequest request = JsfUtils.getRequest();

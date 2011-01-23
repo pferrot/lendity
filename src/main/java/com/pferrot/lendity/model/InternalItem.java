@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -30,10 +31,18 @@ import com.pferrot.core.CoreUtils;
 @DiscriminatorValue("Internal")
 @Audited
 public class InternalItem extends Item implements Ownable, Commentable<ItemComment> {
-
-	// Whether the item can be seen by connections or not.
-	@Column(name = "VISIBLE")
-	private Boolean visible = Boolean.TRUE;
+	
+	// Information displayed to connections only (if the item is shared accordingly).
+	@Column(name = "INFO_CONNECTIONS", nullable = true, length = 3999)
+	private String infoConnections;
+	
+	// Information displayed to non-connections only (if the item is shared accordingly).
+	@Column(name = "INFO_PUBLIC", nullable = true, length = 3999)
+	private String infoPublic;	
+	
+	@ManyToOne(targetEntity = ItemVisibility.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "VISIBILITY_ID", nullable = false)
+	private ItemVisibility visibility;
 
 	@OneToOne(targetEntity = Person.class)
 	@JoinColumn(name = "OWNER_ID")
@@ -73,17 +82,41 @@ public class InternalItem extends Item implements Ownable, Commentable<ItemComme
     public InternalItem() {
     	super();
     }
+
+	public String getInfoConnections() {
+		return infoConnections;
+	}
+
+	public void setInfoConnections(String infoConnections) {
+		this.infoConnections = infoConnections;
+	}
+
+	public String getInfoPublic() {
+		return infoPublic;
+	}
+
+	public void setInfoPublic(String infoPublic) {
+		this.infoPublic = infoPublic;
+	}
     
-	public Boolean getVisible() {
-		return visible;
+	public ItemVisibility getVisibility() {
+		return visibility;
+	}
+	
+	public void setVisibility(ItemVisibility visibility) {
+		this.visibility = visibility;
 	}
 
-	public void setVisible(Boolean visible) {
-		this.visible = visible;
+	public boolean isPublicVisibility() {
+		return getVisibility().getLabelCode().equals(ItemVisibility.PUBLIC);
 	}
 
-	public boolean isVisible() {
-		return Boolean.TRUE.equals(getVisible());
+	public boolean isPrivateVisibility() {
+		return getVisibility().getLabelCode().equals(ItemVisibility.PRIVATE);
+	}
+	
+	public boolean isConnectionsVisibility() {
+		return getVisibility().getLabelCode().equals(ItemVisibility.CONNECTIONS);
 	}
 
 	public Person getOwner() {
@@ -111,7 +144,7 @@ public class InternalItem extends Item implements Ownable, Commentable<ItemComme
 	}
 
 	public boolean isAvailable() {
-		return !isBorrowed() && isVisible();
+		return !isBorrowed() && (isConnectionsVisibility() || isPublicVisibility());
 	}
 
 	@Override

@@ -56,7 +56,7 @@
 <td class="separatorCell"><h:outputText value=" " escape="false" /></td>
 
 <td>
-<ui:include src="filter/visibleStatusFilter.jspx">
+<ui:include src="filter/visibilityFilter.jspx">
 	<ui:param name="theBean" value="#{myLentItemsListController}"/>
 </ui:include>
 </td>
@@ -128,7 +128,7 @@
 					<h:outputText id="id_3" value="#{messages.item_visibility}:" />
 				</th>
 				<td>
-					<h:outputText id="id_4" value="#{myLentItemsListController.visibleLabel}"/>
+					<h:outputText id="id_4" value="#{myLentItemsListController.visibilityLabel}"/>
 				</td>
 			</tr>
 			<tr>

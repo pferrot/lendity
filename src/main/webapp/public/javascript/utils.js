@@ -566,7 +566,7 @@ function requestConnectionTooltip(pTooltipTarget, pPersonID, pRedirectID) {
 /*
  * Click the submit button in the tooltip.
  */
-function submitRequestConnection() {	
+function submitRequestConnection() {
 	document.getElementById("requestConnectionActionButton").click();
 }
 

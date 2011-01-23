@@ -17,17 +17,22 @@ public abstract class AbstractPersonAddEditController {
 	private String firstName;
 	private String lastName;
 	
+	private String website;
+	
 	private String phoneHome;
 	private String phoneMobile;
 	private String phoneProfessional;
 	
 	private String addressHome;
-	private String addressProfessional;
+	private Double addressHomeLongitude;
+	private Double addressHomeLatitude;
 	
 	private Boolean emailSubscriber;
 	private Boolean receiveNeedsNotifications;
 	private Boolean receiveCommentsOnOwnNotif;
 	private Boolean receiveCommentsOnCommentedNotif;
+	private Boolean showNameOnPublicItems;
+	private Boolean showContactDetailsToAll;
 	
 	public PersonService getPersonService() {
 		return personService;
@@ -77,6 +82,14 @@ public abstract class AbstractPersonAddEditController {
 		this.phoneProfessional = StringUtils.getNullIfEmpty(phoneProfessional);
 	}
 
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = StringUtils.getNullIfEmpty(website);
+	}
+
 	public String getAddressHome() {
 		return addressHome;
 	}
@@ -85,12 +98,20 @@ public abstract class AbstractPersonAddEditController {
 		this.addressHome = StringUtils.getNullIfEmpty(addressHome);
 	}
 
-	public String getAddressProfessional() {
-		return addressProfessional;
+	public Double getAddressHomeLongitude() {
+		return addressHomeLongitude;
 	}
 
-	public void setAddressProfessional(String addressProfessional) {
-		this.addressProfessional = StringUtils.getNullIfEmpty(addressProfessional);
+	public void setAddressHomeLongitude(Double addressHomeLongitude) {
+		this.addressHomeLongitude = addressHomeLongitude;
+	}
+
+	public Double getAddressHomeLatitude() {
+		return addressHomeLatitude;
+	}
+
+	public void setAddressHomeLatitude(Double addressHomeLatitude) {
+		this.addressHomeLatitude = addressHomeLatitude;
 	}
 
 	public Boolean getEmailSubscriber() {
@@ -124,6 +145,22 @@ public abstract class AbstractPersonAddEditController {
 	public void setReceiveCommentsOnCommentedNotif(
 			Boolean receiveCommentsOnCommentedNotif) {
 		this.receiveCommentsOnCommentedNotif = receiveCommentsOnCommentedNotif;
+	}
+
+	public Boolean getShowNameOnPublicItems() {
+		return showNameOnPublicItems;
+	}
+	
+	public void setShowNameOnPublicItems(Boolean showNameOnPublicItems) {
+		this.showNameOnPublicItems = showNameOnPublicItems;
+	}
+
+	public Boolean getShowContactDetailsToAll() {
+		return showContactDetailsToAll;
+	}
+
+	public void setShowContactDetailsToAll(Boolean showContactDetailsToAll) {
+		this.showContactDetailsToAll = showContactDetailsToAll;
 	}
 
 	public abstract Long processPerson();

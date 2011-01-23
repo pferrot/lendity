@@ -44,9 +44,9 @@ public class PersonUtils {
 					getSessionMap().get(PersonConsts.CURRENT_PERSON_DISPLAY_NAME_SESSION_ATTRIBUTE_NAME);
 	}
 
-	public static Integer getCurrentPersonNbInvitations() {
-		return (Integer)FacesContext.getCurrentInstance().getExternalContext().
-					getSessionMap().get(PersonConsts.CURRENT_PERSON_NB_INVITATIONS_SESSION_ATTRIBUTE_NAME);
+	public static boolean isCurrentPersonIsAddressDefined() {
+		return Boolean.TRUE.equals(FacesContext.getCurrentInstance().getExternalContext().
+					getSessionMap().get(PersonConsts.CURRENT_PERSON_IS_ADDRESS_DEFINED_SESSION_ATTRIBUTE_NAME));
 	}
 	
 	/**
@@ -124,6 +124,7 @@ public class PersonUtils {
 			pRequest.getSession().setAttribute(PersonConsts.CURRENT_PERSON_FIRST_NAME_SESSION_ATTRIBUTE_NAME, pPerson.getFirstName());
 			pRequest.getSession().setAttribute(PersonConsts.CURRENT_PERSON_LAST_NAME_SESSION_ATTRIBUTE_NAME, pPerson.getLastName());
 			pRequest.getSession().setAttribute(PersonConsts.CURRENT_PERSON_DISPLAY_NAME_SESSION_ATTRIBUTE_NAME, pPerson.getDisplayName());
+			pRequest.getSession().setAttribute(PersonConsts.CURRENT_PERSON_IS_ADDRESS_DEFINED_SESSION_ATTRIBUTE_NAME, Boolean.valueOf(pPerson.isAddressHomeDefined()));
 		}		
 	}
 }

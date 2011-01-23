@@ -108,7 +108,8 @@ public class PersonOverviewController
 	}
 	
 	public boolean isEmailAvailable() {
-		return personService.isCurrentUserAuthorizedToViewEmail(person);
+		return personService.isCurrentUserAuthorizedToViewEmail(person) ||
+			Boolean.TRUE.equals(person.getShowContactDetailsToAll());
 	}
 	
 	public boolean isRequestConnectionDisabled() {
@@ -154,35 +155,12 @@ public class PersonOverviewController
 	}
 
 	public boolean isAddressHomeAvailable() {
-		final String address = person.getAddressHome();
-		return !StringUtils.isNullOrEmpty(address);
-	}
-
-	public String getAddressProfessional() {
-		final String address = person.getAddressProfessional();
-		if (address != null) {
-			return HtmlUtils.escapeHtmlAndReplaceCr(address);
-		}
-		return "";
-	}
-
-	public boolean isAddressProfessionalAvailable() {
-		final String address = person.getAddressProfessional();
-		return !StringUtils.isNullOrEmpty(address);
+		return person.isAddressHomeDefined();
 	}
 
 	public String getAddressHomeGoogleMapsUrl() {
 		try {
 			return GoogleMapsUtils.getLocationUrl(person.getAddressHome());
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public String getAddressProfessionalGoogleMapsUrl() {
-		try {
-			return GoogleMapsUtils.getLocationUrl(person.getAddressProfessional());
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);

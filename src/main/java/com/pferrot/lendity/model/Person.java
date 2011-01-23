@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
@@ -27,8 +30,14 @@ import com.pferrot.core.CoreUtils;
 import com.pferrot.security.model.User;
 
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "PERSONS")
 @Audited
+//@FilterDefs({
+//	@FilterDef(name="originLatitudeFilter", parameters=@ParamDef ( name="originLatitude", type="double" )),
+//	@FilterDef(name="originLongitudeFilter", parameters=@ParamDef ( name="originLongitude", type="double" ))
+//})
 public class Person implements Serializable {
 
 	@Id @GeneratedValue
@@ -41,11 +50,13 @@ public class Person implements Serializable {
 	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "IMAGE_ID", nullable = true)
 	@NotAudited
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Document image;
 	
 	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "THUMBNAIL_ID", nullable = true)
 	@NotAudited
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Document thumbnail;
 	
 	@Column(name = "FIRST_NAME", nullable = false, length = 255)
@@ -60,6 +71,9 @@ public class Person implements Serializable {
 	@Column(name = "EMAIL", unique = true, nullable = false, length = 255)
 	private String email;
 	
+	@Column(name = "WEBSITE", length = 255)
+	private String website;
+	
 	@Column(name = "PHONE_HOME", length = 100)
 	private String phoneHome;
 	
@@ -73,10 +87,12 @@ public class Person implements Serializable {
 			  cascade = {CascadeType.PERSIST})
 	@JoinColumn(name = "USER_ID", nullable = true)
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private User user;
 	
 	@ManyToOne(targetEntity = com.pferrot.lendity.model.Gender.class)
 	@JoinColumn(name = "GENDER_ID", nullable = true)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Gender gender;
 	
 	@ManyToMany(targetEntity = com.pferrot.lendity.model.Person.class)
@@ -85,6 +101,7 @@ public class Person implements Serializable {
 			joinColumns = {@JoinColumn(name = "PERSON_ID")},
 			inverseJoinColumns = {@JoinColumn(name = "CONNECTION_ID")}
 	)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<Person> connections = new HashSet<Person>();
 	
 	@ManyToMany(targetEntity = com.pferrot.lendity.model.Person.class)
@@ -103,14 +120,14 @@ public class Person implements Serializable {
 	)
 	private Set<Person> bannedByPersons = new HashSet<Person>();
 	
-//	@Embedded
-//	private Address address;
-	
 	@Column(name = "ADDRESS_HOME", nullable = true, length = 300)
 	private String addressHome;
 	
-	@Column(name = "ADDRESS_PROFESSIONAL", nullable = true, length = 300)
-	private String addressProfessional;
+	@Column(name = "ADDRESS_HOME_LNG", nullable = true)
+	private Double addressHomeLongitude;
+	
+	@Column(name = "ADDRESS_HOME_LAT", nullable = true)
+	private Double addressHomeLatitude;
 	
 	@Column(name = "RECEIVE_NEEDS_NOTIF", nullable = false)
 	private Boolean receiveNeedsNotifications;
@@ -132,12 +149,35 @@ public class Person implements Serializable {
 	 */
 	@Column(name = "EMAIL_SUBSC_LAST_UPDATE", nullable = true)
 	private Date emailSubscriberLastUpdate;
+	
+	// Specify whether the name of the person should be displayed on public
+	// for users who are not connections.
+	@Column(name = "SHOW_NAME_PUBLIC_ITEMS", nullable = false)
+	private Boolean showNameOnPublicItems;
+	
+	// If true, contact details (address, phone, email,...) will be public.
+	@Column(name = "SHOW_CONTACT_DETAILS_TO_ALL", nullable = false)
+	private Boolean showContactDetailsToAll;
 
     public Person() {
     	super();
     }
+    
+    
 
-    public Person(Long id, String firstName, String lastName) {
+//    public Double getDistance() {
+//		return distance;
+//	}
+//
+//
+//
+//	public void setDistance(Double distance) {
+//		this.distance = distance;
+//	}
+
+
+
+	public Person(Long id, String firstName, String lastName) {
        this.id = id;
        this.firstName = firstName;
        this.lastName = lastName;
@@ -213,6 +253,14 @@ public class Person implements Serializable {
 		this.email = email;
 	}
 
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+
 	public String getPhoneHome() {
 		return phoneHome;
 	}
@@ -273,12 +321,24 @@ public class Person implements Serializable {
 		this.addressHome = addressHome;
 	}
 
-	public String getAddressProfessional() {
-		return addressProfessional;
+	public Double getAddressHomeLongitude() {
+		return addressHomeLongitude;
+	}
+	
+	public boolean isAddressHomeDefined() {
+		return getAddressHomeLongitude() != null;
 	}
 
-	public void setAddressProfessional(String addressProfessional) {
-		this.addressProfessional = addressProfessional;
+	public void setAddressHomeLongitude(Double addressHomeLongitude) {
+		this.addressHomeLongitude = addressHomeLongitude;
+	}
+
+	public Double getAddressHomeLatitude() {
+		return addressHomeLatitude;
+	}
+
+	public void setAddressHomeLatitude(Double addressHomeLatitude) {
+		this.addressHomeLatitude = addressHomeLatitude;
 	}
 
 	public void setConnections(final Set<Person> pConnections) {
@@ -360,6 +420,22 @@ public class Person implements Serializable {
 	public void setReceiveCommentsOnCommentedNotif(
 			Boolean receiveCommentsOnCommentedNotif) {
 		this.receiveCommentsOnCommentedNotif = receiveCommentsOnCommentedNotif;
+	}
+
+	public Boolean getShowNameOnPublicItems() {
+		return showNameOnPublicItems;
+	}
+
+	public void setShowNameOnPublicItems(Boolean showNameOnPublicItems) {
+		this.showNameOnPublicItems = showNameOnPublicItems;
+	}
+	
+	public Boolean getShowContactDetailsToAll() {
+		return showContactDetailsToAll;
+	}
+
+	public void setShowContactDetailsToAll(Boolean showContactDetailsToAll) {
+		this.showContactDetailsToAll = showContactDetailsToAll;
 	}
 
 	public Boolean getEmailSubscriber() {
