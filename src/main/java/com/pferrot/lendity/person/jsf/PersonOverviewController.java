@@ -35,7 +35,7 @@ public class PersonOverviewController
 	
 	@InitView
 	public void initView() {
-		// Read the item ID from the request parameter and load the correct item.
+		// Read the person ID from the request parameter and load the correct person.
 		try {
 			final String personIdString = getPersonIdString();
 			Person person = null;
@@ -51,10 +51,6 @@ public class PersonOverviewController
 					return;
 				}
 				setPerson(person);
-			}
-			// Item not found or not item ID specified.
-			if (person == null) {
-				JsfUtils.redirect(PagesURL.PERSONS_LIST);
 			}
 		}
 		catch (AccessDeniedException ade) {
