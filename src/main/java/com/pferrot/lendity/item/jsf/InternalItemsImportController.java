@@ -71,7 +71,7 @@ public class InternalItemsImportController  {
 	}
 
 	public void setCategoryId(final Long pCategoryId) {
-		this.categoryId = UiUtils.getPositiveLongOrNull(categoryId);
+		this.categoryId = UiUtils.getPositiveLongOrNull(pCategoryId);
 	}
 	
 	public List<SelectItem> getVisibilitySelectItems() {
@@ -88,7 +88,7 @@ public class InternalItemsImportController  {
 	}
 
 	public void setVisibilityId(final Long pVisibilityId) {
-		this.visibilityId = UiUtils.getPositiveLongOrNull(visibilityId);
+		this.visibilityId = UiUtils.getPositiveLongOrNull(pVisibilityId);
 	}
 
 	public Set<String> getValidItemsToImport() {
