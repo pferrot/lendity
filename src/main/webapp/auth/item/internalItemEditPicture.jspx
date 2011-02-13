@@ -1,5 +1,5 @@
 <ui:include xmlns:ui="http://java.sun.com/jsf/facelets"
             src="../image/editPicture.jspx">
 	<ui:param name="controllerBean" value="#{internalItemEditPictureController}"/>
-	<ui:param name="pageTitle" value="#{messages.item_internalItemEditPictureTitle}"/>
+	<ui:param name="pageTitle" value="#{messages.item_internalItemEditPictureTitle}" />
 </ui:include>

@@ -58,9 +58,13 @@
         <mapping class="com.pferrot.lendity.model.LendRequest"/>
         <mapping class="com.pferrot.lendity.model.LendRequestResponse"/>
         
+        <mapping class="com.pferrot.lendity.model.LendTransaction"/>
+        <mapping class="com.pferrot.lendity.model.LendTransactionStatus"/>
+        
         <mapping class="com.pferrot.lendity.model.Comment"/>
         <mapping class="com.pferrot.lendity.model.ItemComment"/>
         <mapping class="com.pferrot.lendity.model.NeedComment"/>
+        <mapping class="com.pferrot.lendity.model.LendTransactionComment"/>
         
         <mapping class="com.pferrot.lendity.model.Need"/>
          

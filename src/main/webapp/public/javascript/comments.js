@@ -66,7 +66,7 @@ function positionEditCommentInProgressBottom() {
 function loadComments(pItemId, pNeedId) {
 	addCommentInProgress();
 	$j.ajax({
-		url: mContextPath + '/auth/comment/comment.json',
+		url: mContextPath + '/public/comment/comment.json',
 		dataType: 'json',
 		contentType: 'application/json',
 		data: {action: 'read', itemID: pItemId, needID: pNeedId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
@@ -87,7 +87,7 @@ function addCommentInDbInternal(pItemId, pNeedId) {
 	text = $j.trim(text);
 	// Add in DB.
 	$j.ajax({
-			url: mContextPath + '/auth/comment/comment.json',
+			url: mContextPath + '/public/comment/comment.json',
 			dataType: 'json',
 			contentType: 'application/json',
 			data: {action: 'create', itemID: pItemId, needID: pNeedId, text: text},
@@ -103,7 +103,7 @@ function loadMoreCommentsInternal(pItemId, pNeedId) {
 	editCommentInProgress();
 	
 	$j.ajax({
-		url: mContextPath + '/auth/comment/comment.json',
+		url: mContextPath + '/public/comment/comment.json',
 		dataType: 'json',
 		contentType: 'application/json',
 		data: {action: 'read', itemID: pItemId, needID: pNeedId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
@@ -274,7 +274,7 @@ function removeComment(pSpanLink) {
 	editCommentInProgress.show();
 	
 	$j.ajax({
-		url: mContextPath + '/auth/comment/comment.json',
+		url: mContextPath + '/public/comment/comment.json',
 		dataType: 'json',
 		contentType: 'application/json',
 		data: {action: 'delete', commentID: commentId},
@@ -428,7 +428,7 @@ function editCommentSubmit() {
 	
 	
 	$j.ajax({
-		url: mContextPath + '/auth/comment/comment.json',
+		url: mContextPath + '/public/comment/comment.json',
 		dataType: 'json',
 		contentType: 'application/json',
 		data: {action: 'update', commentID: commentId, text: newText},

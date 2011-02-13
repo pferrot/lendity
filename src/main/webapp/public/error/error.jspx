@@ -7,7 +7,7 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.error_errorPageTitle}" />
+	<ui:define name="pageTitle"><h:outputText value="#{messages.error_errorPageTitle}" /></ui:define>
 	<ui:param name="contentHeader" value="#{messages.error_errorPageTitle}" />
 
 	<ui:define name="content">

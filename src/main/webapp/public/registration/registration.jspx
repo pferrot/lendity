@@ -6,7 +6,7 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.registration_signUp}" />
+	<ui:define name="pageTitle"><h:outputText value="#{messages.registration_signUp}" /></ui:define>
 	<ui:param name="contentHeader" value="#{messages.registration_signUp}" />
 
 	<ui:define name="content">

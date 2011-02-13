@@ -8,7 +8,7 @@
 
 <head>
     <!-- page title param passed in by param -->
-    <title><h:outputText value="#{messages.general_mainTitle}"/></title>
+    <title><ui:insert name="pageTitle"/><h:outputText value=" " escape="false" />///<h:outputText value=" " escape="false" /><h:outputText value="#{messages.general_mainTitle}"/></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="Expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 	<meta http-equiv="Pragma" content="no-cache" />

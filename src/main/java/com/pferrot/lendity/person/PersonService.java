@@ -25,6 +25,7 @@ import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.exception.PersonException;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.security.SecurityUtils;
 
 public class PersonService {
 
@@ -323,6 +324,9 @@ public class PersonService {
 		
 	public boolean isCurrentUserAuthorizedToViewEmail(final Person pPerson) {
 		CoreUtils.assertNotNull(pPerson);
+		if (!SecurityUtils.isLoggedIn()) {
+			return false;
+		}
 		if (isCurrentUserAuthorizedToEdit(pPerson)) {
 			return true;
 		}
@@ -345,6 +349,9 @@ public class PersonService {
 
 	public boolean isCurrentUserAuthorizedToEdit(final Person pPerson) {
 		CoreUtils.assertNotNull(pPerson);
+		if (!SecurityUtils.isLoggedIn()) {
+			return false;
+		}
 		final Person currentPerson = getCurrentPerson();
 		if (currentPerson == null) {
 			return false;
@@ -378,8 +385,19 @@ public class PersonService {
 	}
 	
 
+	/**
+	 * Returns the current person for the logged in user or null
+	 * if not logged in.
+	 *
+	 * @return
+	 */
 	public Person getCurrentPerson() {
-		return personDao.findPerson(PersonUtils.getCurrentPersonId());
+		if (SecurityUtils.isLoggedIn()) {
+			return personDao.findPerson(PersonUtils.getCurrentPersonId());
+		}
+		else {
+			return null;
+		}
 	}
 
 	public List<ListValue> getCountries() {

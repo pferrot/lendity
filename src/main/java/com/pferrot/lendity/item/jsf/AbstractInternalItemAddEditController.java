@@ -22,6 +22,10 @@ public abstract class AbstractInternalItemAddEditController extends AbstractItem
 	private String infoConnections;
 	private List<SelectItem> visibilitySelectItems;
 	private Long visibilityId;
+	private Boolean toGiveForFree;
+	private Double salePrice;
+	private Double deposit;
+	private Double rentalFee;	
 
 	public String getInfoConnections() {
 		return infoConnections;
@@ -54,6 +58,50 @@ public abstract class AbstractInternalItemAddEditController extends AbstractItem
 
 	public void setVisibilityId(final Long pVisibilityId) {
 		this.visibilityId = UiUtils.getPositiveLongOrNull(pVisibilityId);
+	}
+
+	public Boolean getToGiveForFree() {
+		if (toGiveForFree == null) {
+			return Boolean.FALSE;
+		}
+		return toGiveForFree;
+	}
+
+	public void setToGiveForFree(Boolean toGiveForFree) {
+		this.toGiveForFree = toGiveForFree;
+	}
+
+	public Double getSalePrice() {
+		return salePrice;
+	}
+
+	public void setSalePrice(Double salePrice) {
+		if (salePrice != null && salePrice.doubleValue() <= 0) {
+			salePrice = null;
+		}
+		this.salePrice = salePrice;
+	}
+
+	public Double getDeposit() {
+		return deposit;
+	}
+
+	public void setDeposit(Double deposit) {
+		if (deposit != null && deposit.doubleValue() <= 0) {
+			deposit = null;
+		}
+		this.deposit = deposit;
+	}
+
+	public Double getRentalFee() {
+		return rentalFee;
+	}
+
+	public void setRentalFee(Double rentalFee) {
+		if (rentalFee != null && rentalFee.doubleValue() <= 0) {
+			rentalFee = null;
+		}
+		this.rentalFee = rentalFee;
 	}
 
 	public String submit() {

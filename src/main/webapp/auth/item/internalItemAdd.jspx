@@ -7,7 +7,7 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.item_internalItemAddTitle}" />
+	<ui:define name="pageTitle"><h:outputText value="#{messages.item_internalItemAddTitle}" /></ui:define>
 	<ui:param name="contentHeader" value="#{messages.item_internalItemAddTitle}" />
 
 		<ui:define name="content">
@@ -67,7 +67,7 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">
-						<label><h:outputText value="#{messages.item_visibility}"/></label>
+						<label><h:outputText value="#{messages.item_visibility}"/> *</label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="visibility"></h:message>
 						<h:selectOneMenu id="visibility" 
@@ -77,7 +77,23 @@
 						    requiredMessage="#{messages.validation_requiredMessage}">
 							<f:selectItems value="#{internalItemAddController.visibilitySelectItems}"/>
 						</h:selectOneMenu>
-					</div><!-- /form row -->					
+					</div><!-- /form row -->
+
+					<ui:include src="component/depositEdit.jspx">
+						<ui:param name="controllerBean" value="#{internalItemEditController}"/>
+					</ui:include>	
+					
+					<ui:include src="component/rentalFeeEdit.jspx">
+						<ui:param name="controllerBean" value="#{internalItemEditController}"/>
+					</ui:include>	
+
+					<ui:include src="component/toGiveForFreeEdit.jspx">
+						<ui:param name="controllerBean" value="#{internalItemEditController}"/>
+					</ui:include>
+					
+					<ui:include src="component/salePriceEdit.jspx">
+						<ui:param name="controllerBean" value="#{internalItemEditController}"/>
+					</ui:include>
 					
 					<!-- form row -->
 					<div class="gt-form-row">

@@ -18,11 +18,15 @@ import com.pferrot.lendity.dao.CommentDao;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.item.ItemService;
+import com.pferrot.lendity.lendtransaction.LendTransactionService;
 import com.pferrot.lendity.model.Comment;
 import com.pferrot.lendity.model.Commentable;
+import com.pferrot.lendity.model.CommentableWithOwner;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemComment;
+import com.pferrot.lendity.model.LendTransaction;
+import com.pferrot.lendity.model.LendTransactionComment;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.NeedComment;
 import com.pferrot.lendity.model.Person;
@@ -39,6 +43,7 @@ public class CommentService {
 	private CommentDao commentDao;
 	private ItemService itemService;
 	private NeedService needService;
+	private LendTransactionService lendTransactionService;
 	private PersonDao personDao;
 	private MailManager mailManager;
 	private PersonService personService;
@@ -63,6 +68,11 @@ public class CommentService {
 		this.needService = needService;
 	}
 
+	public void setLendTransactionService(
+			LendTransactionService lendTransactionService) {
+		this.lendTransactionService = lendTransactionService;
+	}
+
 	public void setCommentDao(final CommentDao commentDao) {
 		this.commentDao = commentDao;
 	}
@@ -84,7 +94,10 @@ public class CommentService {
 	 * @return
 	 */
 	public Comment findCommentWithAC(final Long pCommentId, final Long pCurrentPersonId) {
-		final Person currentPerson = personService.findPerson(pCurrentPersonId);
+		Person currentPerson = null;
+		if (pCurrentPersonId != null) {
+			currentPerson = personService.findPerson(pCurrentPersonId);
+		}
 		final Comment comment = commentDao.findComment(pCommentId);
 		assertUserAuthorizedToView(currentPerson, comment);
 		return comment;
@@ -102,7 +115,10 @@ public class CommentService {
 	 */
 	public ListWithRowCount findItemCommentsWithAC(final Long pItemId, final Long pCurrentPersonId, final int pFirstResult, final int pMaxResults) {
 		final InternalItem item = itemService.findInternalItem(pItemId);
-		final Person currentPerson = personService.findPerson(pCurrentPersonId);
+		Person currentPerson = null;
+		if (pCurrentPersonId != null) {
+			currentPerson = personService.findPerson(pCurrentPersonId);
+		}
 		itemService.assertUserAuthorizedToView(currentPerson, item);		
 		return commentDao.findItemComments(item, pFirstResult, pMaxResults);
 	}
@@ -124,7 +140,10 @@ public class CommentService {
 	 */
 	public ListWithRowCount findNeedCommentsWithAC(final Long pNeedId, final Long pCurrentPersonId, final int pFirstResult, final int pMaxResults) {
 		final Need need = needService.findNeed(pNeedId);
-		final Person currentPerson = personService.findPerson(pCurrentPersonId);
+		Person currentPerson = null;
+		if (pCurrentPersonId != null) {
+			currentPerson = personService.findPerson(pCurrentPersonId);
+		}
 		needService.assertUserAuthorizedToView(currentPerson, need);		
 		return commentDao.findNeedComments(need, pFirstResult, pMaxResults);
 	}
@@ -199,6 +218,40 @@ public class CommentService {
 		
 		return commentID;
 	}
+
+	/**
+	 * Creates the comment and sends notifications to others who commented and container owner.
+	 * Also, access control is verified.
+	 * 
+	 * @param pText
+	 * @param pLendTransactionId
+	 * @param pCommentOwnerId
+	 * @return
+	 * @throws CommentException
+	 */
+	public Long createCommentOnLendTransactionWithAC(final String pText, final Long pLendTransactionId, final Long pCommentOwnerId) throws CommentException {
+		final LendTransaction lendTransaction = lendTransactionService.findLendTransaction(pLendTransactionId);
+		
+		final Person commentOwner = personService.findPerson(pCommentOwnerId); 
+		assertUserAuthorizedToAddCommentOnLendTransaction(commentOwner, lendTransaction);
+		
+		final LendTransactionComment lendTransactionComment = new LendTransactionComment();
+		lendTransactionComment.setCreationDate(new Date());
+		lendTransactionComment.setLendTransaction(lendTransaction);
+		lendTransactionComment.setOwner(commentOwner);
+		lendTransactionComment.setText(pText);
+		
+		Long commentID = commentDao.createComment(lendTransactionComment);
+		
+		lendTransaction.addComment(lendTransactionComment);
+		// Not needed, the comment recipients are added when the lend transaction is created.
+		//internalItem.addCommentRecipient(lendTransactionComment.getOwner());
+		lendTransactionService.updateLendTransaction(lendTransaction);
+		
+		sendCommentAddedNotificationToAll(lendTransactionComment);
+		
+		return commentID;
+	}
 	
 	public void deleteComment(final Long pCommentId) {		
 		final Comment comment = commentDao.findComment(pCommentId);
@@ -229,7 +282,8 @@ public class CommentService {
 	 * @param pComment
 	 */
 	private void removeCommentRecipientFromContainerIfNeeded(final Comment pComment) {
-		if (pComment == null || 
+		if (pComment instanceof LendTransactionComment ||
+			pComment == null || 
 			pComment.getId() == null ||
 			pComment.getOwner() == null ||
 			pComment.getOwner().getId() == null) {
@@ -315,7 +369,10 @@ public class CommentService {
 		boolean emailSentToContainerOwner = false;
 		
 		// Send to owner.
-		Person containerOwner = commentable.getOwner();
+		Person containerOwner = null;		
+		if (pComment instanceof CommentableWithOwner) {
+			containerOwner = ((CommentableWithOwner)commentable).getOwner(); 
+		}		
 		
 		// Send to container owner.
 		if (containerOwner != null &&
@@ -363,6 +420,7 @@ public class CommentService {
 			objects.put("commenterLastName", pComment.getOwner().getLastName());
 			
 			final Commentable commentable = pComment.getContainer();
+			String velocityTemplateLocation = null;
 			if (commentable instanceof InternalItem) {
 				final InternalItem internalItem = (InternalItem)commentable;
 				objects.put("objectTitle", internalItem.getTitle());
@@ -370,6 +428,7 @@ public class CommentService {
 						PagesURL.INTERNAL_ITEM_OVERVIEW,
 						PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID,
 						internalItem.getId().toString()));
+				velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/comment/added/comment/fr";
 			}
 			else if (commentable instanceof Need) {
 				final Need need = (Need)commentable;
@@ -378,6 +437,16 @@ public class CommentService {
 						PagesURL.NEED_OVERVIEW,
 						PagesURL.NEED_OVERVIEW_PARAM_NEED_ID,
 						need.getId().toString()));
+				velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/comment/added/need/fr";
+			}
+			else if (commentable instanceof LendTransaction) {
+				final LendTransaction lendTransaction = (LendTransaction)commentable;
+				objects.put("objectTitle", lendTransaction.getItem().getTitle());
+				objects.put("objectUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
+						PagesURL.LEND_TRANSACTION_OVERVIEW,
+						PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_NEED_ID,
+						lendTransaction.getId().toString()));
+				velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/comment/added/lendtransaction/fr";
 			}
 			else {
 				throw new CommentException("Unhandled commentabe type " + commentable.getClass());
@@ -390,9 +459,6 @@ public class CommentService {
 			objects.put("siteName", Configuration.getSiteName());
 			objects.put("siteUrl", Configuration.getRootURL());
 			objects.put("profileUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.MY_PROFILE));
-			
-			// TODO: localization
-			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/comment/added/fr";
 			
 			Map<String, String> to = new HashMap<String, String>();
 			to.put(pPerson.getEmail(), pPerson.getEmail());
@@ -441,6 +507,11 @@ public class CommentService {
 			Need need = needComment.getNeed();
 			return needService.isCurrentUserAuthorizedToView(need);
 		}
+		else if (pComment instanceof LendTransactionComment) {
+			LendTransactionComment lendTransactionComment = (LendTransactionComment)pComment;
+			LendTransaction lendTransaction = lendTransactionComment.getLendTransaction();
+			return lendTransactionService.isCurrentUserAuthorizedToView(lendTransaction);
+		}
 		
 		return false;
 	}
@@ -459,6 +530,11 @@ public class CommentService {
 			NeedComment needComment = (NeedComment)pComment;
 			Need need = needComment.getNeed();
 			return needService.isUserAuthorizedToView(pPerson, need);
+		}
+		else if (pComment instanceof LendTransactionComment) {
+			LendTransactionComment lendTransactionComment = (LendTransactionComment)pComment;
+			LendTransaction lendTransaction = lendTransactionComment.getLendTransaction();
+			return lendTransactionService.isUserAuthorizedToView(pPerson, lendTransaction);
 		}
 		
 		return false;
@@ -486,7 +562,7 @@ public class CommentService {
 			return false;
 		}
 		if (pPerson.getUser() != null &&
-				pPerson.getUser().isAdmin()) {
+			pPerson.getUser().isAdmin()) {
 			return true;
 		}
 		final Person commentOwner = pComment.getOwner();
@@ -521,6 +597,10 @@ public class CommentService {
 		return needService.isUserAuthorizedToView(pPerson, pNeed);
 	}
 	
+	public boolean isUserAuthorizedToAddCommentOnLendTransaction(final Person pPerson, final LendTransaction pLendTransaction) {
+		return lendTransactionService.isUserAuthorizedToView(pPerson, pLendTransaction);
+	}
+	
 	public void assertUserAuthorizedToAddCommentOnItem(final Person pPerson, final Item pItem) {
 		if (!isUserAuthorizedToAddCommentOnItem(pPerson, pItem)) {
 			throw new SecurityException("Current user is not authorized to add comment");
@@ -529,6 +609,12 @@ public class CommentService {
 	
 	public void assertUserAuthorizedToAddCommentOnNeed(final Person pPerson, final Need pNeed) {
 		if (!isUserAuthorizedToAddCommentOnNeed(pPerson, pNeed)) {
+			throw new SecurityException("User is not authorized to add comment");
+		}
+	}
+
+	public void assertUserAuthorizedToAddCommentOnLendTransaction(final Person pPerson, final LendTransaction pLendTransaction) {
+		if (!isUserAuthorizedToAddCommentOnLendTransaction(pPerson, pLendTransaction)) {
 			throw new SecurityException("User is not authorized to add comment");
 		}
 	}

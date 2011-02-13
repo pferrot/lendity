@@ -18,7 +18,6 @@ import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemUtils;
 import com.pferrot.lendity.lendrequest.LendRequestService;
-import com.pferrot.lendity.model.CategoryEnabled;
 import com.pferrot.lendity.model.ExternalItem;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Item;
@@ -48,9 +47,7 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 	private List<SelectItem> maxDistanceSelectItems;
 	private Long maxDistance;
 	
-	private Boolean showPublicItems = Boolean.FALSE;
-	
-	
+	private Boolean showOnlyConnectionsItems = Boolean.FALSE;	
 	
 	public AbstractItemsListController() {
 		super();
@@ -138,17 +135,17 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
         reloadList();
     }
 
-    public Boolean getShowPublicItems() {
-		return showPublicItems;
+    public Boolean getShowOnlyConnectionsItems() {
+		return showOnlyConnectionsItems;
 	}
 
-	public void setShowPublicItems(Boolean showPublicItems) {
-		this.showPublicItems = showPublicItems;
+	public void setShowOnlyConnectionsItems(Boolean showOnlyConnectionsItems) {
+		this.showOnlyConnectionsItems = showOnlyConnectionsItems;
 	}
 	
-	public void showPublicItems(final ValueChangeEvent pEevent) {
-		final Boolean showPublicItems = (Boolean) ((HtmlSelectBooleanCheckbox) pEevent.getComponent()).getValue();
-        setShowPublicItems(showPublicItems);
+	public void showOnlyConnectionsItems(final ValueChangeEvent pEevent) {
+		final Boolean showOnlyConnectionsItems = (Boolean) ((HtmlSelectBooleanCheckbox) pEevent.getComponent()).getValue();
+		setShowOnlyConnectionsItems(showOnlyConnectionsItems);
 		// loadDataList() is not called by getList() when the page is submitted with the onchange
         // event on the h:selectOneMenu. Not sure why!?
         reloadList();	

@@ -8,7 +8,7 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.item_myConnectionsItemsListTitle}" />
+	<ui:define name="pageTitle"><h:outputText value="#{messages.item_myConnectionsItemsListTitle}" /></ui:define>
 	<ui:param name="contentHeader" value="#{messages.item_myConnectionsItemsListTitle}" />
 
 	<ui:define name="content">
@@ -35,8 +35,8 @@
 <tr>
 
 <td class="itemSearchCell">
-<ui:include src="filter/searchFilter.jspx">
-	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
+<ui:include src="../../auth/item/filter/searchFilter.jspx">
+	<ui:param name="theBean" value="#{searchItemsListController}"/>
 	<ui:param name="defaultSearchString" value="#{messages.item_searchItemMyConnectionsItems}"/>
 </ui:include>
 </td>
@@ -44,28 +44,30 @@
 <td class="separatorCell"><h:outputText value=" " escape="false" /></td>
 
 <td>
-<ui:include src="filter/categoryFilter.jspx">
-	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
+<ui:include src="../../auth/item/filter/categoryFilter.jspx">
+	<ui:param name="theBean" value="#{searchItemsListController}"/>
 </ui:include>
 </td>
 
 <td class="separatorCell"><h:outputText value=" " escape="false" /></td>
 
 <td>
-<ui:include src="filter/borrowStatusFilter.jspx">
-	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
+<ui:include src="../../auth/item/filter/borrowStatusFilter.jspx">
+	<ui:param name="theBean" value="#{searchItemsListController}"/>
 	<ui:param name="borrowStatusTitle" value="#{messages.item_availableStatus}"/>	
 </ui:include>
 </td>
 
+<c:if test="#{searchItemsListController.userLoggedIn}">
 <td class="separatorCell"><h:outputText value=" " escape="false" /></td>
 
 <td>
-<ui:include src="filter/ownerFilter.jspx">
-	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
+<ui:include src="../../auth/item/filter/ownerFilter.jspx">
+	<ui:param name="theBean" value="#{searchItemsListController}"/>
 	<ui:param name="label" value="#{messages.item_owner}"/>
 </ui:include>
 </td>
+</c:if>
 
 </tr>
 
@@ -75,26 +77,28 @@
 <table class="filtersTable">
 <tr>
 <td >
-<ui:include src="sort/orderBy.jspx">
-	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
+<ui:include src="../../auth/item/sort/orderBy.jspx">
+	<ui:param name="theBean" value="#{searchItemsListController}"/>
+</ui:include>
+</td>
+
+<c:if test="#{searchItemsListController.userLoggedIn}">
+<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
+
+<td>
+<ui:include src="../../auth/item/filter/distanceFilter.jspx">
+	<ui:param name="theBean" value="#{searchItemsListController}"/>
 </ui:include>
 </td>
 
 <td class="separatorCell"><h:outputText value=" " escape="false" /></td>
 
 <td>
-<ui:include src="filter/distanceFilter.jspx">
-	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
+<ui:include src="../../auth/item/filter/showOnlyConnectionsItemsFilter.jspx">
+	<ui:param name="theBean" value="#{searchItemsListController}"/>
 </ui:include>
 </td>
-
-<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
-
-<td>
-<ui:include src="filter/showPublicItemsFilter.jspx">
-	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
-</ui:include>
-</td>
+</c:if>
 
 </tr>
 </table>
@@ -104,7 +108,7 @@
 <!-- content box -->
 <div class="gt-content-box">
 
-<c:if test="#{empty(myConnectionsItemsListController.list) and myConnectionsItemsListController.filteredList}">
+<c:if test="#{empty(searchItemsListController.list) and searchItemsListController.filteredList}">
 	<br/><br/>
 	<center>
 	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
@@ -115,7 +119,7 @@
 	<br/>
 </c:if>
 
-<c:if test="#{empty(myConnectionsItemsListController.list) and not(myConnectionsItemsListController.filteredList)}">
+<c:if test="#{empty(searchItemsListController.list) and not(searchItemsListController.filteredList)}">
 	<br/><br/>
 	<center>
 	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
@@ -123,24 +127,24 @@
 	<br/>
 </c:if>
 
-<ui:include src="../lendrequest/requestLendTooltip.jspx"/>
+<ui:include src="../../auth/lendrequest/requestLendTooltip.jspx"/>
 
-<h:dataTable value="#{myConnectionsItemsListController.list}" binding="#{myConnectionsItemsListController.table}" var="item" 
+<h:dataTable value="#{searchItemsListController.list}" binding="#{searchItemsListController.table}" var="item" 
    styleClass="gt-table gt-user-table">
 
 
     <h:column id="column1">
     	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
 			<table class="thumbnailInnerTable"><tr><td>
-				<h:outputLink id="overviewLink1" value="#{myConnectionsItemsListController.itemOverviewHref}" rendered="#{myConnectionsItemsListController.thumbnail1Src != null}">
+				<h:outputLink id="overviewLink1" value="#{searchItemsListController.itemOverviewHref}" rendered="#{searchItemsListController.thumbnail1Src != null}">
 					<div class="thumbnailDiv">
-					    <img src="#{myConnectionsItemsListController.thumbnail1Src}"/>
+					    <img src="#{searchItemsListController.thumbnail1Src}"/>
 					</div>
 				</h:outputLink>
 			</td></tr></table>
 		</td><td>
 		<h4>
-			<h:outputLink id="overviewLink2" value="#{myConnectionsItemsListController.itemOverviewHref}">
+			<h:outputLink id="overviewLink2" value="#{searchItemsListController.itemOverviewHref}">
 				<h:outputText id="title" value="#{item.title}" />
 			</h:outputLink>
 		</h4>
@@ -151,17 +155,17 @@
 		<table border="0" class="gt-table-categories" width="300" align="right">
 			<tr>
 			    <th width="50%"><h:outputText id="categoryTitle" value="#{messages.item_category}:" /></th>
-				<td width="50%"><h:outputText id="categoryLabel" value="#{myConnectionsItemsListController.categoryLabel}"/></td>
+				<td width="50%"><h:outputText id="categoryLabel" value="#{searchItemsListController.categoryLabel}"/></td>
 		    </tr>
 			<tr>
 				<th>
 					<h:outputText id="ownerTitle" value="#{messages.item_owner}:" />
 				</th>
 				<td>
-					<h:outputLink id="ownerLink" value="#{myConnectionsItemsListController.ownerHref}" rendered="#{myConnectionsItemsListController.ownerNameAvailable}">
-						<h:outputText id="ownerLabel" value="#{myConnectionsItemsListController.ownerLabel}" rendered="#{myConnectionsItemsListController.ownerNameAvailable}"/>
+					<h:outputLink id="ownerLink" value="#{searchItemsListController.ownerHref}" rendered="#{searchItemsListController.ownerNameAvailable}">
+						<h:outputText id="ownerLabel" value="#{searchItemsListController.ownerLabel}" rendered="#{searchItemsListController.ownerNameAvailable}"/>
 					</h:outputLink>
-					<h:outputText id="ownerLabel2" value="#{myConnectionsItemsListController.ownerLabel}" rendered="#{not (myConnectionsItemsListController.ownerNameAvailable)}"/>
+					<h:outputText id="ownerLabel2" value="#{searchItemsListController.ownerLabel}" rendered="#{not (searchItemsListController.ownerNameAvailable)}"/>
 				</td>
 			</tr>
 			<tr>
@@ -169,7 +173,7 @@
 					<h:outputText id="creationDateTitle" value="#{messages.item_creationDate}:" />
 				</th>
 				<td>					
-					<h:outputText id="creationDateLabel" value="#{myConnectionsItemsListController.creationDateLabel}" />
+					<h:outputText id="creationDateLabel" value="#{searchItemsListController.creationDateLabel}" />
 				</td>
 			</tr>
 			<tr>
@@ -177,7 +181,7 @@
 					<h:outputText id="availableTitle" value="#{messages.item_available}:" />
 				</th>
 				<td>					
-					<h:outputText id="availableLabel" value="#{myConnectionsItemsListController.availableLabel}" />
+					<h:outputText id="availableLabel" value="#{searchItemsListController.availableLabel}" />
 				</td>
 			</tr>
 		</table>
@@ -188,7 +192,7 @@
 			<tr>
 				<td>
 					<span onclick="requestLendTooltip(this, '#{item.id}', 1)">
-						<h:outputText id="requestLendLabel" styleClass="stylishButton" value="#{messages.lendRequest_requestLend}" rendered="#{myConnectionsItemsListController.requestLendAvailable}"/>
+						<h:outputText id="requestLendLabel" styleClass="stylishButton" value="#{messages.lendRequest_requestLend}" rendered="#{searchItemsListController.requestLendAvailable}"/>
 					</span>	
 				</td>
 		    </tr>
@@ -197,8 +201,8 @@
 
 </h:dataTable>
 
-<ui:include src="../table/tableControls.jspx">
-	<ui:param name="theBean" value="#{myConnectionsItemsListController}"/>
+<ui:include src="../../auth/table/tableControls.jspx">
+	<ui:param name="theBean" value="#{searchItemsListController}"/>
 </ui:include>
 
 </div><!-- /content box -->

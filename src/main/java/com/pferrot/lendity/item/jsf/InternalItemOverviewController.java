@@ -1,5 +1,6 @@
 package com.pferrot.lendity.item.jsf;
 
+import java.net.URLEncoder;
 import java.util.Locale;
 
 import javax.faces.context.FacesContext;
@@ -16,8 +17,10 @@ import com.pferrot.lendity.lendrequest.LendRequestService;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.lendity.utils.NavigationUtils;
+import com.pferrot.security.SecurityUtils;
 
-@ViewController(viewIds={"/auth/item/internalItemOverview.jspx"})
+@ViewController(viewIds={"/public/item/internalItemOverview.jspx"})
 public class InternalItemOverviewController extends AbstractItemOverviewController
 {
 	private final static Log log = LogFactory.getLog(InternalItemOverviewController.class);
@@ -42,9 +45,16 @@ public class InternalItemOverviewController extends AbstractItemOverviewControll
 			item = getItemService().findInternalItem(getItemId());
 			// Access control check.
 			if (!getItemService().isCurrentUserAuthorizedToView(item)) {
-				JsfUtils.redirect(PagesURL.ERROR_ACCESS_DENIED);
-				if (log.isWarnEnabled()) {
-					log.warn("Access denied (internal item view): user = " + PersonUtils.getCurrentPersonDisplayName() + " (" + PersonUtils.getCurrentPersonId() + "), item = " + getItemId());
+				if (SecurityUtils.isLoggedIn()) {
+					JsfUtils.redirect(PagesURL.ERROR_ACCESS_DENIED);
+					if (log.isWarnEnabled()) {
+						log.warn("Access denied (internal item view): user = " + PersonUtils.getCurrentPersonDisplayName() + " (" + PersonUtils.getCurrentPersonId() + "), item = " + getItemId());
+					}
+				}
+				// If the user is not logged in, there is a chance he can access the page once logged in,
+				// so we need to redirect him and not just show the access denied page.
+				else {
+					NavigationUtils.redirectToCurrentPageThroughLogin();
 				}
 				return;
 			}

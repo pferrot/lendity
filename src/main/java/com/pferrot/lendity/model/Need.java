@@ -37,7 +37,7 @@ import com.pferrot.core.CoreUtils;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "NEEDS")
 @Audited
-public class Need implements CategoryEnabled, Ownable, Commentable<NeedComment>, Serializable {
+public class Need implements CategoryEnabled, Ownable, CommentableWithOwner<NeedComment>, Serializable {
 	
 	@Id @GeneratedValue
 	@Column(name = "ID")
@@ -84,7 +84,6 @@ public class Need implements CategoryEnabled, Ownable, Commentable<NeedComment>,
 			inverseJoinColumns = {@JoinColumn(name = "ITEM_ID")}
 	)
 	private Set<InternalItem> relatedItems = new HashSet<InternalItem>();
-
 	
 	@Version
 	@Column(name = "OBJ_VERSION")

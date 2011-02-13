@@ -56,6 +56,11 @@ table.pagingTable span {
 	font-size: 92%!important;
 	padding: 3px 0px!important;
 }
+
+.gt-form-text-amount {
+	width: 80px!important;	
+}
+
 .gt-form .error {
 	/*
 	background: url(../images/famfamfam/icons/exclamation.png) no-repeat 0 0;

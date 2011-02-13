@@ -2,7 +2,7 @@ package com.pferrot.lendity.login.jsf;
 
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.item.ItemUtils;
-import com.pferrot.lendity.item.jsf.MyConnectionsItemsListController;
+import com.pferrot.lendity.item.jsf.SearchItemsListController;
 import com.pferrot.lendity.login.AuthenticationConsts;
 import com.pferrot.lendity.need.jsf.MyConnectionsNeedsListController;
 import com.pferrot.lendity.need.jsf.NeedAddController;
@@ -113,13 +113,13 @@ public class AuthenticationController {
 	}
 
 	public String getMyConnectionsItemsURL() {
-		return JsfUtils.getFullUrl(PagesURL.MY_CONNECTIONS_ITEMS_LIST);
+		return JsfUtils.getFullUrl(PagesURL.ITEMS_SEARCH);
 	}
 
 	public String getMyConnectionsItemsOrderByCreationDateURL() {
-		return JsfUtils.getFullUrl(PagesURL.MY_CONNECTIONS_ITEMS_LIST,
-				MyConnectionsItemsListController.FORCE_VIEW_PARAM_NAME,
-				MyConnectionsItemsListController.FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE);
+		return JsfUtils.getFullUrl(PagesURL.ITEMS_SEARCH,
+				SearchItemsListController.FORCE_VIEW_PARAM_NAME,
+				SearchItemsListController.FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE);
 	}
 
 	public String getMyLentItemsURL() {

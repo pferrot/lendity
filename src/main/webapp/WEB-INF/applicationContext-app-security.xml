@@ -132,7 +132,10 @@ security module.
 
 	<beans:bean id="authenticationProcessingFilter"	class="com.pferrot.lendity.login.filter.CustomAuthenticationProcessingFilter">
 		<custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
+		<!--
+		Now handled in CustomAuthenticationProcessingFilter.java 
 		<beans:property name="authenticationFailureUrl" value="/login.faces?loginFailed=true"/>
+		-->
 		<beans:property name="defaultTargetUrl" value="/auth/home.faces" />
 		<beans:property name="authenticationManager" ref="authenticationManager" />
 		<beans:property name="personDao" ref="personDao"/>

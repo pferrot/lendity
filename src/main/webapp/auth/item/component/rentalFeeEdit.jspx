@@ -1,0 +1,37 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+    
+	<script type="text/javascript">
+		$j(document).ready(function() {
+			if ($j('#rentalFee').val() == '') {
+				$j('#rentalFeeDiv').hide();
+				$j('#requestRentalFee').show();
+			}
+		});
+	</script>
+	<span id="requestRentalFee" style="display: none;" class="linkStyleActionSmall" onClick="toggleVisibility('rentalFeeDiv'); toggleVisibility('requestRentalFee');"><h:outputText value="#{messages.item_requestRentalFee}"/><br/><br/></span>
+	    
+	<div id="rentalFeeDiv">
+		<div class="gt-form-row gt-width-100">
+			<label><h:outputText value="#{messages.item_rentalFee}"/></label>
+			<h:message styleClass="error" showSummary="true" showDetail="false"
+				for="rentalFee"></h:message>			
+			<h:inputText id="rentalFee" immediate="true" 
+			    styleClass="gt-form-text-amount"
+			    converterId="javax.faces.Double"
+				value="#{controllerBean.rentalFee}"/>
+			<h:outputText value=" " escape="false" />
+			<h:outputText value="#{messages.currency_chf}"/>
+			<h:outputText value="/" escape="false" />
+			<h:outputText value="#{messages.day}"/>
+		</div><!-- /form row -->
+	</div>
+						
+</ui:composition>

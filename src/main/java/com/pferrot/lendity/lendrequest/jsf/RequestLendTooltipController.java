@@ -50,7 +50,7 @@ public class RequestLendTooltipController implements Serializable {
 		requestLend();
 		
 		if (getRedirectId().longValue() == 1) {
-			JsfUtils.redirect(PagesURL.MY_CONNECTIONS_ITEMS_LIST);
+			JsfUtils.redirect(PagesURL.ITEMS_SEARCH);
 		}
 		else if (getRedirectId().longValue() == 2) {
 			JsfUtils.redirect(PagesURL.INTERNAL_ITEM_OVERVIEW, PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID, getItemId().toString());

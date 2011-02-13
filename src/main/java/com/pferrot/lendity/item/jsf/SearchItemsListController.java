@@ -20,17 +20,17 @@ import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
 
-@ViewController(viewIds={"/auth/item/myConnectionsItemsList.jspx"})
-public class MyConnectionsItemsListController extends AbstractItemsWithOwnerListController {
+@ViewController(viewIds={"/public/item/search.jspx"})
+public class SearchItemsListController extends AbstractItemsWithOwnerListController {
 	
-	private final static Log log = LogFactory.getLog(MyConnectionsItemsListController.class);
+	private final static Log log = LogFactory.getLog(SearchItemsListController.class);
 	
 	public final static String FORCE_VIEW_PARAM_NAME = "view";
 	public final static String FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE = "allByCr";
 	
 	public final static String SEARCH_TEXT_PARAM_NAME = "search";	
 	
-	public MyConnectionsItemsListController() {
+	public SearchItemsListController() {
 		super();
 		// Display available items by default.
 		//setBorrowStatus(UiUtils.getLongFromBoolean(Boolean.FALSE));
@@ -68,7 +68,7 @@ public class MyConnectionsItemsListController extends AbstractItemsWithOwnerList
 	    	maxDistanceDouble = Double.valueOf(getMaxDistance());
 	    }
 		return getItemService().findMyConnectionsItems(getOwnerId(), getSearchString(), getCategoryId(), 
-				getBorrowStatusBoolean(), getShowPublicItems(), maxDistanceDouble, getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
+				getBorrowStatusBoolean(), getShowOnlyConnectionsItems(), maxDistanceDouble, getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
 	}
 
 	@Override

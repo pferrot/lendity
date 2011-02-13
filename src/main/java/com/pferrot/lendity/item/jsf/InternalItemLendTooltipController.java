@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -19,6 +20,7 @@ import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
+import com.pferrot.security.SecurityUtils;
 
 public class InternalItemLendTooltipController implements Serializable {
 	

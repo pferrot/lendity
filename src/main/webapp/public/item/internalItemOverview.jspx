@@ -7,7 +7,7 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.item_internalItemOverviewTitle}" />
+	<ui:define name="pageTitle"><h:outputText value="#{internalItemOverviewController.title}"/></ui:define>
 	<ui:param name="contentHeader" value="#{messages.item_internalItemOverviewTitle}" />
 
 		<ui:define name="content">
@@ -29,15 +29,19 @@
 			
 			
 				<f:view>
-
-<ui:include src="lendTooltip.jspx"/>
-<ui:include src="lendBackTooltip.jspx"/>
-<ui:include src="deleteInternalItemTooltip.jspx"/>
-<ui:include src="../lendrequest/requestLendTooltip.jspx"/>
+<c:if test="#{authenticationController.loggedIn}" var="loggedInUser"/>
+<c:if test="${loggedInUser}">
+	<ui:include src="../../auth/item/lendTooltip.jspx"/>
+	<ui:include src="../../auth/item/lendBackTooltip.jspx"/>
+	<ui:include src="../../auth/item/deleteInternalItemTooltip.jspx"/>
+	<ui:include src="../../auth/lendrequest/requestLendTooltip.jspx"/>
+</c:if>
 
 <h2 class="gt-table-head"><h:outputText value="#{messages.item_internalItemOverviewTitle}"/></h2>
-<a href="#commentsAnchor"><h:outputText styleClass="fontSizeSmall" value="#{messages.comment_addReadComments}"/></a>
-<br/><br/>
+<c:if test="${loggedInUser}">
+	<a href="#commentsAnchor"><h:outputText styleClass="fontSizeSmall" value="#{messages.comment_addReadComments}"/></a>
+	<br/><br/>
+</c:if>
 
 <!-- content box -->
 <div class="gt-form gt-content-box">
@@ -79,6 +83,54 @@
 		</div>
 		<br/>
 	</c:if>
+	<c:if test="#{internalItemOverviewController.item.deposit != null or internalItemOverviewController.item.rentalFee != null or internalItemOverviewController.item.toGiveForFree or internalItemOverviewController.item.salePrice != null}">
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_moreInfo}:" /></label></div>
+			<ul>
+			<c:if test="#{internalItemOverviewController.item.deposit != null}">
+				<li>
+				<h:outputText value="#{messages.item_deposit}:" />
+				<h:outputText value=" " escape="false" />
+				<h:outputText value="#{internalItemOverviewController.item.deposit}">
+					<f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="fr_CH"/>
+				</h:outputText>
+				<h:outputText value=" " escape="false" />
+				<h:outputText value="#{messages.currency_chf}"/>
+				</li>
+			</c:if>
+			<c:if test="#{internalItemOverviewController.item.rentalFee != null}">
+				<li>
+				<h:outputText value="#{messages.item_rentalFee}:" />
+				<h:outputText value=" " escape="false" />
+				<h:outputText value="#{internalItemOverviewController.item.rentalFee}">
+					<f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="fr_CH"/>
+				</h:outputText>
+				<h:outputText value=" " escape="false" />
+				<h:outputText value="#{messages.currency_chf}"/>
+				<h:outputText value="/" escape="false" />
+				<h:outputText value="#{messages.day}"/>
+				</li>
+			</c:if>	
+			<c:if test="#{internalItemOverviewController.item.toGiveForFree}">
+				<li>
+				<h:outputText value="#{messages.item_toGiveForFreeOverview}" />
+				</li>
+			</c:if>
+			<c:if test="#{internalItemOverviewController.item.salePrice != null}">
+				<li>
+				<h:outputText value="#{messages.item_salePrice}:" />
+				<h:outputText value=" " escape="false" />
+				<h:outputText value="#{internalItemOverviewController.item.salePrice}">
+					<f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="fr_CH"/>
+				</h:outputText>
+				<h:outputText value=" " escape="false" />
+				<h:outputText value="#{messages.currency_chf}"/>
+				</li>
+			</c:if>
+			</ul>
+		</div>
+	</c:if>	
+	
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_owner}:" /></label></div>
 		<c:if test="#{internalItemOverviewController.ownerNameAvailable}" var="ownerNameAvailable"/>
@@ -155,7 +207,7 @@
 <!-- comments -->
 <br/><br/>
 <a name="commentsAnchor"/>
-<ui:include src="../comment/comment.jspx">
+<ui:include src="../../auth/comment/comment.jspx">
 	<ui:param name="containerID" value="#{internalItemOverviewController.item.id}"/>
 	<ui:param name="containerType" value="item"/>
 </ui:include>

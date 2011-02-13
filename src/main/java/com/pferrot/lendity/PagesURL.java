@@ -1,5 +1,7 @@
 package com.pferrot.lendity;
 
+import com.pferrot.lendity.login.filter.CustomAuthenticationProcessingFilter;
+
 public interface PagesURL {
 
 	/////////////////////////////////////////////////////////////////////////
@@ -32,6 +34,7 @@ public interface PagesURL {
 	// LOGIN - start
 	
 	String LOGIN = "/login.faces";
+	String LOGIN_PARAM_REDIRECT_TO = CustomAuthenticationProcessingFilter.REDIRECT_TO_PARAMETER_NAME;
 	
 	// LOGIN - end
 	/////////////////////////////////////////////////////////////////////////
@@ -81,7 +84,7 @@ public interface PagesURL {
 	/////////////////////////////////////////////////////////////////////////
 	// ITEM - start
 	
-	String INTERNAL_ITEM_OVERVIEW = "/auth/item/internalItemOverview.faces";
+	String INTERNAL_ITEM_OVERVIEW = "/public/item/internalItemOverview.faces";
 	String INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID = "itemID";
 	
 	String INTERNAL_ITEM_ADD = "/auth/item/internalItemAdd.faces";
@@ -110,7 +113,7 @@ public interface PagesURL {
 	String MY_ITEMS_LIST = "/auth/item/myItemsList.faces";
 	String MY_LENT_ITEMS_LIST = "/auth/item/myLentItemsList.faces";
 	String MY_BORROWED_ITEMS_LIST = "/auth/item/myBorrowedItemsList.faces";
-	String MY_CONNECTIONS_ITEMS_LIST = "/auth/item/myConnectionsItemsList.faces";
+	String ITEMS_SEARCH = "/public/item/search.faces";
 	
 	// ITEM - end
 	/////////////////////////////////////////////////////////////////////////
@@ -130,6 +133,17 @@ public interface PagesURL {
 	String MY_CONNECTIONS_NEEDS_LIST = "/auth/need/myConnectionsNeedsList.faces";
 	
 	// NEED - end
+	/////////////////////////////////////////////////////////////////////////
+
+	/////////////////////////////////////////////////////////////////////////
+	// LEND TRANSACTION - start
+	
+	String LEND_TRANSACTION_OVERVIEW = "/auth/lendtransaction/lendTransactionOverview.faces";
+	String LEND_TRANSACTION_OVERVIEW_PARAM_NEED_ID = "lendTransactionID";
+	
+	String MY_LEND_TRANSACTIONS_LIST = "/auth/lendtransaction/mylendTransactionsList.faces";
+	
+	// LEND TRANSACTION - end
 	/////////////////////////////////////////////////////////////////////////
 	
 	
@@ -167,7 +181,7 @@ public interface PagesURL {
 	String MY_CONNECTIONS_LIST = "/auth/person/myConnectionsList.faces";
 	String MY_BANNED_PERSONS_LIST = "/auth/person/myBannedPersonsList.faces";
 	
-	String PERSON_OVERVIEW = "/auth/person/personOverview.faces";
+	String PERSON_OVERVIEW = "/public/person/personOverview.faces";
 	String PERSON_OVERVIEW_PARAM_PERSON_ID = "personID";
 	
 	String PERSON_EDIT = "/auth/person/personEdit.faces";
@@ -182,7 +196,7 @@ public interface PagesURL {
 	/////////////////////////////////////////////////////////////////////////
 	// DOCUMENT - start
 	
-	String DOCUMENT_DOWNLOAD = "/auth/document/documentDownload.htm";
+	String DOCUMENT_DOWNLOAD = "/public/document/documentDownload.htm";
 	
 	String DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ID = "documentID";
 	

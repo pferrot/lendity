@@ -7,7 +7,7 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.need_needEditTitle}" />
+	<ui:define name="pageTitle"><h:outputText value="#{messages.need_needEditTitle}" /></ui:define>
 	<ui:param name="contentHeader" value="#{messages.need_needEditTitle}" />
 
 		<ui:define name="content">

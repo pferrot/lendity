@@ -59,6 +59,10 @@ public class InternalItemEditController extends AbstractInternalItemAddEditContr
 		setInfoPublic(pItem.getInfoPublic());
 		setCategoryId(pItem.getCategory().getId());
 		setVisibilityId(pItem.getVisibility().getId());
+		setDeposit(pItem.getDeposit());
+		setRentalFee(pItem.getRentalFee());
+		setSalePrice(pItem.getSalePrice());
+		setToGiveForFree(pItem.getToGiveForFree());
 	}	
 
 	public Long updateItem() {		
@@ -66,6 +70,10 @@ public class InternalItemEditController extends AbstractInternalItemAddEditContr
 		getItem().setDescription(getDescription());
 		getItem().setInfoConnections(getInfoConnections());
 		getItem().setInfoPublic(getInfoPublic());
+		getItem().setDeposit(getDeposit());
+		getItem().setRentalFee(getRentalFee());
+		getItem().setToGiveForFree(getToGiveForFree());
+		getItem().setSalePrice(getSalePrice());
 		getItemService().updateItem(getItem(), getCategoryId(), getVisibilityId());
 
 		return getItem().getId();

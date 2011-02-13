@@ -28,6 +28,7 @@ import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.ListValueUtils;
+import com.pferrot.security.SecurityUtils;
 
 public class ItemService extends ObjectService {
 
@@ -110,20 +111,27 @@ public class ItemService extends ObjectService {
 	}
 
 	public ListWithRowCount findMyConnectionsItems(final Long pConnectionId, final String pTitle, final Long pCategoryId,
-			final Boolean pBorrowed, final Boolean pShowPublicItems, final Double pMaxDistanceInKm, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
-		Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(pConnectionId);
-		
+			final Boolean pBorrowed, final Boolean pShowOnlyConnectionsItems, final Double pMaxDistanceInKm, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+				
 		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
-		itemQuery.setOwnerIds(connectionsIds);
+		
 		itemQuery.setOwnerEnabled(Boolean.TRUE);
 		itemQuery.setTitle(pTitle);
 		itemQuery.setCategoryIds(getCategoryIds(pCategoryId));
-		itemQuery.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
-		itemQuery.setBorrowed(pBorrowed);
-		if (Boolean.TRUE.equals(pShowPublicItems)) {
-			itemQuery.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
-			itemQuery.setOwnerIdsToExcludeForVisibilityIdsToForce(ListValueUtils.getIdsArray(PersonUtils.getCurrentPersonId()));
+		if (SecurityUtils.isLoggedIn()) {
+			final Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(pConnectionId);
+			itemQuery.setOwnerIds(connectionsIds);
+			itemQuery.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
+			if (Boolean.FALSE.equals(pShowOnlyConnectionsItems)) {
+				itemQuery.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
+				itemQuery.setOwnerIdsToExcludeForVisibilityIdsToForce(ListValueUtils.getIdsArray(PersonUtils.getCurrentPersonId()));
+			}
 		}
+		// When not logged in - only show public items.
+		else {
+			itemQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
+		}
+		itemQuery.setBorrowed(pBorrowed);		
 		if (pMaxDistanceInKm != null) {
 			final Double latitude = getCurrentPerson().getAddressHomeLatitude();
 			final Double longitude = getCurrentPerson().getAddressHomeLongitude();			
@@ -505,9 +513,11 @@ public class ItemService extends ObjectService {
 	public boolean isCurrentUserAuthorizedToViewOwnerName(final InternalItem pInternalItem) {
 		CoreUtils.assertNotNull(pInternalItem);
 		final Person currentPerson = getCurrentPerson();
-		return isUserAuthorizedToEdit(currentPerson, pInternalItem) || 
-			getPersonService().isConnection(pInternalItem.getOwner().getId(), currentPerson.getId()) ||
-			Boolean.TRUE.equals(pInternalItem.getOwner().getShowNameOnPublicItems());
+		return Boolean.TRUE.equals(pInternalItem.getOwner().getShowNameOnPublicItems()) || 
+			(SecurityUtils.isLoggedIn() &&
+					(isUserAuthorizedToEdit(currentPerson, pInternalItem) || 
+					 getPersonService().isConnection(pInternalItem.getOwner().getId(), currentPerson.getId()))
+			);
 	}
 
     /////////////////////////////////////////////////////////
@@ -519,25 +529,36 @@ public class ItemService extends ObjectService {
 
 	public boolean isUserAuthorizedToView(final Person pPerson, final Item pItem) {
 		CoreUtils.assertNotNull(pItem);
-		if (isUserAuthorizedToEdit(pPerson, pItem)) {
-			return true;
+		if (!SecurityUtils.isLoggedIn()) {
+			if (pItem instanceof InternalItem) {
+				final InternalItem internalItem = (InternalItem) pItem;
+				if (internalItem.isPublicVisibility()) {
+					return true;
+				}
+			}
+			return false;
 		}
-		// Connections can view.
-		if (pItem instanceof InternalItem) {
-			final InternalItem internalItem = (InternalItem) pItem;
-			if (// Public visibility.
-			    internalItem.isPublicVisibility() ||
-				// Connection visibility.
-			    (internalItem.isConnectionsVisibility() && 
-				internalItem.getOwner() != null &&
-				internalItem.getOwner().getConnections() != null &&
-				internalItem.getOwner().getConnections().contains(pPerson)) ||
-				// Person is the current borrower - then he should always see it. 
-			    internalItem.getBorrower() != null && internalItem.getBorrower().equals(pPerson)) {
+		else {
+			if (isUserAuthorizedToEdit(pPerson, pItem)) {
 				return true;
 			}
+			// Connections can view.
+			if (pItem instanceof InternalItem) {
+				final InternalItem internalItem = (InternalItem) pItem;
+				if (// Public visibility.
+				    internalItem.isPublicVisibility() ||
+					// Connection visibility.
+				    (internalItem.isConnectionsVisibility() && 
+					internalItem.getOwner() != null &&
+					internalItem.getOwner().getConnections() != null &&
+					internalItem.getOwner().getConnections().contains(pPerson)) ||
+					// Person is the current borrower - then he should always see it. 
+				    internalItem.getBorrower() != null && internalItem.getBorrower().equals(pPerson)) {
+					return true;
+				}
+			}
+			return false;
 		}
-		return false;
 	}
 	
 	public void assertCurrentUserAuthorizedToView(final Item pItem) {
@@ -558,6 +579,9 @@ public class ItemService extends ObjectService {
 	
 	public boolean isUserAuthorizedToEdit(final Person pPerson, final Item pItem) {
 		CoreUtils.assertNotNull(pItem);
+		if (!SecurityUtils.isLoggedIn()) {
+			return false;
+		}
 		if (pPerson == null || pPerson.getUser() == null) {
 			return false;
 		}

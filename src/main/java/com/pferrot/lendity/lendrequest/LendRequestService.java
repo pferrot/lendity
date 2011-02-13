@@ -25,6 +25,7 @@ import com.pferrot.lendity.model.LendRequestResponse;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.security.SecurityUtils;
 
 public class LendRequestService {
 
@@ -86,6 +87,9 @@ public class LendRequestService {
 	 * @return
 	 */
 	public boolean isLendRequestAllowed(final Person pRequester, final InternalItem pItem) {
+		if (!SecurityUtils.isLoggedIn()) {
+			return false;
+		}
 		// Avoid LazyInitializationException
 		Collection<Person> connections = personService.findConnectionsList(pItem.getOwner().getId(), null, 0, 0);
 		return pItem.isAvailable() && 
@@ -304,6 +308,6 @@ public class LendRequestService {
 	}
 
 	private Person getCurrentPerson() {
-		return personDao.findPerson(PersonUtils.getCurrentPersonId());
+		return personService.getCurrentPerson();
 	}
 }

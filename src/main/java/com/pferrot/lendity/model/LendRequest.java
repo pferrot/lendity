@@ -40,6 +40,12 @@ public class LendRequest implements Serializable {
 	@Column(name = "RESPONSE_DATE", nullable = true)
 	private Date responseDate;
 	
+	@Column(name = "START_DATE", nullable = true)
+	private Date startDate;
+	
+	@Column(name = "END_DATE", nullable = true)
+	private Date endDate;	
+	
 	@OneToOne(targetEntity = com.pferrot.lendity.model.LendRequestResponse.class)
 	@JoinColumn(name = "RESPONSE_ID", nullable = true)
 	private LendRequestResponse response;	
@@ -98,6 +104,22 @@ public class LendRequest implements Serializable {
 
 	public void setResponseDate(Date responseDate) {
 		this.responseDate = responseDate;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 
 	public LendRequestResponse getResponse() {

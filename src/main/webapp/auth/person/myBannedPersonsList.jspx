@@ -8,7 +8,7 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.person_myBannedPersonsListTitle}" />
+	<ui:define name="pageTitle"><h:outputText value="#{messages.person_myBannedPersonsListTitle}" /></ui:define>
 	<ui:param name="contentHeader" value="#{messages.person_myBannedPersonsListTitle}" />
 
 	<ui:define name="content">

@@ -7,7 +7,7 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.login_login}" />
+	<ui:define name="pageTitle"><h:outputText value="#{messages.login_loginTitle}" /></ui:define>
 	<ui:param name="contentHeader" value="#{messages.login_login}" />
 
 	<ui:define name="content">
@@ -127,6 +127,7 @@
 					<!-- form row -->
 					<div class="gt-form-row">
 						<label class="gt-remember-me"><h:selectBooleanCheckbox id="_spring_security_remember_me" styleClass="gt-form-checkbox" value="#{loginController.rememberMe}" /> <h:outputText value="#{messages.login_rememberMe}"/></label>
+						<h:inputHidden id="spring-security-redirect" value="#{loginController.redirectTo}"/>					
 					</div>
 					<!-- /form row -->
 					

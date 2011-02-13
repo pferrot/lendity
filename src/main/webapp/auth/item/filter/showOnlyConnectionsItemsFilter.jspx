@@ -11,9 +11,9 @@
 <!-- categories -->
 <h:form id="showPublicItemsFilterForm" prependId="false">
 <table><tr><td>
-	<h:outputText value="#{messages.item_showPublicItems}" styleClass="small"/>
+	<h:outputText value="#{messages.item_showOnlyConnectionsItems}" styleClass="small"/>
 </td></tr><tr><td>
-	<h:selectBooleanCheckbox id="showPublicItems" value="#{theBean.showPublicItems}" valueChangeListener="#{theBean.showPublicItems}" styleClass="gt-form-element-checkbox" onclick="submit()"/>
+	<h:selectBooleanCheckbox id="showOnlyConnectionsItems" value="#{theBean.showOnlyConnectionsItems}" valueChangeListener="#{theBean.showOnlyConnectionsItems}" styleClass="gt-form-element-checkbox" onclick="submit()"/>
 	<input type="hidden" name="fake1"/>
 	<input type="hidden" name="fake2"/>
 </td></tr></table>

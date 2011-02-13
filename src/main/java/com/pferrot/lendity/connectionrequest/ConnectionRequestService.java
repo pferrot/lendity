@@ -24,6 +24,7 @@ import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.security.SecurityUtils;
 
 public class ConnectionRequestService {
 
@@ -175,7 +176,7 @@ public class ConnectionRequestService {
 	 * @throws ConnectionRequestException
 	 */
 	public boolean isConnectionRequestAllowedFromCurrentUser(final Person pConnection) throws ConnectionRequestException {
-		return isConnectionRequestAllowed(pConnection, getCurrentPerson());		
+		return SecurityUtils.isLoggedIn() && isConnectionRequestAllowed(pConnection, getCurrentPerson());		
 	}
 
 	/**

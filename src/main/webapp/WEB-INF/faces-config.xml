@@ -21,7 +21,9 @@
 			<base-name>messages</base-name>
 			<var>messages</var>
 		</resource-bundle>			 
-
+		
+		<message-bundle>messages</message-bundle>
+		
 		<locale-config>
 			<default-locale>fr</default-locale>
 			<supported-locale>en</supported-locale>
@@ -235,14 +237,14 @@
 	********************************************************************
 	-->
 	<navigation-rule>
-		<from-view-id>/auth/item/myConnectionsItemsList.jspx</from-view-id>
+		<from-view-id>/public/item/search.jspx</from-view-id>
 		<navigation-case>
 			<from-outcome>nextPage</from-outcome>
-			<to-view-id>/auth/item/myConnectionsItemsList.jspx</to-view-id>
+			<to-view-id>/public/item/search.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>previousPage</from-outcome>
-			<to-view-id>/auth/item/myConnectionsItemsList.jspx</to-view-id>
+			<to-view-id>/public/item/search.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>itemOverview</from-outcome>

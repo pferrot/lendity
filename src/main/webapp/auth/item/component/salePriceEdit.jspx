@@ -1,0 +1,35 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+    
+	<script type="text/javascript">
+		$j(document).ready(function() {
+			if ($j('#salePrice').val() == '') {
+				$j('#salePriceDiv').hide();
+				$j('#requestSalePrice').show();
+			}
+		});
+	</script>
+	<span id="requestSalePrice" style="display: none;" class="linkStyleActionSmall" onClick="toggleVisibility('salePriceDiv'); toggleVisibility('requestSalePrice');"><h:outputText value="#{messages.item_forSale}"/><br/><br/></span>
+	    
+	<div id="salePriceDiv">
+		<div class="gt-form-row gt-width-100">
+			<label><h:outputText value="#{messages.item_salePrice}"/></label>
+			<h:message styleClass="error" showSummary="true" showDetail="false"
+				for="salePrice"></h:message>			
+			<h:inputText id="salePrice" immediate="true" 
+			    styleClass="gt-form-text-amount"
+			    converterId="javax.faces.Double"
+				value="#{controllerBean.salePrice}"/>
+			<h:outputText value=" " escape="false" />
+			<h:outputText value="#{messages.currency_chf}"/>
+		</div><!-- /form row -->
+	</div>
+						
+</ui:composition>

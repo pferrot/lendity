@@ -505,6 +505,70 @@
 	LEND REQUEST - end
 	========================================================================================================================
 	 -->
+
+	<!-- 
+	========================================================================================================================
+	LEND TRANSACTION - start
+	 -->
+	 
+	<bean id="lendTransactionDaoTarget" class="com.pferrot.lendity.dao.hibernate.LendTransactionDaoHibernateImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	
+	<bean id="lendTransactionDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target">
+			<ref local="lendTransactionDaoTarget"/>
+		</property>
+		<property name="proxyInterfaces">
+           <value>com.pferrot.lendity.dao.LendTransactionDao</value>
+         </property>		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="lendTransactionService" parent="baseTransactionProxy">
+		<property name="target" ref="lendTransactionServiceTarget" />
+	</bean>
+	
+	<bean id="lendTransactionServiceTarget" class="com.pferrot.lendity.lendtransaction.LendTransactionService">
+		<property name="lendTransactionDao" ref="lendTransactionDao"/>
+		<property name="listValueDao" ref="listValueDao"/>
+		<property name="personDao" ref="personDao"/>
+		<property name="itemDao" ref="itemDao"/>
+		<property name="mailManager" ref="emailSender.mailManager"/>
+		<property name="personService" ref="personService"/>
+	</bean>
+
+<!-- 
+    <bean id="myPendingLendTransactionsListController" class="com.pferrot.lendity.lendtransaction.jsf.MyPendingLendTransactionsListController"
+	      scope="session">
+	      <property name="lendTransactionService" ref="lendTransactionService"/>
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+	
+	<bean id="myPendingLendTransactionsOutListController" class="com.pferrot.lendity.lendtransaction.jsf.MyPendingLendTransactionsOutListController"
+	      scope="session">
+	      <property name="lendTransactionService" ref="lendTransactionService"/>
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+	
+	<bean id="transactionLendTooltipController" class="com.pferrot.lendity.lendtransaction.jsf.TransactionLendTooltipController"
+	      scope="transaction">
+	      <property name="lendTransactionService" ref="lendTransactionService"/>
+	</bean>
+ -->
+ 
+	<!-- 
+	LEND TRANSACTION - end
+	========================================================================================================================
+	 -->
 	 
 	<!-- 
 	========================================================================================================================
@@ -544,6 +608,7 @@
 		<property name="personService" ref="personService"/>
 		<property name="itemService" ref="itemService"/>
 		<property name="needService" ref="needService"/>
+		<property name="lendTransactionService" ref="lendTransactionService"/>
 	</bean>	
 
 	<!-- 
@@ -729,7 +794,7 @@
 	      <property name="personService" ref="personService"/>
 	</bean>
 
-	<bean id="myConnectionsItemsListController" class="com.pferrot.lendity.item.jsf.MyConnectionsItemsListController"
+	<bean id="searchItemsListController" class="com.pferrot.lendity.item.jsf.SearchItemsListController"
 	      scope="session">
 	      <property name="itemService" ref="itemService"/>
 	      <property name="lendRequestService" ref="lendRequestService"/>

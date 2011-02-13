@@ -10,7 +10,6 @@ import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import org.springframework.security.AccessDeniedException;
 
-import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
 import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
@@ -23,7 +22,7 @@ import com.pferrot.lendity.utils.HtmlUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
 
-@ViewController(viewIds={"/auth/person/personOverview.jspx"})
+@ViewController(viewIds={"/public/person/personOverview.jspx"})
 public class PersonOverviewController
 {
 	private final static Log log = LogFactory.getLog(PersonOverviewController.class);
@@ -123,8 +122,7 @@ public class PersonOverviewController
 			return I18nUtils.getMessageResourceString("menu_profile", locale);
 		}
 		else {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			return I18nUtils.getMessageResourceString("person_personOverviewTitle", locale);
+			return getPerson().getDisplayName();
 		}		
 	}
 	

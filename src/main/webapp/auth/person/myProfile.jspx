@@ -7,8 +7,8 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{personOverviewController.pageTitle}" />
-	<ui:param name="contentHeader" value="#{personOverviewController.pageTitle}" />
+	<ui:define name="pageTitle"><h:outputText value="#{myProfileController.pageTitle}" /></ui:define>
+	<ui:param name="contentHeader" value="#{myProfileController.pageTitle}" />
 
 		<ui:define name="content">
 

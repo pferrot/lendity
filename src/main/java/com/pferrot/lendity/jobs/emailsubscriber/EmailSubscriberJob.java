@@ -20,7 +20,7 @@ import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
-import com.pferrot.lendity.item.jsf.MyConnectionsItemsListController;
+import com.pferrot.lendity.item.jsf.SearchItemsListController;
 import com.pferrot.lendity.model.ConnectionRequest;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Need;
@@ -336,9 +336,9 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 	private String getConnectionsItemsByDateUrl() {
 		return JsfUtils.getFullUrlWithPrefix(
 				Configuration.getRootURL(),
-				PagesURL.MY_CONNECTIONS_ITEMS_LIST,
-				MyConnectionsItemsListController.FORCE_VIEW_PARAM_NAME,
-				MyConnectionsItemsListController.FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE);
+				PagesURL.ITEMS_SEARCH,
+				SearchItemsListController.FORCE_VIEW_PARAM_NAME,
+				SearchItemsListController.FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE);
 	}
 	
 	private String getConnectionsNeedsByDateUrl() {

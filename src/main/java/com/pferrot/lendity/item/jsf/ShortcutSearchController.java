@@ -23,8 +23,8 @@ public class ShortcutSearchController implements Serializable {
 	}
 
 	public String submit() {
-		JsfUtils.redirect(PagesURL.MY_CONNECTIONS_ITEMS_LIST, 
-				          MyConnectionsItemsListController.SEARCH_TEXT_PARAM_NAME,
+		JsfUtils.redirect(PagesURL.ITEMS_SEARCH, 
+						  SearchItemsListController.SEARCH_TEXT_PARAM_NAME,
 				          searchString);
 		return null;
 	}

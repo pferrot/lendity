@@ -68,6 +68,10 @@ public class InternalItemAddController extends AbstractInternalItemAddEditContro
 		internalItem.setInfoConnections(getInfoConnections());
 		internalItem.setInfoPublic(getInfoPublic());
 		internalItem.setOwner(getItemService().getCurrentPerson());
+		internalItem.setDeposit(getDeposit());
+		internalItem.setRentalFee(getRentalFee());
+		internalItem.setToGiveForFree(getToGiveForFree());
+		internalItem.setSalePrice(getSalePrice());
 				
 		return getItemService().createItem(internalItem, getCategoryId(), getVisibilityId(), getNeed());
 	}

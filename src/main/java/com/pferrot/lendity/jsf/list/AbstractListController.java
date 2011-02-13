@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.security.SecurityUtils;
 
 /**
  * See http://balusc.blogspot.com/2008/10/effective-datatable-paging-and-sorting.html
@@ -73,6 +74,9 @@ public abstract class AbstractListController implements Serializable {
 //		listInternal = null;
 //	}
 
+	public boolean isUserLoggedIn() {
+		return SecurityUtils.isLoggedIn();
+	}
 
 	public String getSearchString() {
 		return searchString;

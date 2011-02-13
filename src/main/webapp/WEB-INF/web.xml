@@ -235,12 +235,12 @@
 	 
 	 <servlet-mapping>
 		<servlet-name>documentDownload</servlet-name>
-		<url-pattern>/auth/document/documentDownload.htm</url-pattern>
+		<url-pattern>/public/document/documentDownload.htm</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
 		<servlet-name>comment</servlet-name>
-		<url-pattern>/auth/comment/comment.json</url-pattern>
+		<url-pattern>/public/comment/comment.json</url-pattern>
 	</servlet-mapping>
 	 
     <servlet-mapping>

@@ -13,7 +13,7 @@
         </property>
 		<property name="mappings">
 			<props>
-				<prop key="/auth/document/documentDownload.htm">documentDownloadController</prop>
+				<prop key="/public/document/documentDownload.htm">documentDownloadController</prop>
 			</props>
 		</property>
 	</bean>

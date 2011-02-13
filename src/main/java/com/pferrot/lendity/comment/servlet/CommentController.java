@@ -55,6 +55,8 @@ public class CommentController extends AbstractController {
 	
 	public final static String CONTAINER_NEED_ID_PARAMETER_NAME = "needID";
 	
+	public final static String CONTAINER_LEND_TRANSACTION_ID_PARAMETER_NAME = "lendTransactionID";
+	
 	private CommentService commentService;
 	private PersonService personService;
 
@@ -87,7 +89,6 @@ public class CommentController extends AbstractController {
 	 * @return
 	 */
 	protected ModelAndView handleRequestInternal(final HttpServletRequest pRequest, final HttpServletResponse pResponse) throws Exception {
-		
 		final String action = pRequest.getParameter(ACTION_PARAMETER_NAME);
 		if (log.isDebugEnabled()) {
 			log.debug("Action: " + action);
@@ -274,7 +275,8 @@ public class CommentController extends AbstractController {
 				                                          PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID,
 				                                          pComment.getOwner().getId().toString()));
 		map.put("dateAdded", getDateAsString(pComment.getCreationDate()));
-		final Boolean canEdit = PersonUtils.getCurrentPersonId(pRequest.getSession()).equals(owner.getId());
+		final Long currentPersonId = PersonUtils.getCurrentPersonId(pRequest.getSession());
+		final Boolean canEdit = currentPersonId != null && PersonUtils.getCurrentPersonId(pRequest.getSession()).equals(owner.getId());
 		map.put("canEdit", canEdit);
 		map.put("profilePictureUrl",
 				personService.getProfileThumbnailSrc(
@@ -340,12 +342,16 @@ public class CommentController extends AbstractController {
 				Long commentID = null;
 				
 				final String itemID = pRequest.getParameter(CONTAINER_ITEM_ID_PARAMETER_NAME);
+				final String needID = pRequest.getParameter(CONTAINER_NEED_ID_PARAMETER_NAME);
+				final String lendTransactionID = pRequest.getParameter(CONTAINER_LEND_TRANSACTION_ID_PARAMETER_NAME);
 				if (!StringUtils.isNullOrEmpty(itemID)) {
 					commentID = commentService.createCommentOnInternalItemWithAC(text, Long.valueOf(itemID), currentPersonId);
 				}
-				else {
-					final String needID = pRequest.getParameter(CONTAINER_NEED_ID_PARAMETER_NAME);
+				else if (!StringUtils.isNullOrEmpty(needID)) {
 					commentID = commentService.createCommentOnNeedWithAC(text, Long.valueOf(needID), currentPersonId);
+				}
+				else if (!StringUtils.isNullOrEmpty(lendTransactionID)) {
+					commentID = commentService.createCommentOnLendTransactionWithAC(text, Long.valueOf(lendTransactionID), currentPersonId);
 				}
 				
 				map = getMapForOneComment(commentService.findComment(commentID), pRequest);

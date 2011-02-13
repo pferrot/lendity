@@ -9,7 +9,7 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<!-- params for page titles-->
-	<ui:param name="pageTitle" value="#{messages.need_myNeedsListTitle}" />
+	<ui:define name="pageTitle"><h:outputText value="#{messages.need_myNeedsListTitle}" /></ui:define>
 	<ui:param name="contentHeader" value="#{messages.need_myNeedsListTitle}" />
 
 	<ui:define name="content">

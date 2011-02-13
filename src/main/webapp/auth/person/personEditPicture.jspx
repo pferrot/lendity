@@ -1,10 +1,7 @@
-
-
-
 <ui:include xmlns:ui="http://java.sun.com/jsf/facelets"
             src="../image/editPicture.jspx">
 	<ui:param name="controllerBean" value="#{personEditPictureController}"/>
-	<ui:param name="pageTitle" value="#{messages.person_personEditPictureTitle}"/>
+	<ui:param name="pageTitle" value="#{messages.person_personEditPictureTitle}" />
 </ui:include>
 
 

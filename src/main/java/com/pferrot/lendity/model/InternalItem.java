@@ -30,7 +30,7 @@ import com.pferrot.core.CoreUtils;
 @Entity
 @DiscriminatorValue("Internal")
 @Audited
-public class InternalItem extends Item implements Ownable, Commentable<ItemComment> {
+public class InternalItem extends Item implements Ownable, CommentableWithOwner<ItemComment> {
 	
 	// Information displayed to connections only (if the item is shared accordingly).
 	@Column(name = "INFO_CONNECTIONS", nullable = true, length = 3999)
@@ -78,6 +78,18 @@ public class InternalItem extends Item implements Ownable, Commentable<ItemComme
 			inverseJoinColumns = {@JoinColumn(name = "NEED_ID")}
 	)
 	private Set<Need> relatedNeeds = new HashSet<Need>();
+	
+	@Column(name = "GIVE_FOR_FREE", nullable = false)
+	private Boolean toGiveForFree;
+	
+	@Column(name = "SALE_PRICE", nullable = true)
+	private Double salePrice;
+	
+	@Column(name = "DEPOSIT", nullable = true)
+	private Double deposit;
+	
+	@Column(name = "RENTAL_FEE", nullable = true)
+	private Double rentalFee;	
 
     public InternalItem() {
     	super();
@@ -220,6 +232,38 @@ public class InternalItem extends Item implements Ownable, Commentable<ItemComme
 	public void removeRelatedNeed(final Need pRelatedNeed) {
 		CoreUtils.assertNotNull(pRelatedNeed);
 		relatedNeeds.remove(pRelatedNeed);
+	}
+
+	public Boolean getToGiveForFree() {
+		return toGiveForFree;
+	}
+
+	public void setToGiveForFree(Boolean toGiveForFree) {
+		this.toGiveForFree = toGiveForFree;
+	}
+
+	public Double getDeposit() {
+		return deposit;
+	}
+
+	public void setDeposit(Double deposit) {
+		this.deposit = deposit;
+	}
+
+	public Double getRentalFee() {
+		return rentalFee;
+	}
+
+	public void setRentalFee(Double rentalFee) {
+		this.rentalFee = rentalFee;
+	}
+
+	public Double getSalePrice() {
+		return salePrice;
+	}
+
+	public void setSalePrice(Double salePrice) {
+		this.salePrice = salePrice;
 	}
 
 	/**

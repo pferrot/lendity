@@ -176,6 +176,9 @@ public class NeedService extends ObjectService {
 		if (isUserAuthorizedToEdit(pPerson, pNeed)) {
 			return true;
 		}
+		if (pPerson == null) {
+			return false;
+		}
 		return pNeed.getOwner() != null &&
 			pNeed.getOwner().getConnections() != null &&
 			pNeed.getOwner().getConnections().contains(pPerson);

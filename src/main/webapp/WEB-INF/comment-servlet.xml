@@ -13,7 +13,7 @@
         </property>
 		<property name="mappings">
 			<props>
-				<prop key="/auth/comment/comment.json">commentController</prop>
+				<prop key="/public/comment/comment.json">commentController</prop>
 			</props>
 		</property>
 	</bean>
