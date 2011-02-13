@@ -1,0 +1,13 @@
+#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+
+Bonjour $firstName,<br/><br/>
+
+Un commentaire a été ajouté sur la <a href="$objectUrl">transaction pour $objectTitle</a>:<br/><br/>
+
+<b>$commentEscaped</b><br/><br/>
+
+Tu peux répondre à ce commentaire depuis <a href="$objectUrl">cette page</a>.<br/><br/>
+
+A bientôt sur <a href="$siteUrl">$siteName</a>.<br/>
+
+#include("com/pferrot/lendity/emailtemplate/html_footer.vm")

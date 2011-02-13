@@ -1,0 +1,11 @@
+Bonjour $firstName,
+
+Un commentaire a été ajouté sur la transaction pour $objectTitle:
+
+$comment
+
+Tu peux répondre à ce commentaire en visitant la page suivante: $objectUrl
+
+A bientôt sur $siteName.
+
+$siteUrl
