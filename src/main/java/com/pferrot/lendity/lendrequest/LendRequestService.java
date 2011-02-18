@@ -19,12 +19,15 @@ import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.lendrequest.exception.LendRequestException;
+import com.pferrot.lendity.lendtransaction.LendTransactionService;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.LendRequest;
 import com.pferrot.lendity.model.LendRequestResponse;
+import com.pferrot.lendity.model.LendTransaction;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.security.SecurityUtils;
 
 public class LendRequestService {
@@ -37,6 +40,7 @@ public class LendRequestService {
 	private ItemDao itemDao;
 	private MailManager mailManager;
 	private PersonService personService;
+	private LendTransactionService lendTransactionService;
 
 	public void setMailManager(final MailManager pMailManager) {
 		this.mailManager = pMailManager;
@@ -60,6 +64,11 @@ public class LendRequestService {
 
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
+	}
+
+	public void setLendTransactionService(
+			LendTransactionService lendTransactionService) {
+		this.lendTransactionService = lendTransactionService;
 	}
 
 	public LendRequest findLendRequest(final Long pLendRequestId) {
@@ -110,7 +119,8 @@ public class LendRequestService {
 	 * @return
 	 * @throws ConnectionRequestException 
 	 */
-	public Long createLendRequest(final Person pRequester, final InternalItem pItem) throws LendRequestException {
+	public Long createLendRequest(final Person pRequester, final InternalItem pItem,
+			final Date pStartDate, final Date pEndDate) throws LendRequestException {
 		try {
 			if (! isLendRequestAllowed(pRequester, pItem)) {
 				throw new ConnectionRequestException("Lend request not allowed.");
@@ -121,19 +131,35 @@ public class LendRequestService {
 			lendRequest.setItem(pItem);
 			lendRequest.setRequester(pRequester);
 			lendRequest.setRequestDate(new Date());
+			lendRequest.setStartDate(pStartDate);
+			lendRequest.setEndDate(pEndDate);
 			
 			Long lendRequestId = lendRequestDao.createLendRequest(lendRequest);
+			
+			Long lendTransactionId = lendTransactionService.createLendTransaction(lendRequest);
+			
+			// To keep a kind of bi-directional link.
+			lendRequest.setTransaction(lendTransactionService.findLendTransaction(lendTransactionId));
+			lendRequestDao.updateLendRequest(lendRequest);
 				
 			// Send email (will actually create a JMS message, i.e. it is async).
 			Map<String, String> objects = new HashMap<String, String>();
 			objects.put("ownerFirstName", pItem.getOwner().getFirstName());
+			objects.put("ownerLastName", pItem.getOwner().getLastName());
+			objects.put("ownerDisplayName", pItem.getOwner().getDisplayName());
 			objects.put("requesterFirstName", pRequester.getFirstName());
 			objects.put("requesterLastName", pRequester.getLastName());
+			objects.put("requesterDisplayName", pRequester.getDisplayName());
 			objects.put("itemTitle", pItem.getTitle());
 			objects.put("signature", Configuration.getSiteName());
 			objects.put("siteName", Configuration.getSiteName());
 			objects.put("siteUrl", Configuration.getRootURL());
 			objects.put("pendingRequestsUrl", Configuration.getRootURL() + PagesURL.MY_PENDING_LEND_REQUESTS_LIST);
+			objects.put("lendTransactionUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
+					PagesURL.LEND_TRANSACTION_OVERVIEW,
+					PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_NEED_ID,
+					lendTransactionId.toString()));
+			
 			
 			// TODO: localization
 			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lendrequest/ask/fr";
@@ -162,7 +188,7 @@ public class LendRequestService {
 	}
 	
 	public Long createLendRequestFromCurrentUser(final InternalItem pItem) throws LendRequestException {
-		return createLendRequest(getCurrentPerson(), pItem);		
+		return createLendRequest(getCurrentPerson(), pItem, null, null);		
 	}
 
 	public Long createLendRequestFromCurrentUser(final Long pItemId) throws LendRequestException {
@@ -182,8 +208,7 @@ public class LendRequestService {
 
 			setLendRequestResponse(pLendRequest, (LendRequestResponse)listValueDao.findListValue(LendRequestResponse.ACCEPT_LABEL_CODE));
 			
-			sendResponseEmail(pLendRequest,
-					Configuration.getSiteName() + ": demande d'emprunt acceptée",
+			sendResponseEmail(pLendRequest, Configuration.getSiteName() + ": demande d'emprunt acceptée",
 					"com/pferrot/lendity/emailtemplate/lendrequest/accept/fr");
 
 			if (log.isInfoEnabled()) {
@@ -211,7 +236,7 @@ public class LendRequestService {
 
 			setLendRequestResponse(pLendRequest, (LendRequestResponse)listValueDao.findListValue(LendRequestResponse.REFUSE_LABEL_CODE));
 			
-			sendResponseEmail(pLendRequest,
+			sendResponseEmail(pLendRequest, 
 					Configuration.getSiteName() + ": demande d'emprunt refusée",
 					"com/pferrot/lendity/emailtemplate/lendrequest/refuse/fr");
 
@@ -227,17 +252,25 @@ public class LendRequestService {
 		}			
 	}
 
-	private void sendResponseEmail(final LendRequest pLendRequest, final String pEmailSubject, final String pTemplateLocation) {
+	private void sendResponseEmail(final LendRequest pLendRequest,
+			final String pEmailSubject,
+			final String pTemplateLocation) {
 		// Send email (will actually create a JMS message, i.e. it is async).
 		Map<String, String> objects = new HashMap<String, String>();
 		objects.put("requesterFirstName", pLendRequest.getRequester().getFirstName());
 		objects.put("requesterLastName", pLendRequest.getRequester().getLastName());
+		objects.put("requesterDisplayName", pLendRequest.getRequester().getDisplayName());
 		objects.put("ownerFirstName", pLendRequest.getOwner().getFirstName());
 		objects.put("ownerLastName", pLendRequest.getOwner().getLastName());
+		objects.put("ownerDisplayName", pLendRequest.getOwner().getDisplayName());
 		objects.put("itemTitle", pLendRequest.getItem().getTitle());
 		objects.put("signature", Configuration.getSiteName());
 		objects.put("siteName", Configuration.getSiteName());
 		objects.put("siteUrl", Configuration.getRootURL());
+		objects.put("lendTransactionUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
+				PagesURL.LEND_TRANSACTION_OVERVIEW,
+				PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_NEED_ID,
+				pLendRequest.getTransaction().getId().toString()));	
 		
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(pLendRequest.getRequester().getEmail(), pLendRequest.getRequester().getEmail());
@@ -245,8 +278,8 @@ public class LendRequestService {
 		Map<String, String> inlineResources = new HashMap<String, String>();
 		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
 		
-		mailManager.send(pLendRequest.getOwner().getDisplayName(), 
-						 pLendRequest.getOwner().getEmail(),
+		mailManager.send(Configuration.getNoReplySenderName(), 
+		         		 Configuration.getNoReplyEmailAddress(),
 				         to,
 				         null, 
 				         null,

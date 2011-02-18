@@ -221,7 +221,6 @@ public class InitialData {
 		person.setReceiveNeedsNotifications(Boolean.FALSE);
 		person.setReceiveCommentsOnCommentedNotif(Boolean.FALSE);
 		person.setReceiveCommentsOnOwnNotif(Boolean.FALSE);
-		person.setShowNameOnPublicItems(Boolean.FALSE);
 		person.setShowContactDetailsToAll(Boolean.FALSE);
 		person.setEnabled(Boolean.TRUE);
 		

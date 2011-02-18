@@ -211,13 +211,15 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 		CoreUtils.assertNotNullOrEmptyString(pSearchString);
 	
 		// First name and last name not needed since contained in display name.
-//		final Criterion firstNameCriterion = Restrictions.ilike("firstName", pSearchString, MatchMode.ANYWHERE);
-//		final Criterion lastNameCriterion = Restrictions.ilike("lastName", pSearchString, MatchMode.ANYWHERE);
+		final Criterion firstNameCriterion = Restrictions.ilike("firstName", pSearchString, MatchMode.ANYWHERE);
+		final Criterion lastNameCriterion = Restrictions.ilike("lastName", pSearchString, MatchMode.ANYWHERE);
 		
 		final Criterion emailCriterion = Restrictions.ilike("email", pSearchString, pEmailMatchMode);
 		// Display name not needed since 
 		final Criterion displayNameCriterion = Restrictions.ilike("displayName", pSearchString, MatchMode.ANYWHERE);
-		return Restrictions.or(displayNameCriterion, emailCriterion);
+		return Restrictions.or(displayNameCriterion, 
+				   Restrictions.or(emailCriterion, 
+						Restrictions.or(firstNameCriterion, lastNameCriterion)));
 	}
 
 	/**

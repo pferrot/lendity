@@ -79,7 +79,7 @@ public class InvitationService {
 		Map<String, String> inlineResources = new HashMap<String, String>();
 		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
 		
-		mailManager.send(pPerson.getDisplayName(), 
+		mailManager.send(pPerson.getFirstName() + " " + pPerson.getLastName(), 
 				 		 pPerson.getEmail(),
 				         to,
 				         null, 

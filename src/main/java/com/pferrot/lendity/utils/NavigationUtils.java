@@ -6,7 +6,6 @@ import java.util.Enumeration;
 import javax.faces.context.ExternalContext;
 import javax.servlet.http.HttpServletRequest;
 
-import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
 
 public class NavigationUtils {

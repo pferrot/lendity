@@ -1,6 +1,6 @@
 Hello $borrowerFirstName,
 
-$lenderFirstName $lenderLastName t'envoie un rappel à propos d'un emprunt qu'il aimerait que tu lui retournes:
+$lenderDisplayName t'envoie un rappel à propos d'un emprunt qu'il aimerait que tu lui retournes:
 
 $itemTitle
 

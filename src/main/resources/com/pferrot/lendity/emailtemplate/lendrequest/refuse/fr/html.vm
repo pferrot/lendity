@@ -2,7 +2,7 @@
 
 Hello $requesterFirstName,<br/><br/>
 
-$ownerFirstName $ownerLastName refuse de te prêter l'objet suivant:<br/><br/>
+$ownerDisplayName refuse de te prêter l'objet suivant:<br/><br/>
 
 <b>$itemTitle</b><br/><br/>
 

@@ -17,7 +17,6 @@ import com.pferrot.lendity.dao.bean.ItemDaoQueryBean;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.item.exception.ItemException;
 import com.pferrot.lendity.model.Document;
-import com.pferrot.lendity.model.ExternalItem;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
@@ -51,37 +50,6 @@ public class ItemService extends ObjectService {
 
 	public InternalItem findInternalItem(final Long itemId) {
 		return itemDao.findInternalItem(itemId);
-	}
-
-	public ExternalItem findExternalItem(final Long itemId) {
-		return itemDao.findExternalItem(itemId);
-	}
-
-	public ListWithRowCount findMyBorrowedItems(final Long pOwnerId, final String pTitle, final Long pCategoryId, final int pFirstResult, final int pMaxResults) {
-		return findBorrowedItems(PersonUtils.getCurrentPersonId(), pOwnerId, pTitle, pCategoryId, pFirstResult, pMaxResults);
-	}
-
-	public ListWithRowCount findBorrowedItems(final Long pPersonId, final Long pOwnerId, final String pTitle, final Long pCategoryId, final int pFirstResult, final int pMaxResults) {
-		final Long currentPersonId = pPersonId;
-		CoreUtils.assertNotNull(currentPersonId);
-		Long[] ownerIds = null;
-		if (pOwnerId != null) {
-			ownerIds = new Long[]{pOwnerId};
-		}
-		Long[] borrowerIds = new Long[]{currentPersonId};
-		
-		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
-		itemQuery.setOwnerIds(ownerIds);
-		itemQuery.setOwnerEnabled(Boolean.TRUE);
-		itemQuery.setBorrowerIds(borrowerIds);
-		itemQuery.setTitle(pTitle);
-		itemQuery.setCategoryIds(getCategoryIds(pCategoryId));
-		itemQuery.setOrderBy("title");
-		itemQuery.setOrderByAscending(Boolean.TRUE);
-		itemQuery.setFirstResult(pFirstResult);
-		itemQuery.setMaxResults(pMaxResults);
-				
-		return itemDao.findInternalAndExternalItems(itemQuery);
 	}
 	
 	public ListWithRowCount findMyItems(final String pTitle, final Long pCategoryId, final Long pVisibilityId,
@@ -211,6 +179,7 @@ public class ItemService extends ObjectService {
 			objects.put("borrowerFirstName", borrower.getFirstName());
 			objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
 			objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
+			objects.put("lenderDisplayName", PersonUtils.getCurrentPersonDisplayName());
 			objects.put("itemTitle", internalItem.getTitle());
 			objects.put("signature", Configuration.getSiteName());
 			objects.put("siteName", Configuration.getSiteName());
@@ -262,6 +231,7 @@ public class ItemService extends ObjectService {
 		objects.put("borrowerFirstName", borrower.getFirstName());
 		objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
 		objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
+		objects.put("lenderDisplayName", PersonUtils.getCurrentPersonDisplayName());
 		objects.put("itemTitle", internalItem.getTitle());
 		objects.put("signature", Configuration.getSiteName());
 		objects.put("siteName", Configuration.getSiteName());
@@ -331,6 +301,7 @@ public class ItemService extends ObjectService {
 		objects.put("borrowerFirstName", borrower.getFirstName());
 		objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
 		objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
+		objects.put("lenderDisplayName", PersonUtils.getCurrentPersonDisplayName());
 		objects.put("itemTitle", internalItem.getTitle());
 		objects.put("signature", Configuration.getSiteName());
 		objects.put("siteName", Configuration.getSiteName());
@@ -388,16 +359,6 @@ public class ItemService extends ObjectService {
 		itemDao.deleteItem(pInternalItem);
 	}
 	
-	public void deleteExternalItem(final Long pExternalItemId) {
-		deleteExternalItem(itemDao.findExternalItem(pExternalItemId));
-	}
-
-	public void deleteExternalItem(final ExternalItem pExternalItem)  {
-		assertCurrentUserAuthorizedToDelete(pExternalItem);
-		// Delete documents
-		itemDao.deleteItem(pExternalItem);
-	}
-	
 	public void deleteInternalItem(final Long pInternalItemId) {
 		deleteInternalItem(itemDao.findInternalItem(pInternalItemId));
 	}
@@ -410,12 +371,6 @@ public class ItemService extends ObjectService {
 		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
 		pItem.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
 		return createItem(pItem, pNeed);
-	}
-	
-	public Long createExternalItemWithCategory(final ExternalItem pItem, final Long pCategoryId) {
-		pItem.setBorrower(getCurrentPerson());
-		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
-		return createItem(pItem, null);
 	}
 
 	public void updateItem(final Item item) {
@@ -503,23 +458,6 @@ public class ItemService extends ObjectService {
 		}		
 	}
 
-	/**
-	 * Returns true if pPerson is authorized to see the name of the owner of pIternalItem.
-	 *
-	 * @param pInternalItem
-	 * @param pPerson
-	 * @return
-	 */
-	public boolean isCurrentUserAuthorizedToViewOwnerName(final InternalItem pInternalItem) {
-		CoreUtils.assertNotNull(pInternalItem);
-		final Person currentPerson = getCurrentPerson();
-		return Boolean.TRUE.equals(pInternalItem.getOwner().getShowNameOnPublicItems()) || 
-			(SecurityUtils.isLoggedIn() &&
-					(isUserAuthorizedToEdit(currentPerson, pInternalItem) || 
-					 getPersonService().isConnection(pInternalItem.getOwner().getId(), currentPerson.getId()))
-			);
-	}
-
     /////////////////////////////////////////////////////////
 	// Access control
 	
@@ -595,12 +533,6 @@ public class ItemService extends ObjectService {
 				return true;
 			}			
 		}
-		else if (pItem instanceof ExternalItem) {
-			final ExternalItem externalItem = (ExternalItem) pItem;
-			if (pPerson.equals(externalItem.getBorrower())) {
-				return true;
-			}
-		}
 		return false;
 	}
 
@@ -666,7 +598,10 @@ public class ItemService extends ObjectService {
 			Map<String, String> objects = new HashMap<String, String>();
 			objects.put("connectionFirstName", pInternalItem.getOwner().getFirstName());
 			objects.put("connectionLastName", pInternalItem.getOwner().getLastName());
+			objects.put("connectionDisplayName", pInternalItem.getOwner().getDisplayName());
 			objects.put("requesterFirstName", pNeed.getOwner().getFirstName());
+			objects.put("requesterLastName", pNeed.getOwner().getLastName());
+			objects.put("requesterDisplayName", pNeed.getOwner().getDisplayName());
 			objects.put("needTitle", pNeed.getTitle());
 			objects.put("needUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
 					PagesURL.NEED_OVERVIEW,

@@ -2,7 +2,7 @@
 
 Bonjour $firstName,<br/><br/>
 
-$commenterFirstName $commenterLastName a ajouté un commentaire sur <a href="$objectUrl">$objectTitle</a>:<br/><br/>
+$commenterDisplayName a ajouté un commentaire sur <a href="$objectUrl">$objectTitle</a>:<br/><br/>
 
 <b>$commentEscaped</b><br/><br/>
 

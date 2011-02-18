@@ -133,10 +133,6 @@
 		<h:outputText id="sideMenuMyBorrowedItemsText" value="#{messages.menu_myBorrowedItems}"/>
 	</h:outputLink>
 	</li><li>
-	<h:outputLink id="sideMenuExternalItemAddLink" class="sideMenuLink" value="#{authenticationController.externalItemAddURL}">
-		<h:outputText id="sideMenuExternalItemAddText" value="#{messages.menu_addBorrowedItem}" />
-	</h:outputLink>
-	</li><li>
 	<h:outputLink id="sideMenuMyPendingLendRequestsOutLink" class="sideMenuLink" value="#{authenticationController.myPendingLendRequestsOutURL}">
 		<h:outputText id="sideMenuMyPendingLendRequestsOutText" value="#{messages.menu_myPendingLendRequestsOut}"/>
 	</h:outputLink>

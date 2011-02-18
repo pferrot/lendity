@@ -87,6 +87,10 @@ public class LendTransaction implements Commentable<LendTransactionComment>, Ser
 	
 	@Column(name = "CREATION_DATE", nullable = false)
 	private Date creationDate;
+	
+	@Column(name = "CONFLICT", nullable = false)
+	@Audited
+	private Boolean conflict;
 
 	public LendTransaction() {
 		super();
@@ -198,6 +202,14 @@ public class LendTransaction implements Commentable<LendTransactionComment>, Ser
 
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	public Boolean getConflict() {
+		return conflict;
+	}
+
+	public void setConflict(Boolean conflict) {
+		this.conflict = conflict;
 	}
 
 	@Override

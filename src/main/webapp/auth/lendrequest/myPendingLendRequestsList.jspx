@@ -47,9 +47,6 @@
 	<br/>
 </c:if>
 
-<ui:include src="acceptLendTooltip.jspx"/>
-<ui:include src="refuseLendTooltip.jspx"/>
-
 <h:dataTable value="#{myPendingLendRequestsListController.list}" binding="#{myPendingLendRequestsListController.table}" var="lendRequest" styleClass="gt-table gt-user-table">
 
     <h:column id="column1">
@@ -63,46 +60,40 @@
 			</td></tr></table>
 		</td><td>
 		<h4>
-			<h:outputLink id="link2" value="#{myPendingLendRequestsListController.itemOverviewHref}">
+			<h:outputLink id="link2" value="#{myPendingLendRequestsListController.lendTransactionOverviewHref}">
 				<h:outputText value="#{lendRequest.item.title}" />
-			</h:outputLink>
+			</h:outputLink>			
 		</h4>
-		<p>
-			<h:outputLink id="link3" value="#{myPendingLendRequestsListController.requesterOverviewHref}">
-				<h:outputText value="#{lendRequest.requester.displayName}" />
-			</h:outputLink>
-		</p>
 		</td></tr></table>
     </h:column>
 
 	<h:column id="column2">
-		<table border="0" class="gt-table-categories" width="150" align="right">
+		<table border="0" class="gt-table-categories" width="250" align="right">
+			<tr>
+				<th width="50%">
+					<h:outputText id="itemTitle" value="#{messages.item_item}:" />
+				</th>
+				<td width="50%">
+					<h:outputLink id="itemLink" value="#{myPendingLendRequestsListController.itemOverviewHref}">
+						<h:outputText id="itemLabel" value="#{lendRequest.item.title}"/>
+					</h:outputLink>
+				</td>
+			</tr>
+			<tr>
+				<th width="50%">
+					<h:outputText id="ownerTitle" value="#{messages.lendRequest_requester}:" />
+				</th>
+				<td width="50%">
+					<h:outputLink id="ownerLink" value="#{myPendingLendRequestsListController.requesterOverviewHref}">
+						<h:outputText id="ownerLabel" value="#{lendRequest.requester.displayName}"/>
+					</h:outputLink>
+				</td>
+			</tr>
 			<tr>
 			    <th width="50%"><nobr><h:outputText id="id_1" value="#{messages.lendRequest_requestDate}:" /></nobr></th>
 				<td width="50%"><nobr><h:outputText id="id_2" value="#{myPendingLendRequestsListController.requestDateLabel}"/></nobr></td>
-		    </tr>
+		    </tr>		    
 		</table>
-    </h:column>
-
-	<h:column id="column3">
-		<h:form id="form1">
-			<table border="0" class="gt-table-categories" width="75" align="right">
-				<tr>
-					<td>
-						<span onclick="acceptLendTooltip(this, '#{lendRequest.id}', 1)">
-							<h:outputText styleClass="stylishButton" value="#{messages.lendRequest_responseAccept}"/>
-						</span>
-					</td>
-			    </tr>
-			    <tr>
-					<td>
-						<span onclick="refuseLendTooltip(this, '#{lendRequest.id}', 1)">
-							<h:outputText styleClass="stylishButton" value="#{messages.lendRequest_responseRefuse}"/>
-						</span>
-					</td>
-			    </tr>
-			</table>
-		</h:form>
     </h:column>
 
 </h:dataTable>

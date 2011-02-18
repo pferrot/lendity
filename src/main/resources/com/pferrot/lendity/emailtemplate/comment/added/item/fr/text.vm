@@ -1,6 +1,6 @@
 Bonjour $firstName,
 
-$commenterFirstName $commenterLastName a ajouté un commentaire sur $objectTitle:
+$commenterDisplayName a ajouté un commentaire sur $objectTitle:
 
 $comment
 

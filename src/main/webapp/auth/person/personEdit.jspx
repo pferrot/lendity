@@ -60,6 +60,18 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.person_displayName}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="displayName"></h:message>			
+						<h:inputText id="displayName" styleClass="gt-form-text"
+							value="#{personEditController.displayName}" 
+							required="true" 
+							requiredMessage="#{messages.validation_requiredMessage}"
+							maxlength="255"/>			
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
 						<label><h:outputText value="#{messages.person_website}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="website"></h:message>
@@ -161,13 +173,7 @@
 							for="showContactDetailsToAll"></h:message>
 						<h:selectBooleanCheckbox id="showContactDetailsToAll" value="#{personEditController.showContactDetailsToAll}" styleClass="gt-form-element-checkbox"/>
 						<h:outputText value=" " escape="false" />
-						<h:outputText value="#{messages.person_showContactDetailsToAll}"/>
-						<br/>
-						<h:message styleClass="error" showSummary="true" showDetail="false"
-							for="showNameOnPublicItems"></h:message>
-						<h:selectBooleanCheckbox id="showNameOnPublicItems" value="#{personEditController.showNameOnPublicItems}" styleClass="gt-form-element-checkbox"/>
-						<h:outputText value=" " escape="false" />
-						<h:outputText value="#{messages.person_showNameOnPublicItems}"/>						
+						<h:outputText value="#{messages.person_showContactDetailsToAll}"/>						
 					</div><!-- /form row -->
 
 					<!-- form row -->

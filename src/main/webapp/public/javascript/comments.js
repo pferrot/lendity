@@ -21,19 +21,25 @@ function initComments(pContainerId, pContainerType, pContextPath, pAddCommentDef
 	mEditCommentLabel = pEditCommentLabel;
 	mDeleteCommentLabel = pDeleteCommentLabel;
 	if (pContainerType == "item") {
-		loadComments(pContainerId, undefined);
+		loadCommentsForItem(pContainerId);
 	}
 	else if (pContainerType == "need") {
-		loadComments(undefined, pContainerId);
+		loadCommentsForNeed(pContainerId);
+	}	
+	else if (pContainerType == "lendTransaction") {
+		loadCommentsForLendTransaction(pContainerId);
 	}	
 }
 
 function loadMoreComments(pContainerId, pContainerType) {
 	if (pContainerType == "item") {
-		loadMoreCommentsInternal(pContainerId, undefined);
+		loadMoreCommentsInternalForItem(pContainerId);
 	}
 	else if (pContainerType == "need") {
-		loadMoreCommentsInternal(undefined, pContainerId);
+		loadMoreCommentsInternalForNeed(pContainerId);
+	}
+	else if (pContainerType == "lendTransaction") {
+		loadMoreCommentsInternalForLendTransaction(pContainerId);
 	}
 }
 
@@ -44,16 +50,18 @@ function loadMoreComments(pContainerId, pContainerType) {
  */
 function postComment(pContainerId, pContainerType) {
 	addCommentInProgress();
-
 	addCommentInDb(pContainerId, pContainerType);
 }
 
 function addCommentInDb(pContainerId, pContainerType) {
 	if (pContainerType == "item") {
-		addCommentInDbInternal(pContainerId, undefined);
+		addCommentInDbInternalForItem(pContainerId);
 	}
 	else if (pContainerType == "need") {
-		addCommentInDbInternal(undefined, pContainerId);
+		addCommentInDbInternalForNeed(pContainerId);
+	}
+	else if (pContainerType == "lendTransaction") {
+		addCommentInDbInternalForLendTransaction(pContainerId);
 	}
 }
 
@@ -63,13 +71,37 @@ function positionEditCommentInProgressBottom() {
 	editCommentInProgress.insertAfter(commentsContainer);
 }
 
-function loadComments(pItemId, pNeedId) {
+function loadCommentsForItem(pItemId) {
 	addCommentInProgress();
 	$j.ajax({
 		url: mContextPath + '/public/comment/comment.json',
 		dataType: 'json',
 		contentType: 'application/json',
-		data: {action: 'read', itemID: pItemId, needID: pNeedId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
+		data: {action: 'read', itemID: pItemId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
+		success: loadCommentsResponse,
+		cache: false
+	});
+}
+
+function loadCommentsForNeed(pNeedId) {
+	addCommentInProgress();
+	$j.ajax({
+		url: mContextPath + '/public/comment/comment.json',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: {action: 'read', needID: pNeedId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
+		success: loadCommentsResponse,
+		cache: false
+	});
+}
+
+function loadCommentsForLendTransaction(pLendTransactionId) {
+	addCommentInProgress();
+	$j.ajax({
+		url: mContextPath + '/public/comment/comment.json',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: {action: 'read', lendTransactionID: pLendTransactionId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
 		success: loadCommentsResponse,
 		cache: false
 	});
@@ -81,7 +113,7 @@ function loadComments(pItemId, pNeedId) {
  * 
  * @return
  */
-function addCommentInDbInternal(pItemId, pNeedId) {
+function addCommentInDbInternalForItem(pItemId) {
 	var commentTextarea = $j('#commentTextarea');
 	var text = commentTextarea.val();
 	text = $j.trim(text);
@@ -90,13 +122,43 @@ function addCommentInDbInternal(pItemId, pNeedId) {
 			url: mContextPath + '/public/comment/comment.json',
 			dataType: 'json',
 			contentType: 'application/json',
-			data: {action: 'create', itemID: pItemId, needID: pNeedId, text: text},
+			data: {action: 'create', itemID: pItemId, text: text},
 			success: addCommentInDbResponse,
 			cache: false
 	});
 }
 
-function loadMoreCommentsInternal(pItemId, pNeedId) {
+function addCommentInDbInternalForNeed(pNeedId) {
+	var commentTextarea = $j('#commentTextarea');
+	var text = commentTextarea.val();
+	text = $j.trim(text);
+	// Add in DB.
+	$j.ajax({
+			url: mContextPath + '/public/comment/comment.json',
+			dataType: 'json',
+			contentType: 'application/json',
+			data: {action: 'create', needID: pNeedId, text: text},
+			success: addCommentInDbResponse,
+			cache: false
+	});
+}
+
+function addCommentInDbInternalForLendTransaction(pLendTransactionId) {
+	var commentTextarea = $j('#commentTextarea');
+	var text = commentTextarea.val();
+	text = $j.trim(text);
+	// Add in DB.
+	$j.ajax({
+			url: mContextPath + '/public/comment/comment.json',
+			dataType: 'json',
+			contentType: 'application/json',
+			data: {action: 'create', lendTransactionID: pLendTransactionId, text: text},
+			success: addCommentInDbResponse,
+			cache: false
+	});
+}
+
+function loadMoreCommentsInternalForItem(pItemId) {
 	hideLoadExtraCommentsDiv();	
 	
 	positionEditCommentInProgressBottom();
@@ -106,7 +168,39 @@ function loadMoreCommentsInternal(pItemId, pNeedId) {
 		url: mContextPath + '/public/comment/comment.json',
 		dataType: 'json',
 		contentType: 'application/json',
-		data: {action: 'read', itemID: pItemId, needID: pNeedId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
+		data: {action: 'read', itemID: pItemId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
+		success: loadCommentsResponse,
+		cache: false
+	});	
+}
+
+function loadMoreCommentsInternalForNeed(pNeedId) {
+	hideLoadExtraCommentsDiv();	
+	
+	positionEditCommentInProgressBottom();
+	editCommentInProgress();
+	
+	$j.ajax({
+		url: mContextPath + '/public/comment/comment.json',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: {action: 'read', needID: pNeedId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
+		success: loadCommentsResponse,
+		cache: false
+	});	
+}
+
+function loadMoreCommentsInternalForLendTransaction(pLendTransactionId) {
+	hideLoadExtraCommentsDiv();	
+	
+	positionEditCommentInProgressBottom();
+	editCommentInProgress();
+	
+	$j.ajax({
+		url: mContextPath + '/public/comment/comment.json',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: {action: 'read', lendTransactionID: pLendTransactionId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
 		success: loadCommentsResponse,
 		cache: false
 	});	

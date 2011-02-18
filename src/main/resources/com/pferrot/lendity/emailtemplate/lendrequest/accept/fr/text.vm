@@ -1,10 +1,10 @@
 Hello $requesterFirstName,
 
-$ownerFirstName $ownerLastName accepte de te prêter l'objet suivant:
+$ownerDisplayName accepte de te prêter l'objet suivant:
 
 $itemTitle
 
-Prends contact avec $ownerFirstName afin de régler les détails de l'échange. Tu peux par exemple simplement répondre à cet e-mail.
+Etape suivante, régler les détails de la transaction: $lendTransactionUrl 
 
 A bientôt sur $siteName.
 

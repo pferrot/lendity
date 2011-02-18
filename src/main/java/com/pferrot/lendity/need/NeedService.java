@@ -108,8 +108,11 @@ public class NeedService extends ObjectService {
 			// Send email (will actually create a JMS message, i.e. it is async).
 			Map<String, String> objects = new HashMap<String, String>();
 			objects.put("connectionFirstName", pConnection.getFirstName());
+			objects.put("connectionLastName", pConnection.getLastName());
+			objects.put("connectionDisplayName", pConnection.getDisplayName());
 			objects.put("requesterFirstName", pNeed.getOwner().getFirstName());
 			objects.put("requesterLastName", pNeed.getOwner().getLastName());
+			objects.put("requesterDisplayName", pNeed.getOwner().getDisplayName());
 			objects.put("needTitle", pNeed.getTitle());
 			objects.put("needUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
 					PagesURL.NEED_OVERVIEW,

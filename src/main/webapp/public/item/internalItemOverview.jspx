@@ -133,15 +133,9 @@
 	
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_owner}:" /></label></div>
-		<c:if test="#{internalItemOverviewController.ownerNameAvailable}" var="ownerNameAvailable"/>
-		<c:if test="${ownerNameAvailable}">
-			<h:outputLink value="#{internalItemOverviewController.ownerHref}">
-				<h:outputText value="#{internalItemOverviewController.item.owner.displayName}" />
-			</h:outputLink>
-		</c:if>
-		<c:if test="${not (ownerNameAvailable)}">
-			<h:outputText value="#{messages.item_ownerNotAvailable}"/>
-		</c:if>
+		<h:outputLink value="#{internalItemOverviewController.ownerHref}">
+			<h:outputText value="#{internalItemOverviewController.item.owner.displayName}" />
+		</h:outputLink>
 	</div>
 	<br/>	
 	<div class="gt-form-row gt-width-100">

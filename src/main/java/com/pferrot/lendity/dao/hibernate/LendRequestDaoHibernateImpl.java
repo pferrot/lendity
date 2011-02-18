@@ -53,10 +53,10 @@ public class LendRequestDaoHibernateImpl extends HibernateDaoSupport implements 
 	
 		if (pCompleted != null) {
 			if (pCompleted.booleanValue()) {
-				criteria.add(Restrictions.isNotNull("responseDate"));
+				criteria.add(Restrictions.isNotNull("response"));
 			}
 			else {
-				criteria.add(Restrictions.isNull("responseDate"));
+				criteria.add(Restrictions.isNull("response"));
 			}			
 		}
 		

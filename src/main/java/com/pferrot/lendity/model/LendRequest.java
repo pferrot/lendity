@@ -48,7 +48,12 @@ public class LendRequest implements Serializable {
 	
 	@OneToOne(targetEntity = com.pferrot.lendity.model.LendRequestResponse.class)
 	@JoinColumn(name = "RESPONSE_ID", nullable = true)
-	private LendRequestResponse response;	
+	private LendRequestResponse response;
+	
+	@OneToOne(targetEntity = com.pferrot.lendity.model.LendTransaction.class)
+	@JoinColumn(name = "TRANSACTION_ID", nullable = true)
+	private LendTransaction transaction;
+	
 	
     public LendRequest() {
     	super();
@@ -124,6 +129,14 @@ public class LendRequest implements Serializable {
 
 	public LendRequestResponse getResponse() {
 		return response;
+	}
+
+	public LendTransaction getTransaction() {
+		return transaction;
+	}
+
+	public void setTransaction(LendTransaction transaction) {
+		this.transaction = transaction;
 	}
 
 	@Override

@@ -19,7 +19,6 @@ import com.pferrot.lendity.dao.bean.ItemDaoQueryBean;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.dao.hibernate.criterion.CustomSqlCriterion;
 import com.pferrot.lendity.geolocation.GeoLocationConsts;
-import com.pferrot.lendity.model.ExternalItem;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Item;
 
@@ -40,11 +39,6 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 	public InternalItem findInternalItem(final Long itemId) {
 		return (InternalItem)getHibernateTemplate().load(InternalItem.class, itemId);
 	}
-
-	public ExternalItem findExternalItem(final Long itemId) {
-		return (ExternalItem)getHibernateTemplate().load(ExternalItem.class, itemId);
-	}
-
 
 	public List<InternalItem> findInternalItemsList(final ItemDaoQueryBean pItemDaoQueryBean) {
 		return (List<InternalItem>)findItemsList(pItemDaoQueryBean, InternalItem.class);
@@ -220,13 +214,6 @@ public class ItemDaoHibernateImpl extends HibernateDaoSupport implements ItemDao
 	public ListWithRowCount findInternalItems(final ItemDaoQueryBean pItemDaoQueryBean) {
 		final List list = findItemsList(pItemDaoQueryBean, InternalItem.class);
 		final long count = countItems(pItemDaoQueryBean, InternalItem.class);
-		
-		return new ListWithRowCount(list, count);
-	}
-	
-	public ListWithRowCount findInternalAndExternalItems(final ItemDaoQueryBean pItemDaoQueryBean) {
-		final List list = findItemsList(pItemDaoQueryBean, Item.class);
-		final long count = countItems(pItemDaoQueryBean, Item.class);
 		
 		return new ListWithRowCount(list, count);
 	}

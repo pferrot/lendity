@@ -101,14 +101,6 @@ public interface PagesURL {
 	
 	String INTERNAL_ITEMS_IMPORT = "/auth/item/internalItemsImport.faces";
 	
-	String EXTERNAL_ITEM_OVERVIEW = "/auth/item/externalItemOverview.faces";
-	String EXTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID = INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID;
-	
-	String EXTERNAL_ITEM_ADD = "/auth/item/externalItemAdd.faces";
-	
-	String EXTERNAL_ITEM_EDIT = "/auth/item/externalItemEdit.faces";
-	String EXTERNAL_ITEM_EDIT_PARAM_ITEM_ID = EXTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID;	
-	
 	String ITEMS_LIST = "/auth/item/itemsList.faces";
 	String MY_ITEMS_LIST = "/auth/item/myItemsList.faces";
 	String MY_LENT_ITEMS_LIST = "/auth/item/myLentItemsList.faces";
@@ -141,6 +133,12 @@ public interface PagesURL {
 	String LEND_TRANSACTION_OVERVIEW = "/auth/lendtransaction/lendTransactionOverview.faces";
 	String LEND_TRANSACTION_OVERVIEW_PARAM_NEED_ID = "lendTransactionID";
 	
+	String MY_IN_PROGRESS_LEND_TRANSACTIONS_LIST = "/auth/lendtransaction/myInProgressLendTransactionsList.faces";
+	String MY_IN_PROGRESS_LEND_TRANSACTIONS_OUT_LIST = "/auth/lendtransaction/myInProgressLendTransactionsOutList.faces";
+
+	String MY_COMPLETED_LEND_TRANSACTIONS_LIST = "/auth/lendtransaction/myClosedLendTransactionsList.faces";
+	String MY_COMPLETED_LEND_TRANSACTIONS_OUT_LIST = "/auth/lendtransaction/myClosedLendTransactionsOutList.faces";
+
 	String MY_LEND_TRANSACTIONS_LIST = "/auth/lendtransaction/mylendTransactionsList.faces";
 	
 	// LEND TRANSACTION - end

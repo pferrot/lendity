@@ -18,7 +18,7 @@ import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemUtils;
 import com.pferrot.lendity.lendrequest.LendRequestService;
-import com.pferrot.lendity.model.ExternalItem;
+import com.pferrot.lendity.lendtransaction.LendTransactionService;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.person.PersonUtils;
@@ -32,6 +32,7 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 	private final static String REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX = "REQUEST_LEND_AVAILABLE_";
 	
 	private LendRequestService lendRequestService;
+	private LendTransactionService lendTransactionService;
 	
 	private List<SelectItem> borrowStatusSelectItems;
 	// Cannot use Boolean because selecting the SelectItem with value null actually
@@ -59,6 +60,15 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 
 	public void setLendRequestService(LendRequestService lendRequestService) {
 		this.lendRequestService = lendRequestService;
+	}
+
+	public LendTransactionService getLendTransactionService() {
+		return lendTransactionService;
+	}
+
+	public void setLendTransactionService(
+			LendTransactionService lendTransactionService) {
+		this.lendTransactionService = lendTransactionService;
 	}
 
 	public List<SelectItem> getBorrowStatusSelectItems() {
@@ -312,12 +322,6 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 				return internalItem.getOwner().getDisplayName();
 			}
 		}
-		else if (item instanceof ExternalItem) {
-			final ExternalItem externalItem = (ExternalItem) item;
-			if (externalItem.getOwnerName() != null) {
-				return externalItem.getOwnerName();
-			}
-		}
 		return "";
 	}
 
@@ -374,12 +378,7 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 	
 	public String getItemOverviewHref() {
 		final Item item = (Item)getTable().getRowData();
-		if (item instanceof InternalItem) {
-			return ItemUtils.getInternalItemOverviewPageUrl(((InternalItem)item).getId().toString());
-		}
-		else {
-			return ItemUtils.getExternalItemOverviewPageUrl(((ExternalItem)item).getId().toString());
-		}		
+		return ItemUtils.getInternalItemOverviewPageUrl(((InternalItem)item).getId().toString());		
 	}
 
 	public boolean isRequestLendAvailable() {
@@ -394,16 +393,6 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 		request.setAttribute(REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX + item.getId(), Boolean.valueOf(result));
 		return result;
 	}
-
-//	public String getItemEditHref() {
-//		final Item item = (Item)getTable().getRowData();
-//		if (item instanceof InternalItem) {
-//			return ItemUtils.getInternalItemEditPageUrl(((InternalItem)item).getId().toString());
-//		}
-//		else {
-//			return ItemUtils.getInternalItemEditPageUrl(((ExternalItem)item).getId().toString());
-//		}
-//	}
 	
 	public String getImage1Src() {
 		final Item item = (Item)getTable().getRowData();

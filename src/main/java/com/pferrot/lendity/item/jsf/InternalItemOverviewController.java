@@ -115,8 +115,4 @@ public class InternalItemOverviewController extends AbstractItemOverviewControll
 	public boolean isInfoConnectionsAvailable() {
 		return isEditAvailable(); 
 	}
-
-	public boolean isOwnerNameAvailable() {
-		return getItemService().isCurrentUserAuthorizedToViewOwnerName((InternalItem)getItem());
-	}
 }

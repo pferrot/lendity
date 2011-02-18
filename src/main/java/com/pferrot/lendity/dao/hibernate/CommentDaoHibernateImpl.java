@@ -13,6 +13,8 @@ import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.model.Comment;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.ItemComment;
+import com.pferrot.lendity.model.LendTransaction;
+import com.pferrot.lendity.model.LendTransactionComment;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.NeedComment;
 
@@ -46,6 +48,12 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
 	}
 
+	public List<LendTransactionComment> findLendTransactionCommentsList(final LendTransaction pLendTransaction, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria criteria = getLendTransactionCommentsDetachedCriteria(pLendTransaction);
+		criteria.addOrder(Order.desc("creationDate"));		
+		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
+	}
+
 	public long countItemComments(final InternalItem pInternalItem) {
 		final DetachedCriteria criteria = getItemCommentsDetachedCriteria(pInternalItem);
 		return rowCount(criteria);
@@ -53,6 +61,11 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 	
 	public long countNeedComments(final Need pNeed) {
 		final DetachedCriteria criteria = getNeedCommentsDetachedCriteria(pNeed);
+		return rowCount(criteria);
+	}
+
+	public long countLendTransactionComments(final LendTransaction pLendTransaction) {
+		final DetachedCriteria criteria = getLendTransactionCommentsDetachedCriteria(pLendTransaction);
 		return rowCount(criteria);
 	}
 
@@ -70,6 +83,15 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 	
 		if (pNeed != null) {
 			criteria.add(Restrictions.eq("need", pNeed));
+		}		
+		return criteria;	
+	}
+
+	private DetachedCriteria getLendTransactionCommentsDetachedCriteria(final LendTransaction pLendTransaction) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(LendTransactionComment.class);
+	
+		if (pLendTransaction != null) {
+			criteria.add(Restrictions.eq("lendTransaction", pLendTransaction));
 		}		
 		return criteria;	
 	}
@@ -94,6 +116,12 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 	public ListWithRowCount findNeedComments(final Need pNeed, final int pFirstResult, final int pMaxResults) {
 		final List list = findNeedCommentsList(pNeed, pFirstResult, pMaxResults);
 		final long count = countNeedComments(pNeed);
+		return new ListWithRowCount(list, count);
+	}
+
+	public ListWithRowCount findLendTransactionComments(final LendTransaction pLendTransaction, final int pFirstResult, final int pMaxResults) {
+		final List list = findLendTransactionCommentsList(pLendTransaction, pFirstResult, pMaxResults);
+		final long count = countLendTransactionComments(pLendTransaction);
 		return new ListWithRowCount(list, count);
 	}
 }

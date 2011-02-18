@@ -2,7 +2,7 @@
 
 Hello $borrowerFirstName,<br/><br/>
 
-<b>$lenderFirstName $lenderLastName</b> a indiqué que tu lui as retourné l'objet suivant:<br/><br/>
+<b>$lenderDisplayName</b> a indiqué que tu lui as retourné l'objet suivant:<br/><br/>
 
 <b>$itemTitle</b><br/><br/> 
 

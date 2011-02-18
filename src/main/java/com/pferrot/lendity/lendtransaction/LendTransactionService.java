@@ -62,6 +62,25 @@ public class LendTransactionService {
 	public LendTransaction findLendTransaction(final Long pLendTransactionId) {
 		return lendTransactionDao.findLendTransaction(pLendTransactionId);
 	}
+	
+	public LendTransaction findInProgressLendTransactionForItem(final InternalItem pInternalItem) throws LendTransactionException {
+		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
+		queryBean.setInternalItemId(pInternalItem.getId());
+		final ListValue inProgress = listValueDao.findListValue(LendTransactionStatus.IN_PROGRESS_LABEL_CODE);
+		final Long[] inProgressIds = new Long[]{inProgress.getId()};
+		queryBean.setStatusIds(inProgressIds);
+		final ListWithRowCount lwrc = lendTransactionDao.findLendTransactions(queryBean);
+		if (lwrc.getRowCount() > 1) {
+			throw new LendTransactionException("Should not have found more than 1 in progress lend transaction" +
+					" for item = " + pInternalItem.getId());
+		}
+		else if (lwrc.getRowCount() == 0) {
+			return null;
+		}
+		else {
+			return (LendTransaction)lwrc.getList().get(0);
+		}
+	}
 
 	public ListWithRowCount findCurrentUserLendTransactions(final int pFirstResult, final int pMaxResults) {
 		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
@@ -84,6 +103,32 @@ public class LendTransactionService {
 		queryBean.setMaxResults(pMaxResults);
 		return lendTransactionDao.findLendTransactions(queryBean);
 	}
+
+	public ListWithRowCount findCurrentUserInProgressLendTransactionsAsBorrower(final int pFirstResult, final int pMaxResults) {
+		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
+		queryBean.setBorrowerId(PersonUtils.getCurrentPersonId());
+		
+		final ListValue inProgress = listValueDao.findListValue(LendTransactionStatus.IN_PROGRESS_LABEL_CODE);
+		final Long[] inProgressIds = new Long[]{inProgress.getId()};
+		queryBean.setStatusIds(inProgressIds);
+		
+		queryBean.setFirstResult(pFirstResult);
+		queryBean.setMaxResults(pMaxResults);
+		return lendTransactionDao.findLendTransactions(queryBean);
+	}
+
+	public ListWithRowCount findCurrentUserInProgressLendTransactionsAsLender(final int pFirstResult, final int pMaxResults) {
+		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
+		queryBean.setLenderId(PersonUtils.getCurrentPersonId());
+		
+		final ListValue inProgress = listValueDao.findListValue(LendTransactionStatus.IN_PROGRESS_LABEL_CODE);
+		final Long[] inProgressIds = new Long[]{inProgress.getId()};
+		queryBean.setStatusIds(inProgressIds);
+		
+		queryBean.setFirstResult(pFirstResult);
+		queryBean.setMaxResults(pMaxResults);
+		return lendTransactionDao.findLendTransactions(queryBean);
+	}
 	
 	public long countCurrentUserUncompletedLendTransactions() {		
 		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
@@ -98,7 +143,7 @@ public class LendTransactionService {
 	}
 
 	/**
-	 * This operation will create a lend transaction with a status opened.
+	 * This operation will create a lend transaction with a status initialized.
 
 	 * @param pBorrower
 	 * @param pItem
@@ -122,7 +167,7 @@ public class LendTransactionService {
 			lendTransaction.setStartDate(pStartDate);
 			lendTransaction.setEndDate(pEndDate);
 			lendTransaction.setLendRequest(pLendRequest);
-			lendTransaction.setStatus((LendTransactionStatus)listValueDao.findListValue(LendTransactionStatus.OPENED_LABEL_CODE));
+			lendTransaction.setStatus((LendTransactionStatus)listValueDao.findListValue(LendTransactionStatus.INITIALIZED_LABEL_CODE));
 			
 			Long lendTransactionId = lendTransactionDao.createLendTransaction(lendTransaction);
 			
@@ -131,6 +176,15 @@ public class LendTransactionService {
 		catch (Exception e) {
 			throw new LendTransactionException(e);
 		}
+	}
+	
+	public Long createLendTransaction(final LendRequest pLendRequest) throws LendTransactionException {
+		CoreUtils.assertNotNull(pLendRequest);
+		return createLendTransaction(pLendRequest.getRequester(), 
+				pLendRequest.getItem(),
+				pLendRequest,
+				pLendRequest.getStartDate(),
+				pLendRequest.getEndDate());
 	}
 	
 	public void updateLendTransaction(final LendTransaction pLendTransaction) {

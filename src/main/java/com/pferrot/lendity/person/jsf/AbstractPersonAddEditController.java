@@ -16,6 +16,7 @@ public abstract class AbstractPersonAddEditController {
 	
 	private String firstName;
 	private String lastName;
+	private String displayName;
 	
 	private String website;
 	
@@ -31,7 +32,6 @@ public abstract class AbstractPersonAddEditController {
 	private Boolean receiveNeedsNotifications;
 	private Boolean receiveCommentsOnOwnNotif;
 	private Boolean receiveCommentsOnCommentedNotif;
-	private Boolean showNameOnPublicItems;
 	private Boolean showContactDetailsToAll;
 	
 	public PersonService getPersonService() {
@@ -56,6 +56,14 @@ public abstract class AbstractPersonAddEditController {
 
 	public void setLastName(String lastName) {
 		this.lastName = StringUtils.getNullIfEmpty(lastName);
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = StringUtils.getNullIfEmpty(displayName);
 	}
 
 	public String getPhoneHome() {
@@ -145,14 +153,6 @@ public abstract class AbstractPersonAddEditController {
 	public void setReceiveCommentsOnCommentedNotif(
 			Boolean receiveCommentsOnCommentedNotif) {
 		this.receiveCommentsOnCommentedNotif = receiveCommentsOnCommentedNotif;
-	}
-
-	public Boolean getShowNameOnPublicItems() {
-		return showNameOnPublicItems;
-	}
-	
-	public void setShowNameOnPublicItems(Boolean showNameOnPublicItems) {
-		this.showNameOnPublicItems = showNameOnPublicItems;
 	}
 
 	public Boolean getShowContactDetailsToAll() {

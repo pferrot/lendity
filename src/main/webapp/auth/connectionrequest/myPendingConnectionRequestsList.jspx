@@ -68,6 +68,7 @@
 				<h:outputText id="id_06" value="#{connectionRequest.requester.displayName}" />
 			</h:outputLink>
 		</h4>
+		<p><h:outputText value="#{connectionRequest.requester.firstName}" /><h:outputText value=" " escape="false" /><h:outputText value="#{connectionRequest.requester.lastName}" /></p>
 		</td></tr></table>
     </h:column>
 

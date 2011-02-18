@@ -9,8 +9,8 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<!-- params for page titles-->
-	<ui:define name="pageTitle"><h:outputText value="#{messages.lendRequest_myPendingLendRequestsOutTitle}" /></ui:define>
-	<ui:param name="contentHeader" value="#{messages.lendRequest_myPendingLendRequestsOutTitle}" />
+	<ui:define name="pageTitle"><h:outputText value="#{messages.lendTransaction_myInProgressLendTransactionsTitle}" /></ui:define>
+	<ui:param name="contentHeader" value="#{messages.lendTransaction_myInProgressLendTransactionsTitle}" />
 
 	<ui:define name="content">
 
@@ -30,8 +30,7 @@
 				
 <f:view>
 
-<h2 class="gt-table-head"><h:outputText value="#{messages.lendRequest_myPendingLendRequestsOutTitle}"/></h2>
-<p><h:outputText value="#{messages.lendRequest_onlyThoseWithNoResponse}"/></p>
+<h2 class="gt-table-head"><h:outputText value="#{messages.lendTransaction_myInProgressLendTransactionsTitle}"/></h2>
 
 <br/>
 
@@ -39,30 +38,30 @@
 <!-- content box -->
 <div class="gt-content-box">
 
-<c:if test="#{empty(myPendingLendRequestsOutListController.list)}">
+<c:if test="#{empty(myInProgressLendTransactionsListController.list)}">
 	<br/><br/>
 	<center>
-	<h4><h:outputText value="#{messages.lendRequest_noPendingLendRequestOut}"></h:outputText></h4>
+	<h4><h:outputText value="#{messages.lendTransaction_noInProgressLendTransaction}"></h:outputText></h4>
 	</center>
 	<br/>
 </c:if>
 
-<h:dataTable value="#{myPendingLendRequestsOutListController.list}" binding="#{myPendingLendRequestsOutListController.table}" var="lendRequest" styleClass="gt-table gt-user-table">
+<h:dataTable value="#{myInProgressLendTransactionsListController.list}" binding="#{myInProgressLendTransactionsListController.table}" var="lendTransaction" styleClass="gt-table gt-user-table">
 
     <h:column id="column1">
     	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
 			<table class="thumbnailInnerTable"><tr><td>
-				<h:outputLink id="link1" value="#{myPendingLendRequestsOutListController.itemOverviewHref}" rendered="#{myPendingLendRequestsOutListController.thumbnail1Src != null}">
+				<h:outputLink id="link1" value="#{myInProgressLendTransactionsListController.lendTransactionOverviewHref}" rendered="#{myInProgressLendTransactionsListController.thumbnail1Src != null}">
 					<div class="thumbnailDiv">
-					    <img src="#{myPendingLendRequestsOutListController.thumbnail1Src}"/>
+					    <img src="#{myInProgressLendTransactionsListController.thumbnail1Src}"/>
 					</div>
 				</h:outputLink>
 			</td></tr></table>
 		</td><td>
 		<h4>
-			<h:outputLink id="link2" value="#{myPendingLendRequestsOutListController.lendTransactionOverviewHref}">
-				<h:outputText value="#{lendRequest.item.title}" />
-			</h:outputLink>	
+			<h:outputLink id="link2" value="#{myInProgressLendTransactionsListController.lendTransactionOverviewHref}">
+				<h:outputText value="#{lendTransaction.item.title}" />
+			</h:outputLink>			
 		</h4>
 		</td></tr></table>
     </h:column>
@@ -74,24 +73,24 @@
 					<h:outputText id="itemTitle" value="#{messages.item_item}:" />
 				</th>
 				<td width="50%">
-					<h:outputLink id="itemLink" value="#{myPendingLendRequestsOutListController.itemOverviewHref}">
-						<h:outputText id="itemLabel" value="#{lendRequest.item.title}"/>
+					<h:outputLink id="itemLink" value="#{myInProgressLendTransactionsListController.itemOverviewHref}">
+						<h:outputText id="itemLabel" value="#{lendTransaction.item.title}"/>
 					</h:outputLink>
 				</td>
 			</tr>
 			<tr>
 				<th width="50%">
-					<h:outputText id="ownerTitle" value="#{messages.item_owner}:" />
+					<h:outputText id="ownerTitle" value="#{messages.item_lentTo}:" />
 				</th>
 				<td width="50%">
-					<h:outputLink id="ownerLink" value="#{myPendingLendRequestsOutListController.ownerOverviewHref}">
-						<h:outputText id="ownerLabel" value="#{lendRequest.owner.displayName}"/>
+					<h:outputLink id="ownerLink" value="#{myInProgressLendTransactionsListController.borrowerOverviewHref}">
+						<h:outputText id="ownerLabel" value="#{lendTransaction.borrower.displayName}"/>
 					</h:outputLink>
 				</td>
 			</tr>
 			<tr>
-			    <th width="50%"><nobr><h:outputText id="id_1" value="#{messages.lendRequest_requestDate}:" /></nobr></th>
-				<td width="50%"><nobr><h:outputText id="id_2" value="#{myPendingLendRequestsOutListController.requestDateLabel}"/></nobr></td>
+			    <th width="50%"><nobr><h:outputText id="id_1" value="#{messages.item_lentSince}:" /></nobr></th>
+				<td width="50%"><nobr><h:outputText id="id_2" value="#{myInProgressLendTransactionsListController.borrowDateLabel}"/></nobr></td>
 		    </tr>		    
 		</table>
     </h:column>

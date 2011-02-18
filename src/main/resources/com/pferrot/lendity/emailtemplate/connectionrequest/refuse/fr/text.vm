@@ -1,6 +1,6 @@
 Hello $requesterFirstName,
 
-$connectionFirstName $connectionLastName a refusé de t'ajouter comme ami.
+$connectionDisplayName a refusé de t'ajouter comme ami.
 
 A bientôt sur $siteName.
 

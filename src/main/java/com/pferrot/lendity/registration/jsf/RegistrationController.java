@@ -20,6 +20,7 @@ public class RegistrationController {
 	
 	private String firstName;
 	private String lastName;
+	private String displayName;
 	private String email;
 	private String phoneHome;
 	private String phoneMobile;
@@ -59,6 +60,14 @@ public class RegistrationController {
 
 	public void setLastName(String lastName) {
 		this.lastName = StringUtils.getNullIfEmpty(lastName);
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = StringUtils.getNullIfEmpty(displayName);
 	}
 
 	public String getEmail() {
@@ -180,6 +189,7 @@ public class RegistrationController {
 			Person person = new Person();
 			person.setFirstName(getFirstName());
 			person.setLastName(getLastName());
+			person.setDisplayName(getDisplayName());
 			person.setEmail(getEmail());
 			person.setPhoneHome(getPhoneHome());
 			person.setPhoneMobile(getPhoneMobile());
@@ -197,7 +207,6 @@ public class RegistrationController {
 			person.setReceiveNeedsNotifications(Boolean.TRUE);
 			person.setReceiveCommentsOnCommentedNotif(Boolean.TRUE);
 			person.setReceiveCommentsOnOwnNotif(Boolean.TRUE);
-			person.setShowNameOnPublicItems(Boolean.FALSE);
 			person.setShowContactDetailsToAll(Boolean.FALSE);
 			
 			registrationService.createUser(person);

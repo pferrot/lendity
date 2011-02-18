@@ -86,26 +86,6 @@ public class SearchItemsListController extends AbstractItemsWithOwnerListControl
 		return getBorrowStatusSelectItemsInternal();	
 	}
 
-	@Override
-	public String getOwnerLabel() {
-		if (!isOwnerNameAvailable()) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			return I18nUtils.getMessageResourceString("item_ownerNotAvailable", locale);
-		}
-		return super.getOwnerLabel();
-	}
-
-	/**
-	 * The name of the owner is available if the current user has RW access or if he is a connection. I.e. users
-	 * cannot see the owner of public items belonging to users they do not know.
-	 * 
-	 * @return
-	 */
-	public boolean isOwnerNameAvailable() {
-		final InternalItem item = (InternalItem)getTable().getRowData();
-		return getItemService().isCurrentUserAuthorizedToViewOwnerName(item);
-	}
-
 	public boolean isSearchByDistanceAvailable() {
 		return PersonUtils.isCurrentPersonIsAddressDefined();
 	}

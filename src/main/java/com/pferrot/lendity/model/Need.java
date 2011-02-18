@@ -57,6 +57,10 @@ public class Need implements CategoryEnabled, Ownable, CommentableWithOwner<Need
 	@JoinColumn(name = "CATEGORY_ID", nullable = true)
 	private ItemCategory category;
 	
+	@ManyToOne(targetEntity = ItemVisibility.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "VISIBILITY_ID", nullable = false)
+	private ItemVisibility visibility;
+	
 	@Column(name = "CREATION_DATE", nullable = false)
 	private Date creationDate;
 
@@ -193,6 +197,14 @@ public class Need implements CategoryEnabled, Ownable, CommentableWithOwner<Need
 	public void removeRelatedItem(final InternalItem pRelatedItem) {
 		CoreUtils.assertNotNull(pRelatedItem);
 		relatedItems.remove(pRelatedItem);
+	}
+
+	public ItemVisibility getVisibility() {
+		return visibility;
+	}
+	
+	public void setVisibility(ItemVisibility visibility) {
+		this.visibility = visibility;
 	}
 
 	@Override

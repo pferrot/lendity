@@ -1,12 +1,10 @@
 Hello $ownerFirstName,
 
-$requesterFirstName $requesterLastName souhaite t'emprunter l'objet suivant:
+$requesterDisplayName souhaite t'emprunter l'objet suivant:
 
-<b>$itemTitle</b><br/><br/>
+$itemTitle
 
-Rends-toi sur la page suivante pour lui rendre réponse:
-
-$pendingRequestsUrl
+Merci de lui rendre réponse le plus rapidement possible depuis cette page: $lendTransactionUrl
 
 A bientôt sur $siteName.
 

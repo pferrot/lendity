@@ -162,10 +162,9 @@
 					<h:outputText id="ownerTitle" value="#{messages.item_owner}:" />
 				</th>
 				<td>
-					<h:outputLink id="ownerLink" value="#{searchItemsListController.ownerHref}" rendered="#{searchItemsListController.ownerNameAvailable}">
-						<h:outputText id="ownerLabel" value="#{searchItemsListController.ownerLabel}" rendered="#{searchItemsListController.ownerNameAvailable}"/>
+					<h:outputLink id="ownerLink" value="#{searchItemsListController.ownerHref}">
+						<h:outputText id="ownerLabel" value="#{searchItemsListController.ownerLabel}"/>
 					</h:outputLink>
-					<h:outputText id="ownerLabel2" value="#{searchItemsListController.ownerLabel}" rendered="#{not (searchItemsListController.ownerNameAvailable)}"/>
 				</td>
 			</tr>
 			<tr>

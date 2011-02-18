@@ -2,7 +2,7 @@
 
 Hello $requesterFirstName,<br/><br/>
 
-$connectionFirstName $connectionLastName a refusé de t'ajouter comme ami et t'a exclu de ses contacts.<br/><br/>
+$connectionDisplayName a refusé de t'ajouter comme ami et t'a exclu de ses contacts.<br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
 

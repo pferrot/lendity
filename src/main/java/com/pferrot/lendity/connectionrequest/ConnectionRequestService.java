@@ -208,6 +208,7 @@ public class ConnectionRequestService {
 			// Send email (will actually create a JMS message, i.e. it is async).
 			Map<String, String> objects = new HashMap<String, String>();
 			objects.put("connectionFirstName", pConnection.getFirstName());
+			objects.put("requesterDisplayName", pRequester.getDisplayName());
 			objects.put("requesterFirstName", pRequester.getFirstName());
 			objects.put("requesterLastName", pRequester.getLastName());
 			objects.put("signature", Configuration.getSiteName());
@@ -475,6 +476,7 @@ public class ConnectionRequestService {
 		// Send email (will actually create a JMS message, i.e. it is async).
 		Map<String, String> objects = new HashMap<String, String>();
 		objects.put("requesterFirstName", pConnectionRequest.getRequester().getFirstName());
+		objects.put("connectionDisplayName", pConnectionRequest.getConnection().getDisplayName());
 		objects.put("connectionFirstName", pConnectionRequest.getConnection().getFirstName());
 		objects.put("connectionLastName", pConnectionRequest.getConnection().getLastName());
 		objects.put("signature", Configuration.getSiteName());

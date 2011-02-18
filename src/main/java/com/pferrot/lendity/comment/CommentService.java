@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Hibernate;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.emailsender.manager.MailManager;
@@ -152,6 +153,31 @@ public class CommentService {
 		final Need need = needService.findNeed(pNeedId);
 		return commentDao.findNeedComments(need, pFirstResult, pMaxResults);
 	}
+
+	/**
+	 * Returns comments but validates that the specified user is authorized to view those
+	 * comments.
+	 * 
+	 * @param pLendTransactionId
+	 * @param pCurrentPersonId
+	 * @param pFirstResult
+	 * @param pMaxResults
+	 * @return
+	 */
+	public ListWithRowCount findLendTransactionCommentsWithAC(final Long pLendTransactionId, final Long pCurrentPersonId, final int pFirstResult, final int pMaxResults) {
+		final LendTransaction lendTransaction = lendTransactionService.findLendTransaction(pLendTransactionId);
+		Person currentPerson = null;
+		if (pCurrentPersonId != null) {
+			currentPerson = personService.findPerson(pCurrentPersonId);
+		}
+		lendTransactionService.assertUserAuthorizedToView(currentPerson, lendTransaction);		
+		return commentDao.findLendTransactionComments(lendTransaction, pFirstResult, pMaxResults);
+	}
+	
+	public ListWithRowCount findLendTransactionComments(final Long pLendTransactionId, final int pFirstResult, final int pMaxResults) {
+		final LendTransaction lendTransaction = lendTransactionService.findLendTransaction(pLendTransactionId);
+		return commentDao.findLendTransactionComments(lendTransaction, pFirstResult, pMaxResults);
+	}
 	
 	/**
 	 * Creates the comment and sends notifications to others who commented and container owner.
@@ -282,7 +308,7 @@ public class CommentService {
 	 * @param pComment
 	 */
 	private void removeCommentRecipientFromContainerIfNeeded(final Comment pComment) {
-		if (pComment instanceof LendTransactionComment ||
+		if (Hibernate.getClass(pComment).isAssignableFrom(LendTransactionComment.class) ||
 			pComment == null || 
 			pComment.getId() == null ||
 			pComment.getOwner() == null ||
@@ -391,7 +417,7 @@ public class CommentService {
 			//   AND
 			// NOT (owner of the container AND email already sent to owner of the container)
 			if (!recipient.getId().equals(pComment.getOwner().getId()) && 
-				!(recipient.getId().equals(containerOwner.getId()) && emailSentToContainerOwner)){
+				!(containerOwner != null && recipient.getId().equals(containerOwner.getId()) && emailSentToContainerOwner)){
 				if (recipient.isEnabled() &&
 					recipient.getReceiveCommentsOnCommentedNotif() &&
 					!recipient.getId().equals(pComment.getOwner().getId())) {
@@ -416,8 +442,7 @@ public class CommentService {
 			// Send email (will actually create a JMS message, i.e. it is async).
 			Map<String, String> objects = new HashMap<String, String>();
 			objects.put("firstName", pPerson.getFirstName());
-			objects.put("commenterFirstName", pComment.getOwner().getFirstName());
-			objects.put("commenterLastName", pComment.getOwner().getLastName());
+			objects.put("commenterDisplayName", pComment.getOwner().getDisplayName());
 			
 			final Commentable commentable = pComment.getContainer();
 			String velocityTemplateLocation = null;

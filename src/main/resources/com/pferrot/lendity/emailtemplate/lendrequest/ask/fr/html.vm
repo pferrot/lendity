@@ -2,13 +2,11 @@
 
 Hello $ownerFirstName,<br/><br/>
 
-<b>$requesterFirstName $requesterLastName</b> souhaite t'emprunter l'objet suivant:<br/><br/>
+<b>$requesterDisplayName</b> souhaite t'emprunter l'objet suivant:<br/><br/>
 
 <b>$itemTitle</b><br/><br/>
 
-Rends-toi sur la page suivante pour lui rendre réponse:<br/><br/>
-
-<a href="$pendingRequestsUrl">Demandes d'emprunt reçues</a><br/><br/>
+Merci de <a href="$lendTransactionUrl">lui rendre réponse</a> le plus rapidement possible.<br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
 

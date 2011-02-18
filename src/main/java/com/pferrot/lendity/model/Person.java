@@ -150,11 +150,6 @@ public class Person implements Serializable {
 	@Column(name = "EMAIL_SUBSC_LAST_UPDATE", nullable = true)
 	private Date emailSubscriberLastUpdate;
 	
-	// Specify whether the name of the person should be displayed on public
-	// for users who are not connections.
-	@Column(name = "SHOW_NAME_PUBLIC_ITEMS", nullable = false)
-	private Boolean showNameOnPublicItems;
-	
 	// If true, contact details (address, phone, email,...) will be public.
 	@Column(name = "SHOW_CONTACT_DETAILS_TO_ALL", nullable = false)
 	private Boolean showContactDetailsToAll;
@@ -225,7 +220,6 @@ public class Person implements Serializable {
     
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-        setDisplayName(this.firstName + " " + this.lastName);
     }
     
     public String getLastName() {
@@ -234,14 +228,13 @@ public class Person implements Serializable {
     
     public void setLastName(String lastName) {
         this.lastName = lastName;
-        setDisplayName(this.firstName + " " + this.lastName);
     }
 
     public String getDisplayName() {
         return this.displayName;
     }
 
-    private void setDisplayName(String displayName) {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
@@ -420,14 +413,6 @@ public class Person implements Serializable {
 	public void setReceiveCommentsOnCommentedNotif(
 			Boolean receiveCommentsOnCommentedNotif) {
 		this.receiveCommentsOnCommentedNotif = receiveCommentsOnCommentedNotif;
-	}
-
-	public Boolean getShowNameOnPublicItems() {
-		return showNameOnPublicItems;
-	}
-
-	public void setShowNameOnPublicItems(Boolean showNameOnPublicItems) {
-		this.showNameOnPublicItems = showNameOnPublicItems;
 	}
 	
 	public Boolean getShowContactDetailsToAll() {

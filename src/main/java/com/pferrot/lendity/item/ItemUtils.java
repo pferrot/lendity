@@ -47,37 +47,6 @@ public class ItemUtils {
 	public static String getInternalItemAddPageUrl() {		
 		return JsfUtils.getFullUrl(PagesURL.INTERNAL_ITEM_ADD);
 	}
-
-	/**
-	 * Returns the HTML link to an external item overview page.
-	 * 
-	 * @param pItemId
-	 * @return
-	 */
-	public static String getExternalItemOverviewPageUrl(final String pItemId) {
-		CoreUtils.assertNotNull(pItemId);
-		
-		return JsfUtils.getFullUrl(PagesURL.EXTERNAL_ITEM_OVERVIEW, PagesURL.EXTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID, pItemId);
-	}
-	
-	/**
-	 * 
-	 * @param pItemId
-	 * @return
-	 */
-	public static String getExternalItemEditPageUrl(final String pItemId) {
-		CoreUtils.assertNotNull(pItemId);
-		
-		return JsfUtils.getFullUrl(PagesURL.EXTERNAL_ITEM_EDIT, PagesURL.EXTERNAL_ITEM_EDIT_PARAM_ITEM_ID, pItemId);
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public static String getExternalItemAddPageUrl() {		
-		return JsfUtils.getFullUrl(PagesURL.EXTERNAL_ITEM_ADD);
-	}
 	
 	/**
 	 * 

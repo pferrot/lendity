@@ -72,6 +72,7 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		
 		setFirstName(pPerson.getFirstName());
 		setLastName(pPerson.getLastName());
+		setDisplayName(pPerson.getDisplayName());
 		
 		setWebsite(pPerson.getWebsite());
 		
@@ -79,7 +80,6 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		setReceiveNeedsNotifications(pPerson.getReceiveNeedsNotifications());
 		setReceiveCommentsOnCommentedNotif(pPerson.getReceiveCommentsOnCommentedNotif());
 		setReceiveCommentsOnOwnNotif(pPerson.getReceiveCommentsOnOwnNotif());
-		setShowNameOnPublicItems(pPerson.getShowNameOnPublicItems());
 		setShowContactDetailsToAll(pPerson.getShowContactDetailsToAll());
 		
 		setPhoneHome(pPerson.getPhoneHome());
@@ -95,12 +95,12 @@ public class PersonEditController extends AbstractPersonAddEditController {
 
 		getPerson().setFirstName(getFirstName());
 		getPerson().setLastName(getLastName());
+		getPerson().setDisplayName(getDisplayName());
 		getPerson().setWebsite(getWebsite());
 		getPerson().setEmailSubscriber(getEmailSubscriber());
 		getPerson().setReceiveNeedsNotifications(getReceiveNeedsNotifications());
 		getPerson().setReceiveCommentsOnCommentedNotif(getReceiveCommentsOnCommentedNotif());
 		getPerson().setReceiveCommentsOnOwnNotif(getReceiveCommentsOnOwnNotif());
-		getPerson().setShowNameOnPublicItems(getShowNameOnPublicItems());
 		getPerson().setShowContactDetailsToAll(getShowContactDetailsToAll());
 		
 		getPerson().setPhoneHome(getPhoneHome());

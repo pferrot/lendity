@@ -2,7 +2,7 @@
 
 Bonjour $connectionFirstName,<br/><br/>
 
-<b>$requesterFirstName $requesterLastName</b> recherche l'objet suivant:<br/><br/>
+<b>$requesterDisplayName</b> recherche l'objet suivant:<br/><br/>
 
 <b><a href="$needUrl">$needTitle</a></b><br/><br/>
 

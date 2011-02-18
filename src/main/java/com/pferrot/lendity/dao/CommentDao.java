@@ -6,6 +6,8 @@ import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.model.Comment;
 import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.ItemComment;
+import com.pferrot.lendity.model.LendTransaction;
+import com.pferrot.lendity.model.LendTransactionComment;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.NeedComment;
 
@@ -22,6 +24,10 @@ public interface CommentDao {
 	ListWithRowCount findNeedComments(Need pNeed, int pFirstResult, int pMaxResults);
 	List<NeedComment> findNeedCommentsList(Need pNeed, int pFirstResult, int pMaxResults);
 	long countNeedComments(Need pNeed);
+	
+	ListWithRowCount findLendTransactionComments(LendTransaction pLendTransaction, int pFirstResult, int pMaxResults);
+	List<LendTransactionComment> findLendTransactionCommentsList(LendTransaction pLendTransaction, int pFirstResult, int pMaxResults);
+	long countLendTransactionComments(LendTransaction pLendTransaction);
 			
 	void updateComment(Comment pComment);
 	

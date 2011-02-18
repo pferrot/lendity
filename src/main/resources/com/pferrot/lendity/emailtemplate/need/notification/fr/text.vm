@@ -1,6 +1,6 @@
 Bonjour $connectionFirstName,
 
-$requesterFirstName $requesterLastName recherche l'objet suivant:
+$requesterDisplayName recherche l'objet suivant:
 
 $needTitle
 

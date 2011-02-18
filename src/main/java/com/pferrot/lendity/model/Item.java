@@ -223,11 +223,6 @@ public abstract class Item implements CategoryEnabled, Borrowable, Serializable 
 			sb.append("ID: ");
 			sb.append(((InternalItem)this).getId());
 		}
-		else if (this instanceof ExternalItem) {
-			sb.append("ExternalItem, ");
-			sb.append("ID: ");
-			sb.append(((ExternalItem)this).getId());
-		}
 		sb.append(", title: ");
 		sb.append(getTitle());
 		return sb.toString();

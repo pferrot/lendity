@@ -1,6 +1,6 @@
 Hello $borrowerFirstName,
 
-$lenderFirstName $lenderLastName a indiqué que tu lui as retourné l'objet suivant:
+$lenderDisplayName a indiqué que tu lui as retourné l'objet suivant:
 
 $itemTitle
 

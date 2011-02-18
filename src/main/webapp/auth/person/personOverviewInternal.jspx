@@ -26,14 +26,21 @@
 	<div class="profilePictureDiv">
 		<img src="#{theBean.profilePictureSrc}"/>
 	</div>
+	<c:if test="#{theBean.emailAvailable}">
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_firstName}:" /></label></div>
+			<h:outputText value="#{theBean.person.firstName}" />
+		</div>
+		<br/>
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_lastName}:" /></label></div>
+			<h:outputText value="#{theBean.person.lastName}" />
+		</div>
+		<br/>
+	</c:if>
 	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_firstName}:" /></label></div>
-		<h:outputText value="#{theBean.person.firstName}" />
-	</div>
-	<br/>
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_lastName}:" /></label></div>
-		<h:outputText value="#{theBean.person.lastName}" />
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_displayName}:" /></label></div>
+		<h:outputText value="#{theBean.person.displayName}" />
 	</div>
 	<br/>
 	<c:if test="#{theBean.emailAvailable}">
@@ -110,11 +117,7 @@
 			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_settings}:" /></label></div>
 			<h:selectBooleanCheckbox id="showContactDetailsToAll" value="#{theBean.person.showContactDetailsToAll}" styleClass="gt-form-element-checkbox" disabled="true"/>
 			<h:outputText value=" " escape="false" />
-			<h:outputText value="#{messages.person_showContactDetailsToAll}"/>
-			<br/>
-			<h:selectBooleanCheckbox id="showNameOnPublicItems" value="#{theBean.person.showNameOnPublicItems}" styleClass="gt-form-element-checkbox" disabled="true"/>
-			<h:outputText value=" " escape="false" />
-			<h:outputText value="#{messages.person_showNameOnPublicItems}"/>			
+			<h:outputText value="#{messages.person_showContactDetailsToAll}"/>		
 		</div>
 		<br/>
 	</c:if>

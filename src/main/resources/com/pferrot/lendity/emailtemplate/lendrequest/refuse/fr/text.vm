@@ -1,6 +1,6 @@
 Hello $requesterFirstName,
 
-$ownerFirstName $ownerLastName refuse de te prêter l'objet suivant:
+$ownerDisplayName refuse de te prêter l'objet suivant:
 
 $itemTitle
 

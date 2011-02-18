@@ -1,0 +1,101 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle"><h:outputText value="#{messages.lendTransaction_lendTransactionOverviewTitle}"/><h:outputText value=": " escape="false" /><h:outputText value="#{lendTransactionOverviewController.lendTransaction.item.title}"/></ui:define>
+	<ui:param name="contentHeader" value="#{messages.lendTransaction_lendTransactionOverviewTitle}" />
+
+		<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+						
+			
+			
+				<f:view>
+
+<h2 class="gt-table-head"><h:outputText value="#{messages.lendTransaction_lendTransactionOverviewTitle}"/></h2>
+
+<!-- content box -->
+<div class="gt-form gt-content-box">
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label><h:outputText id="itemTitle" value="#{messages.item_item}:" /></label></div>
+		<h4>
+			<h:outputLink id="linkItem" value="#{lendTransactionOverviewController.itemOverviewHref}">
+				<h:outputText value="#{lendTransactionOverviewController.lendTransaction.item.title}" />
+			</h:outputLink>
+		</h4>
+	</div>
+	<br/>
+	
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_lender}:" /></label></div>
+		<h:outputLink id="linkLender" value="#{lendTransactionOverviewController.lenderOverviewHref}">
+			<h:outputText value="#{lendTransactionOverviewController.lendTransaction.lender.displayName}" />
+		</h:outputLink>
+	</div>
+	<br/>
+
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_borrower}:" /></label></div>
+		<h:outputLink id="linkBorrower" value="#{lendTransactionOverviewController.borrowerOverviewHref}">
+			<h:outputText value="#{lendTransactionOverviewController.lendTransaction.borrower.displayName}" />
+		</h:outputLink>
+	</div>
+	<br/>
+
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_status}:" /></label></div>
+		<h:outputText value="#{lendTransactionOverviewController.statusLabel}" />
+	</div>
+	<br/>
+	
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_whatIsNext}:" /></label></div>
+		<h:outputText value="#{lendTransactionOverviewController.whatIsNextLabel}" />
+	</div>
+	<br/>
+	
+</div>
+<!-- /content box -->
+					
+				</f:view>
+				
+
+<!-- comments -->
+<br/><br/>
+<a name="commentsAnchor"/>
+<ui:include src="../../auth/comment/comment.jspx">
+	<ui:param name="containerID" value="#{lendTransactionOverviewController.lendTransaction.id}"/>
+	<ui:param name="containerType" value="lendTransaction"/>
+</ui:include>
+			
+			</div>
+			<!-- /main content -->
+
+
+			
+			</div>
+			<!-- /body -->
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

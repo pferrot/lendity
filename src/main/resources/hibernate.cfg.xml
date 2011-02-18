@@ -46,7 +46,6 @@
         
         <mapping class="com.pferrot.lendity.model.Item"/>
         <mapping class="com.pferrot.lendity.model.InternalItem"/>
-        <mapping class="com.pferrot.lendity.model.ExternalItem"/>
         <mapping class="com.pferrot.lendity.model.ItemCategory"/>
         <mapping class="com.pferrot.lendity.model.ItemVisibility"/>
         

@@ -49,6 +49,12 @@
 						<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_lastName}:"/></label></div>
 						<h:outputText value="#{registrationController.lastName}" />
 					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-66">
+						<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_displayName}:"/></label></div>
+						<h:outputText value="#{registrationController.displayName}" />
+					</div><!-- /form row -->
 
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">

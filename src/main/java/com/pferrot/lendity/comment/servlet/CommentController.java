@@ -157,8 +157,9 @@ public class CommentController extends AbstractController {
 		final Map<String, Object> result = new HashMap<String, Object>();
 		
 		final String commentIdAsString = pRequest.getParameter("commentID");
-		final String itemIdAsString = pRequest.getParameter("itemID");
-		final String needIdAsString = pRequest.getParameter("needID");
+		final String itemIdAsString = pRequest.getParameter(CONTAINER_ITEM_ID_PARAMETER_NAME);
+		final String needIdAsString = pRequest.getParameter(CONTAINER_NEED_ID_PARAMETER_NAME);
+		final String lendTransactionIdAsString = pRequest.getParameter(CONTAINER_LEND_TRANSACTION_ID_PARAMETER_NAME);
 		// Load a given comment.
 		if (commentIdAsString != null && commentIdAsString.trim().length() > 0) {
 			final Long commentId = Long.parseLong(commentIdAsString);
@@ -212,6 +213,27 @@ public class CommentController extends AbstractController {
 			
 			final Long needId = Long.parseLong(needIdAsString);
 			final ListWithRowCount lwrc = commentService.findNeedCommentsWithAC(needId,
+					PersonUtils.getCurrentPersonId(pRequest.getSession()),
+					firstResult,
+					maxResults);
+			
+			populateMultipleCommentsMap(result, lwrc, firstResult, maxResults, pRequest);
+		}
+		// Load comments for a lend transaction.
+		else if (lendTransactionIdAsString != null && lendTransactionIdAsString.trim().length() > 0) {			
+			final String firstResultAsString = pRequest.getParameter("firstResult");
+			int firstResult = 0;
+			if (!StringUtils.isNullOrEmpty(firstResultAsString)) {
+				firstResult = Integer.valueOf(firstResultAsString);
+			}
+			int maxResults = CommentConsts.DEFAULT_NB_COMMENTS_TO_LOAD;
+			final String maxResultsAsString = pRequest.getParameter("maxResults");
+			if (!StringUtils.isNullOrEmpty(maxResultsAsString)) {
+				maxResults = Integer.valueOf(maxResultsAsString);
+			}
+			
+			final Long lendTransactionId = Long.parseLong(lendTransactionIdAsString);
+			final ListWithRowCount lwrc = commentService.findLendTransactionCommentsWithAC(lendTransactionId,
 					PersonUtils.getCurrentPersonId(pRequest.getSession()),
 					firstResult,
 					maxResults);
@@ -320,7 +342,7 @@ public class CommentController extends AbstractController {
 
 	/**
 	 * Creates a comment on the specified container specified by its ID as request parameter
-	 * (for internal item: "itemID", for need: "needID").
+	 * (for internal item: "itemID", for need: "needID", for lendTransaction: "lendTransactionID").
 	 * It is also verified that the comment is valid (max length for instance).
 	 * 
 	 * @param pRequest
