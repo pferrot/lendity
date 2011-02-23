@@ -153,7 +153,7 @@ function qtipOnHide(pContent, pTarget, pJqueryDiv) {
 function hideTooltip(pTooltipTarget, pJqueryForm, pJqueryDiv) {
     var formParent = pJqueryForm.parent();
   	var formParentContent = formParent.html();
-  	pJqueryDiv.append(formParentContent);
+  	pJqueryDiv.append(formParentContent);  	
   	
   	destroyQtip(pTooltipTarget);
 }
@@ -257,7 +257,17 @@ function lendItemTooltip(pTooltipTarget, pItemID, pRedirectID) {
 }
 
 function createDatePicker(pJqueryInputField) {
-	pJqueryInputField.datepicker( "destroy" );
+	// Seems to never be called - in tooltips at least (even when
+	// opening up a tooltip for the second time).
+	if (pJqueryInputField.data("datepicker")) {
+		pJqueryInputField.datepicker("destroy");
+	}
+	// This is necessary since the "destroy" method does not
+	// seem to work very well.
+	// If not doing that, the datepicker does not work the
+	// second time the tooltip is opened.
+	pJqueryInputField.removeClass("hasDatepicker");
+	
 	pJqueryInputField.datepicker({ dateFormat: 'dd.mm.yy', 
         dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
         dayNamesMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
@@ -265,8 +275,8 @@ function createDatePicker(pJqueryInputField) {
         firstDay: 1,
         monthNames: ['Janvier','F&eacute;vrier','Mars','Avril','Mai','Juin','Juillet','Ao&ucirc;t','Septembre','Octobre','Novembre','D&eacute;cembre'],
         monthNamesShort: ['Jan','F&eacute;v','Mar','Avr','Mai','Jui','Jul','Ao&ucirc;','Sep','Oct','Nov','D&eacute;c']});
-
-	pJqueryInputField.attr( 'readOnly' , 'true' );		
+	
+	pJqueryInputField.attr( 'readOnly' , 'true' );
 }
 
 /*
@@ -349,6 +359,8 @@ function lendBackItemTooltip(pTooltipTarget, pItemID, pRedirectID) {
   else {
 	  	// Reset the form when it is displayed.
 	    document.getElementById('lendBackForm').reset();
+	    // Hide error messages if any.
+	    $j('#lendBackForm').find('input').removeClass('validationError');
 		// Set the correct itemID.
 		$j('#lendBackItemId').val(pItemID);
 		// Set the correct redirectID.
@@ -375,53 +387,55 @@ function cancelLendBackItem() {
 
 /***************************************************************************************************
  * 
- * DELETE INTERNAL ITEM
+ * DELETE ITEM
  * 
  ***************************************************************************************************/
-function hideDeleteInternalItemTooltip(pTooltipTarget) {
-	hideTooltip(pTooltipTarget, $j('#deleteInternalItemForm'), $j('#deleteInternalItemDiv'));
+function hideDeleteItemTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#deleteItemForm'), $j('#deleteItemDiv'));
 }
 
-function deleteInternalItemQtipOnHide(pEvent) {
-	qtipOnHide(this.elements['content'], this.elements['target'], $j('#deleteInternalItemDiv'));
+function deleteItemQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#deleteItemDiv'));
 }
 
 /*
  * That method will display / hide the tooltip that is used to lend an item.
  */
-var mDeleteInternalItemTooltip;
-var mDeleteInternalItemTarget;
-function deleteInternalItemTooltip(pTooltipTarget, pItemID, pRedirectID) {
+var mDeleteItemTooltip;
+var mDeleteItemTarget;
+function deleteItemTooltip(pTooltipTarget, pItemID, pRedirectID) {
   // The tooltip is just closed.
   if ($j(pTooltipTarget).data("qtip")) {
-	  hideDeleteInternalItemTooltip(pTooltipTarget);
+	  hideDeleteItemTooltip(pTooltipTarget);
   }
   // The tooltip is opened.
   else {
 	  	// Reset the form when it is displayed.
-	    document.getElementById('deleteInternalItemForm').reset();
+	    document.getElementById('deleteItemForm').reset();
+	    // Hide error messages if any.
+	    $j('#deleteItemForm').find('input').removeClass('validationError');
 		// Set the correct itemID.
-		$j('#deleteInternalItemId').val(pItemID);
+		$j('#deleteItemId').val(pItemID);
 		// Set the correct redirectID.
-		$j('#deleteInternalItemRedirectId').val(pRedirectID);
+		$j('#deleteItemRedirectId').val(pRedirectID);
 		
-	  	mDeleteInternalItemTooltipTarget = pTooltipTarget;
-	  	mDeleteInternalItemTooltip = createFormTooltip($j(pTooltipTarget), $j('#deleteInternalItemForm'), deleteInternalItemQtipOnHide);
+	  	mDeleteItemTooltipTarget = pTooltipTarget;
+	  	mDeleteItemTooltip = createFormTooltip($j(pTooltipTarget), $j('#deleteItemForm'), deleteItemQtipOnHide);
 	}    
 }
 
 /*
  * Click the submit button in the tooltip when an item is back.
  */
-function submitDeleteInternalItem() {	
-	document.getElementById("deleteInternalItemActionButton").click();
+function submitDeleteItem() {	
+	document.getElementById("deleteItemActionButton").click();
 }
 
 /*
  * Click the cancel button to close the lend back item tooltip.
  */
-function cancelDeleteInternalItem() {
-	hideDeleteInternalItemTooltip(mDeleteInternalItemTooltipTarget);
+function cancelDeleteItem() {
+	hideDeleteItemTooltip(mDeleteItemTooltipTarget);
 }
 
 /***************************************************************************************************
@@ -451,6 +465,8 @@ function deleteNeedTooltip(pTooltipTarget, pNeedID, pRedirectID) {
   else {
 	  	// Reset the form when it is displayed.
 	    document.getElementById('deleteNeedForm').reset();
+	    // Hide error messages if any.
+	    $j('#deleteNeedForm').find('input').removeClass('validationError');
 		// Set the correct needID.
 		$j('#deleteNeedId').val(pNeedID);
 		// Set the correct redirectID.
@@ -502,6 +518,8 @@ function requestConnectionTooltip(pTooltipTarget, pPersonID, pRedirectID) {
   else {
 	  	// Reset the form when it is displayed.
 	    document.getElementById('requestConnectionForm').reset();
+	    // Hide error messages if any.
+	    $j('#requestConnectionForm').find('input').removeClass('validationError');
 		// Set the correct ID.
 		$j('#requestConnectionPersonId').val(pPersonID);
 		// Set the correct redirectID.
@@ -553,6 +571,8 @@ function acceptConnectionTooltip(pTooltipTarget, pConnectionRequestID, pRedirect
   else {
 	  	// Reset the form when it is displayed.
 	    document.getElementById('acceptConnectionForm').reset();
+	    // Hide error messages if any.
+	    $j('#acceptConnectionForm').find('input').removeClass('validationError');
 		// Set the correct ID.
 		$j('#acceptConnectionConnectionRequestId').val(pConnectionRequestID);
 		// Set the correct redirectID.
@@ -604,6 +624,8 @@ function refuseConnectionTooltip(pTooltipTarget, pConnectionRequestID, pRedirect
   else {
 	  	// Reset the form when it is displayed.
 	    document.getElementById('refuseConnectionForm').reset();
+	    // Hide error messages if any.
+	    $j('#refuseConnectionForm').find('input').removeClass('validationError');
 		// Set the correct ID.
 		$j('#refuseConnectionConnectionRequestId').val(pConnectionRequestID);
 		// Set the correct redirectID.
@@ -655,6 +677,8 @@ function banConnectionTooltip(pTooltipTarget, pConnectionRequestID, pRedirectID)
   else {
 	  	// Reset the form when it is displayed.
 	    document.getElementById('banConnectionForm').reset();
+	    // Hide error messages if any.
+	    $j('#banConnectionForm').find('input').removeClass('validationError');
 		// Set the correct ID.
 		$j('#banConnectionConnectionRequestId').val(pConnectionRequestID);
 		// Set the correct redirectID.
@@ -706,6 +730,8 @@ function requestLendTooltip(pTooltipTarget, pItemID, pRedirectID) {
   else {
 	  	// Reset the form when it is displayed.
 	    document.getElementById('requestLendForm').reset();
+	    // Hide error messages if any.
+	    $j('#requestLendForm').find('input').removeClass('validationError');
 		// Set the correct ID.
 		$j('#requestLendItemId').val(pItemID);
 		// Set the correct redirectID.
@@ -713,14 +739,38 @@ function requestLendTooltip(pTooltipTarget, pItemID, pRedirectID) {
 		
 	  	mRequestLendTooltipTarget = pTooltipTarget;
 	  	mRequestLendTooltip = createFormTooltip($j(pTooltipTarget), $j('#requestLendForm'), requestLendQtipOnHide);
+	  	
+	  	createDatePicker($j("#requestLendEndDate"));
+	  	createDatePicker($j("#requestLendStartDate"));
 	}    
 }
 
 /*
  * Click the submit button in the tooltip.
  */
-function submitRequestLend() {	
-	document.getElementById("requestLendActionButton").click();
+function submitRequestLend() {
+	var noError = true;
+	var jqueryStartDate = $j("#requestLendStartDate");
+	if (jqueryStartDate.val() == '') {
+		jqueryStartDate.addClass("validationError");
+		noError = false;
+	}
+	else {
+		jqueryStartDate.removeClass("validationError");
+	}
+	
+	var jqueryEndDate = $j("#requestLendEndDate");
+	if (jqueryEndDate.val() == '') {
+		jqueryEndDate.addClass("validationError");
+		noError = false;
+	}
+	else {
+		jqueryEndDate.removeClass("validationError");
+	}
+	
+	if (noError) {
+		document.getElementById("requestLendActionButton").click();
+	}	
 }
 
 /*
@@ -757,6 +807,8 @@ function acceptLendTooltip(pTooltipTarget, pLendRequestID, pRedirectID) {
   else {
 	  	// Reset the form when it is displayed.
 	    document.getElementById('acceptLendForm').reset();
+	    // Hide error messages if any.
+	    $j('#acceptLendForm').find('input').removeClass('validationError');
 		// Set the correct ID.
 		$j('#acceptLendLendRequestId').val(pLendRequestID);
 		// Set the correct redirectID.
@@ -808,6 +860,8 @@ function refuseLendTooltip(pTooltipTarget, pLendRequestID, pRedirectID) {
   else {
 	  	// Reset the form when it is displayed.
 	    document.getElementById('refuseLendForm').reset();
+	    // Hide error messages if any.
+	    $j('#refuseLendForm').find('input').removeClass('validationError');
 		// Set the correct ID.
 		$j('#refuseLendLendRequestId').val(pLendRequestID);
 		// Set the correct redirectID.
@@ -859,6 +913,8 @@ function removeConnectionTooltip(pTooltipTarget, pPersonID, pRedirectID) {
   else {
 	  	// Reset the form when it is displayed.
 	    document.getElementById('removeConnectionForm').reset();
+	    // Hide error messages if any.
+	    $j('#removeConnectionForm').find('input').removeClass('validationError');
 		// Set the correct ID.
 		$j('#removeConnectionPersonId').val(pPersonID);
 		// Set the correct redirectID.
@@ -910,6 +966,8 @@ function removeBannedPersonTooltip(pTooltipTarget, pPersonID, pRedirectID) {
   else {
 	  	// Reset the form when it is displayed.
 	    document.getElementById('removeBannedPersonForm').reset();
+	    // Hide error messages if any.
+	    $j('#removeBannedPersonForm').find('input').removeClass('validationError');
 		// Set the correct ID.
 		$j('#removeBannedPersonPersonId').val(pPersonID);
 		// Set the correct redirectID.
