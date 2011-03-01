@@ -37,12 +37,12 @@ public class NeedEditController extends AbstractNeedAddEditController {
 			}
 			// Not found or no ID specified.
 			if (getNeed() == null) {
-				JsfUtils.redirect(PagesURL.MY_CONNECTIONS_NEEDS_LIST);
+				JsfUtils.redirect(PagesURL.NEEDS_SEARCH);
 			}
 		}
 		catch (Exception e) {
 			//TODO display standard error page instead.
-			JsfUtils.redirect(PagesURL.MY_CONNECTIONS_NEEDS_LIST);
+			JsfUtils.redirect(PagesURL.NEEDS_SEARCH);
 		}		
 	}
 
@@ -56,6 +56,7 @@ public class NeedEditController extends AbstractNeedAddEditController {
 		// Initialize the model to be edited.
 		setTitle(pNeed.getTitle());
 		setDescription(pNeed.getDescription());
+		setVisibilityId(pNeed.getVisibility().getId());
 		final ItemCategory category = pNeed.getCategory();
 		if (category != null) {
 			setCategoryId(category.getId());
@@ -65,7 +66,7 @@ public class NeedEditController extends AbstractNeedAddEditController {
 	public Long updateNeed() {		
 		getNeed().setTitle(getTitle());
 		getNeed().setDescription(getDescription());
-		getNeedService().updateNeedWithCategory(getNeed(), getCategoryId());
+		getNeedService().updateNeed(getNeed(), getCategoryId(), getVisibilityId());
 
 		return getNeed().getId();
 	}

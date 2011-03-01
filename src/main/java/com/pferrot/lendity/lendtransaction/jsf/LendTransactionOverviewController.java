@@ -37,7 +37,7 @@ public class LendTransactionOverviewController
 	public void initView() {
 		// Read the person ID from the request parameter and load the correct person.
 		try {
-			final String idString = JsfUtils.getRequestParameter(PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_NEED_ID);
+			final String idString = JsfUtils.getRequestParameter(PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID);
 			LendTransaction lendTransaction = null;
 			if (idString != null) {
 				lendTransactionId = Long.parseLong(idString);
@@ -104,12 +104,16 @@ public class LendTransactionOverviewController
 	}
 	
 	public String getItemOverviewHref() {
-		return ItemUtils.getInternalItemOverviewPageUrl(getLendTransaction().getItem().getId().toString());
+		return ItemUtils.getItemOverviewPageUrl(getLendTransaction().getItem().getId().toString());
 	}
 	
 	public String getStatusLabel() {
 		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 		return I18nUtils.getMessageResourceString(getLendTransaction().getStatus().getLabelCode(), locale);		
+	}
+
+	public String getCreationDateLabel() {
+		return UiUtils.getDateAsString(getLendTransaction().getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
 	}
 	
 	public String getStartDateLabel() {
@@ -132,10 +136,15 @@ public class LendTransactionOverviewController
 		}
 	}
 
+	public boolean isBorrowerHrefAvailable() {
+		return getLendTransaction().getBorrower() != null;
+	}
+
 	public String getWhatIsNextLabel() {
 		final LendTransactionStatus status = getLendTransaction().getStatus();
 		final boolean isCurrentUserLender = getLendTransaction().getLender().getId().equals(PersonUtils.getCurrentPersonId());
-		final boolean isCurrentUserBorrower = getLendTransaction().getBorrower().getId().equals(PersonUtils.getCurrentPersonId());
+		final boolean isCurrentUserBorrower = getLendTransaction().getBorrower() != null &&
+											  getLendTransaction().getBorrower().getId().equals(PersonUtils.getCurrentPersonId());
 		
 		if (LendTransactionStatus.INITIALIZED_LABEL_CODE.equals(status.getLabelCode())) {
 			// Lender must accept or refuse lend request.

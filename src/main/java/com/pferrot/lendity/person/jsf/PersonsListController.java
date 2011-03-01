@@ -13,11 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Person;
-import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
 
@@ -37,10 +37,6 @@ public class PersonsListController extends AbstractPersonsListController {
 	    	maxDistanceDouble = Double.valueOf(getMaxDistance());
 	    }
 		return getPersonService().findEnabledPersons(getSearchString(), maxDistanceDouble, getFirstRow(), getRowsPerPage());
-	}
-	
-	public boolean isSearchByDistanceAvailable() {
-		return PersonUtils.isCurrentPersonIsAddressDefined();
 	}
 
 	public String requestConnection() {
@@ -118,10 +114,9 @@ public class PersonsListController extends AbstractPersonsListController {
 		setMaxDistance(null);
 		return "clearMaxDistance";
 	}
-
+	
 	@Override
 	public boolean isFilteredList() {
-		boolean tempResult = getMaxDistance() != null; 
-		return tempResult || super.isFilteredList();
+		return !StringUtils.isNullOrEmpty(getSearchString()) || getMaxDistance() != null;
 	}
 }

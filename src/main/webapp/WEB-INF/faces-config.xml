@@ -30,27 +30,6 @@
 		</locale-config>
 
 	</application>
-	
-<!--	<lifecycle>-->
-<!--        <phase-listener>com.pferrot.lendity.listener.UTF8Listener</phase-listener>-->
-<!--    </lifecycle>-->
-
-<!--	<managed-bean>-->
-<!--		<description>Registration Bean</description>-->
-<!--		<managed-bean-name>registrationBean</managed-bean-name>-->
-<!--		<managed-bean-class>com.pferrot.lendity.registration.jsf.RegistrationBean</managed-bean-class>-->
-<!--		<managed-bean-scope>request</managed-bean-scope>-->
-<!--		<managed-property>-->
-<!--			<property-name>registrationService</property-name>-->
-<!--			<value>#{registrationService}</value>-->
-<!--		</managed-property>-->
-		<!-- 
-		<managed-property>
-			<property-name>renderManager</property-name>
-			<value>#{renderManager}</value>
-		</managed-property>
-		-->
-<!--	</managed-bean>-->
 	 
 	<!-- 
 	********************************************************************
@@ -114,324 +93,34 @@
 	<navigation-rule>
 		<from-view-id>/public/registration/lostpassword_2.jspx</from-view-id>
 	</navigation-rule>
-	
-	<!-- 
-	********************************************************************
-	CHANGE PASSWORD
-	********************************************************************
-	-->
-	<navigation-rule>
-		<from-view-id>/auth/changepassword/changepassword.jspx</from-view-id>
-	</navigation-rule>
-	
-	<!-- 
-	********************************************************************
-	LOGIN
-	********************************************************************
-	-->		
-	<navigation-rule>
-		<from-view-id>/login.jspx</from-view-id>
-	</navigation-rule>	
 
 	<!-- 
 	********************************************************************
-	INTERNAL ITEM OVERVIEW
+	ITEM IMPORT
 	********************************************************************
 	-->
 	<navigation-rule>
-		<from-view-id>/auth/item/internalItemOverview.jspx</from-view-id>
-	</navigation-rule>
-	
-	<!-- 
-	********************************************************************
-	INTERNAL ITEM ADD
-	********************************************************************
-	-->	
-	<navigation-rule>
-		<from-view-id>/auth/item/internalItemAdd.jspx</from-view-id>			
-	</navigation-rule>
-	
-	<!-- 
-	********************************************************************
-	INTERNAL ITEM EDIT
-	********************************************************************
-	-->	
-	<navigation-rule>
-		<from-view-id>/auth/item/internalItemEdit.jspx</from-view-id>			
-	</navigation-rule>	
-	
-	<!-- 
-	********************************************************************
-	ITEMS LIST
-	********************************************************************
-	-->
-	<navigation-rule>
-		<from-view-id>/admin/item/itemsList.jspx</from-view-id>
-		<navigation-case>
-			<from-outcome>nextPage</from-outcome>
-			<to-view-id>/admin/item/itemsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>previousPage</from-outcome>
-			<to-view-id>/admin/item/itemsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>search</from-outcome>
-			<to-view-id>/admin/item/itemsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>clearSearch</from-outcome>
-			<to-view-id>/admin/item/itemsList.jspx</to-view-id>
-		</navigation-case>	
-	</navigation-rule>
-	
-	<!-- 
-	********************************************************************
-	MY ITEMS LIST
-	********************************************************************
-	-->
-	<navigation-rule>
-		<from-view-id>/auth/item/myItemsList.jspx</from-view-id>
-		<navigation-case>
-			<from-outcome>firstPage</from-outcome>
-			<to-view-id>/auth/item/myItemsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>nextPage</from-outcome>
-			<to-view-id>/auth/item/myItemsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>previousPage</from-outcome>
-			<to-view-id>/auth/item/myItemsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>itemOverview</from-outcome>
-			<to-view-id>/auth/item/itemOverview.jspx</to-view-id>
-		</navigation-case>		
-	</navigation-rule>	
-
-	<!-- 
-	********************************************************************
-	MY CONNECTIONS ITEMS LIST
-	********************************************************************
-	-->
-	<navigation-rule>
-		<from-view-id>/public/item/search.jspx</from-view-id>
-		<navigation-case>
-			<from-outcome>nextPage</from-outcome>
-			<to-view-id>/public/item/search.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>previousPage</from-outcome>
-			<to-view-id>/public/item/search.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>itemOverview</from-outcome>
-			<to-view-id>/auth/item/itemOverview.jspx</to-view-id>
-		</navigation-case>		
-	</navigation-rule>		
-
-	<!-- 
-	********************************************************************
-	INTERNAL ITEM IMPORT
-	********************************************************************
-	-->
-	<navigation-rule>
-		<from-view-id>/auth/item/internalItemsImport.jspx</from-view-id>
+		<from-view-id>/auth/item/itemsImport.jspx</from-view-id>
 		<navigation-case>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/auth/item/internalItemsImport_2.jspx</to-view-id>
+			<to-view-id>/auth/item/itemsImport_2.jspx</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/auth/item/internalItemsImport_2.jspx</from-view-id>
+		<from-view-id>/auth/item/itemsImport_2.jspx</from-view-id>
 		<navigation-case>
 			<from-outcome>confirm</from-outcome>
-			<to-view-id>/auth/item/internalItemsImport_3.jspx</to-view-id>
+			<to-view-id>/auth/item/itemsImport_3.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>back</from-outcome>
-			<to-view-id>/auth/item/internalItemsImport.jspx</to-view-id>
+			<to-view-id>/auth/item/itemsImport.jspx</to-view-id>
 		</navigation-case>		
 	</navigation-rule>
 		
 	<navigation-rule>
-		<from-view-id>/auth/item/internalItemsImport_3.jspx</from-view-id>
-	</navigation-rule>
-	
-	<!-- 
-	********************************************************************
-	PERSONS LIST
-	********************************************************************
-	-->
-	<navigation-rule>
-		<from-view-id>/auth/person/personsList.jspx</from-view-id>
-		<navigation-case>
-			<from-outcome>personOverview</from-outcome>
-			<to-view-id>/auth/person/personOverview.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>nextPage</from-outcome>
-			<to-view-id>/auth/person/personsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>previousPage</from-outcome>
-			<to-view-id>/auth/person/personsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>requestConnection</from-outcome>
-			<to-view-id>/auth/person/personsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>search</from-outcome>
-			<to-view-id>/auth/person/personsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>clearSearch</from-outcome>
-			<to-view-id>/auth/person/personsList.jspx</to-view-id>
-		</navigation-case>			
+		<from-view-id>/auth/item/itemsImport_3.jspx</from-view-id>
 	</navigation-rule>
 
-	<!-- 
-	********************************************************************
-	MY CONNECTIONS LIST
-	********************************************************************
-	-->
-	<navigation-rule>
-		<from-view-id>/auth/person/myConnectionsList.jspx</from-view-id>
-		<navigation-case>
-			<from-outcome>personOverview</from-outcome>
-			<to-view-id>/auth/person/personOverview.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>nextPage</from-outcome>
-			<to-view-id>/auth/person/myConnectionsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>previousPage</from-outcome>
-			<to-view-id>/auth/person/myConnectionsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>requestConnection</from-outcome>
-			<to-view-id>/auth/person/myConnectionsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>search</from-outcome>
-			<to-view-id>/auth/person/myConnectionsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>clearSearch</from-outcome>
-			<to-view-id>/auth/person/myConnectionsList.jspx</to-view-id>
-		</navigation-case>			
-	</navigation-rule>
-
-	<!-- 
-	********************************************************************
-	MY BANNED PERSONS LIST
-	********************************************************************
-	-->
-	<navigation-rule>
-		<from-view-id>/auth/person/myBannedPersonsList.jspx</from-view-id>
-		<navigation-case>
-			<from-outcome>personOverview</from-outcome>
-			<to-view-id>/auth/person/personOverview.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>nextPage</from-outcome>
-			<to-view-id>/auth/person/myBannedPersonsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>previousPage</from-outcome>
-			<to-view-id>/auth/person/myBannedPersonsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>requestConnection</from-outcome>
-			<to-view-id>/auth/person/myBannedPersonsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>search</from-outcome>
-			<to-view-id>/auth/person/myBannedPersonsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>clearSearch</from-outcome>
-			<to-view-id>/auth/person/myBannedPersonsList.jspx</to-view-id>
-		</navigation-case>			
-	</navigation-rule>
-
-	<!-- 
-	********************************************************************
-	PERSON OVERVIEW
-	********************************************************************
-	-->
-	<navigation-rule>
-		<from-view-id>/auth/person/personOverview.jspx</from-view-id>
-	</navigation-rule>
-
-	<!-- 
-	********************************************************************
-	PERSON ADD
-	********************************************************************
-	-->	
-	<!-- 
-	<navigation-rule>
-		<from-view-id>/auth/person/personAdd.jspx</from-view-id>	
-		<navigation-case>
-			<from-outcome>success</from-outcome>
-			<to-view-id>/auth/person/personOverview.jspx</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	-->
-	 
-	<!-- 
-	********************************************************************
-	PERSON EDIT
-	********************************************************************
-	-->
-	<!-- 
-	<navigation-rule>
-		<from-view-id>/auth/person/personEdit.jspx</from-view-id>
-		<navigation-case>
-			<from-outcome>success</from-outcome>
-			<to-view-id>/auth/person/personOverview.jspx</to-view-id>
-		</navigation-case>
-	</navigation-rule>
- 	-->
- 	
-	<!-- 
-	********************************************************************
-	MY PENDING CONNECTION REQUESTS LIST
-	********************************************************************
-	-->
-	<navigation-rule>
-		<from-view-id>/auth/connectionrequest/myPendingConnectionRequestsList.jspx</from-view-id>
-		<navigation-case>
-			<from-outcome>connectionOverview</from-outcome>
-			<to-view-id>/auth/person/personOverview.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>requesterOverview</from-outcome>
-			<to-view-id>/auth/person/personOverview.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>nextPage</from-outcome>
-			<to-view-id>/auth/person/personsList.jspx</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>previousPage</from-outcome>
-			<to-view-id>/auth/person/personsList.jspx</to-view-id>
-		</navigation-case>		
-	</navigation-rule>
-
-    <!-- 
-	********************************************************************
-	VALIDATORS
-	********************************************************************	
-	 -->
-	 <!-- 
-    <validator>
-        <validator-id>itemYearValidator</validator-id>
-        <validator-class>com.pferrot.lendity.item.jsf.validator.ItemYearValidator</validator-class>
-    </validator>
-	 -->
 </faces-config>

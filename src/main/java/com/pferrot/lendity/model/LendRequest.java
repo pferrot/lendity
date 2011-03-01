@@ -30,9 +30,9 @@ public class LendRequest implements Serializable {
 	@JoinColumn(name = "OWNER_ID", nullable = false)
 	private Person owner;
 	
-	@OneToOne(targetEntity = com.pferrot.lendity.model.InternalItem.class)
+	@OneToOne(targetEntity = com.pferrot.lendity.model.Item.class)
 	@JoinColumn(name = "ITEM_ID", nullable = false)
-	private InternalItem item;
+	private Item item;
 	
 	@Column(name = "REQUEST_DATE", nullable = false)
 	private Date requestDate;
@@ -83,11 +83,11 @@ public class LendRequest implements Serializable {
 		this.owner = owner;
 	}
 
-	public InternalItem getItem() {
+	public Item getItem() {
 		return item;
 	}
 
-	public void setItem(InternalItem item) {
+	public void setItem(Item item) {
 		this.item = item;
 	}
 

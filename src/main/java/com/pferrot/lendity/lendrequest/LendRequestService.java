@@ -20,10 +20,9 @@ import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.lendrequest.exception.LendRequestException;
 import com.pferrot.lendity.lendtransaction.LendTransactionService;
-import com.pferrot.lendity.model.InternalItem;
+import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.LendRequest;
 import com.pferrot.lendity.model.LendRequestResponse;
-import com.pferrot.lendity.model.LendTransaction;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
@@ -49,7 +48,7 @@ public class LendRequestService {
 	public void setLendRequestDao(final LendRequestDao pLendRequestDao) {
 		this.lendRequestDao = pLendRequestDao;
 	}
-	
+
 	public void setPersonDao(final PersonDao pPersonDao) {
 		this.personDao = pPersonDao;
 	}
@@ -88,41 +87,56 @@ public class LendRequestService {
 	}
 
 	/**
-	 * Returns false if the requester is not allowed to ask the other user for connecting (for any reason),
-	 * true otherwise.
+	 * Returns one of:
+	 * LendRequestConsts.REQUEST_LEND_ALLOWED
+	 * LendRequestConsts.REQUEST_LEND_NOT_ALLOWED_BANNED_PERSON
+	 * LendRequestConsts.REQUEST_LEND_NOT_ALLOWED_TRANSACTION_UNCOMPLETED
+	 * LendRequestConsts.REQUEST_LEND_NOT_ALLOWED_NOT_LOGGED_IN
+	 * LendRequestConsts.REQUEST_LEND_NOT_ALLOWED_OWN_ITEM
 	 * 
 	 * @param pRequester
 	 * @param pItem
 	 * @return
 	 */
-	public boolean isLendRequestAllowed(final Person pRequester, final InternalItem pItem) {
+	public int getLendRequestAllowed(final Person pRequester, final Item pItem) {
 		if (!SecurityUtils.isLoggedIn()) {
-			return false;
+			return LendRequestConsts.REQUEST_LEND_NOT_ALLOWED_NOT_LOGGED_IN;
 		}
 		// Avoid LazyInitializationException
-		Collection<Person> connections = personService.findConnectionsList(pItem.getOwner().getId(), null, 0, 0);
-		return pItem.isAvailable() && 
-			connections.contains(pRequester) &&
-			!isUncompletedLendRequestAvailable(pRequester, pItem);		
+		Collection<Person> bannedPersons = personService.findBannedPersonsList(pItem.getOwner().getId(), null, 0, 0);
+		
+		if (pRequester.equals(pItem.getOwner())) {
+			return LendRequestConsts.REQUEST_LEND_NOT_ALLOWED_OWN_ITEM;
+		}
+		else if (bannedPersons.contains(pRequester)) {
+			return LendRequestConsts.REQUEST_LEND_NOT_ALLOWED_BANNED_PERSON;
+		}
+		else if (isUncompletedLendTransactionAvailable(pRequester, pItem)) {
+			return LendRequestConsts.REQUEST_LEND_NOT_ALLOWED_TRANSACTION_UNCOMPLETED;
+		}
+		else {
+			return LendRequestConsts.REQUEST_LEND_ALLOWED;
+		}
 	}
 
-	public boolean isLendRequestAllowedFromCurrentUser(final InternalItem pItem) {
-		return isLendRequestAllowed(getCurrentPerson(), pItem);		
+	public int getLendRequestAllowedFromCurrentUser(final Item pItem) {
+		return getLendRequestAllowed(getCurrentPerson(), pItem);		
 	}
 
 	/**
 	 * This operation will send an email to the owner of the requested item
 	 * informing him that the current user would like to borrow the item.
+	 * Returns an array containing {LendRequest ID, LendTransaction ID}
 
 	 * @param pConnection
 	 * @param pRequester
 	 * @return
 	 * @throws ConnectionRequestException 
 	 */
-	public Long createLendRequest(final Person pRequester, final InternalItem pItem,
+	public Long[] createLendRequest(final Person pRequester, final Item pItem,
 			final Date pStartDate, final Date pEndDate) throws LendRequestException {
 		try {
-			if (! isLendRequestAllowed(pRequester, pItem)) {
+			if (getLendRequestAllowed(pRequester, pItem) != LendRequestConsts.REQUEST_LEND_ALLOWED) {
 				throw new ConnectionRequestException("Lend request not allowed.");
 			}
 
@@ -157,7 +171,7 @@ public class LendRequestService {
 			objects.put("pendingRequestsUrl", Configuration.getRootURL() + PagesURL.MY_PENDING_LEND_REQUESTS_LIST);
 			objects.put("lendTransactionUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
 					PagesURL.LEND_TRANSACTION_OVERVIEW,
-					PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_NEED_ID,
+					PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,
 					lendTransactionId.toString()));
 			
 			
@@ -180,19 +194,19 @@ public class LendRequestService {
 					         velocityTemplateLocation,
 					         inlineResources);		
 			
-			return lendRequestId;
+			return new Long[]{lendRequestId, lendTransactionId};
 		} 
 		catch (Exception e) {
 			throw new LendRequestException(e);
 		}
 	}
 	
-	public Long createLendRequestFromCurrentUser(final InternalItem pItem) throws LendRequestException {
-		return createLendRequest(getCurrentPerson(), pItem, null, null);		
+	public Long[] createLendRequestFromCurrentUser(final Item pItem, final Date pStartDate, final Date pEndDate) throws LendRequestException {
+		return createLendRequest(getCurrentPerson(), pItem, pStartDate, pEndDate);		
 	}
 
-	public Long createLendRequestFromCurrentUser(final Long pItemId) throws LendRequestException {
-		return createLendRequestFromCurrentUser(itemDao.findInternalItem(pItemId));		
+	public Long[] createLendRequestFromCurrentUser(final Long pItemId, final Date pStartDate, final Date pEndDate) throws LendRequestException {
+		return createLendRequestFromCurrentUser(itemDao.findItem(pItemId), pStartDate, pEndDate);		
 	}
 
 	/**
@@ -269,7 +283,7 @@ public class LendRequestService {
 		objects.put("siteUrl", Configuration.getRootURL());
 		objects.put("lendTransactionUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
 				PagesURL.LEND_TRANSACTION_OVERVIEW,
-				PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_NEED_ID,
+				PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,
 				pLendRequest.getTransaction().getId().toString()));	
 		
 		Map<String, String> to = new HashMap<String, String>();
@@ -311,11 +325,18 @@ public class LendRequestService {
 	 * @param pRequester
 	 * @return
 	 */
-	public boolean isUncompletedLendRequestAvailable(final Person pRequester, final InternalItem pItem) {
+	public boolean isUncompletedLendRequestAvailable(final Person pRequester, final Item pItem) {
 		CoreUtils.assertNotNull(pItem);
 		CoreUtils.assertNotNull(pRequester);
 
 		return lendRequestDao.countLendRequests(pRequester.getId(), null, pItem.getId(), Boolean.FALSE) > 0;
+	}
+
+	public boolean isUncompletedLendTransactionAvailable(final Person pRequester, final Item pItem) {
+		CoreUtils.assertNotNull(pItem);
+		CoreUtils.assertNotNull(pRequester);
+		
+		return lendTransactionService.countUncompletedLendTransactionForItemAndBorrower(pItem, pRequester) > 0;
 	}
 	
 	private void assertOwnerIsCurrentUser(final LendRequest pLendRequest) throws LendRequestException {

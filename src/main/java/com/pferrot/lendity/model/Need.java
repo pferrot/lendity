@@ -1,7 +1,6 @@
 package com.pferrot.lendity.model;
 // Generated 10 oct. 2008 00:01:18 by Hibernate Tools 3.2.0.b9
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,7 +36,7 @@ import com.pferrot.core.CoreUtils;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "NEEDS")
 @Audited
-public class Need implements CategoryEnabled, Ownable, CommentableWithOwner<NeedComment>, Serializable {
+public class Need implements Objekt, CommentableWithOwner<NeedComment> {
 	
 	@Id @GeneratedValue
 	@Column(name = "ID")
@@ -53,8 +52,8 @@ public class Need implements CategoryEnabled, Ownable, CommentableWithOwner<Need
 	@Column(name = "DESCRIPTION", nullable = true, length = 3999)
 	private String description;
 	
-	@ManyToOne(targetEntity = ItemCategory.class)
-	@JoinColumn(name = "CATEGORY_ID", nullable = true)
+	@ManyToOne(targetEntity = ItemCategory.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "CATEGORY_ID", nullable = false)
 	private ItemCategory category;
 	
 	@ManyToOne(targetEntity = ItemVisibility.class, fetch = FetchType.EAGER)
@@ -81,13 +80,13 @@ public class Need implements CategoryEnabled, Ownable, CommentableWithOwner<Need
 	)
 	private Set<Person> commentsRecipients = new HashSet<Person>();
 	
-	@ManyToMany(targetEntity = com.pferrot.lendity.model.InternalItem.class)
+	@ManyToMany(targetEntity = com.pferrot.lendity.model.Item.class)
 	@JoinTable(
 			name = "ITEMS_NEEDS",
 			joinColumns = {@JoinColumn(name = "NEED_ID")},
 			inverseJoinColumns = {@JoinColumn(name = "ITEM_ID")}
 	)
-	private Set<InternalItem> relatedItems = new HashSet<InternalItem>();
+	private Set<Item> relatedItems = new HashSet<Item>();
 	
 	@Version
 	@Column(name = "OBJ_VERSION")
@@ -181,20 +180,20 @@ public class Need implements CategoryEnabled, Ownable, CommentableWithOwner<Need
 		commentsRecipients.remove(pCommentRecipient);
 	}
 
-	public Set<InternalItem> getRelatedItems() {
+	public Set<Item> getRelatedItems() {
 		return relatedItems;
 	}
 
-	public void setRelatedItems(final Set<InternalItem> pRelatedItems) {
+	public void setRelatedItems(final Set<Item> pRelatedItems) {
 		this.relatedItems = pRelatedItems;
 	}
 
-	public void addRelatedItem(final InternalItem pRelatedItem) {
+	public void addRelatedItem(final Item pRelatedItem) {
 		CoreUtils.assertNotNull(pRelatedItem);
 		relatedItems.add(pRelatedItem);
 	}
 		
-	public void removeRelatedItem(final InternalItem pRelatedItem) {
+	public void removeRelatedItem(final Item pRelatedItem) {
 		CoreUtils.assertNotNull(pRelatedItem);
 		relatedItems.remove(pRelatedItem);
 	}
@@ -205,6 +204,18 @@ public class Need implements CategoryEnabled, Ownable, CommentableWithOwner<Need
 	
 	public void setVisibility(ItemVisibility visibility) {
 		this.visibility = visibility;
+	}
+
+	public boolean isPublicVisibility() {
+		return getVisibility().getLabelCode().equals(ItemVisibility.PUBLIC);
+	}
+
+	public boolean isPrivateVisibility() {
+		return getVisibility().getLabelCode().equals(ItemVisibility.PRIVATE);
+	}
+	
+	public boolean isConnectionsVisibility() {
+		return getVisibility().getLabelCode().equals(ItemVisibility.CONNECTIONS);
 	}
 
 	@Override

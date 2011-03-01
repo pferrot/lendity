@@ -6,38 +6,51 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.ObjectNotFoundException;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.dao.ItemDao;
 import com.pferrot.lendity.dao.LendRequestDao;
+import com.pferrot.lendity.dao.LendTransactionDao;
 import com.pferrot.lendity.dao.bean.ItemDaoQueryBean;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.item.exception.ItemException;
+import com.pferrot.lendity.lendtransaction.LendTransactionService;
+import com.pferrot.lendity.lendtransaction.exception.LendTransactionException;
 import com.pferrot.lendity.model.Document;
-import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
-import com.pferrot.lendity.model.ListValue;
+import com.pferrot.lendity.model.LendTransaction;
 import com.pferrot.lendity.model.Need;
+import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.ListValueUtils;
 import com.pferrot.security.SecurityUtils;
 
-public class ItemService extends ObjectService {
+public class ItemService extends ObjektService {
 
 	private final static Log log = LogFactory.getLog(ItemService.class);
 	
 	private LendRequestDao lendRequestDao;
+	private LendTransactionDao lendTransactionDao;
+	private LendTransactionService lendTransactionService;
 	private ItemDao itemDao;
 
 	public void setLendRequestDao(LendRequestDao lendRequestDao) {
 		this.lendRequestDao = lendRequestDao;
+	}
+
+	public void setLendTransactionDao(LendTransactionDao lendTransactionDao) {
+		this.lendTransactionDao = lendTransactionDao;
+	}
+	
+	public void setLendTransactionService(
+			LendTransactionService lendTransactionService) {
+		this.lendTransactionService = lendTransactionService;
 	}
 
 	public ItemDao getItemDao() {
@@ -48,17 +61,21 @@ public class ItemService extends ObjectService {
 		this.itemDao = itemDao;
 	}
 
-	public InternalItem findInternalItem(final Long itemId) {
-		return itemDao.findInternalItem(itemId);
+	public Item findItem(final Long itemId) {
+		return itemDao.findItem(itemId);
 	}
 	
+	public String findItemTitle(final Long itemId) {
+		return itemDao.findItem(itemId).getTitle();
+	}	
+	
 	public ListWithRowCount findMyItems(final String pTitle, final Long pCategoryId, final Long pVisibilityId,
-			final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {		
-		return findItems(PersonUtils.getCurrentPersonId(), pTitle, pCategoryId, getVisibilityIds(pVisibilityId), pBorrowed, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
+			final Boolean pBorrowed, final Long pLendType, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {		
+		return findItems(PersonUtils.getCurrentPersonId(), pTitle, pCategoryId, getVisibilityIds(pVisibilityId), pBorrowed, pLendType, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
 	}
 
 	public ListWithRowCount findItems(final Long pPersonId, final String pTitle, final Long pCategoryId, final Long[] pVisibilityIds,
-			final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+			final Boolean pBorrowed, final Long pLendType, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
 		final Long currentPersonId = pPersonId;
 		CoreUtils.assertNotNull(currentPersonId);
 		final Long[] personIds = new Long[]{currentPersonId};
@@ -74,23 +91,53 @@ public class ItemService extends ObjectService {
 		itemQuery.setOrderByAscending(pOrderByAscending);
 		itemQuery.setFirstResult(pFirstResult);
 		itemQuery.setMaxResults(pMaxResults);
+		if (pLendType != null) {
+			if (pLendType.equals(ItemConsts.LEND_TYPE_LEND)) {
+				itemQuery.setToLend();
+			}
+			else if (pLendType.equals(ItemConsts.LEND_TYPE_RENT)) {
+				itemQuery.setToRent();			
+			}
+			else if (pLendType.equals(ItemConsts.LEND_TYPE_SELL)) {
+				itemQuery.setToSell();
+			}
+			else if (pLendType.equals(ItemConsts.LEND_TYPE_GIVE_FOR_FREE)) {
+				itemQuery.setToGiveForFree();
+			}
+		}
 		
-		return itemDao.findInternalItems(itemQuery);
+		
+		return itemDao.findItems(itemQuery);
 	}
 
-	public ListWithRowCount findMyConnectionsItems(final Long pConnectionId, final String pTitle, final Long pCategoryId,
-			final Boolean pBorrowed, final Boolean pShowOnlyConnectionsItems, final Double pMaxDistanceInKm, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+	public ListWithRowCount findItems(final String pTitle, final Long pCategoryId, final Boolean pBorrowed, final Long pOwnerType,
+			final Double pMaxDistanceInKm, final Long pLendType, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
 				
 		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
 		
 		itemQuery.setOwnerEnabled(Boolean.TRUE);
 		itemQuery.setTitle(pTitle);
 		itemQuery.setCategoryIds(getCategoryIds(pCategoryId));
+		if (pLendType != null) {
+			if (pLendType.equals(ItemConsts.LEND_TYPE_LEND)) {
+				itemQuery.setToLend();
+			}
+			else if (pLendType.equals(ItemConsts.LEND_TYPE_RENT)) {
+				itemQuery.setToRent();			
+			}
+			else if (pLendType.equals(ItemConsts.LEND_TYPE_SELL)) {
+				itemQuery.setToSell();
+			}
+			else if (pLendType.equals(ItemConsts.LEND_TYPE_GIVE_FOR_FREE)) {
+				itemQuery.setToGiveForFree();
+			}
+		}
 		if (SecurityUtils.isLoggedIn()) {
-			final Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(pConnectionId);
+			// All connections.
+			final Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(null);
 			itemQuery.setOwnerIds(connectionsIds);
 			itemQuery.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
-			if (Boolean.FALSE.equals(pShowOnlyConnectionsItems)) {
+			if (!ItemConsts.OWNER_TYPE_CONNECTIONS.equals(pOwnerType)) {
 				itemQuery.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
 				itemQuery.setOwnerIdsToExcludeForVisibilityIdsToForce(ListValueUtils.getIdsArray(PersonUtils.getCurrentPersonId()));
 			}
@@ -115,7 +162,35 @@ public class ItemService extends ObjectService {
 		itemQuery.setFirstResult(pFirstResult);
 		itemQuery.setMaxResults(pMaxResults);
 		
-		return itemDao.findInternalItems(itemQuery);
+		return itemDao.findItems(itemQuery);
+	}
+
+	public ListWithRowCount findPersonItems(final Long pOwnerId, final String pTitle, final Long pCategoryId, final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+				
+		CoreUtils.assertNotNull(pOwnerId);
+		
+		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
+		
+		itemQuery.setOwnerIds(getIds(pOwnerId));
+		itemQuery.setOwnerEnabled(Boolean.TRUE);
+		itemQuery.setTitle(pTitle);
+		itemQuery.setCategoryIds(getCategoryIds(pCategoryId));
+		
+		if (SecurityUtils.isLoggedIn() &&
+		    getPersonService().isConnection(pOwnerId, PersonUtils.getCurrentPersonId())) {		
+			itemQuery.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
+		}
+		// When not logged in - only show public items.
+		else {
+			itemQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
+		}
+		itemQuery.setBorrowed(pBorrowed);		
+		itemQuery.setOrderBy(pOrderBy);
+		itemQuery.setOrderByAscending(pOrderByAscending);
+		itemQuery.setFirstResult(pFirstResult);
+		itemQuery.setMaxResults(pMaxResults);
+		
+		return itemDao.findItems(itemQuery);
 	}
 	
 	public ListWithRowCount findMyLatestConnectionsItems() {
@@ -130,7 +205,7 @@ public class ItemService extends ObjectService {
 		itemQuery.setFirstResult(0);
 		itemQuery.setMaxResults(5);
 		
-		return itemDao.findInternalItems(itemQuery);
+		return itemDao.findItems(itemQuery);
 	}
 	
 	public ListWithRowCount findPersonLatestConnectionsItemsSince(final Person pPerson, final Date pDate) {
@@ -146,32 +221,20 @@ public class ItemService extends ObjectService {
 		itemQuery.setFirstResult(0);
 		itemQuery.setMaxResults(5);
 		
-		return itemDao.findInternalItems(itemQuery);
-	}
-	
-	public Long[] getConnectionsAndPublicVisibilityIds() {
-		return new Long[]{getConnectionsVisibilityId(), getPublicVisibilityId()};
-	}
-	
-	public Long getConnectionsVisibilityId() {
-		return getListValueDao().findListValue(ItemVisibility.CONNECTIONS).getId();
-	}
-	
-	public Long getPublicVisibilityId() {
-		return getListValueDao().findListValue(ItemVisibility.PUBLIC).getId();
+		return itemDao.findItems(itemQuery);
 	}
 
 	/**
-	 * When an internal item is no more lent.
+	 * When an item is no more lent.
 	 *
 	 * @param pItemId
 	 */
-	public void updateLendBackInternalItem(final Long pItemId) {
-		final InternalItem internalItem = findInternalItem(pItemId);
-		assertCurrentUserAuthorizedToEdit(internalItem);
-		final Person borrower = internalItem.getBorrower();
-		internalItem.setLendBack();
-		updateItem(internalItem);
+	public void updateLendBackItem(final Long pItemId) {
+		final Item item = findItem(pItemId);
+		assertCurrentUserAuthorizedToEdit(item);
+		final Person borrower = item.getBorrower();
+		item.setLendBack();
+		updateItem(item);
 		// Send email only if was lent to a user of the system.
 		if (borrower != null) {
 			// Send email (will actually create a JMS message, i.e. it is async).
@@ -180,7 +243,7 @@ public class ItemService extends ObjectService {
 			objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
 			objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
 			objects.put("lenderDisplayName", PersonUtils.getCurrentPersonDisplayName());
-			objects.put("itemTitle", internalItem.getTitle());
+			objects.put("itemTitle", item.getTitle());
 			objects.put("signature", Configuration.getSiteName());
 			objects.put("siteName", Configuration.getSiteName());
 			objects.put("siteUrl", Configuration.getRootURL());
@@ -213,48 +276,73 @@ public class ItemService extends ObjectService {
 	 * @param pItemId
 	 * @param pBorrowerId
 	 * @param pBorrowDate
+	 * @throws ItemException 
 	 */
-	public void updateLendInternalItem(final Long pItemId, final Long pBorrowerId, final Date pBorrowDate) {
-		if (log.isInfoEnabled()) {
-			log.info("Lending item to borrower ID: " + pBorrowerId);
+	public Long updateLendItem(final Long pItemId, final Long pBorrowerId, final Date pBorrowDate, final Date pEndDate) throws ItemException {
+		try{
+			if (log.isInfoEnabled()) {
+				log.info("Lending item to borrower ID: " + pBorrowerId);
+			}
+			final Item item = findItem(pItemId);
+			assertCurrentUserAuthorizedToEdit(item);
+			
+			final Person borrower = getPersonService().findPerson(pBorrowerId);
+			
+		    final boolean itemAlreadyBorrowed = item.isBorrowed();
+			
+			Long lendTransactionId = lendTransactionService.createLendTransaction(borrower, null, item, null,
+					pBorrowDate, pEndDate, Boolean.valueOf(itemAlreadyBorrowed));
+			
+			final Date now = new Date();
+			
+			// Only mark as borrowed and send email dates actually indicate it is
+			// currently lent.
+			if (!itemAlreadyBorrowed &&
+				(pBorrowDate == null || pBorrowDate.before(now)) &&
+				(pEndDate == null || pEndDate.after(now))) {
+				// TODO: check if enabled and allowed to borrow !?
+				item.setBorrowed(borrower, pBorrowDate);
+				updateItem(item);
+				
+				// Send email (will actually create a JMS message, i.e. it is async).
+				Map<String, String> objects = new HashMap<String, String>();
+				objects.put("borrowerFirstName", borrower.getFirstName());
+				objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
+				objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
+				objects.put("lenderDisplayName", PersonUtils.getCurrentPersonDisplayName());
+				objects.put("itemTitle", item.getTitle());
+				objects.put("lendTransactionUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
+						PagesURL.LEND_TRANSACTION_OVERVIEW,
+						PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,
+						lendTransactionId.toString()));
+				objects.put("signature", Configuration.getSiteName());
+				objects.put("siteName", Configuration.getSiteName());
+				objects.put("siteUrl", Configuration.getRootURL());
+				
+				// TODO: localization
+				final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lend/lend/fr";
+				
+				Map<String, String> to = new HashMap<String, String>();
+				to.put(borrower.getEmail(), borrower.getEmail());
+				
+				Map<String, String> inlineResources = new HashMap<String, String>();
+				inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+				
+				getMailManager().send(Configuration.getNoReplySenderName(), 
+						         Configuration.getNoReplyEmailAddress(),
+						         to,
+						         null, 
+						         null,
+						         Configuration.getSiteName() + ": objet emprunté",
+						         objects, 
+						         velocityTemplateLocation,
+						         inlineResources);
+			}
+			return lendTransactionId;
 		}
-		final InternalItem internalItem = findInternalItem(pItemId);
-		assertCurrentUserAuthorizedToEdit(internalItem);
-		// TODO: check if enabled and allowed to borrow !?
-		final Person borrower = getPersonService().findPerson(pBorrowerId);
-		internalItem.setBorrowed(borrower, pBorrowDate);
-		
-		updateItem(internalItem);
-		
-		// Send email (will actually create a JMS message, i.e. it is async).
-		Map<String, String> objects = new HashMap<String, String>();
-		objects.put("borrowerFirstName", borrower.getFirstName());
-		objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
-		objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
-		objects.put("lenderDisplayName", PersonUtils.getCurrentPersonDisplayName());
-		objects.put("itemTitle", internalItem.getTitle());
-		objects.put("signature", Configuration.getSiteName());
-		objects.put("siteName", Configuration.getSiteName());
-		objects.put("siteUrl", Configuration.getRootURL());
-		
-		// TODO: localization
-		final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lend/lend/fr";
-		
-		Map<String, String> to = new HashMap<String, String>();
-		to.put(borrower.getEmail(), borrower.getEmail());
-		
-		Map<String, String> inlineResources = new HashMap<String, String>();
-		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
-		
-		getMailManager().send(Configuration.getNoReplySenderName(), 
-				         Configuration.getNoReplyEmailAddress(),
-				         to,
-				         null, 
-				         null,
-				         Configuration.getSiteName() + ": objet emprunté",
-				         objects, 
-				         velocityTemplateLocation,
-				         inlineResources);
+		catch (LendTransactionException e) {
+			throw new ItemException(e);
+		}
 	}
 
 	/**
@@ -263,38 +351,49 @@ public class ItemService extends ObjectService {
 	 * @param pItemId
 	 * @param pBorrowerId
 	 * @param pBorrowDate
+	 * @param pEndDate
+	 * @throws ItemException 
 	 */
-	public void updateLendInternalItem(final Long pItemId, final String pBorrowerName, final Date pBorrowDate) {
-		if (log.isInfoEnabled()) {
-			log.info("Lending item to borrower name: " + pBorrowerName);
+	public Long updateLendItem(final Long pItemId, final String pBorrowerName, final Date pBorrowDate, final Date pEndDate)
+			throws ItemException {
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Lending item to borrower name: " + pBorrowerName);
+			}
+			final Item item = findItem(pItemId);
+			final boolean itemAlreadyBorrowed = item.isBorrowed();
+			assertCurrentUserAuthorizedToEdit(item);
+			item.setBorrowerName(pBorrowerName);
+			item.setBorrower(null);
+			item.setBorrowDate(pBorrowDate);
+			updateItem(item);
+			return lendTransactionService.createLendTransaction(null, pBorrowerName, item, null,
+					pBorrowDate, pEndDate, Boolean.valueOf(itemAlreadyBorrowed));
+			// No email to send out since the borrower is not a user of the system.
 		}
-		final InternalItem internalItem = findInternalItem(pItemId);
-		assertCurrentUserAuthorizedToEdit(internalItem);
-		internalItem.setBorrowerName(pBorrowerName);
-		internalItem.setBorrower(null);
-		internalItem.setBorrowDate(pBorrowDate);
-		updateItem(internalItem);
-		// No email to send out since the borrower is not a user of the system.
+		catch (LendTransactionException e) {
+			throw new ItemException(e);
+		}
 	}
 
-	public void updateSendReminderInternalItem(final Long pItemId) {
+	public void updateSendReminderItem(final Long pItemId) {
 		if (log.isInfoEnabled()) {
 			log.info("Sending reminder for item: " + pItemId);
 		}
-		final InternalItem internalItem = findInternalItem(pItemId);
-		assertCurrentUserAuthorizedToEdit(internalItem);
+		final Item item = findItem(pItemId);
+		assertCurrentUserAuthorizedToEdit(item);
 		
-		if (!internalItem.isBorrowed()) {
+		if (!item.isBorrowed()) {
 			return;			
 		}
 		
-		final Person borrower = internalItem.getBorrower();
+		final Person borrower = item.getBorrower();
 		if (borrower == null) {
 			return;
 		}
 		
-		internalItem.reminderSentNow();		
-		updateItem(internalItem);
+		item.reminderSentNow();		
+		updateItem(item);
 		
 		// Send email (will actually create a JMS message, i.e. it is async).
 		Map<String, String> objects = new HashMap<String, String>();
@@ -302,7 +401,7 @@ public class ItemService extends ObjectService {
 		objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
 		objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
 		objects.put("lenderDisplayName", PersonUtils.getCurrentPersonDisplayName());
-		objects.put("itemTitle", internalItem.getTitle());
+		objects.put("itemTitle", item.getTitle());
 		objects.put("signature", Configuration.getSiteName());
 		objects.put("siteName", Configuration.getSiteName());
 		objects.put("siteUrl", Configuration.getRootURL());
@@ -324,25 +423,24 @@ public class ItemService extends ObjectService {
 				         Configuration.getSiteName() + ": rappel pour objet emprunté",
 				         objects, 
 				         velocityTemplateLocation,
-				         inlineResources);		
-		
+				         inlineResources);
 	}
 	
 	public Long createItem(final Item pItem, final Need pNeed) {
 		try {
 			pItem.setCreationDate(new Date());
 			if (pNeed != null && 
-				pItem instanceof InternalItem) {
-				((InternalItem)pItem).addRelatedNeed(pNeed);
+				pItem instanceof Item) {
+				((Item)pItem).addRelatedNeed(pNeed);
 			}
 			final Long result = itemDao.createItem(pItem);
 			// Send the notification after the dao is called !
 			if (pNeed != null && 
-				pItem instanceof InternalItem) {
-				final InternalItem internalItem = (InternalItem)pItem;
-				if (internalItem.isPublicVisibility() || 
-					internalItem.isConnectionsVisibility()) {
-					sendNotificationForNeed(pNeed, internalItem);
+				pItem instanceof Item) {
+				final Item item = (Item)pItem;
+				if (item.isPublicVisibility() || 
+					(item.isConnectionsVisibility() && pItem.getOwner().getConnections().contains(pNeed.getOwner()))) {
+					sendNotificationForNeed(pNeed, item);
 				}
 			}
 			return result;
@@ -352,22 +450,23 @@ public class ItemService extends ObjectService {
 		}
 	}
  	
-	public void deleteInternalItem(final InternalItem pInternalItem)  {
-		assertCurrentUserAuthorizedToDelete(pInternalItem);
-		// Delete lend requests.
-		lendRequestDao.deleteLendRequestsForItem(pInternalItem.getId());
-		itemDao.deleteItem(pInternalItem);
+	public void deleteItem(final Item pItem)  {
+		assertCurrentUserAuthorizedToDelete(pItem);
+		// Delete lend requests and lend transactions.
+		lendRequestDao.deleteLendRequestsForItem(pItem.getId());
+		lendTransactionDao.deleteLendTransactionsForItem(pItem.getId());
+		itemDao.deleteItem(pItem);
 	}
 	
-	public void deleteInternalItem(final Long pInternalItemId) {
-		deleteInternalItem(itemDao.findInternalItem(pInternalItemId));
+	public void deleteItem(final Long pItemId) {
+		deleteItem(itemDao.findItem(pItemId));
 	}
 	
-	public Long createItem(final InternalItem pItem, final Long pCategoryId, final Long pVisibilityId) {
+	public Long createItem(final Item pItem, final Long pCategoryId, final Long pVisibilityId) {
 		return createItem(pItem, pCategoryId, pVisibilityId, null);
 	}
 
-	public Long createItem(final InternalItem pItem, final Long pCategoryId, final Long pVisibilityId, final Need pNeed) {
+	public Long createItem(final Item pItem, final Long pCategoryId, final Long pVisibilityId, final Need pNeed) {
 		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
 		pItem.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
 		return createItem(pItem, pNeed);
@@ -377,7 +476,7 @@ public class ItemService extends ObjectService {
 		itemDao.updateItem(item);
 	}
 
-	public void updateItem(final InternalItem pItem, final Long pCategoryId, final Long pVisibilityId) {
+	public void updateItem(final Item pItem, final Long pCategoryId, final Long pVisibilityId) {
 		assertCurrentUserAuthorizedToEdit(pItem);
 		pItem.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
 		updateItem(pItem, pCategoryId);
@@ -457,148 +556,19 @@ public class ItemService extends ObjectService {
 					thumbnail.getId().toString());
 		}		
 	}
-
-    /////////////////////////////////////////////////////////
-	// Access control
 	
-	public boolean isCurrentUserAuthorizedToView(final Item pItem) {
-		return isUserAuthorizedToView(getCurrentPerson(), pItem);
-	}
-
-	public boolean isUserAuthorizedToView(final Person pPerson, final Item pItem) {
-		CoreUtils.assertNotNull(pItem);
-		if (!SecurityUtils.isLoggedIn()) {
-			if (pItem instanceof InternalItem) {
-				final InternalItem internalItem = (InternalItem) pItem;
-				if (internalItem.isPublicVisibility()) {
-					return true;
-				}
-			}
-			return false;
-		}
-		else {
-			if (isUserAuthorizedToEdit(pPerson, pItem)) {
-				return true;
-			}
-			// Connections can view.
-			if (pItem instanceof InternalItem) {
-				final InternalItem internalItem = (InternalItem) pItem;
-				if (// Public visibility.
-				    internalItem.isPublicVisibility() ||
-					// Connection visibility.
-				    (internalItem.isConnectionsVisibility() && 
-					internalItem.getOwner() != null &&
-					internalItem.getOwner().getConnections() != null &&
-					internalItem.getOwner().getConnections().contains(pPerson)) ||
-					// Person is the current borrower - then he should always see it. 
-				    internalItem.getBorrower() != null && internalItem.getBorrower().equals(pPerson)) {
-					return true;
-				}
-			}
-			return false;
-		}
-	}
-	
-	public void assertCurrentUserAuthorizedToView(final Item pItem) {
-		if (!isCurrentUserAuthorizedToView(pItem)) {
-			throw new SecurityException("Current user is not authorized to view item");
-		}
-	}
-	
-	public void assertUserAuthorizedToView(final Person pPerson, final Item pItem) {
-		if (!isUserAuthorizedToView(pPerson, pItem)) {
-			throw new SecurityException("User is not authorized to view item");
-		}
-	}
-	
-	public boolean isCurrentUserAuthorizedToEdit(final Item pItem) {
-		return isUserAuthorizedToEdit(getCurrentPerson(), pItem);
-	}
-	
-	public boolean isUserAuthorizedToEdit(final Person pPerson, final Item pItem) {
-		CoreUtils.assertNotNull(pItem);
-		if (!SecurityUtils.isLoggedIn()) {
-			return false;
-		}
-		if (pPerson == null || pPerson.getUser() == null) {
-			return false;
-		}
-		if (pPerson.getUser() != null &&
-			pPerson.getUser().isAdmin()) {
-			return true;
-		}
-		if (pItem instanceof InternalItem) {
-			final InternalItem internalItem = (InternalItem) pItem;
-			if (pPerson.equals(internalItem.getOwner())) {
-				return true;
-			}			
-		}
-		return false;
-	}
-
-	public void assertCurrentUserAuthorizedToEdit(final Item pItem) {
-		if (!isCurrentUserAuthorizedToEdit(pItem)) {
-			throw new SecurityException("Current user is not authorized to edit item");
-		}
-	}
-
-	public boolean isCurrentUserAuthorizedToAdd() {
-		final Person currentPerson = getCurrentPerson();
-		if (currentPerson != null && currentPerson.getUser() != null) {
-			return true;
-		}
-		return false;
-	}
-
-	public void assertCurrentUserAuthorizedToAdd(final Item pItem) {
-		if (!isCurrentUserAuthorizedToAdd()) {
-			throw new SecurityException("Current user is not authorized to add item");
-		}
-	}
-
-	public boolean isCurrentUserAuthorizedToDelete(final Item pItem) {
-		return isCurrentUserAuthorizedToEdit(pItem);
-	}
-
-	public void assertCurrentUserAuthorizedToDelete(final Item pItem) {
-		if (!isCurrentUserAuthorizedToDelete(pItem)) {
-			throw new SecurityException("Current user is not authorized to delete item");
-		}
-	}
-	
-	public boolean isCurrentUserOwner(final Item pItem) {
-		if (! (pItem instanceof InternalItem)) {
-			return false;
-		}
-		final InternalItem internalItem = (InternalItem)pItem;
-		final Person currentPerson = getCurrentPerson();
-		if (currentPerson == null) {
-			return false;
-		}
-		return currentPerson.equals(internalItem.getOwner());
-	}
-	
-	public ListValue getListValue(final Long pListValueId) {
-		CoreUtils.assertNotNull(pListValueId);
-		final ListValue listValue = getListValueDao().findListValue(pListValueId);
-		if (listValue == null) {
-			throw new ObjectNotFoundException(pListValueId, ListValue.class.getName());
-		}
-		return listValue;		
-	}
-
-	public void sendNotificationForNeed(final Need pNeed, final InternalItem pInternalItem) throws ItemException {
+	public void sendNotificationForNeed(final Need pNeed, final Item pItem) throws ItemException {
 		CoreUtils.assertNotNull(pNeed);
-		CoreUtils.assertNotNull(pInternalItem);
+		CoreUtils.assertNotNull(pItem);
 		if (pNeed.getOwner() == null || !pNeed.getOwner().isEnabled()) {
 			return;
 		}
 		try {	
 			// Send email (will actually create a JMS message, i.e. it is async).
 			Map<String, String> objects = new HashMap<String, String>();
-			objects.put("connectionFirstName", pInternalItem.getOwner().getFirstName());
-			objects.put("connectionLastName", pInternalItem.getOwner().getLastName());
-			objects.put("connectionDisplayName", pInternalItem.getOwner().getDisplayName());
+			objects.put("connectionFirstName", pItem.getOwner().getFirstName());
+			objects.put("connectionLastName", pItem.getOwner().getLastName());
+			objects.put("connectionDisplayName", pItem.getOwner().getDisplayName());
 			objects.put("requesterFirstName", pNeed.getOwner().getFirstName());
 			objects.put("requesterLastName", pNeed.getOwner().getLastName());
 			objects.put("requesterDisplayName", pNeed.getOwner().getDisplayName());
@@ -607,11 +577,11 @@ public class ItemService extends ObjectService {
 					PagesURL.NEED_OVERVIEW,
 					PagesURL.NEED_OVERVIEW_PARAM_NEED_ID,
 					pNeed.getId().toString()));
-			objects.put("itemTitle", pInternalItem.getTitle());
+			objects.put("itemTitle", pItem.getTitle());
 			objects.put("itemUrl",  JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
-					PagesURL.INTERNAL_ITEM_OVERVIEW,
-					PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID,
-					pInternalItem.getId().toString()));
+					PagesURL.ITEM_OVERVIEW,
+					PagesURL.ITEM_OVERVIEW_PARAM_ITEM_ID,
+					pItem.getId().toString()));
 			objects.put("signature", Configuration.getSiteName());
 			objects.put("siteName", Configuration.getSiteName());
 			objects.put("siteUrl", Configuration.getRootURL());
@@ -639,5 +609,61 @@ public class ItemService extends ObjectService {
 			throw new ItemException(e);
 		}		
 	}
+
+	public String getItemInProgressLendTransactionUrl(final Item pItem) throws ItemException {
+		try {
+			final LendTransaction lt = lendTransactionService.findInProgressLendTransactionForItem(pItem);
+			if (lt != null) {
+				return JsfUtils.getFullUrl(
+						PagesURL.LEND_TRANSACTION_OVERVIEW,
+						PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,
+						lt.getId().toString());
+			}
+			else {
+				if (log.isWarnEnabled()) {
+					log.warn("No in progress lend transaction for item: " + pItem.getId());
+				}
+				return null;
+			}			
+		}
+		catch (LendTransactionException e) {
+			throw new ItemException(e);
+		}
+	}
+
+	/////////////////////////////////////////////////////////
+	// Access control
+	
+	public boolean isUserAuthorizedToView(final Person pPerson, final Objekt pObjekt) {
+		CoreUtils.assertNotNull(pObjekt);
+		if (!SecurityUtils.isLoggedIn()) {
+			if (pObjekt.isPublicVisibility()) {
+				return true;
+			}
+			return false;
+		}
+		else {
+			Item item = (Item)pObjekt;
+			if (isUserAuthorizedToEdit(pPerson, pObjekt)) {
+				return true;
+			}
+			// Connections can view.
+			else if (// Public visibility.
+				pObjekt.isPublicVisibility() ||
+				// Connection visibility.
+			    (pObjekt.isConnectionsVisibility() && 
+	    		 pObjekt.getOwner() != null &&
+	    		 pObjekt.getOwner().getConnections() != null &&
+	    		 pObjekt.getOwner().getConnections().contains(pPerson)) ||
+				 // Person is the current borrower - then he should always see it. 
+	    		 item.getBorrower() != null && item.getBorrower().equals(pPerson)) {
+				return true;
+			}
+			return false;
+		}
+	}
+
+	// Access control
+	/////////////////////////////////////////////////////////
 	
 }

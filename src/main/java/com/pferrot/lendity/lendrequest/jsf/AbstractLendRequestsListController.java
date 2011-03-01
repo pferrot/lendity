@@ -52,14 +52,14 @@ public abstract class AbstractLendRequestsListController extends AbstractListCon
 
 	public String getItemOverviewHref() {
 		final LendRequest lendRequest = (LendRequest)getTable().getRowData();
-		return ItemUtils.getInternalItemOverviewPageUrl(lendRequest.getItem().getId().toString());
+		return ItemUtils.getItemOverviewPageUrl(lendRequest.getItem().getId().toString());
 	}
 
 	public String getLendTransactionOverviewHref() {
 		final LendRequest lendRequest = (LendRequest)getTable().getRowData();
 		if (lendRequest.getTransaction() != null) {
 			return JsfUtils.getFullUrl(PagesURL.LEND_TRANSACTION_OVERVIEW,
-						PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_NEED_ID,
+						PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,
 						lendRequest.getTransaction().getId().toString());
 		}
 		else {

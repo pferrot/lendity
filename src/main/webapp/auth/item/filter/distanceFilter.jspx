@@ -11,26 +11,18 @@
 <!-- categories -->
 <h:form id="maxDistanceFilterForm" prependId="false">
 <table><tr><td>
-	<h:outputText value="#{messages.geolocation_maxDistance}" styleClass="small"/>
-	<c:if test="#{theBean.maxDistance != null}">
-		<h:outputText value=" " escape="false" />
-		<h:commandLink id="clearMaxDistance" action="#{theBean.clearMaxDistance}">
-			<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
-		</h:commandLink>	
-	</c:if>
-</td></tr><tr><td>
 	<c:if test="#{theBean.searchByDistanceAvailable}">
 		<h:selectOneMenu id="maxDistance" value="#{theBean.maxDistance}" valueChangeListener="#{theBean.maxDistance}" converter="javax.faces.Long" onchange="submit()">
 			<f:selectItems value="#{theBean.maxDistanceSelectItems}"/>
 		</h:selectOneMenu>
+		<script type="text/javascript">
+			setupDropDownFilterField('maxDistance');
+		</script>
 	</c:if>
 	<c:if test="#{not theBean.searchByDistanceAvailable}">
 		<i><h:outputText value="#{messages.geolocation_maxDistanceNotAvailable}" styleClass="small"/></i> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/help.png" class="qtipTitle" title="#{messages.geolocation_maxDistanceNotAvailableExplain}"/>
 	</c:if>
-</td></tr></table>		
-<script type="text/javascript">
-	setupDropDownFilterField('maxDistance');
-</script>	
+</td></tr></table>			
 </h:form>
 <!-- /categories -->
 

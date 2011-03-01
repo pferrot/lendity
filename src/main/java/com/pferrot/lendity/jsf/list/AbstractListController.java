@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.security.SecurityUtils;
 
@@ -32,9 +33,14 @@ public abstract class AbstractListController implements Serializable {
 	private final static String LIST_LOADED_ATTRIBUTE_PREFIX_NAME = "LIST_LOADED";
 	private final static String LIST_LOADED_ATTRIBUTE_VALUE = "TRUE";
 	
+	public final static String FIRST_ROW_PARAMETER_NAME = "firstRow";
+	public final static String SEARCH_STRING_PARAMETER_NAME = "searchString";
+	
     private List list;
 
 	private HtmlDataTable table;
+	
+	private String currentUri;
 	
     // Paging.
 	private int totalRows;
@@ -59,7 +65,11 @@ public abstract class AbstractListController implements Serializable {
 		pageRange = 10;
 	}
 
-	protected abstract ListWithRowCount getListWithRowCount();	
+	protected abstract ListWithRowCount getListWithRowCount();
+	
+	protected void resetFilters() {
+		setSearchString(null, false);		
+	}
 	
 	
 	// Keep a member variable so that the DB is not accessed everytime.
@@ -86,7 +96,7 @@ public abstract class AbstractListController implements Serializable {
 		setSearchString(pSearchString, true);
 	}
 	
-	private void setSearchString(final String pSearchString, final boolean pReloadList) {
+	protected void setSearchString(final String pSearchString, final boolean pReloadList) {
 		this.searchString = pSearchString;
 		if (pReloadList) {
 			reloadList();
@@ -102,10 +112,9 @@ public abstract class AbstractListController implements Serializable {
 		return "clearSearch";
 	}
 	
-	public boolean isFilteredList() {
-		return !StringUtils.isNullOrEmpty(getSearchString());
-	}
-	
+	public boolean isSearchByDistanceAvailable() {
+		return PersonUtils.isCurrentPersonIsAddressDefined();
+	}	
 	
 	 // Paging actions -----------------------------------------------------------------------------
 
@@ -138,7 +147,7 @@ public abstract class AbstractListController implements Serializable {
 //        loadDataList();
     }
 
-    protected void loadDataList() {
+	protected void loadDataList() {
     	
     	if (log.isDebugEnabled()) {
     		log.debug("Loading list");

@@ -187,8 +187,8 @@ public class HomeController extends AbstractItemsListController {
 	
 	public String getNeedGotItHref() {
 		final Need need = (Need)getConnectionsNeedsTable().getRowData();
-		return JsfUtils.getFullUrl(PagesURL.INTERNAL_ITEM_ADD, 
-				PagesURL.INTERNAL_ITEM_ADD_PARAM_NEED_ID,
+		return JsfUtils.getFullUrl(PagesURL.ITEM_ADD, 
+				PagesURL.ITEM_ADD_PARAM_NEED_ID,
 				need.getId().toString());
 	}
 	

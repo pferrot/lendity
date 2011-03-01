@@ -100,8 +100,8 @@
 		<h:outputText id="sideMenuMyItemsText" value="#{messages.menu_myItems}" />
 	</h:outputLink>
 	</li><li>	
-	<h:outputLink id="sideMenuInternalItemAddLink" class="sideMenuLink" value="#{authenticationController.internalItemAddURL}">
-		<h:outputText id="sideMenuInternalItemTextLink" value="#{messages.menu_addItem}" />
+	<h:outputLink id="sideMenuItemAddLink" class="sideMenuLink" value="#{authenticationController.itemAddURL}">
+		<h:outputText id="sideMenuItemTextLink" value="#{messages.menu_addItem}" />
 	</h:outputLink>
 	</li><li>
 	<h:outputLink id="sideMenuMyLentItemsLink" class="sideMenuLink" value="#{authenticationController.myLentItemsURL}">
@@ -160,7 +160,7 @@
 	    </h:outputLink>
 	</li>
 	<li>
-	    <h:outputLink id="sideMenuNeedAddLink" class="sideMenuLink" value="#{authenticationController.needAddWithConfirmURL}">
+	    <h:outputLink id="sideMenuNeedAddLink" class="sideMenuLink" value="#{authenticationController.needAddURL}">
 		    <h:outputText id="sideMenuNeedAddText" value="#{messages.menu_addNeed}" />
 	    </h:outputLink>
 	</li>

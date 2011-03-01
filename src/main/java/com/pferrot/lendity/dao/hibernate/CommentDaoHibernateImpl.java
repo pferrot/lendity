@@ -11,7 +11,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.pferrot.lendity.dao.CommentDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.model.Comment;
-import com.pferrot.lendity.model.InternalItem;
+import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemComment;
 import com.pferrot.lendity.model.LendTransaction;
 import com.pferrot.lendity.model.LendTransactionComment;
@@ -36,8 +36,8 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return (Comment)getHibernateTemplate().load(Comment.class, pCommentId);
 	}
 	
-	public List<ItemComment> findItemCommentsList(final InternalItem pInternalItem, final int pFirstResult, final int pMaxResults) {
-		final DetachedCriteria criteria = getItemCommentsDetachedCriteria(pInternalItem);
+	public List<ItemComment> findItemCommentsList(final Item pItem, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria criteria = getItemCommentsDetachedCriteria(pItem);
 		criteria.addOrder(Order.desc("creationDate"));		
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
 	}
@@ -54,8 +54,8 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
 	}
 
-	public long countItemComments(final InternalItem pInternalItem) {
-		final DetachedCriteria criteria = getItemCommentsDetachedCriteria(pInternalItem);
+	public long countItemComments(final Item pItem) {
+		final DetachedCriteria criteria = getItemCommentsDetachedCriteria(pItem);
 		return rowCount(criteria);
 	}
 	
@@ -69,11 +69,11 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return rowCount(criteria);
 	}
 
-	private DetachedCriteria getItemCommentsDetachedCriteria(final InternalItem pInternalItem) {
+	private DetachedCriteria getItemCommentsDetachedCriteria(final Item pItem) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(ItemComment.class);
 	
-		if (pInternalItem != null) {
-			criteria.add(Restrictions.eq("item", pInternalItem));
+		if (pItem != null) {
+			criteria.add(Restrictions.eq("item", pItem));
 		}		
 		return criteria;	
 	}
@@ -107,9 +107,9 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return ((Long)getHibernateTemplate().findByCriteria(pCriteria).get(0)).longValue();
 	}
 
-	public ListWithRowCount findItemComments(final InternalItem pInternalItem, final int pFirstResult, final int pMaxResults) {
-		final List list = findItemCommentsList(pInternalItem, pFirstResult, pMaxResults);
-		final long count = countItemComments(pInternalItem);
+	public ListWithRowCount findItemComments(final Item pItem, final int pFirstResult, final int pMaxResults) {
+		final List list = findItemCommentsList(pItem, pFirstResult, pMaxResults);
+		final long count = countItemComments(pItem);
 		return new ListWithRowCount(list, count);
 	}
 	

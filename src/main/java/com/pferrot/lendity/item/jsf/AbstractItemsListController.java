@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
@@ -15,22 +14,33 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.StringUtils;
+import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
+import com.pferrot.lendity.item.ItemConsts;
+import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.item.ItemUtils;
+import com.pferrot.lendity.item.ObjektService;
+import com.pferrot.lendity.item.exception.ItemException;
+import com.pferrot.lendity.lendrequest.LendRequestConsts;
 import com.pferrot.lendity.lendrequest.LendRequestService;
+import com.pferrot.lendity.lendtransaction.LendTransactionConsts;
 import com.pferrot.lendity.lendtransaction.LendTransactionService;
-import com.pferrot.lendity.model.InternalItem;
+import com.pferrot.lendity.lendtransaction.jsf.AbstractLendTransactionsListController;
 import com.pferrot.lendity.model.Item;
+import com.pferrot.lendity.model.LendTransaction;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
+import com.pferrot.security.SecurityUtils;
 
-public abstract class AbstractItemsListController extends AbstractObjectsListController {
+public abstract class AbstractItemsListController extends AbstractObjektsListController {
 	
 	private final static Log log = LogFactory.getLog(AbstractItemsListController.class);
 	
 	private final static String REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX = "REQUEST_LEND_AVAILABLE_";
 	
+	private ItemService itemService;
 	private LendRequestService lendRequestService;
 	private LendTransactionService lendTransactionService;
 	
@@ -41,19 +51,39 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 	// 2 = False = not borrowed
 	// null = all items
 	private Long borrowStatus;
-	
-	private List<SelectItem> visibilitySelectItems;
-	private Long visibilityId;
-	
-	private List<SelectItem> maxDistanceSelectItems;
-	private Long maxDistance;
-	
-	private Boolean showOnlyConnectionsItems = Boolean.FALSE;	
+
+	// null == all (default)
+	// 2 == to lend
+	// 3 == to rent
+	// 4 == to sell
+	// 5 == to give for free
+	private Long lendType;
 	
 	public AbstractItemsListController() {
 		super();
 	}
 	
+	public ItemService getItemService() {
+		return itemService;
+	}
+
+	public void setItemService(ItemService itemService) {
+		this.itemService = itemService;
+	}
+
+	@Override
+	protected ObjektService getObjektService() {
+		return getItemService();
+	}
+
+	@Override
+	protected void resetFilters() {
+		super.resetFilters();
+		setBorrowStatus(null);
+		setLendType(null);
+		setOrderBy(null);
+	}
+
 	public LendRequestService getLendRequestService() {
 		return lendRequestService;
 	}
@@ -112,144 +142,58 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
         // event on the h:selectOneMenu. Not sure why!?
         reloadList();
     }
-
-	public List<SelectItem> getVisibilitySelectItems() {
-		if (visibilitySelectItems == null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			visibilitySelectItems = UiUtils.getSelectItemsForOrderedListValue(getItemService().getVisibilities(), locale);
-			// Add all visibilities first.
-			visibilitySelectItems.add(0, getAllVisibilitiesSelectItem(locale));
-		}		
-		return visibilitySelectItems;	
-	}
 	
-	private SelectItem getAllVisibilitiesSelectItem(final Locale pLocale) {
-		final String label = I18nUtils.getMessageResourceString("item_visibilityAll", pLocale);
-		final SelectItem si = new SelectItem(null, label);
-		return si;
-	}
-
-	public Long getVisibilityId() {
-		return visibilityId;
-	}
-
-	public void setVisibilityId(final Long pVisibilityId) {
-		this.visibilityId = UiUtils.getPositiveLongOrNull(pVisibilityId);
-	}
-
-	public void visibility(final ValueChangeEvent pEevent) {
-    	final Long visibility = (Long) ((HtmlSelectOneMenu) pEevent.getComponent()).getValue();
-        setVisibilityId(visibility);
-        // loadDataList() is not called by getList() when the page is submitted with the onchange
-        // event on the h:selectOneMenu. Not sure why!?
-        reloadList();
-    }
-
-    public Boolean getShowOnlyConnectionsItems() {
-		return showOnlyConnectionsItems;
-	}
-
-	public void setShowOnlyConnectionsItems(Boolean showOnlyConnectionsItems) {
-		this.showOnlyConnectionsItems = showOnlyConnectionsItems;
-	}
-	
-	public void showOnlyConnectionsItems(final ValueChangeEvent pEevent) {
-		final Boolean showOnlyConnectionsItems = (Boolean) ((HtmlSelectBooleanCheckbox) pEevent.getComponent()).getValue();
-		setShowOnlyConnectionsItems(showOnlyConnectionsItems);
-		// loadDataList() is not called by getList() when the page is submitted with the onchange
-        // event on the h:selectOneMenu. Not sure why!?
-        reloadList();	
-	}
-
-	public Long getMaxDistance() {
-		return maxDistance;
-	}
-
-	public void setMaxDistance(Long maxDistance) {
-		this.maxDistance = UiUtils.getPositiveLongOrNull(maxDistance);
-	}
-	
-	public List<SelectItem> getMaxDistanceSelectItems() {
-		if (maxDistanceSelectItems == null) {
-			maxDistanceSelectItems = new ArrayList<SelectItem>();
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			// Add all categories first.
-			maxDistanceSelectItems.add(getNoMaxDistanceSelectItem(locale));
-			maxDistanceSelectItems.add(new SelectItem(Long.valueOf(1), "1 km"));
-			maxDistanceSelectItems.add(new SelectItem(Long.valueOf(5), "5 km"));
-			maxDistanceSelectItems.add(new SelectItem(Long.valueOf(10), "10 km"));
-			maxDistanceSelectItems.add(new SelectItem(Long.valueOf(20), "20 km"));
-			maxDistanceSelectItems.add(new SelectItem(Long.valueOf(50), "50 km"));
-			maxDistanceSelectItems.add(new SelectItem(Long.valueOf(100), "100 km"));
-			maxDistanceSelectItems.add(new SelectItem(Long.valueOf(500), "500 km"));
-		}		
-		return maxDistanceSelectItems;	
-	}
-
-	private SelectItem getNoMaxDistanceSelectItem(final Locale pLocale) {
-		final String label = I18nUtils.getMessageResourceString("geolocation_noMaxDistance", pLocale);
-		final SelectItem si = new SelectItem(null, label);
-		return si;
-	}
-	
-	public void maxDistance(final ValueChangeEvent pEevent) {
-    	final Long maxDistance = (Long) ((HtmlSelectOneMenu) pEevent.getComponent()).getValue();
-    	setMaxDistance(maxDistance);
-        // loadDataList() is not called by getList() when the page is submitted with the onchange
-        // event on the h:selectOneMenu. Not sure why!?
-        reloadList();
-    }
-	
-	public String clearMaxDistance() {
-		setMaxDistance(null);
-		return "clearMaxDistance";
-	}	
     
 	public String clearBorrowStatus() {
 		setBorrowStatus(null);
 		return "clearBorrowStatus";
 	}
 
-	public String clearVisiblility() {
-		setVisibilityId(null);
-		return "clearVisibility";
+	public List<SelectItem> getLendTypeSelectItems() {
+		final List<SelectItem> result = new ArrayList<SelectItem>();
+		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		
+		result.add(new SelectItem(null, I18nUtils.getMessageResourceString("item_lendTypeAll", locale)));
+		result.add(new SelectItem(Long.valueOf(ItemConsts.LEND_TYPE_LEND), I18nUtils.getMessageResourceString("item_lendTypeLend", locale)));
+		result.add(new SelectItem(Long.valueOf(ItemConsts.LEND_TYPE_RENT), I18nUtils.getMessageResourceString("item_lendTypeRent", locale)));
+		result.add(new SelectItem(Long.valueOf(ItemConsts.LEND_TYPE_GIVE_FOR_FREE), I18nUtils.getMessageResourceString("item_lendTypeGiveForFree", locale)));
+		result.add(new SelectItem(Long.valueOf(ItemConsts.LEND_TYPE_SELL), I18nUtils.getMessageResourceString("item_lendTypeSell", locale)));
+		
+		return result;
 	}
 
-	@Override
-	public boolean isFilteredList() {
-		boolean tempResult = getBorrowStatusBoolean() != null || getVisibilityId() != null || getMaxDistance() != null; 
-		return tempResult || super.isFilteredList();
+	public Long getLendType() {
+		return lendType;
 	}
 
-	public String getVisibilityLabel() {
-		final Item item = (Item)getTable().getRowData();
-		if (item instanceof InternalItem) {
-			final InternalItem internalItem = (InternalItem)getTable().getRowData();
-			if (internalItem != null && internalItem.getVisibility() != null) {
-				final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-				return I18nUtils.getMessageResourceString(internalItem.getVisibility().getLabelCode(), locale);
-			}
-			else {
-				return "";
-			}
-		}
-		return "";
+	public void setLendType(final Long pLendType) {
+		this.lendType = UiUtils.getPositiveLongOrNull(pLendType);
+	}
+
+    public void lendType(final ValueChangeEvent event) {
+    	final Long lendType = (Long) ((HtmlSelectOneMenu) event.getComponent()).getValue();
+        setLendType(lendType);
+        // loadDataList() is not called by getList() when the page is submitted with the onchange
+        // event on the h:selectOneMenu. Not sure why!?
+        reloadList();
+    }
+	
+    
+	public String clearLendType() {
+		setLendType(null);
+		return "clearLendType";
 	}
 
 	public String getAvailableLabel() {
 		final Item item = (Item)getTable().getRowData();
-		if (item instanceof InternalItem) {
-			InternalItem internalItem = (InternalItem) item;
-			if (internalItem.isAvailable()) {
-				final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-				return I18nUtils.getMessageResourceString("item_availableYes", locale);
-			}
-			else {
-				final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-				return I18nUtils.getMessageResourceString("item_availableNo", locale);
-			}
+		if (item.isAvailable()) {
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			return I18nUtils.getMessageResourceString("item_availableYes", locale);
 		}
-		return "";
+		else {
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			return I18nUtils.getMessageResourceString("item_availableNo", locale);
+		}
 	}
 	
 //	public boolean isEditAvailable() {
@@ -259,8 +203,7 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 
 	public boolean isLendAvailable() {
 		final Item item = (Item)getTable().getRowData();
-		return getItemService().isCurrentUserAuthorizedToEdit(item) &&
-			!item.isBorrowed();		
+		return getItemService().isCurrentUserAuthorizedToEdit(item);		
 	}
 
 	public boolean isLendBackAvailable() {
@@ -277,19 +220,20 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 //		final Item item = (Item)getTable().getRowData();
 //		return getItemService().isCurrentUserAuthorizedToDelete(item);
 //	}
-	
-	@Override
-	public boolean isOwner() {
-		final Item item = (Item)getTable().getRowData();
-		if (item instanceof InternalItem) {
-			return getItemService().isCurrentUserOwner((InternalItem)item);
-		}
-		return false;
-	}
 
 	public boolean isBorrowed() {
 		final Item item = (Item)getTable().getRowData();
 		return item != null && item.isBorrowed();
+	}
+
+	public String getInProgressLendTransactionUrl() {
+		final Item item = (Item)getTable().getRowData();
+		try {
+			return itemService.getItemInProgressLendTransactionUrl(item);
+		}
+		catch (ItemException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public String getBorrowerLabel() {
@@ -313,22 +257,10 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 		return "";
 	}
 
-	@Override
-	public String getOwnerLabel() {
-		final Item item = (Item)getTable().getRowData();
-		if (item instanceof InternalItem) {
-			final InternalItem internalItem = (InternalItem) item;
-			if (internalItem.getOwner() != null && internalItem.getOwner().getDisplayName() != null) {
-				return internalItem.getOwner().getDisplayName();
-			}
-		}
-		return "";
-	}
-
 	public boolean isAvailable() {
 		final Item item = (Item)getTable().getRowData();
-		if (item instanceof InternalItem) {
-			return ((InternalItem) item).isAvailable();
+		if (item instanceof Item) {
+			return ((Item) item).isAvailable();
 		}
 		else {
 			return false;
@@ -343,54 +275,71 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 
 	public String getBorrowerHref() {
 		final Item item = (Item)getTable().getRowData();
-		if (item instanceof InternalItem) {
-			final InternalItem internalItem = (InternalItem) item;
-			if (internalItem.getBorrower() != null) {
-				return PersonUtils.getPersonOverviewPageUrl(internalItem.getBorrower().getId().toString());
-			}
+		if (item.getBorrower() != null) {
+			return PersonUtils.getPersonOverviewPageUrl(item.getBorrower().getId().toString());
 		}
 		return null;		
 	}
 	
 	public boolean isBorrowerHrefAvailable() {
 		final Item item = (Item)getTable().getRowData();
-		if (item instanceof InternalItem) {
-			final InternalItem internalItem = (InternalItem) item;
-			return internalItem.getBorrower() != null;
-		}
-		return false;
-	}
-
-	@Override
-	public String getOwnerHref() {
-		final Item item = (Item)getTable().getRowData();
-		if (item instanceof InternalItem) {
-			final InternalItem internalItem = (InternalItem) item;
-			return PersonUtils.getPersonOverviewPageUrl(internalItem.getOwner().getId().toString());
-		}
-		return null;		
-	}
-
-	public boolean isOwnerHrefAvailable() {
-		final Item item = (Item)getTable().getRowData();
-		return item instanceof InternalItem;		
+		return item.getBorrower() != null;
 	}
 	
 	public String getItemOverviewHref() {
 		final Item item = (Item)getTable().getRowData();
-		return ItemUtils.getInternalItemOverviewPageUrl(((InternalItem)item).getId().toString());		
+		return ItemUtils.getItemOverviewPageUrl(((Item)item).getId().toString());		
 	}
 
 	public boolean isRequestLendAvailable() {
-		final InternalItem item = (InternalItem)getTable().getRowData();
+		return getRequestLendAvailableCode() == LendRequestConsts.REQUEST_LEND_ALLOWED;
+	}
+
+	public boolean isRequestLendNotAvailableOwnItem() {
+		return getRequestLendAvailableCode() == LendRequestConsts.REQUEST_LEND_NOT_ALLOWED_OWN_ITEM;
+	}
+
+	public boolean isRequestLendNotAvailableBannedPerson() {
+		return getRequestLendAvailableCode() == LendRequestConsts.REQUEST_LEND_NOT_ALLOWED_BANNED_PERSON;
+	}
+
+	public boolean isRequestLendNotAvailableNotLoggedIn() {
+		return getRequestLendAvailableCode() == LendRequestConsts.REQUEST_LEND_NOT_ALLOWED_NOT_LOGGED_IN;
+	}
+	
+	public boolean isRequestLendNotAvailableUncompletedTransaction() {
+		return getRequestLendAvailableCode() == LendRequestConsts.REQUEST_LEND_NOT_ALLOWED_TRANSACTION_UNCOMPLETED;
+	}
+
+	public String getRequestLendNotAvailableUncompletedTransactionUrl() {		
+		final Item item = (Item)getTable().getRowData();
+		final ListWithRowCount lwrc = lendTransactionService.findUncompletedLendTransactionForItemAndBorrower(item.getId(), PersonUtils.getCurrentPersonId(), 0, 0);
+		if (lwrc.getRowCount() == 0) {
+			return null;
+		}
+		else if (lwrc.getRowCount() > 1) {
+			if (log.isWarnEnabled()) {
+				log.warn("Found " + lwrc.getRowCount() + " uncomplted transactions for borrower " + PersonUtils.getCurrentPersonId() + " on " +
+						"item " + item.getId() + ". Should have 1 maximum.");
+			}
+		}
+		LendTransaction lt = (LendTransaction)lwrc.getList().get(0);
+		return JsfUtils.getFullUrl(
+				PagesURL.LEND_TRANSACTION_OVERVIEW,
+				PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,
+				lt.getId().toString());
+	}
+
+	protected int getRequestLendAvailableCode() {
+		final Item item = (Item)getTable().getRowData();
 		// Not sure why this is called 3 times per item !? Avoid hitting DB.
 		final HttpServletRequest request = JsfUtils.getRequest();
-		final Boolean requestResult = (Boolean)request.getAttribute(REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX + item.getId());
+		final Integer requestResult = (Integer)request.getAttribute(REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX + item.getId());
 		if (requestResult != null) {
-			return requestResult.booleanValue();
+			return requestResult.intValue();
 		}
-		boolean result = lendRequestService.isLendRequestAllowedFromCurrentUser(item);
-		request.setAttribute(REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX + item.getId(), Boolean.valueOf(result));
+		int result = lendRequestService.getLendRequestAllowedFromCurrentUser(item);
+		request.setAttribute(REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX + item.getId(), Integer.valueOf(result));
 		return result;
 	}
 	
@@ -402,5 +351,72 @@ public abstract class AbstractItemsListController extends AbstractObjectsListCon
 	public String getThumbnail1Src() {
 		final Item item = (Item)getTable().getRowData();
 		return getItemService().getItemThumbnail1Src(item, true);
+	}
+
+	public String getMyLendTransactionsUrl() {
+		final Item item = (Item)getTable().getRowData();
+		return JsfUtils.getFullUrl(
+				PagesURL.MY_LEND_TRANSACTIONS_FOR_ITEM_LIST,
+				PagesURL.MY_LEND_TRANSACTIONS_FOR_ITEM_LIST_PARAM_ITEM_ID,
+				item.getId().toString());
+	}
+
+	public long getNbLendTransactionsCurrentPerson() {
+		if (! SecurityUtils.isLoggedIn()) {
+			throw new RuntimeException("Not logged in");
+		}
+		final Item item = (Item)getTable().getRowData();
+		return lendTransactionService.countLendTransactionsForItemAndPerson(item.getId(), PersonUtils.getCurrentPersonId(), null);
+	}
+
+	public String getMyUncompletedLendTransactionsUrl() {
+		final Item item = (Item)getTable().getRowData();
+		final String[] param1 = new String[]{PagesURL.MY_LEND_TRANSACTIONS_FOR_ITEM_LIST_PARAM_ITEM_ID, item.getId().toString()};
+		final String[] param2 = new String[]{AbstractLendTransactionsListController.FORCE_VIEW_PARAM_NAME,
+				AbstractLendTransactionsListController.FORCE_VIEW_UNCOMPLETED_LEND_TRANSACTIONS};
+		final String[][] params = new String[][]{param1, param2};
+		return JsfUtils.getFullUrl(
+				PagesURL.MY_LEND_TRANSACTIONS_FOR_ITEM_LIST,
+				params);
+	}
+	
+	public long getNbUncompletedLendTransactionsCurrentPerson() {
+		if (! SecurityUtils.isLoggedIn()) {
+			throw new RuntimeException("Not logged in");
+		}
+		final Item item = (Item)getTable().getRowData();
+		return lendTransactionService.countLendTransactionsForItemAndPerson(item.getId(),
+				PersonUtils.getCurrentPersonId(),
+				LendTransactionConsts.UNCOMPLETED_STATUS_SELECT_ITEM_VALUE);
+	}
+	
+	public boolean isActiveTransactionsLinkAvailable() {
+		final long nb = getNbUncompletedLendTransactionsCurrentPerson();
+		if (isBorrowed()) {
+			return nb > 1;
+		}
+		else {
+			return nb > 0;
+		}
+	}
+
+	public boolean isFilteredList() {
+		return !StringUtils.isNullOrEmpty(getSearchString()) ||
+			getMaxDistance() != null ||
+			getCategoryId() != null ||
+			getBorrowStatus() != null ||
+			getOwnerType() != null ||
+			getLendType() != null ||
+			getVisibilityId() != null;
+	}
+
+	public boolean isShowAdvancedSearch() {
+		return getCategoryId() != null || 
+			getBorrowStatus() != null ||
+			getLendType() != null ||
+			getMaxDistance() != null ||
+			getOwnerType() != null ||
+			getVisibilityId() != null ||
+			getOrderBy() != null;
 	}
 }

@@ -76,8 +76,8 @@ function setupSearchField(pFieldId, pClearSearchId, pText) {
     else {
       if (pClearSearchId) {
         $j("#" + pClearSearchId).show();
-        $j("#" + pFieldId).addClass("filterActive");
       }
+      $j("#" + pFieldId).addClass("filterActive");
     }
     $j("#" + pFieldId).focus(function() {
 	  if(this.value == pText ) {
@@ -242,8 +242,11 @@ function lendItemTooltip(pTooltipTarget, pItemID, pRedirectID) {
   else {
 	  	// Reset the form when it is displayed.
 	    document.getElementById('lendForm').reset();
-	    $j('#lendBorrowerId').removeClass("validationError");
-	    $j('#lendBorrowerName').removeClass("validationError");
+	    //$j('#lendBorrowerId').removeClass("validationError");
+	    //$j('#lendBorrowerName').removeClass("validationError");
+	    //$j('#lendBorrowDate').removeClass("validationError");
+	    //$j('#lendEndDate').removeClass("validationError");
+	    $j('#lendForm').find('input').removeClass('validationError');
 		// Set the correct itemID.
 		$j('#lendItemId').val(pItemID);		
 		// Set the correct redirectID.
@@ -253,6 +256,7 @@ function lendItemTooltip(pTooltipTarget, pItemID, pRedirectID) {
 		mLendItemTooltip = createFormTooltip($j(pTooltipTarget), $j('#lendForm'), lendQtipOnHide);
 		
 		createDatePicker($j("#lendBorrowDate"));
+		createDatePicker($j("#lendEndDate"));
 	}    
 }
 
@@ -282,20 +286,52 @@ function createDatePicker(pJqueryInputField) {
 /*
  * Click the submit button in the tooltip when an item is lent.
  */
-function submitLendItem() {	
+function submitLendItem() {
+	var noError = true;
+	
 	var borrowerDropDown = document.getElementById('lendBorrowerId');
 	var jqueryBorrowerName = $j("#lendBorrowerName")
-	if ($j("#lendBorrowerId").is(":visible") && 
-	    borrowerDropDown.selectedIndex == 0) {
-		$j(borrowerDropDown).addClass("validationError");
+	if ($j("#lendBorrowerId").is(":visible")) {
+		if (borrowerDropDown.selectedIndex == 0) {
+			$j(borrowerDropDown).addClass("validationError");
+			noError = false;
+		}
+		else {
+			$j(borrowerDropDown).removeClass("validationError");
+		}
 	}
-	else if (jqueryBorrowerName.is(":visible") &&
-			jqueryBorrowerName.val() == '') {
-		jqueryBorrowerName.addClass("validationError");
+	
+	if (jqueryBorrowerName.is(":visible")) {
+		if (jqueryBorrowerName.val() == '') {
+			jqueryBorrowerName.addClass("validationError");
+			noError = false;
+		}
+		else {
+			jqueryBorrowerName.removeClass("validationError");	
+		}
+	}
+
+	var jqueryBorrowDate = $j("#lendBorrowDate");
+	if (jqueryBorrowDate.val() == '') {
+		jqueryBorrowDate.addClass("validationError");
+		noError = false;
 	}
 	else {
+		jqueryBorrowDate.removeClass("validationError");
+	}
+
+	var jqueryEndDate = $j("#lendEndDate");
+	if (jqueryEndDate.val() == '') {
+		jqueryEndDate.addClass("validationError");
+		noError = false;
+	}
+	else {
+		jqueryEndDate.removeClass("validationError");
+	}
+	
+	if (noError) {
 		document.getElementById("lendActionButton").click();
-	}	
+	}
 }
 
 /*

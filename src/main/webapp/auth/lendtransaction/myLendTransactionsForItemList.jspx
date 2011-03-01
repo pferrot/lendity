@@ -1,0 +1,166 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle">
+		<h:outputFormat value="#{messages.lendTransaction_myLendTransactionsForItemTitle}">
+			<f:param value="#{myLendTransactionsForItemListController.itemTitle}" />
+		</h:outputFormat>
+	</ui:define>
+	<ui:param name="contentHeader" value="#{messages.lendTransaction_myInProgressLendTransactionsTitle}" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			<!-- main content -->
+			<div class="gt-content">
+
+				
+<f:view>
+
+<h:outputLink value="#{myLendTransactionsForItemListController.itemUrl}">
+	<h:outputText styleClass="fontSizeSmall" value="#{myLendTransactionsForItemListController.itemTitle}"/>
+</h:outputLink>
+<h:outputText styleClass="fontSizeSmall" value=" " escape="false"/>
+<h:outputText styleClass="fontSizeSmall" value="#{messages.navigation_pathSeparator}"/>
+<h2 class="gt-table-head">
+	<h:outputFormat value="#{messages.lendTransaction_myLendTransactionsForItemTitle}">
+		<f:param value="#{myLendTransactionsForItemListController.itemTitle}" />						
+	</h:outputFormat>
+</h2>
+
+<br/>
+
+
+<table class="filtersTable">
+<tr>
+<td>
+<ui:include src="filter/statusFilter.jspx">
+	<ui:param name="theBean" value="#{myLendTransactionsForItemListController}"/>
+</ui:include>
+</td>
+</tr>
+</table>
+
+<br/>
+
+
+<!-- content box -->
+<div class="gt-content-box">
+
+<c:if test="#{empty(myLendTransactionsForItemListController.list)}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<h:dataTable value="#{myLendTransactionsForItemListController.list}" binding="#{myLendTransactionsForItemListController.table}" var="lendTransaction" styleClass="gt-table gt-user-table">
+
+    <h:column id="column1">
+    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink id="link1" value="#{myLendTransactionsForItemListController.lendTransactionOverviewHref}" rendered="#{myLendTransactionsForItemListController.thumbnail1Src != null}">
+					<div class="thumbnailDiv">
+					    <img src="#{myLendTransactionsForItemListController.thumbnail1Src}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
+		<h4>
+			<h:outputLink id="link2" value="#{myLendTransactionsForItemListController.lendTransactionOverviewHref}">
+				<h:outputText value="#{lendTransaction.item.title}" />
+			</h:outputLink>			
+		</h4>
+		</td></tr></table>
+    </h:column>
+
+	<h:column id="column2">
+		<table border="0" class="gt-table-categories" width="250" align="right">
+			<tr>
+				<th width="50%">
+					<h:outputText id="itemTitle" value="#{messages.item_item}:" />
+				</th>
+				<td width="50%">
+					<h:outputLink id="itemLink" value="#{myLendTransactionsForItemListController.itemOverviewHref}">
+						<h:outputText id="itemLabel" value="#{lendTransaction.item.title}"/>
+					</h:outputLink>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<h:outputText id="lenderTitle" value="#{messages.item_owner}:" />
+				</th>
+				<td>
+					<h:outputLink id="lenderLink" value="#{myLendTransactionsForItemListController.lenderOverviewHref}">
+						<h:outputText id="lenderLabel" value="#{lendTransaction.lender.displayName}"/>
+					</h:outputLink>
+				</td>
+			</tr>   
+			<tr>
+				<th>
+					<h:outputText id="borrowerTitle" value="#{messages.item_lentTo}:" />
+				</th>
+				<td>
+					<h:outputLink id="borrowerLink" value="#{myLendTransactionsForItemListController.borrowerOverviewHref}" rendered="#{myLendTransactionsForItemListController.borrowerHrefAvailable}">
+						<h:outputText id="borrowerLabel" value="#{lendTransaction.borrower.displayName}" rendered="#{myLendTransactionsForItemListController.borrowerHrefAvailable}"/>
+					</h:outputLink>
+					<h:outputText id="borrowerLabel2" value="#{lendTransaction.borrowerName}" rendered="#{not myLendTransactionsForItemListController.borrowerHrefAvailable}"/>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<h:outputText id="statusTitle" value="#{messages.lendTransaction_status}:" />
+				</th>
+				<td>
+					<h:outputText id="statusLabel" value="#{myLendTransactionsForItemListController.statusLabel}"/>
+				</td>
+			</tr>			
+			<tr>
+				<th>
+					<h:outputText id="creationDateTitle" value="#{messages.lendTransaction_creationDate}:" />
+				</th>
+				<td>
+					<h:outputText id="creationDateLabel" value="#{myLendTransactionsForItemListController.creationDateLabel}"/>
+				</td>
+			</tr>
+		</table>
+    </h:column>
+
+</h:dataTable>
+
+<ui:include src="../table/tableControls.jspx">
+	<ui:param name="theBean" value="#{myLendTransactionsForItemListController}"/>
+</ui:include>
+
+</div><!-- /content box -->
+
+</f:view>
+			</div>
+			<!-- /main content -->
+			</div>
+			<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

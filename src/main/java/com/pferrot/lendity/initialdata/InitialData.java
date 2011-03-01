@@ -11,7 +11,7 @@ import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.model.ConnectionRequestResponse;
 import com.pferrot.lendity.model.Country;
 import com.pferrot.lendity.model.Gender;
-import com.pferrot.lendity.model.InternalItem;
+import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
 import com.pferrot.lendity.model.Language;
@@ -285,7 +285,7 @@ public class InitialData {
 
 	private void createItems(final Person pPerson, final int pNbItems) {
 		for (int i = 0; i < pNbItems; i++) {
-			InternalItem item = new InternalItem();
+			Item item = new Item();
 			item.setTitle(getRandomText(1, 4, 3, 15));
 			item.setDescription(getRandomText(0, 50, 3, 20));
 			item.setCategory((ItemCategory) listValueDao.findListValue(ItemCategory.LABEL_CODES[PasswordGenerator.getRandom(0, ItemCategory.LABEL_CODES.length - 1)]));

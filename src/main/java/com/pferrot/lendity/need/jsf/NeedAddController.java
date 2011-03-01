@@ -17,7 +17,6 @@ public class NeedAddController extends AbstractNeedAddEditController {
 	private final static Log log = LogFactory.getLog(NeedAddController.class);
 	
 	public final static String TITLE_PARAMETER_NAME = "title";
-	public final static String CONFIRM_PARAMETER_NAME = "confirm";
 
 	@InitView
 	public void initView() {
@@ -25,10 +24,6 @@ public class NeedAddController extends AbstractNeedAddEditController {
 		final String title = request.getParameter(TITLE_PARAMETER_NAME);
 		if (!StringUtils.isNullOrEmpty(title)) {
 			setTitle(title);
-		}
-		final String noConfirm = request.getParameter(CONFIRM_PARAMETER_NAME);
-		if ("true".equals(noConfirm)) {
-			request.setAttribute(CONFIRM_PARAMETER_NAME, "true");
 		}
 	}
 
@@ -39,7 +34,7 @@ public class NeedAddController extends AbstractNeedAddEditController {
 		need.setDescription(getDescription());
 		need.setOwner(getNeedService().getCurrentPerson());
 				
-		return getNeedService().createNeedWithCategory(need, getCategoryId());		
+		return getNeedService().createNeed(need, getCategoryId(), getVisibilityId());		
 	}
 	
 	@Override

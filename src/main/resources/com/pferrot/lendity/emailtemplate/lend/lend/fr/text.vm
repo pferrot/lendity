@@ -1,8 +1,10 @@
 Hello $borrowerFirstName,
 
-$lenderDisplayName a indiqué qu'il t'a prêté l'objet suivant:
+$lenderDisplayName a indiqué qu'il t'a prêté / va te prêter l'objet suivant:
 
 $itemTitle
+
+Tu peux maintenant suivre cette transaction ici: $lendTransactionUrl
 
 A bientôt sur $siteName.
 

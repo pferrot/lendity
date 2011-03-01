@@ -1,0 +1,24 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<!-- borrow status -->
+<h:form id="ownerTypeFilterForm" prependId="false">
+<table><tr><td>
+	<h:selectOneMenu id="ownerType" value="#{theBean.ownerType}" valueChangeListener="#{theBean.ownerType}" converter="javax.faces.Long" onchange="submit()">
+		<f:selectItems value="#{theBean.ownerTypeSelectItems}"/>
+	</h:selectOneMenu>
+</td></tr></table>		
+<script type="text/javascript">
+	setupDropDownFilterField('ownerType');
+</script>
+</h:form>
+<!-- /borrow status -->
+
+</ui:composition>

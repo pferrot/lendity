@@ -4,11 +4,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.lendity.PagesURL;
-import com.pferrot.lendity.item.jsf.AbstractObjectAddEditController;
+import com.pferrot.lendity.item.ObjektService;
+import com.pferrot.lendity.item.jsf.AbstractObjektAddEditController;
 import com.pferrot.lendity.need.NeedService;
 import com.pferrot.lendity.utils.JsfUtils;
 
-public abstract class AbstractNeedAddEditController extends AbstractObjectAddEditController {
+public abstract class AbstractNeedAddEditController extends AbstractObjektAddEditController {
 
 	private final static Log log = LogFactory.getLog(AbstractNeedAddEditController.class);
 	
@@ -20,6 +21,11 @@ public abstract class AbstractNeedAddEditController extends AbstractObjectAddEdi
 
 	public void setNeedService(NeedService needService) {
 		this.needService = needService;
+	}
+
+	@Override
+	protected ObjektService getObjektService() {
+		return getNeedService();
 	}
 
 	public abstract Long processNeed();

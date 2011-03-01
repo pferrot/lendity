@@ -7,15 +7,15 @@ import com.pferrot.lendity.utils.JsfUtils;
 public class ItemUtils {
 
 	/**
-	 * Returns the HTML link to an internal item overview page.
+	 * Returns the HTML link to an item overview page.
 	 * 
 	 * @param pItemId
 	 * @return
 	 */
-	public static String getInternalItemOverviewPageUrl(final String pItemId) {
+	public static String getItemOverviewPageUrl(final String pItemId) {
 		CoreUtils.assertNotNull(pItemId);
 		
-		return JsfUtils.getFullUrl(PagesURL.INTERNAL_ITEM_OVERVIEW, PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID, pItemId);
+		return JsfUtils.getFullUrl(PagesURL.ITEM_OVERVIEW, PagesURL.ITEM_OVERVIEW_PARAM_ITEM_ID, pItemId);
 	}
 	
 	/**
@@ -23,10 +23,10 @@ public class ItemUtils {
 	 * @param pItemId
 	 * @return
 	 */
-	public static String getInternalItemEditPageUrl(final String pItemId) {
+	public static String getItemEditPageUrl(final String pItemId) {
 		CoreUtils.assertNotNull(pItemId);
 		
-		return JsfUtils.getFullUrl(PagesURL.INTERNAL_ITEM_EDIT, PagesURL.INTERNAL_ITEM_EDIT_PARAM_ITEM_ID, pItemId);
+		return JsfUtils.getFullUrl(PagesURL.ITEM_EDIT, PagesURL.ITEM_EDIT_PARAM_ITEM_ID, pItemId);
 	}
 	
 	/**
@@ -34,18 +34,18 @@ public class ItemUtils {
 	 * @param pItemId
 	 * @return
 	 */
-	public static String getInternalItemEditPicturePageUrl(final String pItemId) {
+	public static String getItemEditPicturePageUrl(final String pItemId) {
 		CoreUtils.assertNotNull(pItemId);
 		
-		return JsfUtils.getFullUrl(PagesURL.INTERNAL_ITEM_EDIT_PICTURE, PagesURL.INTERNAL_ITEM_EDIT_PICTURE_PARAM_ITEM_ID, pItemId);
+		return JsfUtils.getFullUrl(PagesURL.ITEM_EDIT_PICTURE, PagesURL.ITEM_EDIT_PICTURE_PARAM_ITEM_ID, pItemId);
 	}
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public static String getInternalItemAddPageUrl() {		
-		return JsfUtils.getFullUrl(PagesURL.INTERNAL_ITEM_ADD);
+	public static String getItemAddPageUrl() {		
+		return JsfUtils.getFullUrl(PagesURL.ITEM_ADD);
 	}
 	
 	/**

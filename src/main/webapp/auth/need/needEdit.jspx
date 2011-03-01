@@ -50,6 +50,34 @@
 					<ui:include src="../item/component/descriptionEdit.jspx">
 						<ui:param name="controllerBean" value="#{needEditController}"/>
 					</ui:include>
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.item_category}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="category"></h:message>
+						<h:selectOneMenu id="category" 
+						    value="#{needEditController.categoryId}" 
+						    converter="javax.faces.Long" 
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}">
+							<f:selectItems value="#{needEditController.categoriesSelectItems}"/>
+						</h:selectOneMenu>					
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.item_visibility}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="visibility"></h:message>
+						<h:selectOneMenu id="visibility"
+						    value="#{needEditController.visibilityId}" 
+						    converter="javax.faces.Long" 
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}">
+							<f:selectItems value="#{needEditController.visibilitySelectItems}"/>
+						</h:selectOneMenu>		
+					</div><!-- /form row -->
 															
 					<!-- form row -->
 					<div class="gt-form-row">

@@ -13,16 +13,20 @@ import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.dao.NeedDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
-import com.pferrot.lendity.item.ObjectService;
+import com.pferrot.lendity.dao.bean.NeedDaoQueryBean;
+import com.pferrot.lendity.item.ItemConsts;
+import com.pferrot.lendity.item.ObjektService;
 import com.pferrot.lendity.model.ItemCategory;
+import com.pferrot.lendity.model.ItemVisibility;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.need.exception.NeedException;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.ListValueUtils;
+import com.pferrot.security.SecurityUtils;
 
-public class NeedService extends ObjectService {
+public class NeedService extends ObjektService {
 	
 	private final static Log log = LogFactory.getLog(NeedService.class);
 	
@@ -40,22 +44,90 @@ public class NeedService extends ObjectService {
 		return needDao.findNeed(pNeedId);
 	}
 	
-	public ListWithRowCount findMyNeeds(final String pTitle, final Long pCategoryId, final String pOrderBy,
-			final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+	public ListWithRowCount findMyNeeds(final String pTitle, final Long pCategoryId, final Long pVisibilityId,
+			final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
 		final Long currentPersonId = PersonUtils.getCurrentPersonId();
 		CoreUtils.assertNotNull(currentPersonId);
 		final Long[] personIds = new Long[]{currentPersonId};
 		
-		return needDao.findNeeds(personIds, Boolean.TRUE, pTitle, getCategoryIds(pCategoryId), null, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
+		final NeedDaoQueryBean needDaoQueryBean = new NeedDaoQueryBean();
+		needDaoQueryBean.setOwnerIds(personIds);
+		needDaoQueryBean.setOwnerEnabled(Boolean.TRUE);
+		needDaoQueryBean.setTitle(pTitle);
+		needDaoQueryBean.setVisibilityIds(getVisibilityIds(pVisibilityId));
+		needDaoQueryBean.setCategoryIds(getCategoryIds(pCategoryId));
+		needDaoQueryBean.setOrderBy(pOrderBy);
+		needDaoQueryBean.setOrderByAscending(pOrderByAscending);
+		needDaoQueryBean.setFirstResult(pFirstResult);
+		needDaoQueryBean.setMaxResults(pMaxResults);
+		
+		return needDao.findNeeds(needDaoQueryBean);
 	}
 
-	public ListWithRowCount findMyConnectionsNeeds(final Long pConnectionId, final String pTitle, final Long pCategoryId, final String pOrderBy,
-			final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
-		Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(pConnectionId);
-		if (connectionsIds == null || connectionsIds.length == 0) {
-			return ListWithRowCount.emptyListWithRowCount();
+	public ListWithRowCount findNeeds(final String pTitle, final Long pCategoryId, final Long pOwnerType,
+			final Double pMaxDistanceInKm, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+				
+		final NeedDaoQueryBean needDaoQueryBean = new NeedDaoQueryBean();
+		if (SecurityUtils.isLoggedIn()) {
+			// All connections.
+			final Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(null);
+			needDaoQueryBean.setOwnerIds(connectionsIds);
+			needDaoQueryBean.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
+			if (!ItemConsts.OWNER_TYPE_CONNECTIONS.equals(pOwnerType)) {
+				needDaoQueryBean.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
+				needDaoQueryBean.setOwnerIdsToExcludeForVisibilityIdsToForce(ListValueUtils.getIdsArray(PersonUtils.getCurrentPersonId()));
+			}
 		}
-		return needDao.findNeeds(connectionsIds, Boolean.TRUE, pTitle, getCategoryIds(pCategoryId), null, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
+		// When not logged in - only show public items.
+		else {
+			needDaoQueryBean.setVisibilityIds(new Long[]{getPublicVisibilityId()});
+		}
+		needDaoQueryBean.setOwnerEnabled(Boolean.TRUE);
+		needDaoQueryBean.setTitle(pTitle);
+		needDaoQueryBean.setCategoryIds(getCategoryIds(pCategoryId));
+		if (pMaxDistanceInKm != null) {
+			final Double latitude = getCurrentPerson().getAddressHomeLatitude();
+			final Double longitude = getCurrentPerson().getAddressHomeLongitude();			
+			if (latitude == null || longitude == null) {
+				throw new RuntimeException("Can only search by distance if geolocation is available.");
+			}
+			needDaoQueryBean.setMaxDistanceKm(pMaxDistanceInKm);
+			needDaoQueryBean.setOriginLatitude(latitude);
+			needDaoQueryBean.setOriginLongitude(longitude);
+		}
+		needDaoQueryBean.setOrderBy(pOrderBy);
+		needDaoQueryBean.setOrderByAscending(pOrderByAscending);
+		needDaoQueryBean.setFirstResult(pFirstResult);
+		needDaoQueryBean.setMaxResults(pMaxResults);
+		
+		return needDao.findNeeds(needDaoQueryBean);
+	}
+
+	public ListWithRowCount findPersonNeeds(final Long pOwnerId, final String pTitle, final Long pCategoryId, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+		
+		CoreUtils.assertNotNull(pOwnerId);
+		
+		final NeedDaoQueryBean needQuery = new NeedDaoQueryBean();
+		
+		needQuery.setOwnerIds(getIds(pOwnerId));
+		needQuery.setOwnerEnabled(Boolean.TRUE);
+		needQuery.setTitle(pTitle);
+		needQuery.setCategoryIds(getCategoryIds(pCategoryId));
+		
+		if (SecurityUtils.isLoggedIn() &&
+		    getPersonService().isConnection(pOwnerId, PersonUtils.getCurrentPersonId())) {		
+			needQuery.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
+		}
+		// When not logged in - only show public items.
+		else {
+			needQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
+		}		
+		needQuery.setOrderBy(pOrderBy);
+		needQuery.setOrderByAscending(pOrderByAscending);
+		needQuery.setFirstResult(pFirstResult);
+		needQuery.setMaxResults(pMaxResults);
+		
+		return needDao.findNeeds(needQuery);
 	}
 
 	public ListWithRowCount findMyLatestConnectionsNeeds() {
@@ -63,7 +135,16 @@ public class NeedService extends ObjectService {
 		if (connectionsIds == null || connectionsIds.length == 0) {
 			return ListWithRowCount.emptyListWithRowCount();
 		}
-		return needDao.findNeeds(connectionsIds, Boolean.TRUE, null, null, null, "creationDate", Boolean.FALSE, 0, 5);
+		
+		final NeedDaoQueryBean needDaoQueryBean = new NeedDaoQueryBean();
+		needDaoQueryBean.setOwnerIds(connectionsIds);
+		needDaoQueryBean.setOwnerEnabled(Boolean.TRUE);
+		needDaoQueryBean.setOrderBy("creationDate");
+		needDaoQueryBean.setOrderByAscending(Boolean.FALSE);
+		needDaoQueryBean.setFirstResult(0);
+		needDaoQueryBean.setMaxResults(5);
+		
+		return needDao.findNeeds(needDaoQueryBean);
 	}
 
 	public ListWithRowCount findPersonLatestConnectionsNeedsSince(final Person pPerson, final Date pDate) {
@@ -71,7 +152,17 @@ public class NeedService extends ObjectService {
 		if (connectionsIds == null || connectionsIds.length == 0) {
 			return ListWithRowCount.emptyListWithRowCount();
 		}
-		return needDao.findNeeds(connectionsIds, Boolean.TRUE, null, null, pDate, "creationDate", Boolean.FALSE, 0, 5);
+		
+		final NeedDaoQueryBean needDaoQueryBean = new NeedDaoQueryBean();
+		needDaoQueryBean.setOwnerIds(connectionsIds);
+		needDaoQueryBean.setOwnerEnabled(Boolean.TRUE);
+		needDaoQueryBean.setCreationDateMin(pDate);
+		needDaoQueryBean.setOrderBy("creationDate");
+		needDaoQueryBean.setOrderByAscending(Boolean.FALSE);
+		needDaoQueryBean.setFirstResult(0);
+		needDaoQueryBean.setMaxResults(5);
+		
+		return needDao.findNeeds(needDaoQueryBean);
 	}
 	
 	public void deleteNeed(final Long pNeedId) {
@@ -86,7 +177,12 @@ public class NeedService extends ObjectService {
 		try {
 			pNeed.setCreationDate(new Date());
 			final Long result = needDao.createNeed(pNeed);
-			sendNotificationToAllConnections(pNeed);
+			final Long visibilityId = pNeed.getVisibility().getId();
+			// Only send notifications if they can see.
+			if (visibilityId.equals(getPublicVisibilityId()) ||
+				visibilityId.equals(getConnectionsVisibilityId())) {
+				sendNotificationToAllConnections(pNeed);
+			}
 			return result;
 		}
 		catch (NeedException e) {
@@ -119,8 +215,8 @@ public class NeedService extends ObjectService {
 					PagesURL.NEED_OVERVIEW_PARAM_NEED_ID,
 					pNeed.getId().toString()));
 			objects.put("itemAddUrl",  JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
-					PagesURL.INTERNAL_ITEM_ADD,
-					PagesURL.INTERNAL_ITEM_ADD_PARAM_NEED_ID,
+					PagesURL.ITEM_ADD,
+					PagesURL.ITEM_ADD_PARAM_NEED_ID,
 					pNeed.getId().toString()));
 			objects.put("signature", Configuration.getSiteName());
 			objects.put("siteName", Configuration.getSiteName());
@@ -152,7 +248,12 @@ public class NeedService extends ObjectService {
 		
 	}
 
-	public Long createNeedWithCategory(final Need pNeed, final Long pCategoryId) {
+	public Long createNeed(final Need pNeed, final Long pCategoryId, final Long pVisibilityId) {
+		pNeed.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
+		return createNeed(pNeed, pCategoryId);
+	}
+	
+	public Long createNeed(final Need pNeed, final Long pCategoryId) {
 		pNeed.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
 		return createNeed(pNeed);
 	}
@@ -161,96 +262,15 @@ public class NeedService extends ObjectService {
 		needDao.updateNeed(pNeed);
 	}
 
-	public void updateNeedWithCategory(final Need pNeed, final Long pCategoryId) {
+	public void updateNeed(final Need pNeed, final Long pCategoryId) {
 		assertCurrentUserAuthorizedToEdit(pNeed);
 		pNeed.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
 		updateNeed(pNeed);
 	}
-	
-	/////////////////////////////////////////////////////////
-	// Access control
-	
-	public boolean isCurrentUserAuthorizedToView(final Need pNeed) {
-		return isUserAuthorizedToView(getCurrentPerson(), pNeed);
-	}
-	
-	public boolean isUserAuthorizedToView(final Person pPerson, final Need pNeed) {
-		CoreUtils.assertNotNull(pNeed);
-		if (isUserAuthorizedToEdit(pPerson, pNeed)) {
-			return true;
-		}
-		if (pPerson == null) {
-			return false;
-		}
-		return pNeed.getOwner() != null &&
-			pNeed.getOwner().getConnections() != null &&
-			pNeed.getOwner().getConnections().contains(pPerson);
-	}
-	
-	public void assertCurrentUserAuthorizedToView(final Need pNeed) {
-		if (!isCurrentUserAuthorizedToView(pNeed)) {
-			throw new SecurityException("Current user is not authorized to view need");
-		}
-	}
-	
-	public void assertUserAuthorizedToView(final Person pPerson, final Need pNeed) {
-		if (!isUserAuthorizedToView(pPerson, pNeed)) {
-			throw new SecurityException("User is not authorized to view need");
-		}
-	}
 
-	public boolean isCurrentUserAuthorizedToEdit(final Need pNeed) {
-		return isUserAuthorizedToEdit(getCurrentPerson(), pNeed);
+	public void updateNeed(final Need pNeed, final Long pCategoryId, final Long pVisibilityId) {
+		assertCurrentUserAuthorizedToEdit(pNeed);
+		pNeed.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
+		updateNeed(pNeed, pCategoryId);
 	}
-	
-	public boolean isUserAuthorizedToEdit(final Person pPerson, final Need pNeed) {
-		CoreUtils.assertNotNull(pNeed);
-		if (pPerson == null) {
-			return false;
-		}
-		if (pPerson.getUser() != null &&
-				pPerson.getUser().isAdmin()) {
-			return true;
-		}
-		return pPerson.equals(pNeed.getOwner());
-	}
-
-	public void assertCurrentUserAuthorizedToEdit(final Need pNeed) {
-		if (!isCurrentUserAuthorizedToEdit(pNeed)) {
-			throw new SecurityException("Current user is not authorized to edit need");
-		}
-	}
-
-	public boolean isCurrentUserAuthorizedToAdd() {
-		final Person currentPerson = getCurrentPerson();
-		if (currentPerson != null && currentPerson.getUser() != null) {
-			return true;
-		}
-		return false;
-	}
-
-	public void assertCurrentUserAuthorizedToAdd() {
-		if (!isCurrentUserAuthorizedToAdd()) {
-			throw new SecurityException("Current user is not authorized to add need");
-		}
-	}
-
-	public boolean isCurrentUserAuthorizedToDelete(final Need pNeed) {
-		return isCurrentUserAuthorizedToEdit(pNeed);
-	}
-
-	public void assertCurrentUserAuthorizedToDelete(final Need pNeed) {
-		if (!isCurrentUserAuthorizedToDelete(pNeed)) {
-			throw new SecurityException("Current user is not authorized to delete need");
-		}
-	}
-	
-	public boolean isCurrentUserOwner(final Need pNeed) {
-		final Person currentPerson = getCurrentPerson();
-		if (currentPerson == null) {
-			return false;
-		}
-		return currentPerson.equals(pNeed.getOwner());
-	}
-
 }

@@ -74,16 +74,19 @@ public class LendTransaction implements Commentable<LendTransactionComment>, Ser
 	private Person lender;
 	
 	@OneToOne(targetEntity = Person.class)
-	@JoinColumn(name = "BORROWER_ID", nullable = false)
+	@JoinColumn(name = "BORROWER_ID", nullable = true)
 	private Person borrower;
+
+	@Column(name = "BORROWER_NAME", nullable = true, length = 255)
+	private String borrowerName;
 	
 	@OneToOne(targetEntity = LendRequest.class)
 	@JoinColumn(name = "LEND_REQUEST_ID", nullable = true)
 	private LendRequest lendRequest;
 	
-	@OneToOne(targetEntity = com.pferrot.lendity.model.InternalItem.class)
+	@OneToOne(targetEntity = com.pferrot.lendity.model.Item.class)
 	@JoinColumn(name = "ITEM_ID", nullable = false)
-	private InternalItem item;
+	private Item item;
 	
 	@Column(name = "CREATION_DATE", nullable = false)
 	private Date creationDate;
@@ -179,6 +182,14 @@ public class LendTransaction implements Commentable<LendTransactionComment>, Ser
 	public void setBorrower(Person borrower) {
 		this.borrower = borrower;
 	}
+	
+	public String getBorrowerName() {
+		return borrowerName;
+	}
+
+	public void setBorrowerName(String borrowerName) {
+		this.borrowerName = borrowerName;
+	}
 
 	public LendRequest getLendRequest() {
 		return lendRequest;
@@ -188,11 +199,11 @@ public class LendTransaction implements Commentable<LendTransactionComment>, Ser
 		this.lendRequest = lendRequest;
 	}
 
-	public InternalItem getItem() {
+	public Item getItem() {
 		return item;
 	}
 
-	public void setItem(InternalItem item) {
+	public void setItem(Item item) {
 		this.item = item;
 	}
 

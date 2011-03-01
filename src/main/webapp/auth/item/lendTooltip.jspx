@@ -10,8 +10,8 @@
     
 <div id="lendDiv" style="display: none;">
 	<h:form id="lendForm" prependId="false">
-		<h:inputHidden id="lendItemId" value="#{internalItemLendTooltipController.itemId}" />
-		<h:inputHidden id="lendRedirectId" value="#{internalItemLendTooltipController.redirectId}" />
+		<h:inputHidden id="lendItemId" value="#{itemLendTooltipController.itemId}" />
+		<h:inputHidden id="lendRedirectId" value="#{itemLendTooltipController.redirectId}" />
 		<table> 
 			<tr>
 				<td colspan="2" style="text-align: center;">
@@ -23,10 +23,10 @@
 					<nobr><h:outputText value="#{messages.item_lendTo}:" /> *</nobr>
 				</th>
 				<td style="padding-bottom: 0px;">
-					<h:selectOneMenu id="lendBorrowerId" value="#{internalItemLendTooltipController.borrowerId}" converter="javax.faces.Long" style="width: 100%;">
-						<f:selectItems value="#{internalItemLendTooltipController.borrowerSelectItems}"/>
+					<h:selectOneMenu id="lendBorrowerId" value="#{itemLendTooltipController.borrowerId}" converter="javax.faces.Long" style="width: 100%;">
+						<f:selectItems value="#{itemLendTooltipController.borrowerSelectItems}"/>
 					</h:selectOneMenu>
-					<h:inputText id="lendBorrowerName" value="#{internalItemLendTooltipController.borrowerName}" style="display: none; width: 100%; height: 20px;"></h:inputText>
+					<h:inputText id="lendBorrowerName" value="#{itemLendTooltipController.borrowerName}" style="display: none; width: 100%; height: 20px;"></h:inputText>
 				</td>
 			</tr>
 			<tr style="padding-top: 0px; vertical-align: top;">
@@ -40,14 +40,22 @@
 					<nobr><h:outputText value="#{messages.item_lendSince}:" /> *</nobr>
 				</th>
 				<td>
-					<h:inputText id="lendBorrowDate" styleClass="datepicker" value="#{internalItemLendTooltipController.borrowDateAsString}" style="width: 100%;"/>
+					<h:inputText id="lendBorrowDate" styleClass="datepicker" value="#{itemLendTooltipController.borrowDateAsString}" style="width: 100%;"/>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<nobr><h:outputText value="#{messages.item_lendEndExpected}:" /> *</nobr>
+				</th>
+				<td>
+					<h:inputText id="lendEndDate" styleClass="datepicker" value="#{itemLendTooltipController.endDateAsString}" style="width: 100%;"/>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
 					<span onclick="submitLendItem()"><h:outputText styleClass="fontSizeSmall stylishButton" value="#{messages.navigation_ok}"/></span>
 					<span onclick="cancelLendItem()"><h:outputText styleClass="fontSizeSmall stylishButton" value="#{messages.navigation_cancel}"/></span>
-					<h:commandButton id="lendActionButton" action="#{internalItemLendTooltipController.submit}" style="display: none"  value="not_displayed"/>
+					<h:commandButton id="lendActionButton" action="#{itemLendTooltipController.submit}" style="display: none"  value="not_displayed"/>
 				</td>
 			</tr>
 		</table>

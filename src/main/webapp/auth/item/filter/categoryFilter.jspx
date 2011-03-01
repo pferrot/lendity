@@ -11,14 +11,6 @@
 <!-- categories -->
 <h:form id="categoryFilterForm" prependId="false">
 <table><tr><td>
-	<h:outputText value="#{messages.item_category}" styleClass="small"/>
-	<c:if test="#{theBean.categoryId != null}">
-		<h:outputText value=" " escape="false" />
-		<h:commandLink id="clearCategory" action="#{theBean.clearCategory}">
-			<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
-		</h:commandLink>	
-	</c:if>
-</td></tr><tr><td>
 	<h:selectOneMenu id="category" value="#{theBean.categoryId}" valueChangeListener="#{theBean.category}" converter="javax.faces.Long" onchange="submit()">
 		<f:selectItems value="#{theBean.categoriesSelectItems}"/>
 	</h:selectOneMenu>

@@ -29,37 +29,12 @@
 				<!-- Item Edit Form -->
 				<h2 class="gt-form-head"><h:outputText value="#{messages.need_needAddTitle}"/></h2>
 				<div class="gt-form gt-content-box">
-				
-					<c:if test="#{facesContext.externalContext.requestMap['confirm'] == 'true'}">
-					<script type="text/javascript">
-					$j(document).ready(function() {
-						$j('#realContent').hide();
-					});
-					</script>
-					<div id="validateContent">		
-						<h:outputText value="#{messages.need_needAddConfirmText}"/><br/>
-						<h:outputText value="#{messages.need_needAddConfirmText2}"/>
-						<br/><br/>
-						
-						<!-- form row -->
-						<div class="gt-form-row">
-							<h:outputLink styleClass="stylishButton" value="#{authenticationController.myConnectionsItemsURL}">
-								<h:outputText value="#{messages.need_needAddConfirmGoTo}"/>
-							</h:outputLink>
-							<h:outputText value=" " escape="false" />
-							<span onClick="toggleVisibility('realContent'); toggleVisibility('validateContent');">
-								<h:outputText styleClass="stylishButton" value="#{messages.need_needAddConfirmOk}"/>						
-							</span>
-						</div>
-					</div>
-					</c:if>
 					
 					<div id="realContent">
 					
 					<f:view>
 	
-						<h:form id="needAddForm" prependId="false">	
-	
+						<h:form id="needAddForm" prependId="false">		
 							
 						<!-- form row -->
 						<div class="gt-form-row gt-width-100">
@@ -76,6 +51,34 @@
 						<ui:include src="../item/component/descriptionEdit.jspx">
 							<ui:param name="controllerBean" value="#{needAddController}"/>
 						</ui:include>
+
+						<!-- form row -->
+						<div class="gt-form-row gt-width-100">
+							<label><h:outputText value="#{messages.item_category}"/> *</label>
+							<h:message styleClass="error" showSummary="true" showDetail="false"
+								for="category"></h:message>
+							<h:selectOneMenu id="category" 
+							    value="#{needAddController.categoryId}" 
+							    converter="javax.faces.Long" 
+							    required="true"
+							    requiredMessage="#{messages.validation_requiredMessage}">
+								<f:selectItems value="#{needAddController.categoriesSelectItems}"/>
+							</h:selectOneMenu>					
+						</div><!-- /form row -->
+						
+						<!-- form row -->
+						<div class="gt-form-row gt-width-100">
+							<label><h:outputText value="#{messages.item_visibility}"/> *</label>
+							<h:message styleClass="error" showSummary="true" showDetail="false"
+								for="visibility"></h:message>
+							<h:selectOneMenu id="visibility" 
+							    value="#{needAddController.visibilityId}" 
+							    converter="javax.faces.Long" 
+							    required="true"
+							    requiredMessage="#{messages.validation_requiredMessage}">
+								<f:selectItems value="#{needAddController.visibilitySelectItems}"/>
+							</h:selectOneMenu>
+						</div><!-- /form row -->
 						
 						<!-- form row -->
 						<div class="gt-form-row">

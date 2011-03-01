@@ -11,12 +11,13 @@
 <!-- borrow status -->
 <h:form id="orderByForm" prependId="false">
 <table><tr><td>
-	<h:outputText value="#{messages.navigation_sort}" styleClass="small"/>
-</td></tr><tr><td>
 	<h:selectOneMenu id="orderBy" value="#{theBean.orderBy}" valueChangeListener="#{theBean.orderBy}" converter="javax.faces.Long" onchange="submit()">
 		<f:selectItems value="#{theBean.orderBySelectItems}"/>
 	</h:selectOneMenu>
-</td></tr></table>	
+</td></tr></table>
+<script type="text/javascript">
+	setupDropDownFilterField('orderBy');
+</script>
 </h:form>
 <!-- /borrow status -->
 

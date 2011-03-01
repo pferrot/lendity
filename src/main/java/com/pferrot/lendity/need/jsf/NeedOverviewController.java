@@ -1,27 +1,24 @@
 package com.pferrot.lendity.need.jsf;
 
-import java.util.Locale;
-
-import javax.faces.context.FacesContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
-import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
-import com.pferrot.lendity.i18n.I18nUtils;
+import com.pferrot.lendity.item.ObjektService;
+import com.pferrot.lendity.item.jsf.AbstractObjektOverviewController;
 import com.pferrot.lendity.model.Need;
+import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.need.NeedService;
 import com.pferrot.lendity.need.NeedUtils;
 import com.pferrot.lendity.person.PersonUtils;
-import com.pferrot.lendity.utils.HtmlUtils;
 import com.pferrot.lendity.utils.JsfUtils;
-import com.pferrot.lendity.utils.UiUtils;
+import com.pferrot.lendity.utils.NavigationUtils;
+import com.pferrot.security.SecurityUtils;
 
-@ViewController(viewIds={"/auth/need/needOverview.jspx"})
-public class NeedOverviewController {
+@ViewController(viewIds={"/public/need/needOverview.jspx"})
+public class NeedOverviewController extends AbstractObjektOverviewController {
 	
 	private final static Log log = LogFactory.getLog(NeedOverviewController.class);
 	
@@ -45,6 +42,16 @@ public class NeedOverviewController {
 		this.needService = needService;
 	}
 
+	@Override
+	protected Objekt getObjekt() {
+		return getNeed();
+	}
+
+	@Override
+	protected ObjektService getObjektService() {
+		return getNeedService();
+	}
+
 	public Long getNeedId() {
 		return needId;
 	}
@@ -62,9 +69,16 @@ public class NeedOverviewController {
 			need = getNeedService().findNeed(getNeedId());
 			// Access control check.
 			if (!getNeedService().isCurrentUserAuthorizedToView(need)) {
-				JsfUtils.redirect(PagesURL.ERROR_ACCESS_DENIED);
-				if (log.isWarnEnabled()) {
-					log.warn("Access denied (need view): user = " + PersonUtils.getCurrentPersonDisplayName() + " (" + PersonUtils.getCurrentPersonId() + "), need = " + getNeedId());
+				if (SecurityUtils.isLoggedIn()) {
+					JsfUtils.redirect(PagesURL.ERROR_ACCESS_DENIED);
+					if (log.isWarnEnabled()) {
+						log.warn("Access denied (need view): user = " + PersonUtils.getCurrentPersonDisplayName() + " (" + PersonUtils.getCurrentPersonId() + "), item = " + getNeedId());
+					}
+				}
+				// If the user is not logged in, there is a chance he can access the page once logged in,
+				// so we need to redirect him and not just show the access denied page.
+				else {
+					NavigationUtils.redirectToCurrentPageThroughLogin();
 				}
 				return;
 			}
@@ -72,25 +86,8 @@ public class NeedOverviewController {
 		}	
 	}
 	
-	public String getOwnerHref() {
-		return PersonUtils.getPersonOverviewPageUrl(getNeed().getOwner().getId().toString());
-	}
-	
 	public String getNeedEditHref() {		
 		return NeedUtils.getNeedEditPageUrl(getNeed().getId().toString());
-	}
-	
-	public boolean isDescriptionAvailable() {
-		final String needDescription = need.getDescription();
-		return !StringUtils.isNullOrEmpty(needDescription);
-	}
-
-	public boolean isEditAvailable() {
-		return needService.isCurrentUserAuthorizedToEdit(need);
-	}
-
-	public boolean isDeleteAvailable() {
-		return needService.isCurrentUserAuthorizedToDelete(need);
 	}
 
 	public boolean isGotItAvailable() {
@@ -98,30 +95,8 @@ public class NeedOverviewController {
 	}
 	
 	public String getGotItHref() {
-		return JsfUtils.getFullUrl(PagesURL.INTERNAL_ITEM_ADD, 
-				PagesURL.INTERNAL_ITEM_ADD_PARAM_NEED_ID,
+		return JsfUtils.getFullUrl(PagesURL.ITEM_ADD, 
+				PagesURL.ITEM_ADD_PARAM_NEED_ID,
 				getNeed().getId().toString());
-	}
-		
-	public String getDescription() {
-		final String needDescription = need.getDescription();
-		if (needDescription != null) {
-			return HtmlUtils.escapeHtmlAndReplaceCr(needDescription);
-		}
-		return "";
-	}
-
-	public String getCategoryLabel() {
-		if (need != null && need.getCategory() != null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			return I18nUtils.getMessageResourceString(need.getCategory().getLabelCode(), locale);
-		}
-		else {
-			return "";
-		}
-	}
-
-	public String getCreationDateLabel() {
-		return UiUtils.getDateAsString(need.getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
 	}
 }

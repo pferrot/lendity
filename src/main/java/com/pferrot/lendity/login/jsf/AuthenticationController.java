@@ -4,8 +4,8 @@ import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.item.ItemUtils;
 import com.pferrot.lendity.item.jsf.SearchItemsListController;
 import com.pferrot.lendity.login.AuthenticationConsts;
-import com.pferrot.lendity.need.jsf.MyConnectionsNeedsListController;
 import com.pferrot.lendity.need.jsf.NeedAddController;
+import com.pferrot.lendity.need.jsf.SearchNeedsListController;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.security.SecurityUtils;
@@ -100,8 +100,8 @@ public class AuthenticationController {
 		return JsfUtils.getContextRoot() + PagesURL.MY_PENDING_LEND_REQUESTS_OUT_LIST;
 	}
 	
-	public String getImportInternalItemsURL() {
-		return JsfUtils.getContextRoot() + PagesURL.INTERNAL_ITEMS_IMPORT;
+	public String getImportItemsURL() {
+		return JsfUtils.getContextRoot() + PagesURL.ITEMS_IMPORT;
 	}
 
 	public String getMyItemsURL() {
@@ -126,8 +126,8 @@ public class AuthenticationController {
 		return JsfUtils.getFullUrl(PagesURL.MY_IN_PROGRESS_LEND_TRANSACTIONS_LIST);
 	}
 	
-	public String getInternalItemAddURL() {
-		return ItemUtils.getInternalItemAddPageUrl();
+	public String getItemAddURL() {
+		return ItemUtils.getItemAddPageUrl();
 	}
 	
 	public String getMyNeedsURL() {
@@ -135,17 +135,13 @@ public class AuthenticationController {
 	}
 
 	public String getMyConnectionsNeedsURL() {
-		return JsfUtils.getContextRoot() + PagesURL.MY_CONNECTIONS_NEEDS_LIST;
+		return JsfUtils.getContextRoot() + PagesURL.NEEDS_SEARCH;
 	}
 
 	public String getMyConnectionsNeedsOrderByCreationDateURL() {
-		return JsfUtils.getFullUrl(PagesURL.MY_CONNECTIONS_NEEDS_LIST,
-				MyConnectionsNeedsListController.FORCE_VIEW_PARAM_NAME,
-				MyConnectionsNeedsListController.FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE);
-	}
-	
-	public String getNeedAddWithConfirmURL() {
-		return JsfUtils.getFullUrl(PagesURL.NEED_ADD, NeedAddController.CONFIRM_PARAMETER_NAME, "true");
+		return JsfUtils.getFullUrl(PagesURL.NEEDS_SEARCH,
+				SearchNeedsListController.FORCE_VIEW_PARAM_NAME,
+				SearchNeedsListController.FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE);
 	}
 	
 	public String getNeedAddURL() {

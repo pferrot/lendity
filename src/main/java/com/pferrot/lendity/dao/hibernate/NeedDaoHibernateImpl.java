@@ -1,22 +1,18 @@
 package com.pferrot.lendity.dao.hibernate;
 
-import java.util.Date;
 import java.util.List;
 
-import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.dao.NeedDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.dao.bean.NeedDaoQueryBean;
 import com.pferrot.lendity.model.Need;
 
-public class NeedDaoHibernateImpl extends HibernateDaoSupport implements NeedDao {
+public class NeedDaoHibernateImpl extends ObjektDaoHibernateImpl implements NeedDao {
 
 	public Long createNeed(final Need pNeed) {
 		return (Long)getHibernateTemplate().save(pNeed);
@@ -34,55 +30,31 @@ public class NeedDaoHibernateImpl extends HibernateDaoSupport implements NeedDao
 		return (Need)getHibernateTemplate().load(Need.class, pNeedId);
 	}
 
-	private List<Need> findNeedsList(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final String pTitle, final Long[] pCategoryIds,
-			final Date pCreationDateMin, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+	private List<Need> findNeedsList(final NeedDaoQueryBean pNeedDaoQueryBean) {
 		
-		final DetachedCriteria criteria = getNeedsDetachedCriteria(pOwnerIds, pOwnerEnabled, pTitle, pCategoryIds, pCreationDateMin);
+		final DetachedCriteria criteria = getNeedsDetachedCriteria(pNeedDaoQueryBean);
 		
-		if (!StringUtils.isNullOrEmpty(pOrderBy)) {
+		if (!StringUtils.isNullOrEmpty(pNeedDaoQueryBean.getOrderBy())) {
 			// Ascending.
-			if (pOrderByAscending == null || pOrderByAscending.booleanValue()) {
-				criteria.addOrder(Order.asc(pOrderBy).ignoreCase());
+			if (pNeedDaoQueryBean.getOrderByAscending() == null || pNeedDaoQueryBean.getOrderByAscending().booleanValue()) {
+				criteria.addOrder(Order.asc(pNeedDaoQueryBean.getOrderBy()).ignoreCase());
 			}
 			// Descending.
 			else {
-				criteria.addOrder(Order.desc(pOrderBy).ignoreCase());
+				criteria.addOrder(Order.desc(pNeedDaoQueryBean.getOrderBy()).ignoreCase());
 			}
 		}
 		
-		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
+		return getHibernateTemplate().findByCriteria(criteria, pNeedDaoQueryBean.getFirstResult(), pNeedDaoQueryBean.getMaxResults());
 	}
 
-	public long countNeeds(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final String pTitle, final Long[] pCategoryIds, final Date pCreationDateMin) {
-		final DetachedCriteria criteria = getNeedsDetachedCriteria(pOwnerIds, pOwnerEnabled, pTitle, pCategoryIds, pCreationDateMin);
+	public long countNeeds(final NeedDaoQueryBean pNeedDaoQueryBean) {
+		final DetachedCriteria criteria = getNeedsDetachedCriteria(pNeedDaoQueryBean);
 		return rowCount(criteria);
 	}
 	
-	private DetachedCriteria getNeedsDetachedCriteria(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final String pTitle,
-			final Long[] pCategoryIds, final Date pCreationDateMin) {
-
-		DetachedCriteria criteria = DetachedCriteria.forClass(Need.class);
-	
-		if (pTitle != null && pTitle.trim().length() > 0) {
-			criteria.add(Restrictions.ilike("title", pTitle, MatchMode.ANYWHERE));
-		}
-		if (pCategoryIds != null && pCategoryIds.length > 0) {
-			criteria.createCriteria("category", CriteriaSpecification.INNER_JOIN).
-				add(Restrictions.in("id", pCategoryIds));
-		}
-		if (pOwnerIds != null && pOwnerIds.length > 0) {
-			final DetachedCriteria ownerCriteria = criteria.createCriteria("owner", CriteriaSpecification.INNER_JOIN);
-			ownerCriteria.add(Restrictions.in("id", pOwnerIds));
-			if (pOwnerEnabled != null) {
-				ownerCriteria.add(Restrictions.eq("enabled", pOwnerEnabled));
-			}
-		}
-
-		if (pCreationDateMin != null) {
-			criteria.add(Restrictions.gt("creationDate", pCreationDateMin));
-		}
-		
-		return criteria;	
+	protected DetachedCriteria getNeedsDetachedCriteria(final NeedDaoQueryBean pNeedDaoQueryBean) {
+		return getObjectsDetachedCriteria(pNeedDaoQueryBean);
 	}
 
 	/**
@@ -96,13 +68,15 @@ public class NeedDaoHibernateImpl extends HibernateDaoSupport implements NeedDao
 		return ((Long)getHibernateTemplate().findByCriteria(pCriteria).get(0)).longValue();
 	}
 
-	public ListWithRowCount findNeeds(final Long[] pOwnerIds, final Boolean pOwnerEnabled, final String pTitle,
-			final Long[] categoriesId, final Date pCreationDateMin,
-			final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
-		final List list = findNeedsList(pOwnerIds, pOwnerEnabled, pTitle,
-				categoriesId, pCreationDateMin, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
-		final long count = countNeeds(pOwnerIds, pOwnerEnabled, pTitle, categoriesId, pCreationDateMin);
+	public ListWithRowCount findNeeds(final NeedDaoQueryBean pNeedDaoQueryBean) {
+		final List list = findNeedsList(pNeedDaoQueryBean);
+		final long count = countNeeds(pNeedDaoQueryBean);
 		
 		return new ListWithRowCount(list, count);
+	}
+
+	@Override
+	protected Class getObjectClass() {
+		return Need.class;
 	}	
 }

@@ -21,11 +21,50 @@
 
 <h2 class="gt-table-head"><h:outputText value="#{theBean.pageTitle}"/></h2>
 
+<c:if test="#{theBean.showLinksToObjekts}">
+	<div class="gt-form-row gt-width-100">
+		<h:outputText styleClass="fontSizeSmall" value="#{messages.navigation_pathSeparator}"/>
+		<h:outputText styleClass="fontSizeSmall" value=" " escape="false"/>
+		<h:outputLink value="#{theBean.personItemsUrl}">
+			<h:outputFormat styleClass="fontSizeSmall" value="#{messages.item_personItemsTitle}">
+				<f:param value="#{theBean.person.displayName}" />			
+			</h:outputFormat>
+		</h:outputLink>
+		<br/>
+		<h:outputText styleClass="fontSizeSmall" value="#{messages.navigation_pathSeparator}"/>
+		<h:outputText styleClass="fontSizeSmall" value=" " escape="false"/>
+		<h:outputLink value="#{theBean.personNeedsUrl}">
+			<h:outputFormat styleClass="fontSizeSmall" value="#{messages.need_personNeedsTitle}">
+				<f:param value="#{theBean.person.displayName}" />			
+			</h:outputFormat>
+		</h:outputLink>
+	</div>
+	<br/>
+</c:if>
+
 <!-- content box -->
-<div class="gt-form gt-content-box" style="position: relative;">
-	<div class="profilePictureDiv">
+<div id="personOverviewMainDiv" class="gt-form gt-content-box" style="position: relative;">
+	<div id="personOverviewPictureDiv" class="profilePictureDiv">
 		<img src="#{theBean.profilePictureSrc}"/>
 	</div>
+	<!-- 
+	This will avoid a picture that does not fit in the main div in case there is not
+	a lot of info to display.
+	 -->
+	<script type="text/javascript">
+		$j(document).ready(function() {
+			var mainDivHeight = $j('#personOverviewMainDiv').height();
+			var pictureDivHeight = $j('#personOverviewPictureDiv').height();
+			if (pictureDivHeight > mainDivHeight) {
+				$j('#personOverviewMainDiv').height(pictureDivHeight + 20);
+			}
+		});
+	</script>
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_displayName}:" /></label></div>
+		<h:outputText value="#{theBean.person.displayName}" />
+	</div>
+	<br/>
 	<c:if test="#{theBean.emailAvailable}">
 		<div class="gt-form-row gt-width-100">
 			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_firstName}:" /></label></div>
@@ -37,13 +76,6 @@
 			<h:outputText value="#{theBean.person.lastName}" />
 		</div>
 		<br/>
-	</c:if>
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_displayName}:" /></label></div>
-		<h:outputText value="#{theBean.person.displayName}" />
-	</div>
-	<br/>
-	<c:if test="#{theBean.emailAvailable}">
 		<div class="gt-form-row gt-width-100">
 			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_email}:" /></label></div>
 			<a href="mailto:#{theBean.person.email}"><h:outputText value="#{theBean.person.email}" /></a>
@@ -146,6 +178,7 @@
 	</div>
 </div>
 <!-- /content box -->
+
 					
 				</f:view>	
 			

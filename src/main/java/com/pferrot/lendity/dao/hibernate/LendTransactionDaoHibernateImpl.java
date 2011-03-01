@@ -77,8 +77,6 @@ public class LendTransactionDaoHibernateImpl extends HibernateDaoSupport impleme
 			Criterion c = Restrictions.or(
 					Restrictions.eq("borrower.id", pLendTransactionDaoQueryBean.getBorrowerOrLenderId()),
 					Restrictions.eq("lender.id", pLendTransactionDaoQueryBean.getBorrowerOrLenderId()));
-			final DetachedCriteria requesterCriteria = criteria.createCriteria("borrower", CriteriaSpecification.INNER_JOIN);
-			requesterCriteria.add(Restrictions.eq("id", pLendTransactionDaoQueryBean.getBorrowerId()));
 			criteria.add(c);
 		}
 		
@@ -92,9 +90,9 @@ public class LendTransactionDaoHibernateImpl extends HibernateDaoSupport impleme
 			requesterCriteria.add(Restrictions.eq("id", pLendTransactionDaoQueryBean.getLenderId()));
 		}
 		
-		if (pLendTransactionDaoQueryBean.getInternalItemId() != null) {
+		if (pLendTransactionDaoQueryBean.getItemId() != null) {
 			final DetachedCriteria requesterCriteria = criteria.createCriteria("item", CriteriaSpecification.INNER_JOIN);
-			requesterCriteria.add(Restrictions.eq("id", pLendTransactionDaoQueryBean.getInternalItemId()));
+			requesterCriteria.add(Restrictions.eq("id", pLendTransactionDaoQueryBean.getItemId()));
 		}
 		
 		return criteria;	

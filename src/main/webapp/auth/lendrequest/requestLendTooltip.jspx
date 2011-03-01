@@ -19,6 +19,22 @@
 				</td>
 			</tr>
 			<tr>
+				<th>
+					<nobr><h:outputText value="#{messages.item_requestLendStart}:" /> *</nobr>
+				</th>
+				<td>
+					<h:inputText id="requestLendStartDate" styleClass="datepicker" value="#{requestLendTooltipController.startDateAsString}" style="width: 100%;"/>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<nobr><h:outputText value="#{messages.item_requestLendEnd}:" /> *</nobr>
+				</th>
+				<td>
+					<h:inputText id="requestLendEndDate" styleClass="datepicker" value="#{requestLendTooltipController.endDateAsString}" style="width: 100%;"/>
+				</td>
+			</tr>
+			<tr>
 				<td colspan="2" style="text-align: center;">
 					<input type="button" class="fontSizeSmall stylishButton" onclick="submitRequestLend()" value="#{messages.navigation_ok}"/>
 					<input type="button" class="fontSizeSmall stylishButton" onclick="cancelRequestLend()" value="#{messages.navigation_cancel}"/>

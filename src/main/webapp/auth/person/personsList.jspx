@@ -48,17 +48,6 @@
 </table>
 
 <br/>
-<table class="filtersTable">
-<tr>
-<td >
-<ui:include src="../item/filter/distanceFilter.jspx">
-	<ui:param name="theBean" value="#{personsListController}"/>
-</ui:include>
-</td>
-</tr>
-</table>
-
-<br/>
 
 <!-- content box -->
 <div class="gt-content-box">

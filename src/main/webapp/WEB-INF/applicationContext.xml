@@ -564,6 +564,19 @@
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 
+	<bean id="myLendTransactionsForItemListController" class="com.pferrot.lendity.lendtransaction.jsf.MyLendTransactionsForItemListController"
+	      scope="session">
+	      <property name="lendTransactionService" ref="lendTransactionService"/>
+	      <property name="itemService" ref="itemService"/>
+	      <property name="personService" ref="personService"/>
+	</bean>
+
+	<bean id="myLendTransactionsListController" class="com.pferrot.lendity.lendtransaction.jsf.MyLendTransactionsListController"
+	      scope="session">
+	      <property name="lendTransactionService" ref="lendTransactionService"/>
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+
 <!-- 	
 	<bean id="transactionLendTooltipController" class="com.pferrot.lendity.lendtransaction.jsf.TransactionLendTooltipController"
 	      scope="transaction">
@@ -743,27 +756,29 @@
 		<property name="mailManager" ref="emailSender.mailManager"/>
 		<property name="personService" ref="personService"/>
 		<property name="documentService" ref="documentService"/>
+		<property name="lendTransactionService" ref="lendTransactionService"/>
 	</bean>
 	
-	<bean id="internalItemOverviewController" class="com.pferrot.lendity.item.jsf.InternalItemOverviewController"
+	<bean id="itemOverviewController" class="com.pferrot.lendity.item.jsf.ItemOverviewController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
 	      <property name="documentService" ref="documentService"/>
 	      <property name="lendRequestService" ref="lendRequestService"/>
+	      <property name="lendTransactionService" ref="lendTransactionService"/>	 
 	</bean>
 	
-	<bean id="internalItemAddController" class="com.pferrot.lendity.item.jsf.InternalItemAddController"
+	<bean id="itemAddController" class="com.pferrot.lendity.item.jsf.ItemAddController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
 	      <property name="needService" ref="needService"/>
 	</bean>
 	
-	<bean id="internalItemEditController" class="com.pferrot.lendity.item.jsf.InternalItemEditController"
+	<bean id="itemEditController" class="com.pferrot.lendity.item.jsf.ItemEditController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="internalItemEditPictureController" class="com.pferrot.lendity.item.jsf.InternalItemEditPictureController"
+	<bean id="itemEditPictureController" class="com.pferrot.lendity.item.jsf.ItemEditPictureController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
 	      <property name="documentService" ref="documentService"/>
@@ -772,49 +787,57 @@
 	<bean id="myItemsListController" class="com.pferrot.lendity.item.jsf.MyItemsListController"
 	      scope="session">
 	      <property name="itemService" ref="itemService"/>
+	      <property name="lendTransactionService" ref="lendTransactionService"/>	      
 	</bean>
 
 	<bean id="searchItemsListController" class="com.pferrot.lendity.item.jsf.SearchItemsListController"
 	      scope="session">
 	      <property name="itemService" ref="itemService"/>
 	      <property name="lendRequestService" ref="lendRequestService"/>
+	      <property name="lendTransactionService" ref="lendTransactionService"/>
+	</bean>
+	
+	<bean id="personItemsListController" class="com.pferrot.lendity.item.jsf.PersonItemsListController"
+	      scope="session">
+	      <property name="itemService" ref="itemService"/>
+	      <property name="lendRequestService" ref="lendRequestService"/>
 	      <property name="personService" ref="personService"/>
 	</bean>
 
-	<bean id="internalItemLendTooltipController" class="com.pferrot.lendity.item.jsf.InternalItemLendTooltipController"
+	<bean id="itemLendTooltipController" class="com.pferrot.lendity.item.jsf.ItemLendTooltipController"
 	      scope="request">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="internalItemLendBackTooltipController" class="com.pferrot.lendity.item.jsf.InternalItemLendBackTooltipController"
+	<bean id="itemLendBackTooltipController" class="com.pferrot.lendity.item.jsf.ItemLendBackTooltipController"
 	      scope="request">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="deleteInternalItemTooltipController" class="com.pferrot.lendity.item.jsf.DeleteInternalItemTooltipController"
+	<bean id="deleteItemTooltipController" class="com.pferrot.lendity.item.jsf.DeleteItemTooltipController"
 	      scope="request">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="internalItemsImportController" class="com.pferrot.lendity.item.jsf.InternalItemsImportController"
-	      scope="conversation.access" orchestra:conversationName="internalItemsImport">
+	<bean id="itemsImportController" class="com.pferrot.lendity.item.jsf.ItemsImportController"
+	      scope="conversation.access" orchestra:conversationName="itemsImport">
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="internalItemsImportStep1" class="com.pferrot.lendity.item.jsf.InternalItemsImportStep1"
+	<bean id="itemsImportStep1" class="com.pferrot.lendity.item.jsf.ItemsImportStep1"
 	      scope="request">
-		<property name="internalItemsImportController" ref="internalItemsImportController"/>
+		<property name="itemsImportController" ref="itemsImportController"/>
 		<property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="internalItemsImportStep2" class="com.pferrot.lendity.item.jsf.InternalItemsImportStep2"
+	<bean id="itemsImportStep2" class="com.pferrot.lendity.item.jsf.ItemsImportStep2"
 	      scope="request">
-		<property name="internalItemsImportController" ref="internalItemsImportController"/>
+		<property name="itemsImportController" ref="itemsImportController"/>
 	</bean>
 	
-	<bean id="internalItemsImportStep3" class="com.pferrot.lendity.item.jsf.InternalItemsImportStep3"
+	<bean id="itemsImportStep3" class="com.pferrot.lendity.item.jsf.ItemsImportStep3"
 	      scope="request">
-		<property name="internalItemsImportController" ref="internalItemsImportController"/>
+		<property name="itemsImportController" ref="itemsImportController"/>
 	</bean>
 	
 	<bean id="shortcutSearchController" class="com.pferrot.lendity.item.jsf.ShortcutSearchController"
@@ -874,25 +897,27 @@
 	<bean id="needAddController" class="com.pferrot.lendity.need.jsf.NeedAddController"
 	      scope="conversation.access">
 	      <property name="needService" ref="needService"/>
-	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
 	<bean id="needEditController" class="com.pferrot.lendity.need.jsf.NeedEditController"
 	      scope="conversation.access">
 	      <property name="needService" ref="needService"/>
-	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
 	<bean id="myNeedsListController" class="com.pferrot.lendity.need.jsf.MyNeedsListController"
 	      scope="session">
 	      <property name="needService" ref="needService"/>
-	      <property name="itemService" ref="itemService"/>
 	</bean>
 
-	<bean id="myConnectionsNeedsListController" class="com.pferrot.lendity.need.jsf.MyConnectionsNeedsListController"
+	<bean id="searchNeedsListController" class="com.pferrot.lendity.need.jsf.SearchNeedsListController"
 	      scope="session">
 	      <property name="needService" ref="needService"/>
-	      <property name="itemService" ref="itemService"/>
+	</bean>
+
+	<bean id="personNeedsListController" class="com.pferrot.lendity.need.jsf.PersonNeedsListController"
+	      scope="session">
+	      <property name="needService" ref="needService"/>
+	      <property name="personService" ref="personService"/>
 	</bean>
 
 	<bean id="deleteNeedTooltipController" class="com.pferrot.lendity.need.jsf.DeleteNeedTooltipController"

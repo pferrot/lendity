@@ -22,11 +22,11 @@ import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.item.jsf.SearchItemsListController;
 import com.pferrot.lendity.model.ConnectionRequest;
-import com.pferrot.lendity.model.InternalItem;
+import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.need.NeedService;
-import com.pferrot.lendity.need.jsf.MyConnectionsNeedsListController;
+import com.pferrot.lendity.need.jsf.SearchNeedsListController;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
@@ -157,7 +157,7 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 		int itemsCounter = 0;
 		while (ite.hasNext()) {
 			itemsCounter++;
-			final InternalItem item = (InternalItem)ite.next();
+			final Item item = (Item)ite.next();
 			objects.put("itemTitle" + itemsCounter, item.getTitle());
 			objects.put("itemDetails" + itemsCounter, getItemDetails(item));
 			objects.put("itemUrl" + itemsCounter, getItemUrl(item));
@@ -274,7 +274,7 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 		personService.updatePersonPrivileged(pPerson);
 	}
 	
-	private String getItemDetails(final InternalItem pItem) {
+	private String getItemDetails(final Item pItem) {
 		if (pItem == null) {
 			return "";
 		}
@@ -304,11 +304,11 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 		return I18nUtils.getMessageResourceString("home_connectionsUpdatesDetails", new Object[]{param1}, locale);		
 	}
 	
-	private String getItemUrl(final InternalItem pItem) {
+	private String getItemUrl(final Item pItem) {
 		return JsfUtils.getFullUrlWithPrefix(
 				Configuration.getRootURL(),
-				PagesURL.INTERNAL_ITEM_OVERVIEW,
-				PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID,
+				PagesURL.ITEM_OVERVIEW,
+				PagesURL.ITEM_OVERVIEW_PARAM_ITEM_ID,
 				pItem.getId().toString());
 	}
 	
@@ -344,9 +344,9 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 	private String getConnectionsNeedsByDateUrl() {
 		return JsfUtils.getFullUrlWithPrefix(
 				Configuration.getRootURL(),
-				PagesURL.MY_CONNECTIONS_NEEDS_LIST,
-				MyConnectionsNeedsListController.FORCE_VIEW_PARAM_NAME,
-				MyConnectionsNeedsListController.FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE);
+				PagesURL.NEEDS_SEARCH,
+				SearchNeedsListController.FORCE_VIEW_PARAM_NAME,
+				SearchNeedsListController.FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE);
 	}
 	
 //	private String getBorrowedItemsUrl() {

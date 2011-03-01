@@ -15,13 +15,11 @@ import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
-import com.pferrot.lendity.model.InternalItem;
-import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
 
-@ViewController(viewIds={"/public/item/search.jspx"})
-public class SearchItemsListController extends AbstractItemsWithOwnerListController {
+@ViewController(viewIds={"/public/item/searchItems.jspx"})
+public class SearchItemsListController extends AbstractItemsListController {
 	
 	private final static Log log = LogFactory.getLog(SearchItemsListController.class);
 	
@@ -40,23 +38,15 @@ public class SearchItemsListController extends AbstractItemsWithOwnerListControl
 	public void initView() {		
 		final String orderBy = JsfUtils.getRequestParameter(FORCE_VIEW_PARAM_NAME);
 		if (FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE.equals(orderBy)) {
+			resetFilters();
 			setOrderBy(new Long(2));
-			setSearchString(null);
-			setCategoryId(null);			
-			setBorrowStatus(null);
-			setVisibilityId(null);
-			setOwnerId(null);
 			return;
 		}
 		// Note the return above...
 		final String searchString = JsfUtils.getRequestParameter(SEARCH_TEXT_PARAM_NAME);
 		if (!StringUtils.isNullOrEmpty(searchString)) {
-			setOrderBy(new Long(1));
+			resetFilters();
 			setSearchString(searchString);
-			setCategoryId(null);			
-			setBorrowStatus(null);
-			setVisibilityId(null);
-			setOwnerId(null);
 			return;
 		}		
 	}
@@ -67,8 +57,8 @@ public class SearchItemsListController extends AbstractItemsWithOwnerListControl
 	    if (getMaxDistance() != null) {
 	    	maxDistanceDouble = Double.valueOf(getMaxDistance());
 	    }
-		return getItemService().findMyConnectionsItems(getOwnerId(), getSearchString(), getCategoryId(), 
-				getBorrowStatusBoolean(), getShowOnlyConnectionsItems(), maxDistanceDouble, getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
+		return getItemService().findItems(getSearchString(), getCategoryId(), 
+				getBorrowStatusBoolean(), getOwnerType(), maxDistanceDouble, getLendType(), getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
 	}
 
 	@Override
@@ -84,9 +74,5 @@ public class SearchItemsListController extends AbstractItemsWithOwnerListControl
 			setBorrowStatusSelectItemsInternal(result);
 		}		
 		return getBorrowStatusSelectItemsInternal();	
-	}
-
-	public boolean isSearchByDistanceAvailable() {
-		return PersonUtils.isCurrentPersonIsAddressDefined();
 	}
 }

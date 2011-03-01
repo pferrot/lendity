@@ -342,7 +342,7 @@ public class CommentController extends AbstractController {
 
 	/**
 	 * Creates a comment on the specified container specified by its ID as request parameter
-	 * (for internal item: "itemID", for need: "needID", for lendTransaction: "lendTransactionID").
+	 * (for item: "itemID", for need: "needID", for lendTransaction: "lendTransactionID").
 	 * It is also verified that the comment is valid (max length for instance).
 	 * 
 	 * @param pRequest
@@ -367,7 +367,7 @@ public class CommentController extends AbstractController {
 				final String needID = pRequest.getParameter(CONTAINER_NEED_ID_PARAMETER_NAME);
 				final String lendTransactionID = pRequest.getParameter(CONTAINER_LEND_TRANSACTION_ID_PARAMETER_NAME);
 				if (!StringUtils.isNullOrEmpty(itemID)) {
-					commentID = commentService.createCommentOnInternalItemWithAC(text, Long.valueOf(itemID), currentPersonId);
+					commentID = commentService.createCommentOnItemWithAC(text, Long.valueOf(itemID), currentPersonId);
 				}
 				else if (!StringUtils.isNullOrEmpty(needID)) {
 					commentID = commentService.createCommentOnNeedWithAC(text, Long.valueOf(needID), currentPersonId);

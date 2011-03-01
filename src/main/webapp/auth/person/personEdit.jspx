@@ -33,6 +33,18 @@
 				<f:view>
 
 					<h:form>
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.person_displayName}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="displayName"></h:message>			
+						<h:inputText id="displayName" styleClass="gt-form-text"
+							value="#{personEditController.displayName}" 
+							required="true" 
+							requiredMessage="#{messages.validation_requiredMessage}"
+							maxlength="255"/>			
+					</div><!-- /form row -->
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">
@@ -53,18 +65,6 @@
 							for="lastName"></h:message>			
 						<h:inputText id="lastName" styleClass="gt-form-text"
 							value="#{personEditController.lastName}" 
-							required="true" 
-							requiredMessage="#{messages.validation_requiredMessage}"
-							maxlength="255"/>			
-					</div><!-- /form row -->
-					
-					<!-- form row -->
-					<div class="gt-form-row gt-width-100">
-						<label><h:outputText value="#{messages.person_displayName}"/> *</label>
-						<h:message styleClass="error" showSummary="true" showDetail="false"
-							for="displayName"></h:message>			
-						<h:inputText id="displayName" styleClass="gt-form-text"
-							value="#{personEditController.displayName}" 
 							required="true" 
 							requiredMessage="#{messages.validation_requiredMessage}"
 							maxlength="255"/>			

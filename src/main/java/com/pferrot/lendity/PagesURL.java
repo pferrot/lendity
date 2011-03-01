@@ -80,32 +80,55 @@ public interface PagesURL {
 	
 	// HOME - end
 	/////////////////////////////////////////////////////////////////////////
+
+	/////////////////////////////////////////////////////////////////////////
+	// PERSON - start	
+	
+	String MY_PROFILE = "/auth/person/myProfile.faces";
+	
+	String PERSONS_LIST = "/auth/person/personsList.faces";
+	String MY_CONNECTIONS_LIST = "/auth/person/myConnectionsList.faces";
+	String MY_BANNED_PERSONS_LIST = "/auth/person/myBannedPersonsList.faces";
+	
+	String PERSON_OVERVIEW = "/public/person/personOverview.faces";
+	String PERSON_OVERVIEW_PARAM_PERSON_ID = "personID";
+	
+	String PERSON_EDIT = "/auth/person/personEdit.faces";
+	String PERSON_EDIT_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;
+	
+	String PERSON_EDIT_PICTURE = "/auth/person/personEditPicture.faces";
+	String PERSON_EDIT_PICTURE_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;
+	
+	// PERSON - end
+	/////////////////////////////////////////////////////////////////////////
 	
 	/////////////////////////////////////////////////////////////////////////
 	// ITEM - start
 	
-	String INTERNAL_ITEM_OVERVIEW = "/public/item/internalItemOverview.faces";
-	String INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID = "itemID";
+	String ITEM_OVERVIEW = "/public/item/itemOverview.faces";
+	String ITEM_OVERVIEW_PARAM_ITEM_ID = "itemID";
 	
-	String INTERNAL_ITEM_ADD = "/auth/item/internalItemAdd.faces";
-	String INTERNAL_ITEM_ADD_PARAM_NEED_ID = "needID";
+	String ITEM_ADD = "/auth/item/itemAdd.faces";
+	String ITEM_ADD_PARAM_NEED_ID = "needID";
 	
-	String INTERNAL_ITEM_EDIT = "/auth/item/internalItemEdit.faces";
-	String INTERNAL_ITEM_EDIT_PARAM_ITEM_ID = INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID;
+	String ITEM_EDIT = "/auth/item/itemEdit.faces";
+	String ITEM_EDIT_PARAM_ITEM_ID = ITEM_OVERVIEW_PARAM_ITEM_ID;
 	
-	String INTERNAL_ITEM_EDIT_PICTURE = "/auth/item/internalItemEditPicture.faces";
-	String INTERNAL_ITEM_EDIT_PICTURE_PARAM_ITEM_ID = INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID;
+	String ITEM_EDIT_PICTURE = "/auth/item/itemEditPicture.faces";
+	String ITEM_EDIT_PICTURE_PARAM_ITEM_ID = ITEM_OVERVIEW_PARAM_ITEM_ID;
 	
-	String INTERNAL_ITEM_LEND_TOOLTIP = "/auth/item/internalItemLendTooltip.faces";
-	String INTERNAL_ITEM_LEND_TOOLTIP_PARAM_ITEM_ID = INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID;
+	String ITEM_LEND_TOOLTIP = "/auth/item/itemLendTooltip.faces";
+	String ITEM_LEND_TOOLTIP_PARAM_ITEM_ID = ITEM_OVERVIEW_PARAM_ITEM_ID;
 	
-	String INTERNAL_ITEMS_IMPORT = "/auth/item/internalItemsImport.faces";
+	String ITEMS_IMPORT = "/auth/item/itemsImport.faces";
 	
 	String ITEMS_LIST = "/auth/item/itemsList.faces";
 	String MY_ITEMS_LIST = "/auth/item/myItemsList.faces";
 	String MY_LENT_ITEMS_LIST = "/auth/item/myLentItemsList.faces";
 	String MY_BORROWED_ITEMS_LIST = "/auth/item/myBorrowedItemsList.faces";
-	String ITEMS_SEARCH = "/public/item/search.faces";
+	String ITEMS_SEARCH = "/public/item/searchItems.faces";
+	String PERSON_ITEMS_LIST = "/public/item/personItemsList.faces";
+	String PERSON_ITEMS_LIST_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;
 	
 	// ITEM - end
 	/////////////////////////////////////////////////////////////////////////
@@ -113,7 +136,7 @@ public interface PagesURL {
 	/////////////////////////////////////////////////////////////////////////
 	// NEED - start
 	
-	String NEED_OVERVIEW = "/auth/need/needOverview.faces";
+	String NEED_OVERVIEW = "/public/need/needOverview.faces";
 	String NEED_OVERVIEW_PARAM_NEED_ID = "needID";
 	
 	String NEED_ADD = "/auth/need/needAdd.faces";
@@ -122,7 +145,9 @@ public interface PagesURL {
 	String NEED_EDIT_PARAM_NEED_ID = NEED_OVERVIEW_PARAM_NEED_ID;
 	
 	String MY_NEEDS_LIST = "/auth/need/myNeedsList.faces";
-	String MY_CONNECTIONS_NEEDS_LIST = "/auth/need/myConnectionsNeedsList.faces";
+	String NEEDS_SEARCH = "/public/need/searchNeeds.faces";
+	String PERSON_NEEDS_LIST = "/public/need/personNeedsList.faces";
+	String PERSON_NEEDS_LIST_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;
 	
 	// NEED - end
 	/////////////////////////////////////////////////////////////////////////
@@ -131,7 +156,7 @@ public interface PagesURL {
 	// LEND TRANSACTION - start
 	
 	String LEND_TRANSACTION_OVERVIEW = "/auth/lendtransaction/lendTransactionOverview.faces";
-	String LEND_TRANSACTION_OVERVIEW_PARAM_NEED_ID = "lendTransactionID";
+	String LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID = "lendTransactionID";
 	
 	String MY_IN_PROGRESS_LEND_TRANSACTIONS_LIST = "/auth/lendtransaction/myInProgressLendTransactionsList.faces";
 	String MY_IN_PROGRESS_LEND_TRANSACTIONS_OUT_LIST = "/auth/lendtransaction/myInProgressLendTransactionsOutList.faces";
@@ -139,7 +164,15 @@ public interface PagesURL {
 	String MY_COMPLETED_LEND_TRANSACTIONS_LIST = "/auth/lendtransaction/myClosedLendTransactionsList.faces";
 	String MY_COMPLETED_LEND_TRANSACTIONS_OUT_LIST = "/auth/lendtransaction/myClosedLendTransactionsOutList.faces";
 
-	String MY_LEND_TRANSACTIONS_LIST = "/auth/lendtransaction/mylendTransactionsList.faces";
+	String MY_LEND_TRANSACTIONS_LIST = "/auth/lendtransaction/myLendTransactionsList.faces";
+
+	// Does not exist. Take care of AC if implement!!!
+//	String LEND_TRANSACTIONS_FOR_ITEM_AND_PERSON_LIST = "/auth/lendtransaction/lendTransactionsItemPersonList.faces";
+	String LEND_TRANSACTIONS_FOR_ITEM_AND_PERSON_LIST_PARAM_ITEM_ID = ITEM_OVERVIEW_PARAM_ITEM_ID;
+	String LEND_TRANSACTIONS_FOR_ITEM_AND_PERSON_LIST_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;
+	
+	String MY_LEND_TRANSACTIONS_FOR_ITEM_LIST = "/auth/lendtransaction/myLendTransactionsForItemList.faces";
+	String MY_LEND_TRANSACTIONS_FOR_ITEM_LIST_PARAM_ITEM_ID = LEND_TRANSACTIONS_FOR_ITEM_AND_PERSON_LIST_PARAM_ITEM_ID;
 	
 	// LEND TRANSACTION - end
 	/////////////////////////////////////////////////////////////////////////
@@ -169,27 +202,6 @@ public interface PagesURL {
 	// LEND REQUEST - end
 	/////////////////////////////////////////////////////////////////////////	
 	
-	
-	/////////////////////////////////////////////////////////////////////////
-	// PERSON - start	
-	
-	String MY_PROFILE = "/auth/person/myProfile.faces";
-	
-	String PERSONS_LIST = "/auth/person/personsList.faces";
-	String MY_CONNECTIONS_LIST = "/auth/person/myConnectionsList.faces";
-	String MY_BANNED_PERSONS_LIST = "/auth/person/myBannedPersonsList.faces";
-	
-	String PERSON_OVERVIEW = "/public/person/personOverview.faces";
-	String PERSON_OVERVIEW_PARAM_PERSON_ID = "personID";
-	
-	String PERSON_EDIT = "/auth/person/personEdit.faces";
-	String PERSON_EDIT_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;
-	
-	String PERSON_EDIT_PICTURE = "/auth/person/personEditPicture.faces";
-	String PERSON_EDIT_PICTURE_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;
-	
-	// PERSON - end
-	/////////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////////////////////////////////////////////////
 	// DOCUMENT - start

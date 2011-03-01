@@ -97,6 +97,10 @@
 
 </h:dataTable>
 
+<ui:include src="../table/tableControls.jspx">
+	<ui:param name="theBean" value="#{myInProgressLendTransactionsOutListController}"/>
+</ui:include>
+
 </div><!-- /content box -->
 
 </f:view>

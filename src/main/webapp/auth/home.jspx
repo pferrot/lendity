@@ -35,7 +35,7 @@
 				
 					<c:if test="#{homeController.emptyHomepage}">
 						<p>
-							<h:outputLink value="#{authenticationController.internalItemAddURL}">
+							<h:outputLink value="#{authenticationController.itemAddURL}">
 								<b>
 								<h:outputText value="#{messages.home_addObject}"/>
 						        </b>
@@ -203,10 +203,14 @@
 								<h:column id="column5">
 									<table border="0" class="gt-table-categories" width="300" align="right">
 										<tr>
-											<th width="50%">
+										    <th width="50%"><h:outputText id="categoryTitle" value="#{messages.item_category}:" /></th>
+											<td width="50%"><h:outputText id="categoryLabel" value="#{homeController.needCategoryLabel}"/></td>
+									    </tr>
+									    <tr>
+											<th>
 												<h:outputText value="#{messages.need_owner}:" />
 											</th>
-											<td width="50%">
+											<td>
 												<h:outputLink value="#{homeController.needOwnerHref}">
 													<h:outputText value="#{need.owner.displayName}"/>
 												</h:outputLink>

@@ -1,0 +1,134 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle"><h:outputText value="#{messages.item_itemEditTitle}" /></ui:define>
+	<ui:param name="contentHeader" value="#{messages.item_itemEditTitle}" />
+
+		<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				
+				<!-- Item Edit Form -->
+				<h2 class="gt-form-head"><h:outputText value="#{messages.item_itemEditTitle}"/></h2>
+				<div class="gt-form gt-content-box">
+				
+				<f:view>
+
+					<h:form id="itemEditForm" prependId="false">
+
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.item_title}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="title"></h:message>			
+						<h:inputText id="title" styleClass="gt-form-text"
+							value="#{itemEditController.title}" 
+							required="true" 
+							requiredMessage="#{messages.validation_requiredMessage}"
+							maxlength="255"/>			
+					</div><!-- /form row -->	
+					
+					<ui:include src="component/descriptionEdit.jspx">
+						<ui:param name="controllerBean" value="#{itemEditController}"/>
+					</ui:include>
+										
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.item_category}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="category"></h:message>
+						<h:selectOneMenu id="category" 
+						    value="#{itemEditController.categoryId}" 
+						    converter="javax.faces.Long" 
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}">
+							<f:selectItems value="#{itemEditController.categoriesSelectItems}"/>
+						</h:selectOneMenu>					
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.item_visibility}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="visibility"></h:message>
+						<h:selectOneMenu id="visibility"
+						    value="#{itemEditController.visibilityId}" 
+						    converter="javax.faces.Long" 
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}">
+							<f:selectItems value="#{itemEditController.visibilitySelectItems}"/>
+						</h:selectOneMenu>		
+					</div><!-- /form row -->
+					
+					<ui:include src="component/depositEdit.jspx">
+						<ui:param name="controllerBean" value="#{itemEditController}"/>
+					</ui:include>	
+					
+					<ui:include src="component/rentalFeeEdit.jspx">
+						<ui:param name="controllerBean" value="#{itemEditController}"/>
+					</ui:include>	
+
+					<ui:include src="component/toGiveForFreeEdit.jspx">
+						<ui:param name="controllerBean" value="#{itemEditController}"/>
+					</ui:include>
+					
+					<ui:include src="component/salePriceEdit.jspx">
+						<ui:param name="controllerBean" value="#{itemEditController}"/>
+					</ui:include>				
+					
+					<!-- form row -->
+					<div class="gt-form-row">
+						<br/>
+						<table class="buttonsTable"><tr><td>
+						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{itemEditController.submit}" />
+						</td><td>
+						<h:outputLink styleClass="stylishButton"  value="#{itemEditController.itemOverviewHref}">
+           					<h:outputText value="#{messages.navigation_cancel}"/>
+         				</h:outputLink>
+         				</td></tr></table>
+					</div>
+					<!-- /form row -->
+					
+					</h:form>
+				</f:view>		
+				</div>			
+				<!-- /Item Edit Form -->
+				
+			</div>
+			<!-- /main content -->
+
+			<!-- sidebar -->
+			<div class="gt-sidebar">
+				
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

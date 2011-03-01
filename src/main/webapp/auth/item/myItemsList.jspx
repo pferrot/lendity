@@ -37,53 +37,72 @@
 
 <table class="filtersTable">
 <tr>
-
 <td class="itemSearchCell">
 <ui:include src="filter/searchFilter.jspx">
 	<ui:param name="theBean" value="#{myItemsListController}"/>
-	<ui:param name="defaultSearchString" value="#{messages.item_searchItemMyItems}"/>
-</ui:include>
-</td>
-
-<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
-
-<td>
-<ui:include src="filter/categoryFilter.jspx">
-	<ui:param name="theBean" value="#{myItemsListController}"/>
-</ui:include>
-</td>
-
-<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
-
-<td>
-<ui:include src="filter/borrowStatusFilter.jspx">
-	<ui:param name="theBean" value="#{myItemsListController}"/>
-	<ui:param name="borrowStatusTitle" value="#{messages.item_borrowStatus}"/>
-</ui:include>
-</td>
-
-<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
-
-<td>
-<ui:include src="filter/visibilityFilter.jspx">
-	<ui:param name="theBean" value="#{myItemsListController}"/>
-</ui:include>
-</td>
-</tr>
-
-</table>
-
-<br/>
-<table class="filtersTable">
-<tr>
-<td >
-<ui:include src="sort/orderBy.jspx">
-	<ui:param name="theBean" value="#{myItemsListController}"/>
+	<ui:param name="defaultSearchString" value="#{messages.item_searchItemDefaultText}"/>
 </ui:include>
 </td>
 </tr>
 </table>
 
+<script type="text/javascript">
+	$j(document).ready(function() {
+		var showAdvancedSearch = #{myItemsListController.showAdvancedSearch};
+		if (showAdvancedSearch) {
+			$j('#advancedSearch').show();
+		}
+		else {
+			$j('#showAdvancedSearch').show();
+		}
+	});
+</script>
+
+<span id="showAdvancedSearch" style="display: none;" class="linkStyleActionSmall" onClick="toggleVisibility('advancedSearch'); toggleVisibility('showAdvancedSearch');"><br/><h:outputText value="#{messages.navigation_advancedSearch}"/><br/><br/></span>
+
+<div id="advancedSearch" style="display: none;">	
+
+	<br/>
+	<table class="filtersTable">
+	<tr>
+	<td>
+	<ui:include src="filter/categoryFilter.jspx">
+		<ui:param name="theBean" value="#{myItemsListController}"/>
+	</ui:include>
+	</td>
+	
+	<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
+	
+	<td>
+	<ui:include src="filter/visibilityFilter.jspx">
+		<ui:param name="theBean" value="#{myItemsListController}"/>
+	</ui:include>
+	</td>
+	
+	<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
+	
+	<td>
+	<ui:include src="filter/borrowStatusFilter.jspx">
+		<ui:param name="theBean" value="#{myItemsListController}"/>
+		<ui:param name="borrowStatusTitle" value="#{messages.item_borrowStatus}"/>
+	</ui:include>
+	</td>
+	
+	</tr>
+	
+	</table>
+	
+	<br/>
+	<table class="filtersTable">
+	<tr>
+	<td >
+	<ui:include src="sort/orderBy.jspx">
+		<ui:param name="theBean" value="#{myItemsListController}"/>
+	</ui:include>
+	</td>
+	</tr>
+	</table>
+</div>
 
 <br/>
 
@@ -108,7 +127,6 @@
 </c:if>
 
 <ui:include src="lendTooltip.jspx"/>
-<ui:include src="lendBackTooltip.jspx"/>
 
 <h:dataTable value="#{myItemsListController.list}" binding="#{myItemsListController.table}" var="item" styleClass="gt-table gt-user-table">
 
@@ -154,6 +172,16 @@
 			</tr>
 			<tr>
 				<th>
+					<h:outputText id="id_11" value="#{messages.lendTransaction_uncompletedLendTransaction}:" />
+				</th>
+				<td>
+					<h:outputLink id="id_12" value="#{myItemsListController.myUncompletedLendTransactionsUrl}">
+						<h:outputText id="id_13" value="#{myItemsListController.nbUncompletedLendTransactionsCurrentPerson}"/>
+					</h:outputLink>
+				</td>
+			</tr>
+			<tr>
+				<th>
 					<h:outputText id="id_5" rendered="#{myItemsListController.borrowed}" value="#{messages.item_lentTo}:" />
 				</th>
 				<td>
@@ -161,7 +189,7 @@
 						<h:outputText id="id_7" value="#{myItemsListController.borrowerLabel}"/>
 					</h:outputLink>
 					<h:outputText id="id_8" rendered="#{myItemsListController.borrowed and !myItemsListController.borrowerHrefAvailable}" value="#{myItemsListController.borrowerLabel}"/>
-				</td>
+				</td> 
 			</tr>
 			<tr>
 				<th><h:outputText id="id_9" rendered="#{myItemsListController.borrowed}" value="#{messages.item_lentSince}:" /></th>
@@ -175,11 +203,13 @@
 			<tr>
 			<td>
 				<span onclick="lendItemTooltip(this, '#{item.id}', 1)">
-					<h:outputText styleClass="stylishButton" value="#{messages.item_lend}" rendered="#{myItemsListController.lendAvailable}"/>
+					<h:outputText styleClass="stylishButton" value="#{messages.item_lend}" rendered="#{not myItemsListController.borrowed}"/>				
 				</span>
-				<span  onclick="lendBackItemTooltip(this, '#{item.id}', 1)">
-					<h:outputText styleClass="stylishButton" value="#{messages.item_lendBack}" rendered="#{myItemsListController.lendBackAvailable}"/>
-				</span>		
+				<span>					
+					<h:outputLink id="accessTransactionLink" value="#{myItemsListController.inProgressLendTransactionUrl}" rendered="#{myItemsListController.borrowed}">
+						<h:outputText id="currentlyLentText" value="#{messages.item_currentlyLent}" rendered="#{myItemsListController.borrowed}"/>
+					</h:outputLink>
+				</span>
 			</td>
 			</tr>
 		</table>

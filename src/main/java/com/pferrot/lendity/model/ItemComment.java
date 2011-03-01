@@ -14,13 +14,13 @@ public class ItemComment extends Comment {
 
 	@ManyToOne
 	@JoinColumn(name = "ITEM_ID")
-	private InternalItem item;
+	private Item item;
 
-	public InternalItem getItem() {
+	public Item getItem() {
 		return item;
 	}
 
-	public void setItem(InternalItem item) {
+	public void setItem(Item item) {
 		this.item = item;
 	}
 

@@ -3,6 +3,7 @@ package com.pferrot.lendity.person.jsf;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
 import com.pferrot.lendity.jsf.list.AbstractListController;
 import com.pferrot.lendity.model.Person;
@@ -50,5 +51,9 @@ public abstract class AbstractPersonsListController extends AbstractListControll
 	public String getProfileThumbnailSrc() {
 		final Person person = (Person)getTable().getRowData();
 		return personService.getProfileThumbnailSrc(person, true);
+	}
+	
+	public boolean isFilteredList() {
+		return !StringUtils.isNullOrEmpty(getSearchString());
 	}
 }

@@ -54,9 +54,10 @@
 
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_borrower}:" /></label></div>
-		<h:outputLink id="linkBorrower" value="#{lendTransactionOverviewController.borrowerOverviewHref}">
-			<h:outputText value="#{lendTransactionOverviewController.lendTransaction.borrower.displayName}" />
+		<h:outputLink id="linkBorrower" value="#{lendTransactionOverviewController.borrowerOverviewHref}" rendered="#{lendTransactionOverviewController.borrowerHrefAvailable}">
+			<h:outputText value="#{lendTransactionOverviewController.lendTransaction.borrower.displayName}" rendered="#{lendTransactionOverviewController.borrowerHrefAvailable}" />
 		</h:outputLink>
+		<h:outputText value="#{lendTransactionOverviewController.lendTransaction.borrowerName}" rendered="#{not lendTransactionOverviewController.borrowerHrefAvailable}" />
 	</div>
 	<br/>
 

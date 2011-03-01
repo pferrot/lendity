@@ -1,11 +1,15 @@
 package com.pferrot.lendity.i18n;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class I18nConsts {
 	
 	public static final String DEFAULT_RESOURCE_BUNDLE = "messages";
+	
+	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	// LANGUAGES - start

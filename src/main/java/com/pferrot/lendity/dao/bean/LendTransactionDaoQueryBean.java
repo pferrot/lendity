@@ -7,10 +7,10 @@ public class LendTransactionDaoQueryBean {
 	private Long lenderId = null;
 	private Long borrowerOrLenderId = null;
 	private Long[] statusIds = null;
-	private Long internalItemId = null;
+	private Long itemId = null;
 	private Long lendRequestId;
 	private String orderBy = "creationDate";
-	private Boolean orderByAscending = null;
+	private Boolean orderByAscending = Boolean.FALSE;
 	private int firstResult = 0;
 	private int maxResults = 0;
 
@@ -46,12 +46,12 @@ public class LendTransactionDaoQueryBean {
 		this.statusIds = statusIds;
 	}
 
-	public Long getInternalItemId() {
-		return internalItemId;
+	public Long getItemId() {
+		return itemId;
 	}
 
-	public void setInternalItemId(Long internalItemId) {
-		this.internalItemId = internalItemId;
+	public void setItemId(Long itemId) {
+		this.itemId = itemId;
 	}
 
 	public Long getLendRequestId() {

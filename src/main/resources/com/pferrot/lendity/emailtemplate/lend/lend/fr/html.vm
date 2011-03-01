@@ -2,9 +2,11 @@
 
 Hello $borrowerFirstName,<br/><br/>
 
-<b>$lenderDisplayName</b> a indiqué qu'il t'a prêté l'objet suivant:<br/><br/>
+<b>$lenderDisplayName</b> a indiqué qu'il t'a prêté / va te prêter l'objet suivant:<br/><br/>
 
-<b>$itemTitle</b><br/><br/> 
+<b>$itemTitle</b><br/><br/>
+
+Tu peux maintenant <a href="$lendTransactionUrl">suivre cette transaction</a>.<br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
 

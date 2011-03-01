@@ -18,10 +18,10 @@
 	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/gt-fixed.css" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/override.css" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/custom.css" type="text/css" media="screen, projection" />
-	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/jquery/jquery-ui-1.8.5.custom.css" type="text/css" media="screen, projection" />
-	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/jquery-1.4.2.min.js"></script>	
-	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/jquery-ui-1.8.5.custom.min.js"></script>
-	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/qtip/jquery.qtip-1.0.min_rev54.js"></script>
+	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/jquery/jquery-ui-1.8.9.custom.css" type="text/css" media="screen, projection" />
+	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/jquery-1.4.4.min.js"></script>	
+	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/jquery-ui-1.8.9.custom.min.js"></script>
+	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/qtip/jquery.qtip-1.0.0-rc3-dm-min.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/utils.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/menu.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/comments.js"></script>

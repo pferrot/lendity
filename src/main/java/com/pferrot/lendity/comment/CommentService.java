@@ -23,7 +23,7 @@ import com.pferrot.lendity.lendtransaction.LendTransactionService;
 import com.pferrot.lendity.model.Comment;
 import com.pferrot.lendity.model.Commentable;
 import com.pferrot.lendity.model.CommentableWithOwner;
-import com.pferrot.lendity.model.InternalItem;
+import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemComment;
 import com.pferrot.lendity.model.LendTransaction;
@@ -115,7 +115,7 @@ public class CommentService {
 	 * @return
 	 */
 	public ListWithRowCount findItemCommentsWithAC(final Long pItemId, final Long pCurrentPersonId, final int pFirstResult, final int pMaxResults) {
-		final InternalItem item = itemService.findInternalItem(pItemId);
+		final Item item = itemService.findItem(pItemId);
 		Person currentPerson = null;
 		if (pCurrentPersonId != null) {
 			currentPerson = personService.findPerson(pCurrentPersonId);
@@ -125,7 +125,7 @@ public class CommentService {
 	}
 	
 	public ListWithRowCount findItemComments(final Long pItemId, final int pFirstResult, final int pMaxResults) {
-		final InternalItem item = itemService.findInternalItem(pItemId);
+		final Item item = itemService.findItem(pItemId);
 		return commentDao.findItemComments(item, pFirstResult, pMaxResults);
 	}
 	
@@ -184,28 +184,28 @@ public class CommentService {
 	 * Also, access control is verified.
 	 * 
 	 * @param pText
-	 * @param pInternalItemId
+	 * @param pItemId
 	 * @param pCommentOwnerId
 	 * @return
 	 * @throws CommentException
 	 */
-	public Long createCommentOnInternalItemWithAC(final String pText, final Long pInternalItemId, final Long pCommentOwnerId) throws CommentException {
-		final InternalItem internalItem = itemService.findInternalItem(pInternalItemId);
+	public Long createCommentOnItemWithAC(final String pText, final Long pItemId, final Long pCommentOwnerId) throws CommentException {
+		final Item item = itemService.findItem(pItemId);
 		
 		final Person commentOwner = personService.findPerson(pCommentOwnerId); 
-		assertUserAuthorizedToAddCommentOnItem(commentOwner, internalItem);
+		assertUserAuthorizedToAddCommentOnItem(commentOwner, item);
 		
 		final ItemComment itemComment = new ItemComment();
 		itemComment.setCreationDate(new Date());
-		itemComment.setItem(internalItem);
+		itemComment.setItem(item);
 		itemComment.setOwner(commentOwner);
 		itemComment.setText(pText);
 		
 		Long commentID = commentDao.createComment(itemComment);
 		
-		internalItem.addComment(itemComment);
-		internalItem.addCommentRecipient(itemComment.getOwner());
-		itemService.updateItem(internalItem);
+		item.addComment(itemComment);
+		item.addCommentRecipient(itemComment.getOwner());
+		itemService.updateItem(item);
 		
 		sendCommentAddedNotificationToAll(itemComment);
 		
@@ -271,7 +271,7 @@ public class CommentService {
 		
 		lendTransaction.addComment(lendTransactionComment);
 		// Not needed, the comment recipients are added when the lend transaction is created.
-		//internalItem.addCommentRecipient(lendTransactionComment.getOwner());
+		//item.addCommentRecipient(lendTransactionComment.getOwner());
 		lendTransactionService.updateLendTransaction(lendTransaction);
 		
 		sendCommentAddedNotificationToAll(lendTransactionComment);
@@ -343,8 +343,8 @@ public class CommentService {
 		// User was only owner of that comment, so he should 
 		// not be notified anymore in the future.
 		commentable.removeCommentRecipient(pComment.getOwner());
-		if (commentable instanceof InternalItem) {
-			itemService.updateItem((InternalItem)commentable);
+		if (commentable instanceof Item) {
+			itemService.updateItem((Item)commentable);
 		}
 		else if (commentable instanceof Need) {
 			needService.updateNeed((Need)commentable);
@@ -446,13 +446,13 @@ public class CommentService {
 			
 			final Commentable commentable = pComment.getContainer();
 			String velocityTemplateLocation = null;
-			if (commentable instanceof InternalItem) {
-				final InternalItem internalItem = (InternalItem)commentable;
-				objects.put("objectTitle", internalItem.getTitle());
+			if (commentable instanceof Item) {
+				final Item item = (Item)commentable;
+				objects.put("objectTitle", item.getTitle());
 				objects.put("objectUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
-						PagesURL.INTERNAL_ITEM_OVERVIEW,
-						PagesURL.INTERNAL_ITEM_OVERVIEW_PARAM_ITEM_ID,
-						internalItem.getId().toString()));
+						PagesURL.ITEM_OVERVIEW,
+						PagesURL.ITEM_OVERVIEW_PARAM_ITEM_ID,
+						item.getId().toString()));
 				velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/comment/added/comment/fr";
 			}
 			else if (commentable instanceof Need) {
@@ -469,7 +469,7 @@ public class CommentService {
 				objects.put("objectTitle", lendTransaction.getItem().getTitle());
 				objects.put("objectUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
 						PagesURL.LEND_TRANSACTION_OVERVIEW,
-						PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_NEED_ID,
+						PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,
 						lendTransaction.getId().toString()));
 				velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/comment/added/lendtransaction/fr";
 			}

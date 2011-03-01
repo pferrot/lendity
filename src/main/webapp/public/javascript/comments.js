@@ -10,7 +10,7 @@ var mEditCommentLabel = "";
 var mDeleteCommentLabel = "";
 
 /**
- * Called when an internal item overview page is loaded in order to load the first comments.
+ * Called when an item overview page is loaded in order to load the first comments.
  * 
  * @param pItemId
  * @return

@@ -1,14 +1,24 @@
 package com.pferrot.lendity.lendtransaction.jsf;
 
+import java.util.List;
+import java.util.Locale;
+
+import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
+
+import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.item.ItemUtils;
 import com.pferrot.lendity.jsf.list.AbstractListController;
 import com.pferrot.lendity.lendtransaction.LendTransactionConsts;
 import com.pferrot.lendity.lendtransaction.LendTransactionService;
 import com.pferrot.lendity.model.LendTransaction;
+import com.pferrot.lendity.model.LendTransactionStatus;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
@@ -17,7 +27,23 @@ public abstract class AbstractLendTransactionsListController extends AbstractLis
 	
 	private LendTransactionService lendTransactionService;
 	private ItemService itemService;
+	
+	private List<SelectItem> statusSelectItems;
+	private Long statusId;
+	
+	public final static String FORCE_VIEW_PARAM_NAME = "view";
+	public final static String FORCE_VIEW_UNCOMPLETED_LEND_TRANSACTIONS = "uncompleted";
 
+	@InitView
+	public void initView() {
+		final String filterBy = JsfUtils.getRequestParameter(FORCE_VIEW_PARAM_NAME);
+		if (FORCE_VIEW_UNCOMPLETED_LEND_TRANSACTIONS.equals(filterBy)) {
+			setStatusId(LendTransactionConsts.UNCOMPLETED_STATUS_SELECT_ITEM_VALUE);			
+		}
+		else {
+			setStatusId(null);
+		}
+	}
 	
 	public AbstractLendTransactionsListController() {
 		super();
@@ -43,7 +69,7 @@ public abstract class AbstractLendTransactionsListController extends AbstractLis
 	public String getLendTransactionOverviewHref() {
 		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
 		return JsfUtils.getFullUrl(PagesURL.LEND_TRANSACTION_OVERVIEW,
-				PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_NEED_ID,
+				PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,
 				lendTransaction.getId().toString());
 	}
 
@@ -59,7 +85,7 @@ public abstract class AbstractLendTransactionsListController extends AbstractLis
 
 	public String getItemOverviewHref() {
 		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
-		return ItemUtils.getInternalItemOverviewPageUrl(lendTransaction.getItem().getId().toString());
+		return ItemUtils.getItemOverviewPageUrl(lendTransaction.getItem().getId().toString());
 	}
 	
 	public String getRequestDateLabel() {
@@ -96,6 +122,72 @@ public abstract class AbstractLendTransactionsListController extends AbstractLis
 			return null;
 		}
 	}
+
+	public String getCreationDateLabel() {
+		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
+		if (lendTransaction.getCreationDate() != null) {
+			return UiUtils.getDateAsString(lendTransaction.getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		}
+		else {
+			return null;
+		}
+	}
+
+	public List<SelectItem> getStatusSelectItems() {
+		if (statusSelectItems == null) {
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			statusSelectItems = UiUtils.getSelectItemsForOrderedListValue(getLendTransactionService().getStatuses(), locale);
+			statusSelectItems.add(0, getUncompletedStatusSelectItem(locale));
+			// Add all visibilities first.
+			statusSelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
+			
+		}		
+		return statusSelectItems;	
+	}
+	
+	private SelectItem getUncompletedStatusSelectItem(final Locale pLocale) {
+		final String label = I18nUtils.getMessageResourceString("lendTransaction_statusUncompleted", pLocale);
+		final SelectItem si = new SelectItem(LendTransactionConsts.UNCOMPLETED_STATUS_SELECT_ITEM_VALUE, label);
+		return si;
+	}
+
+	public Long getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(final Long pStatusId) {
+		this.statusId = UiUtils.getPositiveLongOrNull(pStatusId);
+	}
+
+	public void status(final ValueChangeEvent pEevent) {
+    	final Long status = (Long) ((HtmlSelectOneMenu) pEevent.getComponent()).getValue();
+        setStatusId(status);
+        // loadDataList() is not called by getList() when the page is submitted with the onchange
+        // event on the h:selectOneMenu. Not sure why!?
+        reloadList();
+    }
+
+	public String clearStatus() {
+		setStatusId(null);
+		return "clearStatus";
+	}
+	
+	public String getStatusLabel() {
+		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
+		final LendTransactionStatus status = lendTransaction.getStatus();
+		if (status != null) {
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			return I18nUtils.getMessageResourceString(status.getLabelCode(), locale);	
+		}
+		else {
+			return null;
+		}
+	}
+
+	public boolean isBorrowerHrefAvailable() {
+		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
+		return lendTransaction.getBorrower() != null;
+	}
 	
 	public boolean isStartDateAvailable() {
 		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
@@ -115,5 +207,11 @@ public abstract class AbstractLendTransactionsListController extends AbstractLis
 	public String getThumbnail1Src() {
 		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
 		return getItemService().getItemThumbnail1Src(lendTransaction.getItem(), true);
+	}
+
+	@Override
+	protected void resetFilters() {
+		super.resetFilters();
+		setStatusId(null);
 	}
 }

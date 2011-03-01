@@ -50,6 +50,6 @@ public class NeedUtils {
 	 * @return
 	 */
 	public static String getMyConnectionsNeedsListUrl() {		
-		return JsfUtils.getFullUrl(PagesURL.MY_CONNECTIONS_NEEDS_LIST);
+		return JsfUtils.getFullUrl(PagesURL.NEEDS_SEARCH);
 	}
 }

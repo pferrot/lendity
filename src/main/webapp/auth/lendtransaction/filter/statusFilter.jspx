@@ -1,0 +1,32 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+    
+<!-- status -->
+<h:form id="statusFilterForm" prependId="false">
+<table><tr><td>
+	<h:outputText value="#{messages.lendTransaction_status}" styleClass="small"/>
+	<c:if test="#{theBean.statusId != null}">
+		<h:outputText value=" " escape="false" />
+		<h:commandLink id="clearStatus" action="#{theBean.clearStatus}">
+			<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
+		</h:commandLink>	
+	</c:if>
+</td></tr><tr><td>
+	<h:selectOneMenu id="status" value="#{theBean.statusId}" valueChangeListener="#{theBean.status}" converter="javax.faces.Long" onchange="submit()">
+		<f:selectItems value="#{theBean.statusSelectItems}"/>
+	</h:selectOneMenu>
+</td></tr></table>	
+<script type="text/javascript">
+	setupDropDownFilterField('status');
+</script>	
+</h:form>
+<!-- /status -->
+
+</ui:composition>

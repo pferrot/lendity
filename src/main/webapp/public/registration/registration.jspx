@@ -37,7 +37,19 @@
 
 					<h:form id="registrationForm" prependId="false">
 
-
+					<!-- form row -->
+					<div class="gt-form-row gt-width-66">
+						<label><h:outputText value="#{messages.person_displayName}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="displayName"></h:message>
+					    <h:inputText id="displayName" styleClass="gt-form-text"
+							value="#{registrationController.displayName}"
+							required="true"
+							requiredMessage="#{messages.validation_requiredMessage}"
+							maxlength="255"
+							autocomplete="off"/>			
+					</div><!-- /form row -->
+					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">
 						<label><h:outputText value="#{messages.person_firstName}"/> *</label>
@@ -58,19 +70,6 @@
 							for="lastName"></h:message>
 					    <h:inputText id="lastName" styleClass="gt-form-text"
 							value="#{registrationController.lastName}"
-							required="true"
-							requiredMessage="#{messages.validation_requiredMessage}"
-							maxlength="255"
-							autocomplete="off"/>			
-					</div><!-- /form row -->
-					
-					<!-- form row -->
-					<div class="gt-form-row gt-width-66">
-						<label><h:outputText value="#{messages.person_displayName}"/> *</label>
-						<h:message styleClass="error" showSummary="true" showDetail="false"
-							for="displayName"></h:message>
-					    <h:inputText id="displayName" styleClass="gt-form-text"
-							value="#{registrationController.displayName}"
 							required="true"
 							requiredMessage="#{messages.validation_requiredMessage}"
 							maxlength="255"

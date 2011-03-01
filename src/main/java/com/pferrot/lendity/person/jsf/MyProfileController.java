@@ -11,4 +11,9 @@ public class MyProfileController extends PersonOverviewController {
 	protected String getPersonIdString() {
 		return String.valueOf(PersonUtils.getCurrentPersonId());
 	}
+	
+	@Override
+	public boolean isShowLinksToObjekts() {
+		return false;
+	}
 }

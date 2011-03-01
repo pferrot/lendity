@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.pferrot.lendity.dao.bean.ItemDaoQueryBean;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
-import com.pferrot.lendity.model.InternalItem;
 import com.pferrot.lendity.model.Item;
 
 public interface ItemDao {
@@ -13,14 +12,13 @@ public interface ItemDao {
 	// Item
 	Long createItem(Item item);
 	
-	InternalItem findInternalItem(Long itemId);
+	Item findItem(Long itemId);
 	
-	// Returns internal items only.
-	ListWithRowCount findInternalItems(ItemDaoQueryBean itemDaoQueryBean);
+	ListWithRowCount findItems(ItemDaoQueryBean itemDaoQueryBean);
 
-	List<InternalItem> findInternalItemsList(ItemDaoQueryBean itemDaoQueryBean);
+	List<Item> findItemsList(ItemDaoQueryBean itemDaoQueryBean);
 	
-	long countInternalItems(ItemDaoQueryBean itemDaoQueryBean);
+	long countItems(ItemDaoQueryBean itemDaoQueryBean);
 	
 	void updateItem(Item pItem);
 	

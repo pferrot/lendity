@@ -23,8 +23,8 @@ import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
 
 @ViewController(viewIds={"/public/person/personOverview.jspx"})
-public class PersonOverviewController
-{
+public class PersonOverviewController { 
+	
 	private final static Log log = LogFactory.getLog(PersonOverviewController.class);
 	
 	private PersonService personService;
@@ -159,5 +159,23 @@ public class PersonOverviewController
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public String getPersonItemsUrl() {
+		return JsfUtils.getFullUrl(
+				PagesURL.PERSON_ITEMS_LIST,
+				PagesURL.PERSON_ITEMS_LIST_PARAM_PERSON_ID,
+				getPerson().getId().toString());
+	}
+	
+	public String getPersonNeedsUrl() {
+		return JsfUtils.getFullUrl(
+				PagesURL.PERSON_NEEDS_LIST,
+				PagesURL.PERSON_NEEDS_LIST_PARAM_PERSON_ID,
+				getPerson().getId().toString());
+	}
+	
+	public boolean isShowLinksToObjekts() {
+		return true;
 	}
 }
