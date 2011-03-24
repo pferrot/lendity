@@ -2,7 +2,7 @@
 
 Bonjour $firstName,<br/><br/>
 
-Un commentaire a été ajouté sur la <a href="$objectUrl">transaction pour $objectTitle</a>:<br/><br/>
+Un commentaire a été ajouté sur la <a href="$objectUrl">transaction $objectTitle</a>:<br/><br/>
 
 <b>$commentEscaped</b><br/><br/>
 

@@ -232,7 +232,7 @@ function addCommentsFromJsonData(pJsonData) {
 	for (var i = 0; i < nb; i++) {
 		var comment = comments[i];
 		addCommentInternal(comment.commentID, comment.text, comment.ownerName, comment.ownerUrl,
-				comment.dateAdded, comment.profilePictureUrl, comment.canEdit, false);
+				comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.systemComment, false);
 	}
 	mNbCommentsLoaded = mNbCommentsLoaded + nb;
 	var nbExtra = pJsonData.nbExtra;
@@ -443,7 +443,8 @@ function addCommentInDbResponse(pData, pTextStatus, pXmlHttpRequest) {
 		var dateAdded = pData.dateAdded;
 		var profilePictureUrl = pData.profilePictureUrl;
 		var canEdit = pData.canEdit;
-		addCommentInternal(commentId, text, ownerName, ownerUrl, dateAdded, profilePictureUrl, canEdit, true);
+		var systemComment = pData.systemComment;
+		addCommentInternal(commentId, text, ownerName, ownerUrl, dateAdded, profilePictureUrl, canEdit, systemComment, true);
 		resetCommentTextArea();
 	}
 	addCommentStopProgress();
@@ -575,28 +576,53 @@ function editCommentInDbResponse(pJsonData, pTextStatus, pXmlHttpRequest) {
  * @param pCommentDate
  * @param pProfilePictureUrl
  * @param pEditEnabled
+ * @param pSystemComment
+ * @param pAddFirst
  * @return
  */
 function addCommentInternal(pCommentId, pText, pOwnerName, pOwnerUrl, pCommentDate, 
-		pProfilePictureUrl, pEditEnabled, pAddFirst) {
+		pProfilePictureUrl, pEditEnabled, pSystemComment, pAddFirst) {
 	var containerDiv = $j('#commentsContainer');
 	
 	var toPrepend = '<div class="gt-form-row gt-width-100 commentBox" commentId="' + pCommentId + '" id="comment' + pCommentId + '">' +
 	'<table class="thumbnailOutterTable" width="100%" style="vertical-align: top;"><tr><td class="thumbnailOutterTd" valign="top">' +
-	'	<table class="thumbnailInnerTable"><tr><td valign="top">' +
-	'		<a href="' + pOwnerUrl + '">' +
-	'			<div class="thumbnailDiv" valign="top">' +
-	'				<img src="' + pProfilePictureUrl + '"/>' +
-	'			</div>' +
-	'        </a>' +
+	'	<table class="thumbnailInnerTable"><tr><td valign="top">';
+	if (pOwnerUrl) {
+		toPrepend +=
+		'		<a href="' + pOwnerUrl + '">' +
+		'			<div class="thumbnailDiv" valign="top">' +
+		'				<img src="' + pProfilePictureUrl + '"/>' +
+		'			</div>' +
+		'        </a>';
+	}
+	else {
+		toPrepend +=
+		'			<div class="thumbnailDiv" valign="top">' +
+		'				<img src="' + mContextPath + '/public/images/icons/dummy_user_small.png"/>' +
+		'			</div>';	
+	}
+	toPrepend += 
 	'	</td></tr></table>' +
 	'</td><td valign="top">' +
 	'	<div class="highlightedBgLight">' +
 	'		<table width="100%">' +
 	'			<tr>' +
-	'				<td>' +
-	'					<label class="small"><a href="' + pOwnerUrl + '">' + pOwnerName + '</a>, ' + pCommentDate + '</label>' +
-	'				</td>';
+	'				<td>';
+	if (pOwnerUrl) {
+		// Normal comment.
+		if (!pSystemComment) {
+			toPrepend += '					<label class="small"><a href="' + pOwnerUrl + '">' + pOwnerName + '</a>, ' + pCommentDate + '</label>';
+		}
+		// System comment in the name of a normal user.
+		else {
+			toPrepend += '					<label class="small"><a href="' + pOwnerUrl + '">' + pOwnerName + '</a> (system generated), ' + pCommentDate + '</label>';
+		}
+	}
+	// Pure system comment.
+	else {
+		toPrepend += '					<label class="small">System comment, ' + pCommentDate + '</label>';
+	}
+	toPrepend += '				</td>';
 	if (pEditEnabled) {
 		toPrepend += '				<td style="text-align: right;">' +
 			'					<label class="small"><span class="linkStyleActionSmall" onClick="removeComment(this);">' + mDeleteCommentLabel + '</span> | <span class="linkStyleActionSmall" onClick="editComment(this);">' + mEditCommentLabel + '</span></label>' +

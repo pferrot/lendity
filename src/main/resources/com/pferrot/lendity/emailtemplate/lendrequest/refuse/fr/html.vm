@@ -2,11 +2,11 @@
 
 Hello $requesterFirstName,<br/><br/>
 
-$ownerDisplayName refuse de te prêter l'objet suivant:<br/><br/>
+$ownerDisplayName a refusé de te prêter l'objet suivant:<br/><br/>
 
 <b>$itemTitle</b><br/><br/>
 
-Tu peux encore prendre contact avec $ownerFirstName en répondant à cet e-mail si tu veux connaître les raisons de ce refus.<br/><br/>
+Tu peux encore contacter $ownerDisplayName en ajoutant un commentaire sur <a href="$lendTransactionUrl">cette transaction</a>.<br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
 

@@ -4,6 +4,12 @@ $requesterDisplayName souhaite t'emprunter l'objet suivant:
 
 $itemTitle
 
+Du: $startDateLabel
+Jusqu'au: $endDateLabel
+
+Message:
+$text
+
 Merci de lui rendre réponse le plus rapidement possible depuis cette page: $lendTransactionUrl
 
 A bientôt sur $siteName.

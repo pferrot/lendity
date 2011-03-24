@@ -370,59 +370,6 @@ function resetLendBorrowerFields() {
 
 /***************************************************************************************************
  * 
- * LEND BACK ITEM
- * 
- ***************************************************************************************************/
-function hideLendBackItemTooltip(pTooltipTarget) {
-	hideTooltip(pTooltipTarget, $j('#lendBackForm'), $j('#lendBackDiv'));
-}
-
-function lendBackQtipOnHide(pEvent) {
-	qtipOnHide(this.elements['content'], this.elements['target'], $j('#lendBackDiv'));
-}
-
-/*
- * That method will display / hide the tooltip that is used to lend an item.
- */
-var mLendBackItemTooltip;
-var mLendBackItemTooltipTarget;
-function lendBackItemTooltip(pTooltipTarget, pItemID, pRedirectID) {
-  // The tooltip is just closed.
-  if ($j(pTooltipTarget).data("qtip")) {
-	  hideLendBackItemTooltip(pTooltipTarget);
-  }
-  // The tooltip is opened.
-  else {
-	  	// Reset the form when it is displayed.
-	    document.getElementById('lendBackForm').reset();
-	    // Hide error messages if any.
-	    $j('#lendBackForm').find('input').removeClass('validationError');
-		// Set the correct itemID.
-		$j('#lendBackItemId').val(pItemID);
-		// Set the correct redirectID.
-		$j('#lendBackRedirectId').val(pRedirectID);
-		
-	  	mLendBackItemTooltipTarget = pTooltipTarget;
-	  	mLendBackItemTooltip = createFormTooltip($j(pTooltipTarget), $j('#lendBackForm'), lendBackQtipOnHide);
-	}    
-}
-
-/*
- * Click the submit button in the tooltip when an item is back.
- */
-function submitLendBackItem() {	
-	document.getElementById("lendBackActionButton").click();
-}
-
-/*
- * Click the cancel button to close the lend back item tooltip.
- */
-function cancelLendBackItem() {
-	hideLendBackItemTooltip(mLendBackItemTooltipTarget);
-}
-
-/***************************************************************************************************
- * 
  * DELETE ITEM
  * 
  ***************************************************************************************************/
@@ -768,6 +715,7 @@ function requestLendTooltip(pTooltipTarget, pItemID, pRedirectID) {
 	    document.getElementById('requestLendForm').reset();
 	    // Hide error messages if any.
 	    $j('#requestLendForm').find('input').removeClass('validationError');
+	    $j('#requestLendForm').find('textarea').removeClass('validationError');
 		// Set the correct ID.
 		$j('#requestLendItemId').val(pItemID);
 		// Set the correct redirectID.
@@ -802,6 +750,15 @@ function submitRequestLend() {
 	}
 	else {
 		jqueryEndDate.removeClass("validationError");
+	}
+
+	var jqueryText = $j("#requestLendText");
+	if (jqueryText.val() == '') {
+		jqueryText.addClass("validationError");
+		noError = false;
+	}
+	else {
+		jqueryText.removeClass("validationError");
 	}
 	
 	if (noError) {

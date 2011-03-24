@@ -1,0 +1,69 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle"><h:outputText value="#{messages.evaluation_evaluationOverviewTitle}" /></ui:define>
+	<ui:param name="contentHeader" value="#{messages.evaluation_evaluationOverviewTitle}" />
+
+		<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				
+				<!-- Item Edit Form -->
+				<h2 class="gt-form-head"><h:outputText value="#{messages.evaluation_evaluationOverviewTitle}"/></h2>
+				<div class="gt-form gt-content-box">
+				
+				<f:view>
+
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<div class="highlightedBg"><label><h:outputText value="#{messages.evaluation_score}"/></label></div>
+						<h:outputText value="#{evaluationOverviewController.evaluation.score}"/>			
+					</div><!-- /form row -->					
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<div class="highlightedBg"><label><h:outputText value="#{messages.evaluation_text}"/></label></div>
+						<h:outputText value="#{evaluationOverviewController.text}" escape="false"/>			
+					</div><!-- /form row -->					
+					
+				</f:view>		
+				</div>			
+				<!-- /Item Edit Form -->
+				
+			</div>
+			<!-- /main content -->
+
+			<!-- sidebar -->
+			<div class="gt-sidebar">
+				
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

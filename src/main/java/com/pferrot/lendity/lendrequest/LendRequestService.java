@@ -18,15 +18,21 @@ import com.pferrot.lendity.dao.LendRequestDao;
 import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.lendrequest.exception.LendRequestException;
 import com.pferrot.lendity.lendtransaction.LendTransactionService;
+import com.pferrot.lendity.lendtransaction.LendTransactionWithCommentService;
+import com.pferrot.lendity.lendtransaction.exception.LendTransactionException;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.LendRequest;
 import com.pferrot.lendity.model.LendRequestResponse;
+import com.pferrot.lendity.model.LendTransactionStatus;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.utils.HtmlUtils;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.lendity.utils.UiUtils;
 import com.pferrot.security.SecurityUtils;
 
 public class LendRequestService {
@@ -40,6 +46,7 @@ public class LendRequestService {
 	private MailManager mailManager;
 	private PersonService personService;
 	private LendTransactionService lendTransactionService;
+	private LendTransactionWithCommentService lendTransactionWithCommentService;
 
 	public void setMailManager(final MailManager pMailManager) {
 		this.mailManager = pMailManager;
@@ -68,6 +75,11 @@ public class LendRequestService {
 	public void setLendTransactionService(
 			LendTransactionService lendTransactionService) {
 		this.lendTransactionService = lendTransactionService;
+	}
+
+	public void setLendTransactionWithCommentService(
+			LendTransactionWithCommentService lendTransactionWithCommentService) {
+		this.lendTransactionWithCommentService = lendTransactionWithCommentService;
 	}
 
 	public LendRequest findLendRequest(final Long pLendRequestId) {
@@ -128,25 +140,30 @@ public class LendRequestService {
 	 * informing him that the current user would like to borrow the item.
 	 * Returns an array containing {LendRequest ID, LendTransaction ID}
 
-	 * @param pConnection
 	 * @param pRequester
+	 * @param pItem
+	 * @param pStartDate
+	 * @param pEndDate
+	 * @param pText
 	 * @return
-	 * @throws ConnectionRequestException 
+	 * @throws LendRequestException 
 	 */
 	public Long[] createLendRequest(final Person pRequester, final Item pItem,
-			final Date pStartDate, final Date pEndDate) throws LendRequestException {
+			final Date pStartDate, final Date pEndDate, final String pText) throws LendRequestException {
 		try {
 			if (getLendRequestAllowed(pRequester, pItem) != LendRequestConsts.REQUEST_LEND_ALLOWED) {
 				throw new ConnectionRequestException("Lend request not allowed.");
 			}
 
 			final LendRequest lendRequest = new LendRequest();
+			lendRequest.setTitle(pItem.getTitle());
 			lendRequest.setOwner(pItem.getOwner());
 			lendRequest.setItem(pItem);
 			lendRequest.setRequester(pRequester);
 			lendRequest.setRequestDate(new Date());
 			lendRequest.setStartDate(pStartDate);
 			lendRequest.setEndDate(pEndDate);
+			lendRequest.setText(pText);
 			
 			Long lendRequestId = lendRequestDao.createLendRequest(lendRequest);
 			
@@ -165,6 +182,10 @@ public class LendRequestService {
 			objects.put("requesterLastName", pRequester.getLastName());
 			objects.put("requesterDisplayName", pRequester.getDisplayName());
 			objects.put("itemTitle", pItem.getTitle());
+			objects.put("startDateLabel", UiUtils.getDateAsString(lendRequest.getStartDate(), I18nUtils.getDefaultLocale()));
+			objects.put("endDateLabel", UiUtils.getDateAsString(lendRequest.getEndDate(), I18nUtils.getDefaultLocale()));
+			objects.put("textEscaped", HtmlUtils.escapeHtmlAndReplaceCr(lendRequest.getText()));
+			objects.put("text", lendRequest.getText());
 			objects.put("signature", Configuration.getSiteName());
 			objects.put("siteName", Configuration.getSiteName());
 			objects.put("siteUrl", Configuration.getRootURL());
@@ -175,7 +196,7 @@ public class LendRequestService {
 					lendTransactionId.toString()));
 			
 			
-			// TODO: localization
+			// TODO: localization 
 			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lendrequest/ask/fr";
 			
 			Map<String, String> to = new HashMap<String, String>();
@@ -201,12 +222,12 @@ public class LendRequestService {
 		}
 	}
 	
-	public Long[] createLendRequestFromCurrentUser(final Item pItem, final Date pStartDate, final Date pEndDate) throws LendRequestException {
-		return createLendRequest(getCurrentPerson(), pItem, pStartDate, pEndDate);		
+	public Long[] createLendRequestFromCurrentUser(final Item pItem, final Date pStartDate, final Date pEndDate, final String pText) throws LendRequestException {
+		return createLendRequest(getCurrentPerson(), pItem, pStartDate, pEndDate, pText);		
 	}
 
-	public Long[] createLendRequestFromCurrentUser(final Long pItemId, final Date pStartDate, final Date pEndDate) throws LendRequestException {
-		return createLendRequestFromCurrentUser(itemDao.findItem(pItemId), pStartDate, pEndDate);		
+	public Long[] createLendRequestFromCurrentUser(final Long pItemId, final Date pStartDate, final Date pEndDate, final String pText) throws LendRequestException {
+		return createLendRequestFromCurrentUser(itemDao.findItem(pItemId), pStartDate, pEndDate, pText);		
 	}
 
 	/**
@@ -219,15 +240,20 @@ public class LendRequestService {
 	public void updateAcceptLendRequest(final LendRequest pLendRequest) throws LendRequestException {
 		try {
 			CoreUtils.assertNotNull(pLendRequest);
+			CoreUtils.assertTrue(isAcceptLendRequestAvailable(pLendRequest));
 
 			setLendRequestResponse(pLendRequest, (LendRequestResponse)listValueDao.findListValue(LendRequestResponse.ACCEPT_LABEL_CODE));
-			
-			sendResponseEmail(pLendRequest, Configuration.getSiteName() + ": demande d'emprunt acceptée",
-					"com/pferrot/lendity/emailtemplate/lendrequest/accept/fr");
 
 			if (log.isInfoEnabled()) {
 				log.info("Lend request '" + pLendRequest.getId() + "' is accepted by '" + pLendRequest.getOwner() + "'.");
 			}
+
+			if (pLendRequest.getTransaction() != null) {
+				lendTransactionWithCommentService.updateInitializedToOpened(pLendRequest.getTransaction());
+			}
+			
+			sendResponseEmail(pLendRequest, Configuration.getSiteName() + ": demande d'emprunt acceptée",
+				"com/pferrot/lendity/emailtemplate/lendrequest/accept/fr");
 		}
 		catch (LendRequestException e) {
 			throw e;
@@ -235,6 +261,19 @@ public class LendRequestService {
 		catch (Exception e) {
 			throw new LendRequestException(e);
 		}			
+	}
+	
+	public boolean isAcceptLendRequestAvailable(final LendRequest pLendRequest) {
+		if (pLendRequest == null) {
+			return false;
+		}
+		final LendTransactionStatus status = pLendRequest.getTransaction().getStatus();
+		final boolean isCurrentUserLender = pLendRequest.getTransaction().getLender().getId().equals(PersonUtils.getCurrentPersonId());		
+		return LendTransactionStatus.INITIALIZED_LABEL_CODE.equals(status.getLabelCode()) && isCurrentUserLender;
+	}
+	
+	public boolean isRefuseLendRequestAvailable(final LendRequest pLendRequest) {
+		return isAcceptLendRequestAvailable(pLendRequest);
 	}
 
 	/**
@@ -247,6 +286,7 @@ public class LendRequestService {
 	public void updateRefuseLendRequest(final LendRequest pLendRequest) throws LendRequestException {
 		try {
 			CoreUtils.assertNotNull(pLendRequest);
+			CoreUtils.assertTrue(isRefuseLendRequestAvailable(pLendRequest));
 
 			setLendRequestResponse(pLendRequest, (LendRequestResponse)listValueDao.findListValue(LendRequestResponse.REFUSE_LABEL_CODE));
 			
@@ -256,6 +296,47 @@ public class LendRequestService {
 
 			if (log.isInfoEnabled()) {
 				log.info("Lend request '" + pLendRequest.getId() + "' is refused by '" + pLendRequest.getOwner() + "'.");
+			}
+			
+			if (pLendRequest.getTransaction() != null) {
+				lendTransactionWithCommentService.updateInitializedToCanceledRefused(pLendRequest.getTransaction());
+			}
+		}
+		catch (LendRequestException e) {
+			throw e;
+		}
+		catch (Exception e) {
+			throw new LendRequestException(e);
+		}			
+	}
+
+
+	public boolean isCancelLendRequestAvailable(final LendRequest pLendRequest) {
+		if (pLendRequest == null || pLendRequest.getTransaction() == null) {
+			return false;
+		}		
+		return lendTransactionService.isInitializedOrOpenedToCanceledAvailable(pLendRequest.getTransaction());
+	}
+	
+	/**
+	 * The transaction is canceled: cancel the request in case the owner did not reply yet.
+	 * 
+	 * @param pLendRequest
+	 * @throws LendRequestException
+	 */
+	public void updateCancelLendRequest(final LendRequest pLendRequest) throws LendRequestException {
+		try {
+			CoreUtils.assertNotNull(pLendRequest);
+			CoreUtils.assertTrue(isCancelLendRequestAvailable(pLendRequest));
+
+			// The requester cancels the lend request before the owner replied to it.
+			// In case the transaction is canceled after the owner replied, one keep the original reply.
+			if (pLendRequest.getResponse() == null) {
+				cancelLendRequest(pLendRequest, (LendRequestResponse)listValueDao.findListValue(LendRequestResponse.NA_LABEL_CODE));
+			}
+			
+			if (pLendRequest.getTransaction() != null) {
+				lendTransactionWithCommentService.updateInitializedOrOpenedToCanceled(pLendRequest.getTransaction());
 			}
 		}
 		catch (LendRequestException e) {
@@ -343,17 +424,37 @@ public class LendRequestService {
 		CoreUtils.assertNotNull(pLendRequest);
 		Person person = pLendRequest.getOwner();
 		if (!person.getId().equals(PersonUtils.getCurrentPersonId())) {
-			throw new LendRequestException("Only the current user can execute that operation.");
+			throw new LendRequestException("Only the owner can execute that operation.");
 		}
-	}	
+	}
+
+	private void assertRequesterIsCurrentUser(final LendRequest pLendRequest) throws LendRequestException {
+		CoreUtils.assertNotNull(pLendRequest);
+		Person person = pLendRequest.getRequester();
+		if (!person.getId().equals(PersonUtils.getCurrentPersonId())) {
+			throw new LendRequestException("Only the requester can execute that operation.");
+		}
+	}
 	
 	private void setLendRequestResponse(final LendRequest pLendRequest, final LendRequestResponse pLendRequestResponse) throws LendRequestException {
 		CoreUtils.assertNotNull(pLendRequest);
 		CoreUtils.assertNotNull(pLendRequestResponse);
 		
 		assertOwnerIsCurrentUser(pLendRequest);
+
+		if (pLendRequest.getResponse() != null) {
+			throw new LendRequestException("Lend request with ID '" + pLendRequest.getId().toString() + "' already has a response.");
+		}
+		pLendRequest.setResponse(pLendRequestResponse);
+		pLendRequest.setResponseDate(new Date());
+	}
+
+	private void cancelLendRequest(final LendRequest pLendRequest, final LendRequestResponse pLendRequestResponse) throws LendRequestException {
+		CoreUtils.assertNotNull(pLendRequest);
+		CoreUtils.assertNotNull(pLendRequestResponse);
 		
-//		final Person connection = pConnectionRequest.getConnection();
+		assertRequesterIsCurrentUser(pLendRequest);
+		
 		if (pLendRequest.getResponse() != null) {
 			throw new LendRequestException("Lend request with ID '" + pLendRequest.getId().toString() + "' already has a response.");
 		}

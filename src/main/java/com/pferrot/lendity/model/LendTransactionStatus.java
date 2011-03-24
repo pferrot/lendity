@@ -17,11 +17,11 @@ public class LendTransactionStatus extends OrderedListValue {
 	// When the item is lent.
 	public static final String IN_PROGRESS_LABEL_CODE = "lendTransaction_statusInProgress";	
 	// Item has been given back, but still need evaluation from both.
-	public static final String WAITING_EVALUATION_FROM_BOTH_LABEL_CODE = "lendTransaction_statusWaitingEvaluationBoth";
+//	public static final String WAITING_EVALUATION_FROM_BOTH_LABEL_CODE = "lendTransaction_statusWaitingEvaluationBoth";
 	// Item has been given back, only borrower must still evaluate.
-	public static final String WAITING_EVALUATION_FROM_BORROWER_CODE = "lendTransaction_statusWaitingEvaluationBorrower";
+//	public static final String WAITING_EVALUATION_FROM_BORROWER_CODE = "lendTransaction_statusWaitingEvaluationBorrower";
 	// Item has been given back, only lender must still evaluate
-	public static final String WAITING_EVALUATION_FROM_LENDER_LABEL_CODE = "lendTransaction_statusWaitingEvaluationLender";
+//	public static final String WAITING_EVALUATION_FROM_LENDER_LABEL_CODE = "lendTransaction_statusWaitingEvaluationLender";
 	// Everything done.
 	public static final String COMPLETED_LABEL_CODE = "lendTransaction_statusCompleted";
 	// Transaction canceled. Can happen at any time except when in status

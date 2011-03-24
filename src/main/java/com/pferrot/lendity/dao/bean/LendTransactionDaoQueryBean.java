@@ -1,5 +1,7 @@
 package com.pferrot.lendity.dao.bean;
 
+import java.util.Date;
+
 
 public class LendTransactionDaoQueryBean {
 	
@@ -9,8 +11,14 @@ public class LendTransactionDaoQueryBean {
 	private Long[] statusIds = null;
 	private Long itemId = null;
 	private Long lendRequestId;
+	private Long toEvaluateByPersonId;
+	private Long completedStatusId;
 	private String orderBy = "creationDate";
 	private Boolean orderByAscending = Boolean.FALSE;
+	private Date startDateMin = null;
+	private Date startDateMax = null;
+	private Date endDateMin = null;
+	private Date endDateMax = null;	
 	private int firstResult = 0;
 	private int maxResults = 0;
 
@@ -62,6 +70,22 @@ public class LendTransactionDaoQueryBean {
 		this.lendRequestId = lendRequestId;
 	}
 
+	public Long getToEvaluateByPersonId() {
+		return toEvaluateByPersonId;
+	}
+
+	public void setToEvaluateByPersonId(Long toEvaluateByPersonId) {
+		this.toEvaluateByPersonId = toEvaluateByPersonId;
+	}
+
+	public Long getCompletedStatusId() {
+		return completedStatusId;
+	}
+
+	public void setCompletedStatusId(Long completedStatusId) {
+		this.completedStatusId = completedStatusId;
+	}
+
 	public String getOrderBy() {
 		return orderBy;
 	}
@@ -76,6 +100,38 @@ public class LendTransactionDaoQueryBean {
 
 	public void setOrderByAscending(Boolean orderByAscending) {
 		this.orderByAscending = orderByAscending;
+	}
+
+	public Date getStartDateMin() {
+		return startDateMin;
+	}
+
+	public void setStartDateMin(Date startDateMin) {
+		this.startDateMin = startDateMin;
+	}
+
+	public Date getStartDateMax() {
+		return startDateMax;
+	}
+
+	public void setStartDateMax(Date startDateMax) {
+		this.startDateMax = startDateMax;
+	}
+
+	public Date getEndDateMin() {
+		return endDateMin;
+	}
+
+	public void setEndDateMin(Date endDateMin) {
+		this.endDateMin = endDateMin;
+	}
+
+	public Date getEndDateMax() {
+		return endDateMax;
+	}
+
+	public void setEndDateMax(Date endDateMax) {
+		this.endDateMax = endDateMax;
 	}
 
 	public int getFirstResult() {

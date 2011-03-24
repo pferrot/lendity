@@ -35,6 +35,16 @@
 				</td>
 			</tr>
 			<tr>
+				<td colspan="2">
+					<nobr><h:outputText value="#{messages.lendRequest_text}:" /> *</nobr>
+				</td>				
+			</tr>
+			<tr>
+				<td colspan="2">
+					<h:inputTextarea id="requestLendText" value="#{requestLendTooltipController.text}" style="width: 100%;" rows="3"/>
+				</td>
+			</tr>
+			<tr>
 				<td colspan="2" style="text-align: center;">
 					<input type="button" class="fontSizeSmall stylishButton" onclick="submitRequestLend()" value="#{messages.navigation_ok}"/>
 					<input type="button" class="fontSizeSmall stylishButton" onclick="cancelRequestLend()" value="#{messages.navigation_cancel}"/>

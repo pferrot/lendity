@@ -1,37 +1,28 @@
 package com.pferrot.lendity.lendtransaction.jsf;
 
-import java.util.Date;
-import java.util.Locale;
-
-import javax.faces.context.FacesContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import org.springframework.security.AccessDeniedException;
+import org.springframework.web.servlet.support.JstlUtils;
 
 import com.pferrot.lendity.PagesURL;
-import com.pferrot.lendity.i18n.I18nUtils;
-import com.pferrot.lendity.item.ItemUtils;
-import com.pferrot.lendity.lendtransaction.LendTransactionService;
+import com.pferrot.lendity.evaluation.EvaluationService;
+import com.pferrot.lendity.lendrequest.exception.LendRequestException;
+import com.pferrot.lendity.lendtransaction.exception.LendTransactionException;
 import com.pferrot.lendity.model.LendTransaction;
 import com.pferrot.lendity.model.LendTransactionStatus;
 import com.pferrot.lendity.model.Person;
-import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
-import com.pferrot.lendity.utils.UiUtils;
 
 @ViewController(viewIds={"/auth/lendtransaction/lendTransactionOverview.jspx"})
-public class LendTransactionOverviewController
+public class LendTransactionOverviewController extends AbstractLendTransactionOverviewEditController
 {
 	private final static Log log = LogFactory.getLog(LendTransactionOverviewController.class);
-	
-	private LendTransactionService lendTransactionService;
-	private PersonService personService;
-	private Long lendTransactionId;
-	private LendTransaction lendTransaction;
+		
+	private EvaluationService evaluationService;
 	
 	@InitView
 	public void initView() {
@@ -40,13 +31,13 @@ public class LendTransactionOverviewController
 			final String idString = JsfUtils.getRequestParameter(PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID);
 			LendTransaction lendTransaction = null;
 			if (idString != null) {
-				lendTransactionId = Long.parseLong(idString);
-				lendTransaction = lendTransactionService.findLendTransaction(lendTransactionId);
+				setLendTransactionId(Long.parseLong(idString));
+				lendTransaction = getLendTransactionService().findLendTransaction(getLendTransactionId());
 				// Access control check.
-				if (!lendTransactionService.isCurrentUserAuthorizedToView(lendTransaction)) {
+				if (!getLendTransactionService().isCurrentUserAuthorizedToView(lendTransaction)) {
 					JsfUtils.redirect(PagesURL.ERROR_ACCESS_DENIED);
 					if (log.isWarnEnabled()) {
-						log.warn("Access denied (person view): user = " + PersonUtils.getCurrentPersonDisplayName() + " (" + PersonUtils.getCurrentPersonId() + "), lendTransaction = " + idString);
+						log.warn("Access denied (lend transaction view): user = " + PersonUtils.getCurrentPersonDisplayName() + " (" + PersonUtils.getCurrentPersonId() + "), lendTransaction = " + idString);
 					}
 					return;
 				}
@@ -62,82 +53,22 @@ public class LendTransactionOverviewController
 		}		
 	}
 	
-	public LendTransactionService getLendTransactionService() {
-		return lendTransactionService;
-	}
-
-	public void setLendTransactionService(
-			LendTransactionService lendTransactionService) {
-		this.lendTransactionService = lendTransactionService;
-	}
-
-	public PersonService getPersonService() {
-		return personService;
-	}
-
-	public void setPersonService(PersonService personService) {
-		this.personService = personService;
-	}
-
-	public Long getLendTransactionId() {
-		return lendTransactionId;
-	}
-
-	public void setLendTransactionId(Long lendTransactionId) {
-		this.lendTransactionId = lendTransactionId;
-	}
-
-	public LendTransaction getLendTransaction() {
-		return lendTransaction;
-	}
-
-	public void setLendTransaction(LendTransaction lendTransaction) {
-		this.lendTransaction = lendTransaction;
+	public EvaluationService getEvaluationService() {
+		return evaluationService;
 	}
 	
-	public String getBorrowerOverviewHref() {
-		return PersonUtils.getPersonOverviewPageUrl(getLendTransaction().getBorrower().getId().toString());
+	public void setEvaluationService(EvaluationService evaluationService) {
+		this.evaluationService = evaluationService;
 	}
 	
-	public String getLenderOverviewHref() {
-		return PersonUtils.getPersonOverviewPageUrl(getLendTransaction().getLender().getId().toString());
+	public boolean isEditAvailable() {
+		return getLendTransactionService().isCurrentUserAuthorizedToEdit(getLendTransaction());
 	}
 	
-	public String getItemOverviewHref() {
-		return ItemUtils.getItemOverviewPageUrl(getLendTransaction().getItem().getId().toString());
-	}
-	
-	public String getStatusLabel() {
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-		return I18nUtils.getMessageResourceString(getLendTransaction().getStatus().getLabelCode(), locale);		
-	}
-
-	public String getCreationDateLabel() {
-		return UiUtils.getDateAsString(getLendTransaction().getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
-	}
-	
-	public String getStartDateLabel() {
-		final Date startDate = getLendTransaction().getStartDate();
-		if (startDate != null) {
-			return UiUtils.getDateAsString(startDate, FacesContext.getCurrentInstance().getViewRoot().getLocale());
-		}
-		else {
-			return "";
-		}
-	}
-
-	public String getEndDateLabel() {
-		final Date endDate = getLendTransaction().getEndDate();
-		if (endDate != null) {
-			return UiUtils.getDateAsString(endDate, FacesContext.getCurrentInstance().getViewRoot().getLocale());
-		}
-		else {
-			return "";
-		}
-	}
-
-	public boolean isBorrowerHrefAvailable() {
-		return getLendTransaction().getBorrower() != null;
+	public String getLendTransactionEditHref() {
+		return JsfUtils.getFullUrl(PagesURL.LEND_TRANSACTION_EDIT,
+				PagesURL.LEND_TRANSACTION_EDIT_PARAM_LEND_TRANSACTION_ID,
+				getLendTransaction().getId().toString());
 	}
 
 	public String getWhatIsNextLabel() {
@@ -176,36 +107,6 @@ public class LendTransactionOverviewController
 				return LendTransactionStatus.IN_PROGRESS_LABEL_CODE;
 			}			
 		}
-		else if (LendTransactionStatus.WAITING_EVALUATION_FROM_BOTH_LABEL_CODE.equals(status.getLabelCode())) {
-			// Lender must evaluate.
-			if (isCurrentUserLender) {
-				return LendTransactionStatus.WAITING_EVALUATION_FROM_BOTH_LABEL_CODE;
-			}
-			// Borrower must evaluate.
-			else if (isCurrentUserBorrower) {
-				return LendTransactionStatus.WAITING_EVALUATION_FROM_BOTH_LABEL_CODE;
-			}			
-		}
-		else if (LendTransactionStatus.WAITING_EVALUATION_FROM_BORROWER_CODE.equals(status.getLabelCode())) {
-			// Lender has nothing to do.
-			if (isCurrentUserLender) {
-				return LendTransactionStatus.WAITING_EVALUATION_FROM_BORROWER_CODE;
-			}
-			// Borrower must evaluate.
-			else if (isCurrentUserBorrower) {
-				return LendTransactionStatus.WAITING_EVALUATION_FROM_BORROWER_CODE;
-			}			
-		}
-		else if (LendTransactionStatus.WAITING_EVALUATION_FROM_LENDER_LABEL_CODE.equals(status.getLabelCode())) {
-			// Lender must evaluate.
-			if (isCurrentUserLender) {
-				return LendTransactionStatus.WAITING_EVALUATION_FROM_LENDER_LABEL_CODE;
-			}
-			// Borrower has nothing to do.
-			else if (isCurrentUserBorrower) {
-				return LendTransactionStatus.WAITING_EVALUATION_FROM_LENDER_LABEL_CODE;
-			}			
-		}
 		else if (LendTransactionStatus.COMPLETED_LABEL_CODE.equals(status.getLabelCode())) {
 			// Lender has nothing to do.
 			if (isCurrentUserLender) {
@@ -230,12 +131,107 @@ public class LendTransactionOverviewController
 			throw new RuntimeException("Unknown status: " + status.getLabelCode());
 		}
 		
-		final Person currentPerson = personService.getCurrentPerson();
+		final Person currentPerson = getPersonService().getCurrentPerson();
 		if (currentPerson.getUser().isAdmin()) {
 			return "Admins can just watch...";
 		}
 		else {
 			throw new RuntimeException("User should not be here: " + currentPerson.getUser().getUsername());
 		}
+	}
+	
+	public boolean isAcceptRequestAvailable() {
+		return getLendRequestService().isAcceptLendRequestAvailable(getLendTransaction().getLendRequest());
+	}
+	
+	public String acceptRequest() {
+		try {
+			getLendRequestService().updateAcceptLendRequest(getLendTransaction().getLendRequest());
+			return "success";
+		}
+		catch (LendRequestException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public boolean isRefuseRequestAvailable() {
+		return getLendRequestService().isRefuseLendRequestAvailable(getLendTransaction().getLendRequest());
+	}
+	
+	public String refuseRequest() {
+		try {			
+			getLendRequestService().updateRefuseLendRequest(getLendTransaction().getLendRequest());
+			return "success";
+		}
+		catch (LendRequestException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public boolean isLendAvailable() {
+		return getLendTransactionService().isOpenedToInProgressAvailable(getLendTransaction());
+	}
+	
+	public String lend() {
+		try {
+			getLendTransactionWithCommentService().updateOpenedToInProgress(getLendTransaction());
+			return "success";
+		}
+		catch (LendTransactionException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	
+	public boolean isGiveOrSellAvailable() {
+		return getLendTransactionService().isGiveOrSellAvailable(getLendTransaction());
+	}
+	
+	public String giveOrSell() {
+		try {
+			getLendTransactionWithCommentService().updateGiveOrSellItem(getLendTransaction());
+			return "success";
+		}
+		catch (LendTransactionException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public boolean isCancelAvailable() {
+		return getLendTransactionService().isInitializedOrOpenedToCanceledAvailable(getLendTransaction());
+	}
+	
+	public String cancel() {
+		try {
+			// updateOpenedToCanceled does exactly the same.
+			getLendRequestService().updateCancelLendRequest(getLendTransaction().getLendRequest());
+			return "success";
+		}
+		catch (LendRequestException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public boolean isCompleteAvailable() {
+		return getLendTransactionService().isInProgressToCompletedAvailable(getLendTransaction());
+	}
+	
+	public String complete() {
+		try {
+			getLendTransactionWithCommentService().updateInProgressToCompleted(getLendTransaction());
+			return "success";
+		}
+		catch (LendTransactionException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public boolean isEvaluateAvailable() {
+		return getEvaluationService().isEvaluationAsBorrowerAuthorized(PersonUtils.getCurrentPersonId(), getLendTransaction()) ||
+			   getEvaluationService().isEvaluationAsLenderAuthorized(PersonUtils.getCurrentPersonId(), getLendTransaction());
+	}
+
+	public String getEvaluationAddHref() {
+		return JsfUtils.getFullUrl(PagesURL.EVALUATION_ADD, PagesURL.EVALUATION_ADD_PARAM_LEND_TRANSACTION_ID, getLendTransaction().getId().toString());
 	}
 }

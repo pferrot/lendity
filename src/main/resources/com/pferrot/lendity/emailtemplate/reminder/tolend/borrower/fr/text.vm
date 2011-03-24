@@ -1,0 +1,9 @@
+Hello $borrowerFirstName,
+
+Ceci est un rappel concernant l'objet que $lenderName devrait te prêter le $startDateLabel.
+
+Accéder à la transaction $lendTransactionTitle: $lendTransactionUrl
+
+A bientôt sur $siteName.
+
+$siteUrl

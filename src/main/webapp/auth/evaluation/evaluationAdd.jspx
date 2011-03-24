@@ -1,0 +1,100 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle"><h:outputText value="#{messages.evaluation_evaluationAddTitle}" /></ui:define>
+	<ui:param name="contentHeader" value="#{messages.evaluation_evaluationAddTitle}" />
+
+		<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				
+				<!-- Item Edit Form -->
+				<h2 class="gt-form-head"><h:outputText value="#{messages.evaluation_evaluationAddTitle}"/></h2>
+				<div class="gt-form gt-content-box">
+				
+				<f:view>
+
+					<h:form id="evaluationAddForm" prependId="false">
+
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.evaluation_score}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="score"></h:message>			
+						<h:selectOneMenu id="score" 
+						    value="#{evaluationAddController.score}" 
+						    converter="javax.faces.Long" 
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}">
+							<f:selectItems value="#{evaluationAddController.scoreSelectItems}"/>
+						</h:selectOneMenu>			
+					</div><!-- /form row -->					
+					
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.evaluation_text}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="text"></h:message>			
+						<h:inputTextarea id="text" immediate="true" 
+						    styleClass="gt-form-textarea"
+						    rows="5"
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}"
+							value="#{evaluationAddController.text}"
+							validator="#{evaluationAddController.validateTextSize}"/>						
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row">
+						<br/>
+						<table class="buttonsTable"><tr><td>
+						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{evaluationAddController.submit}" />
+						</td><td>
+						<h:outputLink styleClass="stylishButton"  value="#{authenticationController.myLendTransactionsToEvaluateURL}">
+           					<h:outputText value="#{messages.navigation_cancel}"/>
+         				</h:outputLink>
+         				</td></tr></table>
+         			</div>
+					<!-- /form row -->
+					
+					</h:form>
+				</f:view>		
+				</div>			
+				<!-- /Item Edit Form -->
+				
+			</div>
+			<!-- /main content -->
+
+			<!-- sidebar -->
+			<div class="gt-sidebar">
+				
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

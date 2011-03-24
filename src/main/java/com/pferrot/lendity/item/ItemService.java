@@ -16,13 +16,10 @@ import com.pferrot.lendity.dao.LendTransactionDao;
 import com.pferrot.lendity.dao.bean.ItemDaoQueryBean;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.item.exception.ItemException;
-import com.pferrot.lendity.lendtransaction.LendTransactionService;
-import com.pferrot.lendity.lendtransaction.exception.LendTransactionException;
 import com.pferrot.lendity.model.Document;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
-import com.pferrot.lendity.model.LendTransaction;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.model.Person;
@@ -37,7 +34,6 @@ public class ItemService extends ObjektService {
 	
 	private LendRequestDao lendRequestDao;
 	private LendTransactionDao lendTransactionDao;
-	private LendTransactionService lendTransactionService;
 	private ItemDao itemDao;
 
 	public void setLendRequestDao(LendRequestDao lendRequestDao) {
@@ -46,11 +42,6 @@ public class ItemService extends ObjektService {
 
 	public void setLendTransactionDao(LendTransactionDao lendTransactionDao) {
 		this.lendTransactionDao = lendTransactionDao;
-	}
-	
-	public void setLendTransactionService(
-			LendTransactionService lendTransactionService) {
-		this.lendTransactionService = lendTransactionService;
 	}
 
 	public ItemDao getItemDao() {
@@ -229,202 +220,96 @@ public class ItemService extends ObjektService {
 	 *
 	 * @param pItemId
 	 */
-	public void updateLendBackItem(final Long pItemId) {
-		final Item item = findItem(pItemId);
-		assertCurrentUserAuthorizedToEdit(item);
-		final Person borrower = item.getBorrower();
-		item.setLendBack();
-		updateItem(item);
-		// Send email only if was lent to a user of the system.
-		if (borrower != null) {
-			// Send email (will actually create a JMS message, i.e. it is async).
-			Map<String, String> objects = new HashMap<String, String>();
-			objects.put("borrowerFirstName", borrower.getFirstName());
-			objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
-			objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
-			objects.put("lenderDisplayName", PersonUtils.getCurrentPersonDisplayName());
-			objects.put("itemTitle", item.getTitle());
-			objects.put("signature", Configuration.getSiteName());
-			objects.put("siteName", Configuration.getSiteName());
-			objects.put("siteUrl", Configuration.getRootURL());
-			
-			// TODO: localization
-			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lend/lendback/fr";
-			
-			Map<String, String> to = new HashMap<String, String>();
-			to.put(borrower.getEmail(), borrower.getEmail());
-			
-			Map<String, String> inlineResources = new HashMap<String, String>();
-			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
-			
-			getMailManager().send(Configuration.getNoReplySenderName(), 
-					         Configuration.getNoReplyEmailAddress(),
-					         to,
-					         null, 
-					         null,
-					         Configuration.getSiteName() + ": objet rendu",
-					         objects, 
-					         velocityTemplateLocation,
-					         inlineResources);
-			
-		}
-	}
+//	public void updateLendBackItem(final Long pItemId) {
+//		final Item item = findItem(pItemId);
+//		assertCurrentUserAuthorizedToEdit(item);
+//		final Person borrower = item.getBorrower();
+//		item.setLendBack();
+//		updateItem(item);
+//		// Send email only if was lent to a user of the system.
+//		if (borrower != null) {
+//			// Send email (will actually create a JMS message, i.e. it is async).
+//			Map<String, String> objects = new HashMap<String, String>();
+//			objects.put("borrowerFirstName", borrower.getFirstName());
+//			objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
+//			objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
+//			objects.put("lenderDisplayName", PersonUtils.getCurrentPersonDisplayName());
+//			objects.put("itemTitle", item.getTitle());
+//			objects.put("signature", Configuration.getSiteName());
+//			objects.put("siteName", Configuration.getSiteName());
+//			objects.put("siteUrl", Configuration.getRootURL());
+//			
+//			// TODO: localization
+//			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lend/lendback/fr";
+//			
+//			Map<String, String> to = new HashMap<String, String>();
+//			to.put(borrower.getEmail(), borrower.getEmail());
+//			
+//			Map<String, String> inlineResources = new HashMap<String, String>();
+//			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+//			
+//			getMailManager().send(Configuration.getNoReplySenderName(), 
+//					         Configuration.getNoReplyEmailAddress(),
+//					         to,
+//					         null, 
+//					         null,
+//					         Configuration.getSiteName() + ": objet rendu",
+//					         objects, 
+//					         velocityTemplateLocation,
+//					         inlineResources);
+//			
+//		}
+//	}
 
-	/**
-	 * Lend to a user of the system.
-	 * 
-	 * @param pItemId
-	 * @param pBorrowerId
-	 * @param pBorrowDate
-	 * @throws ItemException 
-	 */
-	public Long updateLendItem(final Long pItemId, final Long pBorrowerId, final Date pBorrowDate, final Date pEndDate) throws ItemException {
-		try{
-			if (log.isInfoEnabled()) {
-				log.info("Lending item to borrower ID: " + pBorrowerId);
-			}
-			final Item item = findItem(pItemId);
-			assertCurrentUserAuthorizedToEdit(item);
-			
-			final Person borrower = getPersonService().findPerson(pBorrowerId);
-			
-		    final boolean itemAlreadyBorrowed = item.isBorrowed();
-			
-			Long lendTransactionId = lendTransactionService.createLendTransaction(borrower, null, item, null,
-					pBorrowDate, pEndDate, Boolean.valueOf(itemAlreadyBorrowed));
-			
-			final Date now = new Date();
-			
-			// Only mark as borrowed and send email dates actually indicate it is
-			// currently lent.
-			if (!itemAlreadyBorrowed &&
-				(pBorrowDate == null || pBorrowDate.before(now)) &&
-				(pEndDate == null || pEndDate.after(now))) {
-				// TODO: check if enabled and allowed to borrow !?
-				item.setBorrowed(borrower, pBorrowDate);
-				updateItem(item);
-				
-				// Send email (will actually create a JMS message, i.e. it is async).
-				Map<String, String> objects = new HashMap<String, String>();
-				objects.put("borrowerFirstName", borrower.getFirstName());
-				objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
-				objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
-				objects.put("lenderDisplayName", PersonUtils.getCurrentPersonDisplayName());
-				objects.put("itemTitle", item.getTitle());
-				objects.put("lendTransactionUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
-						PagesURL.LEND_TRANSACTION_OVERVIEW,
-						PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,
-						lendTransactionId.toString()));
-				objects.put("signature", Configuration.getSiteName());
-				objects.put("siteName", Configuration.getSiteName());
-				objects.put("siteUrl", Configuration.getRootURL());
-				
-				// TODO: localization
-				final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lend/lend/fr";
-				
-				Map<String, String> to = new HashMap<String, String>();
-				to.put(borrower.getEmail(), borrower.getEmail());
-				
-				Map<String, String> inlineResources = new HashMap<String, String>();
-				inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
-				
-				getMailManager().send(Configuration.getNoReplySenderName(), 
-						         Configuration.getNoReplyEmailAddress(),
-						         to,
-						         null, 
-						         null,
-						         Configuration.getSiteName() + ": objet emprunté",
-						         objects, 
-						         velocityTemplateLocation,
-						         inlineResources);
-			}
-			return lendTransactionId;
-		}
-		catch (LendTransactionException e) {
-			throw new ItemException(e);
-		}
-	}
-
-	/**
-	 * Lend to someone not using the system.
-	 * 
-	 * @param pItemId
-	 * @param pBorrowerId
-	 * @param pBorrowDate
-	 * @param pEndDate
-	 * @throws ItemException 
-	 */
-	public Long updateLendItem(final Long pItemId, final String pBorrowerName, final Date pBorrowDate, final Date pEndDate)
-			throws ItemException {
-		try {
-			if (log.isInfoEnabled()) {
-				log.info("Lending item to borrower name: " + pBorrowerName);
-			}
-			final Item item = findItem(pItemId);
-			final boolean itemAlreadyBorrowed = item.isBorrowed();
-			assertCurrentUserAuthorizedToEdit(item);
-			item.setBorrowerName(pBorrowerName);
-			item.setBorrower(null);
-			item.setBorrowDate(pBorrowDate);
-			updateItem(item);
-			return lendTransactionService.createLendTransaction(null, pBorrowerName, item, null,
-					pBorrowDate, pEndDate, Boolean.valueOf(itemAlreadyBorrowed));
-			// No email to send out since the borrower is not a user of the system.
-		}
-		catch (LendTransactionException e) {
-			throw new ItemException(e);
-		}
-	}
-
-	public void updateSendReminderItem(final Long pItemId) {
-		if (log.isInfoEnabled()) {
-			log.info("Sending reminder for item: " + pItemId);
-		}
-		final Item item = findItem(pItemId);
-		assertCurrentUserAuthorizedToEdit(item);
-		
-		if (!item.isBorrowed()) {
-			return;			
-		}
-		
-		final Person borrower = item.getBorrower();
-		if (borrower == null) {
-			return;
-		}
-		
-		item.reminderSentNow();		
-		updateItem(item);
-		
-		// Send email (will actually create a JMS message, i.e. it is async).
-		Map<String, String> objects = new HashMap<String, String>();
-		objects.put("borrowerFirstName", borrower.getFirstName());
-		objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
-		objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
-		objects.put("lenderDisplayName", PersonUtils.getCurrentPersonDisplayName());
-		objects.put("itemTitle", item.getTitle());
-		objects.put("signature", Configuration.getSiteName());
-		objects.put("siteName", Configuration.getSiteName());
-		objects.put("siteUrl", Configuration.getRootURL());
-		
-		// TODO: localization
-		final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lend/reminder/fr";
-		
-		Map<String, String> to = new HashMap<String, String>();
-		to.put(borrower.getEmail(), borrower.getEmail());
-		
-		Map<String, String> inlineResources = new HashMap<String, String>();
-		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
-		
-		getMailManager().send(Configuration.getNoReplySenderName(), 
-				         Configuration.getNoReplyEmailAddress(),
-				         to,
-				         null, 
-				         null,
-				         Configuration.getSiteName() + ": rappel pour objet emprunté",
-				         objects, 
-				         velocityTemplateLocation,
-				         inlineResources);
-	}
+//	public void updateSendReminderItem(final Long pItemId) {
+//		if (log.isInfoEnabled()) {
+//			log.info("Sending reminder for item: " + pItemId);
+//		}
+//		final Item item = findItem(pItemId);
+//		assertCurrentUserAuthorizedToEdit(item);
+//		
+//		if (!item.isBorrowed()) {
+//			return;			
+//		}
+//		
+//		final Person borrower = item.getBorrower();
+//		if (borrower == null) {
+//			return;
+//		}
+//		
+//		item.reminderSentNow();		
+//		updateItem(item);
+//		
+//		// Send email (will actually create a JMS message, i.e. it is async).
+//		Map<String, String> objects = new HashMap<String, String>();
+//		objects.put("borrowerFirstName", borrower.getFirstName());
+//		objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
+//		objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
+//		objects.put("lenderDisplayName", PersonUtils.getCurrentPersonDisplayName());
+//		objects.put("itemTitle", item.getTitle());
+//		objects.put("signature", Configuration.getSiteName());
+//		objects.put("siteName", Configuration.getSiteName());
+//		objects.put("siteUrl", Configuration.getRootURL());
+//		
+//		// TODO: localization
+//		final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lend/reminder/fr";
+//		
+//		Map<String, String> to = new HashMap<String, String>();
+//		to.put(borrower.getEmail(), borrower.getEmail());
+//		
+//		Map<String, String> inlineResources = new HashMap<String, String>();
+//		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+//		
+//		getMailManager().send(Configuration.getNoReplySenderName(), 
+//				         Configuration.getNoReplyEmailAddress(),
+//				         to,
+//				         null, 
+//				         null,
+//				         Configuration.getSiteName() + ": rappel pour objet emprunté",
+//				         objects, 
+//				         velocityTemplateLocation,
+//				         inlineResources);
+//	}
 	
 	public Long createItem(final Item pItem, final Need pNeed) {
 		try {
@@ -452,9 +337,9 @@ public class ItemService extends ObjektService {
  	
 	public void deleteItem(final Item pItem)  {
 		assertCurrentUserAuthorizedToDelete(pItem);
-		// Delete lend requests and lend transactions.
-		lendRequestDao.deleteLendRequestsForItem(pItem.getId());
-		lendTransactionDao.deleteLendTransactionsForItem(pItem.getId());
+		// TODO: update and set item to null?
+		lendRequestDao.updateLendRequestsSetNullItem(pItem.getId());
+		lendTransactionDao.updateLendTransactionsSetNullItem(pItem.getId());
 		itemDao.deleteItem(pItem);
 	}
 	
@@ -608,27 +493,6 @@ public class ItemService extends ObjektService {
 		catch (Exception e) {
 			throw new ItemException(e);
 		}		
-	}
-
-	public String getItemInProgressLendTransactionUrl(final Item pItem) throws ItemException {
-		try {
-			final LendTransaction lt = lendTransactionService.findInProgressLendTransactionForItem(pItem);
-			if (lt != null) {
-				return JsfUtils.getFullUrl(
-						PagesURL.LEND_TRANSACTION_OVERVIEW,
-						PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,
-						lt.getId().toString());
-			}
-			else {
-				if (log.isWarnEnabled()) {
-					log.warn("No in progress lend transaction for item: " + pItem.getId());
-				}
-				return null;
-			}			
-		}
-		catch (LendTransactionException e) {
-			throw new ItemException(e);
-		}
 	}
 
 	/////////////////////////////////////////////////////////

@@ -28,9 +28,11 @@ import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemComment;
 import com.pferrot.lendity.model.LendTransaction;
 import com.pferrot.lendity.model.LendTransactionComment;
+import com.pferrot.lendity.model.LendTransactionSystemComment;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.NeedComment;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.model.SystemComment;
 import com.pferrot.lendity.need.NeedService;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
@@ -279,6 +281,30 @@ public class CommentService {
 		return commentID;
 	}
 	
+	public Long createSystemCommentOnLendTransactionWithAC(final String pText, final Long pLendTransactionId, final Long pOwnerId, boolean pSendEmail) throws CommentException {
+		final LendTransaction lendTransaction = lendTransactionService.findLendTransaction(pLendTransactionId);
+		final Person owner = personService.findPerson(pOwnerId);
+		
+		final LendTransactionSystemComment lendTransactionSystemComment = new LendTransactionSystemComment();
+		lendTransactionSystemComment.setCreationDate(new Date());
+		lendTransactionSystemComment.setLendTransaction(lendTransaction);
+		lendTransactionSystemComment.setText(pText);
+		lendTransactionSystemComment.setOwner(owner);
+		
+		Long commentID = commentDao.createComment(lendTransactionSystemComment);
+		
+		lendTransaction.addComment(lendTransactionSystemComment);
+		// Not needed, the comment recipients are added when the lend transaction is created.
+		//item.addCommentRecipient(lendTransactionComment.getOwner());
+		lendTransactionService.updateLendTransaction(lendTransaction);
+		
+		if (pSendEmail) {
+			sendCommentAddedNotificationToAll(lendTransactionSystemComment);
+		}
+		
+		return commentID;
+	}
+	
 	public void deleteComment(final Long pCommentId) {		
 		final Comment comment = commentDao.findComment(pCommentId);
 		removeCommentRecipientFromContainerIfNeeded(comment);
@@ -369,9 +395,14 @@ public class CommentService {
 	 * @param pCommentId
 	 * @param pNewText
 	 * @param pCurrentPersonId
+	 * @throws CommentException 
 	 */
-	public void updateCommentWithAC(final Long pCommentId, final String pNewText, final Long pCurrentPersonId) {		
+	public void updateCommentWithAC(final Long pCommentId, final String pNewText, final Long pCurrentPersonId) throws CommentException {		
 		final Comment comment = commentDao.findComment(pCommentId);
+		if (comment instanceof SystemComment) {
+			throw new CommentException("System comment cannot be edited");
+		}
+		
 		final Person person = personService.findPerson(pCurrentPersonId);
 		
 		assertUserAuthorizedToEdit(person, comment);		
@@ -453,7 +484,7 @@ public class CommentService {
 						PagesURL.ITEM_OVERVIEW,
 						PagesURL.ITEM_OVERVIEW_PARAM_ITEM_ID,
 						item.getId().toString()));
-				velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/comment/added/comment/fr";
+				velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/comment/added/item/fr";
 			}
 			else if (commentable instanceof Need) {
 				final Need need = (Need)commentable;
@@ -466,7 +497,7 @@ public class CommentService {
 			}
 			else if (commentable instanceof LendTransaction) {
 				final LendTransaction lendTransaction = (LendTransaction)commentable;
-				objects.put("objectTitle", lendTransaction.getItem().getTitle());
+				objects.put("objectTitle", lendTransaction.getTitle());
 				objects.put("objectUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
 						PagesURL.LEND_TRANSACTION_OVERVIEW,
 						PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,

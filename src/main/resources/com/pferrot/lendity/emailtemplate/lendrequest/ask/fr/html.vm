@@ -6,6 +6,14 @@ Hello $ownerFirstName,<br/><br/>
 
 <b>$itemTitle</b><br/><br/>
 
+Du: <b>$startDateLabel</b><br/>
+Jusqu'au: <b>$endDateLabel</b><br/><br/>
+
+Message:<br/>
+<b>$textEscaped</b>
+
+<br/><br/>
+
 Merci de <a href="$lendTransactionUrl">lui rendre réponse</a> le plus rapidement possible.<br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.

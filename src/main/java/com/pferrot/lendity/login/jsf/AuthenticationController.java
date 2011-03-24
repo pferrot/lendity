@@ -151,4 +151,16 @@ public class AuthenticationController {
 	public String getMyProfileURL() {
 		return JsfUtils.getFullUrl(PagesURL.MY_PROFILE);
 	}
+	
+	public String getMyLendTransactionsURL() {
+		return JsfUtils.getFullUrl(PagesURL.MY_LEND_TRANSACTIONS_LIST);
+	}
+	
+	public String getMyLendTransactionsWaitingForInputURL() {
+		return JsfUtils.getFullUrl(PagesURL.MY_LEND_TRANSACTIONS_WAITING_FOR_INPUT_LIST);
+	}
+	
+	public String getMyLendTransactionsToEvaluateURL() {
+		return JsfUtils.getFullUrl(PagesURL.MY_LEND_TRANSACTIONS_TO_EVALUATE_LIST);
+	}
 }

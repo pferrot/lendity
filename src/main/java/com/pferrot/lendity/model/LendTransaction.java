@@ -36,6 +36,11 @@ public class LendTransaction implements Commentable<LendTransactionComment>, Ser
 	@Column(name = "ID")
     private Long id;
 	
+	// This is a copy of the item title - especially useful when the item is deleted.
+	@Column(name = "TITLE", nullable = false, length = 255)
+	@Audited
+	private String title;
+	
 	@OneToMany(targetEntity = com.pferrot.lendity.model.LendTransactionComment.class,
 			mappedBy = "lendTransaction",
 			cascade = CascadeType.REMOVE,
@@ -84,8 +89,9 @@ public class LendTransaction implements Commentable<LendTransactionComment>, Ser
 	@JoinColumn(name = "LEND_REQUEST_ID", nullable = true)
 	private LendRequest lendRequest;
 	
+	// Nullable because the item can be deleted.
 	@OneToOne(targetEntity = com.pferrot.lendity.model.Item.class)
-	@JoinColumn(name = "ITEM_ID", nullable = false)
+	@JoinColumn(name = "ITEM_ID", nullable = true)
 	private Item item;
 	
 	@Column(name = "CREATION_DATE", nullable = false)
@@ -94,6 +100,14 @@ public class LendTransaction implements Commentable<LendTransactionComment>, Ser
 	@Column(name = "CONFLICT", nullable = false)
 	@Audited
 	private Boolean conflict;
+
+	@OneToOne(targetEntity = com.pferrot.lendity.model.Evaluation.class)
+	@JoinColumn(name = "EVAL_BY_LENDER_ID", nullable = true)
+	private Evaluation evaluationByLender;
+	
+	@OneToOne(targetEntity = com.pferrot.lendity.model.Evaluation.class)
+	@JoinColumn(name = "EVAL_BY_BORROWER_ID", nullable = true)
+	private Evaluation evaluationByBorrower;
 
 	public LendTransaction() {
 		super();
@@ -105,6 +119,14 @@ public class LendTransaction implements Commentable<LendTransactionComment>, Ser
 	
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public Set<LendTransactionComment> getComments() {
@@ -221,6 +243,22 @@ public class LendTransaction implements Commentable<LendTransactionComment>, Ser
 
 	public void setConflict(Boolean conflict) {
 		this.conflict = conflict;
+	}
+
+	public Evaluation getEvaluationByLender() {
+		return evaluationByLender;
+	}
+
+	public void setEvaluationByLender(Evaluation evaluationByLender) {
+		this.evaluationByLender = evaluationByLender;
+	}
+
+	public Evaluation getEvaluationByBorrower() {
+		return evaluationByBorrower;
+	}
+
+	public void setEvaluationByBorrower(Evaluation evaluationByBorrower) {
+		this.evaluationByBorrower = evaluationByBorrower;
 	}
 
 	@Override

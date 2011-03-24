@@ -158,6 +158,9 @@ public interface PagesURL {
 	String LEND_TRANSACTION_OVERVIEW = "/auth/lendtransaction/lendTransactionOverview.faces";
 	String LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID = "lendTransactionID";
 	
+	String LEND_TRANSACTION_EDIT = "/auth/lendtransaction/lendTransactionEdit.faces";
+	String LEND_TRANSACTION_EDIT_PARAM_LEND_TRANSACTION_ID = LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID;
+	
 	String MY_IN_PROGRESS_LEND_TRANSACTIONS_LIST = "/auth/lendtransaction/myInProgressLendTransactionsList.faces";
 	String MY_IN_PROGRESS_LEND_TRANSACTIONS_OUT_LIST = "/auth/lendtransaction/myInProgressLendTransactionsOutList.faces";
 
@@ -165,6 +168,8 @@ public interface PagesURL {
 	String MY_COMPLETED_LEND_TRANSACTIONS_OUT_LIST = "/auth/lendtransaction/myClosedLendTransactionsOutList.faces";
 
 	String MY_LEND_TRANSACTIONS_LIST = "/auth/lendtransaction/myLendTransactionsList.faces";
+	
+	String MY_LEND_TRANSACTIONS_WAITING_FOR_INPUT_LIST = "/auth/lendtransaction/myLendTransactionsWaitingForInputList.faces";
 
 	// Does not exist. Take care of AC if implement!!!
 //	String LEND_TRANSACTIONS_FOR_ITEM_AND_PERSON_LIST = "/auth/lendtransaction/lendTransactionsItemPersonList.faces";
@@ -173,10 +178,34 @@ public interface PagesURL {
 	
 	String MY_LEND_TRANSACTIONS_FOR_ITEM_LIST = "/auth/lendtransaction/myLendTransactionsForItemList.faces";
 	String MY_LEND_TRANSACTIONS_FOR_ITEM_LIST_PARAM_ITEM_ID = LEND_TRANSACTIONS_FOR_ITEM_AND_PERSON_LIST_PARAM_ITEM_ID;
+
+	String MY_LEND_TRANSACTIONS_TO_EVALUATE_LIST = "/auth/lendtransaction/myLendTransactionsToEvaluateList.faces";
 	
 	// LEND TRANSACTION - end
 	/////////////////////////////////////////////////////////////////////////
 	
+	/////////////////////////////////////////////////////////////////////////
+	// EVALUATION - start
+	
+	String EVALUATION_OVERVIEW = "/auth/evaluation/evaluationOverview.faces";
+	String EVALUATION_OVERVIEW_PARAM_EVALUATION_ID = "evaluationID";
+	
+	String EVALUATION_ADD = "/auth/evaluation/evaluationAdd.faces";
+	String EVALUATION_ADD_PARAM_LEND_TRANSACTION_ID = LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID;
+	
+	String PERSON_EVALUATIONS_LIST = "/auth/evaluation/personEvaluationsList.faces";
+	String PERSON_EVALUATIONS_LIST_PARAM_PERSON_ID = "personID";
+	
+	String PERSON_EVALUATIONS_MADE_LIST = "/auth/evaluation/personEvaluationsMadeList.faces";
+	String PERSON_EVALUATIONS_MADE_LIST_PARAM_PERSON_ID = "personID";
+	
+	String MY_EVALUATIONS_LIST = "/auth/evaluation/myEvaluationsList.faces";
+	
+	String MY_EVALUATIONS_MADE_LIST = "/auth/evaluation/myEvaluationsMadeList.faces";
+
+	
+	// EVALUATION - end
+	/////////////////////////////////////////////////////////////////////////
 	
 	/////////////////////////////////////////////////////////////////////////
 	// CONNECTION REQUEST - start	

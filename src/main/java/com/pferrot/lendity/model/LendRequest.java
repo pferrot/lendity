@@ -18,6 +18,10 @@ public class LendRequest implements Serializable {
 	@Id @GeneratedValue
 	@Column(name = "ID")
     private Long id;
+
+	// This is a copy of the item title - especially useful when the item is deleted.
+	@Column(name = "TITLE", nullable = false, length = 255)
+	private String title;
 	
 	@OneToOne(targetEntity = com.pferrot.lendity.model.Person.class)
 	@JoinColumn(name = "REQUESTER_ID", nullable = false)
@@ -30,8 +34,9 @@ public class LendRequest implements Serializable {
 	@JoinColumn(name = "OWNER_ID", nullable = false)
 	private Person owner;
 	
+	// Nullable because the item can be deleted.
 	@OneToOne(targetEntity = com.pferrot.lendity.model.Item.class)
-	@JoinColumn(name = "ITEM_ID", nullable = false)
+	@JoinColumn(name = "ITEM_ID", nullable = true)
 	private Item item;
 	
 	@Column(name = "REQUEST_DATE", nullable = false)
@@ -44,7 +49,10 @@ public class LendRequest implements Serializable {
 	private Date startDate;
 	
 	@Column(name = "END_DATE", nullable = true)
-	private Date endDate;	
+	private Date endDate;
+
+	@Column(name = "TEXT", nullable = true, length = 3999)
+	private String text;
 	
 	@OneToOne(targetEntity = com.pferrot.lendity.model.LendRequestResponse.class)
 	@JoinColumn(name = "RESPONSE_ID", nullable = true)
@@ -66,6 +74,14 @@ public class LendRequest implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
 	public Person getRequester() {
 		return requester;
@@ -125,6 +141,14 @@ public class LendRequest implements Serializable {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	public LendRequestResponse getResponse() {

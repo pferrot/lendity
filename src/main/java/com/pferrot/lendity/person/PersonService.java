@@ -21,6 +21,7 @@ import com.pferrot.lendity.dao.hibernate.utils.HibernateUtils;
 import com.pferrot.lendity.document.DocumentService;
 import com.pferrot.lendity.model.Country;
 import com.pferrot.lendity.model.Document;
+import com.pferrot.lendity.model.Evaluation;
 import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.exception.PersonException;
@@ -75,6 +76,18 @@ public class PersonService {
 	 */
 	public void updatePersonPrivileged(final Person pPerson) {
 		personDao.updatePerson(pPerson);
+	}
+
+	public void updatePersonAddEvaluation(final Person pPerson, final Evaluation pEvaluation) {
+		CoreUtils.assertNotNull(pPerson);
+		CoreUtils.assertNotNull(pEvaluation);
+		
+		Double temp = pPerson.getNbEvaluations() * pPerson.getEvaluationAverage();
+		pPerson.setNbEvaluations(Integer.valueOf(pPerson.getNbEvaluations().intValue() + 1));
+		temp = temp + pEvaluation.getScore();
+		temp = temp / pPerson.getNbEvaluations();
+		pPerson.setEvaluationAverage(temp);
+		updatePersonPrivileged(pPerson);
 	}
 
 	public void updatePerson(final Person pPerson) {
@@ -323,6 +336,10 @@ public class PersonService {
 		
 		
 		return person1Connections.contains(pPerson2);		
+	}
+
+	public List<Person> getCurrentPersonEnabledConnections() {
+		return findConnectionsList(PersonUtils.getCurrentPersonId(), null, 0, 0);
 	}
 
 		

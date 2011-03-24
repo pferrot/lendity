@@ -15,7 +15,7 @@
 	        
         
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/lendity?characterEncoding=UTF-8</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/lendity2?characterEncoding=UTF-8</property>
 		<property name="connection.username">pferrot</property>
 		<property name="connection.password">klop</property>
         
@@ -64,9 +64,11 @@
         <mapping class="com.pferrot.lendity.model.ItemComment"/>
         <mapping class="com.pferrot.lendity.model.NeedComment"/>
         <mapping class="com.pferrot.lendity.model.LendTransactionComment"/>
+        <mapping class="com.pferrot.lendity.model.LendTransactionSystemComment"/>
         
         <mapping class="com.pferrot.lendity.model.Need"/>
-         
+        
+        <mapping class="com.pferrot.lendity.model.Evaluation"/>         
         
         <mapping class="com.pferrot.envers.model.UserRevisionEntity"/>
         

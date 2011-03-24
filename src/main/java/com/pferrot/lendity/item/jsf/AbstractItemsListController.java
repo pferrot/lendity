@@ -21,11 +21,11 @@ import com.pferrot.lendity.item.ItemConsts;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.item.ItemUtils;
 import com.pferrot.lendity.item.ObjektService;
-import com.pferrot.lendity.item.exception.ItemException;
 import com.pferrot.lendity.lendrequest.LendRequestConsts;
 import com.pferrot.lendity.lendrequest.LendRequestService;
 import com.pferrot.lendity.lendtransaction.LendTransactionConsts;
 import com.pferrot.lendity.lendtransaction.LendTransactionService;
+import com.pferrot.lendity.lendtransaction.exception.LendTransactionException;
 import com.pferrot.lendity.lendtransaction.jsf.AbstractLendTransactionsListController;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.LendTransaction;
@@ -229,9 +229,9 @@ public abstract class AbstractItemsListController extends AbstractObjektsListCon
 	public String getInProgressLendTransactionUrl() {
 		final Item item = (Item)getTable().getRowData();
 		try {
-			return itemService.getItemInProgressLendTransactionUrl(item);
+			return lendTransactionService.getItemInProgressLendTransactionUrl(item);
 		}
-		catch (ItemException e) {
+		catch (LendTransactionException e) {
 			throw new RuntimeException(e);
 		}
 	}

@@ -201,17 +201,32 @@ public abstract class AbstractLendTransactionsListController extends AbstractLis
 
 	public String getImage1Src() {
 		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
-		return getItemService().getItemPicture1Src(lendTransaction.getItem(), true);
+		if (lendTransaction.getItem() == null) {
+			return null;
+		}
+		else {
+			return getItemService().getItemPicture1Src(lendTransaction.getItem(), true);
+		}
 	}
 	
 	public String getThumbnail1Src() {
 		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
-		return getItemService().getItemThumbnail1Src(lendTransaction.getItem(), true);
+		if (lendTransaction.getItem() == null) {
+			return null;
+		}
+		else {
+			return getItemService().getItemThumbnail1Src(lendTransaction.getItem(), true);
+		}
 	}
 
 	@Override
 	protected void resetFilters() {
 		super.resetFilters();
 		setStatusId(null);
+	}
+
+	public boolean isItemAvailable() {
+		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
+		return lendTransaction.getItem() != null;
 	}
 }

@@ -76,7 +76,7 @@
 		</td><td>
 		<h4>
 			<h:outputLink id="link2" value="#{myLendTransactionsListController.lendTransactionOverviewHref}">
-				<h:outputText value="#{lendTransaction.item.title}" />
+				<h:outputText value="#{lendTransaction.title}" />
 			</h:outputLink>			
 		</h4>
 		</td></tr></table>
@@ -89,9 +89,10 @@
 					<h:outputText id="itemTitle" value="#{messages.item_item}:" />
 				</th>
 				<td width="50%">
-					<h:outputLink id="itemLink" value="#{myLendTransactionsListController.itemOverviewHref}">
-						<h:outputText id="itemLabel" value="#{lendTransaction.item.title}"/>
+					<h:outputLink id="itemLink" value="#{myLendTransactionsListController.itemOverviewHref}" rendered="#{myLendTransactionsListController.itemAvailable}">
+						<h:outputText id="itemLabel" value="#{lendTransaction.item.title}"  rendered="#{myLendTransactionsListController.itemAvailable}"/>
 					</h:outputLink>
+					<i><h:outputText id="itemLabel2" value="#{messages.lendTransaction_itemDeleted}"  rendered="#{not myLendTransactionsListController.itemAvailable}"/></i>
 				</td>
 			</tr>
 			<tr>

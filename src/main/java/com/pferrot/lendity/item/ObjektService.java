@@ -80,10 +80,6 @@ public abstract class ObjektService {
 	public List<OrderedListValue> getVisibilities() {
 		return listValueDao.findOrderedListValue(ItemVisibility.class);
 	}
-	
-	public List<Person> getCurrentPersonEnabledConnections() {
-		return getPersonService().findConnectionsList(PersonUtils.getCurrentPersonId(), null, 0, 0);
-	}
 		
 	protected Long[] getCategoryIds(final Long pCategoryId) {
 		return getIds(pCategoryId);

@@ -85,7 +85,7 @@
 			<value>com.mysql.jdbc.Driver</value>
 		</property>
 		<property name="url">
-			<value>jdbc:mysql://localhost:3306/lendity?characterEncoding=UTF-8</value>
+			<value>jdbc:mysql://localhost:3306/lendity2?characterEncoding=UTF-8</value>
 		</property>
 		<property name="username">
 			<value>pferrot</value>
@@ -155,9 +155,9 @@
          </property>		
 		<property name="transactionAttributes">
 			<props>
-				<prop key="delete*">PROPAGATION_REQUIRED</prop>
-				<prop key="update*">PROPAGATION_REQUIRED</prop>
-				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
 				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
 			</props>
 		</property>
@@ -167,9 +167,9 @@
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="transactionAttributes">
 			<props>
-				<prop key="delete*">PROPAGATION_REQUIRED</prop>
-				<prop key="update*">PROPAGATION_REQUIRED</prop>
-				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
 				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
 			</props>
 		</property>
@@ -357,9 +357,9 @@
          </property>		
 		<property name="transactionAttributes">
 			<props>
-				<prop key="delete*">PROPAGATION_REQUIRED</prop>
-				<prop key="update*">PROPAGATION_REQUIRED</prop>
-				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
 				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
 			</props>
 		</property>
@@ -453,9 +453,9 @@
          </property>		
 		<property name="transactionAttributes">
 			<props>
-				<prop key="delete*">PROPAGATION_REQUIRED</prop>
-				<prop key="update*">PROPAGATION_REQUIRED</prop>
-				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
 				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
 			</props>
 		</property>
@@ -473,6 +473,7 @@
 		<property name="mailManager" ref="emailSender.mailManager"/>
 		<property name="personService" ref="personService"/>
 		<property name="lendTransactionService" ref="lendTransactionService"/>
+		<property name="lendTransactionWithCommentService" ref="lendTransactionWithCommentService"/>
 	</bean>
 
     <bean id="myPendingLendRequestsListController" class="com.pferrot.lendity.lendrequest.jsf.MyPendingLendRequestsListController"
@@ -514,6 +515,7 @@
 	 
 	<bean id="lendTransactionDaoTarget" class="com.pferrot.lendity.dao.hibernate.LendTransactionDaoHibernateImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+		<property name="listValueDao" ref="listValueDao"/>
 	</bean>
 	
 	<bean id="lendTransactionDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
@@ -526,9 +528,9 @@
          </property>		
 		<property name="transactionAttributes">
 			<props>
-				<prop key="delete*">PROPAGATION_REQUIRED</prop>
-				<prop key="update*">PROPAGATION_REQUIRED</prop>
-				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
 				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
 			</props>
 		</property>
@@ -541,15 +543,36 @@
 	<bean id="lendTransactionServiceTarget" class="com.pferrot.lendity.lendtransaction.LendTransactionService">
 		<property name="lendTransactionDao" ref="lendTransactionDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
-		<property name="personDao" ref="personDao"/>
-		<property name="itemDao" ref="itemDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
 		<property name="personService" ref="personService"/>
+		<property name="itemService" ref="itemService"/>
+	</bean>
+
+	<bean id="lendTransactionWithCommentService" parent="baseTransactionProxy">
+		<property name="target" ref="lendTransactionWithCommentServiceTarget" />
+	</bean>
+	
+	<bean id="lendTransactionWithCommentServiceTarget" class="com.pferrot.lendity.lendtransaction.LendTransactionWithCommentService">
+		<property name="lendTransactionService" ref="lendTransactionService"/>
+		<property name="listValueDao" ref="listValueDao"/>
+		<property name="itemService" ref="itemService"/>
+		<property name="commentService" ref="commentService"/>
+		<property name="lendTransactionDao" ref="lendTransactionDao"/>
 	</bean>
 
 	<bean id="lendTransactionOverviewController" class="com.pferrot.lendity.lendtransaction.jsf.LendTransactionOverviewController"
 	      scope="conversation.access">
 	      <property name="lendTransactionService" ref="lendTransactionService"/>
+	      <property name="lendTransactionWithCommentService" ref="lendTransactionWithCommentService"/>
+	      <property name="lendRequestService" ref="lendRequestService"/>
+	      <property name="evaluationService" ref="evaluationService"/>
+	</bean>
+	
+	<bean id="lendTransactionEditController" class="com.pferrot.lendity.lendtransaction.jsf.LendTransactionEditController"
+	      scope="conversation.access">
+	      <property name="lendTransactionService" ref="lendTransactionService"/>
+	      <property name="lendTransactionWithCommentService" ref="lendTransactionWithCommentService"/>
+	      <property name="lendRequestService" ref="lendRequestService"/>
 	</bean>
 
     <bean id="myInProgressLendTransactionsListController" class="com.pferrot.lendity.lendtransaction.jsf.MyInProgressLendTransactionsListController"
@@ -576,6 +599,12 @@
 	      <property name="lendTransactionService" ref="lendTransactionService"/>
 	      <property name="itemService" ref="itemService"/>
 	</bean>
+	
+	<bean id="myLendTransactionsWaitingForInputListController" class="com.pferrot.lendity.lendtransaction.jsf.MyLendTransactionsWaitingForInputListController"
+	      scope="session">
+	      <property name="lendTransactionService" ref="lendTransactionService"/>
+	      <property name="itemService" ref="itemService"/>
+	</bean>
 
 <!-- 	
 	<bean id="transactionLendTooltipController" class="com.pferrot.lendity.lendtransaction.jsf.TransactionLendTooltipController"
@@ -589,6 +618,74 @@
 	========================================================================================================================
 	 -->
 	 
+	<!-- 
+	========================================================================================================================
+	EVALUATION - start
+	-->
+	
+	
+	<!-- 
+	EVALUATION - end
+	========================================================================================================================
+	-->		 
+	<bean id="evaluationDaoTarget" class="com.pferrot.lendity.dao.hibernate.EvaluationDaoHibernateImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	
+	<bean id="evaluationDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target">
+			<ref local="evaluationDaoTarget"/>
+		</property>
+		<property name="proxyInterfaces">
+           <value>com.pferrot.lendity.dao.EvaluationDao</value>
+         </property>		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="evaluationService" parent="baseTransactionProxy">
+		<property name="target" ref="evaluationServiceTarget" />
+	</bean>
+	
+	<bean id="evaluationServiceTarget" class="com.pferrot.lendity.evaluation.EvaluationService">
+		<property name="evaluationDao" ref="evaluationDao"/>
+		<property name="listValueDao" ref="listValueDao"/>
+		<property name="lendTransactionWithCommentService" ref="lendTransactionWithCommentService"/>
+		<property name="lendTransactionService" ref="lendTransactionService"/>
+		<property name="personService" ref="personService"/>
+	</bean>	
+
+	<bean id="evaluationAddController" class="com.pferrot.lendity.evaluation.jsf.EvaluationAddController"
+	      scope="conversation.access">
+	      <property name="evaluationService" ref="evaluationService"/>
+	      <property name="lendTransactionService" ref="lendTransactionService"/>	 
+	</bean>
+	
+	<bean id="evaluationOverviewController" class="com.pferrot.lendity.evaluation.jsf.EvaluationOverviewController"
+	      scope="conversation.access">
+	      <property name="evaluationService" ref="evaluationService"/>
+	      <property name="lendTransactionService" ref="lendTransactionService"/>	 
+	</bean>
+	
+	<bean id="myEvaluationsListController" class="com.pferrot.lendity.evaluation.jsf.MyEvaluationsListController"
+	      scope="session">
+	      <property name="evaluationService" ref="evaluationService"/>
+	      <property name="personService" ref="personService"/>	 
+	</bean>
+	
+	<bean id="myEvaluationsMadeListController" class="com.pferrot.lendity.evaluation.jsf.MyEvaluationsMadeListController"
+	      scope="session">
+	      <property name="evaluationService" ref="evaluationService"/>
+	      <property name="personService" ref="personService"/>	 
+	</bean>
+	
 	<!-- 
 	========================================================================================================================
 	COMMENT - start
@@ -608,9 +705,9 @@
          </property>		
 		<property name="transactionAttributes">
 			<props>
-				<prop key="delete*">PROPAGATION_REQUIRED</prop>
-				<prop key="update*">PROPAGATION_REQUIRED</prop>
-				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
 				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
 			</props>
 		</property>
@@ -654,9 +751,9 @@
          </property>		
 		<property name="transactionAttributes">
 			<props>
-				<prop key="delete*">PROPAGATION_REQUIRED</prop>
-				<prop key="update*">PROPAGATION_REQUIRED</prop>
-				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
 				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
 			</props>
 		</property>
@@ -736,9 +833,9 @@
          </property>		
 		<property name="transactionAttributes">
 			<props>
-				<prop key="delete*">PROPAGATION_REQUIRED</prop>
-				<prop key="update*">PROPAGATION_REQUIRED</prop>
-				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
 				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
 			</props>
 		</property>
@@ -753,10 +850,10 @@
 		<property name="documentDao" ref="documentDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
 		<property name="lendRequestDao" ref="lendRequestDao"/>
+		<property name="lendTransactionDao" ref="lendTransactionDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
 		<property name="personService" ref="personService"/>
 		<property name="documentService" ref="documentService"/>
-		<property name="lendTransactionService" ref="lendTransactionService"/>
 	</bean>
 	
 	<bean id="itemOverviewController" class="com.pferrot.lendity.item.jsf.ItemOverviewController"
@@ -806,12 +903,8 @@
 
 	<bean id="itemLendTooltipController" class="com.pferrot.lendity.item.jsf.ItemLendTooltipController"
 	      scope="request">
-	      <property name="itemService" ref="itemService"/>
-	</bean>
-	
-	<bean id="itemLendBackTooltipController" class="com.pferrot.lendity.item.jsf.ItemLendBackTooltipController"
-	      scope="request">
-	      <property name="itemService" ref="itemService"/>
+	      <property name="lendTransactionService" ref="lendTransactionService"/>
+	      <property name="personService" ref="personService"/>
 	</bean>
 	
 	<bean id="deleteItemTooltipController" class="com.pferrot.lendity.item.jsf.DeleteItemTooltipController"
@@ -870,9 +963,9 @@
          </property>		
 		<property name="transactionAttributes">
 			<props>
-				<prop key="delete*">PROPAGATION_REQUIRED</prop>
-				<prop key="update*">PROPAGATION_REQUIRED</prop>
-				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
 				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
 			</props>
 		</property>
@@ -950,9 +1043,9 @@
          </property>		
 		<property name="transactionAttributes">
 			<props>
-				<prop key="delete*">PROPAGATION_REQUIRED</prop>
-				<prop key="update*">PROPAGATION_REQUIRED</prop>
-				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
 				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
 			</props>
 		</property>
@@ -973,6 +1066,102 @@
 
 	<!-- 
 	========================================================================================================================
+	TO LEND EMAIL REMINDER JOB - start
+	 -->
+
+	<bean name="toLendEmailReminderJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="com.pferrot.lendity.jobs.tolendemailreminder.ToLendEmailReminderJob" />
+<!--		<property name="jobDataAsMap">-->
+<!--			<map>-->
+<!--				<entry key="frequencyInDays" value="9" />-->
+<!--			</map>-->
+<!--		</property>		-->
+	</bean>
+	
+	<bean id="toLendEmailReminderCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	    <property name="jobDetail" ref="toLendEmailReminderJob" />
+	    <!-- run every night at 1 AM -->
+	    <property name="cronExpression" value="0 0 1 * * ?" />
+		<!-- Every minute -->
+<!--	    <property name="cronExpression" value="0 * * * * ?" />-->
+	</bean>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	    <property name="triggers">
+	        <list>
+	            <ref bean="toLendEmailReminderCronTrigger" />
+	        </list>
+	    </property>
+	    <property name="schedulerContextAsMap">
+	      <map>
+	      	 <entry key="hibernateSessionFactory">
+	            <ref bean="sessionFactory"/>
+	         </entry>
+	         <entry key="mailManager">
+	            <ref bean="emailSender.mailManager"/>
+	         </entry>
+	         <entry key="lendTransactionService">
+	            <ref bean="lendTransactionService"/>
+	         </entry>
+	      </map>
+	   </property>
+	</bean>
+
+	<!-- 
+	TO LEND EMAIL REMINDER JOB - end
+	========================================================================================================================
+	 -->
+
+	<!-- 
+	========================================================================================================================
+	TO RETURN EMAIL REMINDER JOB - start
+	 -->
+
+	<bean name="toReturnEmailReminderJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="com.pferrot.lendity.jobs.toreturnemailreminder.ToReturnEmailReminderJob" />
+<!--		<property name="jobDataAsMap">-->
+<!--			<map>-->
+<!--				<entry key="frequencyInDays" value="9" />-->
+<!--			</map>-->
+<!--		</property>		-->
+	</bean>
+	
+	<bean id="toReturnEmailReminderCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	    <property name="jobDetail" ref="toReturnEmailReminderJob" />
+	    <!-- run every night at 2 AM -->
+	    <property name="cronExpression" value="0 0 2 * * ?" />
+		<!-- Every minute -->
+<!--	    <property name="cronExpression" value="0 * * * * ?" />-->
+	</bean>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	    <property name="triggers">
+	        <list>
+	            <ref bean="toReturnEmailReminderCronTrigger" />
+	        </list>
+	    </property>
+	    <property name="schedulerContextAsMap">
+	      <map>
+	      	 <entry key="hibernateSessionFactory">
+	            <ref bean="sessionFactory"/>
+	         </entry>
+	         <entry key="mailManager">
+	            <ref bean="emailSender.mailManager"/>
+	         </entry>
+	         <entry key="lendTransactionService">
+	            <ref bean="lendTransactionService"/>
+	         </entry>
+	      </map>
+	   </property>
+	</bean>
+
+	<!-- 
+	TO RETURN EMAIL REMINDER JOB - end
+	========================================================================================================================
+	 -->
+
+	<!-- 
+	========================================================================================================================
 	EMAIL SUBSCRIBER - start
 	 -->
 
@@ -982,8 +1171,7 @@
 			<map>
 				<entry key="frequencyInDays" value="9" />
 			</map>
-		</property>
-		
+		</property>		
 	</bean>
 	
 	<bean id="emailSubscriberCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">

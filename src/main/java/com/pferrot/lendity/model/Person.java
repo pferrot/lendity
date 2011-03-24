@@ -154,6 +154,12 @@ public class Person implements Serializable {
 	@Column(name = "SHOW_CONTACT_DETAILS_TO_ALL", nullable = false)
 	private Boolean showContactDetailsToAll;
 
+	@Column(name = "NB_EVALUATIONS", nullable = false)
+	private Integer nbEvaluations;
+	
+	@Column(name = "EVAL_AVERAGE", nullable = false)
+	private Double evaluationAverage;
+
     public Person() {
     	super();
     }
@@ -437,6 +443,22 @@ public class Person implements Serializable {
 
 	public void setEmailSubscriberLastUpdate(Date emailSubscriberLastUpdate) {
 		this.emailSubscriberLastUpdate = emailSubscriberLastUpdate;
+	}
+
+	public Integer getNbEvaluations() {
+		return nbEvaluations;
+	}
+	
+	public void setNbEvaluations(Integer nbEvaluations) {
+		this.nbEvaluations = nbEvaluations;
+	}
+	
+	public Double getEvaluationAverage() {
+		return evaluationAverage;
+	}
+
+	public void setEvaluationAverage(Double evaluationAverage) {
+		this.evaluationAverage = evaluationAverage;
 	}
 
 	@Override

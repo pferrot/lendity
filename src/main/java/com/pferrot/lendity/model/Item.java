@@ -80,6 +80,10 @@ public class Item implements Objekt, Borrowable, CommentableWithOwner<ItemCommen
 	@Column(name = "CREATION_DATE", nullable = false)
 	private Date creationDate;
 	
+	// When the object is given / sold.
+	@Column(name = "ACQUISITION_DATE", nullable = true)
+	private Date acquisitionDate;
+	
 	@ManyToOne(targetEntity = ItemVisibility.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "VISIBILITY_ID", nullable = false)
 	private ItemVisibility visibility;
@@ -158,6 +162,11 @@ public class Item implements Objekt, Borrowable, CommentableWithOwner<ItemCommen
 	
 	public boolean isConnectionsVisibility() {
 		return getVisibility().getLabelCode().equals(ItemVisibility.CONNECTIONS);
+	}
+	
+	public boolean isToGiveOrSell() {
+		return Boolean.TRUE.equals(getToGiveForFree()) ||
+			getSalePrice() != null;
 	}
 
 	public Person getOwner() {
@@ -360,7 +369,7 @@ public class Item implements Objekt, Borrowable, CommentableWithOwner<ItemCommen
 	}
 
 	public boolean isBorrowed() {
-		return getBorrowDate() != null;
+		return getBorrowDate() != null || getBorrowerName() != null || getBorrower() != null;
 	}
 
 
@@ -370,6 +379,14 @@ public class Item implements Objekt, Borrowable, CommentableWithOwner<ItemCommen
 
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	public Date getAcquisitionDate() {
+		return acquisitionDate;
+	}
+
+	public void setAcquisitionDate(Date acquisitionDate) {
+		this.acquisitionDate = acquisitionDate;
 	}
 
 	/**

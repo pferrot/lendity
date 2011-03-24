@@ -15,8 +15,9 @@ import org.apache.commons.logging.LogFactory;
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.i18n.I18nConsts;
-import com.pferrot.lendity.item.ItemService;
-import com.pferrot.lendity.item.exception.ItemException;
+import com.pferrot.lendity.lendtransaction.LendTransactionService;
+import com.pferrot.lendity.lendtransaction.exception.LendTransactionException;
+import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
 
@@ -24,9 +25,8 @@ public class ItemLendTooltipController implements Serializable {
 	
 	private final static Log log = LogFactory.getLog(ItemLendTooltipController.class);
 	
-	
-	
-	private ItemService itemService;
+	private LendTransactionService lendTransactionService;
+	private PersonService personService;
 	
 	private List<SelectItem> borrowerSelectItems;
 	private Long borrowerId;
@@ -40,16 +40,26 @@ public class ItemLendTooltipController implements Serializable {
 	private Date borrowDate;
 	private Date endDate;
 
-	public void setItemService(final ItemService pItemService) {
-		this.itemService = pItemService;
+
+	public LendTransactionService getLendTransactionService() {
+		return lendTransactionService;
 	}
-	
-	public ItemService getItemService() {
-		return itemService;
+
+	public void setLendTransactionService(
+			LendTransactionService lendTransactionService) {
+		this.lendTransactionService = lendTransactionService;
+	}
+
+	public PersonService getPersonService() {
+		return personService;
+	}
+
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
 	}
 
 	public List<SelectItem> getBorrowerSelectItems() {
-		borrowerSelectItems = UiUtils.getSelectItemsForPerson(getItemService().getCurrentPersonEnabledConnections());
+		borrowerSelectItems = UiUtils.getSelectItemsForPerson(getPersonService().getCurrentPersonEnabledConnections());
 		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 		borrowerSelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));	
 		return borrowerSelectItems;	
@@ -171,16 +181,16 @@ public class ItemLendTooltipController implements Serializable {
 	private Long lendItem() {
 		try {
 			if (getBorrowerId() != null && getBorrowerId().longValue() > 0) {
-				return getItemService().updateLendItem(getItemId(), getBorrowerId(), getBorrowDate(), getEndDate());
+				return getLendTransactionService().updateLendItem(getItemId(), getBorrowerId(), getBorrowDate(), getEndDate());
 			}
 			else if (!StringUtils.isNullOrEmpty(getBorrowerName())) {
-				return getItemService().updateLendItem(getItemId(), getBorrowerName().trim(), getBorrowDate(), getEndDate());
+				return getLendTransactionService().updateLendItem(getItemId(), getBorrowerName().trim(), getBorrowDate(), getEndDate());
 			}
 			else {
 				throw new RuntimeException("Neither borrower ID not borrower name is specified");
 			}
 		}
-		catch (ItemException e) {
+		catch (LendTransactionException e) {
 			throw new RuntimeException(e);
 		}
 	}	

@@ -4,7 +4,7 @@ $ownerDisplayName refuse de te prêter l'objet suivant:
 
 $itemTitle
 
-Tu peux encore prendre contact avec $ownerFirstName en répondant à cet e-mail si tu veux connaître les raisons de ce refus.
+Tu peux encore contacter $ownerDisplayName en ajoutant un commentaire sur cette transaction: $lendTransactionUrl
 
 A bientôt sur $siteName.
 

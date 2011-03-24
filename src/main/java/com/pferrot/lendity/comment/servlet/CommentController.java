@@ -26,6 +26,7 @@ import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Comment;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.model.SystemComment;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.HtmlUtils;
@@ -291,15 +292,20 @@ public class CommentController extends AbstractController {
 		map.put("commentID", pComment.getId());
 		map.put("text", HtmlUtils.escapeHtmlAndReplaceCr(pComment.getText()));
 		final Person owner = pComment.getOwner();
-		map.put("ownerName", HtmlUtils.escapeHtmlAndReplaceCr(owner.getDisplayName()));
-		map.put("ownerUrl", JsfUtils.getFullUrlWithPrefix(pRequest.getContextPath(),
+		if (owner != null) {
+			map.put("ownerName", HtmlUtils.escapeHtmlAndReplaceCr(owner.getDisplayName()));		
+			map.put("ownerUrl", JsfUtils.getFullUrlWithPrefix(pRequest.getContextPath(),
 				                                          PagesURL.PERSON_OVERVIEW,
 				                                          PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID,
 				                                          pComment.getOwner().getId().toString()));
+		}
 		map.put("dateAdded", getDateAsString(pComment.getCreationDate()));
 		final Long currentPersonId = PersonUtils.getCurrentPersonId(pRequest.getSession());
-		final Boolean canEdit = currentPersonId != null && PersonUtils.getCurrentPersonId(pRequest.getSession()).equals(owner.getId());
+		final Boolean canEdit = currentPersonId != null &&
+								! (pComment instanceof SystemComment) &&
+								PersonUtils.getCurrentPersonId(pRequest.getSession()).equals(owner.getId());
 		map.put("canEdit", canEdit);
+		map.put("systemComment", pComment instanceof SystemComment);
 		map.put("profilePictureUrl",
 				personService.getProfileThumbnailSrc(
 						owner, 

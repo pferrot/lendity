@@ -29,6 +29,7 @@ public class RequestLendTooltipController implements Serializable {
 	
 	private Date startDate;
 	private Date endDate;
+	private String text;
 
 	public  LendRequestService getLendRequestService() {
 		return lendRequestService;
@@ -60,6 +61,14 @@ public class RequestLendTooltipController implements Serializable {
 
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = StringUtils.getNullIfEmpty(text);
 	}
 
 	public void setStartDateAsString(final String pStartDateAsString) {
@@ -145,7 +154,7 @@ public class RequestLendTooltipController implements Serializable {
 
 	private Long[] requestLend() {
 		try {
-			return getLendRequestService().createLendRequestFromCurrentUser(getItemId(), getStartDate(), getEndDate());
+			return getLendRequestService().createLendRequestFromCurrentUser(getItemId(), getStartDate(), getEndDate(), getText());
 		} 
 		catch (Exception e) {
 			throw new RuntimeException(e);

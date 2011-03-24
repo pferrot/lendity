@@ -57,6 +57,17 @@ public class I18nUtils {
 	public static String getMessageResourceString(final String key, final Locale locale) {	
 		return getMessageResourceString(I18nConsts.DEFAULT_RESOURCE_BUNDLE, key, null, locale);
 	}
+
+	/**
+	 * Returns the message in the current locale.
+	 *  
+	 * @param key
+	 * @return
+	 */
+	public static String getMessageResourceString(final String key) {
+		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		return getMessageResourceString(I18nConsts.DEFAULT_RESOURCE_BUNDLE, key, null, locale);
+	}
 	
 	/**
 	 * From a map containing several languages, returns the one for the

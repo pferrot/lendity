@@ -1,0 +1,150 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle"><h:outputText value="#{messages.lendTransaction_lendTransactionEditTitle}"/><h:outputText value=": " escape="false" /><h:outputText value="#{lendTransactionEditController.lendTransaction.title}"/></ui:define>
+	<ui:param name="contentHeader" value="#{messages.lendTransaction_lendTransactionEditTitle}" />
+
+		<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+						
+			
+			
+				
+
+<h2 class="gt-table-head"><h:outputText value="#{messages.lendTransaction_lendTransactionEditTitle}"/></h2>
+
+<!-- content box -->
+<div class="gt-form gt-content-box">
+
+
+<f:view><h:form id="lendTransactionEditForm" prependId="false">
+
+
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label><h:outputText id="itemTitle" value="#{messages.item_item}:" /></label></div>
+		<h4>
+			<c:if test="#{lendTransactionEditController.lendTransaction.item != null}">
+				<h:outputLink id="linkItem" value="#{lendTransactionEditController.itemOverviewHref}">
+					<h:outputText value="#{lendTransactionEditController.lendTransaction.title}" />
+				</h:outputLink>
+			</c:if>
+			<c:if test="#{lendTransactionEditController.lendTransaction.item == null}">
+				<h:outputText value="#{lendTransactionEditController.lendTransaction.title}" />
+			</c:if>
+		</h4>
+	</div>
+	<br/>
+	
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_lender}:" /></label></div>
+		<h:outputLink id="linkLender" value="#{lendTransactionEditController.lenderOverviewHref}">
+			<h:outputText value="#{lendTransactionEditController.lendTransaction.lender.displayName}" />
+		</h:outputLink>
+	</div>
+	<br/>
+
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_borrower}:" /></label></div>
+		<h:outputLink id="linkBorrower" value="#{lendTransactionEditController.borrowerOverviewHref}" rendered="#{lendTransactionEditController.borrowerHrefAvailable}">
+			<h:outputText value="#{lendTransactionEditController.lendTransaction.borrower.displayName}" rendered="#{lendTransactionEditController.borrowerHrefAvailable}" />
+		</h:outputLink>
+		<h:outputText value="#{lendTransactionEditController.lendTransaction.borrowerName}" rendered="#{not lendTransactionEditController.borrowerHrefAvailable}" />
+	</div>
+	<br/>
+
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_startDate}:" /></label></div>
+		<c:if test="#{not lendTransactionEditController.editStartDateAvailable}">
+			<h:outputText value="#{lendTransactionEditController.startDateLabel}" />
+		</c:if>
+		<c:if test="#{lendTransactionEditController.editStartDateAvailable}">
+			<h:inputText id="startDate" styleClass="datepicker" value="#{lendTransactionEditController.startDateAsString}"/>
+		</c:if>
+		<script type="text/javascript">
+			$j(document).ready(function() {
+				createDatePicker($j("#startDate"));
+			});
+		</script>
+	</div>
+	<br/>
+
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_endDate}:" /></label></div>
+		<c:if test="#{not lendTransactionEditController.editEndDateAvailable}">
+			<h:outputText value="#{lendTransactionEditController.endDateLabel}" />
+		</c:if>
+		<c:if test="#{lendTransactionEditController.editEndDateAvailable}">
+			<h:inputText id="endDate" styleClass="datepicker" value="#{lendTransactionEditController.endDateAsString}"/>
+		</c:if>
+		<script type="text/javascript">
+			$j(document).ready(function() {
+				createDatePicker($j("#endDate"));
+			});
+		</script>
+	</div>
+	<br/>
+	
+	<c:if test="#{lendTransactionEditController.lendRequestTextAvailable}">
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendRequest_text2}:" /></label></div>
+			<h:outputText value="#{lendTransactionEditController.lendRequestText}" escape="false" />
+		</div>
+		<br/>
+	</c:if>
+
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_status}:" /></label></div>
+		<h:outputText value="#{lendTransactionEditController.statusLabel}" />
+	</div>
+	<br/>	
+	
+	<!-- form row -->
+	<div class="gt-form-row">
+		<br/>
+		<table class="buttonsTable"><tr><td>
+		<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{lendTransactionEditController.submit}" />
+		</td><td>
+		<h:outputLink styleClass="stylishButton"  value="#{lendTransactionEditController.lendTransactionOverviewHref}">
+       					<h:outputText value="#{messages.navigation_cancel}"/>
+     				</h:outputLink>
+     	</td></tr></table>
+	</div>
+	<!-- /form row -->
+					
+</h:form></f:view>
+</div>
+<!-- /content box -->
+					
+			
+			</div>
+			<!-- /main content -->
+
+
+			
+			</div>
+			<!-- /body -->
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

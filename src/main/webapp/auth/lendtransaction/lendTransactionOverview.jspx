@@ -7,7 +7,7 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- params for page titles-->
-	<ui:define name="pageTitle"><h:outputText value="#{messages.lendTransaction_lendTransactionOverviewTitle}"/><h:outputText value=": " escape="false" /><h:outputText value="#{lendTransactionOverviewController.lendTransaction.item.title}"/></ui:define>
+	<ui:define name="pageTitle"><h:outputText value="#{messages.lendTransaction_lendTransactionOverviewTitle}"/><h:outputText value=": " escape="false" /><h:outputText value="#{lendTransactionOverviewController.lendTransaction.title}"/></ui:define>
 	<ui:param name="contentHeader" value="#{messages.lendTransaction_lendTransactionOverviewTitle}" />
 
 		<ui:define name="content">
@@ -28,7 +28,8 @@
 						
 			
 			
-				<f:view>
+				<f:view>				
+					<h:form id="lendTransactionOverviewForm" prependId="false">
 
 <h2 class="gt-table-head"><h:outputText value="#{messages.lendTransaction_lendTransactionOverviewTitle}"/></h2>
 
@@ -37,9 +38,14 @@
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label><h:outputText id="itemTitle" value="#{messages.item_item}:" /></label></div>
 		<h4>
-			<h:outputLink id="linkItem" value="#{lendTransactionOverviewController.itemOverviewHref}">
-				<h:outputText value="#{lendTransactionOverviewController.lendTransaction.item.title}" />
-			</h:outputLink>
+			<c:if test="#{lendTransactionOverviewController.lendTransaction.item != null}">
+				<h:outputLink id="linkItem" value="#{lendTransactionOverviewController.itemOverviewHref}">
+					<h:outputText value="#{lendTransactionOverviewController.lendTransaction.title}" />
+				</h:outputLink>
+			</c:if>
+			<c:if test="#{lendTransactionOverviewController.lendTransaction.item == null}">
+				<h:outputText value="#{lendTransactionOverviewController.lendTransaction.title}" />
+			</c:if>
 		</h4>
 	</div>
 	<br/>
@@ -62,6 +68,26 @@
 	<br/>
 
 	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_startDate}:" /></label></div>
+		<h:outputText value="#{lendTransactionOverviewController.startDateLabel}" />
+	</div>
+	<br/>
+
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_endDate}:" /></label></div>
+		<h:outputText value="#{lendTransactionOverviewController.endDateLabel}" />
+	</div>
+	<br/>
+	
+	<c:if test="#{lendTransactionOverviewController.lendRequestTextAvailable}">
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendRequest_text2}:" /></label></div>
+			<h:outputText value="#{lendTransactionOverviewController.lendRequestText}" escape="false" />
+		</div>
+		<br/>
+	</c:if>
+
+	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_status}:" /></label></div>
 		<h:outputText value="#{lendTransactionOverviewController.statusLabel}" />
 	</div>
@@ -70,12 +96,60 @@
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_whatIsNext}:" /></label></div>
 		<h:outputText value="#{lendTransactionOverviewController.whatIsNextLabel}" />
+		
+		<br/>
+		<table class="buttonsTable"><tr><td>
+		
+		<h:commandButton styleClass="stylishButton"
+			value="TODO accept"
+			action="#{lendTransactionOverviewController.acceptRequest}"
+			rendered="#{lendTransactionOverviewController.acceptRequestAvailable}"/>
+		
+		<h:commandButton styleClass="stylishButton"
+			value="TODO refuse"
+			action="#{lendTransactionOverviewController.refuseRequest}"
+			rendered="#{lendTransactionOverviewController.refuseRequestAvailable}"/>
+		
+		<h:commandButton styleClass="stylishButton"
+			value="TODO lend"
+			action="#{lendTransactionOverviewController.lend}"
+			rendered="#{lendTransactionOverviewController.lendAvailable}"/>
+		
+		<h:commandButton styleClass="stylishButton"
+			value="TODO give"
+			action="#{lendTransactionOverviewController.giveOrSell}"
+			rendered="#{lendTransactionOverviewController.giveOrSellAvailable}"/>
+		
+		<h:commandButton styleClass="stylishButton"
+			value="TODO complete"
+			action="#{lendTransactionOverviewController.complete}"
+			rendered="#{lendTransactionOverviewController.completeAvailable}"/>
+		
+		<h:commandButton styleClass="stylishButton"
+			value="TODO cancel"
+			action="#{lendTransactionOverviewController.cancel}"
+			rendered="#{lendTransactionOverviewController.cancelAvailable}"/>
+			
+		<h:outputLink styleClass="stylishButton"  
+		              value="#{lendTransactionOverviewController.evaluationAddHref}"
+		              rendered="#{lendTransactionOverviewController.evaluateAvailable}">
+        	<h:outputText value="TODO evaluate" rendered="#{lendTransactionOverviewController.evaluateAvailable}"/>
+         </h:outputLink>
+			
+		</td></tr></table>
+		
+		<table class="buttonsTable"><tr><td>
+			<h:outputLink rendered="#{lendTransactionOverviewController.editAvailable}" value="#{lendTransactionOverviewController.lendTransactionEditHref}" styleClass="stylishButton">
+	    		<h:outputText rendered="#{lendTransactionOverviewController.editAvailable}" value="#{messages.lendTransaction_edit}"/>
+	    	</h:outputLink>
+		</td></tr></table>
 	</div>
 	<br/>
 	
 </div>
 <!-- /content box -->
 					
+					</h:form>
 				</f:view>
 				
 
