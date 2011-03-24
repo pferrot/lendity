@@ -188,9 +188,6 @@ public class LendTransactionService {
 		today.set(Calendar.SECOND, 0);
 		today.set(Calendar.MILLISECOND, 0);
 		
-		Date temp = today.getTime();
-		System.out.println(UiUtils.getDateTimeAsString(temp, I18nUtils.getDefaultLocale()));
-		
 		final Calendar startDateMin = (Calendar)today.clone();
 		startDateMin.add(Calendar.DAY_OF_MONTH, 1);
 		
