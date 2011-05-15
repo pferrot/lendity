@@ -1,0 +1,97 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle"><h:outputText value="#{messages.group_myGroupsWhereOwnerOrAdministratorListTitle}" /></ui:define>
+	<ui:param name="contentHeader" value="#{messages.group_myGroupsWhereOwnerOrAdministratorListTitle}" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+
+				
+<f:view>
+
+<h2 class="gt-table-head"><h:outputText value="#{messages.group_myGroupsWhereOwnerOrAdministratorListTitle}"/></h2>
+
+<br/>
+
+<table class="filtersTable">
+<tr>
+
+<td class="groupSearchCell">
+<ui:include src="../../auth/group/filter/searchFilter.jspx">
+	<ui:param name="theBean" value="#{myGroupsWhereOwnerOrAdministratorListController}"/>
+	<ui:param name="defaultSearchString" value="#{messages.group_searchGroupGroups}"/>
+</ui:include>
+</td>
+
+</tr>
+</table>
+
+<br/>
+
+<!-- content box -->
+<div class="gt-content-box">
+
+<c:if test="#{empty(myGroupsWhereOwnerOrAdministratorListController.list)}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<!-- 
+<ui:include src="../connectionrequest/requestConnectionTooltip.jspx"/>
+ -->
+ 
+<h:dataTable value="#{myGroupsWhereOwnerOrAdministratorListController.list}" binding="#{myGroupsWhereOwnerOrAdministratorListController.table}" var="group" 
+   styleClass="gt-table gt-user-table">
+
+    <h:column id="column1">
+		<h4>
+			<h:outputLink value="#{myGroupsWhereOwnerOrAdministratorListController.groupOverviewHref}">
+				<h:outputText value="#{group.title}" />
+			</h:outputLink>
+		</h4>
+    </h:column>
+
+</h:dataTable>
+
+<ui:include src="../../auth/table/tableControls.jspx">
+	<ui:param name="theBean" value="#{myGroupsWhereOwnerOrAdministratorListController}"/>
+</ui:include>
+
+</div><!-- /content box -->
+
+</f:view>
+			</div>
+			<!-- /main content -->
+				
+			</div>
+			<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>

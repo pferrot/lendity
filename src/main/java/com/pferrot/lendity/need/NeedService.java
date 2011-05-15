@@ -12,10 +12,12 @@ import com.pferrot.core.CoreUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.dao.NeedDao;
+import com.pferrot.lendity.dao.bean.ItemDaoQueryBean;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.dao.bean.NeedDaoQueryBean;
 import com.pferrot.lendity.item.ItemConsts;
 import com.pferrot.lendity.item.ObjektService;
+import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
 import com.pferrot.lendity.model.Need;
@@ -42,6 +44,75 @@ public class NeedService extends ObjektService {
 
 	public Need findNeed(final Long pNeedId) {
 		return needDao.findNeed(pNeedId);
+	}
+
+	/**
+	 * Returns 5 random public needs in the area of pOriginLatitude/pOriginLongitude.
+	 * 
+	 * @return
+	 */
+	public List<Need> findRandomNeedsHomepage() {
+		final NeedDaoQueryBean needQuery = new NeedDaoQueryBean();
+		needQuery.setOrderBy("random");
+		needQuery.setMaxResults(5);
+		needQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
+		return needDao.findNeedsList(needQuery);
+	}
+
+	/**
+	 * Returns 5 random public needs in the area of pOriginLatitude/pOriginLongitude.
+	 * First we look in the a distance of 2 kilometers to search for really close needs.
+	 * If there is less that 5 needs, then we look up to 20 km, then up to 100 km and finally distance.
+	 * 
+	 * @param pOriginLatitude
+	 * @param pOriginLongitude
+	 * @return
+	 */
+	public List<Need> findRandomNeedsHomepage(final Double pOriginLatitude, final Double pOriginLongitude) {
+		CoreUtils.assertNotNull(pOriginLatitude);
+		CoreUtils.assertNotNull(pOriginLongitude);
+		
+		final int maxResults = 5;
+		
+		final NeedDaoQueryBean needQuery = new NeedDaoQueryBean();
+		needQuery.setOrderBy("random");
+		needQuery.setMaxResults(maxResults);
+		needQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
+		
+		// Try 2km, then 20, then 100, then unlimited.
+		needQuery.setMaxDistanceKm(new Double(2));
+		needQuery.setOriginLatitude(pOriginLatitude);
+		needQuery.setOriginLongitude(pOriginLongitude);
+		ListWithRowCount lwrc = needDao.findNeeds(needQuery);
+		
+		// Try 20km.
+		if (lwrc.getRowCount() < maxResults) {
+			needQuery.setMaxDistanceKm(new Double(20));
+			lwrc = needDao.findNeeds(needQuery);
+		}
+		else {
+			return lwrc.getList();
+		}
+		
+		// Try 100km.
+		if (lwrc.getRowCount() < maxResults) {
+			needQuery.setMaxDistanceKm(new Double(100));
+			lwrc = needDao.findNeeds(needQuery);
+		}
+		else {
+			return lwrc.getList();
+		}
+		
+		// Unlimited distance.
+		if (lwrc.getRowCount() < maxResults) {
+			needQuery.setMaxDistanceKm(null);
+			lwrc = needDao.findNeeds(needQuery);
+		}
+		else {
+			return lwrc.getList();
+		}
+		
+		return lwrc.getList();
 	}
 	
 	public ListWithRowCount findMyNeeds(final String pTitle, final Long pCategoryId, final Long pVisibilityId,

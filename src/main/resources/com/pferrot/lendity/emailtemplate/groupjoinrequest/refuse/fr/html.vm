@@ -1,0 +1,9 @@
+#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+
+Hello $requesterFirstName,<br/><br/>
+
+Ta demande d'adhésion au groupe <a href="$groupUrl">$groupTitle</a> a été refusée.<br/><br/>
+
+A bientôt sur <a href="$siteUrl">$siteName</a>.
+
+#include("com/pferrot/lendity/emailtemplate/html_footer.vm")

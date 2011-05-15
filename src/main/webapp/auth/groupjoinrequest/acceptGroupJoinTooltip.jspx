@@ -1,0 +1,32 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<div id="acceptGroupJoinDiv" style="display: none;">
+	<h:form id="acceptGroupJoinForm" prependId="false">
+		<h:inputHidden id="acceptGroupJoinGroupJoinRequestId" value="#{acceptGroupJoinTooltipController.groupJoinRequestId}" />
+		<h:inputHidden id="acceptGroupJoinRedirectId" value="#{acceptGroupJoinTooltipController.redirectId}" />
+		<table> 
+			<tr>
+				<td colspan="2" style="text-align: center;">
+					<b><h:outputText value="#{messages.groupJoinRequest_acceptGroupJoinMessage}"/></b>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align: center;">
+					<input type="button" class="fontSizeSmall stylishButton" onclick="submitAcceptGroupJoin()" value="#{messages.navigation_ok}"/>
+					<input type="button" class="fontSizeSmall stylishButton" onclick="cancelAcceptGroupJoin()" value="#{messages.navigation_cancel}"/>
+					<h:commandButton id="acceptGroupJoinActionButton" action="#{acceptGroupJoinTooltipController.submit}" style="display: none" value="not_displayed"/>
+				</td>
+			</tr>
+		</table>
+	</h:form>
+</div>
+
+</ui:composition>

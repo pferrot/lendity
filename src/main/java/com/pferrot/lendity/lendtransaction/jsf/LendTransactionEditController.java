@@ -44,7 +44,13 @@ public class LendTransactionEditController extends AbstractLendTransactionOvervi
 					}
 					return;
 				}
-				setLendTransaction(lendTransaction);
+				else {
+					setLendTransaction(lendTransaction);
+				}
+			}
+			if (getLendTransaction() == null) {
+				JsfUtils.redirect(PagesURL.MY_LEND_TRANSACTIONS_LIST);
+				return;
 			}
 		}
 		catch (AccessDeniedException ade) {

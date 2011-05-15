@@ -65,7 +65,7 @@ function editPictureOnChange(pContextPath) {
  * - the default content is added when leaving the field and it is empty
  * - the form is submitted when pressing enter
  */
-function setupSearchField(pFieldId, pClearSearchId, pText) {
+function setupSearchField(pFieldId, pClearSearchId, pText, pColorBackground) {
   $j(document).ready(function() {
     if ($j("#" + pFieldId).val() == '' ||
         $j("#" + pFieldId).val() == pText) {
@@ -77,7 +77,9 @@ function setupSearchField(pFieldId, pClearSearchId, pText) {
       if (pClearSearchId) {
         $j("#" + pClearSearchId).show();
       }
-      $j("#" + pFieldId).addClass("filterActive");
+      if (pColorBackground) {
+    	  $j("#" + pFieldId).addClass("filterActive");
+      }
     }
     $j("#" + pFieldId).focus(function() {
 	  if(this.value == pText ) {
@@ -476,6 +478,59 @@ function cancelDeleteNeed() {
 
 /***************************************************************************************************
  * 
+ * DELETE GROUP
+ * 
+ ***************************************************************************************************/
+function hideDeleteGroupTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#deleteGroupForm'), $j('#deleteGroupDiv'));
+}
+
+function deleteGroupQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#deleteGroupDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip that is used to lend an group.
+ */
+var mDeleteGroupTooltip;
+var mDeleteGroupTarget;
+function deleteGroupTooltip(pTooltipTarget, pGroupID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideDeleteGroupTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('deleteGroupForm').reset();
+	    // Hide error messages if any.
+	    $j('#deleteGroupForm').find('input').removeClass('validationError');
+		// Set the correct groupID.
+		$j('#deleteGroupId').val(pGroupID);
+		// Set the correct redirectID.
+		$j('#deleteGroupRedirectId').val(pRedirectID);
+		
+	  	mDeleteGroupTooltipTarget = pTooltipTarget;
+	  	mDeleteGroupTooltip = createFormTooltip($j(pTooltipTarget), $j('#deleteGroupForm'), deleteGroupQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip when an group is back.
+ */
+function submitDeleteGroup() {	
+	document.getElementById("deleteGroupActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the lend back group tooltip.
+ */
+function cancelDeleteGroup() {
+	hideDeleteGroupTooltip(mDeleteGroupTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
  * REQUEST CONNECTION
  * 
  ***************************************************************************************************/
@@ -684,6 +739,324 @@ function submitBanConnection() {
  */
 function cancelBanConnection() {
 	hideBanConnectionTooltip(mBanConnectionTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * ACCEPT GROUP JOIN
+ * 
+ ***************************************************************************************************/
+function hideAcceptGroupJoinTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#acceptGroupJoinForm'), $j('#acceptGroupJoinDiv'));
+}
+
+function acceptGroupJoinQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#acceptGroupJoinDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip.
+ */
+var mAcceptGroupJoinTooltip;
+var mAcceptGroupJoinTooltipTarget;
+function acceptGroupJoinTooltip(pTooltipTarget, pGroupJoinRequestID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideAcceptGroupJoinTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('acceptGroupJoinForm').reset();
+	    // Hide error messages if any.
+	    $j('#acceptGroupJoinForm').find('input').removeClass('validationError');
+		// Set the correct ID.
+		$j('#acceptGroupJoinGroupJoinRequestId').val(pGroupJoinRequestID);
+		// Set the correct redirectID.
+		$j('#acceptGroupJoinRedirectId').val(pRedirectID);
+		
+	  	mAcceptGroupJoinTooltipTarget = pTooltipTarget;
+	  	mAcceptGroupJoinTooltip = createFormTooltip($j(pTooltipTarget), $j('#acceptGroupJoinForm'), acceptGroupJoinQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip.
+ */
+function submitAcceptGroupJoin() {	
+	document.getElementById("acceptGroupJoinActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelAcceptGroupJoin() {
+	hideAcceptGroupJoinTooltip(mAcceptGroupJoinTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * REFUSE GROUP JOIN
+ * 
+ ***************************************************************************************************/
+function hideRefuseGroupJoinTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#refuseGroupJoinForm'), $j('#refuseGroupJoinDiv'));
+}
+
+function refuseGroupJoinQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#refuseGroupJoinDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip.
+ */
+var mRefuseGroupJoinTooltip;
+var mRefuseGroupJoinTooltipTarget;
+function refuseGroupJoinTooltip(pTooltipTarget, pGroupJoinRequestID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideRefuseGroupJoinTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('refuseGroupJoinForm').reset();
+	    // Hide error messages if any.
+	    $j('#refuseGroupJoinForm').find('input').removeClass('validationError');
+		// Set the correct ID.
+		$j('#refuseGroupJoinGroupJoinRequestId').val(pGroupJoinRequestID);
+		// Set the correct redirectID.
+		$j('#refuseGroupJoinRedirectId').val(pRedirectID);
+		
+	  	mRefuseGroupJoinTooltipTarget = pTooltipTarget;
+	  	mRefuseGroupJoinTooltip = createFormTooltip($j(pTooltipTarget), $j('#refuseGroupJoinForm'), refuseGroupJoinQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip.
+ */
+function submitRefuseGroupJoin() {	
+	document.getElementById("refuseGroupJoinActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelRefuseGroupJoin() {
+	hideRefuseGroupJoinTooltip(mRefuseGroupJoinTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * BAN GROUP JOIN
+ * 
+ ***************************************************************************************************/
+function hideBanGroupJoinTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#banGroupJoinForm'), $j('#banGroupJoinDiv'));
+}
+
+function banGroupJoinQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#banGroupJoinDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip.
+ */
+var mBanGroupJoinTooltip;
+var mBanGroupJoinTooltipTarget;
+function banGroupJoinTooltip(pTooltipTarget, pGroupJoinRequestID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideBanGroupJoinTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('banGroupJoinForm').reset();
+	    // Hide error messages if any.
+	    $j('#banGroupJoinForm').find('input').removeClass('validationError');
+		// Set the correct ID.
+		$j('#banGroupJoinGroupJoinRequestId').val(pGroupJoinRequestID);
+		// Set the correct redirectID.
+		$j('#banGroupJoinRedirectId').val(pRedirectID);
+		
+	  	mBanGroupJoinTooltipTarget = pTooltipTarget;
+	  	mBanGroupJoinTooltip = createFormTooltip($j(pTooltipTarget), $j('#banGroupJoinForm'), banGroupJoinQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip.
+ */
+function submitBanGroupJoin() {	
+	document.getElementById("banGroupJoinActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelBanGroupJoin() {
+	hideBanGroupJoinTooltip(mBanGroupJoinTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * REQUEST GROUP JOIN
+ * 
+ ***************************************************************************************************/
+function hideRequestGroupJoinTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#requestGroupJoinForm'), $j('#requestGroupJoinDiv'));
+}
+
+function requestGroupJoinQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#requestGroupJoinDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip.
+ */
+var mRequestGroupJoinTooltip;
+var mRequestGroupJoinTooltipTarget;
+function requestGroupJoinTooltip(pTooltipTarget, pGroupID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideRequestGroupJoinTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('requestGroupJoinForm').reset();
+	    // Hide error messages if any.
+	    $j('#requestGroupJoinForm').find('input').removeClass('validationError');
+		// Set the correct ID.
+		$j('#requestGroupJoinGroupId').val(pGroupID);
+		// Set the correct redirectID.
+		$j('#requestGroupJoinRedirectId').val(pRedirectID);
+		
+	  	mRequestGroupJoinTooltipTarget = pTooltipTarget;
+	  	mRequestGroupJoinTooltip = createFormTooltip($j(pTooltipTarget), $j('#requestGroupJoinForm'), requestGroupJoinQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip.
+ */
+function submitRequestGroupJoin() {
+	document.getElementById("requestGroupJoinActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelRequestGroupJoin() {
+	hideRequestGroupJoinTooltip(mRequestGroupJoinTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * JOIN GROUP
+ * 
+ ***************************************************************************************************/
+function hideJoinGroupTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#joinGroupForm'), $j('#joinGroupDiv'));
+}
+
+function joinGroupQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#joinGroupDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip.
+ */
+var mJoinGroupTooltip;
+var mJoinGroupTooltipTarget;
+function joinGroupTooltip(pTooltipTarget, pGroupID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideJoinGroupTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('joinGroupForm').reset();
+	    // Hide error messages if any.
+	    $j('#joinGroupForm').find('input').removeClass('validationError');
+		// Set the correct ID.
+		$j('#joinGroupGroupId').val(pGroupID);
+		// Set the correct redirectID.
+		$j('#joinGroupRedirectId').val(pRedirectID);
+		
+	  	mJoinGroupTooltipTarget = pTooltipTarget;
+	  	mJoinGroupTooltip = createFormTooltip($j(pTooltipTarget), $j('#joinGroupForm'), joinGroupQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip.
+ */
+function submitJoinGroup() {
+	document.getElementById("joinGroupActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelJoinGroup() {
+	hideJoinGroupTooltip(mJoinGroupTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * LEAVE GROUP
+ * 
+ ***************************************************************************************************/
+function hideLeaveGroupTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#leaveGroupForm'), $j('#leaveGroupDiv'));
+}
+
+function leaveGroupQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#leaveGroupDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip.
+ */
+var mLeaveGroupTooltip;
+var mLeaveGroupTooltipTarget;
+function leaveGroupTooltip(pTooltipTarget, pGroupID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideLeaveGroupTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('leaveGroupForm').reset();
+	    // Hide error messages if any.
+	    $j('#leaveGroupForm').find('input').removeClass('validationError');
+		// Set the correct ID.
+		$j('#leaveGroupGroupId').val(pGroupID);
+		// Set the correct redirectID.
+		$j('#leaveGroupRedirectId').val(pRedirectID);
+		
+	  	mLeaveGroupTooltipTarget = pTooltipTarget;
+	  	mLeaveGroupTooltip = createFormTooltip($j(pTooltipTarget), $j('#leaveGroupForm'), leaveGroupQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip.
+ */
+function submitLeaveGroup() {
+	document.getElementById("leaveGroupActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelLeaveGroup() {
+	hideLeaveGroupTooltip(mLeaveGroupTooltipTarget);
 }
 
 /***************************************************************************************************

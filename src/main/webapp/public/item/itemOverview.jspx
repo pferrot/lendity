@@ -97,6 +97,23 @@
 			<h:outputText value="#{itemOverviewController.visibilityLabel}" />
 		</div>
 		<br/>
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_groupsAuthorized}:" /></label></div>
+			<c:if test="#{itemOverviewController.groupsAuthorized}" var="groupAuthorized"/>
+			<c:if test="${groupAuthorized}">
+				<ul>
+					<c:forEach items="#{itemOverviewController.item.groupsAuthorized}" var="group">
+						<li><h:outputText value="${group.title}"/></li>
+					</c:forEach>
+				</ul>
+			</c:if>
+			<c:if test="${not groupAuthorized}">
+				<h:outputText value="#{messages.item_groupsAuthorizedNoneSelected}" />
+				<br/><br/>
+			</c:if>
+		</div>
+		
+		
 	</c:if>
 	<c:if test="#{itemOverviewController.item.deposit != null or itemOverviewController.item.rentalFee != null or itemOverviewController.item.toGiveForFree or itemOverviewController.item.salePrice != null}">
 		<div class="gt-form-row gt-width-100">

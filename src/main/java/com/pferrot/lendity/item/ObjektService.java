@@ -1,6 +1,7 @@
 package com.pferrot.lendity.item;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,6 +12,8 @@ import com.pferrot.emailsender.manager.MailManager;
 import com.pferrot.lendity.dao.DocumentDao;
 import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.document.DocumentService;
+import com.pferrot.lendity.group.GroupService;
+import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
 import com.pferrot.lendity.model.ListValue;
@@ -19,7 +22,6 @@ import com.pferrot.lendity.model.OrderedListValue;
 import com.pferrot.lendity.model.Ownable;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
-import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.security.SecurityUtils;
 
 public abstract class ObjektService {
@@ -31,8 +33,17 @@ public abstract class ObjektService {
 	private MailManager mailManager;
 	private DocumentDao documentDao;
 	private DocumentService documentService;
+	private GroupService groupService;
 	
 	
+	public GroupService getGroupService() {
+		return groupService;
+	}
+
+	public void setGroupService(GroupService groupService) {
+		this.groupService = groupService;
+	}
+
 	public ListValueDao getListValueDao() {
 		return listValueDao;
 	}
@@ -159,6 +170,22 @@ public abstract class ObjektService {
 	    		 pObjekt.getOwner().getConnections() != null &&
 	    		 pObjekt.getOwner().getConnections().contains(pPerson))) {
 				return true;
+			}
+			final Set<Group> groupsAuthorized = pObjekt.getGroupsAuthorized();
+			if (groupsAuthorized.isEmpty()) {
+				return false;
+			}
+			final List<Group> groupsPerson = getGroupService().findPersonGroupsWhereOwnerOrAdministratorOrMemberList(pPerson.getId(), null, 0, 0);
+			if (groupsPerson.isEmpty()) {
+				return false;
+			}
+			// We should certainly improve this when we have time...
+			for (Group groupAuthorized: groupsAuthorized) {
+				for(Group groupPerson: groupsPerson) {
+					if (groupAuthorized.equals(groupPerson)) {
+						return true;
+					}
+				}
 			}
 			return false;
 		}

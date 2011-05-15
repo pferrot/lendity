@@ -11,6 +11,8 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.pferrot.lendity.dao.CommentDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.model.Comment;
+import com.pferrot.lendity.model.Group;
+import com.pferrot.lendity.model.GroupComment;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemComment;
 import com.pferrot.lendity.model.LendTransaction;
@@ -54,6 +56,12 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
 	}
 
+	public List<GroupComment> findGroupCommentsList(final Group pGroup, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria criteria = getGroupCommentsDetachedCriteria(pGroup);
+		criteria.addOrder(Order.desc("creationDate"));		
+		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
+	}
+
 	public long countItemComments(final Item pItem) {
 		final DetachedCriteria criteria = getItemCommentsDetachedCriteria(pItem);
 		return rowCount(criteria);
@@ -66,6 +74,11 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 
 	public long countLendTransactionComments(final LendTransaction pLendTransaction) {
 		final DetachedCriteria criteria = getLendTransactionCommentsDetachedCriteria(pLendTransaction);
+		return rowCount(criteria);
+	}
+	
+	public long countGroupComments(final Group pGroup) {
+		final DetachedCriteria criteria = getGroupCommentsDetachedCriteria(pGroup);
 		return rowCount(criteria);
 	}
 
@@ -96,6 +109,15 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return criteria;	
 	}
 
+	private DetachedCriteria getGroupCommentsDetachedCriteria(final Group pGroup) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(GroupComment.class);
+	
+		if (pGroup != null) {
+			criteria.add(Restrictions.eq("group", pGroup));
+		}		
+		return criteria;	
+	}
+
 	/**
 	 * Returns the number of rows for a giver DetachedCriteria.
 	 *
@@ -122,6 +144,12 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 	public ListWithRowCount findLendTransactionComments(final LendTransaction pLendTransaction, final int pFirstResult, final int pMaxResults) {
 		final List list = findLendTransactionCommentsList(pLendTransaction, pFirstResult, pMaxResults);
 		final long count = countLendTransactionComments(pLendTransaction);
+		return new ListWithRowCount(list, count);
+	}
+
+	public ListWithRowCount findGroupComments(final Group pGroup, final int pFirstResult, final int pMaxResults) {
+		final List list = findGroupCommentsList(pGroup, pFirstResult, pMaxResults);
+		final long count = countGroupComments(pGroup);
 		return new ListWithRowCount(list, count);
 	}
 }

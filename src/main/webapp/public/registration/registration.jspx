@@ -46,6 +46,7 @@
 							value="#{registrationController.displayName}"
 							required="true"
 							requiredMessage="#{messages.validation_requiredMessage}"
+							validator="#{registrationStep1.validateDisplayName}"
 							maxlength="255"
 							autocomplete="off"/>			
 					</div><!-- /form row -->

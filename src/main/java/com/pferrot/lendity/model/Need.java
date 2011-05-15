@@ -42,7 +42,7 @@ public class Need implements Objekt, CommentableWithOwner<NeedComment> {
 	@Column(name = "ID")
     private Long id;
 
-	@OneToOne(targetEntity = Person.class)
+	@ManyToOne(targetEntity = Person.class)
 	@JoinColumn(name = "OWNER_ID")
 	private Person owner;
 	
@@ -59,6 +59,14 @@ public class Need implements Objekt, CommentableWithOwner<NeedComment> {
 	@ManyToOne(targetEntity = ItemVisibility.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "VISIBILITY_ID", nullable = false)
 	private ItemVisibility visibility;
+
+	@ManyToMany(targetEntity = com.pferrot.lendity.model.Group.class)
+	@JoinTable(
+			name = "NEEDS_GROUPS",
+			joinColumns = {@JoinColumn(name = "NEED_ID")},
+			inverseJoinColumns = {@JoinColumn(name = "GROUP_ID")}
+	)
+	private Set<Group> groupsAuthorized = new HashSet<Group>();
 	
 	@Column(name = "CREATION_DATE", nullable = false)
 	private Date creationDate;
@@ -216,6 +224,24 @@ public class Need implements Objekt, CommentableWithOwner<NeedComment> {
 	
 	public boolean isConnectionsVisibility() {
 		return getVisibility().getLabelCode().equals(ItemVisibility.CONNECTIONS);
+	}
+
+	public Set<Group> getGroupsAuthorized() {
+		return groupsAuthorized;
+	}
+
+	public void setGroupsAuthorized(final Set<Group> pGroups) {
+		this.groupsAuthorized = pGroups;
+	}
+
+	public void addGroupAuthorized(final Group pGroup) {
+		CoreUtils.assertNotNull(pGroup);
+		groupsAuthorized.add(pGroup);
+	}
+		
+	public void removeGroupAuthorized(final Group pGroup) {
+		CoreUtils.assertNotNull(pGroup);
+		groupsAuthorized.remove(pGroup);
 	}
 
 	@Override

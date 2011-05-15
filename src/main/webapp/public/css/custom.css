@@ -57,6 +57,12 @@ table.pagingTable span {
 	padding: 3px 0px!important;
 }
 
+.gt-form-text-location {
+	width: 350px!important;	
+	font-size: 130%!important;
+	padding: 3px 0px!important;
+}
+
 .gt-form-text-amount {
 	width: 80px!important;	
 }
@@ -158,6 +164,10 @@ table.filtersTable td.itemSearchCell {
 
 table.filtersTable td.personSearchCell {
 	width: 350px;
+}
+
+table.filtersTable td.groupSearchCell {
+	width: 500px;
 }
 
 table.menuTable {

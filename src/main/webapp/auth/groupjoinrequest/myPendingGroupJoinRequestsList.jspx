@@ -1,0 +1,124 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle"><h:outputText value="#{messages.groupJoinRequest_myPendingGroupJoinRequestsTitle}" /></ui:define>
+	<ui:param name="contentHeader" value="#{messages.groupJoinRequest_myPendingGroupJoinRequestsTitle}" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			<!-- main content -->
+			<div class="gt-content">
+
+				
+<f:view>
+
+<h2 class="gt-table-head"><h:outputText id="id_00" value="#{messages.groupJoinRequest_myPendingGroupJoinRequestsTitle}"/></h2>
+<p><h:outputText id="id_01" value="#{messages.groupJoinRequest_onlyThoseWithNoResponse}"/></p>
+
+<br/>
+
+
+<!-- content box -->
+<div class="gt-content-box">
+
+<c:if test="#{empty(myPendingGroupJoinRequestsListController.list)}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText id="id_02" value="#{messages.search_noResult}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<ui:include src="acceptGroupJoinTooltip.jspx"/>
+<ui:include src="refuseGroupJoinTooltip.jspx"/>
+<ui:include src="banGroupJoinTooltip.jspx"/>
+
+<h:dataTable id="id_03" value="#{myPendingGroupJoinRequestsListController.list}" binding="#{myPendingGroupJoinRequestsListController.table}" var="groupJoinRequest" styleClass="gt-table gt-user-table">
+
+    <h:column id="column1">
+		<h4>
+			<h:outputLink id="id_05" value="#{myPendingGroupJoinRequestsListController.groupOverviewHref}">
+				<h:outputText id="id_06" value="#{groupJoinRequest.group.title}" />
+			</h:outputLink>
+		</h4>
+    </h:column>
+    
+    <h:column id="column2">
+		<h4>
+			<h:outputLink id="id_07" value="#{myPendingGroupJoinRequestsListController.requesterOverviewHref}">
+				<h:outputText id="id_08" value="#{groupJoinRequest.requester.displayName}" />
+			</h:outputLink>
+		</h4>
+    </h:column>
+
+	<h:column id="column3">
+		<table border="0" class="gt-table-categories" width="150" align="right">
+			<tr>
+			    <th width="50%"><nobr><h:outputText id="id_09" value="#{messages.groupJoinRequest_requestDate}:" /></nobr></th>
+				<td width="50%"><nobr><h:outputText id="id_10" value="#{myPendingGroupJoinRequestsListController.requestDateLabel}"/></nobr></td>
+		    </tr>
+		</table>
+    </h:column>
+
+	<h:column id="column4">
+	<h:form id="form123">
+		<table border="0" class="gt-table-categories" width="150" align="right">
+			<tr>
+				<td>
+					<span onclick="acceptGroupJoinTooltip(this, '#{groupJoinRequest.id}', 1)">
+						<h:outputText id="id_10" styleClass="stylishButton" value="#{messages.groupJoinRequest_responseAccept}"/>
+					</span>
+				</td>
+		    </tr>
+		    <tr>
+				<td>
+					<span onclick="refuseGroupJoinTooltip(this, '#{groupJoinRequest.id}', 1)">
+						<h:outputText id="id_11" styleClass="stylishButton" value="#{messages.groupJoinRequest_responseRefuse}"/>
+					</span>
+				</td>
+		    </tr>
+		    <tr>
+				<td>
+					<span onclick="banGroupJoinTooltip(this, '#{groupJoinRequest.id}', 1)">
+						<h:outputText id="id_12" styleClass="stylishButton" value="#{messages.groupJoinRequest_responseBan}"/>
+					</span>
+				</td>
+		    </tr>
+		</table>
+	</h:form>
+    </h:column>
+
+</h:dataTable>
+
+</div><!-- /content box -->
+
+</f:view>
+			</div>
+			<!-- /main content -->
+			</div>
+			<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

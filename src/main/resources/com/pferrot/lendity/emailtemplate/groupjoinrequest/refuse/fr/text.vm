@@ -1,0 +1,7 @@
+Hello $requesterFirstName,
+
+Ta demande d'adhésion au groupe $groupTitle a été refusée.
+
+A bientôt sur $siteName.
+
+$siteUrl

@@ -1,0 +1,106 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle"><h:outputText value="#{messages.group_groupAddTitle}" /></ui:define>
+	<ui:param name="contentHeader" value="#{messages.group_groupAddTitle}" />
+
+		<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				
+				<!-- Group Edit Form -->
+				<h2 class="gt-form-head"><h:outputText value="#{messages.group_groupAddTitle}"/></h2>
+				<div class="gt-form gt-content-box">
+				
+				<f:view>
+
+					<h:form id="groupAddForm" prependId="false">
+
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.group_title}"/> *</label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="title"></h:message>			
+						<h:inputText id="title" styleClass="gt-form-text"
+							value="#{groupAddController.title}" 
+							required="true" 
+							requiredMessage="#{messages.validation_requiredMessage}"
+							maxlength="255"	/>			
+					</div><!-- /form row -->					
+					
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.group_description}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="description"></h:message>			
+						<h:inputTextarea id="description" immediate="true" 
+						    styleClass="gt-form-textarea"
+						    rows="10"
+							value="#{groupAddController.description}"
+							validator="#{groupAddController.validateDescriptionSize}"/>						
+					</div><!-- /form row -->
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.group_validateMembership}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="validateMembership"></h:message>
+						<h:selectBooleanCheckbox id="validateMembership" value="#{groupAddController.validateMembership}" styleClass="gt-form-element-checkbox"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputText value="#{messages.group_validateMembership}"/>
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row">
+						<br/>
+						<table class="buttonsTable"><tr><td>
+						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{groupAddController.submit}" />
+						</td><td>
+						<h:outputLink styleClass="stylishButton"  value="#{authenticationController.groupsURL}">
+           					<h:outputText value="#{messages.navigation_cancel}"/>
+         				</h:outputLink>
+         				</td></tr></table>
+					</div>
+					<!-- /form row -->
+					
+					</h:form>
+				</f:view>		
+				</div>			
+				<!-- /Group Edit Form -->
+				
+			</div>
+			<!-- /main content -->
+
+			<!-- sidebar -->
+			<div class="gt-sidebar">
+				
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

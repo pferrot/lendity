@@ -1,0 +1,15 @@
+#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+
+Hello,<br/><br/>
+
+$requesterDisplayName souhaite rejoindre le groupe $groupTitle.<br/><br/>
+
+Merci de suivre le lien ci-dessous afin de répondre à sa demande.<br/><br/>
+
+<a href="$groupRequestsUrl">Demandes d'adésion à un groupe en attente</a><br/><br/>
+
+Note que si le groupe a d'autres administrateurs, il est possible qu'un autre administrateur réponde à cette demande avant toi.<br/><br/>
+
+A bientôt sur <a href="$siteUrl">$siteName</a>.
+
+#include("com/pferrot/lendity/emailtemplate/html_footer.vm")

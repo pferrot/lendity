@@ -66,7 +66,7 @@ public class Item implements Objekt, Borrowable, CommentableWithOwner<ItemCommen
 	private ItemCategory category;
 
 	// If the borrower if a user of the system.
-	@OneToOne(targetEntity = Person.class)
+	@ManyToOne(targetEntity = Person.class)
 	@JoinColumn(name = "BORROWER_ID", nullable = true)
 	private Person borrower;
 
@@ -88,7 +88,15 @@ public class Item implements Objekt, Borrowable, CommentableWithOwner<ItemCommen
 	@JoinColumn(name = "VISIBILITY_ID", nullable = false)
 	private ItemVisibility visibility;
 
-	@OneToOne(targetEntity = Person.class)
+	@ManyToMany(targetEntity = com.pferrot.lendity.model.Group.class)
+	@JoinTable(
+			name = "ITEMS_GROUPS",
+			joinColumns = {@JoinColumn(name = "ITEM_ID")},
+			inverseJoinColumns = {@JoinColumn(name = "GROUP_ID")}
+	)
+	private Set<Group> groupsAuthorized = new HashSet<Group>();
+
+	@ManyToOne(targetEntity = Person.class)
 	@JoinColumn(name = "OWNER_ID")
 	private Person owner;
 	
@@ -162,6 +170,24 @@ public class Item implements Objekt, Borrowable, CommentableWithOwner<ItemCommen
 	
 	public boolean isConnectionsVisibility() {
 		return getVisibility().getLabelCode().equals(ItemVisibility.CONNECTIONS);
+	}
+
+	public Set<Group> getGroupsAuthorized() {
+		return groupsAuthorized;
+	}
+
+	public void setGroupsAuthorized(final Set<Group> pGroups) {
+		this.groupsAuthorized = pGroups;
+	}
+
+	public void addGroupAuthorized(final Group pGroup) {
+		CoreUtils.assertNotNull(pGroup);
+		groupsAuthorized.add(pGroup);
+	}
+		
+	public void removeGroupAuthorized(final Group pGroup) {
+		CoreUtils.assertNotNull(pGroup);
+		groupsAuthorized.remove(pGroup);
 	}
 	
 	public boolean isToGiveOrSell() {

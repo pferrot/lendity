@@ -58,6 +58,8 @@ public class CommentController extends AbstractController {
 	
 	public final static String CONTAINER_LEND_TRANSACTION_ID_PARAMETER_NAME = "lendTransactionID";
 	
+	public final static String CONTAINER_GROUP_ID_PARAMETER_NAME = "groupID";
+	
 	private CommentService commentService;
 	private PersonService personService;
 
@@ -161,6 +163,7 @@ public class CommentController extends AbstractController {
 		final String itemIdAsString = pRequest.getParameter(CONTAINER_ITEM_ID_PARAMETER_NAME);
 		final String needIdAsString = pRequest.getParameter(CONTAINER_NEED_ID_PARAMETER_NAME);
 		final String lendTransactionIdAsString = pRequest.getParameter(CONTAINER_LEND_TRANSACTION_ID_PARAMETER_NAME);
+		final String groupIdAsString = pRequest.getParameter(CONTAINER_GROUP_ID_PARAMETER_NAME);
 		// Load a given comment.
 		if (commentIdAsString != null && commentIdAsString.trim().length() > 0) {
 			final Long commentId = Long.parseLong(commentIdAsString);
@@ -235,6 +238,27 @@ public class CommentController extends AbstractController {
 			
 			final Long lendTransactionId = Long.parseLong(lendTransactionIdAsString);
 			final ListWithRowCount lwrc = commentService.findLendTransactionCommentsWithAC(lendTransactionId,
+					PersonUtils.getCurrentPersonId(pRequest.getSession()),
+					firstResult,
+					maxResults);
+			
+			populateMultipleCommentsMap(result, lwrc, firstResult, maxResults, pRequest);
+		}
+		// Load comments for a group.
+		else if (groupIdAsString != null && groupIdAsString.trim().length() > 0) {			
+			final String firstResultAsString = pRequest.getParameter("firstResult");
+			int firstResult = 0;
+			if (!StringUtils.isNullOrEmpty(firstResultAsString)) {
+				firstResult = Integer.valueOf(firstResultAsString);
+			}
+			int maxResults = CommentConsts.DEFAULT_NB_COMMENTS_TO_LOAD;
+			final String maxResultsAsString = pRequest.getParameter("maxResults");
+			if (!StringUtils.isNullOrEmpty(maxResultsAsString)) {
+				maxResults = Integer.valueOf(maxResultsAsString);
+			}
+			
+			final Long groupId = Long.parseLong(groupIdAsString);
+			final ListWithRowCount lwrc = commentService.findGroupCommentsWithAC(groupId,
 					PersonUtils.getCurrentPersonId(pRequest.getSession()),
 					firstResult,
 					maxResults);
@@ -372,6 +396,7 @@ public class CommentController extends AbstractController {
 				final String itemID = pRequest.getParameter(CONTAINER_ITEM_ID_PARAMETER_NAME);
 				final String needID = pRequest.getParameter(CONTAINER_NEED_ID_PARAMETER_NAME);
 				final String lendTransactionID = pRequest.getParameter(CONTAINER_LEND_TRANSACTION_ID_PARAMETER_NAME);
+				final String groupID = pRequest.getParameter(CONTAINER_GROUP_ID_PARAMETER_NAME);
 				if (!StringUtils.isNullOrEmpty(itemID)) {
 					commentID = commentService.createCommentOnItemWithAC(text, Long.valueOf(itemID), currentPersonId);
 				}
@@ -380,6 +405,9 @@ public class CommentController extends AbstractController {
 				}
 				else if (!StringUtils.isNullOrEmpty(lendTransactionID)) {
 					commentID = commentService.createCommentOnLendTransactionWithAC(text, Long.valueOf(lendTransactionID), currentPersonId);
+				}
+				else if (!StringUtils.isNullOrEmpty(groupID)) {
+					commentID = commentService.createCommentOnGroupWithAC(text, Long.valueOf(groupID), currentPersonId);
 				}
 				
 				map = getMapForOneComment(commentService.findComment(commentID), pRequest);

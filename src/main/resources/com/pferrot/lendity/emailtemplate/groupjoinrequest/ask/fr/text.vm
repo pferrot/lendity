@@ -1,0 +1,13 @@
+Hello,
+
+$requesterDisplayName souhaite rejoindre le groupe $groupTitle.
+
+Merci de suivre le lien ci-dessous afin de répondre à sa demande.
+
+$groupRequestsUrl
+
+Note que si le groupe a d'autres administrateurs, il est possible qu'un autre administrateur réponde à cette demande avant toi.
+
+A bientôt sur $siteName.
+
+$siteUrl

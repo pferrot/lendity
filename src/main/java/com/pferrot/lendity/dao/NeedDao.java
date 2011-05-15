@@ -1,6 +1,6 @@
 package com.pferrot.lendity.dao;
 
-import java.util.Date;
+import java.util.List;
 
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.dao.bean.NeedDaoQueryBean;
@@ -15,6 +15,7 @@ public interface NeedDao {
 	Need findNeed(Long pNeedId);
 	
 	ListWithRowCount findNeeds(NeedDaoQueryBean pNeedDaoQueryBean);
+	List<Need> findNeedsList(NeedDaoQueryBean pNeedDaoQueryBean);
 	
 	long countNeeds(NeedDaoQueryBean pNeedDaoQueryBean);
 	

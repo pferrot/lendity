@@ -22,7 +22,7 @@
 	</h:form>
 </td></tr></table>	
 <script type="text/javascript">
-	setupSearchField('searchString', false, '#{defaultSearchString}');
+	setupSearchField('searchString', false, '#{defaultSearchString}', true);
 </script>	
 <!-- /search -->
 

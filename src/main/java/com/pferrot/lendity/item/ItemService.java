@@ -2,7 +2,10 @@ package com.pferrot.lendity.item;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,6 +20,7 @@ import com.pferrot.lendity.dao.bean.ItemDaoQueryBean;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.item.exception.ItemException;
 import com.pferrot.lendity.model.Document;
+import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
@@ -63,6 +67,75 @@ public class ItemService extends ObjektService {
 	public ListWithRowCount findMyItems(final String pTitle, final Long pCategoryId, final Long pVisibilityId,
 			final Boolean pBorrowed, final Long pLendType, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {		
 		return findItems(PersonUtils.getCurrentPersonId(), pTitle, pCategoryId, getVisibilityIds(pVisibilityId), pBorrowed, pLendType, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
+	}
+	
+	/**
+	 * Returns 5 random public items in the area of pOriginLatitude/pOriginLongitude.
+	 * 
+	 * @return
+	 */
+	public List<Item> findRandomItemsHomepage() {
+		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
+		itemQuery.setOrderBy("random");
+		itemQuery.setMaxResults(5);
+		itemQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
+		return itemDao.findItemsList(itemQuery);
+	}
+
+	/**
+	 * Returns 5 random public items in the area of pOriginLatitude/pOriginLongitude.
+	 * First we look in the a distance of 2 kilometers to search for really close items.
+	 * If there is less that 5 items, then we look up to 20 km, then up to 100 km and finally distance.
+	 * 
+	 * @param pOriginLatitude
+	 * @param pOriginLongitude
+	 * @return
+	 */
+	public List<Item> findRandomItemsHomepage(final Double pOriginLatitude, final Double pOriginLongitude) {
+		CoreUtils.assertNotNull(pOriginLatitude);
+		CoreUtils.assertNotNull(pOriginLongitude);
+		
+		final int maxResults = 5;
+		
+		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
+		itemQuery.setOrderBy("random");
+		itemQuery.setMaxResults(maxResults);
+		itemQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
+		
+		// Try 2km, then 20, then 100, then unlimited.
+		itemQuery.setMaxDistanceKm(new Double(2));
+		itemQuery.setOriginLatitude(pOriginLatitude);
+		itemQuery.setOriginLongitude(pOriginLongitude);
+		ListWithRowCount lwrc = itemDao.findItems(itemQuery);
+		
+		// Try 20km.
+		if (lwrc.getRowCount() < maxResults) {
+			itemQuery.setMaxDistanceKm(new Double(20));
+			lwrc = itemDao.findItems(itemQuery);
+		}
+		else {
+			return lwrc.getList();
+		}
+		
+		// Try 100km.
+		if (lwrc.getRowCount() < maxResults) {
+			itemQuery.setMaxDistanceKm(new Double(100));
+			lwrc = itemDao.findItems(itemQuery);
+		}
+		else {
+			return lwrc.getList();
+		}
+		
+		// Unlimited distance.
+		if (lwrc.getRowCount() < maxResults) {
+			itemQuery.setMaxDistanceKm(null);
+			lwrc = itemDao.findItems(itemQuery);
+		}
+		else {
+			return lwrc.getList();
+		}
+		
+		return lwrc.getList();
 	}
 
 	public ListWithRowCount findItems(final Long pPersonId, final String pTitle, final Long pCategoryId, final Long[] pVisibilityIds,
@@ -131,6 +204,7 @@ public class ItemService extends ObjektService {
 			if (!ItemConsts.OWNER_TYPE_CONNECTIONS.equals(pOwnerType)) {
 				itemQuery.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
 				itemQuery.setOwnerIdsToExcludeForVisibilityIdsToForce(ListValueUtils.getIdsArray(PersonUtils.getCurrentPersonId()));
+				itemQuery.setGroupIds(getGroupService().getCurrentPersonGroupIds());
 			}
 		}
 		// When not logged in - only show public items.
@@ -366,6 +440,22 @@ public class ItemService extends ObjektService {
 		pItem.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
 		updateItem(pItem, pCategoryId);
 	}
+	
+	public void updateItem(final Item pItem, final Long pCategoryId, final Long pVisibilityId, final List<Long> pAuthorizedGroupsIds) {
+		assertCurrentUserAuthorizedToEdit(pItem);
+		if (pAuthorizedGroupsIds != null) {
+			Set<Group> groups = new HashSet<Group>();
+			for (Long groupId: pAuthorizedGroupsIds) {
+				final Group group = getGroupService().findGroup(groupId);
+				// AC check.
+				getGroupService().assertCurrentUserOwnerOrAdministratorOrMemberOfGroup(group);
+				groups.add(group);
+			}
+			pItem.setGroupsAuthorized(groups);
+		}
+		pItem.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
+		updateItem(pItem, pCategoryId, pVisibilityId);
+	}
 
 	public void updateItem(final Item pItem, final Long pCategoryId) {
 		assertCurrentUserAuthorizedToEdit(pItem);
@@ -520,8 +610,24 @@ public class ItemService extends ObjektService {
 	    		 pObjekt.getOwner().getConnections() != null &&
 	    		 pObjekt.getOwner().getConnections().contains(pPerson)) ||
 				 // Person is the current borrower - then he should always see it. 
-	    		 item.getBorrower() != null && item.getBorrower().equals(pPerson)) {
+	    		(item.getBorrower() != null && item.getBorrower().equals(pPerson))) {
 				return true;
+			}
+			final Set<Group> groupsAuthorized = item.getGroupsAuthorized();
+			if (groupsAuthorized.isEmpty()) {
+				return false;
+			}
+			final List<Group> groupsPerson = getGroupService().findPersonGroupsWhereOwnerOrAdministratorOrMemberList(pPerson.getId(), null, 0, 0);
+			if (groupsPerson.isEmpty()) {
+				return false;
+			}
+			// We should certainly improve this when we have time...
+			for (Group groupAuthorized: groupsAuthorized) {
+				for(Group groupPerson: groupsPerson) {
+					if (groupAuthorized.equals(groupPerson)) {
+						return true;
+					}
+				}
 			}
 			return false;
 		}

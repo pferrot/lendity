@@ -50,6 +50,10 @@ public abstract class AbstractObjektOverviewController {
 		return getObjektService().isCurrentUserOwner(getObjekt());
 	}
 	
+	public boolean isGroupsAuthorized() {
+		return !getObjekt().getGroupsAuthorized().isEmpty();
+	}
+	
 	public String getCreationDateLabel() {
 		return UiUtils.getDateAsString(getObjekt().getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
 	}

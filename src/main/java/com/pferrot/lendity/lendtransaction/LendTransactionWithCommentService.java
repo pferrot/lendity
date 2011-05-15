@@ -1,6 +1,7 @@
 package com.pferrot.lendity.lendtransaction;
 
 import java.util.Date;
+import java.util.HashSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,6 +15,7 @@ import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.lendtransaction.exception.LendTransactionException;
 import com.pferrot.lendity.model.Evaluation;
+import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemVisibility;
 import com.pferrot.lendity.model.LendTransaction;
@@ -214,7 +216,9 @@ public class LendTransactionWithCommentService {
 				item.setSalePrice(null);
 				item.setDeposit(null);
 				item.setVisibility((ItemVisibility)listValueDao.findListValue(ItemVisibility.PRIVATE));
+				item.setGroupsAuthorized(new HashSet<Group>());
 				item.setAcquisitionDate(new Date());
+				
 				
 				itemService.updateItem(item);
 			}

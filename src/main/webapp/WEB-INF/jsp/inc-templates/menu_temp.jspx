@@ -1,0 +1,199 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+    			
+		
+<table>
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.homeURL}">
+	<h:outputText value="#{messages.menu_welcome}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myItemsURL}">
+	<h:outputText value="#{messages.menu_myItems}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.itemAddURL}">
+	<h:outputText value="#{messages.menu_addItem}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myLentItemsURL}">
+	<h:outputText value="#{messages.menu_myLentItems}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myPendingLendRequestsURL}">
+	<h:outputText value="#{messages.menu_myPendingLendRequests}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myConnectionsItemsURL}">
+	<h:outputText value="#{messages.menu_myConnectionsItems}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myBorrowedItemsURL}">
+	<h:outputText value="#{messages.menu_myBorrowedItems}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myPendingLendRequestsOutURL}">
+	<h:outputText value="#{messages.menu_myPendingLendRequestsOut}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myConnectionsNeedsURL}">
+	<h:outputText value="#{messages.menu_myConnectionsNeeds}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myNeedsURL}">
+	<h:outputText value="#{messages.menu_myNeeds}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.needAddURL}">
+	<h:outputText value="#{messages.menu_addNeed}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myConnectionsURL}">
+	<h:outputText value="#{messages.menu_myConnections}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.personsURL}">
+	<h:outputText value="#{messages.menu_persons}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myPendingConnectionRequestsURL}">
+	<h:outputText value="#{messages.menu_myPendingConnectionRequests}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myPendingConnectionRequestsOutURL}">
+	<h:outputText value="#{messages.menu_myPendingConnectionRequestsOut}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myBannedPersonsURL}">
+	<h:outputText value="#{messages.menu_myBannedPersons}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myConnectionsUpdatesURL}">
+	<h:outputText value="#{messages.menu_myConnectionsUpdates}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.inviteFriendsURL}">
+	<h:outputText value="#{messages.menu_inviteFriends}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myEvaluationsURL}">
+	<h:outputText value="#{messages.menu_myEvaluations}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myEvaluationsMadeURL}">
+	<h:outputText value="#{messages.menu_myEvaluationsMade}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myLendTransactionsURL}">
+	<h:outputText value="#{messages.menu_myLendTransactions}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myLendTransactionsWaitingForInputURL}">
+	<h:outputText value="#{messages.menu_myLendTransactionsWaitingForInput}" />
+ </h:outputLink>
+</td>
+</tr>
+
+<tr>
+<td>
+<h:outputLink value="#{authenticationController.myProfileURL}">
+	<h:outputText value="#{messages.menu_profile}" />
+ </h:outputLink>
+</td>
+</tr>
+
+</table>
+
+</ui:composition>

@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -19,11 +20,11 @@ public class ConnectionRequest implements Serializable {
 	@Column(name = "ID")
     private Long id;
 	
-	@OneToOne(targetEntity = com.pferrot.lendity.model.Person.class)
+	@ManyToOne(targetEntity = com.pferrot.lendity.model.Person.class)
 	@JoinColumn(name = "REQUESTER_ID", nullable = false)
 	private Person requester;	
 	
-	@OneToOne(targetEntity = com.pferrot.lendity.model.Person.class)
+	@ManyToOne(targetEntity = com.pferrot.lendity.model.Person.class)
 	@JoinColumn(name = "CONNECTION_ID", nullable = false)
 	private Person connection;
 	
@@ -33,7 +34,7 @@ public class ConnectionRequest implements Serializable {
 	@Column(name = "RESPONSE_DATE", nullable = true)
 	private Date responseDate;
 	
-	@OneToOne(targetEntity = com.pferrot.lendity.model.ConnectionRequestResponse.class)
+	@ManyToOne(targetEntity = com.pferrot.lendity.model.ConnectionRequestResponse.class)
 	@JoinColumn(name = "RESPONSE_ID", nullable = true)
 	private ConnectionRequestResponse response;	
 	
@@ -87,6 +88,31 @@ public class ConnectionRequest implements Serializable {
 
 	public void setResponse(ConnectionRequestResponse response) {
 		this.response = response;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ConnectionRequest other = (ConnectionRequest) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -23,19 +24,19 @@ public class LendRequest implements Serializable {
 	@Column(name = "TITLE", nullable = false, length = 255)
 	private String title;
 	
-	@OneToOne(targetEntity = com.pferrot.lendity.model.Person.class)
+	@ManyToOne(targetEntity = com.pferrot.lendity.model.Person.class)
 	@JoinColumn(name = "REQUESTER_ID", nullable = false)
 	private Person requester;
 
 	// Keep a reference on the owner of the item for performance reason
 	// and also because what if someday the system allows selling objects? The owner
 	// of the object may not be the same as the one at the time the lend request was made...
-	@OneToOne(targetEntity = com.pferrot.lendity.model.Person.class)
+	@ManyToOne(targetEntity = com.pferrot.lendity.model.Person.class)
 	@JoinColumn(name = "OWNER_ID", nullable = false)
 	private Person owner;
 	
 	// Nullable because the item can be deleted.
-	@OneToOne(targetEntity = com.pferrot.lendity.model.Item.class)
+	@ManyToOne(targetEntity = com.pferrot.lendity.model.Item.class)
 	@JoinColumn(name = "ITEM_ID", nullable = true)
 	private Item item;
 	
@@ -54,7 +55,7 @@ public class LendRequest implements Serializable {
 	@Column(name = "TEXT", nullable = true, length = 3999)
 	private String text;
 	
-	@OneToOne(targetEntity = com.pferrot.lendity.model.LendRequestResponse.class)
+	@ManyToOne(targetEntity = com.pferrot.lendity.model.LendRequestResponse.class)
 	@JoinColumn(name = "RESPONSE_ID", nullable = true)
 	private LendRequestResponse response;
 	

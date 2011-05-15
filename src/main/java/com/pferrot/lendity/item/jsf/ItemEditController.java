@@ -23,20 +23,25 @@ public class ItemEditController extends AbstractItemAddEditController {
 		// Read the item ID from the request parameter and load the correct item.
 		try {
 			final String itemIdString = JsfUtils.getRequestParameter(PagesURL.ITEM_EDIT_PARAM_ITEM_ID);
+			Item item = null;
 			if (itemIdString != null) {
-				setItem(getItemService().findItem(Long.parseLong(itemIdString)));
+				item = getItemService().findItem(Long.parseLong(itemIdString));
 				// Access control check.
-				if (!getItemService().isCurrentUserAuthorizedToEdit(getItem())) {
+				if (!getItemService().isCurrentUserAuthorizedToEdit(item)) {
 					JsfUtils.redirect(PagesURL.ERROR_ACCESS_DENIED);
 					if (log.isWarnEnabled()) {
 						log.warn("Access denied (item edit): user = " + PersonUtils.getCurrentPersonDisplayName() + " (" + PersonUtils.getCurrentPersonId() + "), item = " + itemIdString);
 					}
 					return;
 				}
+				else {
+					setItem(item);
+				}
 			}
 			// Item not found or no item ID specified.
 			if (getItem() == null) {
 				JsfUtils.redirect(PagesURL.ITEMS_LIST);
+				return;
 			}
 		}
 		catch (Exception e) {
@@ -61,6 +66,7 @@ public class ItemEditController extends AbstractItemAddEditController {
 		setRentalFee(pItem.getRentalFee());
 		setSalePrice(pItem.getSalePrice());
 		setToGiveForFree(pItem.getToGiveForFree());
+		setAuthorizedGroupsIdsFromObjekt(pItem);		
 	}	
 
 	public Long updateItem() {		
@@ -70,7 +76,7 @@ public class ItemEditController extends AbstractItemAddEditController {
 		getItem().setRentalFee(getRentalFee());
 		getItem().setToGiveForFree(getToGiveForFree());
 		getItem().setSalePrice(getSalePrice());
-		getItemService().updateItem(getItem(), getCategoryId(), getVisibilityId());
+		getItemService().updateItem(getItem(), getCategoryId(), getVisibilityId(), getAuthorizedGroupsIds());
 
 		return getItem().getId();
 	}

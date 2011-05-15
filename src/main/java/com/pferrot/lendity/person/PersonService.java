@@ -17,11 +17,13 @@ import com.pferrot.lendity.dao.DocumentDao;
 import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.dao.bean.PersonDaoQueryBean;
 import com.pferrot.lendity.dao.hibernate.utils.HibernateUtils;
 import com.pferrot.lendity.document.DocumentService;
 import com.pferrot.lendity.model.Country;
 import com.pferrot.lendity.model.Document;
 import com.pferrot.lendity.model.Evaluation;
+import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.exception.PersonException;
@@ -68,6 +70,41 @@ public class PersonService {
 	
 	public Long createPerson(final Person pPerson) {
 		return personDao.createPerson(pPerson);
+	}
+	
+	/**
+	 * Returns true if the display name is available or it is the one pPerson, false otherwise.
+	 *
+	 * @param pDisplayName
+	 * @param pPerson
+	 * @return
+	 */
+	public boolean isDisplayNameAvailable(final String pDisplayName, final Person pPerson) {
+		CoreUtils.assertNotNullOrEmptyString(pDisplayName);
+		CoreUtils.assertNotNull(pPerson);
+		
+		final Person person = personDao.findPersonFromDisplayName(pDisplayName);
+		
+		// It is the display name of the person passed in parameter.
+		if (person != null && pPerson.equals(person)) {
+			return true;
+		}
+		
+		return person == null;
+	}
+	
+	/**
+	 * Returns true if the display name is available, false otherwise.
+	 *
+	 * @param pDisplayName
+	 * @return
+	 */
+	public boolean isDisplayNameAvailable(final String pDisplayName) {
+		CoreUtils.assertNotNullOrEmptyString(pDisplayName);
+		
+		final Person person = personDao.findPersonFromDisplayName(pDisplayName);
+		
+		return person == null;
 	}
 	
 	/**
@@ -121,6 +158,80 @@ public class PersonService {
 	
 	public List<Person> findEmailSubscribers(final Date pEmailSubscriberLastUpdateMax, final int pMaxNbToFind) {
 		return personDao.findPersonsList(null, PersonDao.UNSPECIFIED_LINK, null, null, Boolean.TRUE, null, Boolean.TRUE, pEmailSubscriberLastUpdateMax, null, null, null, 0, pMaxNbToFind);
+	}
+
+	/**
+	 * Returns 5 random enables persons.
+	 * 
+	 * @return
+	 */
+	public List<Person> findRandomPersonsHomepage() {
+		final PersonDaoQueryBean queryBean = new PersonDaoQueryBean();
+		
+		queryBean.setEnabled(Boolean.TRUE);
+		queryBean.setOrderBy("random");
+		queryBean.setFirstResult(0);
+		queryBean.setMaxResults(5);
+		
+		return personDao.findPersonsList(queryBean);
+	}
+
+	/**
+	 * Returns 5 random enabled persons in the area of pOriginLatitude/pOriginLongitude.
+	 * First we look in the a distance of 2 kilometers to search for really close persons.
+	 * If there is less that 5 persons, then we look up to 20 km, then up to 100 km and finally distance.
+	 * 
+	 * @param pOriginLatitude
+	 * @param pOriginLongitude
+	 * @return
+	 */
+	public List<Item> findRandomPersonsHomepage(final Double pOriginLatitude, final Double pOriginLongitude) {
+		CoreUtils.assertNotNull(pOriginLatitude);
+		CoreUtils.assertNotNull(pOriginLongitude);
+		
+		final int maxResults = 5;
+		
+		final PersonDaoQueryBean queryBean = new PersonDaoQueryBean();
+		
+		queryBean.setEnabled(Boolean.TRUE);
+		queryBean.setOrderBy("random");
+		queryBean.setFirstResult(0);
+		queryBean.setMaxResults(5);
+		
+		// Try 2km, then 20, then 100, then unlimited.
+		queryBean.setMaxDistanceKm(new Double(2));
+		queryBean.setOriginLatitude(pOriginLatitude);
+		queryBean.setOriginLongitude(pOriginLongitude);
+		ListWithRowCount lwrc = personDao.findPersons(queryBean);
+		
+		// Try 20km.
+		if (lwrc.getRowCount() < maxResults) {
+			queryBean.setMaxDistanceKm(new Double(20));
+			lwrc = personDao.findPersons(queryBean);
+		}
+		else {
+			return lwrc.getList();
+		}
+		
+		// Try 100km.
+		if (lwrc.getRowCount() < maxResults) {
+			queryBean.setMaxDistanceKm(new Double(100));
+			lwrc = personDao.findPersons(queryBean);
+		}
+		else {
+			return lwrc.getList();
+		}
+		
+		// Unlimited distance.
+		if (lwrc.getRowCount() < maxResults) {
+			queryBean.setMaxDistanceKm(null);
+			lwrc = personDao.findPersons(queryBean);
+		}
+		else {
+			return lwrc.getList();
+		}
+		
+		return lwrc.getList();
 	}
 		
 	public ListWithRowCount findEnabledPersons(final String pSearchString, final Double pMaxDistance, final int pFirstResult, final int pMaxResults) {
@@ -231,8 +342,7 @@ public class PersonService {
 		}
 		// Only one connection - make sure that it is a connection of the user. If not, it is someone trying to hack...
 		else {
-			final Person person = getCurrentPerson();
-			final Set<Person> connections = person.getConnections();
+			final Set<Person> connections = pPerson.getConnections();
 			boolean connectionFound = false;
 			if (connections != null) {
 				for(Person connection: connections) {			
@@ -243,8 +353,7 @@ public class PersonService {
 				}
 			}
 			if (!connectionFound) {
-				throw new SecurityException("Person with ID '" + PersonUtils.getCurrentPersonId() + "' tried to display details about person with " +
-						"ID '" + pConnectionId.toString() + "' but is not a connection.");
+				throw new SecurityException("Person with ID " + pPerson.getId() + " is not a connection of person with ID " + pConnectionId + " (current person: " + PersonUtils.getCurrentPersonId() + ").");
 			}
 			connectionsIds = new Long[]{pConnectionId};
 		}

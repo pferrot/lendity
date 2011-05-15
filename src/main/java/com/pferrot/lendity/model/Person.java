@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -65,7 +66,7 @@ public class Person implements Serializable {
 	@Column(name = "LAST_NAME", nullable = false, length = 255)
     private String lastName;
 
-	@Column(name = "DISPLAY_NAME", nullable = false, length = 255)
+	@Column(name = "DISPLAY_NAME", nullable = false, length = 255, unique = true)
     private String displayName;
 	
 	@Column(name = "EMAIL", unique = true, nullable = false, length = 255)
@@ -119,6 +120,18 @@ public class Person implements Serializable {
 			inverseJoinColumns = {@JoinColumn(name = "BANNED_BY_ID")}
 	)
 	private Set<Person> bannedByPersons = new HashSet<Person>();
+	
+	@ManyToMany(targetEntity = com.pferrot.lendity.model.Group.class, mappedBy = "administrators")
+	private Set<Group> groupsAdministrator = new HashSet<Group>();
+
+	@ManyToMany(targetEntity = com.pferrot.lendity.model.Group.class, mappedBy = "members")
+	private Set<Group> groupsMember = new HashSet<Group>();
+
+	@ManyToMany(targetEntity = com.pferrot.lendity.model.Group.class, mappedBy = "bannedPersons")
+	private Set<Group> groupsBanned = new HashSet<Group>();
+
+	@OneToMany(targetEntity = com.pferrot.lendity.model.Group.class, mappedBy = "owner")
+	private Set<Group> groupsOwner = new HashSet<Group>();	
 	
 	@Column(name = "ADDRESS_HOME", nullable = true, length = 300)
 	private String addressHome;
@@ -459,6 +472,78 @@ public class Person implements Serializable {
 
 	public void setEvaluationAverage(Double evaluationAverage) {
 		this.evaluationAverage = evaluationAverage;
+	}
+
+	public Set<Group> getGroupsAdministrator() {
+		return groupsAdministrator;
+	}
+
+	public void setGroupsAdministrator(final Set<Group> pGroup) {
+		this.groupsAdministrator = pGroup;
+	}
+
+	public void addGroupAdministrator(final Group pGroup) {
+		CoreUtils.assertNotNull(pGroup);
+		groupsAdministrator.add(pGroup);
+	}
+		
+	public void removeGroupAdministrator(final Group pGroup) {
+		CoreUtils.assertNotNull(pGroup);
+		groupsAdministrator.remove(pGroup);
+	}
+
+	public Set<Group> getGroupsOwner() {
+		return groupsOwner;
+	}
+
+	public void setGroupsOwner(final Set<Group> pGroup) {
+		this.groupsOwner = pGroup;
+	}
+
+	public void addGroupOwner(final Group pGroup) {
+		CoreUtils.assertNotNull(pGroup);
+		groupsOwner.add(pGroup);
+	}
+		
+	public void removeGroupOwner(final Group pGroup) {
+		CoreUtils.assertNotNull(pGroup);
+		groupsOwner.remove(pGroup);
+	}
+
+	public Set<Group> getGroupsMember() {
+		return groupsMember;
+	}
+
+	public void setGroupsMember(final Set<Group> pGroup) {
+		this.groupsMember = pGroup;
+	}
+
+	public void addGroupMember(final Group pGroup) {
+		CoreUtils.assertNotNull(pGroup);
+		groupsMember.add(pGroup);
+	}
+		
+	public void removeGroupMember(final Group pGroup) {
+		CoreUtils.assertNotNull(pGroup);
+		groupsMember.remove(pGroup);
+	}
+
+	public Set<Group> getGroupsBanned() {
+		return groupsBanned;
+	}
+
+	public void setGroupsBanned(final Set<Group> pGroup) {
+		this.groupsBanned = pGroup;
+	}
+
+	public void addGroupBanned(final Group pGroup) {
+		CoreUtils.assertNotNull(pGroup);
+		groupsBanned.add(pGroup);
+	}
+		
+	public void removeGroupBanned(final Group pGroup) {
+		CoreUtils.assertNotNull(pGroup);
+		groupsBanned.remove(pGroup);
 	}
 
 	@Override

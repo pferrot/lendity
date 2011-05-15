@@ -68,7 +68,14 @@
         
         <mapping class="com.pferrot.lendity.model.Need"/>
         
-        <mapping class="com.pferrot.lendity.model.Evaluation"/>         
+        <mapping class="com.pferrot.lendity.model.Evaluation"/>  
+        
+        <mapping class="com.pferrot.lendity.model.Group"/>  
+        <mapping class="com.pferrot.lendity.model.GroupMembershipRequest"/>  
+        <mapping class="com.pferrot.lendity.model.GroupMembershipRequestResponse"/>
+        <mapping class="com.pferrot.lendity.model.GroupComment"/>
+        <mapping class="com.pferrot.lendity.model.GroupJoinRequest"/>
+        <mapping class="com.pferrot.lendity.model.GroupJoinRequestResponse"/>         
         
         <mapping class="com.pferrot.envers.model.UserRevisionEntity"/>
         

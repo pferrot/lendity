@@ -48,6 +48,15 @@ public abstract class ObjektDaoHibernateImpl extends HibernateDaoSupport {
 				c = Restrictions.or(c, c1);
 			}
 		}
+		if (pObjectDaoQueryBean.getGroupIds() != null && pObjectDaoQueryBean.getGroupIds().length > 0) {
+			criteria.createAlias("groupsAuthorized", "ga", CriteriaSpecification.LEFT_JOIN);
+			if (c != null) {
+				c = Restrictions.or(c, Restrictions.in("ga.id", pObjectDaoQueryBean.getGroupIds()));
+			}
+			else {
+				c = Restrictions.in("ga.id", pObjectDaoQueryBean.getGroupIds());
+			}
+		}
 		if (c != null) {
 			criteria.add(c);
 		}

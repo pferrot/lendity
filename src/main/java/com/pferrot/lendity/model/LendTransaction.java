@@ -19,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -108,6 +109,10 @@ public class LendTransaction implements Commentable<LendTransactionComment>, Ser
 	@OneToOne(targetEntity = com.pferrot.lendity.model.Evaluation.class)
 	@JoinColumn(name = "EVAL_BY_BORROWER_ID", nullable = true)
 	private Evaluation evaluationByBorrower;
+	
+	@Version
+	@Column(name = "OBJ_VERSION")
+	private int version;
 
 	public LendTransaction() {
 		super();

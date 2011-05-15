@@ -1,0 +1,32 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<div id="leaveGroupDiv" style="display: none;">
+	<h:form id="leaveGroupForm" prependId="false">
+		<h:inputHidden id="leaveGroupGroupId" value="#{leaveGroupTooltipController.groupId}" />
+		<h:inputHidden id="leaveGroupRedirectId" value="#{leaveGroupTooltipController.redirectId}" />
+		<table> 
+			<tr>
+				<td colspan="2" style="text-align: center;">
+					<b><h:outputText value="#{messages.group_leaveGroupMessage}"/></b>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align: center;">
+					<input type="button" class="fontSizeSmall stylishButton" onclick="submitLeaveGroup()" value="#{messages.navigation_ok}"/>
+					<input type="button" class="fontSizeSmall stylishButton" onclick="cancelLeaveGroup()" value="#{messages.navigation_cancel}"/>
+					<h:commandButton id="leaveGroupActionButton" action="#{leaveGroupTooltipController.submit}" style="display: none" value="not_displayed"/>
+				</td>
+			</tr>
+		</table>
+	</h:form>
+</div>
+
+</ui:composition>

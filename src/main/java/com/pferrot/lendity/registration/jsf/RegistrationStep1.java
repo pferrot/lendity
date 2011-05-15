@@ -20,6 +20,7 @@ import com.pferrot.lendity.geolocation.exception.GeolocalisationException;
 import com.pferrot.lendity.geolocation.googlemaps.GoogleMapsUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.person.PersonConsts;
+import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.registration.RegistrationConsts;
 import com.pferrot.lendity.registration.RegistrationService;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -31,6 +32,7 @@ public class RegistrationStep1 {
 	
 	private RegistrationController registrationController;
 	private RegistrationService registrationService;
+	private PersonService personService;
 	
 	public RegistrationStep1() {
 		super();
@@ -61,6 +63,14 @@ public class RegistrationStep1 {
 		this.registrationService = registrationService;
 	}
 
+	public PersonService getPersonService() {
+		return personService;
+	}
+
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
+	}
+
 	public String submit() {
 		if (log.isDebugEnabled()) {
 			log.debug("Clicked submit");
@@ -82,6 +92,17 @@ public class RegistrationStep1 {
 			((UIInput)toValidate).setValid(false);
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 			message = I18nUtils.getMessageResourceString("validation_userAlreadyExists", locale);
+			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
+		}
+	}
+
+	public void validateDisplayName(FacesContext context, UIComponent toValidate, Object value) {
+		String message = "";
+		String displayName = (String) value;
+		if (!personService.isDisplayNameAvailable(displayName)) {
+			((UIInput)toValidate).setValid(false);
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			message = I18nUtils.getMessageResourceString("person_displayNameAlreadyExists", locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
 	}

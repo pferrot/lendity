@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.model.Comment;
+import com.pferrot.lendity.model.Group;
+import com.pferrot.lendity.model.GroupComment;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemComment;
 import com.pferrot.lendity.model.LendTransaction;
@@ -28,6 +30,10 @@ public interface CommentDao {
 	ListWithRowCount findLendTransactionComments(LendTransaction pLendTransaction, int pFirstResult, int pMaxResults);
 	List<LendTransactionComment> findLendTransactionCommentsList(LendTransaction pLendTransaction, int pFirstResult, int pMaxResults);
 	long countLendTransactionComments(LendTransaction pLendTransaction);
+
+	ListWithRowCount findGroupComments(Group pGroup, int pFirstResult, int pMaxResults);
+	List<GroupComment> findGroupCommentsList(Group pGroup, int pFirstResult, int pMaxResults);
+	long countGroupComments(Group pGroup);
 			
 	void updateComment(Comment pComment);
 	

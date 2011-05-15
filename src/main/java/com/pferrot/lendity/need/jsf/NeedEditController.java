@@ -24,8 +24,9 @@ public class NeedEditController extends AbstractNeedAddEditController {
 		// Read the ID from the request parameter and load the correct item.
 		try {
 			final String idString = JsfUtils.getRequestParameter(PagesURL.NEED_EDIT_PARAM_NEED_ID);
+			Need need = null;
 			if (idString != null) {
-				setNeed(getNeedService().findNeed(Long.parseLong(idString)));
+				need = getNeedService().findNeed(Long.parseLong(idString));
 				// Access control check.
 				if (!getNeedService().isCurrentUserAuthorizedToEdit(getNeed())) {
 					JsfUtils.redirect(PagesURL.ERROR_ACCESS_DENIED);
@@ -34,10 +35,14 @@ public class NeedEditController extends AbstractNeedAddEditController {
 					}
 					return;
 				}
+				else {
+					setNeed(need);
+				}
 			}
 			// Not found or no ID specified.
 			if (getNeed() == null) {
 				JsfUtils.redirect(PagesURL.NEEDS_SEARCH);
+				return;
 			}
 		}
 		catch (Exception e) {

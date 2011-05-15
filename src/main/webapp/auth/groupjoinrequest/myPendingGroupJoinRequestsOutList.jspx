@@ -1,0 +1,84 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle"><h:outputText value="#{messages.groupJoinRequest_myPendingGroupJoinRequestsOutTitle}" /></ui:define>
+	<ui:param name="contentHeader" value="#{messages.groupJoinRequest_myPendingGroupJoinRequestsOutTitle}" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			<!-- main content -->
+			<div class="gt-content">
+
+				
+<f:view>
+
+<h2 class="gt-table-head"><h:outputText value="#{messages.groupJoinRequest_myPendingGroupJoinRequestsOutTitle}"/></h2>
+<p><h:outputText value="#{messages.groupJoinRequest_onlyThoseWithNoResponse}"/></p>
+
+<br/>
+
+
+<!-- content box -->
+<div class="gt-content-box">
+
+<c:if test="#{empty(myPendingGroupJoinRequestsOutListController.list)}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<h:dataTable value="#{myPendingGroupJoinRequestsOutListController.list}" binding="#{myPendingGroupJoinRequestsOutListController.table}" var="groupJoinRequest" styleClass="gt-table gt-user-table">
+
+    <h:column id="column1">
+		<h4>
+			<h:outputLink id="id_05" value="#{myPendingGroupJoinRequestsOutListController.groupOverviewHref}">
+				<h:outputText id="id_06" value="#{groupJoinRequest.group.title}" />
+			</h:outputLink>
+		</h4>
+    </h:column>
+
+	<h:column id="column2">
+		<table border="0" class="gt-table-categories" width="150" align="right">
+			<tr>
+			    <th width="50%"><nobr><h:outputText id="id_07" value="#{messages.groupJoinRequest_requestDate}:" /></nobr></th>
+				<td width="50%"><nobr><h:outputText id="id_08" value="#{myPendingGroupJoinRequestsOutListController.requestDateLabel}"/></nobr></td>
+		    </tr>
+		</table>
+    </h:column>
+
+</h:dataTable>
+
+</div><!-- /content box -->
+
+</f:view>
+			</div>
+			<!-- /main content -->
+			</div>
+			<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

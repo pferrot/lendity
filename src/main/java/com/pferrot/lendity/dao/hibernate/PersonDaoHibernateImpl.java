@@ -13,14 +13,15 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.DistinctRootEntityResultTransformer;
 import org.hibernate.type.Type;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.pferrot.core.CoreUtils;
+import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.dao.bean.PersonDaoQueryBean;
 import com.pferrot.lendity.dao.hibernate.criterion.CustomSqlCriterion;
 import com.pferrot.lendity.geolocation.GeoLocationConsts;
 import com.pferrot.lendity.model.Person;
@@ -58,16 +59,45 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 			throw new DataIntegrityViolationException("More that one person with username '" + pUsername + "'");
 		}
 	}
-	
-	public List<Person> findPersonsList(final Long pPersonId, final int pConnectionLink, final String pSearchString,
-			final Boolean pEmailExactMatch, Boolean pEnabled, final Boolean pReceiveNeedsNotifications, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax,
-			final Double pMaxDistanceKm, final Double pOriginLatitude, final Double pOriginLongitude,
-			int pFirstResult, int pMaxResults) {
-		DetachedCriteria criteria = getPersonsDetachedCriteria(pPersonId, pConnectionLink, pSearchString, pEmailExactMatch, 
-				pEnabled, pReceiveNeedsNotifications, pEmailSubscriber, pEmailSubscriberLastUpdateMax,
-				pMaxDistanceKm, pOriginLatitude, pOriginLongitude);
+
+	public Person findPersonFromDisplayName(final String pDisplayName) {
+		CoreUtils.assertNotNullOrEmptyString(pDisplayName);
+		List<Person> list = getHibernateTemplate().find("from Person person where person.displayName = ?", pDisplayName);		
+		
+		if (list == null ||
+			list.isEmpty()) {
+			return null;
+		}
+		else if (list.size() == 1) {
+			return list.get(0);
+		}
+		else {
+			throw new DataIntegrityViolationException("More that one person with display name '" + pDisplayName + "'");
+		}
+	}
+
+	public List<Person> findPersonsList(PersonDaoQueryBean pQueryBean) {
+		DetachedCriteria criteria = getPersonsDetachedCriteria(pQueryBean);
+		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.addOrder(Order.asc("displayName").ignoreCase());
+		
+		if (!StringUtils.isNullOrEmpty(pQueryBean.getOrderBy())) {
+			if ("random".equals(pQueryBean.getOrderBy())) {
+				// This is MySql specific !!!
+				criteria.add(Restrictions.sqlRestriction("1=1 order by rand()"));
+			}
+			else {
+				// Ascending.
+				if (pQueryBean.getOrderByAscending() == null || pQueryBean.getOrderByAscending().booleanValue()) {
+					criteria.addOrder(Order.asc(pQueryBean.getOrderBy()).ignoreCase());
+				}
+				// Descending.
+				else {
+					criteria.addOrder(Order.desc(pQueryBean.getOrderBy()).ignoreCase());
+				}
+			}
+		}
+		
 		
 //		if (pOriginLongitude != null && pOriginLatitude != null) {
 //			criteria.addOrder(
@@ -77,58 +107,100 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 //		}	
 		
 		// Cache query for getting connections as it can be used many times in a page.
-		if (pConnectionLink == CONNECTIONS_LINK) {
+		if (pQueryBean.getConnectionLink() == CONNECTIONS_LINK) {
 			getHibernateTemplate().setQueryCacheRegion("query.connections");
 			getHibernateTemplate().setCacheQueries(true);
 		}
-		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);
+		return getHibernateTemplate().findByCriteria(criteria, pQueryBean.getFirstResult(), pQueryBean.getMaxResults());
+	}
+	
+	/**
+	 * @deprecated
+	 */
+	public List<Person> findPersonsList(final Long pPersonId, final int pConnectionLink, final String pSearchString,
+			final Boolean pEmailExactMatch, Boolean pEnabled, final Boolean pReceiveNeedsNotifications, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax,
+			final Double pMaxDistanceKm, final Double pOriginLatitude, final Double pOriginLongitude,
+			int pFirstResult, int pMaxResults) {
+		
+		final PersonDaoQueryBean queryBean = new PersonDaoQueryBean();
+		queryBean.setPersonId(pPersonId);
+		queryBean.setConnectionLink(pConnectionLink);
+		queryBean.setSearchString(pSearchString);
+		queryBean.setEmailExactMatch(pEmailExactMatch);
+		queryBean.setEnabled(pEnabled);
+		queryBean.setReceiveNeedsNotifications(pReceiveNeedsNotifications);
+		queryBean.setEmailSubscriber(pEmailSubscriber);
+		queryBean.setEmailSubscriberLastUpdateMax(pEmailSubscriberLastUpdateMax);
+		queryBean.setMaxDistanceKm(pMaxDistanceKm);
+		queryBean.setOriginLatitude(pOriginLatitude);
+		queryBean.setOriginLongitude(pOriginLongitude);
+		queryBean.setFirstResult(pFirstResult);
+		queryBean.setMaxResults(pMaxResults);
+		
+		return findPersonsList(queryBean);
 	}
 
-//	private String getDistanceFormula(final Double pOriginLongitude, final Double pOriginLatitude) {
-//		
-//		return "acos(sin(" + pOriginLatitude + " * pi()/180) * sin({0} * pi()/180) + " +
-//				"cos(" + pOriginLatitude + " * pi()/180) * cos({1} * pi()/180) * cos(({2} - " + pOriginLongitude + ") * pi()/180)) * 6371";
-//		
-//	}
+	private String getDistanceFormula(final Double pOriginLongitude, final Double pOriginLatitude) {
+		
+		return "acos(sin(" + pOriginLatitude + " * pi()/180) * sin({0} * pi()/180) + " +
+				"cos(" + pOriginLatitude + " * pi()/180) * cos({1} * pi()/180) * cos(({2} - " + pOriginLongitude + ") * pi()/180)) * 6371";
+		
+	}
 	
-	private long countPersons(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEmailExactMatch,
-			final Boolean pEnabled, final Boolean pReceiveNeedsNotifications, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax,
-			final Double pMaxDistanceKm, final Double pOriginLatitude, final Double pOriginLongitude) {
-		final DetachedCriteria criteria = getPersonsDetachedCriteria(pPersonId, pConnectionLink, pSearchString, pEmailExactMatch,
-				pEnabled, pReceiveNeedsNotifications, pEmailSubscriber, pEmailSubscriberLastUpdateMax, pMaxDistanceKm, pOriginLatitude, pOriginLongitude);
+	private long countPersons(final PersonDaoQueryBean pQueryBean) {
+		final DetachedCriteria criteria = getPersonsDetachedCriteria(pQueryBean);
 		return rowCount(criteria);
 	}
 
+	public ListWithRowCount findPersons(final PersonDaoQueryBean pQueryBean) {
+		final List list = findPersonsList(pQueryBean);
+		final long count = countPersons(pQueryBean);
+
+		return new ListWithRowCount(list, count);
+	}
+	
+	/**
+	 * @deprecated
+	 */
 	public ListWithRowCount findPersons(final Long pPersonId, final int pConnectionLink, final String pSearchString, final Boolean pEmailExactMatch,
 			final Boolean pEnabled, final Boolean pReceiveNeedsNotifications, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax,
 			final Double pMaxDistanceKm, final Double pOriginLatitude, final Double pOriginLongitude,
 			int pFirstResult, int pMaxResults) {
-		final List list = findPersonsList(pPersonId, pConnectionLink, pSearchString, pEmailExactMatch, pEnabled,
-				pReceiveNeedsNotifications, pEmailSubscriber, pEmailSubscriberLastUpdateMax, pMaxDistanceKm, pOriginLatitude, pOriginLongitude, pFirstResult, pMaxResults);
-		final long count = countPersons(pPersonId, pConnectionLink, pSearchString, pEmailExactMatch, pEnabled,
-				pReceiveNeedsNotifications, pEmailSubscriber, pEmailSubscriberLastUpdateMax, pMaxDistanceKm, pOriginLatitude, pOriginLongitude);
-
-		return new ListWithRowCount(list, count);
+		
+		final PersonDaoQueryBean queryBean = new PersonDaoQueryBean();
+		queryBean.setPersonId(pPersonId);
+		queryBean.setConnectionLink(pConnectionLink);
+		queryBean.setSearchString(pSearchString);
+		queryBean.setEmailExactMatch(pEmailExactMatch);
+		queryBean.setEnabled(pEnabled);
+		queryBean.setReceiveNeedsNotifications(pReceiveNeedsNotifications);
+		queryBean.setEmailSubscriber(pEmailSubscriber);
+		queryBean.setEmailSubscriberLastUpdateMax(pEmailSubscriberLastUpdateMax);
+		queryBean.setMaxDistanceKm(pMaxDistanceKm);
+		queryBean.setOriginLatitude(pOriginLatitude);
+		queryBean.setOriginLongitude(pOriginLongitude);
+		queryBean.setFirstResult(pFirstResult);
+		queryBean.setMaxResults(pMaxResults);
+		
+		return findPersons(queryBean);
 	}
 
-	private DetachedCriteria getPersonsDetachedCriteria(final Long pPersonId, final int pConnectionLink, final String pSearchString,
-			final Boolean pEmailExactMatch, final Boolean pEnabled, final Boolean pReceiveNeedsNotifications, final Boolean pEmailSubscriber, final Date pEmailSubscriberLastUpdateMax,
-			final Double pMaxDistanceKm, final Double pOriginLatitude, final Double pOriginLongitude) {
-		if ((pPersonId == null && pConnectionLink != PersonDao.UNSPECIFIED_LINK) ||
-			(pPersonId != null && pConnectionLink == PersonDao.UNSPECIFIED_LINK)) {
+	private DetachedCriteria getPersonsDetachedCriteria(final PersonDaoQueryBean pQueryBean) {
+		if ((pQueryBean.getPersonId() == null && pQueryBean.getConnectionLink() != PersonDao.UNSPECIFIED_LINK) ||
+			(pQueryBean.getPersonId() != null && pQueryBean.getConnectionLink() == PersonDao.UNSPECIFIED_LINK)) {
 			throw new AssertionError("Cannot define only one of 'pPersonId' and 'pConnectionLink'.");
 		}
 		
 		DetachedCriteria criteria = DetachedCriteria.forClass(Person.class);
 		
-		if (pSearchString != null && pSearchString.trim().length() > 0) {
-			final boolean emailExactMatch = Boolean.TRUE.equals(pEmailExactMatch);
-			criteria.add(getEmailLastNameFirstNameDisplayNameLogicalExpression(pSearchString, emailExactMatch?MatchMode.EXACT:MatchMode.ANYWHERE));
+		if (pQueryBean.getSearchString() != null && pQueryBean.getSearchString().trim().length() > 0) {
+			final boolean emailExactMatch = Boolean.TRUE.equals(pQueryBean.getEmailExactMatch());
+			criteria.add(getEmailLastNameFirstNameDisplayNameLogicalExpression(pQueryBean.getSearchString(), emailExactMatch?MatchMode.EXACT:MatchMode.ANYWHERE));
 		}
 		
-		if (pPersonId != null) {			
+		if (pQueryBean.getPersonId() != null) {			
 			String realConnectionLink = null;
-			switch (pConnectionLink) {
+			switch (pQueryBean.getConnectionLink()) {
 				case PersonDao.CONNECTIONS_LINK:
 					realConnectionLink = "connections";
 					break;
@@ -139,40 +211,40 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 					realConnectionLink = "bannedByPersons";
 					break;
 				default:
-					throw new AssertionError("Unknown connection link: " + pConnectionLink);
+					throw new AssertionError("Unknown connection link: " + pQueryBean.getConnectionLink());
 			}			
 			criteria.createCriteria(realConnectionLink, CriteriaSpecification.INNER_JOIN).
-				add(Restrictions.eq("id", pPersonId));
+				add(Restrictions.eq("id", pQueryBean.getPersonId()));
 		}
 		
-		if (pEnabled != null) {
-			criteria.add(Restrictions.eq("enabled", pEnabled));
+		if (pQueryBean.getEnabled() != null) {
+			criteria.add(Restrictions.eq("enabled", pQueryBean.getEnabled()));
 		}
 		
-		if (pReceiveNeedsNotifications != null) {
-			criteria.add(Restrictions.eq("receiveNeedsNotifications", pReceiveNeedsNotifications));
+		if (pQueryBean.getReceiveNeedsNotifications() != null) {
+			criteria.add(Restrictions.eq("receiveNeedsNotifications", pQueryBean.getReceiveNeedsNotifications()));
 		}
 		
-		if (pEmailSubscriber != null) {
-			criteria.add(Restrictions.eq("emailSubscriber", pEmailSubscriber));
+		if (pQueryBean.getEmailSubscriber() != null) {
+			criteria.add(Restrictions.eq("emailSubscriber", pQueryBean.getEmailSubscriber()));
 		}
 		
-		if (pEmailSubscriberLastUpdateMax != null) {
+		if (pQueryBean.getEmailSubscriberLastUpdateMax() != null) {
 			criteria.add(Restrictions.or(
-					Restrictions.lt("emailSubscriberLastUpdate", pEmailSubscriberLastUpdateMax),
+					Restrictions.lt("emailSubscriberLastUpdate", pQueryBean.getEmailSubscriberLastUpdateMax()),
 					Restrictions.isNull("emailSubscriberLastUpdate")
 				)); 
 		}
 		
-		if (pMaxDistanceKm != null) {
+		if (pQueryBean.getMaxDistanceKm() != null) {
 			
 			// Only allows filtering by distance on people who share their contact details.
 			criteria.add(Restrictions.eq("showContactDetailsToAll", Boolean.TRUE));
 			
 			// Calculate a rectangle and only consider persons in that rectangle for obvious performance reason.
-			double maxDistanceKm = pMaxDistanceKm.doubleValue();
-			double originLatitude = pOriginLatitude.doubleValue();
-			double originLongitude = pOriginLongitude.doubleValue();
+			double maxDistanceKm = pQueryBean.getMaxDistanceKm().doubleValue();
+			double originLatitude = pQueryBean.getOriginLatitude().doubleValue();
+			double originLongitude = pQueryBean.getOriginLongitude().doubleValue();
 			
 			double deltaLongitude =  maxDistanceKm / Math.abs(Math.cos(Math.toRadians(originLatitude)) * GeoLocationConsts.ONE_DEGRE_LATITUDE_KM);
 			double deltaLatitude = maxDistanceKm / GeoLocationConsts.ONE_DEGRE_LATITUDE_KM;
@@ -198,7 +270,7 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 				"cos(? * pi()/180) * cos({1} * pi()/180) * cos(({2} - ?) * pi()/180)) * 6371) <= ?";
 			
 			final String[] propertyNames = {"addressHomeLatitude", "addressHomeLatitude", "addressHomeLongitude"};
-			final Object[] values = {pOriginLatitude, pOriginLatitude, pOriginLongitude, pMaxDistanceKm};
+			final Object[] values = {pQueryBean.getOriginLatitude(), pQueryBean.getOriginLatitude(), pQueryBean.getOriginLongitude(), pQueryBean.getMaxDistanceKm()};
 			final Type[] types = {Hibernate.DOUBLE, Hibernate.DOUBLE, Hibernate.DOUBLE, Hibernate.DOUBLE};
 			
 			criteria.add(CustomSqlCriterion.sqlRestriction(sql, propertyNames, values, types));
@@ -231,5 +303,57 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 	private long rowCount(final DetachedCriteria pCriteria) {
 		pCriteria.setProjection(Projections.rowCount());
 		return ((Long)getHibernateTemplate().findByCriteria(pCriteria).get(0)).longValue();
+	}
+
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Get members / administrators of a group.
+	
+	public long countGroupAdministrators(final Long pGroupId) {
+		final DetachedCriteria dc = getGroupAdministratorsDetachedCriteria(pGroupId);
+		final long count = rowCount(dc);
+		return count;
+	}
+
+	public long countGroupMembers(final Long pGroupId) {
+		final DetachedCriteria dc = getGroupMembersDetachedCriteria(pGroupId);
+		final long count = rowCount(dc);
+		return count;
+	}
+
+	public ListWithRowCount findGroupAdministrators(final Long pGroupId, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria dc = getGroupAdministratorsDetachedCriteria(pGroupId);
+		dc.addOrder(Order.asc("displayName").ignoreCase());
+		final List list = getHibernateTemplate().findByCriteria(dc, pFirstResult, pMaxResults);
+		final long count = rowCount(dc);
+
+		return new ListWithRowCount(list, count);
+	}
+
+	public ListWithRowCount findGroupMembers(final Long pGroupId, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria dc = getGroupMembersDetachedCriteria(pGroupId);
+		dc.addOrder(Order.asc("displayName").ignoreCase());
+		final List list = getHibernateTemplate().findByCriteria(dc, pFirstResult, pMaxResults);
+		final long count = rowCount(dc);
+
+		return new ListWithRowCount(list, count);
+	}
+	
+	private DetachedCriteria getGroupMembersDetachedCriteria(final Long pGroupId) {
+		final DetachedCriteria criteria = DetachedCriteria.forClass(Person.class);
+		
+		final DetachedCriteria groupsMemberCriteria = criteria.createCriteria("groupsMember", CriteriaSpecification.INNER_JOIN);
+		groupsMemberCriteria.add(Restrictions.eq("id",pGroupId));
+		
+		return criteria;
+	}
+	
+	private DetachedCriteria getGroupAdministratorsDetachedCriteria(final Long pGroupId) {
+		final DetachedCriteria criteria = DetachedCriteria.forClass(Person.class);
+		
+		final DetachedCriteria groupsMemberCriteria = criteria.createCriteria("groupsAdministrator", CriteriaSpecification.INNER_JOIN);
+		groupsMemberCriteria.add(Restrictions.eq("id", pGroupId));
+		
+		return criteria;
 	}
 }

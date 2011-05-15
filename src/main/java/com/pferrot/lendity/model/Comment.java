@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -35,7 +36,7 @@ public abstract class Comment implements Serializable {
 	@Column(name = "TEXT", nullable = false, length = 160)
     private String text;
 	
-	@OneToOne(targetEntity = Person.class)
+	@ManyToOne(targetEntity = Person.class)
 	@JoinColumn(name = "OWNER_ID")
 	private Person owner;
 	

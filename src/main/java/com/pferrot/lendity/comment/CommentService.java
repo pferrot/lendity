@@ -18,12 +18,14 @@ import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.dao.CommentDao;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.group.GroupService;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.lendtransaction.LendTransactionService;
 import com.pferrot.lendity.model.Comment;
 import com.pferrot.lendity.model.Commentable;
 import com.pferrot.lendity.model.CommentableWithOwner;
-import com.pferrot.lendity.model.Item;
+import com.pferrot.lendity.model.Group;
+import com.pferrot.lendity.model.GroupComment;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemComment;
 import com.pferrot.lendity.model.LendTransaction;
@@ -47,6 +49,7 @@ public class CommentService {
 	private ItemService itemService;
 	private NeedService needService;
 	private LendTransactionService lendTransactionService;
+	private GroupService groupService;
 	private PersonDao personDao;
 	private MailManager mailManager;
 	private PersonService personService;
@@ -74,6 +77,11 @@ public class CommentService {
 	public void setLendTransactionService(
 			LendTransactionService lendTransactionService) {
 		this.lendTransactionService = lendTransactionService;
+	}
+
+	
+	public void setGroupService(GroupService groupService) {
+		this.groupService = groupService;
 	}
 
 	public void setCommentDao(final CommentDao commentDao) {
@@ -180,6 +188,31 @@ public class CommentService {
 		final LendTransaction lendTransaction = lendTransactionService.findLendTransaction(pLendTransactionId);
 		return commentDao.findLendTransactionComments(lendTransaction, pFirstResult, pMaxResults);
 	}
+
+	/**
+	 * Returns comments but validates that the specified user is authorized to view those
+	 * comments.
+	 * 
+	 * @param pGroupId
+	 * @param pCurrentPersonId
+	 * @param pFirstResult
+	 * @param pMaxResults
+	 * @return
+	 */
+	public ListWithRowCount findGroupCommentsWithAC(final Long pGroupId, final Long pCurrentPersonId, final int pFirstResult, final int pMaxResults) {
+		final Group group = groupService.findGroup(pGroupId);
+		Person currentPerson = null;
+		if (pCurrentPersonId != null) {
+			currentPerson = personService.findPerson(pCurrentPersonId);
+		}
+		groupService.assertUserAuthorizedToView(currentPerson, group);		
+		return commentDao.findGroupComments(group, pFirstResult, pMaxResults);
+	}
+	
+	public ListWithRowCount findGroupComments(final Long pGroupId, final int pFirstResult, final int pMaxResults) {
+		final Group group = groupService.findGroup(pGroupId);
+		return commentDao.findGroupComments(group, pFirstResult, pMaxResults);
+	}
 	
 	/**
 	 * Creates the comment and sends notifications to others who commented and container owner.
@@ -280,6 +313,7 @@ public class CommentService {
 		
 		return commentID;
 	}
+
 	
 	public Long createSystemCommentOnLendTransactionWithAC(final String pText, final Long pLendTransactionId, final Long pOwnerId, boolean pSendEmail) throws CommentException {
 		final LendTransaction lendTransaction = lendTransactionService.findLendTransaction(pLendTransactionId);
@@ -301,6 +335,40 @@ public class CommentService {
 		if (pSendEmail) {
 			sendCommentAddedNotificationToAll(lendTransactionSystemComment);
 		}
+		
+		return commentID;
+	}
+
+	/**
+	 * Creates the comment and sends notifications to others who commented and container owner.
+	 * Also, access control is verified.
+	 * 
+	 * @param pText
+	 * @param pLendTransactionId
+	 * @param pCommentOwnerId
+	 * @return
+	 * @throws CommentException
+	 */
+	public Long createCommentOnGroupWithAC(final String pText, final Long pGroupId, final Long pCommentOwnerId) throws CommentException {
+		final Group group = groupService.findGroup(pGroupId);
+		
+		final Person commentOwner = personService.findPerson(pCommentOwnerId); 
+		assertUserAuthorizedToAddCommentOnGroup(commentOwner, group);
+		
+		final GroupComment groupComment = new GroupComment();
+		groupComment.setCreationDate(new Date());
+		groupComment.setGroup(group);
+		groupComment.setOwner(commentOwner);
+		groupComment.setText(pText);
+		
+		Long commentID = commentDao.createComment(groupComment);
+		
+		group.addComment(groupComment);
+		group.addCommentRecipient(groupComment.getOwner());
+		groupService.updateGroup(group);
+		
+		// TODO send notification to whom!?
+		//sendCommentAddedNotificationToAll(groupComment);
 		
 		return commentID;
 	}
@@ -335,6 +403,7 @@ public class CommentService {
 	 */
 	private void removeCommentRecipientFromContainerIfNeeded(final Comment pComment) {
 		if (Hibernate.getClass(pComment).isAssignableFrom(LendTransactionComment.class) ||
+			Hibernate.getClass(pComment).isAssignableFrom(GroupComment.class) ||
 			pComment == null || 
 			pComment.getId() == null ||
 			pComment.getOwner() == null ||
@@ -657,6 +726,10 @@ public class CommentService {
 		return lendTransactionService.isUserAuthorizedToView(pPerson, pLendTransaction);
 	}
 	
+	public boolean isUserAuthorizedToAddCommentOnGroup(final Person pPerson, final Group pGroup) {
+		return groupService.isUserOwnerOrAdministratorOrMemberOfGroup(pPerson, pGroup);
+	}
+	
 	public void assertUserAuthorizedToAddCommentOnItem(final Person pPerson, final Item pItem) {
 		if (!isUserAuthorizedToAddCommentOnItem(pPerson, pItem)) {
 			throw new SecurityException("Current user is not authorized to add comment");
@@ -671,6 +744,12 @@ public class CommentService {
 
 	public void assertUserAuthorizedToAddCommentOnLendTransaction(final Person pPerson, final LendTransaction pLendTransaction) {
 		if (!isUserAuthorizedToAddCommentOnLendTransaction(pPerson, pLendTransaction)) {
+			throw new SecurityException("User is not authorized to add comment");
+		}
+	}
+
+	public void assertUserAuthorizedToAddCommentOnGroup(final Person pPerson, final Group pGroup) {
+		if (!isUserAuthorizedToAddCommentOnGroup(pPerson, pGroup)) {
 			throw new SecurityException("User is not authorized to add comment");
 		}
 	}

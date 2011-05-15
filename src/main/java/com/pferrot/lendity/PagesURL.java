@@ -103,6 +103,45 @@ public interface PagesURL {
 	/////////////////////////////////////////////////////////////////////////
 	
 	/////////////////////////////////////////////////////////////////////////
+	// GROUP - start		
+	
+	String GROUP_ADD = "/auth/group/groupOverview.faces";
+	
+	String GROUP_OVERVIEW = "/public/group/groupOverview.faces";
+	String GROUP_OVERVIEW_PARAM_GROUP_ID = "groupID";
+	
+	String GROUP_EDIT = "/auth/group/groupEdit.faces";
+	String GROUP_EDIT_PARAM_GROUP_ID = GROUP_OVERVIEW_PARAM_GROUP_ID;
+	
+	String GROUPS_LIST = "/public/group/groupsList.faces";
+	
+	String MY_GROUPS_LIST = "/auth/group/myGroupsList.faces";
+	
+	String MY_GROUPS_WHERE_OWNER_OR_ADMINISTRATOR_LIST = "/auth/group/myGroupsWhereOwnerOrAdministratorList.faces";
+	
+	String GROUP_MEMBERS_LIST = "/public/group/groupMembersList.faces";
+	String GROUP_MEMBERS_LIST_PARAM_GROUP_ID = GROUP_OVERVIEW_PARAM_GROUP_ID;
+	
+	String GROUP_ADMINISTRATORS_LIST = "/public/group/groupAdministratorsList.faces";
+	String GROUP_ADMINISTRATORS_LIST_PARAM_GROUP_ID = GROUP_OVERVIEW_PARAM_GROUP_ID;
+	
+	
+	// GROUP - end
+	/////////////////////////////////////////////////////////////////////////
+
+	/////////////////////////////////////////////////////////////////////////
+	// GROUP JOIN REQUEST - start	
+	
+	// Group join requests I have to reply to.
+	String MY_PENDING_GROUP_JOIN_REQUESTS_LIST = "/auth/groupjoinrequest/myPendingGroupJoinRequestsList.faces";
+	// Group join requests I have made.
+	String MY_PENDING_GROUP_JOIN_REQUESTS_OUT_LIST = "/auth/groupjoinrequest/myPendingGroupJoinRequestsOutList.faces";
+	
+	// GROUP JOIN REQUEST - end
+	/////////////////////////////////////////////////////////////////////////
+	
+	
+	/////////////////////////////////////////////////////////////////////////
 	// ITEM - start
 	
 	String ITEM_OVERVIEW = "/public/item/itemOverview.faces";
@@ -179,7 +218,6 @@ public interface PagesURL {
 	String MY_LEND_TRANSACTIONS_FOR_ITEM_LIST = "/auth/lendtransaction/myLendTransactionsForItemList.faces";
 	String MY_LEND_TRANSACTIONS_FOR_ITEM_LIST_PARAM_ITEM_ID = LEND_TRANSACTIONS_FOR_ITEM_AND_PERSON_LIST_PARAM_ITEM_ID;
 
-	String MY_LEND_TRANSACTIONS_TO_EVALUATE_LIST = "/auth/lendtransaction/myLendTransactionsToEvaluateList.faces";
 	
 	// LEND TRANSACTION - end
 	/////////////////////////////////////////////////////////////////////////

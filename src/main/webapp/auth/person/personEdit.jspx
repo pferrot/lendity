@@ -43,6 +43,7 @@
 							value="#{personEditController.displayName}" 
 							required="true" 
 							requiredMessage="#{messages.validation_requiredMessage}"
+							validator="#{personEditController.validateDisplayName}"
 							maxlength="255"/>			
 					</div><!-- /form row -->
 					

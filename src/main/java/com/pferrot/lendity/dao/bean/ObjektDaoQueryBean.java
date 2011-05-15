@@ -11,6 +11,7 @@ public abstract class ObjektDaoQueryBean {
 	private Long[] visibilityIds = null; 
 	private Long[] visibilityIdsToForce = null;
 	private Long[] ownerIdsToExcludeForVisibilityIdsToForce = null;
+	private Long[] groupIds = null;
 	private Date creationDateMin = null;
 	private Double maxDistanceKm = null;
 	private Double originLatitude = null;
@@ -76,6 +77,14 @@ public abstract class ObjektDaoQueryBean {
 		this.ownerIdsToExcludeForVisibilityIdsToForce = ownerIdsToExcludeForVisibilityIdsToForce;
 	}
 	
+	public Long[] getGroupIds() {
+		return groupIds;
+	}
+
+	public void setGroupIds(Long[] groupIds) {
+		this.groupIds = groupIds;
+	}
+
 	public Date getCreationDateMin() {
 		return creationDateMin;
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.dao.NeedDao;
@@ -30,18 +31,24 @@ public class NeedDaoHibernateImpl extends ObjektDaoHibernateImpl implements Need
 		return (Need)getHibernateTemplate().load(Need.class, pNeedId);
 	}
 
-	private List<Need> findNeedsList(final NeedDaoQueryBean pNeedDaoQueryBean) {
+	public List<Need> findNeedsList(final NeedDaoQueryBean pNeedDaoQueryBean) {
 		
 		final DetachedCriteria criteria = getNeedsDetachedCriteria(pNeedDaoQueryBean);
 		
 		if (!StringUtils.isNullOrEmpty(pNeedDaoQueryBean.getOrderBy())) {
-			// Ascending.
-			if (pNeedDaoQueryBean.getOrderByAscending() == null || pNeedDaoQueryBean.getOrderByAscending().booleanValue()) {
-				criteria.addOrder(Order.asc(pNeedDaoQueryBean.getOrderBy()).ignoreCase());
+			if ("random".equals(pNeedDaoQueryBean.getOrderBy())) {
+				// This is MySql specific !!!
+				criteria.add(Restrictions.sqlRestriction("1=1 order by rand()"));
 			}
-			// Descending.
 			else {
-				criteria.addOrder(Order.desc(pNeedDaoQueryBean.getOrderBy()).ignoreCase());
+				// Ascending.
+				if (pNeedDaoQueryBean.getOrderByAscending() == null || pNeedDaoQueryBean.getOrderByAscending().booleanValue()) {
+					criteria.addOrder(Order.asc(pNeedDaoQueryBean.getOrderBy()).ignoreCase());
+				}
+				// Descending.
+				else {
+					criteria.addOrder(Order.desc(pNeedDaoQueryBean.getOrderBy()).ignoreCase());
+				}
 			}
 		}
 		

@@ -196,6 +196,7 @@
 	      scope="request">
 		<property name="registrationController" ref="registrationController"/>
 		<property name="registrationService" ref="registrationService"/>
+		<property name="personService" ref="personService"/>
 	</bean>
 	
 	<bean id="registrationStep2" class="com.pferrot.lendity.registration.jsf.RegistrationStep2"
@@ -319,6 +320,24 @@
 	========================================================================================================================
 	 -->
 	 
+	<!-- 
+	========================================================================================================================
+	HOME PUBLIC - start
+	 -->
+	 
+	<bean id="homePublicController" class="com.pferrot.lendity.login.jsf.HomePublicController"
+	      scope="conversation.access">
+		<property name="itemService" ref="itemService"/>
+		<property name="needService" ref="needService"/>
+		<property name="personService" ref="personService"/>
+		<property name="groupService" ref="groupService"/>
+	</bean>
+
+	<!-- 
+	HOME PUBLIC - end
+	========================================================================================================================
+	 -->
+
 	<!-- 
 	========================================================================================================================
 	HOME - start
@@ -617,17 +636,193 @@
 	LEND TRANSACTION - end
 	========================================================================================================================
 	 -->
+
+	<!-- 
+	========================================================================================================================
+	GROUP - start
+	-->
+	
+	<bean id="groupDaoTarget" class="com.pferrot.lendity.dao.hibernate.GroupDaoHibernateImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	
+	<bean id="groupDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target">
+			<ref local="groupDaoTarget"/>
+		</property>
+		<property name="proxyInterfaces">
+           <value>com.pferrot.lendity.dao.GroupDao</value>
+         </property>		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="groupService" parent="baseTransactionProxy">
+		<property name="target" ref="groupServiceTarget" />
+	</bean>
+	
+	<bean id="groupServiceTarget" class="com.pferrot.lendity.group.GroupService">
+		<property name="groupDao" ref="groupDao"/>
+		<property name="personDao" ref="personDao"/>
+		<property name="listValueDao" ref="listValueDao"/>
+		<property name="personService" ref="personService"/>
+	</bean>
+
+	<bean id="groupOverviewController" class="com.pferrot.lendity.group.jsf.GroupOverviewController"
+	      scope="conversation.access">
+	      <property name="groupService" ref="groupService"/>
+	      <property name="groupJoinRequestService" ref="groupJoinRequestService"/> 
+	</bean>
+
+	<bean id="deleteGroupTooltipController" class="com.pferrot.lendity.group.jsf.DeleteGroupTooltipController"
+	      scope="request">
+	      <property name="groupService" ref="groupService"/>
+	</bean>
+	
+	<bean id="groupAddController" class="com.pferrot.lendity.group.jsf.GroupAddController"
+	      scope="conversation.access">
+	      <property name="groupService" ref="groupService"/>
+	      <property name="personService" ref="personService"/>
+	</bean>
+	
+	<bean id="groupEditController" class="com.pferrot.lendity.group.jsf.GroupEditController"
+	      scope="conversation.access">
+	      <property name="groupService" ref="groupService"/>
+	      <property name="personService" ref="personService"/>
+	</bean>
+	
+	<bean id="groupsListController" class="com.pferrot.lendity.group.jsf.GroupsListController"
+	      scope="session">
+	      <property name="groupService" ref="groupService"/>      
+	</bean>
+	
+	<bean id="myGroupsListController" class="com.pferrot.lendity.group.jsf.MyGroupsListController"
+	      scope="session">
+	      <property name="groupService" ref="groupService"/>      
+	</bean>
+	
+	<bean id="myGroupsWhereOwnerOrAdministratorListController" class="com.pferrot.lendity.group.jsf.MyGroupsWhereOwnerOrAdministratorListController"
+	      scope="session">
+	      <property name="groupService" ref="groupService"/>      
+	</bean>
+	
+	<bean id="groupMembersListController" class="com.pferrot.lendity.group.jsf.GroupMembersListController"
+	      scope="session">
+	      <property name="groupService" ref="groupService"/>
+	      <property name="personService" ref="personService"/>      
+	</bean>
+	
+	<bean id="groupAdministratorsListController" class="com.pferrot.lendity.group.jsf.GroupAdministratorsListController"
+	      scope="session">
+	      <property name="groupService" ref="groupService"/>
+	      <property name="personService" ref="personService"/>      
+	</bean>
+	
+
+	<!-- 
+	GROUP - end
+	========================================================================================================================
+	-->
+
+	<!-- 
+	========================================================================================================================
+	GROUP JOIN REQUEST - start
+	 -->
+	 
+	<bean id="groupJoinRequestDaoTarget" class="com.pferrot.lendity.dao.hibernate.GroupJoinRequestDaoHibernateImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	
+	<bean id="groupJoinRequestDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target">
+			<ref local="groupJoinRequestDaoTarget"/>
+		</property>
+		<property name="proxyInterfaces">
+           <value>com.pferrot.lendity.dao.GroupJoinRequestDao</value>
+         </property>		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="groupJoinRequestService" parent="baseTransactionProxy">
+		<property name="target" ref="groupJoinRequestServiceTarget" />
+	</bean>
+	
+	<bean id="groupJoinRequestServiceTarget" class="com.pferrot.lendity.groupjoinrequest.GroupJoinRequestService">
+		<property name="groupJoinRequestDao" ref="groupJoinRequestDao"/>
+		<property name="groupService" ref="groupService"/>
+		<property name="personService" ref="personService"/>
+		<property name="mailManager" ref="emailSender.mailManager"/>
+		<property name="listValueDao" ref="listValueDao"/>
+	</bean>
+
+	<bean id="myPendingGroupJoinRequestsListController" class="com.pferrot.lendity.groupjoinrequest.jsf.MyPendingGroupJoinRequestsListController"
+	      scope="session">
+	      <property name="groupJoinRequestService" ref="groupJoinRequestService"/>
+	      <property name="personService" ref="personService"/>
+	</bean>
+	
+	<bean id="myPendingGroupJoinRequestsOutListController" class="com.pferrot.lendity.groupjoinrequest.jsf.MyPendingGroupJoinRequestsOutListController"
+	      scope="session">
+	      <property name="groupJoinRequestService" ref="groupJoinRequestService"/>
+	      <property name="personService" ref="personService"/>
+	</bean>
+	
+ 	
+	<bean id="joinGroupTooltipController" class="com.pferrot.lendity.groupjoinrequest.jsf.JoinGroupTooltipController"
+	      scope="request">
+	      <property name="groupService" ref="groupService"/>
+	</bean>
+	
+	<bean id="leaveGroupTooltipController" class="com.pferrot.lendity.groupjoinrequest.jsf.LeaveGroupTooltipController"
+	      scope="request">
+	      <property name="groupService" ref="groupService"/>
+	</bean>
+	
+	<bean id="requestGroupJoinTooltipController" class="com.pferrot.lendity.groupjoinrequest.jsf.RequestGroupJoinTooltipController"
+	      scope="request">
+	      <property name="groupJoinRequestService" ref="groupJoinRequestService"/>
+	</bean>
+
+	<bean id="acceptGroupJoinTooltipController" class="com.pferrot.lendity.groupjoinrequest.jsf.AcceptGroupJoinTooltipController"
+	      scope="request">
+	      <property name="groupJoinRequestService" ref="groupJoinRequestService"/>
+	</bean>
+	
+	<bean id="refuseGroupJoinTooltipController" class="com.pferrot.lendity.groupjoinrequest.jsf.RefuseGroupJoinTooltipController"
+	      scope="request">
+	      <property name="groupJoinRequestService" ref="groupJoinRequestService"/>
+	</bean>
+	
+	<bean id="banGroupJoinTooltipController" class="com.pferrot.lendity.groupjoinrequest.jsf.BanGroupJoinTooltipController"
+	      scope="request">
+	      <property name="groupJoinRequestService" ref="groupJoinRequestService"/>
+	</bean>
+
+ 
+	<!-- 
+	GROUP JOIN REQUEST - end
+	========================================================================================================================
+	 -->
 	 
 	<!-- 
 	========================================================================================================================
 	EVALUATION - start
 	-->
-	
-	
-	<!-- 
-	EVALUATION - end
-	========================================================================================================================
-	-->		 
 	<bean id="evaluationDaoTarget" class="com.pferrot.lendity.dao.hibernate.EvaluationDaoHibernateImpl">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
@@ -685,6 +880,11 @@
 	      <property name="evaluationService" ref="evaluationService"/>
 	      <property name="personService" ref="personService"/>	 
 	</bean>
+
+	<!-- 
+	EVALUATION - end
+	========================================================================================================================
+	-->	
 	
 	<!-- 
 	========================================================================================================================
@@ -725,6 +925,7 @@
 		<property name="itemService" ref="itemService"/>
 		<property name="needService" ref="needService"/>
 		<property name="lendTransactionService" ref="lendTransactionService"/>
+		<property name="groupService" ref="groupService"/>
 	</bean>	
 
 	<!-- 
@@ -854,6 +1055,7 @@
 		<property name="mailManager" ref="emailSender.mailManager"/>
 		<property name="personService" ref="personService"/>
 		<property name="documentService" ref="documentService"/>
+		<property name="groupService" ref="groupService"/>
 	</bean>
 	
 	<bean id="itemOverviewController" class="com.pferrot.lendity.item.jsf.ItemOverviewController"
@@ -873,6 +1075,7 @@
 	<bean id="itemEditController" class="com.pferrot.lendity.item.jsf.ItemEditController"
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
+	      <property name="personService" ref="personService"/>
 	</bean>
 	
 	<bean id="itemEditPictureController" class="com.pferrot.lendity.item.jsf.ItemEditPictureController"

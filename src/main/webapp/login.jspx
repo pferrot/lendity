@@ -27,41 +27,96 @@
 			<!-- main content -->
 			<div class="gt-content">
 			
-			<!--  
-			<div class="gt-form gt-content-box" style="position: relative; height: 255px;">
-			-->
-			<div style="position: relative; height: 470px;">			
+			<div class="gt-form gt-content-box">
 			
-			
-			<div id="square2" class="loginSquares backgroundColor1" style="
-			top: 0px;
-			left: 0px;
-			width: 400px;
-			height: 470px;">
-				<div style="padding: 20px; vertical-align: bottom; height: 190px; top: 220px;">
-				<center><h2><h:outputText value="#{messages.login_lendBorrowExchange}"/></h2></center>
-				<h:outputText value="#{messages.login_whatIsThatExplain}"/><br/><br/>
-				<center>
-				<img src="#{facesContext.externalContext.requestContextPath}/public/images/login_shadows.gif"/>
-				<br/><br/><br/>
-				<h:outputLink value="#{authenticationController.registrationURL}" styleClass="stylishButtonLarge">
-					<h:outputText value="#{messages.login_registerForFree}"/>
-				</h:outputLink>
-				</center>				
+			<f:view><h:form id="homePublicForm" prependId="false">
+				<div style="width: 100%">
+					<c:if test="#{not homePublicController.locationLabelCookieAvailable}">
+							<h:outputText value="#{messages.geolocation_inputYourLocation}" />:
+							<br/><br/>
+							<h:message styleClass="error" showSummary="true" showDetail="false"
+										for="location"></h:message>		
+							<h:inputText id="location"
+										 styleClass="gt-form-text gt-form-text-location"
+							             value="#{homePublicController.location}"
+										 required="true" 
+										 requiredMessage="#{messages.validation_requiredMessage}"
+										 validator="#{homePublicController.validateLocation}"/>
+							<script type="text/javascript">
+								setupSearchField('location', null, '#{messages.geolocation_inputLocationExample}', false);
+							</script>
+					</c:if>
+					
+					<c:if test="#{homePublicController.locationLabelCookieAvailable}">
+						<h:outputText value="#{messages.geolocation_currentLocation}" />:
+						<br/><br/>
+						<h:outputText value="#{homePublicController.locationLabelCookieValue}" styleClass="fontSizeLargeLarge"/>
+						<br/><br/>
+						<h:commandButton value="#{messages.geolocation_resetLocation}"
+						                 action="#{homePublicController.resetLocation}"
+						                 styleClass="stylishButton" />
+					</c:if>
 				</div>
-			</div>			
+
+				<table style="width: 100%;">
+				<tr>
+				<td style="width: 50%;">
+					<h:dataTable value="#{homePublicController.itemsList}" binding="#{homePublicController.itemsTable}" var="item" styleClass="gt-table gt-user-table">
+					
+					    <h:column id="itemColumn1">
+					    	<h:outputLink id="itemLink" value="#{homePublicController.itemOverviewHref}">
+								<h:outputText id="itemTitle" value="#{item.title}" />
+							</h:outputLink>
+					    </h:column>
+					
+					</h:dataTable>	
+				</td>
+				
+				<td style="width: 50%;">
+					<h:dataTable value="#{homePublicController.needsList}" binding="#{homePublicController.needsTable}" var="need" styleClass="gt-table gt-user-table">
+					
+					    <h:column id="needColumn1">
+					    	<h:outputLink id="needLink" value="#{homePublicController.needOverviewHref}">
+								<h:outputText id="needTitle" value="#{need.title}" />
+							</h:outputLink>
+					    </h:column>
+					
+					</h:dataTable>	
+				</td>
+				</tr>
+				
+				<tr>
+				<td style="width: 50%;">
+					<h:dataTable value="#{homePublicController.personsList}" binding="#{homePublicController.personsTable}" var="person" styleClass="gt-table gt-user-table">
+					
+					    <h:column id="personColumn1">
+					    	<h:outputLink id="personLink" value="#{homePublicController.personOverviewHref}">
+								<h:outputText id="personDisplayName" value="#{person.displayName}" />
+							</h:outputLink>
+					    </h:column>
+					
+					</h:dataTable>	
+				</td>
+				
+				<td style="width: 50%;">
+					<h:dataTable value="#{homePublicController.groupsList}" binding="#{homePublicController.groupsTable}" var="group" styleClass="gt-table gt-user-table">
+					
+					    <h:column id="groupColumn1">
+					    	<h:outputLink id="groupLink" value="#{homePublicController.groupOverviewHref}">
+								<h:outputText id="groupTitle" value="#{group.title}" />
+							</h:outputLink>
+					    </h:column>
+					
+					</h:dataTable>	
+				</td>
+				</tr>
+				
+				
+				</table>
 			
-			<div style="
-			position: absolute;
-			top: 50px;
-			left: 430px;
-			width: 220px;
-			height: 134px;">
-			<img src="#{facesContext.externalContext.requestContextPath}/public/images/login_tags.gif"/>
-			
+			</h:form></f:view>
+		
 			</div>
-			
-			</div>		
 			</div>
 			<!-- /main content -->
 
@@ -110,7 +165,12 @@
 						<h:inputText id="j_username" required="true" 
 						    value="#{loginController.username}"
 						    requiredMessage="#{messages.validation_requiredMessage}"
-						    styleClass="gt-form-text gt-form-text-login"/>										
+						    styleClass="gt-form-text gt-form-text-login"/>
+						<script>
+							$j(document).ready(function() {
+						        $j("#j_username").focus();
+						    });
+						</script>									
 					</div><!-- /form row -->	
 
 					<!-- form row -->

@@ -159,8 +159,20 @@ public class AuthenticationController {
 	public String getMyLendTransactionsWaitingForInputURL() {
 		return JsfUtils.getFullUrl(PagesURL.MY_LEND_TRANSACTIONS_WAITING_FOR_INPUT_LIST);
 	}
-	
-	public String getMyLendTransactionsToEvaluateURL() {
-		return JsfUtils.getFullUrl(PagesURL.MY_LEND_TRANSACTIONS_TO_EVALUATE_LIST);
+
+	public String getMyEvaluationsURL() {
+		return JsfUtils.getFullUrl(PagesURL.MY_EVALUATIONS_LIST);
+	}
+
+	public String getMyEvaluationsMadeURL() {
+		return JsfUtils.getFullUrl(PagesURL.MY_EVALUATIONS_MADE_LIST);
+	}
+
+	public String getGroupAddURL() {
+		return JsfUtils.getFullUrl(PagesURL.GROUP_ADD);
+	}
+
+	public String getGroupsURL() {
+		return JsfUtils.getFullUrl(PagesURL.GROUPS_LIST);
 	}
 }

@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -39,8 +38,6 @@ public abstract class AbstractListController implements Serializable {
     private List list;
 
 	private HtmlDataTable table;
-	
-	private String currentUri;
 	
     // Paging.
 	private int totalRows;

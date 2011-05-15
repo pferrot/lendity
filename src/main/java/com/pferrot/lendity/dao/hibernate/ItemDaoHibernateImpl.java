@@ -36,17 +36,23 @@ public class ItemDaoHibernateImpl extends ObjektDaoHibernateImpl implements Item
 		final DetachedCriteria criteria = getItemsDetachedCriteria(pItemDaoQueryBean);
 		
 		if (!StringUtils.isNullOrEmpty(pItemDaoQueryBean.getOrderBy())) {
-			// Ascending.
-			if (pItemDaoQueryBean.getOrderByAscending() == null || pItemDaoQueryBean.getOrderByAscending().booleanValue()) {
-				criteria.addOrder(Order.asc(pItemDaoQueryBean.getOrderBy()).ignoreCase());
+			if ("random".equals(pItemDaoQueryBean.getOrderBy())) {
+				// This is MySql specific !!!
+				criteria.add(Restrictions.sqlRestriction("1=1 order by rand()"));
 			}
-			// Descending.
 			else {
-				criteria.addOrder(Order.desc(pItemDaoQueryBean.getOrderBy()).ignoreCase());
+				// Ascending.
+				if (pItemDaoQueryBean.getOrderByAscending() == null || pItemDaoQueryBean.getOrderByAscending().booleanValue()) {
+					criteria.addOrder(Order.asc(pItemDaoQueryBean.getOrderBy()).ignoreCase());
+				}
+				// Descending.
+				else {
+					criteria.addOrder(Order.desc(pItemDaoQueryBean.getOrderBy()).ignoreCase());
+				}
 			}
 		}
 		return getHibernateTemplate().findByCriteria(criteria, pItemDaoQueryBean.getFirstResult(), pItemDaoQueryBean.getMaxResults());	
-	}
+	}	
 	
 	public long countItems(final ItemDaoQueryBean pItemDaoQueryBean) {
 		final DetachedCriteria criteria = getItemsDetachedCriteria(pItemDaoQueryBean);

@@ -28,7 +28,10 @@ function initComments(pContainerId, pContainerType, pContextPath, pAddCommentDef
 	}	
 	else if (pContainerType == "lendTransaction") {
 		loadCommentsForLendTransaction(pContainerId);
-	}	
+	}
+	else if (pContainerType == "group") {
+		loadCommentsForGroup(pContainerId);
+	}
 }
 
 function loadMoreComments(pContainerId, pContainerType) {
@@ -40,6 +43,9 @@ function loadMoreComments(pContainerId, pContainerType) {
 	}
 	else if (pContainerType == "lendTransaction") {
 		loadMoreCommentsInternalForLendTransaction(pContainerId);
+	}
+	else if (pContainerType == "group") {
+		loadMoreCommentsInternalForGroup(pContainerId);
 	}
 }
 
@@ -62,6 +68,9 @@ function addCommentInDb(pContainerId, pContainerType) {
 	}
 	else if (pContainerType == "lendTransaction") {
 		addCommentInDbInternalForLendTransaction(pContainerId);
+	}
+	else if (pContainerType == "group") {
+		addCommentInDbInternalForGroup(pContainerId);
 	}
 }
 
@@ -102,6 +111,18 @@ function loadCommentsForLendTransaction(pLendTransactionId) {
 		dataType: 'json',
 		contentType: 'application/json',
 		data: {action: 'read', lendTransactionID: pLendTransactionId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
+		success: loadCommentsResponse,
+		cache: false
+	});
+}
+
+function loadCommentsForGroup(pGroupId) {
+	addCommentInProgress();
+	$j.ajax({
+		url: mContextPath + '/public/comment/comment.json',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: {action: 'read', groupID: pGroupId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
 		success: loadCommentsResponse,
 		cache: false
 	});
@@ -158,6 +179,21 @@ function addCommentInDbInternalForLendTransaction(pLendTransactionId) {
 	});
 }
 
+function addCommentInDbInternalForGroup(pGroupId) {
+	var commentTextarea = $j('#commentTextarea');
+	var text = commentTextarea.val();
+	text = $j.trim(text);
+	// Add in DB.
+	$j.ajax({
+			url: mContextPath + '/public/comment/comment.json',
+			dataType: 'json',
+			contentType: 'application/json',
+			data: {action: 'create', groupID: pGroupId, text: text},
+			success: addCommentInDbResponse,
+			cache: false
+	});
+}
+
 function loadMoreCommentsInternalForItem(pItemId) {
 	hideLoadExtraCommentsDiv();	
 	
@@ -201,6 +237,22 @@ function loadMoreCommentsInternalForLendTransaction(pLendTransactionId) {
 		dataType: 'json',
 		contentType: 'application/json',
 		data: {action: 'read', lendTransactionID: pLendTransactionId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
+		success: loadCommentsResponse,
+		cache: false
+	});	
+}
+
+function loadMoreCommentsInternalForGroup(pGroupId) {
+	hideLoadExtraCommentsDiv();	
+	
+	positionEditCommentInProgressBottom();
+	editCommentInProgress();
+	
+	$j.ajax({
+		url: mContextPath + '/public/comment/comment.json',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: {action: 'read', groupID: pGroupId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
 		success: loadCommentsResponse,
 		cache: false
 	});	

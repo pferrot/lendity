@@ -1,0 +1,102 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle">
+		<h:outputFormat value="#{messages.group_groupAdministratorsList}">
+			<f:param value="#{groupAdministratorsListController.groupTitle}" />
+		</h:outputFormat>
+	</ui:define>
+	<ui:param name="contentHeader" value="#{messages.group_groupAdministratorsList}" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			<!-- main content -->
+			<div class="gt-content">
+
+				
+<f:view>
+
+<h:outputLink value="#{groupAdministratorsListController.groupUrl}">
+	<h:outputText styleClass="fontSizeSmall" value="#{groupAdministratorsListController.groupTitle}"/>
+</h:outputLink>
+<h:outputText styleClass="fontSizeSmall" value=" " escape="false"/>
+<h:outputText styleClass="fontSizeSmall" value="#{messages.navigation_pathSeparator}"/>
+<h2 class="gt-table-head">
+	<h:outputFormat value="#{messages.group_groupAdministratorsList}">
+		<f:param value="#{groupAdministratorsListController.groupTitle}" />
+	</h:outputFormat>
+</h2>
+
+<br/>
+
+<!-- content box -->
+<div class="gt-content-box">
+
+<c:if test="#{empty(groupAdministratorsListController.list)}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+
+<h:dataTable value="#{groupAdministratorsListController.list}" binding="#{groupAdministratorsListController.table}" var="person" 
+   styleClass="gt-table gt-user-table">
+
+    <h:column id="column1">
+		<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink value="#{groupAdministratorsListController.personOverviewHref}">
+					<div class="thumbnailDiv">
+						<img src="#{groupAdministratorsListController.profileThumbnailSrc}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
+		<h4>
+			<h:outputLink value="#{groupAdministratorsListController.personOverviewHref}">
+				<h:outputText value="#{person.displayName}" />
+			</h:outputLink>
+		</h4>
+		</td></tr></table>
+    </h:column>
+
+</h:dataTable>
+
+<ui:include src="../../auth/table/tableControls.jspx">
+	<ui:param name="theBean" value="#{groupAdministratorsListController}"/>
+</ui:include>
+
+</div><!-- /content box -->
+
+</f:view>
+
+			</div>
+			<!-- /main content -->
+			
+			</div>
+			<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>

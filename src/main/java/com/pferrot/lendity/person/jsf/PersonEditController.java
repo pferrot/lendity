@@ -36,6 +36,7 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		// Read the person ID from the request parameter and load the correct person.
 		try {
 			final String personIdString = JsfUtils.getRequestParameter(PagesURL.PERSON_EDIT_PARAM_PERSON_ID);
+			Person person = null;
 			if (personIdString != null) {
 				final Long personId = Long.parseLong(personIdString);
 				person = getPersonService().findPerson(personId);				
@@ -47,11 +48,14 @@ public class PersonEditController extends AbstractPersonAddEditController {
 					}
 					return;
 				}
-				setPerson(person);
+				else {
+					setPerson(person);
+				}
 			}
 			// Person not found or no person ID specified.
 			if (getPerson() == null) {
 				JsfUtils.redirect(PagesURL.PERSONS_LIST);
+				return;
 			}
 		}
 		catch (AccessDeniedException ade) {
@@ -162,6 +166,17 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		else {
 			setAddressHomeLatitude(null);
 			setAddressHomeLongitude(null);
+		}
+	}
+
+	public void validateDisplayName(FacesContext context, UIComponent toValidate, Object value) {
+		String message = "";
+		String displayName = (String) value;
+		if (!getPersonService().isDisplayNameAvailable(displayName, getPerson())) {
+			((UIInput)toValidate).setValid(false);
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			message = I18nUtils.getMessageResourceString("person_displayNameAlreadyExists", locale);
+			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
 	}
 	
