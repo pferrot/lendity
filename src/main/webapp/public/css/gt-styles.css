@@ -20,7 +20,10 @@ Misc - anything that doesn't fit elsewhere
 
 /* @group HTML, Body */
 html {
-	background-color: #ffffff;/*#ff6600;*/
+	background-image: url(../images/fond_triangle.png);
+	background-repeat: repeat-y;
+	background-color: #C5C5C5;
+	background-position: center;
 	height: 101%; /*trick to always display the vertical scroll bar in firefox*/
 	
 }
@@ -214,7 +217,6 @@ body {
 
 /* Default List Table */
 .gt-content-box {
-	background-color: #87b0e6;
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	padding: 1px;
@@ -404,7 +406,6 @@ body {
 	margin-right: auto;
 	padding: 1.5em 3em;
 	border: 1px solid #ccc;
-	background-color: #fff;
 	border-radius: 5px;
 }
 .gt-login-box .gt-form .gt-form-text {
@@ -412,7 +413,7 @@ body {
 }
 .gt-login-box .gt-remember-me {
 	display: block;
-	padding: 12px 0 0 0;
+	padding: 0 0 0 0;
 	font-size: 85%;
 	font-weight: normal;
 	color: #ffffff;
@@ -420,13 +421,14 @@ body {
 	display: inline;
 }
 .gt-login-box label {
-	color: #ffffff!important;	
+	color: #000000!important;	
 }
 .gt-forgot-password {
 	font-size: 85%;
 	clear: both;
 	margin: 0;
-	padding: 5px 0 0 0;
+	padding: 0 0 0 0;
+	text-align: left;
 }
 
 

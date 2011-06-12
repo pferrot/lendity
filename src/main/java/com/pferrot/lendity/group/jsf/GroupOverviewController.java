@@ -158,4 +158,22 @@ public class GroupOverviewController  {
 	public String getGroupAdministratorsUrl() {
 		return JsfUtils.getFullUrl(PagesURL.GROUP_ADMINISTRATORS_LIST, PagesURL.GROUP_ADMINISTRATORS_LIST_PARAM_GROUP_ID, getGroupId().toString());
 	}
+
+	public String getGroupPicture1Src() {
+		if (FacesContext.getCurrentInstance().getRenderResponse()) {
+			return groupService.getGroupPicture1Src(getGroup(), true);
+		}
+		return null;
+	}
+	
+	public String getGroupThumbnail1Src() {
+		if (FacesContext.getCurrentInstance().getRenderResponse()) {
+			return groupService.getGroupThumbnail1Src(getGroup(), true);
+		}
+		return null;
+	}
+	
+	public String getGroupEditPictureHref() {		
+		return JsfUtils.getFullUrl(PagesURL.GROUP_EDIT_PICTURE, PagesURL.GROUP_EDIT_PICTURE_PARAM_GROUP_ID, getGroup().getId().toString());
+	}
 }

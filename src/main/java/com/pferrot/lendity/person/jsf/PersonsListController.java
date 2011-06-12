@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.orchestra.viewController.annotations.InitView;
+import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
@@ -20,15 +22,29 @@ import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
+import com.pferrot.security.SecurityUtils;
 
+@ViewController(viewIds={"/public/person/personsList.jspx"})
 public class PersonsListController extends AbstractPersonsListController {
 	
 	private final static Log log = LogFactory.getLog(PersonsListController.class);
 	
 	private final static String REQUEST_CONNECTION_ATTRIUTE_PREFIX = "REQUEST_CONNECTION_AVAILABLE_";
 	
+	public final static String SEARCH_TEXT_PARAM_NAME = "search";
+	
 	private List<SelectItem> maxDistanceSelectItems;
 	private Long maxDistance;
+	
+	@InitView
+	public void initView() {
+		final String searchString = JsfUtils.getRequestParameter(SEARCH_TEXT_PARAM_NAME);
+		if (!StringUtils.isNullOrEmpty(searchString)) {
+			resetFilters();
+			setSearchString(searchString);
+			return;
+		}
+	}
 	
 	@Override
 	protected ListWithRowCount getListWithRowCount() {
@@ -36,23 +52,15 @@ public class PersonsListController extends AbstractPersonsListController {
 	    if (getMaxDistance() != null) {
 	    	maxDistanceDouble = Double.valueOf(getMaxDistance());
 	    }
-		return getPersonService().findEnabledPersons(getSearchString(), maxDistanceDouble, getFirstRow(), getRowsPerPage());
-	}
-
-	public String requestConnection() {
-		try {
-			final Person person = (Person)getTable().getRowData();
-			getConnectionRequestService().createConnectionRequestFromCurrentUser(person);
-			return "requestConnection";
-		}
-		catch (ConnectionRequestException e) {
-			// TODO redirect to error page instead.
-			throw new RuntimeException(e);
-		}		
+		return getPersonService().findEnabledPersons(getSearchString(), maxDistanceDouble, getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
 	}
 
 	public boolean isRequestConnectionDisabled() {
 		try {
+			if (!SecurityUtils.isLoggedIn()) {
+				return true;
+			}
+			
 			final Person person = (Person)getTable().getRowData();			
 			
 			// Not sure why this is called 3 times per person !? Avoid hitting DB.
@@ -118,5 +126,10 @@ public class PersonsListController extends AbstractPersonsListController {
 	@Override
 	public boolean isFilteredList() {
 		return !StringUtils.isNullOrEmpty(getSearchString()) || getMaxDistance() != null;
+	}
+
+	public boolean isShowAdvancedSearch() {
+		return getMaxDistance() != null ||
+			getOrderBy() != null;
 	}
 }

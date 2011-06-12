@@ -2,6 +2,7 @@ package com.pferrot.lendity.lendtransaction;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,6 +12,7 @@ import com.pferrot.lendity.comment.CommentService;
 import com.pferrot.lendity.comment.exception.CommentException;
 import com.pferrot.lendity.dao.LendTransactionDao;
 import com.pferrot.lendity.dao.ListValueDao;
+import com.pferrot.lendity.evaluation.EvaluationUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.lendtransaction.exception.LendTransactionException;
@@ -63,33 +65,42 @@ public class LendTransactionWithCommentService {
 	
 	public void updateLendTransactionDates(final LendTransaction pLendTransaction, final Date pStartDate, final Date pEndDate) throws LendTransactionException {
 		try {
+			final long startDateAfterMs = pStartDate.getTime();
+			final long endDateAfterMs = pEndDate.getTime();
 			final Date startDateBefore = pLendTransaction.getStartDate();
+			final long startDateBeforeMs = startDateBefore.getTime();
 			final Date endDateBefore = pLendTransaction.getEndDate();
+			final long endDateBeforeMs = endDateBefore.getTime();
 			
 			// Nothing changed.
-			if (startDateBefore.equals(pStartDate) && endDateBefore.equals(pEndDate)) {
+			if (startDateAfterMs == startDateBeforeMs && endDateBeforeMs == endDateAfterMs) {
 				return;
 			}
 			// Only end date changed.
-			else if (startDateBefore.equals(pStartDate)) {
+			else if (startDateBeforeMs == startDateAfterMs) {
 				pLendTransaction.setEndDate(pEndDate);
 				lendTransactionDao.updateLendTransaction(pLendTransaction);
 				
 				final String endDateBeforeLabel = UiUtils.getDateAsString(endDateBefore, I18nUtils.getDefaultLocale()); 
 				final String endDateAfterLabel = UiUtils.getDateAsString(pEndDate, I18nUtils.getDefaultLocale());
 				
-				commentService.createSystemCommentOnLendTransactionWithAC("TODO new end date: " + endDateAfterLabel + " (was " + endDateBeforeLabel + ")", pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
+				final Locale locale = I18nUtils.getDefaultLocale();
+				final String message = I18nUtils.getMessageResourceString("lendTransaction_endDateChanged", new Object[]{endDateAfterLabel, endDateBeforeLabel}, locale);
+				commentService.createSystemCommentOnLendTransactionWithAC(message, pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
+				
 				
 			}
 			// Only start date changed.
-			else if (endDateBefore.equals(pEndDate)) {
+			else if (endDateBeforeMs == endDateAfterMs) {
 				pLendTransaction.setStartDate(pStartDate);
 				lendTransactionDao.updateLendTransaction(pLendTransaction);
 				
 				final String startDateBeforeLabel = UiUtils.getDateAsString(startDateBefore, I18nUtils.getDefaultLocale()); 
 				final String startDateAfterLabel = UiUtils.getDateAsString(pStartDate, I18nUtils.getDefaultLocale());
 				
-				commentService.createSystemCommentOnLendTransactionWithAC("TODO new start date: " + startDateAfterLabel + " (was " + startDateBeforeLabel + ")", pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
+				final Locale locale = I18nUtils.getDefaultLocale();
+				final String message = I18nUtils.getMessageResourceString("lendTransaction_startDateChanged", new Object[]{startDateAfterLabel, startDateBeforeLabel}, locale);
+				commentService.createSystemCommentOnLendTransactionWithAC(message, pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
 			}
 			// Both changed.
 			else {
@@ -102,7 +113,10 @@ public class LendTransactionWithCommentService {
 				final String endDateBeforeLabel = UiUtils.getDateAsString(endDateBefore, I18nUtils.getDefaultLocale()); 
 				final String endDateAfterLabel = UiUtils.getDateAsString(pEndDate, I18nUtils.getDefaultLocale());
 				
-				commentService.createSystemCommentOnLendTransactionWithAC("TODO new start date: " + startDateAfterLabel + " (was " + startDateBeforeLabel + ")\nnew end date: " + endDateAfterLabel + " (was " + endDateBeforeLabel + ")", pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
+				final Locale locale = I18nUtils.getDefaultLocale();
+				final String message1 = I18nUtils.getMessageResourceString("lendTransaction_startDateChanged", new Object[]{startDateAfterLabel, startDateBeforeLabel}, locale);
+				final String message2 = I18nUtils.getMessageResourceString("lendTransaction_endDateChanged", new Object[]{endDateAfterLabel, endDateBeforeLabel}, locale);
+				commentService.createSystemCommentOnLendTransactionWithAC(message1 + "\n" + message2, pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
 			}		
 		}
 		catch (CommentException e) {
@@ -120,8 +134,9 @@ public class LendTransactionWithCommentService {
 			pLendTransaction.setStatus((LendTransactionStatus)listValueDao.findListValue(LendTransactionStatus.CANCELED_LABEL_CODE));
 			lendTransactionService.updateLendTransaction(pLendTransaction);
 			
-			// TODO: add comment in lend transaction.
-			commentService.createSystemCommentOnLendTransactionWithAC("TODO transaction canceled", pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
+			final Locale locale = I18nUtils.getDefaultLocale();
+			final String message = I18nUtils.getMessageResourceString("lendTransaction_transactionCancelled", locale);
+			commentService.createSystemCommentOnLendTransactionWithAC(message, pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
 		}
 		catch (CommentException e) {
 			throw new LendTransactionException(e);
@@ -136,8 +151,9 @@ public class LendTransactionWithCommentService {
 			pLendTransaction.setStatus((LendTransactionStatus)listValueDao.findListValue(LendTransactionStatus.CANCELED_LABEL_CODE));
 			lendTransactionService.updateLendTransaction(pLendTransaction);
 			
-			// TODO: add comment in lend transaction.
-			commentService.createSystemCommentOnLendTransactionWithAC("TODO transaction canceled (refused)", pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), false);
+			final Locale locale = I18nUtils.getDefaultLocale();
+			final String message = I18nUtils.getMessageResourceString("lendTransaction_transactionRefused", locale);
+			commentService.createSystemCommentOnLendTransactionWithAC(message, pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), false);
 		}
 		catch (CommentException e) {
 			throw new LendTransactionException(e);
@@ -152,9 +168,9 @@ public class LendTransactionWithCommentService {
 			pLendTransaction.setStatus((LendTransactionStatus)listValueDao.findListValue(LendTransactionStatus.OPENED_LABEL_CODE));
 			lendTransactionService.updateLendTransaction(pLendTransaction);
 			
-			// TODO: add comment in lend transaction.
-			// !!! Email already sent by lend request service.
-			commentService.createSystemCommentOnLendTransactionWithAC("TODO request accepted", pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), false);
+			final Locale locale = I18nUtils.getDefaultLocale();
+			final String message = I18nUtils.getMessageResourceString("lendTransaction_transactionAccepted", locale);
+			commentService.createSystemCommentOnLendTransactionWithAC(message, pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), false);
 		}
 		catch (CommentException e) {
 			throw new LendTransactionException(e);
@@ -192,8 +208,9 @@ public class LendTransactionWithCommentService {
 			
 			lendTransactionService.updateLendTransaction(pLendTransaction);
 			
-			// TODO: add comment in lend transaction.		
-			commentService.createSystemCommentOnLendTransactionWithAC("TODO transaction in progress", pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
+			final Locale locale = I18nUtils.getDefaultLocale();
+			final String message = I18nUtils.getMessageResourceString("lendTransaction_transactionInProgress", locale);
+			commentService.createSystemCommentOnLendTransactionWithAC(message, pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
 		}
 		catch (CommentException e) {
 			throw new LendTransactionException(e);
@@ -203,6 +220,7 @@ public class LendTransactionWithCommentService {
 	public void updateGiveOrSellItem(final LendTransaction pLendTransaction) throws LendTransactionException {
 		try {
 			lendTransactionDao.refreshLendTransaction(pLendTransaction);
+			pLendTransaction.setItemTransfered(Boolean.TRUE);
 			CoreUtils.assertTrue(lendTransactionService.isGiveOrSellAvailable(pLendTransaction));
 			
 			final Item item = pLendTransaction.getItem();
@@ -221,6 +239,7 @@ public class LendTransactionWithCommentService {
 				
 				
 				itemService.updateItem(item);
+				lendTransactionService.updateLendTransaction(pLendTransaction);
 			}
 			else {
 				if (log.isWarnEnabled()) {
@@ -232,8 +251,9 @@ public class LendTransactionWithCommentService {
 			
 			lendTransactionService.updateLendTransaction(pLendTransaction);
 			
-			// TODO: add comment in lend transaction.		
-			commentService.createSystemCommentOnLendTransactionWithAC("TODO transaction completed - object transfered", pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
+			final Locale locale = I18nUtils.getDefaultLocale();
+			final String message = I18nUtils.getMessageResourceString("lendTransaction_transactionCompletedTransfered", locale);
+			commentService.createSystemCommentOnLendTransactionWithAC(message, pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
 		}
 		catch (CommentException e) {
 			throw new LendTransactionException(e);
@@ -259,8 +279,9 @@ public class LendTransactionWithCommentService {
 			pLendTransaction.setStatus((LendTransactionStatus)listValueDao.findListValue(LendTransactionStatus.COMPLETED_LABEL_CODE));
 			lendTransactionService.updateLendTransaction(pLendTransaction);
 			
-			// TODO: add comment in lend transaction.
-			commentService.createSystemCommentOnLendTransactionWithAC("TODO transaction completed", pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
+			final Locale locale = I18nUtils.getDefaultLocale();
+			final String message = I18nUtils.getMessageResourceString("lendTransaction_transactionCompleted", locale);
+			commentService.createSystemCommentOnLendTransactionWithAC(message, pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
 		}
 		catch (CommentException e) {
 			throw new LendTransactionException(e);
@@ -278,8 +299,16 @@ public class LendTransactionWithCommentService {
 			pLendTransaction.setEvaluationByBorrower(pEvaluation);
 			lendTransactionService.updateLendTransaction(pLendTransaction);
 			
-			// TODO: add comment in lend transaction.
-			commentService.createSystemCommentOnLendTransactionWithAC("TODO evaluation by borrower: " + pEvaluation.getScore() + "\n" + pEvaluation.getText() , pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
+			final String evalLabel = EvaluationUtils.getEvaluationLabel(pEvaluation.getScore()); 
+			final Locale locale = I18nUtils.getDefaultLocale();
+			String message = null;
+			if (Boolean.TRUE.equals(pLendTransaction.getItemTransfered())) {
+				message = I18nUtils.getMessageResourceString("lendTransaction_transactionEvaluatedByBorrower2", new Object[]{evalLabel}, locale);
+			}
+			else {
+				message = I18nUtils.getMessageResourceString("lendTransaction_transactionEvaluatedByBorrower", new Object[]{evalLabel}, locale);
+			}
+			commentService.createSystemCommentOnLendTransactionWithAC(message + "\n" + pEvaluation.getText(), pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
 		}
 		catch (CommentException e) {
 			throw new LendTransactionException(e);
@@ -297,8 +326,16 @@ public class LendTransactionWithCommentService {
 			pLendTransaction.setEvaluationByLender(pEvaluation);
 			lendTransactionService.updateLendTransaction(pLendTransaction);
 			
-			// TODO: add comment in lend transaction.
-			commentService.createSystemCommentOnLendTransactionWithAC("TODO evaluation by lender: " + pEvaluation.getScore() + "\n" + pEvaluation.getText() , pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
+			final String evalLabel = EvaluationUtils.getEvaluationLabel(pEvaluation.getScore()); 
+			final Locale locale = I18nUtils.getDefaultLocale();
+			String message = null;
+			if (Boolean.TRUE.equals(pLendTransaction.getItemTransfered())) {
+				message = I18nUtils.getMessageResourceString("lendTransaction_transactionEvaluatedByLender2", new Object[]{evalLabel}, locale);
+			}
+			else {
+				message = I18nUtils.getMessageResourceString("lendTransaction_transactionEvaluatedByLender", new Object[]{evalLabel}, locale);
+			}
+			commentService.createSystemCommentOnLendTransactionWithAC(message + "\n" + pEvaluation.getText(), pLendTransaction.getId(), PersonUtils.getCurrentPersonId(), true);
 		}
 		catch (CommentException e) {
 			throw new LendTransactionException(e);

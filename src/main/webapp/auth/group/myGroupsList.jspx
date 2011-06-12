@@ -67,12 +67,22 @@
 <h:dataTable value="#{myGroupsListController.list}" binding="#{myGroupsListController.table}" var="group" 
    styleClass="gt-table gt-user-table">
 
-    <h:column id="column1">
+	<h:column id="column1">
+		<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink value="#{myGroupsListController.groupOverviewHref}">
+					<div class="thumbnailDiv">
+						<img src="#{myGroupsListController.groupThumbnail1Src}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
 		<h4>
 			<h:outputLink value="#{myGroupsListController.groupOverviewHref}">
 				<h:outputText value="#{group.title}" />
 			</h:outputLink>
 		</h4>
+		</td></tr></table>
     </h:column>
 
 </h:dataTable>

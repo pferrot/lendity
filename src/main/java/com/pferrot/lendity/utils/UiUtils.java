@@ -16,6 +16,7 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.i18n.SelectItemComparator;
 import com.pferrot.lendity.model.ListValue;
@@ -47,18 +48,34 @@ public class UiUtils {
 	
 	public static List<SelectItem> getSelectItemsForListValue(final List<ListValue> pList,
 															  final Locale pLocale) {
+		return getSelectItemsForListValueWithItemFirst(pList, pLocale, null);
+	}
+
+	public static List<SelectItem> getSelectItemsForListValueWithItemFirst(final List<ListValue> pList,
+																		   final Locale pLocale,
+																		   final String pItemToPlaceFirst) {
 		if (pList == null) {
 			return Collections.EMPTY_LIST;
 		}
 		final TreeSet<SelectItem> treeSet = new TreeSet<SelectItem>(new SelectItemComparator());
-		for (ListValue lv: pList) {
+		SelectItem itemToPlaceFirst = null;
+		for (ListValue lv: pList) {			
 			final SelectItem selectItem = new SelectItem(lv.getId(), I18nUtils.getMessageResourceString(lv.getLabelCode(), pLocale));
-			treeSet.add(selectItem);
+			if (lv.getLabelCode().equals(pItemToPlaceFirst)) {
+				itemToPlaceFirst = selectItem;
+			}
+			else {
+				treeSet.add(selectItem);
+			}			
 		}
 		final List result = new ArrayList<SelectItem>();
 		result.addAll(treeSet);
+		if (itemToPlaceFirst != null) {
+			result.add(0, itemToPlaceFirst);
+		}
 		return result; 
-	}
+	}	
+	
 
 	/**
 	 * Will only consider ENABLED persons.

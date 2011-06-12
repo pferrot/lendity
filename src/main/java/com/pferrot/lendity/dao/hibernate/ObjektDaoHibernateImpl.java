@@ -12,6 +12,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.pferrot.lendity.dao.bean.ObjektDaoQueryBean;
 import com.pferrot.lendity.dao.hibernate.criterion.CustomSqlCriterion;
 import com.pferrot.lendity.geolocation.GeoLocationConsts;
+import com.pferrot.lendity.geolocation.GeoLocationUtils;
 
 public abstract class ObjektDaoHibernateImpl extends HibernateDaoSupport {
 
@@ -30,6 +31,14 @@ public abstract class ObjektDaoHibernateImpl extends HibernateDaoSupport {
 		if (pObjectDaoQueryBean.getOwnerIds() != null && pObjectDaoQueryBean.getOwnerIds().length > 0) {
 			c = Restrictions.in("owner.id", pObjectDaoQueryBean.getOwnerIds());
 		}
+//		if (pObjectDaoQueryBean.getOwnerIdsToExcludeForVisibilityIdsToForce() != null && pObjectDaoQueryBean.getOwnerIdsToExcludeForVisibilityIdsToForce().length > 0) {
+//			if (c != null) {
+//				c = Restrictions.and(c, Restrictions.not(Restrictions.in("owner.id", pObjectDaoQueryBean.getOwnerIdsToExcludeForVisibilityIdsToForce())));
+//			}
+//			else {
+//				c = Restrictions.not(Restrictions.in("owner.id", pObjectDaoQueryBean.getOwnerIdsToExcludeForVisibilityIdsToForce()));
+//			}
+//		}
 		if (pObjectDaoQueryBean.getVisibilityIds() != null && pObjectDaoQueryBean.getVisibilityIds().length > 0) {
 			if (c != null) {
 				c = Restrictions.and(c, Restrictions.in("visibility.id", pObjectDaoQueryBean.getVisibilityIds()));
@@ -50,11 +59,15 @@ public abstract class ObjektDaoHibernateImpl extends HibernateDaoSupport {
 		}
 		if (pObjectDaoQueryBean.getGroupIds() != null && pObjectDaoQueryBean.getGroupIds().length > 0) {
 			criteria.createAlias("groupsAuthorized", "ga", CriteriaSpecification.LEFT_JOIN);
-			if (c != null) {
-				c = Restrictions.or(c, Restrictions.in("ga.id", pObjectDaoQueryBean.getGroupIds()));
+			Criterion c1 = Restrictions.in("ga.id", pObjectDaoQueryBean.getGroupIds());
+			if (pObjectDaoQueryBean.getOwnerIdsToExcludeForVisibilityIdsToForce() != null && pObjectDaoQueryBean.getOwnerIdsToExcludeForVisibilityIdsToForce().length > 0) {
+				c1 = Restrictions.and(c1, Restrictions.not(Restrictions.in("owner.id", pObjectDaoQueryBean.getOwnerIdsToExcludeForVisibilityIdsToForce())));
+			}
+			if (c != null) {				
+				c = Restrictions.or(c, c1);
 			}
 			else {
-				c = Restrictions.in("ga.id", pObjectDaoQueryBean.getGroupIds());
+				c = c1;
 			}
 		}
 		if (c != null) {
@@ -63,20 +76,23 @@ public abstract class ObjektDaoHibernateImpl extends HibernateDaoSupport {
 		
 		DetachedCriteria ownerCriteria = null;
 		// Exclude public needs owned by persons that do not want to share their address if filtering by distance.
-		if (pObjectDaoQueryBean.getOwnerIds() != null && pObjectDaoQueryBean.getOwnerIds().length > 0 &&
-			pObjectDaoQueryBean.getMaxDistanceKm() != null) {
-			ownerCriteria = criteria.createCriteria("owner", CriteriaSpecification.INNER_JOIN);
-			c = Restrictions.in("id", pObjectDaoQueryBean.getOwnerIds());
-			if (pObjectDaoQueryBean.getMaxDistanceKm() != null) {
-				c = Restrictions.or(c, Restrictions.eq("showContactDetailsToAll", Boolean.TRUE));
-			}
-			ownerCriteria.add(c);
-		}
+//		if (pObjectDaoQueryBean.getOwnerIds() != null && pObjectDaoQueryBean.getOwnerIds().length > 0 &&
+//			pObjectDaoQueryBean.getMaxDistanceKm() != null) {
+//			ownerCriteria = criteria.createCriteria("owner", CriteriaSpecification.INNER_JOIN);
+//			ownerCriteria = criteria.createAlias("owner", "o", CriteriaSpecification.INNER_JOIN);
+//			c = Restrictions.in("o.id", pObjectDaoQueryBean.getOwnerIds());
+//			if (pObjectDaoQueryBean.getMaxDistanceKm() != null) {
+//				c = Restrictions.or(c, Restrictions.eq("o.showContactDetailsToAll", Boolean.TRUE));
+//			}
+//			ownerCriteria.add(c);
+//		}
+		
 		if (pObjectDaoQueryBean.getOwnerEnabled() != null) {
 			if (ownerCriteria == null) {
-				ownerCriteria = criteria.createCriteria("owner", CriteriaSpecification.INNER_JOIN);
+//				ownerCriteria = criteria.createCriteria("owner", CriteriaSpecification.INNER_JOIN);
+				ownerCriteria = criteria.createAlias("owner", "o", CriteriaSpecification.INNER_JOIN);
 			}
-			ownerCriteria.add(Restrictions.eq("enabled", pObjectDaoQueryBean.getOwnerEnabled()));
+			ownerCriteria.add(Restrictions.eq("o.enabled", pObjectDaoQueryBean.getOwnerEnabled()));
 		}
 		
 		if (pObjectDaoQueryBean.getCategoryIds() != null && pObjectDaoQueryBean.getCategoryIds().length > 0) {
@@ -104,23 +120,23 @@ public abstract class ObjektDaoHibernateImpl extends HibernateDaoSupport {
 			double latitude2 = originLatitude + deltaLatitude;
 			
 			if (ownerCriteria == null) {
-				ownerCriteria = criteria.createCriteria("owner", CriteriaSpecification.INNER_JOIN);
+//				ownerCriteria = criteria.createCriteria("owner", CriteriaSpecification.INNER_JOIN);
+				ownerCriteria = criteria.createAlias("owner", "o", CriteriaSpecification.INNER_JOIN);
 			}			
 			
 			// Pre-filtering for performance reason. Records not in that square do not need
 			// to be considered. 
-			ownerCriteria.add(Restrictions.ge("addressHomeLatitude", Double.valueOf(latitude1)));
-			ownerCriteria.add(Restrictions.le("addressHomeLatitude", Double.valueOf(latitude2)));
-			ownerCriteria.add(Restrictions.ge("addressHomeLongitude", Double.valueOf(longitude1)));
-			ownerCriteria.add(Restrictions.le("addressHomeLongitude", Double.valueOf(longitude2)));			
+			ownerCriteria.add(Restrictions.ge("o.addressHomeLatitude", Double.valueOf(latitude1)));
+			ownerCriteria.add(Restrictions.le("o.addressHomeLatitude", Double.valueOf(latitude2)));
+			ownerCriteria.add(Restrictions.ge("o.addressHomeLongitude", Double.valueOf(longitude1)));
+			ownerCriteria.add(Restrictions.le("o.addressHomeLongitude", Double.valueOf(longitude2)));			
 			
 			// Fine grain the result - calculate the exact distance.
 			// It would be too expensive to do that for all records, that is why we pre-filter with
 			// a square above.
-			final String sql = "(acos(sin(? * pi()/180) * sin({0} * pi()/180) + " +
-				"cos(? * pi()/180) * cos({1} * pi()/180) * cos(({2} - ?) * pi()/180)) * 6371) <= ?";
+			final String sql = "(" + GeoLocationUtils.getDistanceFormula("?", "?", "?") + ") <= ?";
 			
-			final String[] propertyNames = {"addressHomeLatitude", "addressHomeLatitude", "addressHomeLongitude"};
+			final String[] propertyNames = {"o.addressHomeLatitude", "o.addressHomeLatitude", "o.addressHomeLongitude"};
 			final Object[] values = {pObjectDaoQueryBean.getOriginLatitude(), pObjectDaoQueryBean.getOriginLatitude(),
 					pObjectDaoQueryBean.getOriginLongitude(), pObjectDaoQueryBean.getMaxDistanceKm()};
 			final Type[] types = {Hibernate.DOUBLE, Hibernate.DOUBLE, Hibernate.DOUBLE, Hibernate.DOUBLE};		

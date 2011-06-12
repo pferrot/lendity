@@ -113,13 +113,22 @@
 <h:dataTable value="#{personNeedsListController.list}" binding="#{personNeedsListController.table}" var="need" 
    styleClass="gt-table gt-user-table">
 
-
     <h:column id="column1">
+    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink value="#{personNeedsListController.needOverviewHref}" rendered="#{personNeedsListController.thumbnail1Src != null}">
+					<div class="thumbnailDiv">
+					    <img src="#{personNeedsListController.thumbnail1Src}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
 		<h4>
 			<h:outputLink value="#{personNeedsListController.needOverviewHref}">
 				<h:outputText value="#{need.title}" />
 			</h:outputLink>
 		</h4>
+		</td></tr></table>
     </h:column>
 
 	<h:column id="column2">

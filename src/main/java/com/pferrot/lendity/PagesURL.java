@@ -23,6 +23,14 @@ public interface PagesURL {
 	/////////////////////////////////////////////////////////////////////////
 	
 	/////////////////////////////////////////////////////////////////////////
+	// TERMS AND CONDITIONS - start
+	
+	String FAQ = "/public/faq/faq.faces";
+	
+	// TERMS AND CONDITIONS - end
+	/////////////////////////////////////////////////////////////////////////
+	
+	/////////////////////////////////////////////////////////////////////////
 	// CONTACT - start
 	
 	String CONTACT = "/public/contact/contact.faces";
@@ -34,6 +42,7 @@ public interface PagesURL {
 	// LOGIN - start
 	
 	String LOGIN = "/login.faces";
+	String HOME_PUBLIC = LOGIN;
 	String LOGIN_PARAM_REDIRECT_TO = CustomAuthenticationProcessingFilter.REDIRECT_TO_PARAMETER_NAME;
 	
 	// LOGIN - end
@@ -86,7 +95,7 @@ public interface PagesURL {
 	
 	String MY_PROFILE = "/auth/person/myProfile.faces";
 	
-	String PERSONS_LIST = "/auth/person/personsList.faces";
+	String PERSONS_LIST = "/public/person/personsList.faces";
 	String MY_CONNECTIONS_LIST = "/auth/person/myConnectionsList.faces";
 	String MY_BANNED_PERSONS_LIST = "/auth/person/myBannedPersonsList.faces";
 	
@@ -112,6 +121,9 @@ public interface PagesURL {
 	
 	String GROUP_EDIT = "/auth/group/groupEdit.faces";
 	String GROUP_EDIT_PARAM_GROUP_ID = GROUP_OVERVIEW_PARAM_GROUP_ID;
+	
+	String GROUP_EDIT_PICTURE = "/auth/group/groupEditPicture.faces";
+	String GROUP_EDIT_PICTURE_PARAM_GROUP_ID = GROUP_OVERVIEW_PARAM_GROUP_ID;
 	
 	String GROUPS_LIST = "/public/group/groupsList.faces";
 	
@@ -257,17 +269,6 @@ public interface PagesURL {
 	
 	// CONNECTION REQUEST - end
 	/////////////////////////////////////////////////////////////////////////
-
-	/////////////////////////////////////////////////////////////////////////
-	// LEND REQUEST - start	
-	
-	// Lend requests I have to reply to.
-	String MY_PENDING_LEND_REQUESTS_LIST = "/auth/lendrequest/myPendingLendRequestsList.faces";
-	// Lend requests I have made.
-	String MY_PENDING_LEND_REQUESTS_OUT_LIST = "/auth/lendrequest/myPendingLendRequestsOutList.faces";
-	
-	// LEND REQUEST - end
-	/////////////////////////////////////////////////////////////////////////	
 	
 
 	/////////////////////////////////////////////////////////////////////////

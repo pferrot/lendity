@@ -110,6 +110,10 @@ public class LendTransaction implements Commentable<LendTransactionComment>, Ser
 	@JoinColumn(name = "EVAL_BY_BORROWER_ID", nullable = true)
 	private Evaluation evaluationByBorrower;
 	
+	// True if the item is given or sold.
+	@Column(name = "ITEM_TRANSFERED", nullable = false)
+	private Boolean itemTransfered;
+	
 	@Version
 	@Column(name = "OBJ_VERSION")
 	private int version;
@@ -264,6 +268,14 @@ public class LendTransaction implements Commentable<LendTransactionComment>, Ser
 
 	public void setEvaluationByBorrower(Evaluation evaluationByBorrower) {
 		this.evaluationByBorrower = evaluationByBorrower;
+	}
+
+	public Boolean getItemTransfered() {
+		return itemTransfered;
+	}
+
+	public void setItemTransfered(Boolean itemTransfered) {
+		this.itemTransfered = itemTransfered;
 	}
 
 	@Override

@@ -118,12 +118,22 @@
    styleClass="gt-table gt-user-table">
 
 
-    <h:column id="column1">
+	<h:column id="column1">
+    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink value="#{searchNeedsListController.needOverviewHref}" rendered="#{searchNeedsListController.thumbnail1Src != null}">
+					<div class="thumbnailDiv">
+					    <img src="#{searchNeedsListController.thumbnail1Src}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
 		<h4>
 			<h:outputLink value="#{searchNeedsListController.needOverviewHref}">
 				<h:outputText value="#{need.title}" />
 			</h:outputLink>
 		</h4>
+		</td></tr></table>
     </h:column>
 
 	<h:column id="column2">
@@ -148,6 +158,14 @@
 				</th>
 				<td>					
 					<h:outputText value="#{searchNeedsListController.creationDateLabel}" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<h:outputText id="distanceTitle" value="#{messages.geolocation_distance}:" />
+				</th>
+				<td>					
+					<h:outputText id="distanceLabel" value="#{searchNeedsListController.distanceLabel}" />
 				</td>
 			</tr>
 		</table>

@@ -73,4 +73,14 @@ public abstract class AbstractNeedsListController extends AbstractObjektsListCon
 			getVisibilityId() != null ||
 			getOrderBy() != null;
 	}
+
+	public String getImage1Src() {
+		final Need need = (Need)getTable().getRowData();
+		return getNeedService().getNeedPicture1Src(need, true);
+	}
+	
+	public String getThumbnail1Src() {
+		final Need need = (Need)getTable().getRowData();
+		return getNeedService().getNeedThumbnail1Src(need, true);
+	}
 }

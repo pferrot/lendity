@@ -23,7 +23,9 @@ import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.dao.bean.PersonDaoQueryBean;
 import com.pferrot.lendity.dao.hibernate.criterion.CustomSqlCriterion;
+import com.pferrot.lendity.dao.hibernate.criterion.OrderBySql;
 import com.pferrot.lendity.geolocation.GeoLocationConsts;
+import com.pferrot.lendity.geolocation.GeoLocationUtils;
 import com.pferrot.lendity.model.Person;
 
 public class PersonDaoHibernateImpl extends HibernateDaoSupport implements PersonDao {
@@ -86,6 +88,23 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 				// This is MySql specific !!!
 				criteria.add(Restrictions.sqlRestriction("1=1 order by rand()"));
 			}
+			else if ("distance".equals(pQueryBean.getOrderBy())) {
+				final String ascOrDesc = Boolean.TRUE.equals(pQueryBean.getOrderByAscending())?"asc":"desc";
+				if (pQueryBean.getOriginLatitude() != null && pQueryBean.getOriginLongitude() != null) {
+					// First order to make sure that persons where the distance cannot be calculated appear last.
+					// Only check the latitude to simplify the query. If one of latitude/longitude is null, both should be null.
+					criteria.addOrder(OrderBySql.sql("{0} is not null desc", new String[] {"addressHomeLatitude"}));
+					// Actual sorting by distance.
+					criteria.addOrder(
+							OrderBySql.sql("(" + GeoLocationUtils.getDistanceFormula(pQueryBean.getOriginLongitude(), pQueryBean.getOriginLatitude()) + ") " + ascOrDesc,
+												         new String[] {"addressHomeLatitude", "addressHomeLatitude", "addressHomeLongitude"})
+					    );
+				}	
+				else {
+					throw new RuntimeException("Cannot sort by distance when origin latitude/longitude are not defined");
+				}
+				
+			}
 			else {
 				// Ascending.
 				if (pQueryBean.getOrderByAscending() == null || pQueryBean.getOrderByAscending().booleanValue()) {
@@ -139,15 +158,8 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 		
 		return findPersonsList(queryBean);
 	}
-
-	private String getDistanceFormula(final Double pOriginLongitude, final Double pOriginLatitude) {
-		
-		return "acos(sin(" + pOriginLatitude + " * pi()/180) * sin({0} * pi()/180) + " +
-				"cos(" + pOriginLatitude + " * pi()/180) * cos({1} * pi()/180) * cos(({2} - " + pOriginLongitude + ") * pi()/180)) * 6371";
-		
-	}
 	
-	private long countPersons(final PersonDaoQueryBean pQueryBean) {
+	public long countPersons(final PersonDaoQueryBean pQueryBean) {
 		final DetachedCriteria criteria = getPersonsDetachedCriteria(pQueryBean);
 		return rowCount(criteria);
 	}
@@ -194,8 +206,7 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 		DetachedCriteria criteria = DetachedCriteria.forClass(Person.class);
 		
 		if (pQueryBean.getSearchString() != null && pQueryBean.getSearchString().trim().length() > 0) {
-			final boolean emailExactMatch = Boolean.TRUE.equals(pQueryBean.getEmailExactMatch());
-			criteria.add(getEmailLastNameFirstNameDisplayNameLogicalExpression(pQueryBean.getSearchString(), emailExactMatch?MatchMode.EXACT:MatchMode.ANYWHERE));
+			criteria.add(getEmailLastNameFirstNameDisplayNameLogicalExpression(pQueryBean));
 		}
 		
 		if (pQueryBean.getPersonId() != null) {			
@@ -239,7 +250,7 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 		if (pQueryBean.getMaxDistanceKm() != null) {
 			
 			// Only allows filtering by distance on people who share their contact details.
-			criteria.add(Restrictions.eq("showContactDetailsToAll", Boolean.TRUE));
+			//criteria.add(Restrictions.eq("showContactDetailsToAll", Boolean.TRUE));
 			
 			// Calculate a rectangle and only consider persons in that rectangle for obvious performance reason.
 			double maxDistanceKm = pQueryBean.getMaxDistanceKm().doubleValue();
@@ -266,8 +277,7 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 			// Fine grain the result - calculate the exact distance.
 			// It would be too expensive to do that for all records, that is why we pre-filter with
 			// a square above.
-			final String sql = "(acos(sin(? * pi()/180) * sin({0} * pi()/180) + " +
-				"cos(? * pi()/180) * cos({1} * pi()/180) * cos(({2} - ?) * pi()/180)) * 6371) <= ?";
+			final String sql = "(" + GeoLocationUtils.getDistanceFormula("?", "?", "?") + ") <= ?";
 			
 			final String[] propertyNames = {"addressHomeLatitude", "addressHomeLatitude", "addressHomeLongitude"};
 			final Object[] values = {pQueryBean.getOriginLatitude(), pQueryBean.getOriginLatitude(), pQueryBean.getOriginLongitude(), pQueryBean.getMaxDistanceKm()};
@@ -279,19 +289,30 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 		return criteria;
 	}
 
-	private LogicalExpression getEmailLastNameFirstNameDisplayNameLogicalExpression(final String pSearchString, final MatchMode pEmailMatchMode) {
-		CoreUtils.assertNotNullOrEmptyString(pSearchString);
-	
-		// First name and last name not needed since contained in display name.
-		final Criterion firstNameCriterion = Restrictions.ilike("firstName", pSearchString, MatchMode.ANYWHERE);
-		final Criterion lastNameCriterion = Restrictions.ilike("lastName", pSearchString, MatchMode.ANYWHERE);
+	private LogicalExpression getEmailLastNameFirstNameDisplayNameLogicalExpression(final PersonDaoQueryBean pQueryBean) {
+		CoreUtils.assertNotNull(pQueryBean);
+		CoreUtils.assertNotNullOrEmptyString(pQueryBean.getSearchString());
 		
-		final Criterion emailCriterion = Restrictions.ilike("email", pSearchString, pEmailMatchMode);
+		final boolean emailExactMatch = Boolean.TRUE.equals(pQueryBean.getEmailExactMatch());
+		final MatchMode emailMatchMode = emailExactMatch?MatchMode.EXACT:MatchMode.ANYWHERE;
+	
+		
+		final Criterion emailCriterion = Restrictions.ilike("email", pQueryBean.getSearchString(), emailMatchMode);
 		// Display name not needed since 
-		final Criterion displayNameCriterion = Restrictions.ilike("displayName", pSearchString, MatchMode.ANYWHERE);
-		return Restrictions.or(displayNameCriterion, 
-				   Restrictions.or(emailCriterion, 
-						Restrictions.or(firstNameCriterion, lastNameCriterion)));
+		final Criterion displayNameCriterion = Restrictions.ilike("displayName", pQueryBean.getSearchString(), MatchMode.ANYWHERE);
+		// Do not search on first name or last name when email exact match.
+		if (emailExactMatch) {
+			return Restrictions.or(displayNameCriterion, emailCriterion);
+		}
+		else {
+			// First name and last name not needed since contained in display name.
+			final Criterion firstNameCriterion = Restrictions.ilike("firstName", pQueryBean.getSearchString(), MatchMode.ANYWHERE);
+			final Criterion lastNameCriterion = Restrictions.ilike("lastName", pQueryBean.getSearchString(), MatchMode.ANYWHERE);
+			return Restrictions.or(displayNameCriterion, 
+					   Restrictions.or(emailCriterion, 
+							Restrictions.or(firstNameCriterion, lastNameCriterion)));
+		}
+		
 	}
 
 	/**

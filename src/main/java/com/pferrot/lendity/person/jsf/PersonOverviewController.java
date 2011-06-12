@@ -178,34 +178,4 @@ public class PersonOverviewController {
 	public boolean isShowLinksToObjekts() {
 		return true;
 	}
-	
-	public String getEvaluationLabel() {
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-		if (getPerson().getNbEvaluations().intValue() == 0) {
-			return I18nUtils.getMessageResourceString("evaluation_notAvailable", locale);			
-		}
-		else {
-			final Double score = getPerson().getEvaluationAverage();
-			if (score.doubleValue() >= 2.5) {
-				return I18nUtils.getMessageResourceString("evaluation_good", locale);
-			}
-			else if (score >= 1.7) {
-				return I18nUtils.getMessageResourceString("evaluation_average", locale);
-			}
-			else {
-				return I18nUtils.getMessageResourceString("evaluation_bad", locale);
-			}
-		}
-	}
-
-	public String getEvaluationDetails() {
-		if (getPerson().getNbEvaluations() > 0) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			final Object[] params = {getPerson().getEvaluationAverage(), getPerson().getNbEvaluations()};
-			return I18nUtils.getMessageResourceString("evaluation_details", params, locale);
-		}
-		else {
-			return "";
-		}
-	}
 }

@@ -7,6 +7,11 @@ public class PersonDaoQueryBean {
 	private Long personId = null;
 	private int connectionLink;
 	private String searchString = null;
+	// Set to true when a person should be a match only if his
+	// full email is the searchString, i.e. when searching for "gmail"
+	// Will not return all persons with a gmail address.
+	// Also, if this is TRUE, then the search will not happen on the first
+	// name and last name fields, but only on display name and full email.
 	private Boolean emailExactMatch = null;
 	private Boolean enabled = null;
 	private Boolean receiveNeedsNotifications = null;

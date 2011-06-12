@@ -5,9 +5,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.pferrot.core.CoreUtils;
+import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.login.jsf.HomePublicController;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.utils.CookieUtils;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.security.SecurityUtils;
 
 public class PersonUtils {
 
@@ -45,9 +49,49 @@ public class PersonUtils {
 	}
 
 	public static boolean isCurrentPersonIsAddressDefined() {
-		return Boolean.TRUE.equals(FacesContext.getCurrentInstance().getExternalContext().
-					getSessionMap().get(PersonConsts.CURRENT_PERSON_IS_ADDRESS_DEFINED_SESSION_ATTRIBUTE_NAME));
+		if (SecurityUtils.isLoggedIn()) {
+			return Boolean.TRUE.equals(FacesContext.getCurrentInstance().getExternalContext().
+						getSessionMap().get(PersonConsts.CURRENT_PERSON_IS_ADDRESS_DEFINED_SESSION_ATTRIBUTE_NAME));
+		}
+		else {
+			final String s = CookieUtils.getCookieValue(HomePublicController.COOKIE_LOCATION_LABEL);
+			return !StringUtils.isNullOrEmpty(s);
+		}
 	}
+	
+	public static Double getCurrentPersonAddressHomeLatitude() {
+		if (SecurityUtils.isLoggedIn()) {
+			return (Double)FacesContext.getCurrentInstance().
+				getExternalContext().getSessionMap().get(PersonConsts.CURRENT_PERSON_ADDRESS_HOME_LATITUDE_SESSION_ATTRIBUTE_NAME);
+		}
+		else {
+			final String s = CookieUtils.getCookieValue(HomePublicController.COOKIE_LOCATION_LATITUDE);
+			if (!StringUtils.isNullOrEmpty(s)) {
+				return Double.valueOf(s);
+			}
+			else {
+				return null;
+			}		
+		}
+	}
+	
+	public static Double getCurrentPersonAddressHomeLongitude() {
+		if (SecurityUtils.isLoggedIn()) {
+			return (Double)FacesContext.getCurrentInstance().
+				getExternalContext().getSessionMap().get(PersonConsts.CURRENT_PERSON_ADDRESS_HOME_LONGITUDE_SESSION_ATTRIBUTE_NAME);
+		}
+		else {
+			final String s = CookieUtils.getCookieValue(HomePublicController.COOKIE_LOCATION_LONGITUDE);
+			if (!StringUtils.isNullOrEmpty(s)) {
+				return Double.valueOf(s);
+			}
+			else {
+				return null;
+			}
+		}
+	}
+	
+	
 	
 	/**
 	 * Returns the HTML link to a person overview page.
@@ -125,6 +169,8 @@ public class PersonUtils {
 			pRequest.getSession().setAttribute(PersonConsts.CURRENT_PERSON_LAST_NAME_SESSION_ATTRIBUTE_NAME, pPerson.getLastName());
 			pRequest.getSession().setAttribute(PersonConsts.CURRENT_PERSON_DISPLAY_NAME_SESSION_ATTRIBUTE_NAME, pPerson.getDisplayName());
 			pRequest.getSession().setAttribute(PersonConsts.CURRENT_PERSON_IS_ADDRESS_DEFINED_SESSION_ATTRIBUTE_NAME, Boolean.valueOf(pPerson.isAddressHomeDefined()));
+			pRequest.getSession().setAttribute(PersonConsts.CURRENT_PERSON_ADDRESS_HOME_LATITUDE_SESSION_ATTRIBUTE_NAME, pPerson.getAddressHomeLatitude());
+			pRequest.getSession().setAttribute(PersonConsts.CURRENT_PERSON_ADDRESS_HOME_LONGITUDE_SESSION_ATTRIBUTE_NAME, pPerson.getAddressHomeLongitude());
 		}		
 	}
 }

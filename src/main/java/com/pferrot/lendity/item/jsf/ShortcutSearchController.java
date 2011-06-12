@@ -23,7 +23,32 @@ public class ShortcutSearchController implements Serializable {
 	}
 
 	public String submit() {
+		return submitHomeSearchItems();
+	}
+	
+	public String submitHomeSearchItems() {
 		JsfUtils.redirect(PagesURL.ITEMS_SEARCH, 
+						  SearchItemsListController.SEARCH_TEXT_PARAM_NAME,
+				          searchString);
+		return null;
+	}
+	
+	public String submitHomeSearchNeeds() {
+		JsfUtils.redirect(PagesURL.NEEDS_SEARCH, 
+						  SearchItemsListController.SEARCH_TEXT_PARAM_NAME,
+				          searchString);
+		return null;
+	}
+	
+	public String submitHomeSearchPersons() {
+		JsfUtils.redirect(PagesURL.PERSONS_LIST, 
+						  SearchItemsListController.SEARCH_TEXT_PARAM_NAME,
+				          searchString);
+		return null;
+	}
+	
+	public String submitHomeSearchGroups() {
+		JsfUtils.redirect(PagesURL.GROUPS_LIST, 
 						  SearchItemsListController.SEARCH_TEXT_PARAM_NAME,
 				          searchString);
 		return null;

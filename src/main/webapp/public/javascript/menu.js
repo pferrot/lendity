@@ -7,12 +7,14 @@ subMenusToMenuLinksMap.divSubMenuHome = 'menuHomeLink2';
 subMenusToMenuLinksMap.divSubMenuItems = 'menuMyItemsLink';
 subMenusToMenuLinksMap.divSubMenuBorrowedItems = 'menuMyBorrowedItemsLink';
 subMenusToMenuLinksMap.divSubMenuNeeds = 'menuMyNeedsLink';
+subMenusToMenuLinksMap.divSubMenuLendTransactions = 'menuMyLendTransactionsLink';
 subMenusToMenuLinksMap.divSubMenuConnections = 'menuMyConnectionsLink';
+subMenusToMenuLinksMap.divSubMenuGroups = 'menuMyGroupsLink';
 subMenusToMenuLinksMap.divSubMenuProfile = 'menuProfileLink';
 
 
-var menuLinksArray = ['menuHomeLink', 'menuHomeLink2', 'menuMyItemsLink', 'menuMyBorrowedItemsLink', 'menuMyNeedsLink', 'menuMyConnectionsLink', 'menuProfileLink'];
-var subMenusArray = ['divSubMenuLogin', 'divSubMenuHome', 'divSubMenuItems', 'divSubMenuBorrowedItems', 'divSubMenuNeeds', 'divSubMenuConnections', 'divSubMenuProfile'];
+var menuLinksArray = ['menuHomeLink', 'menuHomeLink2', 'menuMyItemsLink', 'menuMyBorrowedItemsLink', 'menuMyNeedsLink', 'menuMyLendTransactionsLink', 'menuMyConnectionsLink', 'menuMyGroupsLink', 'menuProfileLink'];
+var subMenusArray = ['divSubMenuLogin', 'divSubMenuHome', 'divSubMenuItems', 'divSubMenuBorrowedItems', 'divSubMenuNeeds', 'divSubMenuLendTransactions', 'divSubMenuConnections', 'divSubMenuGroups', 'divSubMenuProfile'];
 
 function initMenu(pServletPath) {
 	mCurrentServletPath = pServletPath;
@@ -42,10 +44,8 @@ function initMenu(pServletPath) {
 		menuLinkConfig('menuHomeLink2');
 		subMenuConfig('divSubMenuHome');
 	}
-	else if (pServletPath.indexOf('auth/item/external') > 0 ||
-			 pServletPath.indexOf('auth/lendrequest/myPendingLendRequestsOutList') > 0 ||
-			 pServletPath.indexOf('auth/item/myConnectionsItemsList') > 0 ||
-			 pServletPath.indexOf('auth/item/myBorrowedItemsList') > 0) {
+	else if (pServletPath.indexOf('public/item/searchItems') > 0 ||
+			 pServletPath.indexOf('auth/lendtransaction/myInProgressLendTransactionsOutList') > 0) {
 		mCurrentMenuLinkId = 'menuMyBorrowedItemsLink';
 		mCurrentSubMenuId = 'divSubMenuBorrowedItems';
 		menuHighlightBorrowedItems();
@@ -55,7 +55,7 @@ function initMenu(pServletPath) {
 		subMenuConfig('divSubMenuBorrowedItems');
 	}
 	else if (pServletPath.indexOf('auth/item') > 0 ||
-			pServletPath.indexOf('auth/lendrequest/myPendingLendRequestsList') > 0) {
+			 pServletPath.indexOf('auth/lendtransaction/myInProgressLendTransactionsList') > 0) {
 		mCurrentMenuLinkId = 'menuMyItemsLink';
 		mCurrentSubMenuId = 'divSubMenuItems';
 		menuHighlightItems();
@@ -64,7 +64,8 @@ function initMenu(pServletPath) {
 		menuLinkConfig('menuMyItemsLink');
 		subMenuConfig('divSubMenuItems');
 	}
-	else if (pServletPath.indexOf('auth/need') > 0) {
+	else if (pServletPath.indexOf('auth/need') > 0 ||
+			 pServletPath.indexOf('public/need') > 0) {
 		mCurrentMenuLinkId = 'menuMyNeedsLink';
 		mCurrentSubMenuId = 'divSubMenuNeeds';
 		menuHighlightNeeds();
@@ -72,6 +73,27 @@ function initMenu(pServletPath) {
 		
 		menuLinkConfig('menuMyNeedsLink');
 		subMenuConfig('divSubMenuNeeds');
+	}
+	else if (pServletPath.indexOf('auth/lendtransaction') > 0 ||
+			pServletPath.indexOf('auth/evaluation') > 0) {
+		mCurrentMenuLinkId = 'menuMyLendTransactionsLink';
+		mCurrentSubMenuId = 'divSubMenuLendTransactions';
+		menuHighlightLendTransactions();
+		menuLendTransactionsOver();
+		
+		menuLinkConfig('menuMyLendTransactionsLink');
+		subMenuConfig('divSubMenuLendTransactions');
+	}
+	else if (pServletPath.indexOf('auth/group') > 0 ||
+			pServletPath.indexOf('public/group') > 0 ||
+			pServletPath.indexOf('auth/groupjoinrequest') > 0) {
+		mCurrentMenuLinkId = 'menuMyGroupsLink';
+		mCurrentSubMenuId = 'divSubMenuGroups';
+		menuHighlightGroups();
+		menuGroupsOver();
+		
+		menuLinkConfig('menuMyGroupsLink');
+		subMenuConfig('divSubMenuGroups');
 	}
 	else if (pServletPath.indexOf('auth/person/myProfile') > 0 ||
 			pServletPath.indexOf('auth/changepassword') > 0 ||
@@ -85,6 +107,7 @@ function initMenu(pServletPath) {
 		subMenuConfig('divSubMenuProfile');
 	}
 	else if (pServletPath.indexOf('auth/person') > 0 ||
+			 pServletPath.indexOf('public/person') > 0 ||
 			 pServletPath.indexOf('auth/connectionrequest') > 0 ||
 			 pServletPath.indexOf('auth/invitation') > 0) {
 		mCurrentMenuLinkId = 'menuMyConnectionsLink';
@@ -118,6 +141,14 @@ function menuHighlightNeeds() {
 	menuHighlight('menuMyNeedsLink');
 }
 
+function menuHighlightGroups() {
+	menuHighlight('menuMyGroupsLink');
+}
+
+function menuHighlightLendTransactions() {
+	menuHighlight('menuMyLendTransactionsLink');
+}
+
 function menuHighlightConnections() {
 	menuHighlight('menuMyConnectionsLink');
 }
@@ -148,6 +179,14 @@ function menuBorrowedItemsOver() {
 
 function menuNeedsOver() {
 	menuOver('divSubMenuNeeds');
+}
+
+function menuGroupsOver() {
+	menuOver('divSubMenuGroups');
+}
+
+function menuLendTransactionsOver() {
+	menuOver('divSubMenuLendTransactions');
 }
 
 function menuConnectionsOver() {

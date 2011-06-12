@@ -12,6 +12,8 @@ import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.dao.ItemDao;
 import com.pferrot.lendity.dao.bean.ItemDaoQueryBean;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.dao.hibernate.criterion.OrderBySql;
+import com.pferrot.lendity.geolocation.GeoLocationUtils;
 import com.pferrot.lendity.model.Item;
 
 public class ItemDaoHibernateImpl extends ObjektDaoHibernateImpl implements ItemDao {
@@ -40,6 +42,23 @@ public class ItemDaoHibernateImpl extends ObjektDaoHibernateImpl implements Item
 				// This is MySql specific !!!
 				criteria.add(Restrictions.sqlRestriction("1=1 order by rand()"));
 			}
+			else if ("distance".equals(pItemDaoQueryBean.getOrderBy())) {
+				final String ascOrDesc = Boolean.TRUE.equals(pItemDaoQueryBean.getOrderByAscending())?"asc":"desc";
+				if (pItemDaoQueryBean.getOriginLatitude() != null && pItemDaoQueryBean.getOriginLongitude() != null) {
+					// First order to make sure that persons where the distance cannot be calculated appear last.
+					// Only check the latitude to simplify the query. If one of latitude/longitude is null, both should be null.
+					criteria.addOrder(OrderBySql.sql("{0} is not null desc", new String[] {"o.addressHomeLatitude"}));
+					// Actual sorting by distance.
+					criteria.addOrder(
+							OrderBySql.sql("(" + GeoLocationUtils.getDistanceFormula(pItemDaoQueryBean.getOriginLongitude(), pItemDaoQueryBean.getOriginLatitude()) + ") " + ascOrDesc,
+												         new String[] {"o.addressHomeLatitude", "o.addressHomeLatitude", "o.addressHomeLongitude"})
+					    );
+				}	
+				else {
+					throw new RuntimeException("Cannot sort by distance when origin latitude/longitude are not defined");
+				}
+				
+			}
 			else {
 				// Ascending.
 				if (pItemDaoQueryBean.getOrderByAscending() == null || pItemDaoQueryBean.getOrderByAscending().booleanValue()) {
@@ -52,7 +71,7 @@ public class ItemDaoHibernateImpl extends ObjektDaoHibernateImpl implements Item
 			}
 		}
 		return getHibernateTemplate().findByCriteria(criteria, pItemDaoQueryBean.getFirstResult(), pItemDaoQueryBean.getMaxResults());	
-	}	
+	}
 	
 	public long countItems(final ItemDaoQueryBean pItemDaoQueryBean) {
 		final DetachedCriteria criteria = getItemsDetachedCriteria(pItemDaoQueryBean);

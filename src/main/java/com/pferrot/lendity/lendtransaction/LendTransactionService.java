@@ -164,11 +164,18 @@ public class LendTransactionService {
 		return lendTransactionDao.findLendTransactions(queryBean);
 	}
 	
-	public ListWithRowCount findLendTransactionsWaitingForInputForCurrentPerson(final int pFirstResult, final int pMaxResults) {
+	public ListWithRowCount findCurrentPersonLendTransactionsWaitingForInput(final int pFirstResult, final int pMaxResults) {
 		if (!SecurityUtils.isLoggedIn()) {
 			throw new SecurityException("Not logged in");
 		}
 		return findLendTransactionsWaitingForInput(PersonUtils.getCurrentPersonId(), pFirstResult, pMaxResults);
+	}
+	
+	public long countCurrentPersonLendTransactionsWaitingForInput() {
+		if (!SecurityUtils.isLoggedIn()) {
+			throw new SecurityException("Not logged in");
+		}
+		return countLendTransactionsWaitingForInput(PersonUtils.getCurrentPersonId());
 	}
 
 	public ListWithRowCount findLendTransactionsWaitingForInput(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
@@ -397,6 +404,7 @@ public class LendTransactionService {
 			lendTransaction.setBorrower(pBorrower);
 			lendTransaction.setBorrowerName(pBorrowerName);
 			lendTransaction.setItem(pItem);
+			lendTransaction.setItemTransfered(Boolean.FALSE);
 			if (pBorrower != null) {
 				lendTransaction.addCommentRecipient(pBorrower);
 			}

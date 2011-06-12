@@ -24,6 +24,7 @@ import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.utils.HtmlUtils;
 import com.pferrot.security.SecurityUtils;
 
 public class ConnectionRequestService {
@@ -60,23 +61,35 @@ public class ConnectionRequestService {
 		return connectionRequestDao.findConnectionRequest(pConnectionRequestId);
 	}
 
-	public ListWithRowCount findCurrentUserPendingConnectionRequests(final int pFirstResult, final int pMaxResults) {		
+	public ListWithRowCount findCurrentUserPendingConnectionRequests(final int pFirstResult, final int pMaxResults) {
+		if (!SecurityUtils.isLoggedIn()) {
+			throw new SecurityException("Not logged in");
+		}
 		return connectionRequestDao.findConnectionRequests(new Long[]{PersonUtils.getCurrentPersonId()}, null, null, null, null,
 				Boolean.FALSE, null, null, "requestDate", Boolean.FALSE, pFirstResult, pMaxResults);
 	}
 	
 	public long countCurrentUserPendingConnectionRequests() {
+		if (!SecurityUtils.isLoggedIn()) {
+			throw new SecurityException("Not logged in");
+		}
 		return connectionRequestDao.countConnectionRequests(new Long[]{PersonUtils.getCurrentPersonId()}, null, null, null, null,
 				Boolean.FALSE, null, null);
 	}
 	
-	public ListWithRowCount findCurrentUserPendingConnectionRequestsOut(final int pFirstResult, final int pMaxResults) {		
+	public ListWithRowCount findCurrentUserPendingConnectionRequestsOut(final int pFirstResult, final int pMaxResults) {
+		if (!SecurityUtils.isLoggedIn()) {
+			throw new SecurityException("Not logged in");
+		}
 		return connectionRequestDao.findConnectionRequests(null, new Long[]{PersonUtils.getCurrentPersonId()}, null, null, null,
 				Boolean.FALSE, null, null, "requestDate", Boolean.FALSE, pFirstResult, pMaxResults);
 		
 	}
 	
 	public ListWithRowCount findCurrentUserConnectionsUpdates(final int pFirstResult, final int pMaxResults) {
+		if (!SecurityUtils.isLoggedIn()) {
+			throw new SecurityException("Not logged in");
+		}
 		final Long[] connectionsIds = personService.getCurrentPersonConnectionIds(null);
 		// Make sure one do not show all connections updates for someone who has no friend.
 		if (connectionsIds == null || connectionsIds.length == 0) {
@@ -185,10 +198,11 @@ public class ConnectionRequestService {
 
 	 * @param pConnection
 	 * @param pRequester
+	 * @param pText
 	 * @return
 	 * @throws ConnectionRequestException 
 	 */
-	public Long createConnectionRequest(final Person pConnection, final Person pRequester) throws ConnectionRequestException {
+	public Long createConnectionRequest(final Person pConnection, final Person pRequester, final String pText) throws ConnectionRequestException {
 		try {
 			if (! isConnectionRequestAllowed(pConnection, pRequester)) {
 				throw new ConnectionRequestException("Connection request not allowed.");
@@ -198,6 +212,7 @@ public class ConnectionRequestService {
 			connectionRequest.setConnection(pConnection);
 			connectionRequest.setRequester(pRequester);
 			connectionRequest.setRequestDate(new Date());
+			connectionRequest.setText(pText);
 			
 			if (isUncompletedConnectionRequestAvailable(pConnection, pRequester)) {
 				throw new ConnectionRequestException("Connection request not allowed."); 
@@ -211,6 +226,8 @@ public class ConnectionRequestService {
 			objects.put("requesterDisplayName", pRequester.getDisplayName());
 			objects.put("requesterFirstName", pRequester.getFirstName());
 			objects.put("requesterLastName", pRequester.getLastName());
+			objects.put("textEscaped", HtmlUtils.escapeHtmlAndReplaceCr(pText));
+			objects.put("text", pText);
 			objects.put("signature", Configuration.getSiteName());
 			objects.put("siteName", Configuration.getSiteName());
 			objects.put("siteUrl", Configuration.getRootURL());
@@ -270,22 +287,24 @@ public class ConnectionRequestService {
 	 * Create a connection request using the current user as requester.
 	 *
 	 * @param pConnection
+	 * @param pText
 	 * @return
 	 * @throws ConnectionRequestException
 	 */
-	public Long createConnectionRequestFromCurrentUser(final Person pConnection) throws ConnectionRequestException {		
-		return createConnectionRequest(pConnection, getCurrentPerson());
+	public Long createConnectionRequestFromCurrentUser(final Person pConnection, final String pText) throws ConnectionRequestException {		
+		return createConnectionRequest(pConnection, getCurrentPerson(), pText);
 	}
 
 	/**
 	 * Create a connection request using the current user as requester.
 	 *
 	 * @param pConnectionId
+	 * @param pText
 	 * @return
 	 * @throws ConnectionRequestException
 	 */
-	public Long createConnectionRequestFromCurrentUser(final Long pConnectionId) throws ConnectionRequestException {		
-		return createConnectionRequestFromCurrentUser(personDao.findPerson(pConnectionId));
+	public Long createConnectionRequestFromCurrentUser(final Long pConnectionId, final String pText) throws ConnectionRequestException {		
+		return createConnectionRequestFromCurrentUser(personDao.findPerson(pConnectionId), pText);
 	}
 	
 	/**

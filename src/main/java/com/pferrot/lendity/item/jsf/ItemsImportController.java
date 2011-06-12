@@ -17,7 +17,6 @@ import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
-import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.utils.UiUtils;
 
 public class ItemsImportController  {
@@ -60,7 +59,7 @@ public class ItemsImportController  {
 	public List<SelectItem> getCategoriesSelectItems() {
 		if (categoriesSelectItems == null) {
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			categoriesSelectItems = UiUtils.getSelectItemsForListValue(itemService.getCategories(), locale);
+			categoriesSelectItems = UiUtils.getSelectItemsForListValueWithItemFirst(itemService.getCategories(), locale, ItemCategory.OTHER_LABEL_CODE);
 			categoriesSelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
 		}		
 		return categoriesSelectItems;	

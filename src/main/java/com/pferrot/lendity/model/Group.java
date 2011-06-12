@@ -16,12 +16,14 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import com.pferrot.core.CoreUtils;
 
@@ -41,6 +43,16 @@ public class Group implements CommentableWithOwner<GroupComment>, Ownable {
 	
 	@Column(name = "DESCRIPTION", nullable = false, length = 3999)
 	private String description;
+
+	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+	@JoinColumn(name = "IMAGE_1_ID", nullable = true)
+	@NotAudited
+	private Document image1;
+	
+	@OneToOne(targetEntity = Document.class, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+	@JoinColumn(name = "THUMBNAIL_1_ID", nullable = true)
+	@NotAudited
+	private Document thumbnail1;
 	
 	// True if owner / administrators must validate new members,
 	// false otherwise.
@@ -124,6 +136,22 @@ public class Group implements CommentableWithOwner<GroupComment>, Ownable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Document getImage1() {
+		return image1;
+	}
+
+	public void setImage1(Document image1) {
+		this.image1 = image1;
+	}
+
+	public Document getThumbnail1() {
+		return thumbnail1;
+	}
+
+	public void setThumbnail1(Document thumbnail1) {
+		this.thumbnail1 = thumbnail1;
 	}
 
 	public Boolean getValidateMembership() {

@@ -49,21 +49,20 @@ Overridden for the cursor property.
 Overridden for width.
 */
 .gt-login-box {
-	width: 200px!important;
+	width: 420px!important;
 	margin-left: auto;
 	margin-right: auto;
-	padding: 1.5em 3em;
-	border: 2px solid #073351;
-	background-color: #094e62;
+	padding: 0.7em 1.5em;
+	border: 0px solid #dddddd;
 	border-radius: 5px;
+	text-align: left;
 }
 
 /*
 Overridden for align right.
 */
 .gt-util-box-inner {
-	padding: .35em 2em;
-	text-align : right!important; 
+	padding: 0px!important; 
 }
 
 a:link, a:visited {
@@ -78,7 +77,6 @@ a:hover {
 
 .gt-content-box {
 	word-wrap:break-word!important;
-	background-color: #ffffff;
 	border: 1px solid #073351;
 	border-radius: 5px;
 	padding: 1px;

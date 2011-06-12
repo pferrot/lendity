@@ -65,7 +65,7 @@
 					<h:outputText id="evalScoreLabel" value="#{messages.evaluation_score}:" />
 				</th>
 				<td width="50%">
-					<h:outputText id="evalScore" value="#{evaluation.score}" />
+					<h:outputText id="evalScore" value="#{myEvaluationsListController.evaluationLabel}" />
 				</td>
 			</tr>		    
 		</table>

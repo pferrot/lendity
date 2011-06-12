@@ -44,15 +44,7 @@
 
 <tr>
 <td>
-<h:outputLink value="#{authenticationController.myPendingLendRequestsURL}">
-	<h:outputText value="#{messages.menu_myPendingLendRequests}" />
- </h:outputLink>
-</td>
-</tr>
-
-<tr>
-<td>
-<h:outputLink value="#{authenticationController.myConnectionsItemsURL}">
+<h:outputLink value="#{authenticationController.itemsSearchURL}">
 	<h:outputText value="#{messages.menu_myConnectionsItems}" />
  </h:outputLink>
 </td>
@@ -68,15 +60,7 @@
 
 <tr>
 <td>
-<h:outputLink value="#{authenticationController.myPendingLendRequestsOutURL}">
-	<h:outputText value="#{messages.menu_myPendingLendRequestsOut}" />
- </h:outputLink>
-</td>
-</tr>
-
-<tr>
-<td>
-<h:outputLink value="#{authenticationController.myConnectionsNeedsURL}">
+<h:outputLink value="#{authenticationController.needsSearchURL}">
 	<h:outputText value="#{messages.menu_myConnectionsNeeds}" />
  </h:outputLink>
 </td>

@@ -3,21 +3,28 @@ package com.pferrot.lendity.group;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.core.StringUtils;
+import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.dao.DocumentDao;
 import com.pferrot.lendity.dao.GroupDao;
 import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.GroupDaoQueryBean;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.document.DocumentService;
 import com.pferrot.lendity.group.exception.GroupException;
+import com.pferrot.lendity.model.Document;
 import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.security.SecurityUtils;
 
 public class GroupService {
@@ -28,7 +35,25 @@ public class GroupService {
 	private PersonDao personDao;
 	private ListValueDao listValueDao;
 	private PersonService personService;
+	private DocumentService documentService;
+	private DocumentDao documentDao;
 	
+	public DocumentService getDocumentService() {
+		return documentService;
+	}
+
+	public void setDocumentService(DocumentService documentService) {
+		this.documentService = documentService;
+	}
+
+	public DocumentDao getDocumentDao() {
+		return documentDao;
+	}
+
+	public void setDocumentDao(DocumentDao documentDao) {
+		this.documentDao = documentDao;
+	}
+
 	public GroupDao getGroupDao() {
 		return groupDao;
 	}
@@ -446,6 +471,67 @@ public class GroupService {
 			throw new SecurityException("Current user is not banned by group");
 		}
 	}
+
+	public String getGroupPicture1Src(final Group pGroup, final boolean pAuthorizeDocumentAccess) {
+		final Document picture = pGroup.getImage1();
+		if (picture == null ) {
+			return JsfUtils.getFullUrl(GroupConsts.DUMMY_GROUP_PICTURE_URL);
+		}
+		else {
+			if (pAuthorizeDocumentAccess) {
+				documentService.authorizeDownloadOneMinute(JsfUtils.getSession(), picture.getId());
+			}
+			return JsfUtils.getFullUrl(
+					PagesURL.DOCUMENT_DOWNLOAD, 
+					PagesURL.DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ID, 
+					picture.getId().toString());
+		}			
+	}
+	
+	public String getGroupThumbnail1Src(final Group pGroup, final boolean pAuthorizeDocumentAccess) {
+		return getGroupThumbnailSrc(pGroup, pAuthorizeDocumentAccess, JsfUtils.getSession(), JsfUtils.getContextRoot());		
+	}
+	
+	public String getGroupThumbnailSrc(final Group pGroup, final boolean pAuthorizeDocumentAccess,
+			final HttpSession pSession, final String pUrlPrefix) {
+		final Document thumbnail = pGroup.getThumbnail1();
+		if (thumbnail == null ) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, GroupConsts.DUMMY_GROUP_THUMBNAIL_URL);
+		}
+		else {
+			if (pAuthorizeDocumentAccess) {
+				documentService.authorizeDownloadOneMinute(pSession, thumbnail.getId());
+			}
+			return JsfUtils.getFullUrlWithPrefix(
+					pUrlPrefix,
+					PagesURL.DOCUMENT_DOWNLOAD, 
+					PagesURL.DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ID, 
+					thumbnail.getId().toString());
+		}		
+	}
+
+	public void updateGroupPicture(final Group pGroup, final Document pPicture, final Document pThumbnail) {
+		assertCurrentUserAuthorizedToEdit(pGroup);
+		final Document oldPic = pGroup.getImage1();
+		final Document oldThumbnail = pGroup.getThumbnail1();		
+		if (pPicture != null) {
+			documentDao.createDocument(pPicture);
+		}
+		pGroup.setImage1(pPicture);
+		if (pThumbnail != null) {
+			documentDao.createDocument(pThumbnail);
+		}
+		pGroup.setThumbnail1(pThumbnail);
+		
+		if (oldPic != null) {
+			documentDao.deleteDocument(oldPic);
+		}
+		if (oldThumbnail != null) {
+			documentDao.deleteDocument(oldThumbnail);
+		}
+		
+		groupDao.updateGroup(pGroup);
+ 	}
 
 	/////////////////////////////////////////////////////////
 	// Access control

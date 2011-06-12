@@ -348,7 +348,9 @@
 	      <property name="itemService" ref="itemService"/>
 	      <property name="needService" ref="needService"/>
 	      <property name="personService" ref="personService"/>
-	      <property name="lendRequestService" ref="lendRequestService"/>
+	      <property name="groupService" ref="groupService"/>
+	      <property name="groupJoinRequestService" ref="groupJoinRequestService"/>
+	      <property name="lendTransactionService" ref="lendTransactionService"/>
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
 
@@ -673,6 +675,8 @@
 		<property name="personDao" ref="personDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
 		<property name="personService" ref="personService"/>
+		<property name="documentService" ref="documentService"/>
+		<property name="documentDao" ref="documentDao"/>
 	</bean>
 
 	<bean id="groupOverviewController" class="com.pferrot.lendity.group.jsf.GroupOverviewController"
@@ -696,6 +700,12 @@
 	      scope="conversation.access">
 	      <property name="groupService" ref="groupService"/>
 	      <property name="personService" ref="personService"/>
+	</bean>
+
+	<bean id="groupEditPictureController" class="com.pferrot.lendity.group.jsf.GroupEditPictureController"
+	      scope="conversation.access">
+	      <property name="groupService" ref="groupService"/>
+	      <property name="documentService" ref="documentService"/>
 	</bean>
 	
 	<bean id="groupsListController" class="com.pferrot.lendity.group.jsf.GroupsListController"

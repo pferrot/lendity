@@ -1,6 +1,9 @@
 Hello $connectionFirstName,
 
-$requesterDisplayName ($requesterFirstName $requesterLastName) souhaite t'ajouter en tant qu'ami
+$requesterDisplayName ($requesterFirstName $requesterLastName) souhaite t'ajouter en tant qu'ami.
+
+Message:
+$text
 
 Merci de suivre le lien ci-dessous afin de répondre à sa demande.
 

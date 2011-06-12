@@ -19,6 +19,16 @@
 				</td>
 			</tr>
 			<tr>
+				<td colspan="2">
+					<nobr><h:outputText value="#{messages.connectionRequest_text}:" /> *</nobr>
+				</td>				
+			</tr>
+			<tr>
+				<td colspan="2">
+					<h:inputTextarea id="requestConnectionText" value="#{requestConnectionTooltipController.text}" style="width: 200px;" rows="3"/>
+				</td>
+			</tr>
+			<tr>
 				<td colspan="2" style="text-align: center;">
 					<input type="button" class="fontSizeSmall stylishButton" onclick="submitRequestConnection()" value="#{messages.navigation_ok}"/>
 					<input type="button" class="fontSizeSmall stylishButton" onclick="cancelRequestConnection()" value="#{messages.navigation_cancel}"/>

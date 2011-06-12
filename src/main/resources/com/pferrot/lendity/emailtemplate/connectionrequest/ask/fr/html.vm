@@ -4,6 +4,11 @@ Hello $connectionFirstName,<br/><br/>
 
 $requesterDisplayName ($requesterFirstName $requesterLastName) souhaite t'ajouter en tant qu'ami.<br/><br/>
 
+Message:<br/>
+<b>$textEscaped</b>
+
+<br/><br/>
+
 Merci de suivre le lien ci-dessous afin de répondre à sa demande.<br/><br/>
 
 <a href="$invitationsUrl">Invitations reçues</a><br/><br/>

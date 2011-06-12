@@ -12,6 +12,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="Expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 	<meta http-equiv="Pragma" content="no-cache" />
+	<meta property="og:image" content="http://www.lendity.ch/public/images/title_lendity.gif" />
 	<link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/favicon.ico" />
 	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/reset-fonts.css" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/gt-styles.css" type="text/css" media="screen, projection" />
@@ -87,7 +88,7 @@
 				<div class="gt-logo">
 					<o:separateConversationContext>
 						<h:outputLink id="homeLink" value="#{authenticationController.homeURL}">
-							<img src="#{facesContext.externalContext.requestContextPath}/public/images/title_lendity.gif"/>
+							<img src="#{facesContext.externalContext.requestContextPath}/public/images/logo.png"/>
 						</h:outputLink>
 					</o:separateConversationContext>
 				</div>
@@ -122,27 +123,14 @@
 			</div><!-- /head top -->
 
 
-<ui:include src="menu.jspx" />
+	<ui:include src="menu.jspx" />
 	
 		</div>
 		<!-- / head -->
 	
 	<ui:insert name="content">Default Content</ui:insert>	
 
-
-		<!-- footer -->
-		<div class="gt-footer clearfix"><div class="gt-footer-inner clearfix">
-			<p>&#169; 2010 lendity |
-				<h:outputText id="footerText1" value=" " escape="false" />
-				<h:outputLink id="footerLink1" value="#{authenticationController.termsAndConditionsURL}" target="_blank">
-					<h:outputText id="footerText2" value="#{messages.termsAndConditions_termsAndConditionsTitle}"/>
-				</h:outputLink>
-				<h:outputText id="footerText3" value=" " escape="false" />|<h:outputText id="footerText4" value=" " escape="false" />
-				<h:outputLink id="footerLink2" value="#{authenticationController.contactURL}">
-					<h:outputText id="footerText5" value="#{messages.contact_contactTitle}"/>
-				</h:outputLink>
-			</p>
-		</div></div>
-		<!-- /footer -->
+	<ui:include src="footer.jspx" />
+		
 </body>
 </html>

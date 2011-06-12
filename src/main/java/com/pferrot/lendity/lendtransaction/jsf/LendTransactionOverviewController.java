@@ -1,5 +1,9 @@
 package com.pferrot.lendity.lendtransaction.jsf;
 
+import java.util.Locale;
+
+import javax.faces.context.FacesContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
@@ -9,6 +13,7 @@ import org.springframework.web.servlet.support.JstlUtils;
 
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.evaluation.EvaluationService;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.lendrequest.exception.LendRequestException;
 import com.pferrot.lendity.lendtransaction.exception.LendTransactionException;
 import com.pferrot.lendity.model.LendTransaction;
@@ -76,55 +81,86 @@ public class LendTransactionOverviewController extends AbstractLendTransactionOv
 		final boolean isCurrentUserLender = getLendTransaction().getLender().getId().equals(PersonUtils.getCurrentPersonId());
 		final boolean isCurrentUserBorrower = getLendTransaction().getBorrower() != null &&
 											  getLendTransaction().getBorrower().getId().equals(PersonUtils.getCurrentPersonId());
-		
+		final boolean isItemToGiveOrSell = getLendTransaction().getItem().isToGiveOrSell();
+		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 		if (LendTransactionStatus.INITIALIZED_LABEL_CODE.equals(status.getLabelCode())) {
 			// Lender must accept or refuse lend request.
 			if (isCurrentUserLender) {
-				return LendTransactionStatus.INITIALIZED_LABEL_CODE;
+				if (!isItemToGiveOrSell) {
+					return I18nUtils.getMessageResourceString("lendTransaction_initializedHelpLender", locale);
+				}
+				else {
+					return I18nUtils.getMessageResourceString("lendTransaction_initializedHelpLender2", locale);
+				}
 			}
 			// Borrower has nothing to do.
 			else if (isCurrentUserBorrower) {
-				return LendTransactionStatus.INITIALIZED_LABEL_CODE;
+				if (!isItemToGiveOrSell) {
+					return I18nUtils.getMessageResourceString("lendTransaction_initializedHelpBorrower", locale);
+				}
+				else {
+					return I18nUtils.getMessageResourceString("lendTransaction_initializedHelpBorrower2", locale);
+				}
 			}			
 		}
 		else if (LendTransactionStatus.OPENED_LABEL_CODE.equals(status.getLabelCode())) {
 			// Lender must lend the object.
 			if (isCurrentUserLender) {
-				return LendTransactionStatus.OPENED_LABEL_CODE;
+				if (!isItemToGiveOrSell) {
+					return I18nUtils.getMessageResourceString("lendTransaction_openedHelpLender", locale);
+				}
+				else {
+					return I18nUtils.getMessageResourceString("lendTransaction_openedHelpLender2", locale);
+				}
 			}
 			// Borrower has nothing to do.
 			else if (isCurrentUserBorrower) {
-				return LendTransactionStatus.OPENED_LABEL_CODE;
+				if (!isItemToGiveOrSell) {
+					return I18nUtils.getMessageResourceString("lendTransaction_openedHelpBorrower", locale);
+				}
+				else {
+					return I18nUtils.getMessageResourceString("lendTransaction_openedHelpBorrower2", locale);
+				}
 			}			
 		}
 		else if (LendTransactionStatus.IN_PROGRESS_LABEL_CODE.equals(status.getLabelCode())) {
 			// Lender has nothing to do.
 			if (isCurrentUserLender) {
-				return LendTransactionStatus.IN_PROGRESS_LABEL_CODE;
+				return I18nUtils.getMessageResourceString("lendTransaction_inProgressHelpLender", locale);
 			}
 			// Borrower must give the object back.
 			else if (isCurrentUserBorrower) {
-				return LendTransactionStatus.IN_PROGRESS_LABEL_CODE;
+				return I18nUtils.getMessageResourceString("lendTransaction_inProgressHelpBorrower", locale);
 			}			
 		}
 		else if (LendTransactionStatus.COMPLETED_LABEL_CODE.equals(status.getLabelCode())) {
 			// Lender has nothing to do.
 			if (isCurrentUserLender) {
-				return LendTransactionStatus.COMPLETED_LABEL_CODE;
+				if (Boolean.FALSE.equals(getLendTransaction().getItemTransfered())) {
+					return I18nUtils.getMessageResourceString("lendTransaction_completedHelpLender", locale);
+				}
+				else {
+					return I18nUtils.getMessageResourceString("lendTransaction_completedHelpLender2", locale);
+				}
 			}
 			// Borrower has nothing to do.
 			else if (isCurrentUserBorrower) {
-				return LendTransactionStatus.COMPLETED_LABEL_CODE;
+				if (Boolean.FALSE.equals(getLendTransaction().getItemTransfered())) {
+					return I18nUtils.getMessageResourceString("lendTransaction_completedHelpBorrower", locale);
+				}
+				else {
+					return I18nUtils.getMessageResourceString("lendTransaction_completedHelpBorrower2", locale);
+				}
 			}			
 		}
 		else if (LendTransactionStatus.CANCELED_LABEL_CODE.equals(status.getLabelCode())) {
 			// Lender has nothing to do.
 			if (isCurrentUserLender) {
-				return LendTransactionStatus.CANCELED_LABEL_CODE;
+				return I18nUtils.getMessageResourceString("lendTransaction_canceledHelpLender", locale);
 			}
 			// Borrower has nothing to do.
 			else if (isCurrentUserBorrower) {
-				return LendTransactionStatus.CANCELED_LABEL_CODE;
+				return I18nUtils.getMessageResourceString("lendTransaction_canceledHelpBorrower", locale);
 			}			
 		}
 		else {

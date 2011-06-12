@@ -95,8 +95,6 @@
 	<table class="filtersTable">
 	<tr>
 	
-	
-	<c:if test="#{searchItemsListController.userLoggedIn}">	
 	<td>
 	<ui:include src="../../auth/item/filter/distanceFilter.jspx">
 		<ui:param name="theBean" value="#{searchItemsListController}"/>
@@ -105,6 +103,7 @@
 	
 	<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
 	
+	<c:if test="#{searchItemsListController.userLoggedIn}">	
 	<td>
 	<ui:include src="../../auth/item/filter/ownerTypeFilter.jspx">
 		<ui:param name="theBean" value="#{searchItemsListController}"/>
@@ -130,18 +129,7 @@
 <!-- content box -->
 <div class="gt-content-box">
 
-<c:if test="#{empty(searchItemsListController.list) and searchItemsListController.filteredList}">
-	<br/><br/>
-	<center>
-	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
-	<h4>
-		<h:outputLink value="#{authenticationController.needAddURL}"><h:outputText value="#{messages.need_needAddFromItemSearch}"></h:outputText></h:outputLink>
-	</h4>
-	</center>
-	<br/>
-</c:if>
-
-<c:if test="#{empty(searchItemsListController.list) and not(searchItemsListController.filteredList)}">
+<c:if test="#{empty(searchItemsListController.list)}">
 	<br/><br/>
 	<center>
 	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
@@ -203,6 +191,14 @@
 				</th>
 				<td>					
 					<h:outputText id="availableLabel" value="#{searchItemsListController.availableLabel}" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<h:outputText id="distanceTitle" value="#{messages.geolocation_distance}:" />
+				</th>
+				<td>					
+					<h:outputText id="distanceLabel" value="#{searchItemsListController.distanceLabel}" />
 				</td>
 			</tr>
 		</table>

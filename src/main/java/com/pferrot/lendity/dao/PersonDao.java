@@ -73,6 +73,7 @@ public interface PersonDao {
 			int pFirstResult, int pMaxResults);
 	
 	List<Person> findPersonsList(PersonDaoQueryBean pQueryBean);
+	long countPersons(PersonDaoQueryBean pQueryBean);
 		
 	void updatePerson(Person person);
 	

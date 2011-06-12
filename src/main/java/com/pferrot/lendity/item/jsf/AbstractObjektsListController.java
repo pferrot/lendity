@@ -13,11 +13,13 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.lendity.geolocation.GeoLocationUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemConsts;
 import com.pferrot.lendity.item.ObjektService;
 import com.pferrot.lendity.jsf.list.AbstractListController;
 import com.pferrot.lendity.model.CategoryEnabled;
+import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.model.Ownable;
 import com.pferrot.lendity.model.VisibilityEnabled;
@@ -32,7 +34,8 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 	private Long categoryId;
 	
 	private List<SelectItem> orderBySelectItems;
-	// 1 = by title ascending
+	// null = by title ascending
+	// 1 = by distance
 	// 2 = by creationDate descending
 	private Long orderBy;
 	
@@ -187,7 +190,7 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 	public List<SelectItem> getCategoriesSelectItems() {
 		if (categoriesSelectItems == null) {
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			categoriesSelectItems = UiUtils.getSelectItemsForListValue(getObjektService().getCategories(), locale);
+			categoriesSelectItems = UiUtils.getSelectItemsForListValueWithItemFirst(getObjektService().getCategories(), locale, ItemCategory.OTHER_LABEL_CODE);
 			// Add all categories first.
 			categoriesSelectItems.add(0, getAllCategoriesSelectItem(locale));
 		}		
@@ -222,6 +225,9 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 			
 			result.add(new SelectItem(null, I18nUtils.getMessageResourceString("item_orderByTitleAsc", locale)));
+			if (PersonUtils.isCurrentPersonIsAddressDefined()) {
+				result.add(new SelectItem(new Long(1), I18nUtils.getMessageResourceString("geolocation_orderByDistanceAsc", locale)));
+			}
 			result.add(new SelectItem(new Long(2), getOrderBySelectItemsByCreationDateLabel()));
 			
 			orderBySelectItems = result;
@@ -255,6 +261,14 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 		if (orderByLong == null) {
 			return "title";
 		}
+		// Not a field - this is calculated. See in DAO implementation for details.
+		else if (orderByLong.longValue() == 1) {
+			if (!PersonUtils.isCurrentPersonIsAddressDefined()) {
+				setOrderBy(null);
+				return "title";
+			}
+			return "distance";
+		}
 		else if (orderByLong.longValue() == 2) {
 			return "creationDate";
 		}
@@ -264,6 +278,13 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 	protected Boolean getOrderByAscending() {
 		final Long orderByLong = getOrderBy();
 		if (orderByLong == null) {
+			return Boolean.TRUE;
+		}
+		else if (orderByLong.longValue() == 1) {
+			if (!PersonUtils.isCurrentPersonIsAddressDefined()) {
+				setOrderBy(null);
+				return Boolean.TRUE;
+			}
 			return Boolean.TRUE;
 		}
 		else if (orderByLong.longValue() == 2) {
@@ -307,6 +328,14 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 	public String getCreationDateLabel() {
 		final Objekt objekt = (Objekt)getTable().getRowData();
 		return UiUtils.getDateAsString(objekt.getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+	}
+	
+	public String getDistanceLabel() {
+		final Objekt objekt = (Objekt)getTable().getRowData();
+		return GeoLocationUtils.getApproxDistanceKm(PersonUtils.getCurrentPersonAddressHomeLatitude(),
+													PersonUtils.getCurrentPersonAddressHomeLongitude(),
+													objekt.getOwner().getAddressHomeLatitude(),
+													objekt.getOwner().getAddressHomeLongitude());
 	}
 	
 	protected abstract ObjektService getObjektService();

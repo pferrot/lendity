@@ -67,7 +67,8 @@
 	<br/>
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_evaluation}:" /></label></div>
-		<h:outputText value="#{theBean.evaluationLabel}" /><h:outputText value=" " escape="false"/><h:outputText value="#{theBean.evaluationDetails}" />
+		<h:outputText value="#{messages.evaluation_score1} :" /><h:outputText value="#{theBean.person.nbEvalScore1}" /><br/>
+		<h:outputText value="#{messages.evaluation_score2} :" /><h:outputText value="#{theBean.person.nbEvalScore2}" />
 	</div>
 	<br/>
 	<c:if test="#{theBean.emailAvailable}">

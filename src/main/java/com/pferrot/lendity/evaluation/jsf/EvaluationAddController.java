@@ -107,7 +107,6 @@ public class EvaluationAddController {
 			scoreSelectItems.add(UiUtils.getPleaseSelectSelectItem(locale));
 			scoreSelectItems.add(new SelectItem(Long.valueOf(1), I18nUtils.getMessageResourceString("evaluation_score1", locale)));
 			scoreSelectItems.add(new SelectItem(Long.valueOf(2), I18nUtils.getMessageResourceString("evaluation_score2", locale)));
-			scoreSelectItems.add(new SelectItem(Long.valueOf(3), I18nUtils.getMessageResourceString("evaluation_score3", locale)));
 		}		
 		return scoreSelectItems;	
 	}

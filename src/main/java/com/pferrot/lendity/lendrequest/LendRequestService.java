@@ -86,15 +86,24 @@ public class LendRequestService {
 		return lendRequestDao.findLendRequest(pLendRequestId);
 	}
 
-	public ListWithRowCount findCurrentUserPendingLendRequests(final int pFirstResult, final int pMaxResults) {		
+	public ListWithRowCount findCurrentUserPendingLendRequests(final int pFirstResult, final int pMaxResults) {
+		if (!SecurityUtils.isLoggedIn()) {
+			throw new SecurityException("Not logged in");
+		}
 		return lendRequestDao.findLendRequests(null, PersonUtils.getCurrentPersonId(), null, Boolean.FALSE, pFirstResult, pMaxResults);
 	}
 	
-	public long countCurrentUserPendingLendRequests() {		
+	public long countCurrentUserPendingLendRequests() {
+		if (!SecurityUtils.isLoggedIn()) {
+			throw new SecurityException("Not logged in");
+		}
 		return lendRequestDao.countLendRequests(null, PersonUtils.getCurrentPersonId(), null, Boolean.FALSE);
 	}
 	
-	public ListWithRowCount findCurrentUserPendingLendRequestsOut(final int pFirstResult, final int pMaxResults) {		
+	public ListWithRowCount findCurrentUserPendingLendRequestsOut(final int pFirstResult, final int pMaxResults) {
+		if (!SecurityUtils.isLoggedIn()) {
+			throw new SecurityException("Not logged in");
+		}
 		return lendRequestDao.findLendRequests(PersonUtils.getCurrentPersonId(), null, null, Boolean.FALSE, pFirstResult, pMaxResults);
 	}
 
@@ -189,7 +198,6 @@ public class LendRequestService {
 			objects.put("signature", Configuration.getSiteName());
 			objects.put("siteName", Configuration.getSiteName());
 			objects.put("siteUrl", Configuration.getRootURL());
-			objects.put("pendingRequestsUrl", Configuration.getRootURL() + PagesURL.MY_PENDING_LEND_REQUESTS_LIST);
 			objects.put("lendTransactionUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
 					PagesURL.LEND_TRANSACTION_OVERVIEW,
 					PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,

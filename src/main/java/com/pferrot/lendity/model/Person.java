@@ -167,11 +167,11 @@ public class Person implements Serializable {
 	@Column(name = "SHOW_CONTACT_DETAILS_TO_ALL", nullable = false)
 	private Boolean showContactDetailsToAll;
 
-	@Column(name = "NB_EVALUATIONS", nullable = false)
-	private Integer nbEvaluations;
+	@Column(name = "NB_EVAL_SCORE_1", nullable = false)
+	private Integer nbEvalScore1;
 	
-	@Column(name = "EVAL_AVERAGE", nullable = false)
-	private Double evaluationAverage;
+	@Column(name = "NB_EVAL_SCORE_2", nullable = false)
+	private Integer nbEvalScore2;
 
     public Person() {
     	super();
@@ -458,20 +458,20 @@ public class Person implements Serializable {
 		this.emailSubscriberLastUpdate = emailSubscriberLastUpdate;
 	}
 
-	public Integer getNbEvaluations() {
-		return nbEvaluations;
-	}
-	
-	public void setNbEvaluations(Integer nbEvaluations) {
-		this.nbEvaluations = nbEvaluations;
-	}
-	
-	public Double getEvaluationAverage() {
-		return evaluationAverage;
+	public Integer getNbEvalScore1() {
+		return nbEvalScore1;
 	}
 
-	public void setEvaluationAverage(Double evaluationAverage) {
-		this.evaluationAverage = evaluationAverage;
+	public void setNbEvalScore1(Integer nbEvalScore1) {
+		this.nbEvalScore1 = nbEvalScore1;
+	}
+
+	public Integer getNbEvalScore2() {
+		return nbEvalScore2;
+	}
+
+	public void setNbEvalScore2(Integer nbEvalScore2) {
+		this.nbEvalScore2 = nbEvalScore2;
 	}
 
 	public Set<Group> getGroupsAdministrator() {

@@ -23,9 +23,6 @@
 			
 			<!-- body -->
 			<div class="gt-bd gt-cols clearfix">
-			
-			<!-- main content -->
-			<div class="gt-content">
 
 				
 <f:view>
@@ -36,16 +33,54 @@
 
 <table class="filtersTable">
 <tr>
-
 <td class="personSearchCell">
-<ui:include src="filter/searchFilter.jspx">
+<ui:include src="../../auth/person/filter/searchFilter.jspx">
 	<ui:param name="theBean" value="#{personsListController}"/>
 	<ui:param name="defaultSearchString" value="#{messages.person_searchPersonPersons}"/>
 </ui:include>
 </td>
-
 </tr>
 </table>
+
+<script type="text/javascript">
+	$j(document).ready(function() {
+		var showAdvancedSearch = #{personsListController.showAdvancedSearch};
+		if (showAdvancedSearch) {
+			$j('#advancedSearch').show();
+		}
+		else {
+			$j('#showAdvancedSearch').show();
+		}
+	});
+</script>
+
+<span id="showAdvancedSearch" style="display: none;" class="linkStyleActionSmall" onClick="toggleVisibility('advancedSearch'); toggleVisibility('showAdvancedSearch');"><br/><h:outputText value="#{messages.navigation_advancedSearch}"/><br/><br/></span>
+
+<div id="advancedSearch" style="display: none;">	    
+
+	<br/>
+	
+	<table class="filtersTable">
+	<tr>
+	
+	<td>
+	<ui:include src="../../auth/person/filter/distanceFilter.jspx">
+		<ui:param name="theBean" value="#{personsListController}"/>
+	</ui:include>
+	</td>
+	
+	<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
+	
+	<td >
+	<ui:include src="../../auth/person/sort/orderBy.jspx">
+		<ui:param name="theBean" value="#{personsListController}"/>
+	</ui:include>
+	</td>
+	
+	</tr>
+	</table>
+
+</div>
 
 <br/>
 
@@ -73,7 +108,7 @@
 	<br/>
 </c:if>
 
-<ui:include src="../connectionrequest/requestConnectionTooltip.jspx"/>
+<ui:include src="../../auth/connectionrequest/requestConnectionTooltip.jspx"/>
 
 <h:dataTable value="#{personsListController.list}" binding="#{personsListController.table}" var="person" 
    styleClass="gt-table gt-user-table">
@@ -95,8 +130,17 @@
 		</h4>
 		</td></tr></table>
     </h:column>
+    
+    <h:column id="column2">
+		<table border="0" class="gt-table-categories" width="300" align="right">
+			<tr>
+			    <th width="50%"><h:outputText id="distanceTitle" value="#{messages.geolocation_distance}:" /></th>
+				<td width="50%"><h:outputText id="distanceLabel" value="#{personsListController.distanceLabel}"/></td>
+		    </tr>
+		</table>
+    </h:column>
 
-	<h:column id="column2">
+	<h:column id="column3">
 		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 				<td>
@@ -110,15 +154,13 @@
 
 </h:dataTable>
 
-<ui:include src="../table/tableControls.jspx">
+<ui:include src="../../auth/table/tableControls.jspx">
 	<ui:param name="theBean" value="#{personsListController}"/>
 </ui:include>
 
 </div><!-- /content box -->
 
 </f:view>
-			</div>
-			<!-- /main content -->
 				
 			</div>
 			<!-- /body -->

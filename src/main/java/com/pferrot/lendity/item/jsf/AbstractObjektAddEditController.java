@@ -24,6 +24,7 @@ import com.pferrot.lendity.i18n.SelectItemComparator;
 import com.pferrot.lendity.item.ItemConsts;
 import com.pferrot.lendity.item.ObjektService;
 import com.pferrot.lendity.model.Group;
+import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
@@ -56,7 +57,7 @@ public abstract class AbstractObjektAddEditController {
 	public List<SelectItem> getCategoriesSelectItems() {
 		if (categoriesSelectItems == null) {
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-			categoriesSelectItems = UiUtils.getSelectItemsForListValue(getObjektService().getCategories(), locale);
+			categoriesSelectItems = UiUtils.getSelectItemsForListValueWithItemFirst(getObjektService().getCategories(), locale, ItemCategory.OTHER_LABEL_CODE);
 			categoriesSelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
 		}		
 		return categoriesSelectItems;	

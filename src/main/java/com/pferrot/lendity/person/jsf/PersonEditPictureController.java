@@ -46,7 +46,7 @@ public class PersonEditPictureController  extends AbstractEditPictureController 
 			final String personIdString = JsfUtils.getRequestParameter(PagesURL.PERSON_EDIT_PICTURE_PARAM_PERSON_ID);
 			if (personIdString != null) {
 				final Long personId = Long.parseLong(personIdString);
-				person = getPersonService().findPerson(personId);				
+				final Person person = getPersonService().findPerson(personId);				
 				// Access control check.
 				if (!getPersonService().isCurrentUserAuthorizedToEdit(person)) {
 					JsfUtils.redirect(PagesURL.ERROR_ACCESS_DENIED);

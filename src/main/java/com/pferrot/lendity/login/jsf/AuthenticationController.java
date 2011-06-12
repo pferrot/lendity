@@ -4,7 +4,6 @@ import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.item.ItemUtils;
 import com.pferrot.lendity.item.jsf.SearchItemsListController;
 import com.pferrot.lendity.login.AuthenticationConsts;
-import com.pferrot.lendity.need.jsf.NeedAddController;
 import com.pferrot.lendity.need.jsf.SearchNeedsListController;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -38,6 +37,10 @@ public class AuthenticationController {
 	
 	public String getTermsAndConditionsURL() {
 		return JsfUtils.getContextRoot() + PagesURL.TERMS_AND_CONDITIONS;
+	}
+	
+	public String getFaqURL() {
+		return JsfUtils.getContextRoot() + PagesURL.FAQ;
 	}
 	
 	public String getContactURL() {
@@ -91,14 +94,6 @@ public class AuthenticationController {
 	public String getMyConnectionsUpdatesURL() {
 		return JsfUtils.getContextRoot() + PagesURL.MY_CONNECTIONS_UPDATES_LIST;
 	}
-
-	public String getMyPendingLendRequestsURL() {
-		return JsfUtils.getContextRoot() + PagesURL.MY_PENDING_LEND_REQUESTS_LIST;
-	}
-
-	public String getMyPendingLendRequestsOutURL() {
-		return JsfUtils.getContextRoot() + PagesURL.MY_PENDING_LEND_REQUESTS_OUT_LIST;
-	}
 	
 	public String getImportItemsURL() {
 		return JsfUtils.getContextRoot() + PagesURL.ITEMS_IMPORT;
@@ -112,11 +107,11 @@ public class AuthenticationController {
 		return JsfUtils.getContextRoot() + PagesURL.MY_IN_PROGRESS_LEND_TRANSACTIONS_OUT_LIST;
 	}
 
-	public String getMyConnectionsItemsURL() {
+	public String getItemsSearchURL() {
 		return JsfUtils.getFullUrl(PagesURL.ITEMS_SEARCH);
 	}
 
-	public String getMyConnectionsItemsOrderByCreationDateURL() {
+	public String getItemsSearchOrderByCreationDateURL() {
 		return JsfUtils.getFullUrl(PagesURL.ITEMS_SEARCH,
 				SearchItemsListController.FORCE_VIEW_PARAM_NAME,
 				SearchItemsListController.FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE);
@@ -134,11 +129,11 @@ public class AuthenticationController {
 		return JsfUtils.getContextRoot() + PagesURL.MY_NEEDS_LIST;
 	}
 
-	public String getMyConnectionsNeedsURL() {
+	public String getNeedsSearchURL() {
 		return JsfUtils.getContextRoot() + PagesURL.NEEDS_SEARCH;
 	}
 
-	public String getMyConnectionsNeedsOrderByCreationDateURL() {
+	public String getNeedsSearchOrderByCreationDateURL() {
 		return JsfUtils.getFullUrl(PagesURL.NEEDS_SEARCH,
 				SearchNeedsListController.FORCE_VIEW_PARAM_NAME,
 				SearchNeedsListController.FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE);
@@ -175,4 +170,21 @@ public class AuthenticationController {
 	public String getGroupsURL() {
 		return JsfUtils.getFullUrl(PagesURL.GROUPS_LIST);
 	}
+
+	public String getMyGroupsURL() {
+		return JsfUtils.getFullUrl(PagesURL.MY_GROUPS_LIST);
+	}
+	
+	public String getMyGroupsWhereOwnerOrAdministratorURL() {
+		return JsfUtils.getFullUrl(PagesURL.MY_GROUPS_WHERE_OWNER_OR_ADMINISTRATOR_LIST);
+	}
+	
+	public String getMyPendingGroupJoinRequestsListURL() {
+		return JsfUtils.getFullUrl(PagesURL.MY_PENDING_GROUP_JOIN_REQUESTS_LIST);
+	}
+	
+	public String getEditProfileURL() {		
+		return PersonUtils.getPersonEditPageUrl(PersonUtils.getCurrentPersonId().toString());
+	}
+	
 }

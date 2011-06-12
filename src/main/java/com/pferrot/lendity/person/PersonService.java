@@ -118,12 +118,17 @@ public class PersonService {
 	public void updatePersonAddEvaluation(final Person pPerson, final Evaluation pEvaluation) {
 		CoreUtils.assertNotNull(pPerson);
 		CoreUtils.assertNotNull(pEvaluation);
+		CoreUtils.assertNotNull(pEvaluation.getScore());
 		
-		Double temp = pPerson.getNbEvaluations() * pPerson.getEvaluationAverage();
-		pPerson.setNbEvaluations(Integer.valueOf(pPerson.getNbEvaluations().intValue() + 1));
-		temp = temp + pEvaluation.getScore();
-		temp = temp / pPerson.getNbEvaluations();
-		pPerson.setEvaluationAverage(temp);
+		if (pEvaluation.getScore().intValue() == 1) {
+			pPerson.setNbEvalScore1(pPerson.getNbEvalScore1() + 1);
+		}
+		else if (pEvaluation.getScore().intValue() == 2) {
+			pPerson.setNbEvalScore2(pPerson.getNbEvalScore2() + 1);
+		}
+		else {
+			throw new RuntimeException("Unsupported score: " + pEvaluation.getScore());
+		}
 		updatePersonPrivileged(pPerson);
 	}
 
@@ -234,18 +239,30 @@ public class PersonService {
 		return lwrc.getList();
 	}
 		
-	public ListWithRowCount findEnabledPersons(final String pSearchString, final Double pMaxDistance, final int pFirstResult, final int pMaxResults) {
-		Double originaLatitude = null;
-		Double originaLongitude = null;
-		if (pMaxDistance != null) {
-			Person p = getCurrentPerson();
-			originaLatitude = p.getAddressHomeLatitude();
-			originaLongitude = p.getAddressHomeLongitude();
-			if (originaLatitude == null || originaLongitude == null) {
-				throw new RuntimeException("Can only search by distance if geolocation is available.");
-			}
+	public ListWithRowCount findEnabledPersons(final String pSearchString, final Double pMaxDistance, final String pOrderByField, final Boolean pOrderByAsc,
+			final int pFirstResult, final int pMaxResults) {
+		final PersonDaoQueryBean queryBean = new PersonDaoQueryBean();
+		queryBean.setSearchString(pSearchString);
+		queryBean.setConnectionLink(PersonDao.UNSPECIFIED_LINK);
+		queryBean.setEnabled(Boolean.TRUE);
+		queryBean.setEmailExactMatch(Boolean.TRUE);
+		queryBean.setMaxDistanceKm(pMaxDistance);
+		queryBean.setOrderBy(pOrderByField);
+		queryBean.setOrderByAscending(pOrderByAsc);
+		queryBean.setFirstResult(pFirstResult);
+		queryBean.setMaxResults(pMaxResults);
+		
+		Double originLatitude = PersonUtils.getCurrentPersonAddressHomeLatitude();;
+		Double originLongitude = PersonUtils.getCurrentPersonAddressHomeLongitude();;
+		queryBean.setOriginLatitude(originLatitude);
+		queryBean.setOriginLongitude(originLongitude);
+		
+		if (pMaxDistance != null &&
+			(originLatitude == null || originLongitude == null)) {
+			throw new RuntimeException("Can only search by distance if geolocation is available.");
 		}
-		return personDao.findPersons(null, PersonDao.UNSPECIFIED_LINK, pSearchString, Boolean.TRUE, Boolean.TRUE, null, null, null, pMaxDistance, originaLatitude, originaLongitude, pFirstResult, pMaxResults);
+		
+		return personDao.findPersons(queryBean);
 	}
 
 	public ListWithRowCount findConnections(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {
@@ -256,6 +273,17 @@ public class PersonService {
 	public List<Person> findConnectionsList(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNull(pPersonId); 
 		return personDao.findPersonsList(pPersonId, PersonDao.CONNECTIONS_LINK, pSearchString, Boolean.FALSE, Boolean.TRUE, null, null, null, null, null, null, pFirstResult, pMaxResults);
+	}
+	
+	public long countConnections(final Long pPersonId, final String pSearchString) {
+		CoreUtils.assertNotNull(pPersonId);
+		final PersonDaoQueryBean queryBean = new PersonDaoQueryBean();
+		queryBean.setPersonId(pPersonId);
+		queryBean.setConnectionLink(PersonDao.CONNECTIONS_LINK);
+		queryBean.setEnabled(Boolean.TRUE);
+		queryBean.setSearchString(pSearchString);
+		queryBean.setEmailExactMatch(Boolean.FALSE);
+		return personDao.countPersons(queryBean);
 	}
 	
 	public List<Person> findConnectionsRecevingNeedsNotificationsList(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {

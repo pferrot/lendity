@@ -13,6 +13,6 @@ public class MyLendTransactionsWaitingForInputListController extends AbstractLen
 
 	@Override
 	protected ListWithRowCount getListWithRowCount() {
-		return getLendTransactionService().findLendTransactionsWaitingForInputForCurrentPerson(getFirstRow(), getRowsPerPage());
+		return getLendTransactionService().findCurrentPersonLendTransactionsWaitingForInput(getFirstRow(), getRowsPerPage());
 	}
 }

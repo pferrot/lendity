@@ -558,6 +558,7 @@ function requestConnectionTooltip(pTooltipTarget, pPersonID, pRedirectID) {
 	    document.getElementById('requestConnectionForm').reset();
 	    // Hide error messages if any.
 	    $j('#requestConnectionForm').find('input').removeClass('validationError');
+	    $j('#requestConnectionForm').find('textarea').removeClass('validationError');	    
 		// Set the correct ID.
 		$j('#requestConnectionPersonId').val(pPersonID);
 		// Set the correct redirectID.
@@ -572,7 +573,20 @@ function requestConnectionTooltip(pTooltipTarget, pPersonID, pRedirectID) {
  * Click the submit button in the tooltip.
  */
 function submitRequestConnection() {
-	document.getElementById("requestConnectionActionButton").click();
+	var noError = true;
+
+	var jqueryText = $j("#requestConnectionText");
+	if (jqueryText.val() == '') {
+		jqueryText.addClass("validationError");
+		noError = false;
+	}
+	else {
+		jqueryText.removeClass("validationError");
+	}
+	
+	if (noError) {
+		document.getElementById("requestConnectionActionButton").click();
+	}		
 }
 
 /*
@@ -1144,112 +1158,6 @@ function submitRequestLend() {
  */
 function cancelRequestLend() {
 	hideRequestLendTooltip(mRequestLendTooltipTarget);
-}
-
-/***************************************************************************************************
- * 
- * ACCEPT LEND
- * 
- ***************************************************************************************************/
-function hideAcceptLendTooltip(pTooltipTarget) {
-	hideTooltip(pTooltipTarget, $j('#acceptLendForm'), $j('#acceptLendDiv'));
-}
-
-function acceptLendQtipOnHide(pEvent) {
-	qtipOnHide(this.elements['content'], this.elements['target'], $j('#acceptLendDiv'));
-}
-
-/*
- * That method will display / hide the tooltip.
- */
-var mAcceptLendTooltip;
-var mAcceptLendTooltipTarget;
-function acceptLendTooltip(pTooltipTarget, pLendRequestID, pRedirectID) {
-  // The tooltip is just closed.
-  if ($j(pTooltipTarget).data("qtip")) {
-	  hideAcceptLendTooltip(pTooltipTarget);
-  }
-  // The tooltip is opened.
-  else {
-	  	// Reset the form when it is displayed.
-	    document.getElementById('acceptLendForm').reset();
-	    // Hide error messages if any.
-	    $j('#acceptLendForm').find('input').removeClass('validationError');
-		// Set the correct ID.
-		$j('#acceptLendLendRequestId').val(pLendRequestID);
-		// Set the correct redirectID.
-		$j('#acceptLendRedirectId').val(pRedirectID);
-		
-	  	mAcceptLendTooltipTarget = pTooltipTarget;
-	  	mAcceptLendTooltip = createFormTooltip($j(pTooltipTarget), $j('#acceptLendForm'), acceptLendQtipOnHide);
-	}    
-}
-
-/*
- * Click the submit button in the tooltip.
- */
-function submitAcceptLend() {	
-	document.getElementById("acceptLendActionButton").click();
-}
-
-/*
- * Click the cancel button to close the tooltip.
- */
-function cancelAcceptLend() {
-	hideAcceptLendTooltip(mAcceptLendTooltipTarget);
-}
-
-/***************************************************************************************************
- * 
- * REFUSE LEND
- * 
- ***************************************************************************************************/
-function hideRefuseLendTooltip(pTooltipTarget) {
-	hideTooltip(pTooltipTarget, $j('#refuseLendForm'), $j('#refuseLendDiv'));
-}
-
-function refuseLendQtipOnHide(pEvent) {
-	qtipOnHide(this.elements['content'], this.elements['target'], $j('#refuseLendDiv'));
-}
-
-/*
- * That method will display / hide the tooltip.
- */
-var mRefuseLendTooltip;
-var mRefuseLendTooltipTarget;
-function refuseLendTooltip(pTooltipTarget, pLendRequestID, pRedirectID) {
-  // The tooltip is just closed.
-  if ($j(pTooltipTarget).data("qtip")) {
-	  hideRefuseLendTooltip(pTooltipTarget);
-  }
-  // The tooltip is opened.
-  else {
-	  	// Reset the form when it is displayed.
-	    document.getElementById('refuseLendForm').reset();
-	    // Hide error messages if any.
-	    $j('#refuseLendForm').find('input').removeClass('validationError');
-		// Set the correct ID.
-		$j('#refuseLendLendRequestId').val(pLendRequestID);
-		// Set the correct redirectID.
-		$j('#refuseLendRedirectId').val(pRedirectID);
-		
-	  	mRefuseLendTooltipTarget = pTooltipTarget;
-	  	mRefuseLendTooltip = createFormTooltip($j(pTooltipTarget), $j('#refuseLendForm'), refuseLendQtipOnHide);
-	}    
-}
-
-/*
- * Click the submit button in the tooltip.
- */
-function submitRefuseLend() {	
-	document.getElementById("refuseLendActionButton").click();
-}
-
-/*
- * Click the cancel button to close the tooltip.
- */
-function cancelRefuseLend() {
-	hideRefuseLendTooltip(mRefuseLendTooltipTarget);
 }
 
 /***************************************************************************************************

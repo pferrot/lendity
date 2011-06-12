@@ -9,6 +9,7 @@ import com.pferrot.lendity.group.GroupConsts;
 import com.pferrot.lendity.group.GroupService;
 import com.pferrot.lendity.jsf.list.AbstractListController;
 import com.pferrot.lendity.model.Group;
+import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.utils.JsfUtils;
 
 public abstract class AbstractGroupsListController extends AbstractListController {
@@ -37,5 +38,15 @@ public abstract class AbstractGroupsListController extends AbstractListControlle
 	
 	public boolean isFilteredList() {
 		return !StringUtils.isNullOrEmpty(getSearchString());
+	}
+
+	public String getGroupPicture1Src() {
+		final Group group = (Group)getTable().getRowData();
+		return groupService.getGroupPicture1Src(group, true);
+	}
+	
+	public String getGroupThumbnail1Src() {
+		final Group group = (Group)getTable().getRowData();
+		return groupService.getGroupThumbnail1Src(group, true);
 	}
 }

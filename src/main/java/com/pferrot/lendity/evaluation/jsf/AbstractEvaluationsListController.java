@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.evaluation.EvaluationService;
+import com.pferrot.lendity.evaluation.EvaluationUtils;
 import com.pferrot.lendity.jsf.list.AbstractListController;
 import com.pferrot.lendity.model.Evaluation;
 import com.pferrot.lendity.person.PersonService;
@@ -56,5 +57,10 @@ public abstract class AbstractEvaluationsListController extends AbstractListCont
 	public String getEvaluationOverviewHref() {
 		final Evaluation eval = (Evaluation)getTable().getRowData();
 		return JsfUtils.getFullUrl(PagesURL.EVALUATION_OVERVIEW, PagesURL.EVALUATION_OVERVIEW_PARAM_EVALUATION_ID, eval.getId().toString());
+	}
+	
+	public String getEvaluationLabel() {
+		final Evaluation eval = (Evaluation)getTable().getRowData();
+		return EvaluationUtils.getEvaluationLabel(eval.getScore());
 	}
 }

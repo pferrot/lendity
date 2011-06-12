@@ -36,7 +36,7 @@
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">
 						<div class="highlightedBg"><label><h:outputText value="#{messages.evaluation_score}"/></label></div>
-						<h:outputText value="#{evaluationOverviewController.evaluation.score}"/>			
+						<h:outputText value="#{evaluationOverviewController.evaluationScoreLabel}"/>			
 					</div><!-- /form row -->					
 					
 					<!-- form row -->

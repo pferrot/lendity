@@ -68,6 +68,10 @@ public class ItemService extends ObjektService {
 			final Boolean pBorrowed, final Long pLendType, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {		
 		return findItems(PersonUtils.getCurrentPersonId(), pTitle, pCategoryId, getVisibilityIds(pVisibilityId), pBorrowed, pLendType, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
 	}
+
+	public long countAllMyItems() {		
+		return countItems(PersonUtils.getCurrentPersonId(), null, null, null, null, null, null, null);
+	}
 	
 	/**
 	 * Returns 5 random public items in the area of pOriginLatitude/pOriginLongitude.
@@ -76,6 +80,7 @@ public class ItemService extends ObjektService {
 	 */
 	public List<Item> findRandomItemsHomepage() {
 		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
+		itemQuery.setOwnerEnabled(Boolean.TRUE);
 		itemQuery.setOrderBy("random");
 		itemQuery.setMaxResults(5);
 		itemQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
@@ -98,6 +103,7 @@ public class ItemService extends ObjektService {
 		final int maxResults = 5;
 		
 		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
+		itemQuery.setOwnerEnabled(Boolean.TRUE);
 		itemQuery.setOrderBy("random");
 		itemQuery.setMaxResults(maxResults);
 		itemQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
@@ -138,11 +144,9 @@ public class ItemService extends ObjektService {
 		return lwrc.getList();
 	}
 
-	public ListWithRowCount findItems(final Long pPersonId, final String pTitle, final Long pCategoryId, final Long[] pVisibilityIds,
+	protected ItemDaoQueryBean getItemsQueryBean(final Long pPersonId, final String pTitle, final Long pCategoryId, final Long[] pVisibilityIds,
 			final Boolean pBorrowed, final Long pLendType, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
-		final Long currentPersonId = pPersonId;
-		CoreUtils.assertNotNull(currentPersonId);
-		final Long[] personIds = new Long[]{currentPersonId};
+		final Long[] personIds = new Long[]{pPersonId};
 		
 		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
 		itemQuery.setOwnerIds(personIds);
@@ -169,9 +173,22 @@ public class ItemService extends ObjektService {
 				itemQuery.setToGiveForFree();
 			}
 		}
+		return itemQuery;
+	}
+	
+	public ListWithRowCount findItems(final Long pPersonId, final String pTitle, final Long pCategoryId, final Long[] pVisibilityIds,
+			final Boolean pBorrowed, final Long pLendType, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
 		
+		final ItemDaoQueryBean itemQuery = getItemsQueryBean(pPersonId, pTitle, pCategoryId, pVisibilityIds, pBorrowed, pLendType, pOrderBy, pOrderByAscending, pFirstResult, pMaxResults);
 		
 		return itemDao.findItems(itemQuery);
+	}
+
+	public long countItems(final Long pPersonId, final String pTitle, final Long pCategoryId, final Long[] pVisibilityIds,
+			final Boolean pBorrowed, final Long pLendType, final String pOrderBy, final Boolean pOrderByAscending) {
+		final ItemDaoQueryBean itemQuery = getItemsQueryBean(pPersonId, pTitle, pCategoryId, pVisibilityIds, pBorrowed, pLendType, null, null, 0, 0);
+		
+		return itemDao.countItems(itemQuery);
 	}
 
 	public ListWithRowCount findItems(final String pTitle, final Long pCategoryId, final Boolean pBorrowed, final Long pOwnerType,
@@ -200,10 +217,11 @@ public class ItemService extends ObjektService {
 			// All connections.
 			final Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(null);
 			itemQuery.setOwnerIds(connectionsIds);
+			// Exclude myself.
+			itemQuery.setOwnerIdsToExcludeForVisibilityIdsToForce(ListValueUtils.getIdsArray(PersonUtils.getCurrentPersonId()));
 			itemQuery.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
 			if (!ItemConsts.OWNER_TYPE_CONNECTIONS.equals(pOwnerType)) {
 				itemQuery.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
-				itemQuery.setOwnerIdsToExcludeForVisibilityIdsToForce(ListValueUtils.getIdsArray(PersonUtils.getCurrentPersonId()));
 				itemQuery.setGroupIds(getGroupService().getCurrentPersonGroupIds());
 			}
 		}
@@ -211,16 +229,15 @@ public class ItemService extends ObjektService {
 		else {
 			itemQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
 		}
-		itemQuery.setBorrowed(pBorrowed);		
-		if (pMaxDistanceInKm != null) {
-			final Double latitude = getCurrentPerson().getAddressHomeLatitude();
-			final Double longitude = getCurrentPerson().getAddressHomeLongitude();			
-			if (latitude == null || longitude == null) {
-				throw new RuntimeException("Can only search by distance if geolocation is available.");
-			}
-			itemQuery.setMaxDistanceKm(pMaxDistanceInKm);
-			itemQuery.setOriginLatitude(latitude);
-			itemQuery.setOriginLongitude(longitude);
+		itemQuery.setBorrowed(pBorrowed);
+		final Double latitude = PersonUtils.getCurrentPersonAddressHomeLatitude();
+		final Double longitude = PersonUtils.getCurrentPersonAddressHomeLongitude();	
+		itemQuery.setOriginLatitude(latitude);
+		itemQuery.setOriginLongitude(longitude);
+		itemQuery.setMaxDistanceKm(pMaxDistanceInKm);
+		if (pMaxDistanceInKm != null &&
+				(latitude == null || longitude == null)) {
+			throw new RuntimeException("Can only search by distance if geolocation is available.");			
 		}
 		itemQuery.setOrderBy(pOrderBy);
 		itemQuery.setOrderByAscending(pOrderByAscending);

@@ -28,7 +28,7 @@ public class NeedEditController extends AbstractNeedAddEditController {
 			if (idString != null) {
 				need = getNeedService().findNeed(Long.parseLong(idString));
 				// Access control check.
-				if (!getNeedService().isCurrentUserAuthorizedToEdit(getNeed())) {
+				if (!getNeedService().isCurrentUserAuthorizedToEdit(need)) {
 					JsfUtils.redirect(PagesURL.ERROR_ACCESS_DENIED);
 					if (log.isWarnEnabled()) {
 						log.warn("Access denied (need edit): user = " + PersonUtils.getCurrentPersonDisplayName() + " (" + PersonUtils.getCurrentPersonId() + "), need = " + idString);
@@ -77,7 +77,7 @@ public class NeedEditController extends AbstractNeedAddEditController {
 	}
 
 	public String getNeedOverviewHref() {		
-		return NeedUtils.getNeedOverviewPageUrl(need.getId().toString());
+		return NeedUtils.getNeedOverviewPageUrl(getNeed().getId().toString());
 	}	
 
 	@Override

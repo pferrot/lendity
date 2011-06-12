@@ -25,6 +25,7 @@ import com.pferrot.lendity.model.GroupJoinRequestResponse;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.security.SecurityUtils;
 
 public class GroupJoinRequestService {
 	
@@ -239,11 +240,25 @@ public class GroupJoinRequestService {
 
 	public ListWithRowCount findCurrentUserPendingGroupJoinRequests(
 			int firstRow, int rowsPerPage) {
+		if (!SecurityUtils.isLoggedIn()) {
+			throw new SecurityException("Not logged in");
+		}
 		final GroupJoinRequestDaoQueryBean queryBean = new GroupJoinRequestDaoQueryBean();
 		queryBean.setCompleted(Boolean.FALSE);
 		queryBean.setGroupIds(getOwnerAndAdministratorGroupIds(getPersonService().getCurrentPerson()));
 		
 		return groupJoinRequestDao.findGroupJoinRequests(queryBean);
+	}
+	
+	public long countCurrentUserPendingGroupJoinRequests() {
+		if (!SecurityUtils.isLoggedIn()) {
+			throw new SecurityException("Not logged in");
+		}
+		final GroupJoinRequestDaoQueryBean queryBean = new GroupJoinRequestDaoQueryBean();
+		queryBean.setCompleted(Boolean.FALSE);
+		queryBean.setGroupIds(getOwnerAndAdministratorGroupIds(getPersonService().getCurrentPerson()));
+		
+		return groupJoinRequestDao.countGroupJoinRequests(queryBean);
 	}
 	
 	private Long[] getOwnerAndAdministratorGroupIds(final Person pPerson) {
@@ -259,9 +274,14 @@ public class GroupJoinRequestService {
 			groupIds.add(group.getId());
 		}
 		
-		final Long[] groupIdsArray = (Long[])groupIds.toArray(new Long[groupIds.size()]);
-		
-		return groupIdsArray;
+		// Trick to "tell" the DAO that this is a user without any
+		// group, and not a user with all groups...
+		if (groupIds == null || groupIds.isEmpty()) {
+			return new Long[]{Long.valueOf(-1)};
+		}
+		else {
+			return (Long[])groupIds.toArray(new Long[groupIds.size()]);
+		}
 	}
 	
 	public ListWithRowCount findCurrentUserPendingGroupJoinRequestsOut(
@@ -433,9 +453,5 @@ public class GroupJoinRequestService {
 		final GroupJoinRequest request = groupJoinRequestDao.findGroupJoinRequest(pGroupJoinRequestId);
 
 		updateBanGroupJoinRequest(request);	
-	}
-
-	
-
-	
+	}	
 }

@@ -12,12 +12,10 @@ import com.pferrot.core.CoreUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.dao.NeedDao;
-import com.pferrot.lendity.dao.bean.ItemDaoQueryBean;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.dao.bean.NeedDaoQueryBean;
 import com.pferrot.lendity.item.ItemConsts;
 import com.pferrot.lendity.item.ObjektService;
-import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
 import com.pferrot.lendity.model.Need;
@@ -53,6 +51,7 @@ public class NeedService extends ObjektService {
 	 */
 	public List<Need> findRandomNeedsHomepage() {
 		final NeedDaoQueryBean needQuery = new NeedDaoQueryBean();
+		needQuery.setOwnerEnabled(Boolean.TRUE);
 		needQuery.setOrderBy("random");
 		needQuery.setMaxResults(5);
 		needQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
@@ -75,6 +74,7 @@ public class NeedService extends ObjektService {
 		final int maxResults = 5;
 		
 		final NeedDaoQueryBean needQuery = new NeedDaoQueryBean();
+		needQuery.setOwnerEnabled(Boolean.TRUE);
 		needQuery.setOrderBy("random");
 		needQuery.setMaxResults(maxResults);
 		needQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
@@ -143,10 +143,11 @@ public class NeedService extends ObjektService {
 			// All connections.
 			final Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(null);
 			needDaoQueryBean.setOwnerIds(connectionsIds);
+			// Exclude myself.
+			needDaoQueryBean.setOwnerIdsToExcludeForVisibilityIdsToForce(ListValueUtils.getIdsArray(PersonUtils.getCurrentPersonId()));
 			needDaoQueryBean.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
 			if (!ItemConsts.OWNER_TYPE_CONNECTIONS.equals(pOwnerType)) {
 				needDaoQueryBean.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
-				needDaoQueryBean.setOwnerIdsToExcludeForVisibilityIdsToForce(ListValueUtils.getIdsArray(PersonUtils.getCurrentPersonId()));
 			}
 		}
 		// When not logged in - only show public items.
@@ -156,16 +157,17 @@ public class NeedService extends ObjektService {
 		needDaoQueryBean.setOwnerEnabled(Boolean.TRUE);
 		needDaoQueryBean.setTitle(pTitle);
 		needDaoQueryBean.setCategoryIds(getCategoryIds(pCategoryId));
-		if (pMaxDistanceInKm != null) {
-			final Double latitude = getCurrentPerson().getAddressHomeLatitude();
-			final Double longitude = getCurrentPerson().getAddressHomeLongitude();			
-			if (latitude == null || longitude == null) {
-				throw new RuntimeException("Can only search by distance if geolocation is available.");
-			}
-			needDaoQueryBean.setMaxDistanceKm(pMaxDistanceInKm);
-			needDaoQueryBean.setOriginLatitude(latitude);
-			needDaoQueryBean.setOriginLongitude(longitude);
+		
+		final Double latitude = PersonUtils.getCurrentPersonAddressHomeLatitude();
+		final Double longitude = PersonUtils.getCurrentPersonAddressHomeLongitude();	
+		needDaoQueryBean.setOriginLatitude(latitude);
+		needDaoQueryBean.setOriginLongitude(longitude);
+		needDaoQueryBean.setMaxDistanceKm(pMaxDistanceInKm);
+		if (pMaxDistanceInKm != null &&
+				(latitude == null || longitude == null)) {
+			throw new RuntimeException("Can only search by distance if geolocation is available.");			
 		}
+		
 		needDaoQueryBean.setOrderBy(pOrderBy);
 		needDaoQueryBean.setOrderByAscending(pOrderByAscending);
 		needDaoQueryBean.setFirstResult(pFirstResult);
@@ -343,5 +345,29 @@ public class NeedService extends ObjektService {
 		assertCurrentUserAuthorizedToEdit(pNeed);
 		pNeed.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
 		updateNeed(pNeed, pCategoryId);
+	}
+
+	/**
+	 * Returns the URL for image1 or null if no image1.
+	 * 
+	 * @param pNeed
+	 * @param pAuthorizeDocumentAccess
+	 * @return
+	 */
+	public String getNeedPicture1Src(final Need pNeed, final boolean pAuthorizeDocumentAccess) {
+		// No image on needs.
+		return null;		
+	}
+	
+	/**
+	 * Returns the URL for thumbnail1 or null if no thumbnail1.
+	 * 
+	 * @param pNeed
+	 * @param pAuthorizeDocumentAccess
+	 * @return
+	 */
+	public String getNeedThumbnail1Src(final Need pNeed, final boolean pAuthorizeDocumentAccess) {
+		// No image on needs.
+		return null;	
 	}
 }

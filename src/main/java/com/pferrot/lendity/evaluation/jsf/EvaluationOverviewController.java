@@ -1,5 +1,7 @@
 package com.pferrot.lendity.evaluation.jsf;
 
+import java.util.Locale;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
@@ -7,6 +9,8 @@ import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.evaluation.EvaluationService;
+import com.pferrot.lendity.evaluation.EvaluationUtils;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.lendtransaction.LendTransactionService;
 import com.pferrot.lendity.model.Evaluation;
 import com.pferrot.lendity.person.PersonUtils;
@@ -82,5 +86,10 @@ public class EvaluationOverviewController {
 			return HtmlUtils.escapeHtmlAndReplaceCr(text);
 		}
 		return "";
+	}
+	
+	public String getEvaluationScoreLabel() {
+		final Integer score = getEvaluation().getScore();
+		return EvaluationUtils.getEvaluationLabel(score);
 	}
 }

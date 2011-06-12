@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
+import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.utils.JsfUtils;
 
@@ -15,6 +16,8 @@ public class SearchNeedsListController extends AbstractNeedsListController {
 
 	public final static String FORCE_VIEW_PARAM_NAME = "view";
 	public final static String FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE = "allByCr";
+	
+	public final static String SEARCH_TEXT_PARAM_NAME = "search";
 	
 	public SearchNeedsListController() {
 		super();
@@ -28,6 +31,14 @@ public class SearchNeedsListController extends AbstractNeedsListController {
 		if (FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE.equals(orderBy)) {
 			resetFilters();
 			setOrderBy(new Long(2));
+			return;
+		}
+		// Note the return above...
+		final String searchString = JsfUtils.getRequestParameter(SEARCH_TEXT_PARAM_NAME);
+		if (!StringUtils.isNullOrEmpty(searchString)) {
+			resetFilters();
+			setSearchString(searchString);
+			return;
 		}
 	}
 

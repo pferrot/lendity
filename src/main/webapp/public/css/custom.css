@@ -14,7 +14,10 @@ h2.gt-form-head  {
 }
 
 div.contentContent {
-	background-color: #ffffff;
+	background-image: url(../images/fond_triangle.png);
+	background-repeat: repeat-y;
+	background-color: #C5C5C5;
+	background-position: center;
 	padding-bottom: 20px;	
 }
 
@@ -52,13 +55,13 @@ table.pagingTable span {
 }
 
 .gt-form-text-login {
-	width: 180px!important;	
+	width: 160px!important;	
 	font-size: 92%!important;
 	padding: 3px 0px!important;
 }
 
 .gt-form-text-location {
-	width: 350px!important;	
+	width: 250px!important;	
 	font-size: 130%!important;
 	padding: 3px 0px!important;
 }
@@ -259,6 +262,10 @@ span.linkStyleAction:hover {
 
 .fontSizeLargeLarge {
 	font-size:130%!important;
+}
+
+.fontSizeLargeLargeLarge {
+	font-size:250%!important;
 }
 
 span.linkStyleActionSmall {
@@ -492,4 +499,93 @@ div.commentBox {
 	background-color: #ffffff;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
+}
+
+/* LOGIN PAGE */
+#head {
+	height: 350px;
+	margin: -10px ;
+	background-image: url(../images/login/fond_head.png);
+	background-repeat: x-repeat;
+}
+	
+#headshadow {
+	height: 20px;
+	background-image: url(../images/login/head_shadow.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	margin-left:-10px;
+	margin-right:-10px;
+	margin-top:10px;
+}
+
+#guys {
+	position:absolute;
+	left:60px;
+	top:100px;
+	width:960px;
+	height:260px;
+	background-image: url(../images/login/guys_head.png);
+	background-repeat: no-repeat;
+	margin-left:-100px;
+}
+
+#centre {
+	position:absolute;
+	left:50%;
+	top:10px;
+	width:960px;
+	margin-left:-480px; /* Cette valeur doit être la moitié négative de la valeur du width */
+}
+
+.boxheadorange{
+	position: absolute;
+	top:130px;
+	left:770px;
+	width:150px;
+	height: 150px;
+	background-image: url(../images/login/boxheadgrey.png);
+	background-repeat: no-repeat;
+	background-position: top;
+	padding: 0px;
+	text-align: center;
+}
+
+.boxtitleright {
+	padding-top: 35px;	
+	padding-bottom: 15px;	
+	padding-left: 15px;	
+	padding-right: 15px;	
+}
+
+.boxheadorange a {
+	color: #fff;
+}
+
+.boxheadorange a:hover {
+	color: #ff9900;
+}
+
+div.blackBox200 {
+	background-image: url(../images/login/lineheadgrey.png);
+	background-repeat: repeat-x;
+	background-position: top;
+	width: 200px;
+	height: 65px;
+	color: #ffffff;
+	font-size: 130%;
+	text-align: center;
+	padding-top: 20px;
+}
+
+div.blackBox2 {
+	background-image: url(../images/login/lineheadgrey.png);
+	background-repeat: repeat-x;
+	background-position: top;
+	width: 70%;
+	height: 65px;
+	color: #ffffff;
+	font-size: 100%;
+	text-align: center;
+	padding-top: 10px;
 }

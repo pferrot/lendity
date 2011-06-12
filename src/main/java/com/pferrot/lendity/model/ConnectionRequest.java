@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -27,6 +26,9 @@ public class ConnectionRequest implements Serializable {
 	@ManyToOne(targetEntity = com.pferrot.lendity.model.Person.class)
 	@JoinColumn(name = "CONNECTION_ID", nullable = false)
 	private Person connection;
+	
+	@Column(name = "TEXT", nullable = true, length = 3999)
+	private String text;
 	
 	@Column(name = "REQUEST_DATE", nullable = false)
 	private Date requestDate;
@@ -88,6 +90,14 @@ public class ConnectionRequest implements Serializable {
 
 	public void setResponse(ConnectionRequestResponse response) {
 		this.response = response;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	@Override

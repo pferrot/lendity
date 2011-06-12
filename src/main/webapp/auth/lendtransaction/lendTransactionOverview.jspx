@@ -90,50 +90,47 @@
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_status}:" /></label></div>
 		<h:outputText value="#{lendTransactionOverviewController.statusLabel}" />
+		<img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{lendTransactionOverviewController.whatIsNextLabel}"/>
 	</div>
 	<br/>
 	
 	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_whatIsNext}:" /></label></div>
-		<h:outputText value="#{lendTransactionOverviewController.whatIsNextLabel}" />
-		
-		<br/>
 		<table class="buttonsTable"><tr><td>
 		
 		<h:commandButton styleClass="stylishButton"
-			value="TODO accept"
+			value="#{messages.lendTransaction_buttonAccept}"
 			action="#{lendTransactionOverviewController.acceptRequest}"
 			rendered="#{lendTransactionOverviewController.acceptRequestAvailable}"/>
 		
 		<h:commandButton styleClass="stylishButton"
-			value="TODO refuse"
+			value="#{messages.lendTransaction_buttonRefuse}"
 			action="#{lendTransactionOverviewController.refuseRequest}"
 			rendered="#{lendTransactionOverviewController.refuseRequestAvailable}"/>
 		
 		<h:commandButton styleClass="stylishButton"
-			value="TODO lend"
+			value="#{messages.lendTransaction_buttonLend}"
 			action="#{lendTransactionOverviewController.lend}"
 			rendered="#{lendTransactionOverviewController.lendAvailable}"/>
 		
 		<h:commandButton styleClass="stylishButton"
-			value="TODO give"
+			value="#{messages.lendTransaction_buttonGiveOrSell}"
 			action="#{lendTransactionOverviewController.giveOrSell}"
 			rendered="#{lendTransactionOverviewController.giveOrSellAvailable}"/>
 		
 		<h:commandButton styleClass="stylishButton"
-			value="TODO complete"
+			value="#{messages.lendTransaction_buttonComplete}"
 			action="#{lendTransactionOverviewController.complete}"
 			rendered="#{lendTransactionOverviewController.completeAvailable}"/>
 		
 		<h:commandButton styleClass="stylishButton"
-			value="TODO cancel"
+			value="#{messages.lendTransaction_buttonCancel}"
 			action="#{lendTransactionOverviewController.cancel}"
 			rendered="#{lendTransactionOverviewController.cancelAvailable}"/>
 			
 		<h:outputLink styleClass="stylishButton"  
 		              value="#{lendTransactionOverviewController.evaluationAddHref}"
 		              rendered="#{lendTransactionOverviewController.evaluateAvailable}">
-        	<h:outputText value="TODO evaluate" rendered="#{lendTransactionOverviewController.evaluateAvailable}"/>
+        	<h:outputText value="#{messages.lendTransaction_buttonEvaluate}" rendered="#{lendTransactionOverviewController.evaluateAvailable}"/>
          </h:outputLink>
 			
 		</td></tr></table>

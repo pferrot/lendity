@@ -11,6 +11,8 @@ import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.dao.NeedDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.dao.bean.NeedDaoQueryBean;
+import com.pferrot.lendity.dao.hibernate.criterion.OrderBySql;
+import com.pferrot.lendity.geolocation.GeoLocationUtils;
 import com.pferrot.lendity.model.Need;
 
 public class NeedDaoHibernateImpl extends ObjektDaoHibernateImpl implements NeedDao {
@@ -39,6 +41,23 @@ public class NeedDaoHibernateImpl extends ObjektDaoHibernateImpl implements Need
 			if ("random".equals(pNeedDaoQueryBean.getOrderBy())) {
 				// This is MySql specific !!!
 				criteria.add(Restrictions.sqlRestriction("1=1 order by rand()"));
+			}
+			else if ("distance".equals(pNeedDaoQueryBean.getOrderBy())) {
+				final String ascOrDesc = Boolean.TRUE.equals(pNeedDaoQueryBean.getOrderByAscending())?"asc":"desc";
+				if (pNeedDaoQueryBean.getOriginLatitude() != null && pNeedDaoQueryBean.getOriginLongitude() != null) {
+					// First order to make sure that persons where the distance cannot be calculated appear last.
+					// Only check the latitude to simplify the query. If one of latitude/longitude is null, both should be null.
+					criteria.addOrder(OrderBySql.sql("{0} is not null desc", new String[] {"o.addressHomeLatitude"}));
+					// Actual sorting by distance.
+					criteria.addOrder(
+							OrderBySql.sql("(" + GeoLocationUtils.getDistanceFormula(pNeedDaoQueryBean.getOriginLongitude(), pNeedDaoQueryBean.getOriginLatitude()) + ") " + ascOrDesc,
+												         new String[] {"o.addressHomeLatitude", "o.addressHomeLatitude", "o.addressHomeLongitude"})
+					    );
+				}	
+				else {
+					throw new RuntimeException("Cannot sort by distance when origin latitude/longitude are not defined");
+				}
+				
 			}
 			else {
 				// Ascending.
