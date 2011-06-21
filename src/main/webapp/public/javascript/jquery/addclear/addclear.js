@@ -28,6 +28,10 @@
 					'width' : '16px'
 					}, this);
 				
+					if ($(this).length == 0) {
+						return;
+					}
+				
 					if($(this).val().length >= 1 && options.showOnLoad === true) {
 						$(this).siblings("a[href='#clear']").show();
 					}
