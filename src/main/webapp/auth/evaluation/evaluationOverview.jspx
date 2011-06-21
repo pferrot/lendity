@@ -32,7 +32,6 @@
 				
 				<f:view>
 
-
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">
 						<div class="highlightedBg"><label><h:outputText value="#{messages.evaluation_score}"/></label></div>
@@ -43,6 +42,36 @@
 					<div class="gt-form-row gt-width-100">
 						<div class="highlightedBg"><label><h:outputText value="#{messages.evaluation_text}"/></label></div>
 						<h:outputText value="#{evaluationOverviewController.text}" escape="false"/>			
+					</div><!-- /form row -->	
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<div class="highlightedBg"><label><h:outputText value="#{messages.evaluation_evaluator}"/></label></div>
+						<h:outputLink value="#{evaluationOverviewController.evaluatorUrl}">
+							<h:outputText value="#{evaluationOverviewController.evaluation.evaluator.displayName}"/>
+						</h:outputLink>			
+					</div><!-- /form row -->	
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<div class="highlightedBg"><label><h:outputText value="#{messages.evaluation_evaluated}"/></label></div>
+						<h:outputLink value="#{evaluationOverviewController.evaluatedUrl}">
+							<h:outputText value="#{evaluationOverviewController.evaluation.evaluated.displayName}"/>
+						</h:outputLink>			
+					</div><!-- /form row -->	
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<div class="highlightedBg"><label><h:outputText value="#{messages.lendTransaction_transaction}"/></label></div>
+						<h:outputLink value="#{evaluationOverviewController.lendTransactionUrl}">
+							<h:outputText value="#{evaluationOverviewController.evaluation.lendTransaction.title}"/>
+						</h:outputLink>			
+					</div><!-- /form row -->	
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<div class="highlightedBg"><label><h:outputText value="#{messages.evaluation_date}"/></label></div>
+						<h:outputText value="#{evaluationOverviewController.creationDateLabel}" escape="false"/>			
 					</div><!-- /form row -->					
 					
 				</f:view>		

@@ -147,7 +147,7 @@ public class GroupJoinRequestService {
 			}
 			
 			Map<String, String> inlineResources = new HashMap<String, String>();
-			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 			
 			mailManager.send(Configuration.getNoReplySenderName(), 
 					         Configuration.getNoReplyEmailAddress(),
@@ -254,9 +254,15 @@ public class GroupJoinRequestService {
 		if (!SecurityUtils.isLoggedIn()) {
 			throw new SecurityException("Not logged in");
 		}
+		return countUserPendingGroupJoinRequests(getPersonService().getCurrentPerson());
+	}
+	
+	public long countUserPendingGroupJoinRequests(final Person pPerson) {
+		CoreUtils.assertNotNull(pPerson);
+		
 		final GroupJoinRequestDaoQueryBean queryBean = new GroupJoinRequestDaoQueryBean();
 		queryBean.setCompleted(Boolean.FALSE);
-		queryBean.setGroupIds(getOwnerAndAdministratorGroupIds(getPersonService().getCurrentPerson()));
+		queryBean.setGroupIds(getOwnerAndAdministratorGroupIds(pPerson));
 		
 		return groupJoinRequestDao.countGroupJoinRequests(queryBean);
 	}
@@ -321,7 +327,7 @@ public class GroupJoinRequestService {
 		to.put(pRequest.getRequester().getEmail(), pRequest.getRequester().getEmail());
 		
 		Map<String, String> inlineResources = new HashMap<String, String>();
-		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 		
 		mailManager.send(Configuration.getNoReplySenderName(), 
 						 Configuration.getNoReplyEmailAddress(),

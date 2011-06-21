@@ -2,10 +2,24 @@
 
 Bonjour $firstName,<br/><br/>
 
+#if( $nbTransactionsWaitingForInput )
+<a href="$transactionsWaitingForInputUrl">$nbTransactionsWaitingForInput transaction(s) en attente d'action</a><br/>
+#end
+#if( $nbGroupJoinRequests )
+<a href="$groupJoinRequestsUrl">$nbGroupJoinRequests demande(s) d'adhésion à un groupe en attente</a><br/>
+#end
+#if( $nbConnectionRequests )
+<a href="$connectionRequestsUrl">$nbConnectionRequests demande(s) d'ami en attente de réponse</a><br/>
+#end
+
+#if( $nbTransactionsWaitingForInput || $nbGroupJoinRequests || $nbConnectionRequests )
+<br/>
+#end
+
 Dernières activités dans ton réseau:<br/><br/>
 
-<div style="background-color: #d3d3e1; width: 100%;">
-Objets ajoutés
+<div style="background-color: #d1d1d1; width: 100%;">
+Objets ajoutés près de chez toi
 #if( $latestUpdateDateLabel )
 (depuis le $latestUpdateDateLabel)
 #end
@@ -39,8 +53,8 @@ depuis le $latestUpdateDateLabel
 <a href="$itemUrl">Voir la liste complète</a><br/>
 
 <br/>
-<div style="background-color: #d3d3e1; width: 100%;">
-Recherches ajoutées
+<div style="background-color: #d1d1d1; width: 100%;">
+Recherches ajoutées près de chez toi
 #if( $latestUpdateDateLabel )
 (depuis le $latestUpdateDateLabel)
 #end
@@ -74,7 +88,7 @@ depuis le $latestUpdateDateLabel
 <a href="$needUrl">Voir la liste complète</a><br/>
 
 <br/>
-<div style="background-color: #d3d3e1; width: 100%;">
+<div style="background-color: #d1d1d1; width: 100%;">
 Amis
 #if( $latestUpdateDateLabel )
 (depuis le $latestUpdateDateLabel)

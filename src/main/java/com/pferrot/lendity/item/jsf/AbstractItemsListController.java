@@ -342,16 +342,6 @@ public abstract class AbstractItemsListController extends AbstractObjektsListCon
 		request.setAttribute(REQUEST_LEND_AVAILABLE_ATTRIUTE_PREFIX + item.getId(), Integer.valueOf(result));
 		return result;
 	}
-	
-	public String getImage1Src() {
-		final Item item = (Item)getTable().getRowData();
-		return getItemService().getItemPicture1Src(item, true);
-	}
-	
-	public String getThumbnail1Src() {
-		final Item item = (Item)getTable().getRowData();
-		return getItemService().getItemThumbnail1Src(item, true);
-	}
 
 	public String getMyLendTransactionsUrl() {
 		final Item item = (Item)getTable().getRowData();

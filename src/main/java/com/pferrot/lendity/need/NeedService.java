@@ -2,8 +2,10 @@ package com.pferrot.lendity.need;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,6 +18,7 @@ import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.dao.bean.NeedDaoQueryBean;
 import com.pferrot.lendity.item.ItemConsts;
 import com.pferrot.lendity.item.ObjektService;
+import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
 import com.pferrot.lendity.model.Need;
@@ -54,7 +57,20 @@ public class NeedService extends ObjektService {
 		needQuery.setOwnerEnabled(Boolean.TRUE);
 		needQuery.setOrderBy("random");
 		needQuery.setMaxResults(5);
-		needQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
+		if (SecurityUtils.isLoggedIn()) {
+			// All connections.
+			final Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(null);
+			needQuery.setOwnerIds(connectionsIds);
+			// Exclude myself.
+			needQuery.setOwnerIdsToExcludeForVisibilityIdsToForce(ListValueUtils.getIdsArray(PersonUtils.getCurrentPersonId()));
+			needQuery.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
+			needQuery.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
+			needQuery.setGroupIds(getGroupService().getCurrentPersonGroupIds());
+		}
+		// When not logged in - only show public items.
+		else {
+			needQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
+		}
 		return needDao.findNeedsList(needQuery);
 	}
 
@@ -77,7 +93,20 @@ public class NeedService extends ObjektService {
 		needQuery.setOwnerEnabled(Boolean.TRUE);
 		needQuery.setOrderBy("random");
 		needQuery.setMaxResults(maxResults);
-		needQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
+		if (SecurityUtils.isLoggedIn()) {
+			// All connections.
+			final Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(null);
+			needQuery.setOwnerIds(connectionsIds);
+			// Exclude myself.
+			needQuery.setOwnerIdsToExcludeForVisibilityIdsToForce(ListValueUtils.getIdsArray(PersonUtils.getCurrentPersonId()));
+			needQuery.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
+			needQuery.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
+			needQuery.setGroupIds(getGroupService().getCurrentPersonGroupIds());
+		}
+		// When not logged in - only show public items.
+		else {
+			needQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
+		}
 		
 		// Try 2km, then 20, then 100, then unlimited.
 		needQuery.setMaxDistanceKm(new Double(2));
@@ -148,6 +177,7 @@ public class NeedService extends ObjektService {
 			needDaoQueryBean.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
 			if (!ItemConsts.OWNER_TYPE_CONNECTIONS.equals(pOwnerType)) {
 				needDaoQueryBean.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
+				needDaoQueryBean.setGroupIds(getGroupService().getCurrentPersonGroupIds());
 			}
 		}
 		// When not logged in - only show public items.
@@ -220,15 +250,31 @@ public class NeedService extends ObjektService {
 		return needDao.findNeeds(needDaoQueryBean);
 	}
 
-	public ListWithRowCount findPersonLatestConnectionsNeedsSince(final Person pPerson, final Date pDate) {
+	/**
+	 * Returns new needs in the area (20km) of the user.
+	 * 
+	 * @param pPerson
+	 * @param pDate
+	 * @return
+	 */
+	public ListWithRowCount findPersonNeedsUpdatesSince(final Person pPerson, final Date pDate) {
 		Long[] connectionsIds = getPersonService().getPersonConnectionIds(pPerson, null);
-		if (connectionsIds == null || connectionsIds.length == 0) {
-			return ListWithRowCount.emptyListWithRowCount();
-		}
+		Long[] groupIds = getGroupService().getPersonGroupsIds(pPerson, null);
 		
 		final NeedDaoQueryBean needDaoQueryBean = new NeedDaoQueryBean();
 		needDaoQueryBean.setOwnerIds(connectionsIds);
 		needDaoQueryBean.setOwnerEnabled(Boolean.TRUE);
+		
+		// Exclude myself.
+		needDaoQueryBean.setOwnerIdsToExcludeForVisibilityIdsToForce(ListValueUtils.getIdsArray(pPerson.getId()));
+		needDaoQueryBean.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
+		needDaoQueryBean.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
+		needDaoQueryBean.setGroupIds(groupIds);
+		
+		needDaoQueryBean.setMaxDistanceKm(Double.valueOf(20.0));
+		needDaoQueryBean.setOriginLatitude(pPerson.getAddressHomeLatitude());
+		needDaoQueryBean.setOriginLongitude(pPerson.getAddressHomeLongitude());
+		
 		needDaoQueryBean.setCreationDateMin(pDate);
 		needDaoQueryBean.setOrderBy("creationDate");
 		needDaoQueryBean.setOrderByAscending(Boolean.FALSE);
@@ -303,7 +349,7 @@ public class NeedService extends ObjektService {
 			to.put(pConnection.getEmail(), pConnection.getEmail());
 			
 			Map<String, String> inlineResources = new HashMap<String, String>();
-			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 			
 			getMailManager().send(Configuration.getNoReplySenderName(), 
 					         Configuration.getNoReplyEmailAddress(),
@@ -324,6 +370,20 @@ public class NeedService extends ObjektService {
 	public Long createNeed(final Need pNeed, final Long pCategoryId, final Long pVisibilityId) {
 		pNeed.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
 		return createNeed(pNeed, pCategoryId);
+	}
+
+	public Long createNeed(final Need pNeed, final Long pCategoryId, final Long pVisibilityId, final List<Long> pAuthorizedGroupsIds) {
+		if (pAuthorizedGroupsIds != null) {
+			Set<Group> groups = new HashSet<Group>();
+			for (Long groupId: pAuthorizedGroupsIds) {
+				final Group group = getGroupService().findGroup(groupId);
+				// AC check.
+				getGroupService().assertCurrentUserOwnerOrAdministratorOrMemberOfGroup(group);
+				groups.add(group);
+			}
+			pNeed.setGroupsAuthorized(groups);
+		}
+		return createNeed(pNeed, pCategoryId, pVisibilityId);
 	}
 	
 	public Long createNeed(final Need pNeed, final Long pCategoryId) {
@@ -346,28 +406,19 @@ public class NeedService extends ObjektService {
 		pNeed.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
 		updateNeed(pNeed, pCategoryId);
 	}
-
-	/**
-	 * Returns the URL for image1 or null if no image1.
-	 * 
-	 * @param pNeed
-	 * @param pAuthorizeDocumentAccess
-	 * @return
-	 */
-	public String getNeedPicture1Src(final Need pNeed, final boolean pAuthorizeDocumentAccess) {
-		// No image on needs.
-		return null;		
-	}
 	
-	/**
-	 * Returns the URL for thumbnail1 or null if no thumbnail1.
-	 * 
-	 * @param pNeed
-	 * @param pAuthorizeDocumentAccess
-	 * @return
-	 */
-	public String getNeedThumbnail1Src(final Need pNeed, final boolean pAuthorizeDocumentAccess) {
-		// No image on needs.
-		return null;	
+	public void updateNeed(final Need pNeed, final Long pCategoryId, final Long pVisibilityId, final List<Long> pAuthorizedGroupsIds) {
+		assertCurrentUserAuthorizedToEdit(pNeed);
+		if (pAuthorizedGroupsIds != null) {
+			Set<Group> groups = new HashSet<Group>();
+			for (Long groupId: pAuthorizedGroupsIds) {
+				final Group group = getGroupService().findGroup(groupId);
+				// AC check.
+				getGroupService().assertCurrentUserOwnerOrAdministratorOrMemberOfGroup(group);
+				groups.add(group);
+			}
+			pNeed.setGroupsAuthorized(groups);
+		}
+		updateNeed(pNeed, pCategoryId, pVisibilityId);
 	}
 }

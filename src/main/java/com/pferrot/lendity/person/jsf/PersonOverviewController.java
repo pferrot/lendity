@@ -1,5 +1,6 @@
 package com.pferrot.lendity.person.jsf;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 import javax.faces.context.FacesContext;
@@ -13,6 +14,7 @@ import org.springframework.security.AccessDeniedException;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
 import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
+import com.pferrot.lendity.geolocation.GeoLocationUtils;
 import com.pferrot.lendity.geolocation.googlemaps.GoogleMapsUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Person;
@@ -21,9 +23,10 @@ import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.HtmlUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
+import com.pferrot.security.SecurityUtils;
 
 @ViewController(viewIds={"/public/person/personOverview.jspx"})
-public class PersonOverviewController { 
+public class PersonOverviewController implements Serializable { 
 	
 	private final static Log log = LogFactory.getLog(PersonOverviewController.class);
 	
@@ -177,5 +180,16 @@ public class PersonOverviewController {
 	
 	public boolean isShowLinksToObjekts() {
 		return true;
+	}
+
+	public String getDistanceLabel() {
+		return GeoLocationUtils.getApproxDistanceKm(PersonUtils.getCurrentPersonAddressHomeLatitude(),
+													PersonUtils.getCurrentPersonAddressHomeLongitude(),
+													getPerson().getAddressHomeLatitude(),
+													getPerson().getAddressHomeLongitude());
+	}
+	
+	public boolean isOwnProfile() {		
+		return SecurityUtils.isLoggedIn() && getPerson().getId().equals(PersonUtils.getCurrentPersonId());
 	}
 }

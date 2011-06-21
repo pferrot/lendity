@@ -79,6 +79,6 @@ public abstract class AbstractLendRequestsListController extends AbstractListCon
 	
 	public String getThumbnail1Src() {
 		final LendRequest lendRequest = (LendRequest)getTable().getRowData();
-		return getItemService().getItemThumbnail1Src(lendRequest.getItem(), true);
+		return getItemService().getThumbnail1Src(lendRequest.getItem(), true);
 	}
 }

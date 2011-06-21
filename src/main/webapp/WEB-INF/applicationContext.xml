@@ -174,7 +174,47 @@
 			</props>
 		</property>
 	</bean>
+
+	<!-- 
+	========================================================================================================================
+	IP TO COUNTRY - start
+	 -->
 	
+	<bean id="ipToCountryService" parent="baseTransactionProxy">
+		<property name="target" ref="ipToCountryServiceTarget" />
+	</bean>
+		
+	<bean id="ipToCountryServiceTarget" class="com.pferrot.lendity.iptocountry.IpToCountryService">
+		<property name="ipToCountryDao" ref="ipToCountryDao"/>
+	</bean>
+	
+	<bean id="ipToCountryDaoTarget" class="com.pferrot.lendity.dao.hibernate.IpToCountryDaoHibernateImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+
+	<bean id="ipToCountryDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target">
+			<ref local="ipToCountryDaoTarget"/>
+		</property>
+		<property name="proxyInterfaces">
+           <value>com.pferrot.lendity.dao.IpToCountryDao</value>
+         </property>		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 
+	IP TO COUNTRY - end
+	========================================================================================================================
+	 -->
+	 
 	<!-- 
 	========================================================================================================================
 	REGISTRATION - start
@@ -197,6 +237,7 @@
 		<property name="registrationController" ref="registrationController"/>
 		<property name="registrationService" ref="registrationService"/>
 		<property name="personService" ref="personService"/>
+		<property name="ipToCountryService" ref="ipToCountryService"/>		
 	</bean>
 	
 	<bean id="registrationStep2" class="com.pferrot.lendity.registration.jsf.RegistrationStep2"
@@ -690,6 +731,31 @@
 	      <property name="groupService" ref="groupService"/>
 	</bean>
 	
+	<bean id="groupRemoveMemberTooltipController" class="com.pferrot.lendity.group.jsf.GroupRemoveMemberTooltipController"
+	      scope="request">
+	      <property name="groupService" ref="groupService"/>
+	</bean>
+	
+	<bean id="groupRemoveAdminTooltipController" class="com.pferrot.lendity.group.jsf.GroupRemoveAdminTooltipController"
+	      scope="request">
+	      <property name="groupService" ref="groupService"/>
+	</bean>
+	
+	<bean id="groupAddAdminTooltipController" class="com.pferrot.lendity.group.jsf.GroupAddAdminTooltipController"
+	      scope="request">
+	      <property name="groupService" ref="groupService"/>
+	</bean>
+	
+	<bean id="groupBanPersonTooltipController" class="com.pferrot.lendity.group.jsf.GroupBanPersonTooltipController"
+	      scope="request">
+	      <property name="groupService" ref="groupService"/>
+	</bean>
+	
+	<bean id="groupUnbanPersonTooltipController" class="com.pferrot.lendity.group.jsf.GroupUnbanPersonTooltipController"
+	      scope="request">
+	      <property name="groupService" ref="groupService"/>
+	</bean>
+	
 	<bean id="groupAddController" class="com.pferrot.lendity.group.jsf.GroupAddController"
 	      scope="conversation.access">
 	      <property name="groupService" ref="groupService"/>
@@ -730,6 +796,12 @@
 	</bean>
 	
 	<bean id="groupAdministratorsListController" class="com.pferrot.lendity.group.jsf.GroupAdministratorsListController"
+	      scope="session">
+	      <property name="groupService" ref="groupService"/>
+	      <property name="personService" ref="personService"/>      
+	</bean>
+	
+	<bean id="groupBannedListController" class="com.pferrot.lendity.group.jsf.GroupBannedListController"
 	      scope="session">
 	      <property name="groupService" ref="groupService"/>
 	      <property name="personService" ref="personService"/>      
@@ -1080,6 +1152,7 @@
 	      scope="conversation.access">
 	      <property name="itemService" ref="itemService"/>
 	      <property name="needService" ref="needService"/>
+	      <property name="personService" ref="personService"/>
 	</bean>
 	
 	<bean id="itemEditController" class="com.pferrot.lendity.item.jsf.ItemEditController"
@@ -1193,6 +1266,7 @@
 		<property name="listValueDao" ref="listValueDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
 		<property name="personService" ref="personService"/>
+		<property name="groupService" ref="groupService"/>
 	</bean>
 	
 	<bean id="needOverviewController" class="com.pferrot.lendity.need.jsf.NeedOverviewController"
@@ -1203,11 +1277,13 @@
 	<bean id="needAddController" class="com.pferrot.lendity.need.jsf.NeedAddController"
 	      scope="conversation.access">
 	      <property name="needService" ref="needService"/>
+	      <property name="personService" ref="personService"/>
 	</bean>
 	
 	<bean id="needEditController" class="com.pferrot.lendity.need.jsf.NeedEditController"
 	      scope="conversation.access">
 	      <property name="needService" ref="needService"/>
+	      <property name="personService" ref="personService"/>
 	</bean>
 	
 	<bean id="myNeedsListController" class="com.pferrot.lendity.need.jsf.MyNeedsListController"
@@ -1390,9 +1466,9 @@
 	<bean id="emailSubscriberCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	    <property name="jobDetail" ref="emailSubscriberJob" />
 	    <!-- run every night at 3 AM -->
-	    <property name="cronExpression" value="0 0 3 * * ?" />
+<!--	    <property name="cronExpression" value="0 0 3 * * ?" />-->
 		<!-- Every minute -->
-<!--	    <property name="cronExpression" value="0 * * * * ?" />-->
+	    <property name="cronExpression" value="0 * * * * ?" />
 	</bean>
 	
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -1420,6 +1496,12 @@
 	         </entry>
 	         <entry key="connectionRequestService">
 	            <ref bean="connectionRequestService"/>
+	         </entry>
+	         <entry key="groupJoinRequestService">
+	            <ref bean="groupJoinRequestService"/>
+	         </entry>
+	         <entry key="lendTransactionService">
+	            <ref bean="lendTransactionService"/>
 	         </entry>
 	      </map>
 	   </property>

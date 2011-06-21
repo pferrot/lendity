@@ -45,7 +45,7 @@ body {
 	margin-left: 35px;
 	margin-bottom: 0;
 	padding-top: 10px;
-	color: #094e62;
+	color: #4c4847;
 	font-size: 215%;
 	font-weight: normal;
 	float: left;
@@ -149,7 +149,7 @@ body {
 /* Footer Styles */
 .gt-footer {
 	font-size: 93%;
-	color: #094e62;
+	color: #4c4847;
 	margin: 20px 0px;
 	text-align: center;
 	width: 100%;
@@ -192,7 +192,7 @@ body {
 /* Utility Box Styles */
 .gt-util-box {
 	margin-right: 20px;
-	color: #094e62;
+	color: #4c4847;
 	font-size: 93%;
 	float: right;
 	display: inline;
@@ -588,7 +588,7 @@ body {
 /* @group Nav */
 /* Navbar */
 .gt-navbar {
-	background-color: #094e62;
+	background-color: #4c4847;
 	margin-bottom: 0px;
 }
 
@@ -696,7 +696,7 @@ h1 {
 /* H2 */
 h2 {
 	font-size: 161.6%;
-	color: #094e62;
+	color: #4c4847;
 	margin-bottom: 10px;
 	font-weight: bold;
 }
@@ -837,7 +837,7 @@ ul li {
 }
 .gt-form label {
 	font-size: 100%;
-	color: #094e62;
+	color: #4c4847;
 	display: block;
 	margin-bottom: 3px;
 	font-weight: bold;

@@ -1,5 +1,7 @@
 package com.pferrot.lendity.evaluation.jsf;
 
+import javax.faces.context.FacesContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -10,6 +12,7 @@ import com.pferrot.lendity.jsf.list.AbstractListController;
 import com.pferrot.lendity.model.Evaluation;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.lendity.utils.UiUtils;
 
 
 public abstract class AbstractEvaluationsListController extends AbstractListController {
@@ -63,4 +66,11 @@ public abstract class AbstractEvaluationsListController extends AbstractListCont
 		final Evaluation eval = (Evaluation)getTable().getRowData();
 		return EvaluationUtils.getEvaluationLabel(eval.getScore());
 	}
+	
+	public String getCreationDateLabel() {
+		final Evaluation eval = (Evaluation)getTable().getRowData();
+		return UiUtils.getDateAsString(eval.getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+	}
+	
+	public abstract String getEvaluationTitleLabel();
 }

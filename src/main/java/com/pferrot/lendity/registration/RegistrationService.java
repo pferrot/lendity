@@ -132,7 +132,7 @@ public class RegistrationService {
 			to.put(pPerson.getEmail(), pPerson.getEmail());
 			
 			Map<String, String> inlineResources = new HashMap<String, String>();
-			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 			
 			mailManager.send(Configuration.getNoReplySenderName(), 
 					 		 Configuration.getNoReplyEmailAddress(),

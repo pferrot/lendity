@@ -103,7 +103,7 @@ public class ToLendEmailReminderJob extends TransactionalQuartzJobBean {
 		objects.put("siteUrl", Configuration.getRootURL());
 		
 		Map<String, String> inlineResources = new HashMap<String, String>();
-		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 		
 		// Mail to the lender.
 		if (pLendTransaction.getLender() != null &&

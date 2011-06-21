@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
@@ -336,6 +335,11 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 													PersonUtils.getCurrentPersonAddressHomeLongitude(),
 													objekt.getOwner().getAddressHomeLatitude(),
 													objekt.getOwner().getAddressHomeLongitude());
+	}
+	
+	public String getThumbnail1Src() {
+		final Objekt objekt = (Objekt)getTable().getRowData();
+		return getObjektService().getThumbnail1Src(objekt, true);
 	}
 	
 	protected abstract ObjektService getObjektService();

@@ -118,7 +118,7 @@ public class LostPasswordService {
 			to.put(person.getEmail(), person.getEmail());
 			
 			Map<String, String> inlineResources = new HashMap<String, String>();
-			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 			
 			mailManager.send(Configuration.getNoReplySenderName(), 
 							 Configuration.getNoReplyEmailAddress(),
@@ -183,7 +183,7 @@ public class LostPasswordService {
 		to.put(person.getEmail(), person.getEmail());
 		
 		Map<String, String> inlineResources = new HashMap<String, String>();
-		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 		
 		mailManager.send(Configuration.getNoReplySenderName(), 
 						 Configuration.getNoReplyEmailAddress(),

@@ -79,5 +79,7 @@
         
         <mapping class="com.pferrot.envers.model.UserRevisionEntity"/>
         
+        <mapping class="com.pferrot.lendity.model.IpToCountry"/>
+        
     </session-factory>
 </hibernate-configuration>

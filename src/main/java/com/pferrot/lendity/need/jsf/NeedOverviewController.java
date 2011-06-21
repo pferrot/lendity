@@ -91,7 +91,7 @@ public class NeedOverviewController extends AbstractObjektOverviewController {
 	}
 
 	public boolean isGotItAvailable() {
-		return !getNeed().getOwner().getId().equals(PersonUtils.getCurrentPersonId());
+		return SecurityUtils.isLoggedIn() && !getNeed().getOwner().getId().equals(PersonUtils.getCurrentPersonId());
 	}
 	
 	public String getGotItHref() {

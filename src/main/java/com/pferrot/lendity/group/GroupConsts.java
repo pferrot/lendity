@@ -6,6 +6,6 @@ public interface GroupConsts {
 	
 	int MAX_DESCRIPTION_SIZE = 1333;
 	
-	String DUMMY_GROUP_PICTURE_URL = "/public/images/icons/dummy_group.png";
-	String DUMMY_GROUP_THUMBNAIL_URL = "/public/images/icons/dummy_group_small.png";
+	String DUMMY_GROUP_PICTURE_URL = "/public/images/icons/group.gif";
+	String DUMMY_GROUP_THUMBNAIL_URL = "/public/images/icons/group_small.gif";
 }

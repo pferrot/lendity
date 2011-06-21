@@ -215,7 +215,9 @@
 					<h:outputLink id="requestLendNotAllowed2Link" value="#{searchItemsListController.requestLendNotAvailableUncompletedTransactionUrl}" rendered="#{searchItemsListController.requestLendNotAvailableUncompletedTransaction}">
 						<h:outputText id="requestLendNotAllowed2" value="#{messages.lendRequest_requestNotAllowedUncompletedTransaction}" rendered="#{searchItemsListController.requestLendNotAvailableUncompletedTransaction}"/>
 					</h:outputLink>
-					<h:outputText id="requestLendNotAllowed3" value="#{messages.lendRequest_requestNotAllowedNotLoggedIn}" rendered="#{searchItemsListController.requestLendNotAvailableNotLoggedIn}"/>
+					<h:outputLink id="requestLendNotAllowedNotLoggedInLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
+						<h:outputText id="requestLendNotAllowedNotLoggedIn" value="#{messages.lendRequest_requestNotAllowedNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
+					</h:outputLink>
 					<h:outputText id="requestLendNotAllowed4" value="#{messages.lendRequest_requestNotAllowedBannedPerson}" rendered="#{searchItemsListController.requestLendNotAvailableBannedPerson}"/>
 				</td>
 		    </tr>

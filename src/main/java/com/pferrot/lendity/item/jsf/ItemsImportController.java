@@ -144,6 +144,7 @@ public class ItemsImportController  {
 			final Item item = new Item();
 			item.setTitle(itemTitle);
 			item.setOwner(getItemService().getCurrentPerson());
+			item.setToGiveForFree(Boolean.FALSE);
 			getItemService().createItem(item, getCategoryId(), getVisibilityId());
 		}
 	}

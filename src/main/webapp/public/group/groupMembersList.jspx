@@ -32,6 +32,13 @@
 
 				
 <f:view>
+	<c:if test="#{authenticationController.loggedIn}" var="loggedInUser"/>
+	<c:if test="${loggedInUser}">
+		<ui:include src="../../auth/group/addGroupAdminTooltip.jspx"/>
+		<ui:include src="../../auth/group/removeGroupMemberTooltip.jspx"/>
+		<ui:include src="../../auth/group/removeAndBanGroupMemberTooltip.jspx"/>
+	</c:if>
+
 
 <h:outputLink value="#{groupMembersListController.groupUrl}">
 	<h:outputText styleClass="fontSizeSmall" value="#{groupMembersListController.groupTitle}"/>
@@ -77,6 +84,40 @@
 			</h:outputLink>
 		</h4>
 		</td></tr></table>
+    </h:column>
+    
+    <h:column id="column2">
+		<h:form id="form123">
+			<table border="0" class="gt-table-categories" width="150" align="right">
+				<tr>
+					<td>
+						
+							<span onclick="removeGroupMemberTooltip(this, '#{groupMembersListController.groupId}', '#{person.id}', 2)">
+								<h:outputText id="id_01" styleClass="stylishButton" value="#{messages.group_removeGroupMember}"/>
+							</span>
+						
+					</td>
+			    </tr>
+			    <tr>
+					<td>
+						
+							<span onclick="removeAndBanGroupMemberTooltip(this, '#{groupMembersListController.groupId}', '#{person.id}', 2)">
+								<h:outputText id="id_02" styleClass="stylishButton" value="#{messages.group_removeAndBanGroupMember}"/>
+							</span>
+						
+					</td>
+			    </tr>
+			    <tr>
+					<td>
+						
+							<span onclick="addGroupAdminTooltip(this, '#{groupMembersListController.groupId}', '#{person.id}', 2)">
+								<h:outputText id="id_03" styleClass="stylishButton" value="#{messages.group_addGroupAdmin}"/>
+							</span>
+						
+					</td>
+			    </tr>
+			</table>
+		</h:form>
     </h:column>
 
 </h:dataTable>

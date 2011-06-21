@@ -5,7 +5,9 @@ import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.type.Type;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -57,6 +59,7 @@ public abstract class ObjektDaoHibernateImpl extends HibernateDaoSupport {
 				c = Restrictions.or(c, c1);
 			}
 		}
+		boolean useSubquery = false;
 		if (pObjectDaoQueryBean.getGroupIds() != null && pObjectDaoQueryBean.getGroupIds().length > 0) {
 			criteria.createAlias("groupsAuthorized", "ga", CriteriaSpecification.LEFT_JOIN);
 			Criterion c1 = Restrictions.in("ga.id", pObjectDaoQueryBean.getGroupIds());
@@ -69,6 +72,8 @@ public abstract class ObjektDaoHibernateImpl extends HibernateDaoSupport {
 			else {
 				c = c1;
 			}
+			useSubquery = true;
+			criteria.setProjection(Projections.distinct(Projections.id()));
 		}
 		if (c != null) {
 			criteria.add(c);
@@ -144,6 +149,14 @@ public abstract class ObjektDaoHibernateImpl extends HibernateDaoSupport {
 			ownerCriteria.add(CustomSqlCriterion.sqlRestriction(sql, propertyNames, values, types));
 		}
 		
+		// See http://floledermann.blogspot.com/2007/10/solving-hibernate-criterias-distinct.html
+		// Comment from Roadrunner
+		if (useSubquery) {
+			final DetachedCriteria selectCriteria = DetachedCriteria.forClass(getObjectClass());
+			selectCriteria.add(Subqueries.propertyIn("id", criteria));
+			selectCriteria.createAlias("owner", "o");
+			return selectCriteria;
+		}
 		return criteria;	
 	}
 }

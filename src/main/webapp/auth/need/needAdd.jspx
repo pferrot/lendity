@@ -4,7 +4,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:o="http://myfaces.apache.org/orchestra"
-	xmlns:c="http://java.sun.com/jstl/core">
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<!-- params for page titles-->
 	<ui:define name="pageTitle"><h:outputText value="#{messages.need_needAddTitle}" /></ui:define>
@@ -78,6 +79,21 @@
 							    requiredMessage="#{messages.validation_requiredMessage}">
 								<f:selectItems value="#{needAddController.visibilitySelectItems}"/>
 							</h:selectOneMenu>
+						</div><!-- /form row -->
+						
+						<div class="gt-form-row gt-width-100">
+							<label><h:outputText value="#{messages.item_groupsAuthorized}"/></label>
+							<h:message styleClass="error" showSummary="true" showDetail="true"
+								for="authorizedGroups"></h:message>
+							<c:if test="#{needAddController.groupsAuthorizedAvailable}" var="groupAuthorizedAvailable"/>
+							<c:if test="${groupAuthorizedAvailable}">
+								<t:selectManyCheckbox id="authorizedGroups" value="#{needAddController.authorizedGroupsIds}" styleClass="gt-form-element-checkbox" layout="pageDirection" layoutWidth="1" converter="javax.faces.Long">
+									<f:selectItems value="#{needAddController.authorizedGroupsSelectItems}"/>
+								</t:selectManyCheckbox>
+							</c:if>
+							<c:if test="${not groupAuthorizedAvailable}">
+								<h:outputText value="#{messages.item_groupsAuthorizedNoneAvailable}"/>
+							</c:if>
 						</div><!-- /form row -->
 						
 						<!-- form row -->

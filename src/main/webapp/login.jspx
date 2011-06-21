@@ -126,10 +126,6 @@
 				
 				<c:if test="${not (loggedInUser)}">
 				
-				<!-- Registration Form -->
-				<!-- 
-				<h2 class="gt-form-head">#{messages.login_login}</h2>
-				 -->	
 			
 				<!-- login box -->
 				<div  class="gt-form gt-login-box">
@@ -178,12 +174,12 @@
 												var passwordDivHeight = $j('#passwordDiv').height();
 												if (usernameDivHeight > passwordDivHeight) {
 													$j('#passwordDiv').height(usernameDivHeight);
-												}
-												if ($j('#usernameError').html()) {
+												}												
+												if ($j('#usernameDiv').children("span.error")[0]) {
 													$j("#j_username").addClass('validationError');        
 												}
-												if ($j('#passwordError').html()) {
-													$j("#j_password").addClass('validationError');        
+												if ($j('#passwordDiv').children("span.error")[0]) {
+													$j("#j_password").addClass('validationError');
 												}
 											});
 										</script>	
@@ -250,7 +246,7 @@
 								
 								<span class="stylishButton" onclick="document.getElementById('homePublicForm').submit();"><h:outputText value="#{messages.geolocation_setLocation}"/></span>
 								<script type="text/javascript">
-									setupSearchField('location', null, '#{messages.geolocation_inputLocationExample}', false);
+									setupSearchField('location', '#{messages.geolocation_inputLocationExample}', false);
 								</script>
 								
 						</c:if>
@@ -315,7 +311,7 @@
 						<div style="position: absolute; top: 115px; left: 260px;" class="blackBox200"><h:outputText value="#{messages.login_boxNeeds}"/></div>
 						
 						<div style="position: absolute; top: 0px; left: 500px;">
-							<img src="#{facesContext.externalContext.requestContextPath}/public/images/login/objet_geo_200.png"/><br/>
+							<img src="#{facesContext.externalContext.requestContextPath}/public/images/login/objet_neighbour_200.png"/><br/>
 						</div>
 						<div style="position: absolute; top: 115px; left: 500px;" class="blackBox200"><h:outputText value="#{messages.login_boxPersons}"/></div>
 						

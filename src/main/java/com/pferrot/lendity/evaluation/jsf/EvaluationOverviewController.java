@@ -2,6 +2,8 @@ package com.pferrot.lendity.evaluation.jsf;
 
 import java.util.Locale;
 
+import javax.faces.context.FacesContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
@@ -16,6 +18,7 @@ import com.pferrot.lendity.model.Evaluation;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.HtmlUtils;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.lendity.utils.UiUtils;
 
 @ViewController(viewIds={"/auth/evaluation/evaluationOverview.jspx"})
 public class EvaluationOverviewController {
@@ -91,5 +94,23 @@ public class EvaluationOverviewController {
 	public String getEvaluationScoreLabel() {
 		final Integer score = getEvaluation().getScore();
 		return EvaluationUtils.getEvaluationLabel(score);
+	}
+	
+	public String getCreationDateLabel() {
+		return UiUtils.getDateAsString(getEvaluation().getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+	}
+	
+	public String getLendTransactionUrl() {
+		return JsfUtils.getFullUrl(PagesURL.LEND_TRANSACTION_OVERVIEW,
+				PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,
+				getEvaluation().getLendTransaction().getId().toString());
+	}
+	
+	public String getEvaluatorUrl() {
+		return PersonUtils.getPersonOverviewPageUrl(getEvaluation().getEvaluator().getId().toString());
+	}
+	
+	public String getEvaluatedUrl() {
+		return PersonUtils.getPersonOverviewPageUrl(getEvaluation().getEvaluated().getId().toString());
 	}
 }

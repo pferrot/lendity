@@ -95,44 +95,40 @@
 	<br/>
 	
 	<div class="gt-form-row gt-width-100">
-		<table class="buttonsTable"><tr><td>
+		<table class="buttonsTable"><tr>
 		
-		<h:commandButton styleClass="stylishButton"
-			value="#{messages.lendTransaction_buttonAccept}"
-			action="#{lendTransactionOverviewController.acceptRequest}"
-			rendered="#{lendTransactionOverviewController.acceptRequestAvailable}"/>
-		
-		<h:commandButton styleClass="stylishButton"
-			value="#{messages.lendTransaction_buttonRefuse}"
-			action="#{lendTransactionOverviewController.refuseRequest}"
-			rendered="#{lendTransactionOverviewController.refuseRequestAvailable}"/>
-		
-		<h:commandButton styleClass="stylishButton"
-			value="#{messages.lendTransaction_buttonLend}"
-			action="#{lendTransactionOverviewController.lend}"
-			rendered="#{lendTransactionOverviewController.lendAvailable}"/>
-		
-		<h:commandButton styleClass="stylishButton"
-			value="#{messages.lendTransaction_buttonGiveOrSell}"
-			action="#{lendTransactionOverviewController.giveOrSell}"
-			rendered="#{lendTransactionOverviewController.giveOrSellAvailable}"/>
-		
-		<h:commandButton styleClass="stylishButton"
-			value="#{messages.lendTransaction_buttonComplete}"
-			action="#{lendTransactionOverviewController.complete}"
-			rendered="#{lendTransactionOverviewController.completeAvailable}"/>
-		
-		<h:commandButton styleClass="stylishButton"
-			value="#{messages.lendTransaction_buttonCancel}"
-			action="#{lendTransactionOverviewController.cancel}"
-			rendered="#{lendTransactionOverviewController.cancelAvailable}"/>
-			
-		<h:outputLink styleClass="stylishButton"  
-		              value="#{lendTransactionOverviewController.evaluationAddHref}"
-		              rendered="#{lendTransactionOverviewController.evaluateAvailable}">
-        	<h:outputText value="#{messages.lendTransaction_buttonEvaluate}" rendered="#{lendTransactionOverviewController.evaluateAvailable}"/>
-         </h:outputLink>
-			
+		<td>		
+			<h:commandButton styleClass="stylishButton"
+				value="#{messages.lendTransaction_buttonAccept}"
+				action="#{lendTransactionOverviewController.acceptRequest}"
+				rendered="#{lendTransactionOverviewController.acceptRequestAvailable}"/>
+			<h:commandButton styleClass="stylishButton"
+				value="#{messages.lendTransaction_buttonLend}"
+				action="#{lendTransactionOverviewController.lend}"
+				rendered="#{lendTransactionOverviewController.lendAvailable}"/>
+			<h:commandButton styleClass="stylishButton"
+				value="#{messages.lendTransaction_buttonComplete}"
+				action="#{lendTransactionOverviewController.complete}"
+				rendered="#{lendTransactionOverviewController.completeAvailable}"/>
+			<h:outputLink styleClass="stylishButton"  
+			              value="#{lendTransactionOverviewController.evaluationAddHref}"
+			              rendered="#{lendTransactionOverviewController.evaluateAvailable}">
+	        	<h:outputText value="#{messages.lendTransaction_buttonEvaluate}" rendered="#{lendTransactionOverviewController.evaluateAvailable}"/>
+	        </h:outputLink>
+		</td><td>
+			<h:commandButton styleClass="stylishButton"
+				value="#{messages.lendTransaction_buttonRefuse}"
+				action="#{lendTransactionOverviewController.refuseRequest}"
+				rendered="#{lendTransactionOverviewController.refuseRequestAvailable}"/>
+			<h:commandButton styleClass="stylishButton"
+				value="#{messages.lendTransaction_buttonGiveOrSell}"
+				action="#{lendTransactionOverviewController.giveOrSell}"
+				rendered="#{lendTransactionOverviewController.giveOrSellAvailable}"/>
+		</td><td>
+			<h:commandButton styleClass="stylishButton"
+				value="#{messages.lendTransaction_buttonCancel}"
+				action="#{lendTransactionOverviewController.cancel}"
+				rendered="#{lendTransactionOverviewController.cancelAvailable}"/>			
 		</td></tr></table>
 		
 		<table class="buttonsTable"><tr><td>

@@ -73,7 +73,12 @@ public class ConnectionRequestService {
 		if (!SecurityUtils.isLoggedIn()) {
 			throw new SecurityException("Not logged in");
 		}
-		return connectionRequestDao.countConnectionRequests(new Long[]{PersonUtils.getCurrentPersonId()}, null, null, null, null,
+		return countUserPendingConnectionRequests(PersonUtils.getCurrentPersonId());
+	}
+	
+	public long countUserPendingConnectionRequests(final Long pPersonId) {
+		CoreUtils.assertNotNull(pPersonId);
+		return connectionRequestDao.countConnectionRequests(new Long[]{pPersonId}, null, null, null, null,
 				Boolean.FALSE, null, null);
 	}
 	
@@ -240,7 +245,7 @@ public class ConnectionRequestService {
 			to.put(pConnection.getEmail(), pConnection.getEmail());
 			
 			Map<String, String> inlineResources = new HashMap<String, String>();
-			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 			
 			mailManager.send(Configuration.getNoReplySenderName(), 
 					         Configuration.getNoReplyEmailAddress(),
@@ -506,7 +511,7 @@ public class ConnectionRequestService {
 		to.put(pConnectionRequest.getRequester().getEmail(), pConnectionRequest.getRequester().getEmail());
 		
 		Map<String, String> inlineResources = new HashMap<String, String>();
-		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 		
 		mailManager.send(Configuration.getNoReplySenderName(), 
 						 Configuration.getNoReplyEmailAddress(),

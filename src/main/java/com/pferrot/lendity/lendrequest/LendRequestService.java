@@ -211,7 +211,7 @@ public class LendRequestService {
 			to.put(pItem.getOwner().getEmail(), pItem.getOwner().getEmail());
 			
 			Map<String, String> inlineResources = new HashMap<String, String>();
-			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 			
 			mailManager.send(Configuration.getNoReplySenderName(), 
 					         Configuration.getNoReplyEmailAddress(),
@@ -379,7 +379,7 @@ public class LendRequestService {
 		to.put(pLendRequest.getRequester().getEmail(), pLendRequest.getRequester().getEmail());
 		
 		Map<String, String> inlineResources = new HashMap<String, String>();
-		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 		
 		mailManager.send(Configuration.getNoReplySenderName(), 
 		         		 Configuration.getNoReplyEmailAddress(),

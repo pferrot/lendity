@@ -53,6 +53,7 @@ public interface PagesURL {
 	
 	String REGISTRATION = "/public/registration/registration.faces";
 	String REGISTRATION_VALIDATION = "/public/registration/registrationValidation.faces";
+	String REGISTRATION_NOT_IN_YOUR_COUNTRY = "/public/registration/registrationNotInYourCountry.faces";
 	
 	// REGISTRATION - end
 	/////////////////////////////////////////////////////////////////////////
@@ -137,6 +138,8 @@ public interface PagesURL {
 	String GROUP_ADMINISTRATORS_LIST = "/public/group/groupAdministratorsList.faces";
 	String GROUP_ADMINISTRATORS_LIST_PARAM_GROUP_ID = GROUP_OVERVIEW_PARAM_GROUP_ID;
 	
+	String GROUP_BANNED_LIST = "/public/group/groupBannedList.faces";
+	String GROUP_BANNED_LIST_PARAM_GROUP_ID = GROUP_OVERVIEW_PARAM_GROUP_ID;
 	
 	// GROUP - end
 	/////////////////////////////////////////////////////////////////////////

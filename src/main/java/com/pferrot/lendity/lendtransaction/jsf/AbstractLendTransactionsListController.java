@@ -215,7 +215,7 @@ public abstract class AbstractLendTransactionsListController extends AbstractLis
 			return null;
 		}
 		else {
-			return getItemService().getItemThumbnail1Src(lendTransaction.getItem(), true);
+			return getItemService().getThumbnail1Src(lendTransaction.getItem(), true);
 		}
 	}
 

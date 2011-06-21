@@ -116,7 +116,7 @@
 			</tr>   
 			<tr>
 				<th>
-					<h:outputText id="borrowerTitle" value="#{messages.item_lentTo}:" />
+					<h:outputText id="borrowerTitle" value="#{messages.lendTransaction_requester}:" />
 				</th>
 				<td>
 					<h:outputLink id="borrowerLink" value="#{myLendTransactionsForItemListController.borrowerOverviewHref}" rendered="#{myLendTransactionsForItemListController.borrowerHrefAvailable}">

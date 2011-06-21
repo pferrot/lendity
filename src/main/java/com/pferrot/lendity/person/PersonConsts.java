@@ -11,8 +11,8 @@ public interface PersonConsts {
 	String CURRENT_PERSON_ADDRESS_HOME_LATITUDE_SESSION_ATTRIBUTE_NAME = "currentPersonAddressHomeLatitude";
 	String CURRENT_PERSON_ADDRESS_HOME_LONGITUDE_SESSION_ATTRIBUTE_NAME = "currentPersonAddressHomeLongitude";
 	
-	String DUMMY_PROFILE_PICTURE_URL = "/public/images/icons/dummy_user.png";
-	String DUMMY_PROFILE_THUMBNAIL_URL = "/public/images/icons/dummy_user_small.png";
+	String DUMMY_PROFILE_PICTURE_URL = "/public/images/icons/user.gif";
+	String DUMMY_PROFILE_THUMBNAIL_URL = "/public/images/icons/user_small.gif";
 	
 	int MAX_ADDRESS_SIZE = 300;
 }

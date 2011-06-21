@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
+import org.hibernate.id.IdentityGenerator.GetGeneratedKeysDelegate;
 
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.model.Item;
@@ -71,7 +72,7 @@ public class ItemAddController extends AbstractItemAddEditController {
 		item.setToGiveForFree(getToGiveForFree());
 		item.setSalePrice(getSalePrice());
 				
-		return getItemService().createItem(item, getCategoryId(), getVisibilityId(), getNeed());
+		return getItemService().createItem(item, getCategoryId(), getVisibilityId(), getNeed(), getAuthorizedGroupsIds());
 	}
 	
 	@Override

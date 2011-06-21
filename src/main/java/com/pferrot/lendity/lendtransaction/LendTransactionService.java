@@ -275,6 +275,7 @@ public class LendTransactionService {
 	}
 
 	public long countLendTransactionsWaitingForInput(final Long pPersonId) {
+		CoreUtils.assertNotNull(pPersonId);
 		return lendTransactionDao.countLendTransactionsWaitingForInput(pPersonId);
 	}
 
@@ -520,7 +521,7 @@ public class LendTransactionService {
 			to.put(borrower.getEmail(), borrower.getEmail());
 			
 			Map<String, String> inlineResources = new HashMap<String, String>();
-			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 			
 			mailManager.send(Configuration.getNoReplySenderName(), 
 					         Configuration.getNoReplyEmailAddress(),
@@ -608,7 +609,7 @@ public class LendTransactionService {
 		       isCurrentUserLender &&
 		        pLendTransaction.getItem().isToGiveOrSell() &&
 				pLendTransaction.getBorrower() != null &&
-				((!pLendTransaction.getItem().isBorrowed() && (LendTransactionStatus.INITIALIZED_LABEL_CODE.equals(statusCode) || LendTransactionStatus.OPENED_LABEL_CODE.equals(statusCode))) ||
+				((!pLendTransaction.getItem().isBorrowed() && LendTransactionStatus.OPENED_LABEL_CODE.equals(statusCode)) ||
 				 LendTransactionStatus.IN_PROGRESS_LABEL_CODE.equals(statusCode));
 	}
 

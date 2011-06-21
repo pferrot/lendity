@@ -65,18 +65,15 @@ function editPictureOnChange(pContextPath) {
  * - the default content is added when leaving the field and it is empty
  * - the form is submitted when pressing enter
  */
-function setupSearchField(pFieldId, pClearSearchId, pText, pColorBackground) {
+function setupSearchField(pFieldId, pText, pColorBackground) {
   $j(document).ready(function() {
     if ($j("#" + pFieldId).val() == '' ||
         $j("#" + pFieldId).val() == pText) {
       $j("#" + pFieldId).val(pText);
       $j("#" + pFieldId).addClass('grayColor');
-      //$j("#" + pClearSearchId).hide();
+      $j("#" + pFieldId).attr('wasEmpty', 'true');
     }
     else {
-      if (pClearSearchId) {
-        $j("#" + pClearSearchId).show();
-      }
       if (pColorBackground) {
     	  $j("#" + pFieldId).addClass("filterActive");
       }
@@ -527,6 +524,281 @@ function submitDeleteGroup() {
  */
 function cancelDeleteGroup() {
 	hideDeleteGroupTooltip(mDeleteGroupTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * REMOVE GROUP MEMBER
+ * 
+ ***************************************************************************************************/
+function hideRemoveGroupMemberTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#removeGroupMemberForm'), $j('#removeGroupMemberDiv'));
+}
+
+function removeGroupMemberQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#removeGroupMemberDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip that is used to lend an group.
+ */
+var mRemoveGroupMemberTooltip;
+var mRemoveGroupMemberTarget;
+function removeGroupMemberTooltip(pTooltipTarget, pGroupID, pPersonID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideRemoveGroupMemberTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('removeGroupMemberForm').reset();
+	    // Hide error messages if any.
+	    $j('#removeGroupMemberForm').find('input').removeClass('validationError');
+	    // Set the correct groupID.
+		$j('#removeGroupMemberGroupId').val(pGroupID);
+		// Set the correct groupID.
+		$j('#removeGroupMemberPersonId').val(pPersonID);
+		// Set the correct redirectID.
+		$j('#removeGroupMemberRedirectId').val(pRedirectID);
+		
+	  	mRemoveGroupMemberTooltipTarget = pTooltipTarget;
+	  	mRemoveGroupMemberTooltip = createFormTooltip($j(pTooltipTarget), $j('#removeGroupMemberForm'), removeGroupMemberQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip when an group is back.
+ */
+function submitRemoveGroupMember() {	
+	document.getElementById("removeGroupMemberActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the lend back group tooltip.
+ */
+function cancelRemoveGroupMember() {
+	hideRemoveGroupMemberTooltip(mRemoveGroupMemberTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * ADD GROUP ADMIN MEMBER
+ * 
+ ***************************************************************************************************/
+function hideAddGroupAdminTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#addGroupAdminForm'), $j('#addGroupAdminDiv'));
+}
+
+function addGroupAdminQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#addGroupAdminDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip that is used to lend an group.
+ */
+var mAddGroupAdminTooltip;
+var mAddGroupAdminTarget;
+function addGroupAdminTooltip(pTooltipTarget, pGroupID, pPersonID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideAddGroupAdminTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('addGroupAdminForm').reset();
+	    // Hide error messages if any.
+	    $j('#addGroupAdminForm').find('input').removeClass('validationError');
+	    // Set the correct groupID.
+		$j('#addGroupAdminGroupId').val(pGroupID);
+		// Set the correct groupID.
+		$j('#addGroupAdminPersonId').val(pPersonID);
+		// Set the correct redirectID.
+		$j('#addGroupAdminRedirectId').val(pRedirectID);
+		
+	  	mAddGroupAdminTooltipTarget = pTooltipTarget;
+	  	mAddGroupAdminTooltip = createFormTooltip($j(pTooltipTarget), $j('#addGroupAdminForm'), addGroupAdminQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip when an group is back.
+ */
+function submitAddGroupAdmin() {	
+	document.getElementById("addGroupAdminActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the lend back group tooltip.
+ */
+function cancelAddGroupAdmin() {
+	hideAddGroupAdminTooltip(mAddGroupAdminTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * REMOVE GROUP ADMIN MEMBER
+ * 
+ ***************************************************************************************************/
+function hideRemoveGroupAdminTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#removeGroupAdminForm'), $j('#removeGroupAdminDiv'));
+}
+
+function removeGroupAdminQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#removeGroupAdminDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip that is used to lend an group.
+ */
+var mRemoveGroupAdminTooltip;
+var mRemoveGroupAdminTarget;
+function removeGroupAdminTooltip(pTooltipTarget, pGroupID, pPersonID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideRemoveGroupAdminTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('removeGroupAdminForm').reset();
+	    // Hide error messages if any.
+	    $j('#removeGroupAdminForm').find('input').removeClass('validationError');
+	    // Set the correct groupID.
+		$j('#removeGroupAdminGroupId').val(pGroupID);
+		// Set the correct groupID.
+		$j('#removeGroupAdminPersonId').val(pPersonID);
+		// Set the correct redirectID.
+		$j('#removeGroupAdminRedirectId').val(pRedirectID);
+		
+	  	mRemoveGroupAdminTooltipTarget = pTooltipTarget;
+	  	mRemoveGroupAdminTooltip = createFormTooltip($j(pTooltipTarget), $j('#removeGroupAdminForm'), removeGroupAdminQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip when an group is back.
+ */
+function submitRemoveGroupAdmin() {	
+	document.getElementById("removeGroupAdminActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the lend back group tooltip.
+ */
+function cancelRemoveGroupAdmin() {
+	hideRemoveGroupAdminTooltip(mRemoveGroupAdminTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * REMOVE AND BAN GROUP MEMBER
+ * 
+ ***************************************************************************************************/
+function hideRemoveAndBanGroupMemberTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#removeAndBanGroupMemberForm'), $j('#removeAndBanGroupMemberDiv'));
+}
+
+function removeAndBanGroupMemberQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#removeAndBanGroupMemberDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip that is used to lend an group.
+ */
+var mRemoveAndBanGroupMemberTooltip;
+var mRemoveAndBanGroupMemberTarget;
+function removeAndBanGroupMemberTooltip(pTooltipTarget, pGroupID, pPersonID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideRemoveAndBanGroupMemberTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('removeAndBanGroupMemberForm').reset();
+	    // Hide error messages if any.
+	    $j('#removeAndBanGroupMemberForm').find('input').removeClass('validationError');
+	    // Set the correct groupID.
+		$j('#removeAndBanGroupMemberGroupId').val(pGroupID);
+		// Set the correct groupID.
+		$j('#removeAndBanGroupMemberPersonId').val(pPersonID);
+		// Set the correct redirectID.
+		$j('#removeAndBanGroupMemberRedirectId').val(pRedirectID);
+		
+	  	mRemoveAndBanGroupMemberTooltipTarget = pTooltipTarget;
+	  	mRemoveAndBanGroupMemberTooltip = createFormTooltip($j(pTooltipTarget), $j('#removeAndBanGroupMemberForm'), removeAndBanGroupMemberQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip when an group is back.
+ */
+function submitRemoveAndBanGroupMember() {	
+	document.getElementById("removeAndBanGroupMemberActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the lend back group tooltip.
+ */
+function cancelRemoveAndBanGroupMember() {
+	hideRemoveAndBanGroupMemberTooltip(mRemoveAndBanGroupMemberTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * UNBAN FROM GROUP
+ * 
+ ***************************************************************************************************/
+function hideUnbanFromGroupTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#unbanFromGroupForm'), $j('#unbanFromGroupDiv'));
+}
+
+function unbanFromGroupQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#unbanFromGroupDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip that is used to lend an group.
+ */
+var mUnbanFromGroupTooltip;
+var mUnbanFromGroupTarget;
+function unbanFromGroupTooltip(pTooltipTarget, pGroupID, pPersonID, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideUnbanFromGroupTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('unbanFromGroupForm').reset();
+	    // Hide error messages if any.
+	    $j('#unbanFromGroupForm').find('input').removeClass('validationError');
+	    // Set the correct groupID.
+		$j('#unbanFromGroupGroupId').val(pGroupID);
+		// Set the correct groupID.
+		$j('#unbanFromGroupPersonId').val(pPersonID);
+		// Set the correct redirectID.
+		$j('#unbanFromGroupRedirectId').val(pRedirectID);
+		
+	  	mUnbanFromGroupTooltipTarget = pTooltipTarget;
+	  	mUnbanFromGroupTooltip = createFormTooltip($j(pTooltipTarget), $j('#unbanFromGroupForm'), unbanFromGroupQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip when an group is back.
+ */
+function submitUnbanFromGroup() {	
+	document.getElementById("unbanFromGroupActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the lend back group tooltip.
+ */
+function cancelUnbanFromGroup() {
+	hideUnbanFromGroupTooltip(mUnbanFromGroupTooltipTarget);
 }
 
 /***************************************************************************************************

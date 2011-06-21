@@ -102,6 +102,13 @@ public class GroupService {
 	public void updateGroup(final Group pGroup) {
 		groupDao.updateGroup(pGroup);
 	}
+	
+	public void updateGroupAddMember(final Long pGroupId, final Long pMemberToAddId) throws GroupException {
+		CoreUtils.assertNotNull(pGroupId);
+		CoreUtils.assertNotNull(pMemberToAddId);
+		
+		updateGroupAddMember(findGroup(pGroupId), getPersonService().findPerson(pMemberToAddId));
+	}
 
 	public void updateGroupAddMember(final Group pGroup, final Person pMemberToAdd) throws GroupException {
 		CoreUtils.assertNotNull(pGroup);
@@ -109,42 +116,116 @@ public class GroupService {
 		
 		assertCurrentUserAuthorizedToAddMember(pGroup, pMemberToAdd);
 		
-		if (!pMemberToAdd.isEnabled()) {
-			throw new GroupException("Person is not enabled: " + pMemberToAdd);
-		}
-		
-		if (isUserOwnerOrAdministratorOrMemberOfGroup(pMemberToAdd, pGroup)) {
-			throw new GroupException("Person (" + pMemberToAdd + ") is already owner or admin or member of group (" + pGroup + ")");
-		}
-		
-		if (!Boolean.FALSE.equals(pGroup.getValidateMembership())) {
-			throw new GroupException("New memberships must be validated for group " + pGroup);
-		}
-		
-		if (isUserBannedByGroup(pMemberToAdd, pGroup)) {
-			throw new GroupException("Person " + pMemberToAdd + " is banned by group " + pGroup);
-		}
-		
 		pGroup.addMember(pMemberToAdd);
 		groupDao.updateGroup(pGroup);
-		
-//		pPerson.addGroupMember(pGroup);
-//		getPersonService().updatePerson(pPerson);	
 	}
-
-	public void updateGroupRemoveMemberAndAdministrator(final Group pGroup, final Person pMemberToRemove) throws GroupException {
+	
+	public void updateGroupRemoveMember(final Long pGroupId, final Long pMemberToRemoveId) throws GroupException {
+		CoreUtils.assertNotNull(pGroupId);
+		CoreUtils.assertNotNull(pMemberToRemoveId);
+		
+		updateGroupRemoveMember(findGroup(pGroupId), getPersonService().findPerson(pMemberToRemoveId));
+	}
+	
+	public void updateGroupRemoveMember(final Group pGroup, final Person pMemberToRemove) throws GroupException {
 		CoreUtils.assertNotNull(pGroup);
 		CoreUtils.assertNotNull(pMemberToRemove);
 		
 		assertCurrentUserAuthorizedToRemoveMember(pGroup, pMemberToRemove);
 		
+		pGroup.removeMember(pMemberToRemove);
+		groupDao.updateGroup(pGroup);
+	}
+	
+	public void updateGroupUnbanPerson(final Long pGroupId, final Long pPersonToUnbanId) throws GroupException {
+		CoreUtils.assertNotNull(pGroupId);
+		CoreUtils.assertNotNull(pPersonToUnbanId);
+		
+		updateGroupUnbanPerson(findGroup(pGroupId), getPersonService().findPerson(pPersonToUnbanId));
+	}
+	
+	public void updateGroupUnbanPerson(final Group pGroup, final Person pPersonToUnban) throws GroupException {
+		CoreUtils.assertNotNull(pGroup);
+		CoreUtils.assertNotNull(pPersonToUnban);
+		
+		assertCurrentUserAuthorizedToUnbanPerson(pGroup, pPersonToUnban);
+		
+		pGroup.removeBannedPerson(pPersonToUnban);
+		
+		groupDao.updateGroup(pGroup);
+	}
+	
+	public void updateGroupBanPerson(final Long pGroupId, final Long pPersonToBanId) throws GroupException {
+		CoreUtils.assertNotNull(pGroupId);
+		CoreUtils.assertNotNull(pPersonToBanId);
+		
+		updateGroupBanPerson(findGroup(pGroupId), getPersonService().findPerson(pPersonToBanId));
+	}
+
+	public void updateGroupBanPerson(final Group pGroup, final Person pPersonToBan) throws GroupException {
+		CoreUtils.assertNotNull(pGroup);
+		CoreUtils.assertNotNull(pPersonToBan);
+		
+		assertCurrentUserAuthorizedToBanPerson(pGroup, pPersonToBan);		
+		
+		pGroup.removeAdministrator(pPersonToBan);
+		pGroup.removeMember(pPersonToBan);
+		pGroup.addBannedPerson(pPersonToBan);
+		
+		groupDao.updateGroup(pGroup);
+	}
+	
+	public void updateGroupRemoveAdmin(final Long pGroupId, final Long pAdminToRemoveId) throws GroupException {
+		CoreUtils.assertNotNull(pGroupId);
+		CoreUtils.assertNotNull(pAdminToRemoveId);
+		
+		updateGroupRemoveAdmin(findGroup(pGroupId), getPersonService().findPerson(pAdminToRemoveId));
+	}
+	
+	public void updateGroupRemoveAdmin(final Group pGroup, final Person pAdminToRemove) throws GroupException {
+		CoreUtils.assertNotNull(pGroup);
+		CoreUtils.assertNotNull(pAdminToRemove);
+		
+		assertCurrentUserAuthorizedToRemoveAdmin(pGroup, pAdminToRemove);
+		
+		pGroup.removeAdministrator(pAdminToRemove);
+		groupDao.updateGroup(pGroup);
+	}
+
+	public void updateGroupAddAdmin(final Long pGroupId, final Long pMemberToAddAdminToId) throws GroupException {
+		CoreUtils.assertNotNull(pGroupId);
+		CoreUtils.assertNotNull(pMemberToAddAdminToId);
+		
+		updateGroupAddAdmin(findGroup(pGroupId), getPersonService().findPerson(pMemberToAddAdminToId));
+	}	
+	
+	public void updateGroupAddAdmin(final Group pGroup, final Person pMemberToAddAdminTo) throws GroupException {
+		CoreUtils.assertNotNull(pGroup);
+		CoreUtils.assertNotNull(pMemberToAddAdminTo);
+		
+		assertCurrentUserAuthorizedToAddAdmin(pGroup, pMemberToAddAdminTo);
+		
+		pGroup.removeMember(pMemberToAddAdminTo);
+		pGroup.addAdministrator(pMemberToAddAdminTo);
+		groupDao.updateGroup(pGroup);
+	}
+
+	public void updateGroupRemoveMemberAndAdministrator(final Long pGroupId, final Long pMemberToRemoveId) throws GroupException {
+		CoreUtils.assertNotNull(pGroupId);
+		CoreUtils.assertNotNull(pMemberToRemoveId);
+		
+		updateGroupRemoveMemberAndAdministrator(findGroup(pGroupId), getPersonService().findPerson(pMemberToRemoveId));
+	}
+	
+	public void updateGroupRemoveMemberAndAdministrator(final Group pGroup, final Person pMemberToRemove) throws GroupException {
+		CoreUtils.assertNotNull(pGroup);
+		CoreUtils.assertNotNull(pMemberToRemove);
+		
+		assertCurrentUserAuthorizedToRemoveMember(pGroup, pMemberToRemove);		
 						
 		pGroup.removeMember(pMemberToRemove);
 		pGroup.removeAdministrator(pMemberToRemove);
 		groupDao.updateGroup(pGroup);
-		
-//		pPerson.addGroupMember(pGroup);
-//		getPersonService().updatePerson(pPerson);	
 	}
 	
 	public void updateGroupAddCurrentUserAsMember(final Group pGroup) throws GroupException {
@@ -304,6 +385,18 @@ public class GroupService {
 		return result;
 	}
 
+	public ListWithRowCount findGroupBanned(final Long pGroupId, final int pFirstResult, final int pMaxResults) {
+		CoreUtils.assertNotNull(pGroupId);
+		
+		return personDao.findGroupBanned(pGroupId, pFirstResult, pMaxResults);
+	}
+	
+	public long countGroupBanned(final Long pGroupId) {
+		CoreUtils.assertNotNull(pGroupId);
+		
+		return personDao.countGroupBanned(pGroupId);
+	}
+	
 	public ListWithRowCount findGroupMembers(final Long pGroupId, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNull(pGroupId);
 		
@@ -638,38 +731,111 @@ public class GroupService {
 		}
 	}
 
-	private boolean isUserAuthorizedToAddMember(Person pUser, Group pGroup, Person pMemberToAdd) {
-		return pUser.isEnabled() && pMemberToAdd.isEnabled() &&
+	public boolean isUserAuthorizedToAddMember(Person pUser, Group pGroup, Person pMemberToAdd) {
+		return pUser.isEnabled() &&
+			   pMemberToAdd.isEnabled() &&
+			!isUserOwnerOrAdministratorOrMemberOfGroup(pMemberToAdd, pGroup) &&
+			!isUserBannedByGroup(pMemberToAdd, pGroup) &&
 			((Boolean.FALSE.equals(pGroup.getValidateMembership()) && pUser.equals(pMemberToAdd)) ||
 			 isUserAdministratorOfGroup(pUser, pGroup) ||
 			 isUserOwnerOfGroup(pUser, pGroup));
 	}
 	
-	private void assertUserAuthorizedToAddMember(final Person pUser, final Group pGroup, final Person pMemberToAdd) {
+	public void assertUserAuthorizedToAddMember(final Person pUser, final Group pGroup, final Person pMemberToAdd) {
 		if (!isUserAuthorizedToAddMember(pUser, pGroup, pMemberToAdd)) {
 			throw new SecurityException("Current user is not authorized to remove member");
 		}		
 	}
 	
-	private void assertCurrentUserAuthorizedToAddMember(final Group pGroup, final Person pMemberToAdd) {
+	public void assertCurrentUserAuthorizedToAddMember(final Group pGroup, final Person pMemberToAdd) {
 		assertUserAuthorizedToAddMember(getPersonService().getCurrentPerson(), pGroup, pMemberToAdd);		
 	}
 	
-	private boolean isUserAuthorizedToRemoveMember(final Person pUser, final Group pGroup, final Person pMemberToAdd) {
-		return pUser.isEnabled() && pMemberToAdd.isEnabled() &&
-			(pUser.equals(pMemberToAdd) ||
+	public boolean isUserAuthorizedToRemoveMember(final Person pUser, final Group pGroup, final Person pMemberToRemove) {
+		return pUser.isEnabled() &&
+		       pMemberToRemove.isEnabled() &&
+			(pUser.equals(pMemberToRemove) ||
 			 isUserAdministratorOfGroup(pUser, pGroup) ||
-			 isUserOwnerOfGroup(pUser, pGroup));
+			 isUserOwnerOfGroup(pUser, pGroup)) &&
+			!isUserOwnerOfGroup(pMemberToRemove, pGroup);
 	}
 	
-	private void assertUserAuthorizedToRemoveMember(final Person pUser, final Group pGroup, final Person pMemberToAdd) {
-		if (!isUserAuthorizedToRemoveMember(pUser, pGroup, pMemberToAdd)) {
+	public void assertUserAuthorizedToRemoveMember(final Person pUser, final Group pGroup, final Person pMemberToRemove) {
+		if (!isUserAuthorizedToRemoveMember(pUser, pGroup, pMemberToRemove)) {
 			throw new SecurityException("Current user is not authorized to remove member");
 		}		
 	}
 	
-	private void assertCurrentUserAuthorizedToRemoveMember(final Group pGroup, final Person pMemberToAdd) {
-		assertUserAuthorizedToRemoveMember(getPersonService().getCurrentPerson(), pGroup, pMemberToAdd);		
+	public void assertCurrentUserAuthorizedToRemoveMember(final Group pGroup, final Person pMemberToRemove) {
+		assertUserAuthorizedToRemoveMember(getPersonService().getCurrentPerson(), pGroup, pMemberToRemove);		
+	}
+	
+	public boolean isUserAuthorizedToRemoveAdmin(Person pUser, Group pGroup, Person pPersonToRemoveAdminFrom) {
+		return isUserAuthorizedToRemoveMember(pUser, pGroup, pPersonToRemoveAdminFrom);
+	}
+	
+	public void assertUserAuthorizedToRemoveAdmin(final Person pUser, final Group pGroup, final Person pPersonToRemoveAdminFrom) {
+		if (!isUserAuthorizedToRemoveAdmin(pUser, pGroup, pPersonToRemoveAdminFrom)) {
+			throw new SecurityException("User " + pUser.getId() + " is not authorized to remove admin person " + pPersonToRemoveAdminFrom.getId() + " from group " + pGroup.getId());
+		}
+	}
+
+	public void assertCurrentUserAuthorizedToRemoveAdmin(final Group pGroup, final Person pPersonToRemoveAdminFrom) {
+		assertUserAuthorizedToRemoveAdmin(getPersonService().getCurrentPerson(), pGroup, pPersonToRemoveAdminFrom);		
+	}
+	
+	public boolean isUserAuthorizedToAddAdmin(final Person pUser, final Group pGroup, final Person pAdminToAdd) {
+		return pUser.isEnabled() &&
+			   pAdminToAdd.isEnabled() &&
+			(isUserAdministratorOfGroup(pUser, pGroup) ||
+			 isUserOwnerOfGroup(pUser, pGroup)) &&
+			!isUserBannedByGroup(pAdminToAdd, pGroup) &&
+			!isUserOwnerOfGroup(pAdminToAdd, pGroup);
+	}
+	
+	public void assertUserAuthorizedToAddAdmin(final Person pUser, final Group pGroup, final Person pPersonToAddAdminTo) {
+		if (!isUserAuthorizedToAddAdmin(pUser, pGroup, pPersonToAddAdminTo)) {
+			throw new SecurityException("User " + pUser.getId() + " is not authorized to add admin person " + pPersonToAddAdminTo.getId() + " to group " + pGroup.getId());
+		}
+	}
+	
+	public void assertCurrentUserAuthorizedToAddAdmin(final Group pGroup, final Person pPersonToAddAdminTo) {
+		assertUserAuthorizedToAddAdmin(getPersonService().getCurrentPerson(), pGroup, pPersonToAddAdminTo);		
+	}
+	
+	public boolean isUserAuthorizedToUnbanPerson(final Person pUser, final Group pGroup, final Person pPersonToUnban) {
+		return pUser.isEnabled() &&
+		       pPersonToUnban.isEnabled() &&
+			(isUserAdministratorOfGroup(pUser, pGroup) ||
+			 isUserOwnerOfGroup(pUser, pGroup));
+	}
+	
+	public void assertUserAuthorizedToUnbanPerson(final Person pUser, final Group pGroup, final Person pPersonToUnban) {
+		if (!isUserAuthorizedToUnbanPerson(pUser, pGroup, pPersonToUnban)) {
+			throw new SecurityException("User " + pUser.getId() + " is not authorized to unban person " + pPersonToUnban.getId() + " from group " + pGroup.getId());
+		}		
+	}
+	
+	public void assertCurrentUserAuthorizedToUnbanPerson(final Group pGroup, final Person pPersonToUnban) {
+		assertUserAuthorizedToUnbanPerson(getPersonService().getCurrentPerson(), pGroup, pPersonToUnban);		
+	}
+	
+	public boolean isUserAuthorizedToBanPerson(final Person pUser, final Group pGroup, final Person pPersonToBan) {
+		return pUser.isEnabled() &&
+		       pPersonToBan.isEnabled() &&
+			(isUserAdministratorOfGroup(pUser, pGroup) ||
+			 isUserOwnerOfGroup(pUser, pGroup)) &&
+			!isUserOwnerOfGroup(pPersonToBan, pGroup);
+	}
+	
+	public void assertUserAuthorizedToBanPerson(final Person pUser, final Group pGroup, final Person pPersonToBan) {
+		if (!isUserAuthorizedToBanPerson(pUser, pGroup, pPersonToBan)) {
+			throw new SecurityException("User " + pUser.getId() + " is not authorized to ban person " + pPersonToBan.getId() + " from group " + pGroup.getId());
+		}		
+	}
+
+	public void assertCurrentUserAuthorizedToBanPerson(final Group pGroup, final Person pPersonToBan) {
+		assertUserAuthorizedToBanPerson(getPersonService().getCurrentPerson(), pGroup, pPersonToBan);		
 	}
 
 	// Access control

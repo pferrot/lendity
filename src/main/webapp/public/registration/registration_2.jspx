@@ -60,7 +60,13 @@
 						<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_email}:"/></label></div>
 						<h:outputText value="#{registrationController.email}" />
 					</div><!-- /form row -->
-										
+					
+					<c:if test="#{registrationController.addressHomeAvailable}">
+						<div class="gt-form-row gt-width-66">
+							<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_addressHome}:"/></label></div>
+							<h:outputText value="#{registrationController.addressHomeFormated}" escape="false"/>
+						</div>
+					</c:if>						
 					<c:if test="#{registrationController.phoneMobile != null and (not empty(registrationController.phoneMobile))}">
 						<div class="gt-form-row gt-width-66">
 							<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_phoneMobile}:"/></label></div>
@@ -78,13 +84,7 @@
 							<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_phoneProfessional}:"/></label></div>
 							<h:outputText value="#{registrationController.phoneProfessional}" />
 						</div>
-					</c:if>
-					<c:if test="#{registrationController.addressHomeAvailable}">
-						<div class="gt-form-row gt-width-66">
-							<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_addressHome}:"/></label></div>
-							<h:outputText value="#{registrationController.addressHomeFormated}" escape="false"/>
-						</div>
-					</c:if>										
+					</c:if>									
 					
 					<!-- form row -->
 					<div class="gt-form-row">

@@ -34,7 +34,7 @@ public class NeedAddController extends AbstractNeedAddEditController {
 		need.setDescription(getDescription());
 		need.setOwner(getNeedService().getCurrentPerson());
 				
-		return getNeedService().createNeed(need, getCategoryId(), getVisibilityId());		
+		return getNeedService().createNeed(need, getCategoryId(), getVisibilityId(), getAuthorizedGroupsIds());		
 	}
 	
 	@Override

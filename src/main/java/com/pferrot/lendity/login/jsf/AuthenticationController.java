@@ -7,9 +7,14 @@ import com.pferrot.lendity.login.AuthenticationConsts;
 import com.pferrot.lendity.need.jsf.SearchNeedsListController;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.lendity.utils.NavigationUtils;
 import com.pferrot.security.SecurityUtils;
 
 public class AuthenticationController {
+	
+	public String getCurrentPageThroughLoginURL() {
+		return NavigationUtils.getCurrentPageThroughLoginURL();
+	}
 	
 	public boolean isLoggedIn() {
 		return SecurityUtils.isLoggedIn();
@@ -181,6 +186,10 @@ public class AuthenticationController {
 	
 	public String getMyPendingGroupJoinRequestsListURL() {
 		return JsfUtils.getFullUrl(PagesURL.MY_PENDING_GROUP_JOIN_REQUESTS_LIST);
+	}
+	
+	public String getMyPendingGroupJoinRequestsOutListURL() {
+		return JsfUtils.getFullUrl(PagesURL.MY_PENDING_GROUP_JOIN_REQUESTS_OUT_LIST);
 	}
 	
 	public String getEditProfileURL() {		

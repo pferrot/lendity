@@ -158,6 +158,10 @@ public class GroupOverviewController  {
 	public String getGroupAdministratorsUrl() {
 		return JsfUtils.getFullUrl(PagesURL.GROUP_ADMINISTRATORS_LIST, PagesURL.GROUP_ADMINISTRATORS_LIST_PARAM_GROUP_ID, getGroupId().toString());
 	}
+	
+	public String getGroupBannedUrl() {
+		return JsfUtils.getFullUrl(PagesURL.GROUP_BANNED_LIST, PagesURL.GROUP_BANNED_LIST_PARAM_GROUP_ID, getGroupId().toString());
+	}
 
 	public String getGroupPicture1Src() {
 		if (FacesContext.getCurrentInstance().getRenderResponse()) {

@@ -16,24 +16,14 @@
 <table><tr><td class="personSearchCell">
 	<h:form id="searchFilterForm2" prependId="false">
 		<h:inputText id="searchString"
-		             styleClass="listerSearchInput"
+		             styleClass="listerSearchInput addClearWithSubmitEnabled"
 		             style="width: 100%;"
 	    	         value="#{theBean.searchString}"/>
 	</h:form>
 </td>
-<td>
-	<h:form id="searchFilterForm" prependId="false">
-		<c:if test="#{theBean.searchString != null and !empty(theBean.searchString)}">    
-			<h:outputText value=" " escape="false" />
-			<h:commandLink id="clearSearchString" action="#{theBean.clearSearch}">
-				<h:outputText value="#{messages.search_clearFilter}" styleClass="small" title="#{messages.search_clearFilterTooltip}"/>
-			</h:commandLink>
-		</c:if>
-	</h:form>
-</td>
 </tr></table>	
 <script type="text/javascript">
-	setupSearchField('searchString', false, '#{defaultSearchString}', true);
+	setupSearchField('searchString', '#{defaultSearchString}', true);
 </script>	
 <!-- /search -->
 

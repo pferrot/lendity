@@ -208,6 +208,8 @@ public class RegistrationController {
 			person.setReceiveCommentsOnCommentedNotif(Boolean.TRUE);
 			person.setReceiveCommentsOnOwnNotif(Boolean.TRUE);
 			person.setShowContactDetailsToAll(Boolean.FALSE);
+			person.setNbEvalScore1(Integer.valueOf(0));
+			person.setNbEvalScore2(Integer.valueOf(0));
 			
 			registrationService.createUser(person);
 		} catch (RegistrationException e) {

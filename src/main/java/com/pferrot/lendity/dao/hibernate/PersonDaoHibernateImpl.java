@@ -328,7 +328,7 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Get members / administrators of a group.
+	// Get members / administrators / banned of a group.
 	
 	public long countGroupAdministrators(final Long pGroupId) {
 		final DetachedCriteria dc = getGroupAdministratorsDetachedCriteria(pGroupId);
@@ -338,6 +338,12 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 
 	public long countGroupMembers(final Long pGroupId) {
 		final DetachedCriteria dc = getGroupMembersDetachedCriteria(pGroupId);
+		final long count = rowCount(dc);
+		return count;
+	}
+	
+	public long countGroupBanned(final Long pGroupId) {
+		final DetachedCriteria dc = getGroupBannedDetachedCriteria(pGroupId);
 		final long count = rowCount(dc);
 		return count;
 	}
@@ -360,6 +366,15 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 		return new ListWithRowCount(list, count);
 	}
 	
+	public ListWithRowCount findGroupBanned(final Long pGroupId, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria dc = getGroupBannedDetachedCriteria(pGroupId);
+		dc.addOrder(Order.asc("displayName").ignoreCase());
+		final List list = getHibernateTemplate().findByCriteria(dc, pFirstResult, pMaxResults);
+		final long count = rowCount(dc);
+
+		return new ListWithRowCount(list, count);
+	}
+	
 	private DetachedCriteria getGroupMembersDetachedCriteria(final Long pGroupId) {
 		final DetachedCriteria criteria = DetachedCriteria.forClass(Person.class);
 		
@@ -373,6 +388,15 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 		final DetachedCriteria criteria = DetachedCriteria.forClass(Person.class);
 		
 		final DetachedCriteria groupsMemberCriteria = criteria.createCriteria("groupsAdministrator", CriteriaSpecification.INNER_JOIN);
+		groupsMemberCriteria.add(Restrictions.eq("id", pGroupId));
+		
+		return criteria;
+	}
+	
+	private DetachedCriteria getGroupBannedDetachedCriteria(final Long pGroupId) {
+		final DetachedCriteria criteria = DetachedCriteria.forClass(Person.class);
+		
+		final DetachedCriteria groupsMemberCriteria = criteria.createCriteria("groupsBanned", CriteriaSpecification.INNER_JOIN);
 		groupsMemberCriteria.add(Restrictions.eq("id", pGroupId));
 		
 		return criteria;

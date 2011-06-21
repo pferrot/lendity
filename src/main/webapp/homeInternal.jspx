@@ -26,7 +26,7 @@
 										    	     onkeypress="if(event.keyCode==13){document.getElementById('homeSearchItemsActionButton').click()}"/>
 										<input id="fake1" type="text" style="display: none;"/>
 										<script type="text/javascript">
-											setupSearchField('homeSearchItemsInput', null, '#{messages.search_search}', true);
+											setupSearchField('homeSearchItemsInput', '#{messages.search_search}', true);
 										</script>
 										<h:commandButton id="homeSearchItemsActionButton" action="#{shortcutSearchController.submitHomeSearchItems}" style="display: none" value="not_displayed"/>
 									</h:form>
@@ -36,7 +36,6 @@
 						</center>
 						
 						<div style="border-width: 1px; border-style: solid; border-color: #dddddd; padding: 0px; border-radius: 5px; margin-top: 10px;">
-							<br/>
 							<h:dataTable value="#{theBean.itemsList}" binding="#{theBean.itemsTable}" var="item" styleClass="gt-table gt-user-table">
 							
 								<h:column id="itemColumn1">
@@ -96,7 +95,7 @@
 											    	     onkeypress="if(event.keyCode==13){document.getElementById('homeSearchNeedsActionButton').click()}"/>
 											<input id="fake1" type="text" style="display: none;"/>
 											<script type="text/javascript">
-												setupSearchField('homeSearchNeedsInput', null, '#{messages.search_search}', true);
+												setupSearchField('homeSearchNeedsInput', '#{messages.search_search}', true);
 											</script>
 											<h:commandButton id="homeSearchNeedsActionButton" action="#{shortcutSearchController.submitHomeSearchNeeds}" style="display: none" value="not_displayed"/>
 										</h:form>
@@ -106,7 +105,6 @@
 						</center>
 						
 						<div style="border-width: 1px; border-style: solid; border-color: #dddddd; padding: 0px; border-radius: 5px; margin-top: 10px;">
-							<br/>
 							<h:dataTable value="#{theBean.needsList}" binding="#{theBean.needsTable}" var="need" styleClass="gt-table gt-user-table">
 							
 								<h:column id="needColumn1">
@@ -157,7 +155,7 @@
 				<td style="width: 50%; padding: 10px; vertical-align: top;">
 					<div style="border-width: 0px; border-style: solid; border-color: #dddddd; padding: 5px; border-radius: 5px;">
 						<center>
-							<img src="#{facesContext.externalContext.requestContextPath}/public/images/login/objet_geo.png"/><br/>
+							<img src="#{facesContext.externalContext.requestContextPath}/public/images/login/objet_neighbour.png"/><br/>
 							<div class="blackBox2">
 								<center>
 									<h:outputText value="#{messages.login_boxPersons}"/><br/><br/>
@@ -169,7 +167,7 @@
 											    	     onkeypress="if(event.keyCode==13){document.getElementById('homeSearchPersonsActionButton').click()}"/>
 											<input id="fake1" type="text" style="display: none;"/>
 											<script type="text/javascript">
-												setupSearchField('homeSearchPersonsInput', null, '#{messages.search_search}', true);
+												setupSearchField('homeSearchPersonsInput', '#{messages.search_search}', true);
 											</script>
 											<h:commandButton id="homeSearchPersonsActionButton" action="#{shortcutSearchController.submitHomeSearchPersons}" style="display: none" value="not_displayed"/>
 										</h:form>
@@ -179,7 +177,6 @@
 						</center>
 						
 						<div style="border-width: 1px; border-style: solid; border-color: #dddddd; padding: 0px; border-radius: 5px; margin-top: 10px;">
-							<br/>
 							<h:dataTable value="#{theBean.personsList}" binding="#{theBean.personsTable}" var="person" styleClass="gt-table gt-user-table">
 							
 								<h:column id="personColumn1">
@@ -231,7 +228,7 @@
 							<img src="#{facesContext.externalContext.requestContextPath}/public/images/login/objet_friends_2.png"/><br/>
 							<div class="blackBox2">
 								<center>
-									<h:outputText value="#{messages.login_groups}"/><br/><br/>
+									<h:outputText value="#{messages.login_boxGroups}"/><br/><br/>
 									<div class="gt-search"><div class="gt-search-inner">
 										<h:form id="homeSearchGroupsForm" prependId="false">						
 											<h:inputText id="homeSearchGroupsInput"
@@ -240,7 +237,7 @@
 											    	     onkeypress="if(event.keyCode==13){document.getElementById('homeSearchGroupsActionButton').click()}"/>
 											<input id="fake1" type="text" style="display: none;"/>
 											<script type="text/javascript">
-												setupSearchField('homeSearchGroupsInput', null, '#{messages.search_search}', true);
+												setupSearchField('homeSearchGroupsInput', '#{messages.search_search}', true);
 											</script>
 											<h:commandButton id="homeSearchGroupsActionButton" action="#{shortcutSearchController.submitHomeSearchGroups}" style="display: none" value="not_displayed"/>
 										</h:form>
@@ -250,7 +247,6 @@
 						</center>
 						
 						<div style="border-width: 1px; border-style: solid; border-color: #dddddd; padding: 0px; border-radius: 5px; margin-top: 10px;">
-							<br/>
 							<h:dataTable value="#{theBean.groupsList}" binding="#{theBean.groupsTable}" var="group" styleClass="gt-table gt-user-table">
 		
 							    <h:column id="groupColumn1">

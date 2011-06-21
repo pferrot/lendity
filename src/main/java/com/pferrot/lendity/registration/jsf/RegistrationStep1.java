@@ -7,6 +7,7 @@ import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
@@ -15,10 +16,12 @@ import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.core.StringUtils;
+import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.geolocation.bean.Coordinate;
 import com.pferrot.lendity.geolocation.exception.GeolocalisationException;
 import com.pferrot.lendity.geolocation.googlemaps.GoogleMapsUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
+import com.pferrot.lendity.iptocountry.IpToCountryService;
 import com.pferrot.lendity.person.PersonConsts;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.registration.RegistrationConsts;
@@ -33,6 +36,7 @@ public class RegistrationStep1 {
 	private RegistrationController registrationController;
 	private RegistrationService registrationService;
 	private PersonService personService;
+	private IpToCountryService ipToCountryService;
 	
 	public RegistrationStep1() {
 		super();
@@ -40,12 +44,25 @@ public class RegistrationStep1 {
 	
 	@InitView
 	public void initView() {
+		final String ipAddress = ((HttpServletRequest)JsfUtils.getRequest()).getRemoteAddr();
+		if (!getIpToCountryService().isIpInSwitzerland(ipAddress)) {
+			JsfUtils.redirect(PagesURL.REGISTRATION_NOT_IN_YOUR_COUNTRY);
+			return;
+		}
 		final String email = JsfUtils.getRequestParameter(RegistrationConsts.REGISTRATION_EMAIL_PARAM_NAME);
 		if (!StringUtils.isNullOrEmpty(email)) {
 			getRegistrationController().setEmail(email.trim());
 		}
 	}
 	
+	public IpToCountryService getIpToCountryService() {
+		return ipToCountryService;
+	}
+
+	public void setIpToCountryService(IpToCountryService ipToCountryService) {
+		this.ipToCountryService = ipToCountryService;
+	}
+
 	public RegistrationController getRegistrationController() {
 		return registrationController;
 	}

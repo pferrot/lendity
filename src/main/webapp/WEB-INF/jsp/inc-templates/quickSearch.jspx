@@ -17,7 +17,7 @@
 			    	     onkeypress="if(event.keyCode==13){document.getElementById('shortcutSearchStringActionButton').click()}"/>
 			<input id="fake1" type="text" style="display: none;"/>
 			<script type="text/javascript">
-				setupSearchField('shortcutSearch', null, '#{messages.item_searchItemMyConnectionsItems}', true);
+				setupSearchField('shortcutSearch', '#{messages.item_searchItemMyConnectionsItems}', true);
 			</script>
 			<h:commandButton id="shortcutSearchStringActionButton" action="#{shortcutSearchController.submit}" style="display: none" value="not_displayed"/>
 		</h:form>

@@ -11,7 +11,7 @@ import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.utils.JsfUtils;
 
 @ViewController(viewIds={"/public/evaluation/personEvaluationsList.jspx"})
-public class PersonEvaluationsListController extends AbstractEvaluationsListController {
+public abstract class PersonEvaluationsListController extends AbstractEvaluationsListController {
 
 	private final static Log log = LogFactory.getLog(PersonEvaluationsListController.class);
 	

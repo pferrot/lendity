@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.StringUtils;
+import com.pferrot.lendity.geolocation.GeoLocationUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ObjektService;
 import com.pferrot.lendity.model.Objekt;
@@ -79,5 +80,12 @@ public abstract class AbstractObjektOverviewController {
 
 	public boolean isDeleteAvailable() {
 		return getObjektService().isCurrentUserAuthorizedToDelete(getObjekt());
+	}
+	
+	public String getDistanceLabel() {
+		return GeoLocationUtils.getApproxDistanceKm(PersonUtils.getCurrentPersonAddressHomeLatitude(),
+													PersonUtils.getCurrentPersonAddressHomeLongitude(),
+													getObjekt().getOwner().getAddressHomeLatitude(),
+													getObjekt().getOwner().getAddressHomeLongitude());
 	}
 }

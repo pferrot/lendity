@@ -15,7 +15,6 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.id.IdentityGenerator.GetGeneratedKeysDelegate;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.core.StringUtils;

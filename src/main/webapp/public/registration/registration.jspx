@@ -39,7 +39,7 @@
 
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">
-						<label><h:outputText value="#{messages.person_displayName}"/> *</label>
+						<label><h:outputText value="#{messages.person_displayName}"/> * <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{messages.person_displayNameInfo}"/></label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="displayName"></h:message>
 					    <h:inputText id="displayName" styleClass="gt-form-text"
@@ -53,7 +53,7 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">
-						<label><h:outputText value="#{messages.person_firstName}"/> *</label>
+						<label><h:outputText value="#{messages.person_firstName}"/> * <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="firstName"></h:message>			
 						<h:inputText id="firstName" styleClass="gt-form-text"
@@ -66,7 +66,7 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">
-						<label><h:outputText value="#{messages.person_lastName}"/> *</label>
+						<label><h:outputText value="#{messages.person_lastName}"/> * <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="lastName"></h:message>
 					    <h:inputText id="lastName" styleClass="gt-form-text"
@@ -94,7 +94,7 @@
 
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">
-						<label><h:outputText value="#{messages.user_password}"/> *</label>
+						<label><h:outputText value="#{messages.user_password}"/> * <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{messages.user_passwordInfo}"/></label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="password"></h:message>
 						<h:inputSecret id="password" styleClass="gt-form-text"
@@ -121,7 +121,20 @@
 						    autocomplete="off">
 						</h:inputSecret>												
 					</div><!-- /form row -->
-					
+				
+					<!-- form row -->
+					<div class="gt-form-row gt-width-66">
+						<label><h:outputText value="#{messages.person_addressHome}"/> * <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{messages.person_addressHomeInfo}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="addressHome"></h:message>			
+						<h:inputTextarea id="addressHome" immediate="true" 
+						    styleClass="gt-form-textarea"
+						    rows="4"
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}"
+							value="#{registrationController.addressHome}"
+							validator="#{registrationStep1.validateAddressHome}"/>						
+					</div><!-- /form row -->				
 					
 					<script type="text/javascript">
 						$j(document).ready(function() {
@@ -203,24 +216,6 @@
 							$j('#addAddress').hide();
 						}
 					</script>
-					<span id="addAddress" style="display: none; font-weight: bold;" class="linkStyleAction" onClick="addAddressOnClick();"><h:outputText value="#{messages.registration_addAddress}"/><br/><br/></span>
-		
-					
-					<div id="addressDiv" style="display: none;">					
-						<!-- form row -->
-						<div class="gt-form-row gt-width-66">
-							<label><h:outputText value="#{messages.person_addressHome}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
-							<h:message styleClass="error" showSummary="true" showDetail="false"
-								for="addressHome"></h:message>			
-							<h:inputTextarea id="addressHome" immediate="true" 
-							    styleClass="gt-form-textarea"
-							    rows="4"
-								value="#{registrationController.addressHome}"
-								validator="#{registrationStep1.validateAddressHome}"/>						
-						</div><!-- /form row -->
-						
-					</div>
-								
 
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">

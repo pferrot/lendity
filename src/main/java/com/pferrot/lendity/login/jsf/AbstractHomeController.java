@@ -232,12 +232,12 @@ public abstract class AbstractHomeController implements Serializable {
 
 	public String getItemThumbnail1Src() {
 		final Item item = (Item)getItemsTable().getRowData();
-		return getItemService().getItemThumbnail1Src(item, true);
+		return getItemService().getThumbnail1Src(item, true);
 	}
 	
 	public String getNeedThumbnail1Src() {
 		final Need need = (Need)getNeedsTable().getRowData();
-		return getNeedService().getNeedThumbnail1Src(need, true);
+		return getNeedService().getThumbnail1Src(need, true);
 	}
 
 	public String getPersonThumbnail1Src() {

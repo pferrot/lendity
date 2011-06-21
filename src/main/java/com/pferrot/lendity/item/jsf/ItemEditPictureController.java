@@ -123,7 +123,7 @@ public class ItemEditPictureController  extends AbstractEditPictureController {
 			return getTempThumbnailImgSrc();			
 		}
 		else {
-			return itemService.getItemThumbnail1Src(getItem(), true);
+			return itemService.getThumbnail1Src(getItem(), true);
 		}
 	}
 

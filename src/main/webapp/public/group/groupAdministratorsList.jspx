@@ -32,6 +32,10 @@
 
 				
 <f:view>
+	<c:if test="#{authenticationController.loggedIn}" var="loggedInUser"/>
+	<c:if test="${loggedInUser}">
+		<ui:include src="../../auth/group/removeGroupAdminTooltip.jspx"/>
+	</c:if>
 
 <h:outputLink value="#{groupAdministratorsListController.groupUrl}">
 	<h:outputText styleClass="fontSizeSmall" value="#{groupAdministratorsListController.groupTitle}"/>
@@ -77,6 +81,22 @@
 			</h:outputLink>
 		</h4>
 		</td></tr></table>
+    </h:column>
+    
+    <h:column id="column2">
+		<h:form id="form123">
+			<table border="0" class="gt-table-categories" width="150" align="right">
+				<tr>
+					<td>
+						
+							<span onclick="removeGroupAdminTooltip(this, '#{groupAdministratorsListController.groupId}', '#{person.id}', 1)">
+								<h:outputText id="id_01" styleClass="stylishButton" value="#{messages.group_removeGroupAdmin}"/>
+							</span>
+						
+					</td>
+			    </tr>
+			</table>
+		</h:form>
     </h:column>
 
 </h:dataTable>

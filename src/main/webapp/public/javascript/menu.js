@@ -44,7 +44,7 @@ function initMenu(pServletPath) {
 		menuLinkConfig('menuHomeLink2');
 		subMenuConfig('divSubMenuHome');
 	}
-	else if (pServletPath.indexOf('public/item/searchItems') > 0 ||
+	else if (pServletPath.indexOf('public/item') > 0 ||
 			 pServletPath.indexOf('auth/lendtransaction/myInProgressLendTransactionsOutList') > 0) {
 		mCurrentMenuLinkId = 'menuMyBorrowedItemsLink';
 		mCurrentSubMenuId = 'divSubMenuBorrowedItems';

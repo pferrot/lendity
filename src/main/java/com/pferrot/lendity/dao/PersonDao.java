@@ -83,4 +83,6 @@ public interface PersonDao {
 	long countGroupMembers(Long pGroupId);
 	ListWithRowCount findGroupAdministrators(Long pGroupId, int pFirstResult, int pMaxResults);
 	long countGroupAdministrators(Long pGroupId);
+	ListWithRowCount findGroupBanned(Long pGroupId, int pFirstResult, int pMaxResults);
+	long countGroupBanned(Long pGroupId);
 }

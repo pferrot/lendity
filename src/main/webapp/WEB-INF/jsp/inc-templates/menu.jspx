@@ -66,7 +66,7 @@
         </h:outputLink>
 	</li>
 	<li>
-        <h:outputLink id="menuMyGroupsLink" value="#{authenticationController.groupsURL}" onmouseover="menuGroupsOver();" onmouseout="menuOut();">
+        <h:outputLink id="menuMyGroupsLink" value="#{authenticationController.myGroupsURL}" onmouseover="menuGroupsOver();" onmouseout="menuOut();">
         	<h:outputText id="menuMyGroupsText" value="#{messages.menu_groups}"/>
         </h:outputLink>
 	</li>
@@ -97,216 +97,221 @@
 			</div><!-- /navbar -->
 
 <div class="gt-subnavbar clearfix" style="height: 27px;">
-
-<!-- navbar -->
-<div id="divSubMenuItems" class="gt-subnavbar clearfix" style="display: none;"><div class="gt-fixed-wrap clearfix"><div>
-	<table class="subMenuTable">
-	<tr>
-	<td>
-	<ul class="sf-menu2">
-	<li>
-	<h:outputLink id="sideMenuMyItemsLink" class="sideMenuLink" value="#{authenticationController.myItemsURL}">
-		<h:outputText id="sideMenuMyItemsText" value="#{messages.menu_myItems}" />
-	</h:outputLink>
-	</li><li>	
-	<h:outputLink id="sideMenuItemAddLink" class="sideMenuLink" value="#{authenticationController.itemAddURL}">
-		<h:outputText id="sideMenuItemTextLink" value="#{messages.menu_addItem}" />
-	</h:outputLink>
-	</li><li>
-	<h:outputLink id="sideMenuMyLentItemsLink" class="sideMenuLink" value="#{authenticationController.myLentItemsURL}">
-		<h:outputText id="sideMenuMyLentItemsText" value="#{messages.menu_myLentItems}" />
-	</h:outputLink>	
-	</li>
-	</ul>	
-	</td>
-	</tr>
-	</table>
-</div></div></div>
-
-<!-- navbar -->
-<div id="divSubMenuBorrowedItems" class="gt-subnavbar clearfix" style="display: none;"><div class="gt-fixed-wrap clearfix"><div>
-	<table class="subMenuTable">
-	<tr>
-	<td>
-	<ul class="sf-menu2">
-	<li>
-	<h:outputLink id="sideMenuMyConnectionsItemsLink" class="sideMenuLink" value="#{authenticationController.itemsSearchURL}">
-		<h:outputText id="sideMenuMyConnectionsItemsText" value="#{messages.menu_myConnectionsItems}"/>
-	</h:outputLink>
-	</li><li>
-	<h:outputLink id="sideMenuMyBorrowedItemsLink" class="sideMenuLink" value="#{authenticationController.myBorrowedItemsURL}">
-		<h:outputText id="sideMenuMyBorrowedItemsText" value="#{messages.menu_myBorrowedItems}"/>
-	</h:outputLink>
-	</li>
-	</ul>	
-	</td>
-	</tr>
-	</table>
-</div></div></div>
-
-<!-- navbar -->
-<div id="divSubMenuNeeds" class="gt-subnavbar clearfix" style="display: none; position: relative;"><div class="gt-fixed-wrap clearfix"><div>
-	<table class="subMenuTable">
-	<tr>
-	<td>
-	<ul class="sf-menu2">
-	<li>
-	   <h:outputLink id="sideMenuMyConnectionsNeedsLink" class="sideMenuLink" value="#{authenticationController.needsSearchURL}">
-       		<h:outputText id="sideMenuMyConnectionsNeedsText" value="#{messages.menu_myConnectionsNeeds}"/>
-       </h:outputLink>
-	</li>	
-	<li>
-	    <h:outputLink id="sideMenuMyNeedsLink2" class="sideMenuLink" value="#{authenticationController.myNeedsURL}">
-		    <h:outputText id="sideMenuMyNeedsText2" value="#{messages.menu_myNeeds}" />
-	    </h:outputLink>
-	</li>
-	<li>
-	    <h:outputLink id="sideMenuNeedAddLink" class="sideMenuLink" value="#{authenticationController.needAddURL}">
-		    <h:outputText id="sideMenuNeedAddText" value="#{messages.menu_addNeed}" />
-	    </h:outputLink>
-	</li>
-	</ul>	
-	</td>
-	</tr>
-	</table>
-</div></div></div>
-
-<!-- navbar -->
-<div id="divSubMenuLendTransactions" class="gt-subnavbar clearfix" style="display: none; position: relative;"><div class="gt-fixed-wrap clearfix"><div>
-	<table class="subMenuTable">
-	<tr>
-	<td>
-	<ul class="sf-menu2">
-	<li>
-	   <h:outputLink id="sideMenuMyLendTransactionsWaitingForInputLink" class="sideMenuLink" value="#{authenticationController.myLendTransactionsWaitingForInputURL}">
-       		<h:outputText id="sideMenuMyLendTransactionsWaitingForInputText" value="#{messages.menu_myLendTransactionsWaitingForInput}"/>
-       </h:outputLink>
-	</li>	
-	<li>
-	   <h:outputLink id="sideMenuMyLendTransactionsLink" class="sideMenuLink" value="#{authenticationController.myLendTransactionsURL}">
-       		<h:outputText id="sideMenuMyLendTransactionsText" value="#{messages.menu_myLendTransactions}"/>
-       </h:outputLink>
-	</li>
-	<li>
-	    <h:outputLink id="sideMenuMyEvaluationsLink" class="sideMenuLink" value="#{authenticationController.myEvaluationsURL}">
-		    <h:outputText id="sideMenuMyEvaluationsText" value="#{messages.menu_myEvaluations}" />
-	    </h:outputLink>
-	</li>
-	<li>
-	    <h:outputLink id="sideMenuMyEvaluationsMadeLink" class="sideMenuLink" value="#{authenticationController.myEvaluationsMadeURL}">
-		    <h:outputText id="sideMenuMyEvaluationsMadeText" value="#{messages.menu_myEvaluationsMade}" />
-	    </h:outputLink>
-	</li>
-	</ul>	
-	</td>
-	</tr>
-	</table>
-</div></div></div>
-
-
-<!-- navbar -->
-<div id="divSubMenuConnections" class="gt-subnavbar clearfix" style="display: none; position: relative;"><div class="gt-fixed-wrap clearfix"><div>
-	<table class="subMenuTable">
-	<tr>
-	<td>
-	<ul class="sf-menu2">
-	<li>
-	   <h:outputLink id="sideMenuMyConnectionsLink2" class="sideMenuLink" value="#{authenticationController.myConnectionsURL}">
-             	  <h:outputText id="sideMenuMyConnectionsText2" value="#{messages.menu_myConnections}"/>
-             </h:outputLink>
-	</li>
-	<li>
-	    <h:outputLink id="sideMenuPersonsLink" class="sideMenuLink" value="#{authenticationController.personsURL}">
-            <h:outputText id="sideMenuPersonsText" value="#{messages.menu_persons}"/>
-        </h:outputLink>
-    </li>
-	<li>
-	    <h:outputLink id="sideMenuMyPendingConnectionRequestsLink" class="sideMenuLink" value="#{authenticationController.myPendingConnectionRequestsURL}">
-        	<h:outputText id="sideMenuMyPendingConnectionRequestsText" value="#{messages.menu_myPendingConnectionRequests}"/>
-        </h:outputLink>
-	</li>
-	<li>
-	    <h:outputLink id="sideMenuMyPendingConnectionRequestsOutLink" class="sideMenuLink" value="#{authenticationController.myPendingConnectionRequestsOutURL}">
-        	<h:outputText id="sideMenuMyPendingConnectionRequestsOutText" value="#{messages.menu_myPendingConnectionRequestsOut}"/>
-        </h:outputLink>
-	</li>
-	<li>
-	    <h:outputLink id="sideMenuMyBannedPersonsLink" class="sideMenuLink" value="#{authenticationController.myBannedPersonsURL}">
-       		<h:outputText id="sideMenuMyBannedPersonsText" value="#{messages.menu_myBannedPersons}"/>
-        </h:outputLink>
-	</li>
-	<li>
-	    <h:outputLink id="sideMenuMyConnectionsUpdates" class="sideMenuLink" value="#{authenticationController.myConnectionsUpdatesURL}">
-       		<h:outputText id="sideMenuMyConnectionsUpdatesText" value="#{messages.menu_myConnectionsUpdates}"/>
-        </h:outputLink>
-	</li>
-	<li>
-		<o:separateConversationContext>
-	    <h:outputLink id="sideMenuInviteFriends" class="sideMenuLink" value="#{authenticationController.inviteFriendsURL}">
-       		<h:outputText id="sideMenuInviteFriendsText" value="#{messages.menu_inviteFriends}"/>
-        </h:outputLink>
-        </o:separateConversationContext>
-	</li>	
-	</ul>	
-	</td>
-	</tr>
-	</table>
-</div></div></div>
-
-<!-- navbar -->
-<div id="divSubMenuGroups" class="gt-subnavbar clearfix" style="display: none; position: relative;"><div class="gt-fixed-wrap clearfix"><div>
-	<table class="subMenuTable">
-	<tr>
-	<td>
-	<ul class="sf-menu2">
-	<li>
-	   <h:outputLink id="sideMenuGroupsLink" class="sideMenuLink" value="#{authenticationController.groupsURL}">
-       		<h:outputText id="sideMenuGroupsText" value="#{messages.menu_groups}"/>
-       </h:outputLink>
-	</li>	
-	<li>
-	    <h:outputLink id="sideMenuMyGroupsLink" class="sideMenuLink" value="#{authenticationController.myGroupsURL}">
-		    <h:outputText id="sideMenuMyGroupsText" value="#{messages.menu_myGroups}" />
-	    </h:outputLink>
-	</li>
-	<li>
-	    <h:outputLink id="sideMenuMyGroupsAdminLink" class="sideMenuLink" value="#{authenticationController.myGroupsWhereOwnerOrAdministratorURL}">
-		    <h:outputText id="sideMenuMyGroupsAdminText" value="#{messages.menu_myGroupsWhereOwnerOrAdministrator}" />
-	    </h:outputLink>
-	</li>
-	<li>
-	    <h:outputLink id="sideMenuMyPendingGroupJoinRequestsLink" class="sideMenuLink" value="#{authenticationController.myPendingGroupJoinRequestsListURL}">
-		    <h:outputText id="sideMenuMyPendingGroupJoinRequestsText" value="#{messages.menu_pendingJoinGroupRequests}" />
-	    </h:outputLink>
-	</li>
-	</ul>	
-	</td>
-	</tr>
-	</table>
-</div></div></div>
-
-<!-- navbar -->
-<div id="divSubMenuHome" class="gt-subnavbar clearfix" style="display: none;"><div class="gt-fixed-wrap clearfix"><div>
-	<table class="subMenuTable">
-	<tr>
-	<td>
-		<img src="#{facesContext.externalContext.requestContextPath}/public/images/transparent.gif" width="1" height="27"/>
-	</td>
-	</tr>
-	</table>
-</div></div></div>
-
-<!-- navbar -->
-<div id="divSubMenuProfile" class="gt-subnavbar clearfix" style="display: none;"><div class="gt-fixed-wrap clearfix"><div>
-	<table class="subMenuTable">
-	<tr>
-	<td>
-		<img src="#{facesContext.externalContext.requestContextPath}/public/images/transparent.gif" width="1" height="27"/>
-	</td>
-	</tr>
-	</table>
-</div></div></div>
-
+<c:if test="${loggedInUser}">
+	<!-- navbar -->
+	<div id="divSubMenuItems" class="gt-subnavbar clearfix" style="display: none;"><div class="gt-fixed-wrap clearfix"><div>
+		<table class="subMenuTable">
+		<tr>
+		<td>
+		<ul class="sf-menu2">
+		<li>
+		<h:outputLink id="sideMenuMyItemsLink" class="sideMenuLink" value="#{authenticationController.myItemsURL}">
+			<h:outputText id="sideMenuMyItemsText" value="#{messages.menu_myItems}" />
+		</h:outputLink>
+		</li><li>	
+		<h:outputLink id="sideMenuItemAddLink" class="sideMenuLink" value="#{authenticationController.itemAddURL}">
+			<h:outputText id="sideMenuItemTextLink" value="#{messages.menu_addItem}" />
+		</h:outputLink>
+		</li><li>
+		<h:outputLink id="sideMenuMyLentItemsLink" class="sideMenuLink" value="#{authenticationController.myLentItemsURL}">
+			<h:outputText id="sideMenuMyLentItemsText" value="#{messages.menu_myLentItems}" />
+		</h:outputLink>	
+		</li>
+		</ul>	
+		</td>
+		</tr>
+		</table>
+	</div></div></div>
+	
+	<!-- navbar -->
+	<div id="divSubMenuBorrowedItems" class="gt-subnavbar clearfix" style="display: none;"><div class="gt-fixed-wrap clearfix"><div>
+		<table class="subMenuTable">
+		<tr>
+		<td>
+		<ul class="sf-menu2">
+		<li>
+		<h:outputLink id="sideMenuMyConnectionsItemsLink" class="sideMenuLink" value="#{authenticationController.itemsSearchURL}">
+			<h:outputText id="sideMenuMyConnectionsItemsText" value="#{messages.menu_myConnectionsItems}"/>
+		</h:outputLink>
+		</li><li>
+		<h:outputLink id="sideMenuMyBorrowedItemsLink" class="sideMenuLink" value="#{authenticationController.myBorrowedItemsURL}">
+			<h:outputText id="sideMenuMyBorrowedItemsText" value="#{messages.menu_myBorrowedItems}"/>
+		</h:outputLink>
+		</li>
+		</ul>	
+		</td>
+		</tr>
+		</table>
+	</div></div></div>
+	
+	<!-- navbar -->
+	<div id="divSubMenuNeeds" class="gt-subnavbar clearfix" style="display: none; position: relative;"><div class="gt-fixed-wrap clearfix"><div>
+		<table class="subMenuTable">
+		<tr>
+		<td>
+		<ul class="sf-menu2">
+		<li>
+		   <h:outputLink id="sideMenuMyConnectionsNeedsLink" class="sideMenuLink" value="#{authenticationController.needsSearchURL}">
+	       		<h:outputText id="sideMenuMyConnectionsNeedsText" value="#{messages.menu_myConnectionsNeeds}"/>
+	       </h:outputLink>
+		</li>	
+		<li>
+		    <h:outputLink id="sideMenuMyNeedsLink2" class="sideMenuLink" value="#{authenticationController.myNeedsURL}">
+			    <h:outputText id="sideMenuMyNeedsText2" value="#{messages.menu_myNeeds}" />
+		    </h:outputLink>
+		</li>
+		<li>
+		    <h:outputLink id="sideMenuNeedAddLink" class="sideMenuLink" value="#{authenticationController.needAddURL}">
+			    <h:outputText id="sideMenuNeedAddText" value="#{messages.menu_addNeed}" />
+		    </h:outputLink>
+		</li>
+		</ul>	
+		</td>
+		</tr>
+		</table>
+	</div></div></div>
+	
+	<!-- navbar -->
+	<div id="divSubMenuLendTransactions" class="gt-subnavbar clearfix" style="display: none; position: relative;"><div class="gt-fixed-wrap clearfix"><div>
+		<table class="subMenuTable">
+		<tr>
+		<td>
+		<ul class="sf-menu2">
+		<li>
+		   <h:outputLink id="sideMenuMyLendTransactionsWaitingForInputLink" class="sideMenuLink" value="#{authenticationController.myLendTransactionsWaitingForInputURL}">
+	       		<h:outputText id="sideMenuMyLendTransactionsWaitingForInputText" value="#{messages.menu_myLendTransactionsWaitingForInput}"/>
+	       </h:outputLink>
+		</li>	
+		<li>
+		   <h:outputLink id="sideMenuMyLendTransactionsLink" class="sideMenuLink" value="#{authenticationController.myLendTransactionsURL}">
+	       		<h:outputText id="sideMenuMyLendTransactionsText" value="#{messages.menu_myLendTransactions}"/>
+	       </h:outputLink>
+		</li>
+		<li>
+		    <h:outputLink id="sideMenuMyEvaluationsLink" class="sideMenuLink" value="#{authenticationController.myEvaluationsURL}">
+			    <h:outputText id="sideMenuMyEvaluationsText" value="#{messages.menu_myEvaluations}" />
+		    </h:outputLink>
+		</li>
+		<li>
+		    <h:outputLink id="sideMenuMyEvaluationsMadeLink" class="sideMenuLink" value="#{authenticationController.myEvaluationsMadeURL}">
+			    <h:outputText id="sideMenuMyEvaluationsMadeText" value="#{messages.menu_myEvaluationsMade}" />
+		    </h:outputLink>
+		</li>
+		</ul>	
+		</td>
+		</tr>
+		</table>
+	</div></div></div>
+	
+	
+	<!-- navbar -->
+	<div id="divSubMenuConnections" class="gt-subnavbar clearfix" style="display: none; position: relative;"><div class="gt-fixed-wrap clearfix"><div>
+		<table class="subMenuTable">
+		<tr>
+		<td>
+		<ul class="sf-menu2">
+		<li>
+		   <h:outputLink id="sideMenuMyConnectionsLink2" class="sideMenuLink" value="#{authenticationController.myConnectionsURL}">
+	             	  <h:outputText id="sideMenuMyConnectionsText2" value="#{messages.menu_myConnections}"/>
+	             </h:outputLink>
+		</li>
+		<li>
+		    <h:outputLink id="sideMenuPersonsLink" class="sideMenuLink" value="#{authenticationController.personsURL}">
+	            <h:outputText id="sideMenuPersonsText" value="#{messages.menu_persons}"/>
+	        </h:outputLink>
+	    </li>
+		<li>
+		    <h:outputLink id="sideMenuMyPendingConnectionRequestsLink" class="sideMenuLink" value="#{authenticationController.myPendingConnectionRequestsURL}">
+	        	<h:outputText id="sideMenuMyPendingConnectionRequestsText" value="#{messages.menu_myPendingConnectionRequests}"/>
+	        </h:outputLink>
+		</li>
+		<li>
+		    <h:outputLink id="sideMenuMyPendingConnectionRequestsOutLink" class="sideMenuLink" value="#{authenticationController.myPendingConnectionRequestsOutURL}">
+	        	<h:outputText id="sideMenuMyPendingConnectionRequestsOutText" value="#{messages.menu_myPendingConnectionRequestsOut}"/>
+	        </h:outputLink>
+		</li>
+		<li>
+		    <h:outputLink id="sideMenuMyBannedPersonsLink" class="sideMenuLink" value="#{authenticationController.myBannedPersonsURL}">
+	       		<h:outputText id="sideMenuMyBannedPersonsText" value="#{messages.menu_myBannedPersons}"/>
+	        </h:outputLink>
+		</li>
+		<li>
+		    <h:outputLink id="sideMenuMyConnectionsUpdates" class="sideMenuLink" value="#{authenticationController.myConnectionsUpdatesURL}">
+	       		<h:outputText id="sideMenuMyConnectionsUpdatesText" value="#{messages.menu_myConnectionsUpdates}"/>
+	        </h:outputLink>
+		</li>
+		<li>
+			<o:separateConversationContext>
+		    <h:outputLink id="sideMenuInviteFriends" class="sideMenuLink" value="#{authenticationController.inviteFriendsURL}">
+	       		<h:outputText id="sideMenuInviteFriendsText" value="#{messages.menu_inviteFriends}"/>
+	        </h:outputLink>
+	        </o:separateConversationContext>
+		</li>	
+		</ul>	
+		</td>
+		</tr>
+		</table>
+	</div></div></div>
+	
+	<!-- navbar -->
+	<div id="divSubMenuGroups" class="gt-subnavbar clearfix" style="display: none; position: relative;"><div class="gt-fixed-wrap clearfix"><div>
+		<table class="subMenuTable">
+		<tr>
+		<td>
+		<ul class="sf-menu2">	
+		<li>
+		    <h:outputLink id="sideMenuMyGroupsLink" class="sideMenuLink" value="#{authenticationController.myGroupsURL}">
+			    <h:outputText id="sideMenuMyGroupsText" value="#{messages.menu_myGroups}" />
+		    </h:outputLink>
+		</li>
+		<li>
+		   <h:outputLink id="sideMenuGroupsLink" class="sideMenuLink" value="#{authenticationController.groupsURL}">
+	       		<h:outputText id="sideMenuGroupsText" value="#{messages.menu_groupsSearch}"/>
+	       </h:outputLink>
+		</li>
+		<li>
+		    <h:outputLink id="sideMenuMyGroupsAdminLink" class="sideMenuLink" value="#{authenticationController.myGroupsWhereOwnerOrAdministratorURL}">
+			    <h:outputText id="sideMenuMyGroupsAdminText" value="#{messages.menu_myGroupsWhereOwnerOrAdministrator}" />
+		    </h:outputLink>
+		</li>
+		<li>
+		    <h:outputLink id="sideMenuMyPendingGroupJoinRequestsLink" class="sideMenuLink" value="#{authenticationController.myPendingGroupJoinRequestsListURL}">
+			    <h:outputText id="sideMenuMyPendingGroupJoinRequestsText" value="#{messages.menu_pendingJoinGroupRequests}" />
+		    </h:outputLink>
+		</li>
+		<li>
+		    <h:outputLink id="sideMenuMyPendingGroupJoinRequestsOutLink" class="sideMenuLink" value="#{authenticationController.myPendingGroupJoinRequestsOutListURL}">
+			    <h:outputText id="sideMenuMyPendingGroupJoinRequestsOutText" value="#{messages.menu_pendingJoinGroupRequestsOut}" />
+		    </h:outputLink>
+		</li>
+		</ul>	
+		</td>
+		</tr>
+		</table>
+	</div></div></div>
+	
+	<!-- navbar -->
+	<div id="divSubMenuHome" class="gt-subnavbar clearfix" style="display: none;"><div class="gt-fixed-wrap clearfix"><div>
+		<table class="subMenuTable">
+		<tr>
+		<td>
+			<img src="#{facesContext.externalContext.requestContextPath}/public/images/transparent.gif" width="1" height="27"/>
+		</td>
+		</tr>
+		</table>
+	</div></div></div>
+	
+	<!-- navbar -->
+	<div id="divSubMenuProfile" class="gt-subnavbar clearfix" style="display: none;"><div class="gt-fixed-wrap clearfix"><div>
+		<table class="subMenuTable">
+		<tr>
+		<td>
+			<img src="#{facesContext.externalContext.requestContextPath}/public/images/transparent.gif" width="1" height="27"/>
+		</td>
+		</tr>
+		</table>
+	</div></div></div>
+</c:if>
 </div>
 
 </ui:composition>

@@ -52,7 +52,7 @@
     	<table><tr><td>
 		<h4>
 			<h:outputLink id="link2" value="#{myEvaluationsMadeListController.evaluationOverviewHref}">
-				<h:outputText value="#{evaluation.evaluated.displayName}" />
+				<h:outputText value="#{myEvaluationsMadeListController.evaluationTitleLabel}" />
 			</h:outputLink>			
 		</h4>
 		</td></tr></table>
@@ -67,7 +67,15 @@
 				<td width="50%">
 					<h:outputText id="evalScore" value="#{myEvaluationsMadeListController.evaluationLabel}" />
 				</td>
-			</tr>		    
+			</tr>
+			<tr>
+				<th>
+					<h:outputText id="evalDateLabel" value="#{messages.evaluation_date}:" />
+				</th>
+				<td>
+					<h:outputText id="evalDate" value="#{myEvaluationsMadeListController.creationDateLabel}" />
+				</td>
+			</tr>	    
 		</table>
     </h:column>
 

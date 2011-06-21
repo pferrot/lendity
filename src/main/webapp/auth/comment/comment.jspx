@@ -16,7 +16,7 @@
 		<div class="gt-form-row gt-width-100">
 			<textarea id="commentTextarea" rows="3" style="width: 100%;" class="fontSizeSmall"/>
 			<script type="text/javascript">
-				setupSearchField('commentTextarea', null, '<h:outputText value="#{messages.comment_addComment}"/>', true);
+				setupSearchField('commentTextarea', '<h:outputText value="#{messages.comment_addComment}"/>', true);
 			</script>
 		</div>
 		<div class="gt-form-row gt-width-100">

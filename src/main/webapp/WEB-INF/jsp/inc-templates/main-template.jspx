@@ -23,6 +23,7 @@
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/jquery-1.4.4.min.js"></script>	
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/jquery-ui-1.8.9.custom.min.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/qtip/jquery.qtip-1.0.0-rc3-dm-min.js"></script>
+	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/addclear/addclear.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/utils.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/menu.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/comments.js"></script>
@@ -54,6 +55,19 @@
 		$j(document).ready(function() {
 			makeQtipTitles();
 		});
+
+        $j(document).ready(function(){
+        	$j("input.addClearWithSubmitEnabled").addClear({
+            	onClear: function(pTheInput){
+            				 var wasEmpty = pTheInput.attr('wasEmpty');
+            				 if (wasEmpty != 'true') { 
+            	             	pTheInput.closest("form").submit();
+            				 }
+            			 },
+            	closeImage: '#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/addclear/clear.png',
+            	showOnLoad: true
+            });
+        });
 	</script>
 
 <!--

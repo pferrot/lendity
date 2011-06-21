@@ -263,8 +263,9 @@ public class LendTransactionOverviewController extends AbstractLendTransactionOv
 	}
 
 	public boolean isEvaluateAvailable() {
-		return getEvaluationService().isEvaluationAsBorrowerAuthorized(PersonUtils.getCurrentPersonId(), getLendTransaction()) ||
-			   getEvaluationService().isEvaluationAsLenderAuthorized(PersonUtils.getCurrentPersonId(), getLendTransaction());
+		return getLendTransaction().getBorrower() != null &&
+			   (getEvaluationService().isEvaluationAsBorrowerAuthorized(PersonUtils.getCurrentPersonId(), getLendTransaction()) ||
+			    getEvaluationService().isEvaluationAsLenderAuthorized(PersonUtils.getCurrentPersonId(), getLendTransaction()));
 	}
 
 	public String getEvaluationAddHref() {

@@ -1,8 +1,18 @@
 Bonjour $firstName,
 
+#if( $nbTransactionsWaitingForInput )
+$nbTransactionsWaitingForInput transaction(s) en attente d'action: $transactionsWaitingForInputUrl
+#end
+#if( $nbGroupJoinRequests )
+$nbGroupJoinRequests demande(s) d'adhésion à un groupe en attente: $groupJoinRequestsUrl
+#end
+#if( $nbConnectionRequests )
+$nbConnectionRequests demande(s) d'ami en attente de réponse: $connectionRequestsUrl
+#end
+
 Dernières activités dans ton réseau:
 
-Objets ajoutés
+Objets ajoutés près de chez toi
 #if( $latestUpdateDateLabel )
 (depuis le $latestUpdateDateLabel)
 #end
@@ -32,7 +42,7 @@ depuis le $latestUpdateDateLabel
 #end
 Voir la liste complète: $itemUrl
 
-Recherches ajoutées
+Recherches ajoutées près de chez toi
 #if( $latestUpdateDateLabel )
 (depuis le $latestUpdateDateLabel)
 #end

@@ -91,7 +91,11 @@
 			<tr>
 			    <th width="50%"><nobr><h:outputText id="id_1" value="#{messages.item_lentSince}:" /></nobr></th>
 				<td width="50%"><nobr><h:outputText id="id_2" value="#{myInProgressLendTransactionsListController.borrowDateLabel}"/></nobr></td>
-		    </tr>		    
+		    </tr>
+		    <tr>
+			    <th width="50%"><nobr><h:outputText id="id_3" value="#{messages.lendTransaction_endDate}:" /></nobr></th>
+				<td width="50%"><nobr><h:outputText id="id_4" value="#{myInProgressLendTransactionsListController.endDateLabel}"/></nobr></td>
+		    </tr>
 		</table>
     </h:column>
 

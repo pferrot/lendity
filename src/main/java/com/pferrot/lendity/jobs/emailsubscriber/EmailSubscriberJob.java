@@ -18,9 +18,11 @@ import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.groupjoinrequest.GroupJoinRequestService;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.item.jsf.SearchItemsListController;
+import com.pferrot.lendity.lendtransaction.LendTransactionService;
 import com.pferrot.lendity.model.ConnectionRequest;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.Need;
@@ -41,6 +43,8 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 	private ItemService itemService;
 	private NeedService needService;
 	private ConnectionRequestService connectionRequestService;
+	private GroupJoinRequestService groupJoinRequestService;
+	private LendTransactionService lendTransactionService;
 	private PersonService personService;
 
 	public void setMailManager(MailManager mailManager) {
@@ -58,6 +62,16 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 	public void setConnectionRequestService(
 			ConnectionRequestService connectionRequestService) {
 		this.connectionRequestService = connectionRequestService;
+	}
+
+	public void setGroupJoinRequestService(
+			GroupJoinRequestService groupJoinRequestService) {
+		this.groupJoinRequestService = groupJoinRequestService;
+	}
+
+	public void setLendTransactionService(
+			LendTransactionService lendTransactionService) {
+		this.lendTransactionService = lendTransactionService;
 	}
 
 	public void setPersonService(PersonService personService) {
@@ -131,6 +145,26 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 			log.debug("Preparing email for: " + pPerson);
 		}
 		
+		Map<String, String> objects = new HashMap<String, String>();
+		
+		long nbGroupJoinRequestsPending = groupJoinRequestService.countUserPendingGroupJoinRequests(pPerson);
+		if (nbGroupJoinRequestsPending > 0) {
+			objects.put("nbGroupJoinRequests", String.valueOf(nbGroupJoinRequestsPending));
+			objects.put("groupJoinRequestsUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.MY_PENDING_GROUP_JOIN_REQUESTS_LIST));
+		}
+		
+		long nbTransactionsWaitingForMyInput = lendTransactionService.countLendTransactionsWaitingForInput(pPerson.getId());
+		if (nbTransactionsWaitingForMyInput > 0) {
+			objects.put("nbTransactionsWaitingForInput", String.valueOf(nbTransactionsWaitingForMyInput));
+			objects.put("transactionsWaitingForInputUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.MY_LEND_TRANSACTIONS_WAITING_FOR_INPUT_LIST));
+		}
+		
+		long nbPendingConnectionRequests = connectionRequestService.countUserPendingConnectionRequests(pPerson.getId());
+		if (nbPendingConnectionRequests > 0) {
+			objects.put("nbConnectionRequests", String.valueOf(nbPendingConnectionRequests));
+			objects.put("connectionRequestsUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.MY_PENDING_CONNECTION_REQUESTS_LIST));
+		}
+		
 		final Locale locale = I18nUtils.getDefaultLocale();
 		
 		Date latestUpdate = pPerson.getEmailSubscriberLastUpdate();
@@ -144,11 +178,11 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 			latestUpdateDateLabel = UiUtils.getDateAsString(latestUpdate, locale);
 		}
 		
-		Map<String, String> objects = new HashMap<String, String>();
+		
 		objects.put("latestUpdateDateLabel", latestUpdateDateLabel);
 		
 		// Items.
-		final ListWithRowCount items = itemService.findPersonLatestConnectionsItemsSince(pPerson, latestUpdate);
+		final ListWithRowCount items = itemService.findPersonItemsUpdateSince(pPerson, latestUpdate);
 		if (log.isDebugEnabled()) {
 			log.debug("Items: " + items.getRowCount());
 		}
@@ -169,7 +203,7 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 		objects.put("itemUrl", getConnectionsItemsByDateUrl());
 		
 		// Needs.
-		final ListWithRowCount needs = needService.findPersonLatestConnectionsNeedsSince(pPerson, latestUpdate);
+		final ListWithRowCount needs = needService.findPersonNeedsUpdatesSince(pPerson, latestUpdate);
 		if (log.isDebugEnabled()) {
 			log.debug("Needs: " + needs.getRowCount());
 		}
@@ -229,7 +263,11 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 //		objects.put("lentItemUrl", getLentItemsUrl());
 		
 		// Do not send the email if nothing to say...
-		if (itemsCounter > 0 ||
+		if (nbTransactionsWaitingForMyInput > 0 ||
+			nbPendingConnectionRequests > 0 ||
+			nbGroupJoinRequestsPending > 0 ||
+			itemsCounter > 0 ||
+			needsCounter > 0 ||
 			connectionsUpdatesCounter > 0) {
 		
 			if (log.isDebugEnabled()) {
@@ -249,7 +287,7 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 			to.put(pPerson.getEmail(), pPerson.getEmail());
 			
 			Map<String, String> inlineResources = new HashMap<String, String>();
-			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 			
 			final String currentDateLabel = UiUtils.getDateAsString(new Date(), locale);
 			

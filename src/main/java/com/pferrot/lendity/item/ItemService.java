@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -83,7 +85,20 @@ public class ItemService extends ObjektService {
 		itemQuery.setOwnerEnabled(Boolean.TRUE);
 		itemQuery.setOrderBy("random");
 		itemQuery.setMaxResults(5);
-		itemQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
+		if (SecurityUtils.isLoggedIn()) {
+			// All connections.
+			final Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(null);
+			itemQuery.setOwnerIds(connectionsIds);
+			// Exclude myself.
+			itemQuery.setOwnerIdsToExcludeForVisibilityIdsToForce(ListValueUtils.getIdsArray(PersonUtils.getCurrentPersonId()));
+			itemQuery.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
+			itemQuery.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
+			itemQuery.setGroupIds(getGroupService().getCurrentPersonGroupIds());
+		}
+		// When not logged in - only show public items.
+		else {
+			itemQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
+		}
 		return itemDao.findItemsList(itemQuery);
 	}
 
@@ -106,7 +121,20 @@ public class ItemService extends ObjektService {
 		itemQuery.setOwnerEnabled(Boolean.TRUE);
 		itemQuery.setOrderBy("random");
 		itemQuery.setMaxResults(maxResults);
-		itemQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
+		if (SecurityUtils.isLoggedIn()) {
+			// All connections.
+			final Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(null);
+			itemQuery.setOwnerIds(connectionsIds);
+			// Exclude myself.
+			itemQuery.setOwnerIdsToExcludeForVisibilityIdsToForce(ListValueUtils.getIdsArray(PersonUtils.getCurrentPersonId()));
+			itemQuery.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
+			itemQuery.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
+			itemQuery.setGroupIds(getGroupService().getCurrentPersonGroupIds());
+		}
+		// When not logged in - only show public items.
+		else {
+			itemQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
+		}
 		
 		// Try 2km, then 20, then 100, then unlimited.
 		itemQuery.setMaxDistanceKm(new Double(2));
@@ -173,6 +201,10 @@ public class ItemService extends ObjektService {
 				itemQuery.setToGiveForFree();
 			}
 		}
+		final Double latitude = PersonUtils.getCurrentPersonAddressHomeLatitude();
+		final Double longitude = PersonUtils.getCurrentPersonAddressHomeLongitude();	
+		itemQuery.setOriginLatitude(latitude);
+		itemQuery.setOriginLongitude(longitude);
 		return itemQuery;
 	}
 	
@@ -290,13 +322,31 @@ public class ItemService extends ObjektService {
 		return itemDao.findItems(itemQuery);
 	}
 	
-	public ListWithRowCount findPersonLatestConnectionsItemsSince(final Person pPerson, final Date pDate) {
+	/**
+	 * Returns new items in the area (20km) of the user.
+	 * 
+	 * @param pPerson
+	 * @param pDate
+	 * @return
+	 */
+	public ListWithRowCount findPersonItemsUpdateSince(final Person pPerson, final Date pDate) {
 		Long[] connectionsIds = getPersonService().getPersonConnectionIds(pPerson, null);
+		Long[] groupIds = getGroupService().getPersonGroupsIds(pPerson, null);
 		
 		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
 		itemQuery.setOwnerIds(connectionsIds);
 		itemQuery.setOwnerEnabled(Boolean.TRUE);
+
+		// Exclude myself.
+		itemQuery.setOwnerIdsToExcludeForVisibilityIdsToForce(ListValueUtils.getIdsArray(pPerson.getId()));
 		itemQuery.setVisibilityIds(getConnectionsAndPublicVisibilityIds());
+		itemQuery.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
+		itemQuery.setGroupIds(groupIds);
+		
+		itemQuery.setMaxDistanceKm(Double.valueOf(20.0));
+		itemQuery.setOriginLatitude(pPerson.getAddressHomeLatitude());
+		itemQuery.setOriginLongitude(pPerson.getAddressHomeLongitude());
+		
 		itemQuery.setCreationDateMin(pDate);
 		itemQuery.setOrderBy("creationDate");
 		itemQuery.setOrderByAscending(Boolean.FALSE);
@@ -337,7 +387,7 @@ public class ItemService extends ObjektService {
 //			to.put(borrower.getEmail(), borrower.getEmail());
 //			
 //			Map<String, String> inlineResources = new HashMap<String, String>();
-//			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+//			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 //			
 //			getMailManager().send(Configuration.getNoReplySenderName(), 
 //					         Configuration.getNoReplyEmailAddress(),
@@ -389,7 +439,7 @@ public class ItemService extends ObjektService {
 //		to.put(borrower.getEmail(), borrower.getEmail());
 //		
 //		Map<String, String> inlineResources = new HashMap<String, String>();
-//		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+//		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 //		
 //		getMailManager().send(Configuration.getNoReplySenderName(), 
 //				         Configuration.getNoReplyEmailAddress(),
@@ -447,6 +497,20 @@ public class ItemService extends ObjektService {
 		pItem.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
 		return createItem(pItem, pNeed);
 	}
+	
+	public Long createItem(final Item pItem, final Long pCategoryId, final Long pVisibilityId, final Need pNeed, final List<Long> pAuthorizedGroupsIds) {
+		if (pAuthorizedGroupsIds != null) {
+			Set<Group> groups = new HashSet<Group>();
+			for (Long groupId: pAuthorizedGroupsIds) {
+				final Group group = getGroupService().findGroup(groupId);
+				// AC check.
+				getGroupService().assertCurrentUserOwnerOrAdministratorOrMemberOfGroup(group);
+				groups.add(group);
+			}
+			pItem.setGroupsAuthorized(groups);
+		}
+		return createItem(pItem, pCategoryId, pVisibilityId, pNeed);
+	}
 
 	public void updateItem(final Item item) {
 		itemDao.updateItem(item);
@@ -470,7 +534,6 @@ public class ItemService extends ObjektService {
 			}
 			pItem.setGroupsAuthorized(groups);
 		}
-		pItem.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
 		updateItem(pItem, pCategoryId, pVisibilityId);
 	}
 
@@ -526,29 +589,25 @@ public class ItemService extends ObjektService {
 		}			
 	}
 	
-	/**
-	 * Returns the URL for thumbnail1 or null if no thumbnail1.
-	 * 
-	 * @param pItem
-	 * @param pAuthorizeDocumentAccess
-	 * @return
-	 */
-	public String getItemThumbnail1Src(final Item pItem, final boolean pAuthorizeDocumentAccess) {
-		final Document thumbnail = pItem.getThumbnail1();
-		if (thumbnail == null ) {
-			return null;
+	
+	@Override
+	public String getThumbnail1Src(Objekt pObjekt, boolean pAuthorizeDocumentAccess, HttpSession pSession, String pUrlPrefix) {
+		final Item item = (Item)pObjekt;
+		final Document thumbnail1 = item.getThumbnail1();
+		if (thumbnail1 == null ) {
+			return super.getThumbnail1Src(pObjekt, pAuthorizeDocumentAccess, pSession, pUrlPrefix);
 		}
 		else {
 			if (pAuthorizeDocumentAccess) {
-				getDocumentService().authorizeDownloadOneMinute(JsfUtils.getSession(), thumbnail.getId());
+				getDocumentService().authorizeDownloadOneMinute(JsfUtils.getSession(), thumbnail1.getId());
 			}
 			return JsfUtils.getFullUrl(
 					PagesURL.DOCUMENT_DOWNLOAD, 
 					PagesURL.DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ID, 
-					thumbnail.getId().toString());
-		}		
+					thumbnail1.getId().toString());
+		}
 	}
-	
+
 	public void sendNotificationForNeed(final Need pNeed, final Item pItem) throws ItemException {
 		CoreUtils.assertNotNull(pNeed);
 		CoreUtils.assertNotNull(pItem);
@@ -585,7 +644,7 @@ public class ItemService extends ObjektService {
 			to.put(pNeed.getOwner().getEmail(), pNeed.getOwner().getEmail());
 			
 			Map<String, String> inlineResources = new HashMap<String, String>();
-			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.gif");
+			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 			
 			getMailManager().send(Configuration.getNoReplySenderName(), 
 					         Configuration.getNoReplyEmailAddress(),

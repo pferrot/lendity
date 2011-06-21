@@ -15,7 +15,9 @@ import com.pferrot.lendity.item.jsf.AbstractObjektsListController;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.need.NeedService;
 import com.pferrot.lendity.need.NeedUtils;
+import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.security.SecurityUtils;
 
 public abstract class AbstractNeedsListController extends AbstractObjektsListController {
 	
@@ -74,13 +76,13 @@ public abstract class AbstractNeedsListController extends AbstractObjektsListCon
 			getOrderBy() != null;
 	}
 
-	public String getImage1Src() {
-		final Need need = (Need)getTable().getRowData();
-		return getNeedService().getNeedPicture1Src(need, true);
-	}
-	
-	public String getThumbnail1Src() {
-		final Need need = (Need)getTable().getRowData();
-		return getNeedService().getNeedThumbnail1Src(need, true);
+	public boolean isGotItAvailable() {
+		if (!SecurityUtils.isLoggedIn()) {
+			return false;
+		}
+		else {
+			final Need need = (Need)getTable().getRowData();
+			return need.getOwner().getId().equals(PersonUtils.getCurrentPersonId());
+		}
 	}
 }

@@ -65,6 +65,21 @@
 			<h:outputText value="#{needOverviewController.visibilityLabel}" />
 		</div>
 		<br/>
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_groupsAuthorized}:" /></label></div>
+			<c:if test="#{needOverviewController.groupsAuthorized}" var="groupAuthorized"/>
+			<c:if test="${groupAuthorized}">
+				<ul>
+					<c:forEach items="#{needOverviewController.need.groupsAuthorized}" var="group">
+						<li><h:outputText value="${group.title}"/></li>
+					</c:forEach>
+				</ul>
+			</c:if>
+			<c:if test="${not groupAuthorized}">
+				<h:outputText value="#{messages.item_groupsAuthorizedNoneSelected}" />
+				<br/><br/>
+			</c:if>
+		</div>
 	</c:if>
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.need_owner}:" /></label></div>
@@ -73,6 +88,13 @@
 		</h:outputLink>
 	</div>
 	<br/>
+	<c:if test="#{not needOverviewController.owner}">
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.geolocation_distance}:" /></label></div>
+			<h:outputText value="#{needOverviewController.distanceLabel}" />
+		</div>
+		<br/>
+	</c:if>	
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_creationDate}:" /></label></div>
 		<h:outputText value="#{needOverviewController.creationDateLabel}" />
@@ -84,8 +106,11 @@
 	    		<h:outputText rendered="#{needOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
 	    	</h:outputLink>
 	    	<h:outputLink rendered="#{needOverviewController.gotItAvailable}" value="#{needOverviewController.gotItHref}" styleClass="stylishButton" >
-			    <h:outputText value="#{messages.need_gotIt}" />
+			    <h:outputText rendered="#{needOverviewController.gotItAvailable}" value="#{messages.need_gotIt}" />
 		    </h:outputLink>
+		    <h:outputLink id="gotItNotAvailableLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
+				<h:outputText id="gotItNotAvailable" value="#{messages.need_gotItNotAvailableNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
+			</h:outputLink>
     	</td><td>
 			<c:if test="#{needOverviewController.editAvailable}">
 				<span onclick="deleteNeedTooltip(this, '#{needOverviewController.need.id}', 1)">
@@ -100,12 +125,14 @@
 				</f:view>
 
 <!-- comments -->
-<br/><br/>
-<a name="commentsAnchor"/>
-<ui:include src="../../auth/comment/comment.jspx">
-	<ui:param name="containerID" value="#{needOverviewController.need.id}"/>
-	<ui:param name="containerType" value="need"/>
-</ui:include>
+<c:if test="${loggedInUser}">
+	<br/><br/>
+	<a name="commentsAnchor"/>
+	<ui:include src="../../auth/comment/comment.jspx">
+		<ui:param name="containerID" value="#{needOverviewController.need.id}"/>
+		<ui:param name="containerType" value="need"/>
+	</ui:include>
+</c:if>
 			
 			</div>
 			<!-- /main content -->
