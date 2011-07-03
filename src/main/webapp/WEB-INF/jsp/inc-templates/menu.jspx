@@ -265,6 +265,11 @@
 		    </h:outputLink>
 		</li>
 		<li>
+		    <h:outputLink id="sideMenuAddGroupLink" class="sideMenuLink" value="#{authenticationController.addGroupURL}">
+			    <h:outputText id="sideMenuAddGroupText" value="#{messages.menu_addGroup}" />
+		    </h:outputLink>
+		</li>
+		<li>
 		   <h:outputLink id="sideMenuGroupsLink" class="sideMenuLink" value="#{authenticationController.groupsURL}">
 	       		<h:outputText id="sideMenuGroupsText" value="#{messages.menu_groupsSearch}"/>
 	       </h:outputLink>

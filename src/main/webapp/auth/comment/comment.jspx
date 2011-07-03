@@ -8,10 +8,9 @@
     xmlns:o="http://myfaces.apache.org/orchestra"
     xmlns:t="http://myfaces.apache.org/tomahawk">
     
-<div class="gt-form gt-content-box">
+<div id="commentsMainContainer" class="gt-form gt-content-box">
 
-<c:if test="#{authenticationController.loggedIn}" var="loggedInUser"/>
-<c:if test="${loggedInUser}">
+<c:if test="#{authorizedToAdd}">
 	<div id="addCommentBox">
 		<div class="gt-form-row gt-width-100">
 			<textarea id="commentTextarea" rows="3" style="width: 100%;" class="fontSizeSmall"/>
@@ -78,6 +77,11 @@
 		<span id="loadMoreComments" class="linkStyleAction" onClick="loadMoreComments('#{containerID}', '#{containerType}');">
 			<h:outputText value="#{messages.comment_loadMore}"/>
 		</span>
+		<br/>
+		<br/>
+	</div>
+	<div id="noCommentContainer" style="display: none;">
+		<h:outputText value="#{messages.comment_noCommentAvailable}"/>
 		<br/>
 		<br/>
 	</div>

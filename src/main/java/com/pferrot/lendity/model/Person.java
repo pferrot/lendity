@@ -111,14 +111,10 @@ public class Person implements Serializable {
 			joinColumns = {@JoinColumn(name = "PERSON_ID")},
 			inverseJoinColumns = {@JoinColumn(name = "BANNED_ID")}
 	)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<Person> bannedPersons = new HashSet<Person>();
 	
-	@ManyToMany(targetEntity = com.pferrot.lendity.model.Person.class)
-	@JoinTable(
-			name = "PERSONS_BANNED_BY",
-			joinColumns = {@JoinColumn(name = "PERSON_ID")},
-			inverseJoinColumns = {@JoinColumn(name = "BANNED_BY_ID")}
-	)
+	@ManyToMany(targetEntity = com.pferrot.lendity.model.Person.class, mappedBy = "bannedPersons")
 	private Set<Person> bannedByPersons = new HashSet<Person>();
 	
 	@ManyToMany(targetEntity = com.pferrot.lendity.model.Group.class, mappedBy = "administrators")
@@ -380,13 +376,11 @@ public class Person implements Serializable {
 	public void addBannedPerson(final Person pPerson) {
 		CoreUtils.assertNotNull(pPerson);
 		bannedPersons.add(pPerson);
-		pPerson.getBannedByPersons().add(this);
 	}
 		
 	public void removeBannedPerson(final Person pPerson) {
 		CoreUtils.assertNotNull(pPerson);
 		bannedPersons.remove(pPerson);
-		pPerson.getBannedByPersons().remove(this);
 	}
 	
 	public Set<Person> getBannedByPersons() {
@@ -400,13 +394,11 @@ public class Person implements Serializable {
 	public void addBannedByPerson(final Person pPerson) {
 		CoreUtils.assertNotNull(pPerson);
 		bannedByPersons.add(pPerson);
-		pPerson.getBannedPersons().add(this);
 	}
 		
 	public void removeBannedByPerson(final Person pPerson) {
 		CoreUtils.assertNotNull(pPerson);
 		bannedByPersons.remove(pPerson);
-		pPerson.getBannedPersons().remove(this);
 	}
 
 	public Boolean getReceiveNeedsNotifications() {

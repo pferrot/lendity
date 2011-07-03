@@ -1,11 +1,21 @@
 package com.pferrot.lendity.item.jsf;
 
+import java.util.Locale;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.item.ObjektService;
+import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.utils.JsfUtils;
 
 public abstract class AbstractItemAddEditController extends AbstractObjektAddEditController {
@@ -78,6 +88,26 @@ public abstract class AbstractItemAddEditController extends AbstractObjektAddEdi
 		this.rentalFee = rentalFee;
 	}
 
+	public void validateRentalFee(FacesContext context, UIComponent toValidate, Object value) {
+		String message = "";
+		Double rentalFee = (Double) value;
+		
+		final UIComponent categoryComponent = toValidate.findComponent("category");
+		final EditableValueHolder categoryEditableValueHolder = (EditableValueHolder)categoryComponent;
+		final Long categoryId = (Long)categoryEditableValueHolder.getValue();
+		
+		if (categoryId != null &&
+				rentalFee != null &&
+			!getItemService().isRentalAllowed(categoryId)) {
+			((UIInput)toValidate).setValid(false);
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final ListValue category = getObjektService().getListValueDao().findListValue(categoryId);
+			final String categoryLabel = I18nUtils.getMessageResourceString(category.getLabelCode(), locale);
+			message = I18nUtils.getMessageResourceString("validation_rentalFeeNotAllowedIntellectualProperty", new Object[]{categoryLabel}, locale);
+			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));			
+		}
+	}
+	
 	public String submit() {
 		Long itemId = processItem();
 		

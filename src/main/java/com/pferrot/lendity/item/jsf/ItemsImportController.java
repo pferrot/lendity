@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -17,6 +21,7 @@ import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
+import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.utils.UiUtils;
 
 public class ItemsImportController  {
@@ -165,5 +170,25 @@ public class ItemsImportController  {
 		}
 		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 		return I18nUtils.getMessageResourceString(category.getLabelCode(), locale);
+	}
+
+	public void validateVisibility(FacesContext context, UIComponent toValidate, Object value) {
+		String message = "";
+		Long visibilityId = (Long) value;
+		
+		final UIComponent categoryComponent = toValidate.findComponent("category");
+		final EditableValueHolder categoryEditableValueHolder = (EditableValueHolder)categoryComponent;
+		final Long categoryId = (Long)categoryEditableValueHolder.getValue();
+		
+		if (categoryId != null &&
+			visibilityId != null &&
+			!getItemService().isVisibilityAllowed(visibilityId, categoryId)) {
+			((UIInput)toValidate).setValid(false);
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final ListValue category = getItemService().getListValueDao().findListValue(categoryId);
+			final String categoryLabel = I18nUtils.getMessageResourceString(category.getLabelCode(), locale);
+			message = I18nUtils.getMessageResourceString("validation_visibilityNotAllowedIntellectualProperty", new Object[]{categoryLabel}, locale);
+			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));			
+		}
 	}
 }

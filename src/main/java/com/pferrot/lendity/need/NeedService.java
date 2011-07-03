@@ -271,9 +271,11 @@ public class NeedService extends ObjektService {
 		needDaoQueryBean.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
 		needDaoQueryBean.setGroupIds(groupIds);
 		
-		needDaoQueryBean.setMaxDistanceKm(Double.valueOf(20.0));
-		needDaoQueryBean.setOriginLatitude(pPerson.getAddressHomeLatitude());
-		needDaoQueryBean.setOriginLongitude(pPerson.getAddressHomeLongitude());
+		if (pPerson.isAddressHomeDefined()) {
+			needDaoQueryBean.setMaxDistanceKm(Double.valueOf(20.0));
+			needDaoQueryBean.setOriginLatitude(pPerson.getAddressHomeLatitude());
+			needDaoQueryBean.setOriginLongitude(pPerson.getAddressHomeLongitude());
+		}
 		
 		needDaoQueryBean.setCreationDateMin(pDate);
 		needDaoQueryBean.setOrderBy("creationDate");

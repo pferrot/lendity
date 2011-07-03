@@ -1,6 +1,7 @@
 var mCurrentServletPath;
 var mCurrentSubMenuId;
 var mCurrentMenuLinkId;
+var ownItem = false;
 var subMenusToMenuLinksMap = new Object();
 subMenusToMenuLinksMap.divSubMenuLogin = 'menuHomeLink';
 subMenusToMenuLinksMap.divSubMenuHome = 'menuHomeLink2';
@@ -44,8 +45,9 @@ function initMenu(pServletPath) {
 		menuLinkConfig('menuHomeLink2');
 		subMenuConfig('divSubMenuHome');
 	}
-	else if (pServletPath.indexOf('public/item') > 0 ||
-			 pServletPath.indexOf('auth/lendtransaction/myInProgressLendTransactionsOutList') > 0) {
+	else if (!ownItem &&
+			 (pServletPath.indexOf('public/item') > 0 ||
+			  pServletPath.indexOf('auth/lendtransaction/myInProgressLendTransactionsOutList') > 0)) {
 		mCurrentMenuLinkId = 'menuMyBorrowedItemsLink';
 		mCurrentSubMenuId = 'divSubMenuBorrowedItems';
 		menuHighlightBorrowedItems();
@@ -54,7 +56,8 @@ function initMenu(pServletPath) {
 		menuLinkConfig('menuMyBorrowedItemsLink');
 		subMenuConfig('divSubMenuBorrowedItems');
 	}
-	else if (pServletPath.indexOf('auth/item') > 0 ||
+	else if (ownItem ||
+			 pServletPath.indexOf('auth/item') > 0 ||
 			 pServletPath.indexOf('auth/lendtransaction/myInProgressLendTransactionsList') > 0) {
 		mCurrentMenuLinkId = 'menuMyItemsLink';
 		mCurrentSubMenuId = 'divSubMenuItems';

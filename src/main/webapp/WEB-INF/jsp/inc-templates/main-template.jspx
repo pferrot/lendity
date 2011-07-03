@@ -10,9 +10,14 @@
     <!-- page title param passed in by param -->
     <title><ui:insert name="pageTitle"/><h:outputText value=" " escape="false" />///<h:outputText value=" " escape="false" /><h:outputText value="#{messages.general_mainTitle}"/></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="Expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+	<meta http-equiv="Cache-Control" content="no-cache" />
 	<meta http-equiv="Pragma" content="no-cache" />
-	<meta property="og:image" content="http://www.lendity.ch/public/images/title_lendity.gif" />
+	<meta http-equiv="Expires" content="-1" />
+	
+	<meta property="og:image" content="#{facesContext.externalContext.requestMap['ogImage']}" />
+	<meta property="og:title" content="#{facesContext.externalContext.requestMap['ogTitle']}" />	
+	<meta property="og:site_name" content="#{configuration.siteNameNotStatic}" />
+	
 	<link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/favicon.ico" />
 	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/reset-fonts.css" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/gt-styles.css" type="text/css" media="screen, projection" />

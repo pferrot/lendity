@@ -11,6 +11,8 @@ public interface DocumentDao {
 	void updateDocument(Document document);
 	
 	void deleteDocument(Document document);
+	
+	boolean isDocumentPublic(Long documentId);
 
 
 }

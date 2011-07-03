@@ -88,4 +88,8 @@ public abstract class AbstractObjektOverviewController {
 													getObjekt().getOwner().getAddressHomeLatitude(),
 													getObjekt().getOwner().getAddressHomeLongitude());
 	}
+	
+	public boolean isFacebookLikeButtonAvailable() {
+		return getObjekt().isPublicVisibility();
+	}
 }

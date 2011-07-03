@@ -72,12 +72,16 @@ public class DocumentService {
 		CoreUtils.assertNotNull(pSession);
 		final Map<Long, Long> userAuthorizations = (Map<Long, Long>)pSession.getAttribute(DocumentConsts.AUTHORIZATIONS_SESSION_ATTRIBUTE_NAME);
 		if (userAuthorizations == null) {
-			return false;
+			return isDocumentPublic(pDocumentId);
 		}
 		final Long expirationTime = userAuthorizations.get(pDocumentId);
 		if (expirationTime == null) {
-			return false;
+			return isDocumentPublic(pDocumentId);
 		}
-		return expirationTime.longValue() > Calendar.getInstance().getTimeInMillis();
+		return expirationTime.longValue() > Calendar.getInstance().getTimeInMillis() || isDocumentPublic(pDocumentId);
+	}
+	
+	private boolean isDocumentPublic(final Long pDocumentId) {
+		return documentDao.isDocumentPublic(pDocumentId);
 	}
 }

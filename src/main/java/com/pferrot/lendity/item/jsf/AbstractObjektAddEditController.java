@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -15,6 +16,8 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import sun.security.action.GetLongAction;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.core.StringUtils;
@@ -24,6 +27,7 @@ import com.pferrot.lendity.item.ItemConsts;
 import com.pferrot.lendity.item.ObjektService;
 import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.ItemCategory;
+import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
@@ -159,6 +163,26 @@ public abstract class AbstractObjektAddEditController {
 			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 			message = I18nUtils.getMessageResourceString("validation_maxSizeExceeded", new Object[]{String.valueOf(ItemConsts.MAX_DESCRIPTION_SIZE)}, locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
+		}
+	}
+	
+	public void validateVisibility(FacesContext context, UIComponent toValidate, Object value) {
+		String message = "";
+		Long visibilityId = (Long) value;
+		
+		final UIComponent categoryComponent = toValidate.findComponent("category");
+		final EditableValueHolder categoryEditableValueHolder = (EditableValueHolder)categoryComponent;
+		final Long categoryId = (Long)categoryEditableValueHolder.getValue();
+		
+		if (categoryId != null &&
+			visibilityId != null &&
+			!getObjektService().isVisibilityAllowed(visibilityId, categoryId)) {
+			((UIInput)toValidate).setValid(false);
+			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final ListValue category = getObjektService().getListValueDao().findListValue(categoryId);
+			final String categoryLabel = I18nUtils.getMessageResourceString(category.getLabelCode(), locale);
+			message = I18nUtils.getMessageResourceString("validation_visibilityNotAllowedIntellectualProperty", new Object[]{categoryLabel}, locale);
+			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));			
 		}
 	}
 }

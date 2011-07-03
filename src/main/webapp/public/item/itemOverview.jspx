@@ -29,6 +29,14 @@
 			
 			
 				<f:view>
+
+<c:if test="#{itemOverviewController.editAvailable}">
+	<script type="text/javascript">
+		// See menu.js
+		ownItem = true;
+	</script>
+</c:if>
+
 <c:if test="#{authenticationController.loggedIn}" var="loggedInUser"/>
 <c:if test="${loggedInUser}">
 	<ui:include src="../../auth/item/lendTooltip.jspx"/>
@@ -111,9 +119,7 @@
 				<h:outputText value="#{messages.item_groupsAuthorizedNoneSelected}" />
 				<br/><br/>
 			</c:if>
-		</div>
-		
-		
+		</div>		
 	</c:if>
 	<c:if test="#{itemOverviewController.item.deposit != null or itemOverviewController.item.rentalFee != null or itemOverviewController.item.toGiveForFree or itemOverviewController.item.salePrice != null}">
 		<div class="gt-form-row gt-width-100">
@@ -197,6 +203,20 @@
 		</div>
 		<br/>
 	</c:if>	
+	
+	<c:if test="#{itemOverviewController.requestLendNotAvailableUncompletedTransaction}">
+		<div class="statusInfoOverview">
+			<h:outputLink id="requestLendNotAllowed2Link" value="#{itemOverviewController.requestLendNotAvailableUncompletedTransactionUrl}" rendered="#{itemOverviewController.requestLendNotAvailableUncompletedTransaction}">
+				<h:outputText id="requestLendNotAllowed2" value="#{messages.lendRequest_requestNotAllowedUncompletedTransaction}" rendered="#{itemOverviewController.requestLendNotAvailableUncompletedTransaction}"/>
+			</h:outputLink>
+		</div>
+	</c:if>
+	<c:if test="#{itemOverviewController.requestLendNotAvailableBannedPerson}">
+		<div class="statusInfoOverview">
+			<h:outputText id="requestLendNotAllowed3" value="#{messages.lendRequest_requestNotAllowedBannedPerson}" rendered="#{itemOverviewController.requestLendNotAvailableBannedPerson}"/>
+		</div>
+	</c:if>
+	
 	<div class="gt-form-row gt-width-100">
 		<table class="buttonsTable"><tr><td>
 			<c:if test="#{itemOverviewController.lendAvailable}">
@@ -224,8 +244,8 @@
 					</h:outputLink>
 				</c:if>
 			</td>
-		</tr>
-		<tr>
+		</tr></table>
+		<table class="buttonsTable"><tr>
     	<td>    		
 			<h:outputLink rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.itemEditHref}" styleClass="stylishButton">
 	    		<h:outputText rendered="#{itemOverviewController.editAvailable}" value="#{messages.navigation_editDetails}"/>
@@ -243,7 +263,11 @@
 					<h:outputText styleClass="stylishButton" value="#{messages.item_delete}"/>
 				</span>
 			</c:if>
-		</td></tr></table>		
+		</td></tr></table>	
+		<c:if test="#{itemOverviewController.facebookLikeButtonAvailable}">
+			<br/>
+			<iframe src="http://www.facebook.com/plugins/like.php?app_id=242769605735680&amp;href=http%3A%2F%2Fgolgoth14.dyndns.org%3A8080%2Flendity%2Fpublic%2Fitem%2FitemOverview.faces%3FitemID%3D#{itemOverviewController.item.id}&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>
+		</c:if>	
 	</div>
 </div>
 <!-- /content box -->
@@ -256,6 +280,7 @@
 	<br/><br/>
 	<a name="commentsAnchor"/>
 	<ui:include src="../../auth/comment/comment.jspx">
+		<ui:param name="authorizedToAdd" value="${loggedInUser}"/>
 		<ui:param name="containerID" value="#{itemOverviewController.item.id}"/>
 		<ui:param name="containerType" value="item"/>
 	</ui:include>

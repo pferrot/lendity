@@ -8,17 +8,19 @@
 	                    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
 	                    http://myfaces.apache.org/orchestra http://myfaces.apache.org/orchestra/orchestra.xsd">
 	
-	<!-- 
+	<!--
 	<bean id="initialData" class="com.pferrot.lendity.initialdata.InitialData">
 		<property name="userDao" ref="security.userDao"/>
 		<property name="roleDao" ref="security.roleDao"/>
 		<property name="personDao" ref="personDao"/>
+		<property name="groupDao" ref="groupDao"/>
+		<property name="groupService" ref="groupService"/>
 		<property name="listValueDao" ref="listValueDao"/>
 		<property name="itemDao" ref="itemDao"/>
-		<property name="itemDao" ref="needDao"/>
+		<property name="needDao" ref="needDao"/>
 		<property name="passwordEncoder" ref="security.passwordEncoder"/>
 	</bean>
-    -->
+     -->
  
 	<!-- json -->
 	<bean id="xmlFileViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
@@ -37,7 +39,8 @@
 		</property>		
 		<property name="rootURL">
 <!--			<value>http://www.lendity.com</value>-->
-			<value>http://localhost:8080/lendity</value>
+<!--			<value>http://localhost:8080/lendity</value>-->
+			<value>http://golgoth14.dyndns.org:8080/lendity</value>
 		</property>
 		<property name="noReplyEmailAddress">
 			<value>no_reply@lendity.com</value>
@@ -53,6 +56,30 @@
 		</property>
 		<property name="nbDaysToValidateRegistration">
 			<value>30</value>
+		</property>
+		<property name="categoriesNotAllowedPublicVisibility">
+			<set>
+				<value>item_categoryCd</value>
+				<value>item_categoryDvd</value>
+				<value>item_categoryBluRay</value>
+				<value>item_categoryVideoGameOther</value>
+				<value>item_categoryVideoGamePS3</value>
+				<value>item_categoryVideoGamePC</value>
+				<value>item_categoryVideoGameXbox360</value>
+				<value>item_categoryVideoGameWii</value>
+			</set>		
+		</property>
+		<property name="categoriesNotAllowedToRent">
+			<set>
+				<value>item_categoryCd</value>
+				<value>item_categoryDvd</value>
+				<value>item_categoryBluRay</value>
+				<value>item_categoryVideoGameOther</value>
+				<value>item_categoryVideoGamePS3</value>
+				<value>item_categoryVideoGamePC</value>
+				<value>item_categoryVideoGameXbox360</value>
+				<value>item_categoryVideoGameWii</value>
+			</set>
 		</property>
 	</bean>
 
@@ -628,6 +655,11 @@
 	      <property name="lendTransactionWithCommentService" ref="lendTransactionWithCommentService"/>
 	      <property name="lendRequestService" ref="lendRequestService"/>
 	      <property name="evaluationService" ref="evaluationService"/>
+	</bean>
+	
+	<bean id="transferItemTooltipController" class="com.pferrot.lendity.lendtransaction.jsf.TransferItemTooltipController"
+	      scope="request">
+	      <property name="lendTransactionWithCommentService" ref="lendTransactionWithCommentService"/>
 	</bean>
 	
 	<bean id="lendTransactionEditController" class="com.pferrot.lendity.lendtransaction.jsf.LendTransactionEditController"
@@ -1466,9 +1498,9 @@
 	<bean id="emailSubscriberCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	    <property name="jobDetail" ref="emailSubscriberJob" />
 	    <!-- run every night at 3 AM -->
-<!--	    <property name="cronExpression" value="0 0 3 * * ?" />-->
+	    <property name="cronExpression" value="0 0 3 * * ?" />
 		<!-- Every minute -->
-	    <property name="cronExpression" value="0 * * * * ?" />
+<!--	    <property name="cronExpression" value="0 * * * * ?" />-->
 	</bean>
 	
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">

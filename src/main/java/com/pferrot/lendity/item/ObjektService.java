@@ -11,12 +11,12 @@ import org.hibernate.ObjectNotFoundException;
 
 import com.pferrot.core.CoreUtils;
 import com.pferrot.emailsender.manager.MailManager;
-import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.dao.DocumentDao;
 import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.document.DocumentService;
 import com.pferrot.lendity.group.GroupService;
-import com.pferrot.lendity.model.Document;
+import com.pferrot.lendity.login.jsf.AuthenticationController;
 import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
@@ -25,7 +25,6 @@ import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.model.OrderedListValue;
 import com.pferrot.lendity.model.Ownable;
 import com.pferrot.lendity.model.Person;
-import com.pferrot.lendity.person.PersonConsts;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.security.SecurityUtils;
@@ -216,6 +215,90 @@ public abstract class ObjektService {
 		}
 		
 		return null;				
+	}
+	
+	public String getImage200Src(final Objekt pObjekt, final boolean pAuthorizeDocumentAccess) {
+		return getImage200Src(pObjekt, pAuthorizeDocumentAccess, JsfUtils.getSession(), JsfUtils.getContextRoot());		
+	}
+	
+	public String getImage200Src(final Objekt pObjekt, final boolean pAuthorizeDocumentAccess,
+			final HttpSession pSession, final String pUrlPrefix) {
+		final ItemCategory category = pObjekt.getCategory();
+		final String categoryLabelCode = category.getLabelCode();
+		
+		if (ItemCategory.BABY_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_BABY_200_URL);
+		}
+		else if (ItemCategory.BLURAY_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_BLURAY_200_URL);
+		}
+		else if (ItemCategory.BOARD_GAME_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_BOARDGAME_200_URL);
+		}
+		else if (ItemCategory.BOOK_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_BOOK_200_URL);
+		}
+		else if (ItemCategory.CD_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_CD_200_URL);
+		}
+		else if (ItemCategory.COMICS_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_COMICS_200_URL);
+		}
+		else if (ItemCategory.DVD_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_DVD_200_URL);
+		}
+		else if (ItemCategory.ELECTRONIC_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_ELECTRONIC_200_URL);
+		}
+		else if (ItemCategory.HOUSEHOLD_ELECTRICAL_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_HOUSEHOLDELECTRICAL_200_URL);
+		}
+		else if (ItemCategory.MUSIC_INSTRUMENT_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_MUSICINSTRUMENT_200_URL);
+		}
+		else if (ItemCategory.OTHER_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_OTHER_200_URL);
+		}
+		else if (ItemCategory.SPORT_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_SPORT_200_URL);
+		}
+		else if (ItemCategory.TOOL_DO_IT_YOURSELF_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_TOOLDOITYOURSELF_200_URL);
+		}
+		else if (ItemCategory.TOOL_GARDEN_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_TOOLGARDEN_200_URL);
+		}
+		else if (ItemCategory.VIDEOGAME_OTHER_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VIDEOGAMEOTHER_200_URL);
+		}
+		else if (ItemCategory.VIDEOGAME_PC_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VIDEOGAMEPC_200_URL);
+		}
+		else if (ItemCategory.VIDEOGAME_PS3_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VIDEOGAMEPS3_200_URL);
+		}
+		else if (ItemCategory.VIDEOGAME_WII_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VIDEOGAMEWII_200_URL);
+		}
+		else if (ItemCategory.VIDEOGAME_XBOX360_LABEL_CODE.equals(categoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VIDEOGAMEXBOX360_200_URL);
+		}
+		
+		return null;				
+	}
+	
+	public boolean isVisibilityAllowed(final Long pVisibilityId, final Long pCategoryId) {
+		CoreUtils.assertNotNull(pVisibilityId);
+		CoreUtils.assertNotNull(pCategoryId);
+		
+		final ListValue visibility = getListValueDao().findListValue(pVisibilityId);
+		final ListValue category = getListValueDao().findListValue(pCategoryId);
+		
+		if (ItemVisibility.PUBLIC.equals(visibility.getLabelCode()) &&
+			Configuration.getCategoriesNotAllowedPublicVisibility().contains(category.getLabelCode())) {
+			return false;
+		}		
+		return true;
 	}
 
 	/////////////////////////////////////////////////////////

@@ -82,7 +82,7 @@ public abstract class AbstractNeedsListController extends AbstractObjektsListCon
 		}
 		else {
 			final Need need = (Need)getTable().getRowData();
-			return need.getOwner().getId().equals(PersonUtils.getCurrentPersonId());
+			return !need.getOwner().getId().equals(PersonUtils.getCurrentPersonId());
 		}
 	}
 }

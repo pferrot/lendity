@@ -3,7 +3,9 @@ package com.pferrot.lendity.item.jsf;
 import java.util.Locale;
 
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,7 +14,10 @@ import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.configuration.Configuration;
+import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.document.DocumentService;
+import com.pferrot.lendity.facebook.FacebookConsts;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.item.ItemUtils;
@@ -24,6 +29,7 @@ import com.pferrot.lendity.lendtransaction.LendTransactionService;
 import com.pferrot.lendity.lendtransaction.exception.LendTransactionException;
 import com.pferrot.lendity.lendtransaction.jsf.AbstractLendTransactionsListController;
 import com.pferrot.lendity.model.Item;
+import com.pferrot.lendity.model.LendTransaction;
 import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -111,7 +117,13 @@ public class ItemOverviewController extends AbstractObjektOverviewController {
 				return;
 			}
 			setItem(item);
-		}	
+		}
+		// For facebook.
+		final String ogImageUrl = getItemService().getImage200Src(getItem(),true, JsfUtils.getSession(), Configuration.getRootURL());
+		JsfUtils.getRequest().setAttribute(FacebookConsts.OG_IMAGE_ATTRIBUTE_NAME, ogImageUrl);
+		final Locale locale = I18nUtils.getDefaultLocale();		
+		final String ogTitle = I18nUtils.getMessageResourceString("facebook_itemAvailable", new Object[]{getItem().getTitle()}, locale);
+		JsfUtils.getRequest().setAttribute(FacebookConsts.OG_TITLE_ATTRIBUTE_NAME, ogTitle);
 	}
 
 	public Long getItemId() {
@@ -218,6 +230,24 @@ public class ItemOverviewController extends AbstractObjektOverviewController {
 	public boolean isRequestLendNotAvailableUncompletedTransaction() {
 		return getRequestLendAvailableCode() == LendRequestConsts.REQUEST_LEND_NOT_ALLOWED_TRANSACTION_UNCOMPLETED;
 	}	
+	
+	public String getRequestLendNotAvailableUncompletedTransactionUrl() {		
+		final ListWithRowCount lwrc = lendTransactionService.findUncompletedLendTransactionForItemAndBorrower(getItem().getId(), PersonUtils.getCurrentPersonId(), 0, 0);
+		if (lwrc.getRowCount() == 0) {
+			return null;
+		}
+		else if (lwrc.getRowCount() > 1) {
+			if (log.isWarnEnabled()) {
+				log.warn("Found " + lwrc.getRowCount() + " uncomplted transactions for borrower " + PersonUtils.getCurrentPersonId() + " on " +
+						"item " + item.getId() + ". Should have 1 maximum.");
+			}
+		}
+		LendTransaction lt = (LendTransaction)lwrc.getList().get(0);
+		return JsfUtils.getFullUrl(
+				PagesURL.LEND_TRANSACTION_OVERVIEW,
+				PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,
+				lt.getId().toString());
+	}
 
 	protected int getRequestLendAvailableCode() {
 		// Not sure why this is called 3 times per item (in lister) !? Avoid hitting DB.

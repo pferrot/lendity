@@ -16,6 +16,13 @@
 
 				$(this).wrap("<span style='position:relative;' class='add-clear-span'>");
 				$(".add-clear-span").append("<a href='#clear'>clear</a>");
+				var optionTopCorrected = options.top;
+				if (jQuery.browser.msie && jQuery.browser.version == '9.0') {
+					optionTopCorrected = optionTopCorrected - 15;
+				}
+				else if (jQuery.browser.msie) {
+					
+				}
 				$("a[href='#clear']").css({
 					'background' : 'transparent url('+options.closeImage+') 0 0 no-repeat', 
 					'display' : 'none',
@@ -24,7 +31,7 @@
 					'position' : 'absolute',
 					'right' : options.right+'px',
 					'text-indent' : '-9999px',
-					'top' : options.top+'px',
+					'top' : optionTopCorrected+'px',
 					'width' : '16px'
 					}, this);
 				

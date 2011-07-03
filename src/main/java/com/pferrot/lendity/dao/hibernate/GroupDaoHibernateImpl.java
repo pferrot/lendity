@@ -8,6 +8,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.pferrot.core.StringUtils;
@@ -80,7 +81,7 @@ public class GroupDaoHibernateImpl extends HibernateDaoSupport implements GroupD
 		if (!StringUtils.isNullOrEmpty(pGroupDaoQueryBean.getDescription())) {
 			criteria.add(Restrictions.ilike("description", pGroupDaoQueryBean.getDescription(), MatchMode.ANYWHERE));
 		}
-		
+		boolean useSubquery = false;
 		if (pGroupDaoQueryBean.getOwnerOrAdministratorsOrMembersIds() != null) {
 			criteria.createAlias("owner", "o", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("members", "m", CriteriaSpecification.LEFT_JOIN);
@@ -91,7 +92,11 @@ public class GroupDaoHibernateImpl extends HibernateDaoSupport implements GroupD
 							Restrictions.in("o.id", pGroupDaoQueryBean.getOwnerOrAdministratorsOrMembersIds()),
 							Restrictions.or(
 									Restrictions.in("m.id", pGroupDaoQueryBean.getOwnerOrAdministratorsOrMembersIds()),
-									Restrictions.in("a.id", pGroupDaoQueryBean.getOwnerOrAdministratorsOrMembersIds()))));			
+									Restrictions.in("a.id", pGroupDaoQueryBean.getOwnerOrAdministratorsOrMembersIds()))));
+			if (!useSubquery) {
+				useSubquery = true;
+				criteria.setProjection(Projections.distinct(Projections.id()));
+			}
 		}
 		
 		if (pGroupDaoQueryBean.getOwnerOrAdministratorsIds() != null) {
@@ -101,7 +106,12 @@ public class GroupDaoHibernateImpl extends HibernateDaoSupport implements GroupD
 			
 			criteria.add(Restrictions.or(
 							Restrictions.in("o2.id", pGroupDaoQueryBean.getOwnerOrAdministratorsIds()),
-							Restrictions.in("a2.id", pGroupDaoQueryBean.getOwnerOrAdministratorsIds())));			
+							Restrictions.in("a2.id", pGroupDaoQueryBean.getOwnerOrAdministratorsIds())));
+			
+			if (!useSubquery) {
+				useSubquery = true;
+				criteria.setProjection(Projections.distinct(Projections.id()));
+			}
 		}
 		
 		if (pGroupDaoQueryBean.getOwnerIds() != null) {
@@ -125,6 +135,12 @@ public class GroupDaoHibernateImpl extends HibernateDaoSupport implements GroupD
 		
 		if (pGroupDaoQueryBean.getValidateMembership() != null) {
 			criteria.add(Restrictions.eq("validateMembership", pGroupDaoQueryBean.getValidateMembership()));
+		}
+		
+		if (useSubquery) {
+			final DetachedCriteria selectCriteria = DetachedCriteria.forClass(Group.class);
+			selectCriteria.add(Subqueries.propertyIn("id", criteria));
+			return selectCriteria;
 		}
 				
 		return criteria;

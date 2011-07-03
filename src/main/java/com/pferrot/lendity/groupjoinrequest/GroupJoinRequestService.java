@@ -25,6 +25,7 @@ import com.pferrot.lendity.model.GroupJoinRequestResponse;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.security.SecurityUtils;
 
 public class GroupJoinRequestService {
@@ -149,15 +150,22 @@ public class GroupJoinRequestService {
 			Map<String, String> inlineResources = new HashMap<String, String>();
 			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 			
-			mailManager.send(Configuration.getNoReplySenderName(), 
-					         Configuration.getNoReplyEmailAddress(),
-					         to,
-					         null, 
-					         null,
-					         Configuration.getSiteName() + ": demande d'adhésion au groupe " + pGroup.getTitle(),
-					         objects, 
-					         velocityTemplateLocation,
-					         inlineResources);		
+			
+			// Multiple recipients is not implemented. Plus it is good to not show all admin email to all recipients anyway.
+			for(String adminMail: to.keySet()) {
+				Map<String, String> to2 = new HashMap<String, String>();
+				to2.put(adminMail, adminMail);
+				
+				mailManager.send(Configuration.getNoReplySenderName(), 
+						         Configuration.getNoReplyEmailAddress(),
+						         to2,
+						         null, 
+						         null,
+						         Configuration.getSiteName() + ": demande d'adhésion au groupe " + pGroup.getTitle(),
+						         objects, 
+						         velocityTemplateLocation,
+						         inlineResources);		
+			}
 			
 			return groupJoinRequestId;
 		} 
@@ -212,6 +220,10 @@ public class GroupJoinRequestService {
 		}
 		
 		return true;			
+	}
+	
+	public boolean isUncompletedGroupJoinRequestAvailableFromCurrentPerson(final Group pGroup) {
+		return isUncompletedGroupJoinRequestAvailable(pGroup, getPersonService().getCurrentPerson());
 	}
 	
 	/**
@@ -319,13 +331,14 @@ public class GroupJoinRequestService {
 		Map<String, String> objects = new HashMap<String, String>();
 		objects.put("requesterFirstName", pRequest.getRequester().getFirstName());
 		objects.put("groupTitle", pRequest.getGroup().getTitle());
+		objects.put("groupUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.GROUP_OVERVIEW, PagesURL.GROUP_OVERVIEW_PARAM_GROUP_ID, pRequest.getGroup().getId().toString()));
 		objects.put("signature", Configuration.getSiteName());
 		objects.put("siteName", Configuration.getSiteName());
 		objects.put("siteUrl", Configuration.getRootURL());
 		
 		Map<String, String> to = new HashMap<String, String>();
 		to.put(pRequest.getRequester().getEmail(), pRequest.getRequester().getEmail());
-		
+	
 		Map<String, String> inlineResources = new HashMap<String, String>();
 		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
 		
@@ -366,7 +379,7 @@ public class GroupJoinRequestService {
 			pGroupJoinRequest.getGroup().addMember(pGroupJoinRequest.getRequester());
 			
 			sendResponseEmail(pGroupJoinRequest,
-					Configuration.getSiteName() + ": demande d'ami acceptée",
+					Configuration.getSiteName() + ": demande d'adhésion au groupe acceptée",
 					"com/pferrot/lendity/emailtemplate/groupjoinrequest/accept/fr");
 
 			if (log.isInfoEnabled()) {

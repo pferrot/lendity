@@ -420,6 +420,8 @@ function cancelDeleteItem() {
 	hideDeleteItemTooltip(mDeleteItemTooltipTarget);
 }
 
+
+
 /***************************************************************************************************
  * 
  * DELETE NEED
@@ -1536,5 +1538,50 @@ function submitRemoveBannedPerson() {
  */
 function cancelRemoveBannedPerson() {
 	hideRemoveBannedPersonTooltip(mRemoveBannedPersonTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * TRANSFER ITEM
+ * 
+ ***************************************************************************************************/
+function hideTransferItemTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#transferItemForm'), $j('#transferItemDiv'));
+}
+
+function transferItemQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#transferItemDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip that is used to transfer an item.
+ */
+var mTransferItemTooltip;
+var mTransferItemTarget;
+function transferItemTooltip(pTooltipTarget, pLendTransactionID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideTransferItemTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('transferItemForm').reset();
+	    // Hide error messages if any.
+	    $j('#transferItemForm').find('input').removeClass('validationError');
+		// Set the correct lendTransactionId.
+		$j('#transferLendTransactionId').val(pLendTransactionID);
+		
+	  	mTransferItemTooltipTarget = pTooltipTarget;
+	  	mTransferItemTooltip = createFormTooltip($j(pTooltipTarget), $j('#transferItemForm'), transferItemQtipOnHide);
+	}    
+}
+
+function submitTransferItem() {	
+	document.getElementById("transferItemActionButton").click();
+}
+
+function cancelTransferItem() {
+	hideTransferItemTooltip(mTransferItemTooltipTarget);
 }
 

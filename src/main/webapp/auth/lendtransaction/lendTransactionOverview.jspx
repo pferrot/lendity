@@ -28,7 +28,10 @@
 						
 			
 			
-				<f:view>				
+				<f:view>		
+				
+<ui:include src="transferItemTooltip.jspx"/>
+						
 					<h:form id="lendTransactionOverviewForm" prependId="false">
 
 <h2 class="gt-table-head"><h:outputText value="#{messages.lendTransaction_lendTransactionOverviewTitle}"/></h2>
@@ -120,10 +123,11 @@
 				value="#{messages.lendTransaction_buttonRefuse}"
 				action="#{lendTransactionOverviewController.refuseRequest}"
 				rendered="#{lendTransactionOverviewController.refuseRequestAvailable}"/>
-			<h:commandButton styleClass="stylishButton"
-				value="#{messages.lendTransaction_buttonGiveOrSell}"
-				action="#{lendTransactionOverviewController.giveOrSell}"
-				rendered="#{lendTransactionOverviewController.giveOrSellAvailable}"/>
+			<c:if test="#{lendTransactionOverviewController.giveOrSellAvailable}">
+				<span onclick="transferItemTooltip(this, '#{lendTransactionOverviewController.lendTransaction.id}')">
+					<h:outputText styleClass="stylishButton" value="#{messages.lendTransaction_buttonGiveOrSell}"/>
+				</span>
+			</c:if>
 		</td><td>
 			<h:commandButton styleClass="stylishButton"
 				value="#{messages.lendTransaction_buttonCancel}"
@@ -150,6 +154,7 @@
 <br/><br/>
 <a name="commentsAnchor"/>
 <ui:include src="../../auth/comment/comment.jspx">
+	<ui:param name="authorizedToAdd" value="#{authenticationController.loggedIn}"/>
 	<ui:param name="containerID" value="#{lendTransactionOverviewController.lendTransaction.id}"/>
 	<ui:param name="containerType" value="lendTransaction"/>
 </ui:include>

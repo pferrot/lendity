@@ -73,8 +73,8 @@ public class DocumentDownloadController extends AbstractController {
 					out.flush();
 				}
 				else {
-					if (log.isDebugEnabled()) {
-						log.debug("Forbidden access person ID: " + currentPersonId + " for document : " + documentIdAsString);
+					if (log.isWarnEnabled()) {
+						log.warn("Forbidden access person ID: " + currentPersonId + " for document : " + documentIdAsString);
 					}
 				}
 			}

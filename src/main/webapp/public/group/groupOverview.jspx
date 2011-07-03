@@ -116,13 +116,22 @@
 	</div>
 	<br/>
 	
+	<c:if test="#{groupOverviewController.uncompletedGroupJoinRequestAvailable}">
+		<div class="statusInfoOverview">
+			<h:outputText value="#{messages.group_pendingRequestExists}"/>
+		</div>
+	</c:if>
+	
+	<c:if test="#{groupOverviewController.bannedFromGroup}">
+		<div class="statusInfoOverview">
+			<h:outputText value="#{messages.group_bannedByGroup}"/>
+		</div>
+	</c:if>
+	
 	<div class="gt-form-row gt-width-100">
 		<table class="buttonsTable">
 		<tr>
-    	<td>    		
-			<h:outputLink rendered="#{groupOverviewController.editAvailable}" value="#{groupOverviewController.groupEditHref}" styleClass="stylishButton">
-	    		<h:outputText rendered="#{groupOverviewController.editAvailable}" value="#{messages.navigation_editDetails}"/>
-	    	</h:outputLink>
+    	<td>
 	    	<span onclick="requestGroupJoinTooltip(this, '#{groupOverviewController.group.id}', 2)">
 				<h:outputText styleClass="stylishButton" value="#{messages.groupJoinRequest_requestGroupJoin}" rendered="#{groupOverviewController.requestJoinAvailable}"/>
 			</span>
@@ -135,6 +144,9 @@
 			<h:outputLink id="joinGroupNotAvailableNotLoggedInLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
 				<h:outputText id="joinGroupNotAvailableNotLoggedIn" value="#{messages.group_joinGroupNotAvailableNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
 			</h:outputLink>
+			<h:outputLink rendered="#{groupOverviewController.editAvailable}" value="#{groupOverviewController.groupEditHref}" styleClass="stylishButton">
+	    		<h:outputText rendered="#{groupOverviewController.editAvailable}" value="#{messages.navigation_editDetails}"/>
+	    	</h:outputLink>
 		</td><td>
 			<h:outputLink rendered="#{groupOverviewController.editAvailable}" value="#{groupOverviewController.groupEditPictureHref}" styleClass="stylishButton">
 	    		<h:outputText rendered="#{groupOverviewController.editAvailable}" value="#{messages.group_changeGroupPicture}"/>
@@ -154,10 +166,11 @@
 				
 
 <!-- comments -->
-<c:if test="${loggedInUser}">
+<c:if test="#{authenticationController.loggedIn}">
 	<br/><br/>
 	<a name="commentsAnchor"/>
 	<ui:include src="../../auth/comment/comment.jspx">
+		<ui:param name="authorizedToAdd" value="#{groupOverviewController.authorizedToAddComments}"/>
 		<ui:param name="containerID" value="#{groupOverviewController.group.id}"/>
 		<ui:param name="containerType" value="group"/>
 	</ui:include>

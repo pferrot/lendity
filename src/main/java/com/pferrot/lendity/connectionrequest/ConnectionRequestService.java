@@ -363,6 +363,7 @@ public class ConnectionRequestService {
 	public void updateBanConnectionRequest(final ConnectionRequest pConnectionRequest) throws ConnectionRequestException {
 		try {
 			CoreUtils.assertNotNull(pConnectionRequest);
+			HibernateUtils.evictQueryCacheRegion("query.connections");
 			
 			setConnectionRequestResponse(pConnectionRequest, (ConnectionRequestResponse)listValueDao.findListValue(ConnectionRequestResponse.BAN_LABEL_CODE));
 

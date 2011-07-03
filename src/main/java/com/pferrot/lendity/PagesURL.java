@@ -115,7 +115,7 @@ public interface PagesURL {
 	/////////////////////////////////////////////////////////////////////////
 	// GROUP - start		
 	
-	String GROUP_ADD = "/auth/group/groupOverview.faces";
+	String GROUP_ADD = "/auth/group/groupAdd.faces";
 	
 	String GROUP_OVERVIEW = "/public/group/groupOverview.faces";
 	String GROUP_OVERVIEW_PARAM_GROUP_ID = "groupID";

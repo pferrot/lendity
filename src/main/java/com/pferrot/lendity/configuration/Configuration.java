@@ -1,5 +1,8 @@
 package com.pferrot.lendity.configuration;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Values are set from applicationContext.xml.
  * As I wanted to be able to access that bean in a static manner rather than
@@ -22,8 +25,14 @@ public class Configuration {
 	private static String supportEmailAddress;
 	private static String contactEmailAddress;
 	private static int nbDaysToValidateRegistration;
+	private static Set<String> categoriesNotAllowedPublicVisibility = new HashSet<String>();
+	private static Set<String> categoriesNotAllowedToRent = new HashSet<String>();
 
 	public static String getRootURL() {
+		return rootURL;
+	}
+	
+	public String getRootURLNotStatic() {
 		return rootURL;
 	}
 
@@ -32,6 +41,10 @@ public class Configuration {
 	}
 
 	public static String getSiteName() {
+		return siteName;
+	}
+	
+	public String getSiteNameNotStatic() {
 		return siteName;
 	}
 
@@ -86,5 +99,31 @@ public class Configuration {
 	public void setNbDaysToValidateRegistration(
 			int nbDaysToValidateRegistration) {
 		this.nbDaysToValidateRegistration = nbDaysToValidateRegistration;
+	}
+
+	public static Set<String> getCategoriesNotAllowedPublicVisibility() {
+		return categoriesNotAllowedPublicVisibility;
+	}
+
+	public void setCategoriesNotAllowedPublicVisibility(
+			Set<String> categoriesNotAllowedPublicVisibility) {
+		Configuration.categoriesNotAllowedPublicVisibility = categoriesNotAllowedPublicVisibility;
+	}
+	
+	public void addCategoriesNotAllowedPublicVisibility(final String pValue) {
+		Configuration.categoriesNotAllowedPublicVisibility.add(pValue);
+	}
+
+	public static Set<String> getCategoriesNotAllowedToRent() {
+		return categoriesNotAllowedToRent;
+	}
+	
+	public void addCategoriesNotAllowedToRent(final String pValue) {
+		Configuration.categoriesNotAllowedToRent.add(pValue);
+	}
+
+	public void setCategoriesNotAllowedToRent(
+			Set<String> categoriesNotAllowedToRent) {
+		Configuration.categoriesNotAllowedToRent = categoriesNotAllowedToRent;
 	}
 }

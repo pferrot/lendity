@@ -26,6 +26,7 @@ import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
+import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.model.Person;
@@ -343,9 +344,11 @@ public class ItemService extends ObjektService {
 		itemQuery.setVisibilityIdsToForce(ListValueUtils.getIdsArray(getPublicVisibilityId()));
 		itemQuery.setGroupIds(groupIds);
 		
-		itemQuery.setMaxDistanceKm(Double.valueOf(20.0));
-		itemQuery.setOriginLatitude(pPerson.getAddressHomeLatitude());
-		itemQuery.setOriginLongitude(pPerson.getAddressHomeLongitude());
+		if (pPerson.isAddressHomeDefined()) {
+			itemQuery.setMaxDistanceKm(Double.valueOf(20.0));
+			itemQuery.setOriginLatitude(pPerson.getAddressHomeLatitude());
+			itemQuery.setOriginLongitude(pPerson.getAddressHomeLongitude());
+		}
 		
 		itemQuery.setCreationDateMin(pDate);
 		itemQuery.setOrderBy("creationDate");
@@ -512,8 +515,9 @@ public class ItemService extends ObjektService {
 		return createItem(pItem, pCategoryId, pVisibilityId, pNeed);
 	}
 
-	public void updateItem(final Item item) {
-		itemDao.updateItem(item);
+	public void updateItem(final Item pItem) {
+		updateItemPicture1Visibility(pItem);
+		itemDao.updateItem(pItem);
 	}
 
 	public void updateItem(final Item pItem, final Long pCategoryId, final Long pVisibilityId) {
@@ -545,6 +549,22 @@ public class ItemService extends ObjektService {
 
 	public void updateItemPicture1(final Item pItem, final Document pPicture, final Document pThumbnail) {
 		assertCurrentUserAuthorizedToEdit(pItem);
+		if (pItem.isPublicVisibility()) {
+			if (pPicture != null) {
+				pPicture.setPublik(Boolean.TRUE);
+			}
+			if (pThumbnail != null) {
+				pThumbnail.setPublik(Boolean.TRUE);
+			}
+		}
+		else {
+			if (pPicture != null) {
+				pPicture.setPublik(Boolean.FALSE);
+			}
+			if (pThumbnail != null) {
+				pThumbnail.setPublik(Boolean.FALSE);
+			}
+		}
 		final Document oldPic = pItem.getImage1();
 		final Document oldThumbnail = pItem.getThumbnail1();		
 		if (pPicture != null) {
@@ -564,6 +584,15 @@ public class ItemService extends ObjektService {
 		}
 		
 		itemDao.updateItem(pItem);
+ 	}
+	
+	private void updateItemPicture1Visibility(final Item pItem) {		
+		if (pItem.getImage1() != null) {
+			pItem.getImage1().setPublik(pItem.isPublicVisibility());
+		}
+		if (pItem.getThumbnail1() != null) {
+			pItem.getThumbnail1().setPublik(pItem.isPublicVisibility());
+		}
  	}
 	
 	/**
@@ -591,7 +620,8 @@ public class ItemService extends ObjektService {
 	
 	
 	@Override
-	public String getThumbnail1Src(Objekt pObjekt, boolean pAuthorizeDocumentAccess, HttpSession pSession, String pUrlPrefix) {
+	public String getThumbnail1Src(final Objekt pObjekt,
+			 final boolean pAuthorizeDocumentAccess, final HttpSession pSession, final String pUrlPrefix) {
 		final Item item = (Item)pObjekt;
 		final Document thumbnail1 = item.getThumbnail1();
 		if (thumbnail1 == null ) {
@@ -605,6 +635,28 @@ public class ItemService extends ObjektService {
 					PagesURL.DOCUMENT_DOWNLOAD, 
 					PagesURL.DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ID, 
 					thumbnail1.getId().toString());
+		}
+	}
+	
+	
+
+	@Override
+	public String getImage200Src(final Objekt pObjekt,
+			 final boolean pAuthorizeDocumentAccess, final HttpSession pSession, final String pUrlPrefix) {
+		final Item item = (Item)pObjekt;
+		final Document image1 = item.getImage1();
+		if (image1 == null ) {
+			return super.getImage200Src(pObjekt, pAuthorizeDocumentAccess, pSession, pUrlPrefix);
+		}
+		else {
+			if (pAuthorizeDocumentAccess) {
+				getDocumentService().authorizeDownloadOneMinute(JsfUtils.getSession(), image1.getId());
+			}
+			return JsfUtils.getFullUrlWithPrefix(
+					Configuration.getRootURL(),
+					PagesURL.DOCUMENT_DOWNLOAD, 
+					PagesURL.DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ID, 
+					image1.getId().toString());
 		}
 	}
 
@@ -659,6 +711,16 @@ public class ItemService extends ObjektService {
 		catch (Exception e) {
 			throw new ItemException(e);
 		}		
+	}
+
+	public boolean isRentalAllowed(final Long pCategoryId) {
+		CoreUtils.assertNotNull(pCategoryId);
+		final ListValue category = getListValueDao().findListValue(pCategoryId);
+		
+		if (Configuration.getCategoriesNotAllowedToRent().contains(category.getLabelCode())) {
+			return false;
+		}		
+		return true;
 	}
 
 	/////////////////////////////////////////////////////////

@@ -10,9 +10,13 @@
     <!-- page title param passed in by param -->
     <title><h:outputText value="#{messages.login_loginTitle}" /></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="Expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+	<meta http-equiv="Cache-Control" content="no-cache" />
 	<meta http-equiv="Pragma" content="no-cache" />
-	<meta property="og:image" content="http://www.lendity.ch/public/images/title_lendity.gif" />
+	<meta http-equiv="Expires" content="-1" />
+	<meta property="og:image" content="#{configuration.rootURLNotStatic}/public/images/login/objet_geo.png" />
+	<meta property="og:title" content="#{messages.login_loginTitle}" />
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="#{configuration.siteNameNotStatic}" />
 	<link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/favicon.ico" />
 	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/reset-fonts.css" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/gt-styles.css" type="text/css" media="screen, projection" />
@@ -96,9 +100,17 @@
 				</div>
 				<!-- / logo -->
 				
+				<!-- 
 				<div style="position: absolute; top: 65px; left: 0px; height: 35px; width: 450px; border-style: solid; border-color: black; border-width: 0px;">
 					<iframe src="http://www.facebook.com/plugins/like.php?app_id=205308432839095&amp;href=http%3A%2F%2Fwww.lendity.ch&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font=arial&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>
 				</div>
+ 				-->
+				
+				<!-- 
+				<div style="position: absolute; top: 65px; left: 0px; height: 35px; width: 450px; border-style: solid; border-color: black; border-width: 0px;">
+					<iframe src="http://www.facebook.com/plugins/like.php?app_id=205308432839095&amp;href=http%3A%2F%2Fgolgoth14.dyndns.org%3A8080%2Flendity&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font=arial&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>
+				</div>
+ 				-->
 				
 				<div id="guys"></div>
 				
@@ -227,7 +239,7 @@
 				</div>
 				<div style="position: absolute; left: 380px; top: 200px; width: 350px; height: 120px; border-style: solid; border-width: 0px; border-color: black;">
 					<h:form id="homePublicForm" prependId="false">
-					<div style="width: 100%; text-align: center;">
+					<div style="width: 100%; text-align: center;" class="gt-form">
 	
 	
 						<c:if test="#{not homePublicController.locationLabelCookieAvailable}">

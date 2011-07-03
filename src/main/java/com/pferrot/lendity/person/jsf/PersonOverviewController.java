@@ -192,4 +192,14 @@ public class PersonOverviewController implements Serializable {
 	public boolean isOwnProfile() {		
 		return SecurityUtils.isLoggedIn() && getPerson().getId().equals(PersonUtils.getCurrentPersonId());
 	}
+	
+	public boolean isUncompletedConnectionRequestAvailable() {
+		return SecurityUtils.isLoggedIn() &&
+			   connectionRequestService.isUncompletedConnectionRequestAvailable(getPerson(), personService.getCurrentPerson());
+	}
+	
+	public boolean isBannedByPerson() {
+		return SecurityUtils.isLoggedIn() &&
+		       getPerson().getBannedPersons().contains(personService.getCurrentPerson());
+	}
 }

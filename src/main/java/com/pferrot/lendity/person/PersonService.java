@@ -140,6 +140,12 @@ public class PersonService {
 	
 	public void updatePersonPicture(final Person pPerson, final Document pPicture, final Document pThumbnail) {
 		assertCurrentUserAuthorizedToEdit(pPerson);
+		if (pPicture != null) {
+			pPicture.setPublik(Boolean.TRUE);
+		}
+		if (pThumbnail != null) {
+			pThumbnail.setPublik(Boolean.TRUE);
+		}
 		final Document oldPic = pPerson.getImage();
 		final Document oldThumbnail = pPerson.getThumbnail();		
 		if (pPicture != null) {
@@ -399,6 +405,8 @@ public class PersonService {
 		try {
 			CoreUtils.assertNotNull(pBannerPersonId);
 			CoreUtils.assertNotNull(pBannedPersonId);
+			
+			HibernateUtils.evictQueryCacheRegion("query.connections");
 			
 			final Person bannerPerson = personDao.findPerson(pBannerPersonId);
 			assertCurrentUserAuthorizedToEdit(bannerPerson);

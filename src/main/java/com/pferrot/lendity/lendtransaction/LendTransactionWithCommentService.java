@@ -7,6 +7,8 @@ import java.util.Locale;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import sun.security.action.GetLongAction;
+
 import com.pferrot.core.CoreUtils;
 import com.pferrot.lendity.comment.CommentService;
 import com.pferrot.lendity.comment.exception.CommentException;
@@ -216,6 +218,10 @@ public class LendTransactionWithCommentService {
 			throw new LendTransactionException(e);
 		}
 	}
+	
+	public void updateGiveOrSellItem(final Long pLendTransactionId) throws LendTransactionException {
+		updateGiveOrSellItem(lendTransactionDao.findLendTransaction(pLendTransactionId));
+	}
 
 	public void updateGiveOrSellItem(final LendTransaction pLendTransaction) throws LendTransactionException {
 		try {
@@ -225,8 +231,11 @@ public class LendTransactionWithCommentService {
 			
 			final Item item = pLendTransaction.getItem();
 			if (item != null) {
-				if (item.isBorrowed()) {
-					throw new LendTransactionException("Item " + item.getId() + " is lent - cannot be given");
+				// Item can still be tansfered to the person it is currently lent to.
+				if (item.isBorrowed() &&
+					 (pLendTransaction.getBorrower() == null ||
+					  !pLendTransaction.getBorrower().equals(pLendTransaction.getItem().getBorrower()))) {
+					throw new LendTransactionException("Item " + item.getId() + " is lent to another person - cannot be given");
 				}
 				
 				item.setOwner(pLendTransaction.getBorrower());

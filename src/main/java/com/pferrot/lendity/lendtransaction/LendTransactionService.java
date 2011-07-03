@@ -490,49 +490,50 @@ public class LendTransactionService {
 		
 		final Date now = new Date();
 		
-		// Only mark as borrowed and send email dates actually indicate it is
-		// currently lent.
+		// Only mark as borrowed if dates actually indicate it is
+		// currently lent AND it is not lent already.
 		if (!itemAlreadyBorrowed &&
 			(pBorrowDate == null || pBorrowDate.before(now)) &&
 			(pEndDate == null || pEndDate.after(now))) {
 			// TODO: check if enabled and allowed to borrow !?
 			item.setBorrowed(borrower, pBorrowDate);
 			itemService.updateItem(item);
-			
-			// Send email (will actually create a JMS message, i.e. it is async).
-			Map<String, String> objects = new HashMap<String, String>();
-			objects.put("borrowerFirstName", borrower.getFirstName());
-			objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
-			objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
-			objects.put("lenderDisplayName", PersonUtils.getCurrentPersonDisplayName());
-			objects.put("itemTitle", item.getTitle());
-			objects.put("lendTransactionUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
-					PagesURL.LEND_TRANSACTION_OVERVIEW,
-					PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,
-					lendTransactionId.toString()));
-			objects.put("signature", Configuration.getSiteName());
-			objects.put("siteName", Configuration.getSiteName());
-			objects.put("siteUrl", Configuration.getRootURL());
-			
-			// TODO: localization
-			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lend/lend/fr";
-			
-			Map<String, String> to = new HashMap<String, String>();
-			to.put(borrower.getEmail(), borrower.getEmail());
-			
-			Map<String, String> inlineResources = new HashMap<String, String>();
-			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
-			
-			mailManager.send(Configuration.getNoReplySenderName(), 
-					         Configuration.getNoReplyEmailAddress(),
-					         to,
-					         null, 
-					         null,
-					         Configuration.getSiteName() + ": objet emprunté",
-					         objects, 
-					         velocityTemplateLocation,
-					         inlineResources);
 		}
+			
+		// Send email (will actually create a JMS message, i.e. it is async).
+		Map<String, String> objects = new HashMap<String, String>();
+		objects.put("borrowerFirstName", borrower.getFirstName());
+		objects.put("lenderFirstName", PersonUtils.getCurrentPersonFirstName());
+		objects.put("lenderLastName", PersonUtils.getCurrentPersonLastName());
+		objects.put("lenderDisplayName", PersonUtils.getCurrentPersonDisplayName());
+		objects.put("itemTitle", item.getTitle());
+		objects.put("lendTransactionUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
+				PagesURL.LEND_TRANSACTION_OVERVIEW,
+				PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,
+				lendTransactionId.toString()));
+		objects.put("signature", Configuration.getSiteName());
+		objects.put("siteName", Configuration.getSiteName());
+		objects.put("siteUrl", Configuration.getRootURL());
+		
+		// TODO: localization
+		final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/lend/lend/fr";
+		
+		Map<String, String> to = new HashMap<String, String>();
+		to.put(borrower.getEmail(), borrower.getEmail());
+		
+		Map<String, String> inlineResources = new HashMap<String, String>();
+		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
+		
+		mailManager.send(Configuration.getNoReplySenderName(), 
+				         Configuration.getNoReplyEmailAddress(),
+				         to,
+				         null, 
+				         null,
+				         Configuration.getSiteName() + ": objet emprunté",
+				         objects, 
+				         velocityTemplateLocation,
+				         inlineResources);
+		
 		return lendTransactionId;
 	}
 	

@@ -9,8 +9,10 @@ import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.group.GroupService;
 import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.person.jsf.AbstractPersonsListController;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.security.SecurityUtils;
 
 public abstract class AbstractGroupPersonsListController extends AbstractPersonsListController {
 	
@@ -71,18 +73,48 @@ public abstract class AbstractGroupPersonsListController extends AbstractPersons
 		return JsfUtils.getFullUrl(PagesURL.GROUP_OVERVIEW, PagesURL.GROUP_OVERVIEW_PARAM_GROUP_ID, getGroupId().toString());
 	}
 	
-	public boolean isAuthorizedToRemoveMember() {
+	public boolean isAuthorizedToRemoveAdmin() {
+		if (!SecurityUtils.isLoggedIn()) {
+			return false;
+		}
 		final Person person = (Person)getTable().getRowData();
-		return getGroupService().isUserAuthorizedToRemoveMember(getPersonService().getCurrentPerson(), getGroup(), person);
+		// Need to pass IDs as parameters to reload object and not get a LazyInitializationException.
+		return getGroupService().isUserAuthorizedToRemoveAdmin(PersonUtils.getCurrentPersonId(), getGroupId(), person.getId());
+	}
+	
+	public boolean isAuthorizedToRemoveMember() {
+		if (!SecurityUtils.isLoggedIn()) {
+			return false;
+		}
+		final Person person = (Person)getTable().getRowData();
+		// Need to pass IDs as parameters to reload object and not get a LazyInitializationException.
+		return getGroupService().isUserAuthorizedToRemoveMember(PersonUtils.getCurrentPersonId(), getGroupId(), person.getId());
 	}
 	
 	public boolean isAuthorizedToAddAdmin() {
+		if (!SecurityUtils.isLoggedIn()) {
+			return false;
+		}
 		final Person person = (Person)getTable().getRowData();
-		return getGroupService().isUserAuthorizedToAddAdmin(getPersonService().getCurrentPerson(), getGroup(), person);
+		// Need to pass IDs as parameters to reload object and not get a LazyInitializationException.
+		return getGroupService().isUserAuthorizedToAddAdmin(PersonUtils.getCurrentPersonId(), getGroupId(), person.getId());
 	}
 	
 	public boolean isAuthorizedToBanMember() {
+		if (!SecurityUtils.isLoggedIn()) {
+			return false;
+		}
 		final Person person = (Person)getTable().getRowData();
-		return getGroupService().isUserAuthorizedToBanPerson(getPersonService().getCurrentPerson(), getGroup(), person);
+		// Need to pass IDs as parameters to reload object and not get a LazyInitializationException.
+		return getGroupService().isUserAuthorizedToBanPerson(PersonUtils.getCurrentPersonId(), getGroupId(), person.getId());
+	}
+	
+	public boolean isAuthorizedToUnbanPerson() {
+		if (!SecurityUtils.isLoggedIn()) {
+			return false;
+		}
+		final Person person = (Person)getTable().getRowData();
+		// Need to pass IDs as parameters to reload object and not get a LazyInitializationException.
+		return getGroupService().isUserAuthorizedToUnbanPerson(PersonUtils.getCurrentPersonId(), getGroupId(), person.getId());
 	}
 }

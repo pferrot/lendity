@@ -9,7 +9,6 @@ import com.pferrot.lendity.group.GroupConsts;
 import com.pferrot.lendity.group.GroupService;
 import com.pferrot.lendity.jsf.list.AbstractListController;
 import com.pferrot.lendity.model.Group;
-import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.utils.JsfUtils;
 
 public abstract class AbstractGroupsListController extends AbstractListController {

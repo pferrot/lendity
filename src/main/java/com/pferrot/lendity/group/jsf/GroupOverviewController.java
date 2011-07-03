@@ -11,7 +11,6 @@ import org.springframework.security.AccessDeniedException;
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.group.GroupService;
-import com.pferrot.lendity.group.exception.GroupException;
 import com.pferrot.lendity.groupjoinrequest.GroupJoinRequestService;
 import com.pferrot.lendity.groupjoinrequest.exception.GroupJoinRequestException;
 import com.pferrot.lendity.model.Group;
@@ -134,6 +133,16 @@ public class GroupOverviewController  {
 		}
 	}
 	
+	public boolean isUncompletedGroupJoinRequestAvailable() {
+		return SecurityUtils.isLoggedIn() &&
+			   getGroupJoinRequestService().isUncompletedGroupJoinRequestAvailableFromCurrentPerson(getGroup());
+	}
+	
+	public boolean isBannedFromGroup() {
+		return SecurityUtils.isLoggedIn() &&
+		       getGroupService().isCurrentUserBannedByGroup(getGroup());
+	}
+	
 	public boolean isJoinAvailable() {
 			return SecurityUtils.isLoggedIn() &&
 				   Boolean.FALSE.equals(getGroup().getValidateMembership()) &&
@@ -179,5 +188,10 @@ public class GroupOverviewController  {
 	
 	public String getGroupEditPictureHref() {		
 		return JsfUtils.getFullUrl(PagesURL.GROUP_EDIT_PICTURE, PagesURL.GROUP_EDIT_PICTURE_PARAM_GROUP_ID, getGroup().getId().toString());
+	}
+	
+	public boolean isAuthorizedToAddComments() {
+		return SecurityUtils.isLoggedIn() &&
+		       getGroupService().isCurrentUserOwnerOrAdministratorOrMemberOfGroup(getGroup());
 	}
 }

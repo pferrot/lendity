@@ -11,9 +11,12 @@ public class GroupRemoveAdminTooltipController extends AbstractGroupMemberToolti
 
 	@Override
 	protected void process() throws GroupException {
-		getGroupService().updateGroupRemoveAdmin(getGroupId(), getPersonId());
 		// Remove admin, but keep as normal member.
-		getGroupService().updateGroupAddMember(getGroupId(), getPersonId());
+		getGroupService().updateGroupRemoveAdmin(getGroupId(), getPersonId());
+		// Ok not to check the AC since the call to updateGroupRemoveAdmin() would
+		// make an exception in case of an AC issue.
+		getGroupService().updateGroupAddMemberPrivileged(getGroupId(), getPersonId());
+		
 	}
 	
 	

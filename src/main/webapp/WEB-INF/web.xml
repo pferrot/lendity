@@ -194,18 +194,29 @@
 		<load-on-startup>2</load-on-startup>
 	</servlet>
 	 -->
+
+	<!-- MessAdmin Servlet -->
+	<servlet>
+		<servlet-name>MessAdminServlet</servlet-name>
+		<servlet-class>clime.messadmin.admin.MessAdminServlet</servlet-class>
+		<init-param>
+			<param-name>AuthorizationPassword</param-name>
+			<param-value>918273</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 	 
 	<!-- 
 	Never in production !!!
 	-->
-	<!-- 
+	<!--
 	<servlet>		
 		<servlet-name>initialdata</servlet-name>
 		<description>Servlet to create initial data in the DB</description>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
-	-->
+	 -->
 	<servlet>		
 		<servlet-name>documentDownload</servlet-name>
 		<description>Servlet to download documents</description>
@@ -226,6 +237,11 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 	
+	<servlet-mapping>
+		<servlet-name>MessAdminServlet</servlet-name>
+		<url-pattern>/MessAdmin</url-pattern>
+	</servlet-mapping>
+	 
 	<!--
 	<servlet-mapping>
 		<servlet-name>initialdata</servlet-name>
@@ -233,7 +249,7 @@
 	</servlet-mapping>
 	 -->
 	 
-	 <servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>documentDownload</servlet-name>
 		<url-pattern>/public/document/documentDownload.htm</url-pattern>
 	</servlet-mapping>
@@ -257,6 +273,30 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
+	<!-- For MessAdmin -->
+	<taglib>
+		<taglib-uri>http://messadmin.sf.net/core</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/taglib-core.tld</taglib-location>
+	</taglib>
+	<taglib>
+		<taglib-uri>http://messadmin.sf.net/fmt</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/taglib-fmt.tld</taglib-location>
+	</taglib>
+	
+	<!-- For MessAdmin --> 
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>MessAdmin</web-resource-name>
+			<url-pattern>/MessAdmin</url-pattern>
+		</web-resource-collection>
+		<!--auth-constraint>
+			<role-name>admin</role-name>
+		</auth-constraint-->
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	
 	<error-page>
 		<error-code>404</error-code>
 		<location>/public/error/error_404.faces</location>

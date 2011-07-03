@@ -1,11 +1,16 @@
 package com.pferrot.lendity.need.jsf;
 
+import java.util.Locale;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.configuration.Configuration;
+import com.pferrot.lendity.facebook.FacebookConsts;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ObjektService;
 import com.pferrot.lendity.item.jsf.AbstractObjektOverviewController;
 import com.pferrot.lendity.model.Need;
@@ -83,7 +88,13 @@ public class NeedOverviewController extends AbstractObjektOverviewController {
 				return;
 			}
 			setNeed(need);
-		}	
+		}
+		// For facebook.
+		final String ogImageUrl = getNeedService().getImage200Src(getNeed(), true, JsfUtils.getSession(), Configuration.getRootURL());
+		JsfUtils.getRequest().setAttribute(FacebookConsts.OG_IMAGE_ATTRIBUTE_NAME, ogImageUrl);
+		final Locale locale = I18nUtils.getDefaultLocale();		
+		final String ogTitle = I18nUtils.getMessageResourceString("facebook_needResearched", new Object[]{getNeed().getTitle()}, locale);
+		JsfUtils.getRequest().setAttribute(FacebookConsts.OG_TITLE_ATTRIBUTE_NAME, ogTitle);
 	}
 	
 	public String getNeedEditHref() {		

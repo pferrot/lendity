@@ -81,7 +81,7 @@
 					</div><!-- /form row -->
 					
 					<div class="gt-form-row gt-width-100">
-						<label><h:outputText value="#{messages.item_groupsAuthorized}"/></label>
+						<label><h:outputText value="#{messages.item_groupsAuthorizedEdit}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{messages.need_groupsAuthorizedInfo}"/></label>
 						<h:message styleClass="error" showSummary="true" showDetail="true"
 							for="authorizedGroups"></h:message>
 						<c:if test="#{needEditController.groupsAuthorizedAvailable}" var="groupAuthorizedAvailable"/>

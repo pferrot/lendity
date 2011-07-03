@@ -244,6 +244,30 @@
 			<version>2.0</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.messadmin</groupId>
+			<artifactId>MessAdmin-Core</artifactId>
+			<version>5.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.messadmin</groupId>
+			<artifactId>MessAdmin-AutoProbe</artifactId>
+			<version>5.1</version>
+			<scope>compile</scope>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>net.sourceforge.messadmin</groupId>-->
+<!--			<artifactId>MessAdmin-Hibernate</artifactId>-->
+<!--			<version>5.1</version>-->
+<!--			<scope>compile</scope>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>net.sourceforge.messadmin</groupId>-->
+<!--			<artifactId>MessAdmin-Ehcache</artifactId>-->
+<!--			<version>5.1</version>-->
+<!--			<scope>compile</scope>-->
+<!--		</dependency>-->
 	</dependencies>
 	<developers>
 		<developer>
@@ -420,6 +444,11 @@
 			<id>central</id>
 			<url>http://repo1.maven.org/maven2/</url>
 		</repository>
+		<repository>
+			<id>MessAdmin</id>
+			<url>http://messadmin.sourceforge.net/maven2/</url>
+		</repository>
+		
 <!--		<repository>-->
 <!--			<id>Codehaus Snapshots</id>-->
 <!--			<url>http://snapshots.repository.codehaus.org/</url>-->

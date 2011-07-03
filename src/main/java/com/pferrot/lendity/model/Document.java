@@ -40,6 +40,9 @@ public class Document implements Serializable {
 
 	@Column(name = "MIME_TYPE", nullable = false, length = 100)
 	private String mimeType;
+	
+	@Column(name = "PUBLIK", nullable = false)
+	private Boolean publik;
 
 	
 	public Long getId() {
@@ -96,6 +99,14 @@ public class Document implements Serializable {
 
 	public void setSize(Long size) {
 		this.size = size;
+	}
+
+	public Boolean getPublik() {
+		return publik;
+	}
+
+	public void setPublik(Boolean publik) {
+		this.publik = publik;
 	}
 
 	@Override

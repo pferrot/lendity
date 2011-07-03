@@ -1,12 +1,14 @@
 package com.pferrot.lendity.dao.hibernate;
 
 import java.sql.Blob;
+import java.util.List;
 
 import org.hibernate.Hibernate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.pferrot.lendity.dao.DocumentDao;
 import com.pferrot.lendity.model.Document;
+import com.pferrot.lendity.model.OrderedListValue;
 
 public class DocumentDaoHibernateImpl extends HibernateDaoSupport implements DocumentDao {
 
@@ -31,6 +33,14 @@ public class DocumentDaoHibernateImpl extends HibernateDaoSupport implements Doc
 //		final Blob blob = document.getContent();
 //		document.setBytes(toByteArray(blob));
 		return document;
+	}
+
+	public boolean isDocumentPublic(final Long pDocumentId) {		
+		final List<Boolean> list = getHibernateTemplate().find("select publik from Document d where d.id = ?", pDocumentId);
+		if (list == null || list.isEmpty()) {
+			return false;
+		}
+		return Boolean.TRUE.equals(list.get(0));
 	}
 
 //	private byte[] toByteArray(Blob fromImageBlob) {

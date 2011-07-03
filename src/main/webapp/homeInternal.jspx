@@ -75,8 +75,7 @@
 									</span>
 								</h:outputLink>
 							</center>
-						</div>
-						<br/>					
+						</div>					
 					</div>
 				</td>
 				
@@ -146,7 +145,6 @@
 								</h:outputLink>
 							</center>
 						</div>
-						<br/>					
 					</div>
 				</td>
 				</tr>

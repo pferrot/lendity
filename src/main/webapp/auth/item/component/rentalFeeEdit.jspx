@@ -26,6 +26,7 @@
 			<h:inputText id="rentalFee" immediate="true" 
 			    styleClass="gt-form-text-amount"
 			    converterId="javax.faces.Double"
+			    validator="#{controllerBean.validateRentalFee}"
 				value="#{controllerBean.rentalFee}"/>
 			<h:outputText value=" " escape="false" />
 			<h:outputText value="#{messages.currency_chf}"/>

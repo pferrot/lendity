@@ -497,6 +497,14 @@ div.commentBox {
 	-moz-border-radius: 5px;
 }
 
+div.statusInfoOverview {
+	font-size:110%;
+	font-weight: bold; 
+	padding: 0px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;	
+}
+
 /* LOGIN PAGE */
 #head {
 	height: 350px;

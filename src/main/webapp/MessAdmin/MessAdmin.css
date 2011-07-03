@@ -1,0 +1,174 @@
+/***************************************************************************/
+/* ToolTips */
+/***************************************************************************/
+
+/*
+With Windows computers, it's known as a Tool Tip and with (Classic) MacIntosh, it's known as Balloon Help.
+The meaning is a bit different (Balloon Help are more powerful than Tool Tip, and was adopted
+in Windows in later release). Unfortunately, Balloon Help disapeared from Mac OS X, and where replaced with
+a tooltips-like system that was used in OpenStep.
+*/
+.infoballoon {
+	display: none;
+	position: absolute;
+	float: left;
+	background-color: infobackground;
+	/*border: thin solid black;*/
+	border-width: 1px; /* IE doesn't think 'thin' should be 1px... */
+	border-style: solid;
+	border-color: black;
+	padding-left: 4px;
+	padding-right: 4px;
+	opacity: .9; /* CSS 3 */
+	/* -moz-opacity: 0.9; Gecko; removed in Firefox 3.5 in favor of the standard opacity property */
+	filter: alpha(opacity=90); /* IE */
+	border-radius: 4px; /* CSS 3 */
+	-moz-border-radius: 4px; /* Gecko */
+	-webkit-border-radius: 4px; /* WebKit */
+}
+.infoballoonable {
+	cursor: help;
+}
+
+/* IE hack */
+.infoballoon table tr th {
+	text-align: left;
+}
+
+/* Display a little cue that this element has a tooltip (doesn't work on IE6... never mind...) */
+/* Disabled, as beta-testers indicated this to be confusing. Default to a simple cursor hint. */
+/*
+*[title]:after {
+	content: "?"; / * no html here: emulate a <sup> * /
+	font-size: 50%;
+	font-style: normal;
+	font-weight: lighter;
+	margin-left: 0.25em;
+	position: relative;
+	top: -1ex;
+}
+*/
+*[title] {
+	cursor: help;
+	background-color: infobackground;
+}
+
+/***************************************************************************/
+/* Pretty buttons (doesn't work on IE6... never mind...) */
+/***************************************************************************/
+
+input[type="submit"], button {
+	border: 3px double #999999;
+	border-top-color: #CCCCCC;
+	border-left-color: #CCCCCC;
+	/*padding: 0.125em; /* This padding doesn't look right on Safari. Let's get natural. */
+	background-color: #EAEAEA;
+	/*background-image: url(http://www.macromedia.com/images/master/background_form_element.gif);
+	background-repeat: repeat-x;*/
+	color: #333333;
+	font-size: 66%;
+	font-weight: bold;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+}
+input[type="submit"]:active, button:active {
+	border: 3px double #CCCCCC;
+	border-top-color: #999999;
+	border-left-color: #999999;
+}
+input[type="submit"]:hover, button:hover { background-color: #E0E0E0; }
+
+/***************************************************************************/
+/* AJAX */
+/***************************************************************************/
+
+#ajaxLoadingDiv {
+	display: none;
+	position: fixed;
+	top: 1px;
+	right: 16px;
+	z-index: 9999;
+	background-color: #CC4444; /* #FFF1A8 */
+	font-size: 80%;
+	color: white; /* black */
+	padding: 2px; /* 4px */
+	font-family: sans-serif;
+	/*font-weight: bold;*/
+}
+
+/***************************************************************************/
+/* Strippable tables (CSS3) */
+/***************************************************************************/
+
+table.strippable {
+	/*border: 1px solid #666;*/
+	border-collapse: collapse;
+}
+
+table.strippable thead th, table.strippable tfoot th {
+	background: rgb(187,187,187);
+}
+
+table.strippable tbody tr:nth-child(odd) {
+	background-color: #fff;
+}
+table.strippable tbody tr:nth-child(even) {
+	background-color: #eee;
+}
+
+/***************************************************************************/
+/* Misc */
+/***************************************************************************/
+
+.number {
+	text-align: right;
+}
+
+.collapsible {
+	cursor: pointer;
+}
+
+#menu {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	padding-top: 2px;
+	padding-left: 2px;
+	padding-right: 2px;
+	padding-bottom: 4px;
+	/*z-index: 9999;*/
+	background-color: threedlightshadow;
+	border-bottom-style: double;
+	/*font-weight: bold;*/
+}
+
+#submenu {
+	font-size: smaller;
+}
+
+textarea {
+	resize: both; /* CSS 3 */
+	min-width: 96px;
+	max-width: 1280px;
+	min-height: 32px;
+	max-height: 1024px;
+	/*border: 1px solid;*/
+}
+
+input:focus, textarea:focus { background-color: infobackground; }
+
+.noprint {}
+@media print {
+	body {
+		background-color: #FFFFFF;
+	}
+	input[type="submit"], button, .noprint {
+		display: none;
+	}
+	/*
+	a:link:after, a:visited:after {
+		content: " [" attr(href) "] ";
+		font-size: 75%;
+	}
+	*/
+}

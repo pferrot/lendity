@@ -180,6 +180,10 @@ public class AuthenticationController {
 		return JsfUtils.getFullUrl(PagesURL.MY_GROUPS_LIST);
 	}
 	
+	public String getAddGroupURL() {
+		return JsfUtils.getFullUrl(PagesURL.GROUP_ADD);
+	}
+	
 	public String getMyGroupsWhereOwnerOrAdministratorURL() {
 		return JsfUtils.getFullUrl(PagesURL.MY_GROUPS_WHERE_OWNER_OR_ADMINISTRATOR_LIST);
 	}

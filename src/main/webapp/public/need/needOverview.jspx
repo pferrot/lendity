@@ -35,6 +35,7 @@
 </c:if>
 
 <h2 class="gt-table-head"><h:outputText value="#{messages.need_needOverviewTitle}"/></h2>
+
 <c:if test="${loggedInUser}">
 	<a href="#commentsAnchor"><h:outputText styleClass="fontSizeSmall" value="#{messages.comment_addReadComments}"/></a>
 	<br/><br/>
@@ -117,7 +118,11 @@
 					<h:outputText styleClass="stylishButton" value="#{messages.item_delete}"/>
 				</span>
 			</c:if>
-		</td></tr></table>		
+		</td></tr></table>
+		<c:if test="#{needOverviewController.facebookLikeButtonAvailable}">
+			<br/>
+			<iframe src="http://www.facebook.com/plugins/like.php?app_id=242769605735680&amp;href=http%3A%2F%2Fgolgoth14.dyndns.org%3A8080%2Flendity%2Fpublic%2Fneed%2FneedOverview.faces%3FneedID%3D#{needOverviewController.need.id}&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>
+		</c:if>		
 	</div>
 </div>
 <!-- /content box -->
@@ -129,6 +134,7 @@
 	<br/><br/>
 	<a name="commentsAnchor"/>
 	<ui:include src="../../auth/comment/comment.jspx">
+		<ui:param name="authorizedToAdd" value="${loggedInUser}"/>
 		<ui:param name="containerID" value="#{needOverviewController.need.id}"/>
 		<ui:param name="containerType" value="need"/>
 	</ui:include>

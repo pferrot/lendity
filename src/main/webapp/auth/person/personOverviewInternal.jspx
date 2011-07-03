@@ -171,6 +171,19 @@
 		<h:outputText value="#{theBean.memberSinceLabel}" />
 	</div>
 	<br/>
+	
+	<c:if test="#{theBean.uncompletedConnectionRequestAvailable}">
+		<div class="statusInfoOverview">
+			<h:outputText value="#{messages.person_pendingRequestExists}"/>
+		</div>
+	</c:if>
+	
+	<c:if test="#{theBean.bannedByPerson}">
+		<div class="statusInfoOverview">
+			<h:outputText value="#{messages.person_bannedByPerson}"/>
+		</div>
+	</c:if>
+	
 	<div class="gt-form-row gt-width-100">
 		<table class="buttonsTable"><tr><td>
 		<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.personEditHref}" styleClass="stylishButton">

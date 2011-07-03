@@ -294,6 +294,12 @@ function addCommentsFromJsonData(pJsonData) {
 	else {
 		hideLoadExtraCommentsDiv();
 	}
+	if (mNbCommentsLoaded == 0) {
+		showNoCommentDiv();
+	}
+	else {
+		hideNoCommentDiv();
+	}
 	
 }
 
@@ -304,6 +310,14 @@ function showLoadExtraCommentsDiv(pNbExtra) {
 
 function hideLoadExtraCommentsDiv() {
 	$j("#loadMoreCommentsContainer").hide();
+}
+
+function showNoCommentDiv() {
+	$j("#noCommentContainer").show();
+}
+
+function hideNoCommentDiv() {
+	$j("#noCommentContainer").hide();
 }
 
 /**
@@ -448,6 +462,9 @@ function removeCommentFromDbResponse(pData, pTextStatus, pXmlHttpRequest) {
 	else {
 		commentBox.remove();
 		mNbCommentsLoaded = mNbCommentsLoaded - 1;
+		if (mNbCommentsLoaded <= 0) {
+			showNoCommentDiv();
+		}
 	}
 }
 
@@ -498,6 +515,8 @@ function addCommentInDbResponse(pData, pTextStatus, pXmlHttpRequest) {
 		var systemComment = pData.systemComment;
 		addCommentInternal(commentId, text, ownerName, ownerUrl, dateAdded, profilePictureUrl, canEdit, systemComment, true);
 		resetCommentTextArea();
+		mNbCommentsLoaded = mNbCommentsLoaded + 1;
+		hideNoCommentDiv();
 	}
 	addCommentStopProgress();
 }

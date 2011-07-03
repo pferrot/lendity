@@ -92,7 +92,8 @@
 						    value="#{itemsImportController.visibilityId}" 
 						    converter="javax.faces.Long" 
 						    required="true"
-						    requiredMessage="#{messages.validation_requiredMessage}">
+						    requiredMessage="#{messages.validation_requiredMessage}"
+						    validator="#{itemsImportController.validateVisibility}">
 							<f:selectItems value="#{itemsImportController.visibilitySelectItems}"/>
 						</h:selectOneMenu>	
 					</div><!-- /form row -->
