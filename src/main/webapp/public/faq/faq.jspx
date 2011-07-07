@@ -29,7 +29,28 @@
 
 				<h2 class="gt-table-head"><h:outputText value="#{messages.faq_faqTitle}"/></h2>
 				<div class="gt-form gt-content-box">
-					<h:outputText value="COMING SOON..." escape="false"/>					
+					<div><h:outputText id="q1" value="#{messages.faq_q1}" styleClass="linkStyleActionSmall" onclick="toggleQuestion('a1Div');"/></div>
+					<div id="a1Div"  style="display: none;"><h:outputText id="a1" value="#{messages.faq_a1}"/></div>
+					
+					<br/>
+					
+					<div><h:outputText id="q2" value="#{messages.faq_q2}" styleClass="linkStyleActionSmall" onclick="toggleQuestion('a2Div');"/></div>
+					<div id="a2Div" style="display: none;"><h:outputText id="a2" value="#{messages.faq_a2}"/><br/></div>
+					
+					<br/>
+					
+					<div><h:outputText id="q4" value="#{messages.faq_q3}" styleClass="linkStyleActionSmall" onclick="toggleQuestion('a3Div');"/></div>
+					<div id="a3Div" style="display: none;"><h:outputText id="a4" value="#{messages.faq_a3}"/><br/></div>
+					
+					<br/>
+					
+					<div><h:outputText id="q4" value="#{messages.faq_q4}" styleClass="linkStyleActionSmall" onclick="toggleQuestion('a4Div');"/></div>
+					<div id="a4Div" style="display: none;"><h:outputText id="a4" value="#{messages.faq_a4}"/><br/></div>
+					
+					<br/>
+					
+					<div><h:outputText id="q5" value="#{messages.faq_q5}" styleClass="linkStyleActionSmall" onclick="toggleQuestion('a5Div');"/></div>
+					<div id="a5Div" style="display: none;"><h:outputText id="a5" value="#{messages.faq_a5}"/><br/></div>					
 				</div>
 			</div>
 			<!-- /main content -->

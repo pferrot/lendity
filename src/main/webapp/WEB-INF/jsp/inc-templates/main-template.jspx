@@ -15,7 +15,8 @@
 	<meta http-equiv="Expires" content="-1" />
 	
 	<meta property="og:image" content="#{facesContext.externalContext.requestMap['ogImage']}" />
-	<meta property="og:title" content="#{facesContext.externalContext.requestMap['ogTitle']}" />	
+	<meta property="og:title" content="#{facesContext.externalContext.requestMap['ogTitle']}" />
+	<meta property="og:description" content="#{facesContext.externalContext.requestMap['ogDescription']}" />	
 	<meta property="og:site_name" content="#{configuration.siteNameNotStatic}" />
 	
 	<link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/favicon.ico" />

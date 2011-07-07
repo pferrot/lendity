@@ -61,7 +61,7 @@
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">
-						<label><h:outputText value="#{messages.group_validateMembership}"/></label>
+						<label><h:outputText value="#{messages.group_validateMembership}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{messages.group_validateMembershipInfo}"/></label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="validateMembership"></h:message>
 						<h:selectBooleanCheckbox id="validateMembership" value="#{groupEditController.validateMembership}" styleClass="gt-form-element-checkbox"/>

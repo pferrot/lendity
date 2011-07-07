@@ -16,6 +16,7 @@ import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
 import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
 import com.pferrot.lendity.geolocation.GeoLocationUtils;
 import com.pferrot.lendity.geolocation.googlemaps.GoogleMapsUtils;
+import com.pferrot.lendity.i18n.I18nConsts;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
@@ -86,7 +87,7 @@ public class PersonOverviewController implements Serializable {
 	}
 	
 	public String getMemberSinceLabel() {
-		return UiUtils.getDateAsString(person.getUser().getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		return UiUtils.getDateAsString(person.getUser().getCreationDate(), I18nUtils.getDefaultLocale());
 	}
 
 	public String getPersonEditHref() {		
@@ -121,7 +122,7 @@ public class PersonOverviewController implements Serializable {
 	
 	public String getPageTitle() {
 		if (isEditAvailable()) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			return I18nUtils.getMessageResourceString("menu_profile", locale);
 		}
 		else {
@@ -201,5 +202,9 @@ public class PersonOverviewController implements Serializable {
 	public boolean isBannedByPerson() {
 		return SecurityUtils.isLoggedIn() &&
 		       getPerson().getBannedPersons().contains(personService.getCurrentPerson());
+	}
+	
+	public String getBirthdateLabel() {
+		return I18nUtils.getSimpleDateFormat().format(getPerson().getBirthdate());
 	}
 }

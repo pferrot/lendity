@@ -44,7 +44,7 @@ public abstract class AbstractNeedsListController extends AbstractObjektsListCon
 
 	@Override
 	protected String getOrderBySelectItemsByCreationDateLabel() {
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		final Locale locale = I18nUtils.getDefaultLocale();
     	return I18nUtils.getMessageResourceString("need_orderByCreationDateDesc", locale);
 	}
 	

@@ -10,7 +10,7 @@
 	<ui:define name="pageTitle"><h:outputText value="#{groupOverviewController.group.title}"/></ui:define>
 	<ui:param name="contentHeader" value="#{messages.group_groupOverviewTitle}" />
 
-		<ui:define name="content">
+		<ui:define name="content"> 
 
 		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
 
@@ -77,8 +77,13 @@
 			if (pictureDivHeight > mainDivHeight) {
 				$j('#groupOverviewMainDiv').height(pictureDivHeight + 20);
 			}
+			if ($j('#descriptionDiv')) {
+				var descWidth = $j('#groupOverviewMainDiv').width() - $j('#groupOverviewPictureDiv').width() - 20;
+				$j('#descriptionDiv').width(descWidth);
+			}
 		});
 	</script>
+	
 	
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.group_title}:" /></label></div>
@@ -89,7 +94,7 @@
 	<c:if test="#{groupOverviewController.descriptionAvailable}">
 		<div class="gt-form-row gt-width-100">
 			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.group_description}:" /></label></div>
-			<h:outputText value="#{groupOverviewController.description}" escape="false" />
+			<div id="descriptionDiv" style="width: 375px;"><h:outputText value="#{groupOverviewController.description}" escape="false" /></div>
 		</div>
 		<br/>
 	</c:if>

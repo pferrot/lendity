@@ -65,6 +65,9 @@ public class Person implements Serializable {
 	
 	@Column(name = "LAST_NAME", nullable = false, length = 255)
     private String lastName;
+	
+	@Column(name = "BIRTHDATE", nullable = false)
+	private Date birthdate;
 
 	@Column(name = "DISPLAY_NAME", nullable = false, length = 255, unique = true)
     private String displayName;
@@ -245,7 +248,15 @@ public class Person implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getDisplayName() {
+    public Date getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
+	}
+
+	public String getDisplayName() {
         return this.displayName;
     }
 

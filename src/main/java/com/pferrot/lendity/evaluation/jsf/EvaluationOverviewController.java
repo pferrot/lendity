@@ -97,7 +97,7 @@ public class EvaluationOverviewController {
 	}
 	
 	public String getCreationDateLabel() {
-		return UiUtils.getDateAsString(getEvaluation().getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		return UiUtils.getDateAsString(getEvaluation().getCreationDate(), I18nUtils.getDefaultLocale());
 	}
 	
 	public String getLendTransactionUrl() {

@@ -76,7 +76,7 @@ public abstract class AbstractGroupAddEditController implements Serializable {
 		String description = (String) value;
 		if (description != null && description.length() > GroupConsts.MAX_DESCRIPTION_SIZE) {
 			((UIInput)toValidate).setValid(false);
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			message = I18nUtils.getMessageResourceString("validation_maxSizeExceeded", new Object[]{String.valueOf(GroupConsts.MAX_DESCRIPTION_SIZE)}, locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}

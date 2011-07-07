@@ -9,8 +9,6 @@ public class I18nConsts {
 	
 	public static final String DEFAULT_RESOURCE_BUNDLE = "messages";
 	
-	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
-	
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	// LANGUAGES - start
 	

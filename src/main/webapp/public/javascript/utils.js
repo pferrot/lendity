@@ -1,3 +1,7 @@
+function toggleQuestion(pAnswerId) {
+	$j('#' + pAnswerId).toggle(400);	
+}
+
 function limitTextareaLength(pTextarea, pMaxLength) {
 	pTextarea.value = pTextarea.value.slice(0, pMaxLength);
 }
@@ -260,6 +264,14 @@ function lendItemTooltip(pTooltipTarget, pItemID, pRedirectID) {
 }
 
 function createDatePicker(pJqueryInputField) {
+	createDatePickerInternal(pJqueryInputField, false, false);
+}
+
+function createDatePickerWithChangeYear(pJqueryInputField) {
+	createDatePickerInternal(pJqueryInputField, true, true);
+}
+
+function createDatePickerInternal(pJqueryInputField, pChangeYear, pChangeMonth) {
 	// Seems to never be called - in tooltips at least (even when
 	// opening up a tooltip for the second time).
 	if (pJqueryInputField.data("datepicker")) {
@@ -272,15 +284,19 @@ function createDatePicker(pJqueryInputField) {
 	pJqueryInputField.removeClass("hasDatepicker");
 	
 	pJqueryInputField.datepicker({ dateFormat: 'dd.mm.yy', 
-        dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-        dayNamesMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
-        dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
-        firstDay: 1,
-        monthNames: ['Janvier','F&eacute;vrier','Mars','Avril','Mai','Juin','Juillet','Ao&ucirc;t','Septembre','Octobre','Novembre','D&eacute;cembre'],
-        monthNamesShort: ['Jan','F&eacute;v','Mar','Avr','Mai','Jui','Jul','Ao&ucirc;','Sep','Oct','Nov','D&eacute;c']});
+	    dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+	    dayNamesMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+	    dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+	    firstDay: 1,
+	    monthNames: ['Janvier','F&eacute;vrier','Mars','Avril','Mai','Juin','Juillet','Ao&ucirc;t','Septembre','Octobre','Novembre','D&eacute;cembre'],
+	    monthNamesShort: ['Jan','F&eacute;v','Mar','Avr','Mai','Jui','Jul','Ao&ucirc;','Sep','Oct','Nov','D&eacute;c'],
+	    changeMonth: pChangeMonth,
+	    changeYear: pChangeYear,
+	    yearRange: '-130:+0'});
 	
 	pJqueryInputField.attr( 'readOnly' , 'true' );
 }
+
 
 /*
  * Click the submit button in the tooltip when an item is lent.

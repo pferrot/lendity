@@ -1,9 +1,8 @@
 package com.pferrot.lendity.connectionrequest.jsf;
 
-import javax.faces.context.FacesContext;
-
 import com.pferrot.lendity.connectionrequest.ConnectionRequestConsts;
 import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.jsf.list.AbstractListController;
 import com.pferrot.lendity.model.ConnectionRequest;
 import com.pferrot.lendity.person.PersonService;
@@ -49,12 +48,12 @@ public abstract class AbstractConnectionRequestsListController extends AbstractL
 
 	public String getRequestDateLabel() {
 		final ConnectionRequest connectionRequest = (ConnectionRequest)getTable().getRowData();
-		return UiUtils.getDateAsString(connectionRequest.getRequestDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		return UiUtils.getDateAsString(connectionRequest.getRequestDate(), I18nUtils.getDefaultLocale());
 	}
 	
 	public String getResponseDateLabel() {
 		final ConnectionRequest connectionRequest = (ConnectionRequest)getTable().getRowData();
-		return UiUtils.getDateAsString(connectionRequest.getResponseDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		return UiUtils.getDateAsString(connectionRequest.getResponseDate(), I18nUtils.getDefaultLocale());
 	}
 
 	public String getRequesterThumbnailSrc() {

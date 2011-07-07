@@ -641,12 +641,12 @@ public class ItemService extends ObjektService {
 	
 
 	@Override
-	public String getImage200Src(final Objekt pObjekt,
+	public String getFacebookLikeImageSrc(final Objekt pObjekt,
 			 final boolean pAuthorizeDocumentAccess, final HttpSession pSession, final String pUrlPrefix) {
 		final Item item = (Item)pObjekt;
 		final Document image1 = item.getImage1();
 		if (image1 == null ) {
-			return super.getImage200Src(pObjekt, pAuthorizeDocumentAccess, pSession, pUrlPrefix);
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.FACEBOOK_LIKE_DEFAULT_IMAGE_URL);
 		}
 		else {
 			if (pAuthorizeDocumentAccess) {

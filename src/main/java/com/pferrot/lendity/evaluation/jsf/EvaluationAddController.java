@@ -100,7 +100,7 @@ public class EvaluationAddController {
 
 	public List<SelectItem> getScoreSelectItems() {
 		if (scoreSelectItems == null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			
 			scoreSelectItems = new ArrayList<SelectItem>();
 			
@@ -152,7 +152,7 @@ public class EvaluationAddController {
 		String text = (String) value;
 		if (text != null && text.length() > EvaluationConsts.MAX_TEXT_SIZE) {
 			((UIInput)toValidate).setValid(false);
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			message = I18nUtils.getMessageResourceString("validation_maxSizeExceeded", new Object[]{String.valueOf(EvaluationConsts.MAX_TEXT_SIZE)}, locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}

@@ -65,7 +65,7 @@ public class SearchItemsListController extends AbstractItemsListController {
 	public List<SelectItem> getBorrowStatusSelectItems() {
 		if (getBorrowStatusSelectItemsInternal() == null) {
 			final List<SelectItem> result = new ArrayList<SelectItem>();
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			
 			result.add(new SelectItem(UiUtils.getLongFromBoolean(null), I18nUtils.getMessageResourceString("item_availableStatusAll", locale)));
 			result.add(new SelectItem(UiUtils.getLongFromBoolean(Boolean.FALSE), I18nUtils.getMessageResourceString("item_availableStatusAvailable", locale)));

@@ -105,18 +105,18 @@ public class AbstractLendTransactionOverviewEditController
 	}
 	
 	public String getStatusLabel() {
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		final Locale locale = I18nUtils.getDefaultLocale();
 		return I18nUtils.getMessageResourceString(getLendTransaction().getStatus().getLabelCode(), locale);		
 	}
 
 	public String getCreationDateLabel() {
-		return UiUtils.getDateAsString(getLendTransaction().getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		return UiUtils.getDateAsString(getLendTransaction().getCreationDate(), I18nUtils.getDefaultLocale());
 	}
 	
 	public String getStartDateLabel() {
 		final Date startDate = getLendTransaction().getStartDate();
 		if (startDate != null) {
-			return UiUtils.getDateAsString(startDate, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			return UiUtils.getDateAsString(startDate, I18nUtils.getDefaultLocale());
 		}
 		else {
 			return "";
@@ -126,7 +126,7 @@ public class AbstractLendTransactionOverviewEditController
 	public String getEndDateLabel() {
 		final Date endDate = getLendTransaction().getEndDate();
 		if (endDate != null) {
-			return UiUtils.getDateAsString(endDate, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			return UiUtils.getDateAsString(endDate, I18nUtils.getDefaultLocale());
 		}
 		else {
 			return "";

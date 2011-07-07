@@ -48,6 +48,10 @@ public class AuthenticationController {
 		return JsfUtils.getContextRoot() + PagesURL.FAQ;
 	}
 	
+	public String getDataProtectionURL() {
+		return JsfUtils.getContextRoot() + PagesURL.DATA_PROTECTION;
+	}
+	
 	public String getContactURL() {
 		return JsfUtils.getContextRoot() + PagesURL.CONTACT;
 	}

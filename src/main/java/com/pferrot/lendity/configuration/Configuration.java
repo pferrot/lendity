@@ -1,5 +1,7 @@
 package com.pferrot.lendity.configuration;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +26,9 @@ public class Configuration {
 	private static String noReplySenderName;
 	private static String supportEmailAddress;
 	private static String contactEmailAddress;
+	private static boolean facebookLikeEnabled;
 	private static int nbDaysToValidateRegistration;
+	private static int minimumAge;
 	private static Set<String> categoriesNotAllowedPublicVisibility = new HashSet<String>();
 	private static Set<String> categoriesNotAllowedToRent = new HashSet<String>();
 
@@ -34,6 +38,18 @@ public class Configuration {
 	
 	public String getRootURLNotStatic() {
 		return rootURL;
+	}
+	
+	/**
+	 * Returns the root as it should be encoded to appear in the facebook like button. 
+	 */
+	public String getRootURLFacebookEncodedNotStatic() {
+		try {
+			return URLEncoder.encode(getRootURLNotStatic(), "UTF-8");
+		}
+		catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void setRootURL(String rootURL) {
@@ -92,6 +108,18 @@ public class Configuration {
 		this.contactEmailAddress = contactEmailAddress;
 	}
 
+	public static boolean isFacebookLikeEnabled() {
+		return facebookLikeEnabled;
+	}
+	
+	public boolean isFacebookLikeEnabledNotStatic() {
+		return facebookLikeEnabled;
+	}
+
+	public void setFacebookLikeEnabled(boolean facebookLikeEnabled) {
+		this.facebookLikeEnabled = facebookLikeEnabled;
+	}
+
 	public static int getNbDaysToValidateRegistration() {
 		return nbDaysToValidateRegistration;
 	}
@@ -99,6 +127,14 @@ public class Configuration {
 	public void setNbDaysToValidateRegistration(
 			int nbDaysToValidateRegistration) {
 		this.nbDaysToValidateRegistration = nbDaysToValidateRegistration;
+	}
+
+	public static int getMinimumAge() {
+		return minimumAge;
+	}
+
+	public void setMinimumAge(int minimumAge) {
+		this.minimumAge = minimumAge;
 	}
 
 	public static Set<String> getCategoriesNotAllowedPublicVisibility() {

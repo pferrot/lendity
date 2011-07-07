@@ -13,10 +13,13 @@
 	<meta http-equiv="Cache-Control" content="no-cache" />
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Expires" content="-1" />
+	
 	<meta property="og:image" content="#{configuration.rootURLNotStatic}/public/images/login/objet_geo.png" />
-	<meta property="og:title" content="#{messages.login_loginTitle}" />
+	<meta property="og:title" content="#{configuration.siteNameNotStatic}" />
+	<meta property="og:description" content="#{messages.facebook_loginLikeDescription}" />
 	<meta property="og:type" content="website" />
 	<meta property="og:site_name" content="#{configuration.siteNameNotStatic}" />
+	
 	<link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/favicon.ico" />
 	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/reset-fonts.css" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/gt-styles.css" type="text/css" media="screen, projection" />
@@ -100,21 +103,14 @@
 				</div>
 				<!-- / logo -->
 				
-				<!-- 
-				<div style="position: absolute; top: 65px; left: 0px; height: 35px; width: 450px; border-style: solid; border-color: black; border-width: 0px;">
-					<iframe src="http://www.facebook.com/plugins/like.php?app_id=205308432839095&amp;href=http%3A%2F%2Fwww.lendity.ch&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font=arial&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>
-				</div>
- 				-->
-				
-				<!-- 
-				<div style="position: absolute; top: 65px; left: 0px; height: 35px; width: 450px; border-style: solid; border-color: black; border-width: 0px;">
-					<iframe src="http://www.facebook.com/plugins/like.php?app_id=205308432839095&amp;href=http%3A%2F%2Fgolgoth14.dyndns.org%3A8080%2Flendity&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font=arial&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>
-				</div>
- 				-->
-				
+				<c:if test="#{configuration.facebookLikeEnabledNotStatic}">
+					<div style="position: absolute; top: 65px; left: 0px; height: 35px; width: 450px; border-style: solid; border-color: black; border-width: 0px;">
+						<iframe src="http://www.facebook.com/plugins/like.php?app_id=205308432839095&amp;href=#{configuration.rootURLFacebookEncodedNotStatic}&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font=arial&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>
+					</div>
+ 				</c:if>
+								 
 				<div id="guys"></div>
-				
-				
+								
 				<!-- utility box -->
 				<div class="gt-util-box">
 					<div class="gt-util-box-inner">

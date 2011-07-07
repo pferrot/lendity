@@ -1,5 +1,8 @@
 package com.pferrot.lendity.person.jsf;
 
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.faces.application.FacesMessage;
@@ -15,9 +18,11 @@ import org.springframework.security.AccessDeniedException;
 
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.geolocation.bean.Coordinate;
 import com.pferrot.lendity.geolocation.exception.GeolocalisationException;
 import com.pferrot.lendity.geolocation.googlemaps.GoogleMapsUtils;
+import com.pferrot.lendity.i18n.I18nConsts;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonConsts;
@@ -76,6 +81,7 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		
 		setFirstName(pPerson.getFirstName());
 		setLastName(pPerson.getLastName());
+		setBirthdate(pPerson.getBirthdate());
 		setDisplayName(pPerson.getDisplayName());
 		
 		setWebsite(pPerson.getWebsite());
@@ -99,6 +105,7 @@ public class PersonEditController extends AbstractPersonAddEditController {
 
 		getPerson().setFirstName(getFirstName());
 		getPerson().setLastName(getLastName());
+		getPerson().setBirthdate(getBirthdate());
 		getPerson().setDisplayName(getDisplayName());
 		getPerson().setWebsite(getWebsite());
 		getPerson().setEmailSubscriber(getEmailSubscriber());
@@ -141,7 +148,7 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		if (!StringUtils.isNullOrEmpty(address)) {
 			if (address.length() > PersonConsts.MAX_ADDRESS_SIZE) {
 				((UIInput)toValidate).setValid(false);
-				final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+				final Locale locale = I18nUtils.getDefaultLocale();
 				message = I18nUtils.getMessageResourceString("validation_maxSizeExceeded", new Object[]{String.valueOf(PersonConsts.MAX_ADDRESS_SIZE)}, locale);
 				context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 			}
@@ -157,7 +164,7 @@ public class PersonEditController extends AbstractPersonAddEditController {
 					setAddressHomeLongitude(null);
 					
 					((UIInput)toValidate).setValid(false);
-					final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+					final Locale locale = I18nUtils.getDefaultLocale();
 					message = I18nUtils.getMessageResourceString("validation_geolocationNotFound", locale);
 					context.addMessage(toValidate.getClientId(context), new FacesMessage(message));					
 				}
@@ -174,11 +181,38 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		String displayName = (String) value;
 		if (!getPersonService().isDisplayNameAvailable(displayName, getPerson())) {
 			((UIInput)toValidate).setValid(false);
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			message = I18nUtils.getMessageResourceString("person_displayNameAlreadyExists", locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
 	}
+	
+	public void validateBirthdate(FacesContext context, UIComponent toValidate, Object value) {
+		try {
+			String message = "";
+			final String birthdateString = (String) value;
+			final Date birthdate = I18nUtils.getSimpleDateFormat().parse(birthdateString);
+			final Date d = new Date();
+			final Calendar c = Calendar.getInstance();
+			c.set(Calendar.YEAR, c.get(Calendar.YEAR) - Configuration.getMinimumAge());
+			c.set(Calendar.HOUR, 0);
+			c.set(Calendar.HOUR_OF_DAY, 0);
+			c.set(Calendar.MINUTE, 0);
+			c.set(Calendar.SECOND, 0);
+			c.set(Calendar.MILLISECOND, 0);
+			
+			if (c.getTime().before(birthdate)) {
+				((UIInput)toValidate).setValid(false);
+				final Locale locale = I18nUtils.getDefaultLocale();
+				message = I18nUtils.getMessageResourceString("validation_birthdateTooYoung", locale);
+				context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
+			}
+		}
+		catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	
 //	protected boolean isModifiedAddressHome(final String pNewAddress) {
 //		final String oldAddress = getPerson().getAddressHome();

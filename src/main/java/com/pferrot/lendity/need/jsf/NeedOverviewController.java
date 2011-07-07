@@ -90,11 +90,15 @@ public class NeedOverviewController extends AbstractObjektOverviewController {
 			setNeed(need);
 		}
 		// For facebook.
-		final String ogImageUrl = getNeedService().getImage200Src(getNeed(), true, JsfUtils.getSession(), Configuration.getRootURL());
+		final String ogImageUrl = getNeedService().getFacebookLikeImageSrc(getNeed(), true, JsfUtils.getSession(), Configuration.getRootURL());
 		JsfUtils.getRequest().setAttribute(FacebookConsts.OG_IMAGE_ATTRIBUTE_NAME, ogImageUrl);
-		final Locale locale = I18nUtils.getDefaultLocale();		
-		final String ogTitle = I18nUtils.getMessageResourceString("facebook_needResearched", new Object[]{getNeed().getTitle()}, locale);
+				
+		final String ogTitle = getNeed().getTitle();
 		JsfUtils.getRequest().setAttribute(FacebookConsts.OG_TITLE_ATTRIBUTE_NAME, ogTitle);
+		
+		final Locale locale = I18nUtils.getDefaultLocale();
+		final String ogDescription = I18nUtils.getMessageResourceString("facebook_needLikeDescription", locale);
+		JsfUtils.getRequest().setAttribute(FacebookConsts.OG_DESCRIPTION_ATTRIBUTE_NAME, ogDescription);
 	}
 	
 	public String getNeedEditHref() {		

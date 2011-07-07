@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -22,6 +24,7 @@ import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
 import com.pferrot.lendity.model.Need;
+import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.need.exception.NeedException;
 import com.pferrot.lendity.person.PersonUtils;
@@ -422,5 +425,11 @@ public class NeedService extends ObjektService {
 			pNeed.setGroupsAuthorized(groups);
 		}
 		updateNeed(pNeed, pCategoryId, pVisibilityId);
+	}
+
+	@Override
+	public String getFacebookLikeImageSrc(final Objekt pObjekt,
+			 final boolean pAuthorizeDocumentAccess, final HttpSession pSession, final String pUrlPrefix) {
+		return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, NeedConsts.FACEBOOK_LIKE_DEFAULT_IMAGE_URL);
 	}
 }

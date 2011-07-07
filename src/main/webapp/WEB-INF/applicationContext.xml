@@ -57,6 +57,12 @@
 		<property name="nbDaysToValidateRegistration">
 			<value>30</value>
 		</property>
+		<property name="minimumAge">
+			<value>18</value>
+		</property>
+		<property name="facebookLikeEnabled">
+			<value>false</value>
+		</property>
 		<property name="categoriesNotAllowedPublicVisibility">
 			<set>
 				<value>item_categoryCd</value>

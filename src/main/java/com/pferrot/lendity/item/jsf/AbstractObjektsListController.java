@@ -64,7 +64,7 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 
 	public List<SelectItem> getVisibilitySelectItems() {
 		if (visibilitySelectItems == null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			visibilitySelectItems = UiUtils.getSelectItemsForOrderedListValue(getObjektService().getVisibilities(), locale);
 			// Add all visibilities first.
 			visibilitySelectItems.add(0, getAllVisibilitiesSelectItem(locale));
@@ -97,7 +97,7 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 	public String getVisibilityLabel() {
 		final VisibilityEnabled visibilityEnabled = (VisibilityEnabled)getTable().getRowData();
 		if (visibilityEnabled != null && visibilityEnabled.getVisibility() != null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			return I18nUtils.getMessageResourceString(visibilityEnabled.getVisibility().getLabelCode(), locale);
 		}
 		else {
@@ -107,7 +107,7 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 
 	public List<SelectItem> getOwnerTypeSelectItems() {
 		final List<SelectItem> result = new ArrayList<SelectItem>();
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		final Locale locale = I18nUtils.getDefaultLocale();
 		
 		result.add(new SelectItem(null, I18nUtils.getMessageResourceString("item_ownerTypeAll", locale)));
 		result.add(new SelectItem(Long.valueOf(ItemConsts.OWNER_TYPE_CONNECTIONS), I18nUtils.getMessageResourceString("item_ownerTypeConnections", locale)));
@@ -148,7 +148,7 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 	public List<SelectItem> getMaxDistanceSelectItems() {
 		if (maxDistanceSelectItems == null) {
 			maxDistanceSelectItems = new ArrayList<SelectItem>();
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			// Add all categories first.
 			maxDistanceSelectItems.add(getNoMaxDistanceSelectItem(locale));
 			maxDistanceSelectItems.add(new SelectItem(Long.valueOf(1), "1 km"));
@@ -188,7 +188,7 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 
 	public List<SelectItem> getCategoriesSelectItems() {
 		if (categoriesSelectItems == null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			categoriesSelectItems = UiUtils.getSelectItemsForListValueWithItemFirst(getObjektService().getCategories(), locale, ItemCategory.OTHER_LABEL_CODE);
 			// Add all categories first.
 			categoriesSelectItems.add(0, getAllCategoriesSelectItem(locale));
@@ -221,7 +221,7 @@ public abstract class AbstractObjektsListController extends AbstractListControll
     public List<SelectItem> getOrderBySelectItems() {
 		if (orderBySelectItems == null) {
 			final List<SelectItem> result = new ArrayList<SelectItem>();
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			
 			result.add(new SelectItem(null, I18nUtils.getMessageResourceString("item_orderByTitleAsc", locale)));
 			if (PersonUtils.isCurrentPersonIsAddressDefined()) {
@@ -235,7 +235,7 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 	}
     
     protected String getOrderBySelectItemsByCreationDateLabel() {
-    	final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    	final Locale locale = I18nUtils.getDefaultLocale();
     	return I18nUtils.getMessageResourceString("item_orderByCreationDateDesc", locale);
     }
 	
@@ -300,7 +300,7 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 	public String getCategoryLabel() {
 		final CategoryEnabled ce = (CategoryEnabled)getTable().getRowData();
 		if (ce != null && ce.getCategory() != null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			return I18nUtils.getMessageResourceString(ce.getCategory().getLabelCode(), locale);
 		}
 		else {
@@ -326,7 +326,7 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 
 	public String getCreationDateLabel() {
 		final Objekt objekt = (Objekt)getTable().getRowData();
-		return UiUtils.getDateAsString(objekt.getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		return UiUtils.getDateAsString(objekt.getCreationDate(), I18nUtils.getDefaultLocale());
 	}
 	
 	public String getDistanceLabel() {

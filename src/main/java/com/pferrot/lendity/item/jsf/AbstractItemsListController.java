@@ -104,7 +104,7 @@ public abstract class AbstractItemsListController extends AbstractObjektsListCon
 	public List<SelectItem> getBorrowStatusSelectItems() {
 		if (getBorrowStatusSelectItemsInternal() == null) {
 			final List<SelectItem> result = new ArrayList<SelectItem>();
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			
 			result.add(new SelectItem(UiUtils.getLongFromBoolean(null), I18nUtils.getMessageResourceString("item_borrowStatusAll", locale)));
 			result.add(new SelectItem(UiUtils.getLongFromBoolean(Boolean.TRUE), I18nUtils.getMessageResourceString("item_borrowStatusBorrowed", locale)));
@@ -151,7 +151,7 @@ public abstract class AbstractItemsListController extends AbstractObjektsListCon
 
 	public List<SelectItem> getLendTypeSelectItems() {
 		final List<SelectItem> result = new ArrayList<SelectItem>();
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		final Locale locale = I18nUtils.getDefaultLocale();
 		
 		result.add(new SelectItem(null, I18nUtils.getMessageResourceString("item_lendTypeAll", locale)));
 		result.add(new SelectItem(Long.valueOf(ItemConsts.LEND_TYPE_LEND), I18nUtils.getMessageResourceString("item_lendTypeLend", locale)));
@@ -187,11 +187,11 @@ public abstract class AbstractItemsListController extends AbstractObjektsListCon
 	public String getAvailableLabel() {
 		final Item item = (Item)getTable().getRowData();
 		if (item.isAvailable()) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			return I18nUtils.getMessageResourceString("item_availableYes", locale);
 		}
 		else {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			return I18nUtils.getMessageResourceString("item_availableNo", locale);
 		}
 	}
@@ -252,7 +252,7 @@ public abstract class AbstractItemsListController extends AbstractObjektsListCon
 	public String getBorrowDateLabel() {
 		final Item item = (Item)getTable().getRowData();
 		if (item != null && item.isBorrowed()) {
-			return UiUtils.getDateAsString(item.getBorrowDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			return UiUtils.getDateAsString(item.getBorrowDate(), I18nUtils.getDefaultLocale());
 		}
 		return "";
 	}
@@ -270,7 +270,7 @@ public abstract class AbstractItemsListController extends AbstractObjektsListCon
 	@Override
 	public String getCreationDateLabel() {
 		final Item item = (Item)getTable().getRowData();
-		return UiUtils.getDateAsString(item.getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		return UiUtils.getDateAsString(item.getCreationDate(), I18nUtils.getDefaultLocale());
 	}
 
 	public String getBorrowerHref() {

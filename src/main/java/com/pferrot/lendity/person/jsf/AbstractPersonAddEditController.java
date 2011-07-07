@@ -1,10 +1,14 @@
 package com.pferrot.lendity.person.jsf;
 
+import java.text.ParseException;
+import java.util.Date;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.utils.JsfUtils;
 
@@ -16,6 +20,7 @@ public abstract class AbstractPersonAddEditController {
 	
 	private String firstName;
 	private String lastName;
+	private Date birthdate;
 	private String displayName;
 	
 	private String website;
@@ -56,6 +61,37 @@ public abstract class AbstractPersonAddEditController {
 
 	public void setLastName(String lastName) {
 		this.lastName = StringUtils.getNullIfEmpty(lastName);
+	}
+	
+	public Date getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
+	}
+
+	public void setBirthdateAsString(final String pBirthdateAsString) {
+		try {
+			if (StringUtils.isNullOrEmpty(pBirthdateAsString)) {
+				setBirthdate(null);
+			}
+			else {
+				setBirthdate(I18nUtils.getSimpleDateFormat().parse(pBirthdateAsString));
+			}
+		}
+		catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public String getBirthdateAsString() {
+		if (getBirthdate() == null) {
+			return "";
+		}
+		else {
+			return I18nUtils.getSimpleDateFormat().format(getBirthdate());
+		}
 	}
 
 	public String getDisplayName() {

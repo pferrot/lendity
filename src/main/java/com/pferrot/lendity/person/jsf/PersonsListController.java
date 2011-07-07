@@ -90,7 +90,7 @@ public class PersonsListController extends AbstractPersonsListController {
 	public List<SelectItem> getMaxDistanceSelectItems() {
 		if (maxDistanceSelectItems == null) {
 			maxDistanceSelectItems = new ArrayList<SelectItem>();
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			// Add all categories first.
 			maxDistanceSelectItems.add(getNoMaxDistanceSelectItem(locale));
 			maxDistanceSelectItems.add(new SelectItem(Long.valueOf(1), "1 km"));

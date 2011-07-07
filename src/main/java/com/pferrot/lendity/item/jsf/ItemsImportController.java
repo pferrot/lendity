@@ -63,7 +63,7 @@ public class ItemsImportController  {
 
 	public List<SelectItem> getCategoriesSelectItems() {
 		if (categoriesSelectItems == null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			categoriesSelectItems = UiUtils.getSelectItemsForListValueWithItemFirst(itemService.getCategories(), locale, ItemCategory.OTHER_LABEL_CODE);
 			categoriesSelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
 		}		
@@ -80,7 +80,7 @@ public class ItemsImportController  {
 	
 	public List<SelectItem> getVisibilitySelectItems() {
 		if (visibilitySelectItems == null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			visibilitySelectItems = UiUtils.getSelectItemsForOrderedListValue(itemService.getVisibilities(), locale);
 			visibilitySelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
 		}		
@@ -159,7 +159,7 @@ public class ItemsImportController  {
 		if (visibility == null || visibility.getLabelCode() == null) {
 			return null;
 		}
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		final Locale locale = I18nUtils.getDefaultLocale();
 		return I18nUtils.getMessageResourceString(visibility.getLabelCode(), locale);
 	}
 	
@@ -168,7 +168,7 @@ public class ItemsImportController  {
 		if (category == null || category.getLabelCode() == null) {
 			return null;
 		}
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		final Locale locale = I18nUtils.getDefaultLocale();
 		return I18nUtils.getMessageResourceString(category.getLabelCode(), locale);
 	}
 
@@ -184,7 +184,7 @@ public class ItemsImportController  {
 			visibilityId != null &&
 			!getItemService().isVisibilityAllowed(visibilityId, categoryId)) {
 			((UIInput)toValidate).setValid(false);
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			final ListValue category = getItemService().getListValueDao().findListValue(categoryId);
 			final String categoryLabel = I18nUtils.getMessageResourceString(category.getLabelCode(), locale);
 			message = I18nUtils.getMessageResourceString("validation_visibilityNotAllowedIntellectualProperty", new Object[]{categoryLabel}, locale);

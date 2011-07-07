@@ -13,6 +13,7 @@ import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.group.GroupService;
 import com.pferrot.lendity.groupjoinrequest.GroupJoinRequestService;
 import com.pferrot.lendity.groupjoinrequest.exception.GroupJoinRequestException;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.HtmlUtils;
@@ -111,7 +112,7 @@ public class GroupOverviewController  {
 	}
 
 	public String getCreationDateLabel() {
-		return UiUtils.getDateAsString(getGroup().getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		return UiUtils.getDateAsString(getGroup().getCreationDate(), I18nUtils.getDefaultLocale());
 	}
 
 	public boolean isEditAvailable() {

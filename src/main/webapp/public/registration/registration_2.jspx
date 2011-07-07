@@ -48,12 +48,17 @@
 						<h:outputText value="#{registrationController.firstName}" />
 					</div><!-- /form row -->
 					
-					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">
 						<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_lastName}:"/></label></div>
 						<h:outputText value="#{registrationController.lastName}" />
 					</div><!-- /form row -->
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-66">
+						<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_birthdate}:"/></label></div>
+						<h:outputText value="#{registrationController.birthdateAsString}" />
+					</div><!-- /form row -->	
 
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">

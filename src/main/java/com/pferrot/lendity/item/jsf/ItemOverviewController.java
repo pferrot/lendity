@@ -2,10 +2,7 @@ package com.pferrot.lendity.item.jsf;
 
 import java.util.Locale;
 
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -119,11 +116,16 @@ public class ItemOverviewController extends AbstractObjektOverviewController {
 			setItem(item);
 		}
 		// For facebook.
-		final String ogImageUrl = getItemService().getImage200Src(getItem(),true, JsfUtils.getSession(), Configuration.getRootURL());
+		final String ogImageUrl = getItemService().getFacebookLikeImageSrc(getItem(),true, JsfUtils.getSession(), Configuration.getRootURL());
 		JsfUtils.getRequest().setAttribute(FacebookConsts.OG_IMAGE_ATTRIBUTE_NAME, ogImageUrl);
-		final Locale locale = I18nUtils.getDefaultLocale();		
-		final String ogTitle = I18nUtils.getMessageResourceString("facebook_itemAvailable", new Object[]{getItem().getTitle()}, locale);
+				
+		
+		final String ogTitle = getItem().getTitle();
 		JsfUtils.getRequest().setAttribute(FacebookConsts.OG_TITLE_ATTRIBUTE_NAME, ogTitle);
+		
+		final Locale locale = I18nUtils.getDefaultLocale();
+		final String ogDescription = I18nUtils.getMessageResourceString("facebook_itemLikeDescription", locale);
+		JsfUtils.getRequest().setAttribute(FacebookConsts.OG_DESCRIPTION_ATTRIBUTE_NAME, ogDescription);
 	}
 
 	public Long getItemId() {
@@ -179,7 +181,7 @@ public class ItemOverviewController extends AbstractObjektOverviewController {
 
 	public String getBorrowDateLabel() {
 		if (item.isBorrowed()) {
-			return UiUtils.getDateAsString(item.getBorrowDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			return UiUtils.getDateAsString(item.getBorrowDate(), I18nUtils.getDefaultLocale());
 		}
 		return "";
 	}
@@ -262,7 +264,7 @@ public class ItemOverviewController extends AbstractObjektOverviewController {
 	}
 
 	public String getImageButtonLabel() {
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		final Locale locale = I18nUtils.getDefaultLocale();
 		if (getItem().getImage1() == null) {
 			return I18nUtils.getMessageResourceString("image_addImage", locale);
 		}
@@ -305,7 +307,7 @@ public class ItemOverviewController extends AbstractObjektOverviewController {
 	}
 
 	public String getLendButtonLabel() {
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		final Locale locale = I18nUtils.getDefaultLocale();
 		if (!item.isBorrowed()) {
 			return I18nUtils.getMessageResourceString("item_lend", locale);
 		}

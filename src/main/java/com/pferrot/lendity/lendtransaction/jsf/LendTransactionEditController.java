@@ -11,9 +11,8 @@ import org.springframework.security.AccessDeniedException;
 
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
-import com.pferrot.lendity.i18n.I18nConsts;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.lendtransaction.exception.LendTransactionException;
-import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.LendTransaction;
 import com.pferrot.lendity.model.LendTransactionStatus;
 import com.pferrot.lendity.person.PersonUtils;
@@ -76,7 +75,7 @@ public class LendTransactionEditController extends AbstractLendTransactionOvervi
 				setStartDate(null);
 			}
 			else {
-				setStartDate(I18nConsts.DATE_FORMAT.parse(pStartDateAsString));
+				setStartDate(I18nUtils.getSimpleDateFormat().parse(pStartDateAsString));
 			}
 		}
 		catch (ParseException e) {
@@ -89,7 +88,7 @@ public class LendTransactionEditController extends AbstractLendTransactionOvervi
 			return "";
 		}
 		else {
-			return I18nConsts.DATE_FORMAT.format(getStartDate());
+			return I18nUtils.getSimpleDateFormat().format(getStartDate());
 		}
 	}
 
@@ -107,7 +106,7 @@ public class LendTransactionEditController extends AbstractLendTransactionOvervi
 				setEndDate(null);
 			}
 			else {
-				setEndDate(I18nConsts.DATE_FORMAT.parse(pEndDateAsString));
+				setEndDate(I18nUtils.getSimpleDateFormat().parse(pEndDateAsString));
 			}
 		}
 		catch (ParseException e) {
@@ -120,7 +119,7 @@ public class LendTransactionEditController extends AbstractLendTransactionOvervi
 			return "";
 		}
 		else {
-			return I18nConsts.DATE_FORMAT.format(getEndDate());
+			return I18nUtils.getSimpleDateFormat().format(getEndDate());
 		}
 	}
 

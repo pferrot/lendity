@@ -85,7 +85,7 @@ public abstract class AbstractPersonsListController extends AbstractListControll
 	public List<SelectItem> getOrderBySelectItems() {
 		if (orderBySelectItems == null) {
 			final List<SelectItem> result = new ArrayList<SelectItem>();
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			
 			result.add(new SelectItem(null, I18nUtils.getMessageResourceString("person_orderByDisplayNameAsc", locale)));
 			if (PersonUtils.isCurrentPersonIsAddressDefined()) {

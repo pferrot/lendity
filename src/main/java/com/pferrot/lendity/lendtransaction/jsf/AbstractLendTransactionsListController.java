@@ -90,13 +90,13 @@ public abstract class AbstractLendTransactionsListController extends AbstractLis
 	
 	public String getRequestDateLabel() {
 		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
-		return UiUtils.getDateAsString(lendTransaction.getLendRequest().getRequestDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		return UiUtils.getDateAsString(lendTransaction.getLendRequest().getRequestDate(), I18nUtils.getDefaultLocale());
 	}
 
 	public String getStartDateLabel() {
 		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
 		if (lendTransaction.getStartDate() != null) {
-			return UiUtils.getDateAsString(lendTransaction.getStartDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			return UiUtils.getDateAsString(lendTransaction.getStartDate(), I18nUtils.getDefaultLocale());
 		}
 		else {
 			return null;
@@ -106,7 +106,7 @@ public abstract class AbstractLendTransactionsListController extends AbstractLis
 	public String getEndDateLabel() {
 		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
 		if (lendTransaction.getStartDate() != null) {
-			return UiUtils.getDateAsString(lendTransaction.getEndDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			return UiUtils.getDateAsString(lendTransaction.getEndDate(), I18nUtils.getDefaultLocale());
 		}
 		else {
 			return null;
@@ -116,7 +116,7 @@ public abstract class AbstractLendTransactionsListController extends AbstractLis
 	public String getBorrowDateLabel() {
 		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
 		if (lendTransaction.getItem().getBorrowDate() != null) {
-			return UiUtils.getDateAsString(lendTransaction.getItem().getBorrowDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			return UiUtils.getDateAsString(lendTransaction.getItem().getBorrowDate(), I18nUtils.getDefaultLocale());
 		}
 		else {
 			return null;
@@ -126,7 +126,7 @@ public abstract class AbstractLendTransactionsListController extends AbstractLis
 	public String getCreationDateLabel() {
 		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
 		if (lendTransaction.getCreationDate() != null) {
-			return UiUtils.getDateAsString(lendTransaction.getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+			return UiUtils.getDateAsString(lendTransaction.getCreationDate(), I18nUtils.getDefaultLocale());
 		}
 		else {
 			return null;
@@ -135,7 +135,7 @@ public abstract class AbstractLendTransactionsListController extends AbstractLis
 
 	public List<SelectItem> getStatusSelectItems() {
 		if (statusSelectItems == null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			statusSelectItems = UiUtils.getSelectItemsForOrderedListValue(getLendTransactionService().getStatuses(), locale);
 			statusSelectItems.add(0, getUncompletedStatusSelectItem(locale));
 			// Add all visibilities first.
@@ -176,7 +176,7 @@ public abstract class AbstractLendTransactionsListController extends AbstractLis
 		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
 		final LendTransactionStatus status = lendTransaction.getStatus();
 		if (status != null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			return I18nUtils.getMessageResourceString(status.getLabelCode(), locale);	
 		}
 		else {

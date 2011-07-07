@@ -304,6 +304,7 @@ public class InitialData {
 		
 		person.setFirstName(firstName);
 		person.setLastName(lastName);
+		person.setBirthdate(new Date());
 		person.setDisplayName(displayName);
 		person.setEmail(email);
 		person.setEmailSubscriber(Boolean.FALSE);

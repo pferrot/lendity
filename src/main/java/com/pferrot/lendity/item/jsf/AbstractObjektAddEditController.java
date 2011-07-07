@@ -17,8 +17,6 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import sun.security.action.GetLongAction;
-
 import com.pferrot.core.CoreUtils;
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
@@ -59,7 +57,7 @@ public abstract class AbstractObjektAddEditController {
 
 	public List<SelectItem> getCategoriesSelectItems() {
 		if (categoriesSelectItems == null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			categoriesSelectItems = UiUtils.getSelectItemsForListValueWithItemFirst(getObjektService().getCategories(), locale, ItemCategory.OTHER_LABEL_CODE);
 			categoriesSelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
 		}		
@@ -72,7 +70,7 @@ public abstract class AbstractObjektAddEditController {
 
 	public List<SelectItem> getVisibilitySelectItems() {
 		if (visibilitySelectItems == null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			visibilitySelectItems = UiUtils.getSelectItemsForOrderedListValue(getObjektService().getVisibilities(), locale);
 			visibilitySelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
 		}		
@@ -160,7 +158,7 @@ public abstract class AbstractObjektAddEditController {
 		String description = (String) value;
 		if (description != null && description.length() > ItemConsts.MAX_DESCRIPTION_SIZE) {
 			((UIInput)toValidate).setValid(false);
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			message = I18nUtils.getMessageResourceString("validation_maxSizeExceeded", new Object[]{String.valueOf(ItemConsts.MAX_DESCRIPTION_SIZE)}, locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
@@ -178,7 +176,7 @@ public abstract class AbstractObjektAddEditController {
 			visibilityId != null &&
 			!getObjektService().isVisibilityAllowed(visibilityId, categoryId)) {
 			((UIInput)toValidate).setValid(false);
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			final ListValue category = getObjektService().getListValueDao().findListValue(categoryId);
 			final String categoryLabel = I18nUtils.getMessageResourceString(category.getLabelCode(), locale);
 			message = I18nUtils.getMessageResourceString("validation_visibilityNotAllowedIntellectualProperty", new Object[]{categoryLabel}, locale);

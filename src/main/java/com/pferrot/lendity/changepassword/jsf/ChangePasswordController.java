@@ -83,7 +83,7 @@ public class ChangePasswordController {
 		String password = (String) value;
 		if (password == null || !password.matches(RegistrationConsts.PASSWORD_REGEXP)) {
 			((UIInput)toValidate).setValid(false);
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			message = I18nUtils.getMessageResourceString("validation_passwordConstraints", locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
@@ -95,7 +95,7 @@ public class ChangePasswordController {
 		String oldPasswordEncoded = getChangePasswordService().getCurrentUserPassword();
 		if (oldPasswordFromUser == null || !passwordEncoder.encodePassword(oldPasswordFromUser, null).equals(oldPasswordEncoded)) {
 			((UIInput)toValidate).setValid(false);
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			message = I18nUtils.getMessageResourceString("validation_oldPasswordNotCorrect", locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}
@@ -111,7 +111,7 @@ public class ChangePasswordController {
 
 		if (!passwordRepeat.equals(password)) {
 			((UIInput)toValidate).setValid(false);
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			message = I18nUtils.getMessageResourceString("validation_passwordsNotMatch", locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 		}

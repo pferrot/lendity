@@ -61,13 +61,13 @@ public class InviteFriendsController {
 			String email = (String) value;
 			if (!email.contains("@")) {
 				((UIInput)toValidate).setValid(false);
-				final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+				final Locale locale = I18nUtils.getDefaultLocale();
 				message = I18nUtils.getMessageResourceString("validation_emailNotValid", locale);
 				context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 			}
 			else if (!registrationService.isUsernameAvailable(email)) {
 				((UIInput)toValidate).setValid(false);
-				final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+				final Locale locale = I18nUtils.getDefaultLocale();
 				message = I18nUtils.getMessageResourceString("validation_userAlreadyExists", locale);
 				context.addMessage(toValidate.getClientId(context), new FacesMessage(message));
 			}

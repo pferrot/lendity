@@ -1,6 +1,7 @@
 package com.pferrot.lendity.i18n;
 
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
@@ -65,7 +66,7 @@ public class I18nUtils {
 	 * @return
 	 */
 	public static String getMessageResourceString(final String key) {
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		final Locale locale = I18nUtils.getDefaultLocale();
 		return getMessageResourceString(I18nConsts.DEFAULT_RESOURCE_BUNDLE, key, null, locale);
 	}
 	
@@ -114,7 +115,7 @@ public class I18nUtils {
 	 * @return
 	 */
 	public static String getLocalAsString() {
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		final Locale locale = I18nUtils.getDefaultLocale();
 		String lang = null;
 		if (locale == null) {
 			lang = I18nConsts.DEFAULT_LANGUAGE;
@@ -150,5 +151,10 @@ public class I18nUtils {
 
 	public static Locale getCurrentLocale(final HttpSession pSession) {
 		return getDefaultLocale();
+	}
+	
+	public static SimpleDateFormat getSimpleDateFormat() {
+		// Simple date is not thread safe - we must create a new instance everytime.
+		return new SimpleDateFormat("dd.MM.yyyy");
 	}
 }

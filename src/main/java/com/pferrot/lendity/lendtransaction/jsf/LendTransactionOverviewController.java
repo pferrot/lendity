@@ -81,8 +81,13 @@ public class LendTransactionOverviewController extends AbstractLendTransactionOv
 		final boolean isCurrentUserLender = getLendTransaction().getLender().getId().equals(PersonUtils.getCurrentPersonId());
 		final boolean isCurrentUserBorrower = getLendTransaction().getBorrower() != null &&
 											  getLendTransaction().getBorrower().getId().equals(PersonUtils.getCurrentPersonId());
-		final boolean isItemToGiveOrSell = getLendTransaction().getItem().isToGiveOrSell();
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		
+		boolean isItemToGiveOrSell = false;
+		// The item might be null in case it was deleted.
+		if (getLendTransaction().getItem() != null) {
+			isItemToGiveOrSell = getLendTransaction().getItem().isToGiveOrSell();
+		}
+		final Locale locale = I18nUtils.getDefaultLocale();
 		if (LendTransactionStatus.INITIALIZED_LABEL_CODE.equals(status.getLabelCode())) {
 			// Lender must accept or refuse lend request.
 			if (isCurrentUserLender) {

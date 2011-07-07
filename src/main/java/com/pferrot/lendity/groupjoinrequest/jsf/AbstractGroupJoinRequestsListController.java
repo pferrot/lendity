@@ -1,10 +1,9 @@
 package com.pferrot.lendity.groupjoinrequest.jsf;
 
-import javax.faces.context.FacesContext;
-
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.groupjoinrequest.GroupJoinRequestConsts;
 import com.pferrot.lendity.groupjoinrequest.GroupJoinRequestService;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.jsf.list.AbstractListController;
 import com.pferrot.lendity.model.GroupJoinRequest;
 import com.pferrot.lendity.person.PersonService;
@@ -52,12 +51,12 @@ public abstract class AbstractGroupJoinRequestsListController extends AbstractLi
 
 	public String getRequestDateLabel() {
 		final GroupJoinRequest groupJoinRequest = (GroupJoinRequest)getTable().getRowData();
-		return UiUtils.getDateAsString(groupJoinRequest.getRequestDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		return UiUtils.getDateAsString(groupJoinRequest.getRequestDate(), I18nUtils.getDefaultLocale());
 	}
 	
 	public String getResponseDateLabel() {
 		final GroupJoinRequest groupJoinRequest = (GroupJoinRequest)getTable().getRowData();
-		return UiUtils.getDateAsString(groupJoinRequest.getResponseDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		return UiUtils.getDateAsString(groupJoinRequest.getResponseDate(), I18nUtils.getDefaultLocale());
 	}
 
 	public String getRequesterThumbnailSrc() {

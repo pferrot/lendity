@@ -62,7 +62,7 @@
 	</script>
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_displayName}:" /></label></div>
-		<h:outputText value="#{theBean.person.displayName}" />
+		<h4><h:outputText value="#{theBean.person.displayName}" /></h4>
 	</div>
 	<br/>
 	<div class="gt-form-row gt-width-100">
@@ -87,6 +87,11 @@
 		<div class="gt-form-row gt-width-100">
 			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_lastName}:" /></label></div>
 			<h:outputText value="#{theBean.person.lastName}" />
+		</div>
+		<br/>
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_birthdate}:" /></label></div>
+			<h:outputText value="#{theBean.birthdateLabel}" />
 		</div>
 		<br/>
 		<div class="gt-form-row gt-width-100">

@@ -1,8 +1,7 @@
 package com.pferrot.lendity.lendrequest.jsf;
 
-import javax.faces.context.FacesContext;
-
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.item.ItemUtils;
 import com.pferrot.lendity.jsf.list.AbstractListController;
@@ -69,7 +68,7 @@ public abstract class AbstractLendRequestsListController extends AbstractListCon
 	
 	public String getRequestDateLabel() {
 		final LendRequest lendRequest = (LendRequest)getTable().getRowData();
-		return UiUtils.getDateAsString(lendRequest.getRequestDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		return UiUtils.getDateAsString(lendRequest.getRequestDate(), I18nUtils.getDefaultLocale());
 	}
 
 	public String getImage1Src() {

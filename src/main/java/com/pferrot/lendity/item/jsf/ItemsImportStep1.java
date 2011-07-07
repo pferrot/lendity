@@ -162,7 +162,7 @@ public class ItemsImportStep1 extends AbstractItemsImportStep {
 	private void ioException() {
 		String message = "";
 		FacesContext context = FacesContext.getCurrentInstance();
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		final Locale locale = I18nUtils.getDefaultLocale();
 		message = I18nUtils.getMessageResourceString("validation_importIoError", locale);
 		context.addMessage(getFileUIComponent().getClientId(context), new FacesMessage(message));
 	}
@@ -170,7 +170,7 @@ public class ItemsImportStep1 extends AbstractItemsImportStep {
 	private void notTextFile() {
 		String message = "";
 		FacesContext context = FacesContext.getCurrentInstance();
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		final Locale locale = I18nUtils.getDefaultLocale();
 		message = I18nUtils.getMessageResourceString("validation_importIoError", locale);
 		context.addMessage(getFileUIComponent().getClientId(context), new FacesMessage(message));
 	}
@@ -178,7 +178,7 @@ public class ItemsImportStep1 extends AbstractItemsImportStep {
 	private void tooManyEntriesInFile(final int pMaxNbEntries) {
 		String message = "";
 		FacesContext context = FacesContext.getCurrentInstance();
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		final Locale locale = I18nUtils.getDefaultLocale();
 		message = I18nUtils.getMessageResourceString("validation_maxNbItemsToImportExceeded",
 				new Object[]{String.valueOf(pMaxNbEntries)}, locale);
 		context.addMessage(getFileUIComponent().getClientId(context), new FacesMessage(message));

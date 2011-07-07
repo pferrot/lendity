@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.evaluation.EvaluationService;
 import com.pferrot.lendity.evaluation.EvaluationUtils;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.jsf.list.AbstractListController;
 import com.pferrot.lendity.model.Evaluation;
 import com.pferrot.lendity.person.PersonService;
@@ -69,7 +70,7 @@ public abstract class AbstractEvaluationsListController extends AbstractListCont
 	
 	public String getCreationDateLabel() {
 		final Evaluation eval = (Evaluation)getTable().getRowData();
-		return UiUtils.getDateAsString(eval.getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		return UiUtils.getDateAsString(eval.getCreationDate(), I18nUtils.getDefaultLocale());
 	}
 	
 	public abstract String getEvaluationTitleLabel();

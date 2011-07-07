@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
@@ -14,7 +13,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
-import com.pferrot.lendity.i18n.I18nConsts;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.lendtransaction.LendTransactionService;
 import com.pferrot.lendity.lendtransaction.exception.LendTransactionException;
 import com.pferrot.lendity.person.PersonService;
@@ -60,7 +59,7 @@ public class ItemLendTooltipController implements Serializable {
 
 	public List<SelectItem> getBorrowerSelectItems() {
 		borrowerSelectItems = UiUtils.getSelectItemsForPerson(getPersonService().getCurrentPersonEnabledConnections());
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		final Locale locale = I18nUtils.getDefaultLocale();
 		borrowerSelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));	
 		return borrowerSelectItems;	
 	}
@@ -95,7 +94,7 @@ public class ItemLendTooltipController implements Serializable {
 				setBorrowDate(null);
 			}
 			else {
-				setBorrowDate(I18nConsts.DATE_FORMAT.parse(pBorrowDateAsString));
+				setBorrowDate(I18nUtils.getSimpleDateFormat().parse(pBorrowDateAsString));
 			}
 		}
 		catch (ParseException e) {
@@ -108,7 +107,7 @@ public class ItemLendTooltipController implements Serializable {
 			return "";
 		}
 		else {
-			return I18nConsts.DATE_FORMAT.format(getBorrowDate());
+			return I18nUtils.getSimpleDateFormat().format(getBorrowDate());
 		}
 	}
 
@@ -126,7 +125,7 @@ public class ItemLendTooltipController implements Serializable {
 				setEndDate(null);
 			}
 			else {
-				setEndDate(I18nConsts.DATE_FORMAT.parse(pEndDateAsString));
+				setEndDate(I18nUtils.getSimpleDateFormat().parse(pEndDateAsString));
 			}
 		}
 		catch (ParseException e) {
@@ -139,7 +138,7 @@ public class ItemLendTooltipController implements Serializable {
 			return "";
 		}
 		else {
-			return I18nConsts.DATE_FORMAT.format(getEndDate());
+			return I18nUtils.getSimpleDateFormat().format(getEndDate());
 		}
 	}
 

@@ -34,7 +34,7 @@ public class LoginController {
 			final boolean loginFailed = CustomAuthenticationProcessingFilter.LOGIN_FAILED_PARAMETER_VALUE.equals(
 					JsfUtils.getRequestParameter(CustomAuthenticationProcessingFilter.LOGIN_FAILED_PARAMETER_NAME));
 			if (loginFailed) {
-				final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+				final Locale locale = I18nUtils.getDefaultLocale();
 				final String message = I18nUtils.getMessageResourceString("validation_loginFailed", locale);
 				JsfUtils.addErrorMessage(AuthenticationProcessingFilter.SPRING_SECURITY_FORM_USERNAME_KEY, message);
 				JsfUtils.addErrorMessage(AuthenticationProcessingFilter.SPRING_SECURITY_FORM_PASSWORD_KEY, "");

@@ -100,7 +100,7 @@ public abstract class AbstractItemAddEditController extends AbstractObjektAddEdi
 				rentalFee != null &&
 			!getItemService().isRentalAllowed(categoryId)) {
 			((UIInput)toValidate).setValid(false);
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			final ListValue category = getObjektService().getListValueDao().findListValue(categoryId);
 			final String categoryLabel = I18nUtils.getMessageResourceString(category.getLabelCode(), locale);
 			message = I18nUtils.getMessageResourceString("validation_rentalFeeNotAllowedIntellectualProperty", new Object[]{categoryLabel}, locale);

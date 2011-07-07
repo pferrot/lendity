@@ -1,11 +1,15 @@
 package com.pferrot.lendity.registration.jsf;
 
+import java.text.ParseException;
+import java.util.Date;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.providers.encoding.MessageDigestPasswordEncoder;
 
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.configuration.Configuration;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.registration.RegistrationException;
 import com.pferrot.lendity.registration.RegistrationService;
@@ -20,6 +24,7 @@ public class RegistrationController {
 	
 	private String firstName;
 	private String lastName;
+	private Date birthdate;
 	private String displayName;
 	private String email;
 	private String phoneHome;
@@ -60,6 +65,37 @@ public class RegistrationController {
 
 	public void setLastName(String lastName) {
 		this.lastName = StringUtils.getNullIfEmpty(lastName);
+	}
+
+	public Date getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
+	}
+
+	public void setBirthdateAsString(final String pBirthdateAsString) {
+		try {
+			if (StringUtils.isNullOrEmpty(pBirthdateAsString)) {
+				setBirthdate(null);
+			}
+			else {
+				setBirthdate(I18nUtils.getSimpleDateFormat().parse(pBirthdateAsString));
+			}
+		}
+		catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public String getBirthdateAsString() {
+		if (getBirthdate() == null) {
+			return "";
+		}
+		else {
+			return I18nUtils.getSimpleDateFormat().format(getBirthdate());
+		}
 	}
 
 	public String getDisplayName() {
@@ -189,6 +225,7 @@ public class RegistrationController {
 			Person person = new Person();
 			person.setFirstName(getFirstName());
 			person.setLastName(getLastName());
+			person.setBirthdate(getBirthdate());
 			person.setDisplayName(getDisplayName());
 			person.setEmail(getEmail());
 			person.setPhoneHome(getPhoneHome());

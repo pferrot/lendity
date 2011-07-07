@@ -265,8 +265,10 @@
 			</c:if>
 		</td></tr></table>	
 		<c:if test="#{itemOverviewController.facebookLikeButtonAvailable}">
-			<br/>
-			<iframe src="http://www.facebook.com/plugins/like.php?app_id=242769605735680&amp;href=http%3A%2F%2Fgolgoth14.dyndns.org%3A8080%2Flendity%2Fpublic%2Fitem%2FitemOverview.faces%3FitemID%3D#{itemOverviewController.item.id}&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>
+			<br/> 
+			<c:if test="#{configuration.facebookLikeEnabledNotStatic}"> 
+				<iframe src="http://www.facebook.com/plugins/like.php?app_id=242769605735680&amp;href=#{configuration.rootURLFacebookEncodedNotStatic}%2Fpublic%2Fitem%2FitemOverview.faces%3FitemID%3D#{itemOverviewController.item.id}&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>
+			</c:if>
 		</c:if>	
 	</div>
 </div>

@@ -7,8 +7,6 @@ import java.util.Locale;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import sun.security.action.GetLongAction;
-
 import com.pferrot.core.CoreUtils;
 import com.pferrot.lendity.comment.CommentService;
 import com.pferrot.lendity.comment.exception.CommentException;

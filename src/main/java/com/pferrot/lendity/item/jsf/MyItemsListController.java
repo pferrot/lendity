@@ -43,7 +43,7 @@ public class MyItemsListController extends AbstractItemsListController {
 	
 	public String getLendButtonLabel() {
 		final Item item = (Item)getTable().getRowData();
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		final Locale locale = I18nUtils.getDefaultLocale();
 		if (!item.isBorrowed()) {
 			return I18nUtils.getMessageResourceString("item_lend", locale);
 		}

@@ -79,6 +79,25 @@
 
 					<!-- form row -->
 					<div class="gt-form-row gt-width-66">
+						<label><h:outputText value="#{messages.person_birthdate}"/> * <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="birthdate"></h:message>
+					    <h:inputText id="birthdate" styleClass="gt-form-text"
+							value="#{registrationController.birthdateAsString}"
+							required="true"
+							requiredMessage="#{messages.validation_requiredMessage}"
+							validator="#{registrationStep1.validateBirthdate}"
+							maxlength="255"
+							autocomplete="off"/>
+						<script type="text/javascript">
+							$j(document).ready(function() {
+								createDatePickerWithChangeYear($j("#birthdate"));
+							});
+						</script>
+					</div><!-- /form row -->
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-66">
 						<label><h:outputText value="#{messages.person_email}"/> * <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/lock.png" class="qtipTitle"  title="#{messages.confidential_onlyFriendsCanSee}"/></label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="email"></h:message>

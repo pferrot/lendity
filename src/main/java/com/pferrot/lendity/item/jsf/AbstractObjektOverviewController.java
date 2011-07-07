@@ -26,7 +26,7 @@ public abstract class AbstractObjektOverviewController {
 	
 	public String getCategoryLabel() {
 		if (getObjekt() != null && getObjekt().getCategory() != null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			return I18nUtils.getMessageResourceString(getObjekt().getCategory().getLabelCode(), locale);
 		}
 		else {
@@ -56,13 +56,13 @@ public abstract class AbstractObjektOverviewController {
 	}
 	
 	public String getCreationDateLabel() {
-		return UiUtils.getDateAsString(getObjekt().getCreationDate(), FacesContext.getCurrentInstance().getViewRoot().getLocale());
+		return UiUtils.getDateAsString(getObjekt().getCreationDate(), I18nUtils.getDefaultLocale());
 	}
 
 	
 	public String getVisibilityLabel() {
 		if (getObjekt() != null && getObjekt().getVisibility() != null) {
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			return I18nUtils.getMessageResourceString(getObjekt().getVisibility().getLabelCode(), locale);
 		}
 		else {

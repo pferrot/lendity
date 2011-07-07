@@ -65,7 +65,7 @@ public class HomePublicController extends AbstractHomeController {
 	}
 	
 	private boolean isExampleAddressText(final String pText) {
-		final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		final Locale locale = I18nUtils.getDefaultLocale();
 		final String exampleText = I18nUtils.getMessageResourceString("geolocation_inputLocationExample", locale);
 		return exampleText != null && exampleText.equals(pText);
 	}
@@ -80,7 +80,7 @@ public class HomePublicController extends AbstractHomeController {
 			deleteLocationLongitudeCookie();
 			
 			((UIInput)toValidate).setValid(false);
-			final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+			final Locale locale = I18nUtils.getDefaultLocale();
 			message = I18nUtils.getMessageResourceString("validation_geolocationNotFound", locale);
 			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));		
 		}
@@ -97,7 +97,7 @@ public class HomePublicController extends AbstractHomeController {
 				deleteLocationLongitudeCookie();
 				
 				((UIInput)toValidate).setValid(false);
-				final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+				final Locale locale = I18nUtils.getDefaultLocale();
 				message = I18nUtils.getMessageResourceString("validation_geolocationNotFound", locale);
 				context.addMessage(toValidate.getClientId(context), new FacesMessage(message));					
 			}			

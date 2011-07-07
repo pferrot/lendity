@@ -10,18 +10,22 @@
     			
 		<!-- footer -->
 		<div class="gt-footer clearfix"><div class="gt-footer-inner clearfix">
-			<p>&#169; 2010-2011 lendity |
-				<h:outputText id="footerText1" value=" " escape="false" />
+			<p>&#169; 2010-2011<h:outputText id="footerText12" value=" " escape="false" /><h:outputText id="siteNameFooter" value="#{configuration.siteNameNotStatic}"/>
+				<h:outputText id="footerText0" value=" " escape="false" />|<h:outputText id="footerText1" value=" " escape="false" />
 				<h:outputLink id="footerLink1" value="#{authenticationController.termsAndConditionsURL}" target="_blank">
 					<h:outputText id="footerText2" value="#{messages.termsAndConditions_termsAndConditionsTitle}"/>
 				</h:outputLink>
-				<h:outputText id="footerText3" value=" " escape="false" />|<h:outputText id="footerText4" value=" " escape="false" />
-				<h:outputLink id="footerLink4" value="#{authenticationController.faqURL}" target="_blank">
-					<h:outputText id="footerText6" value="#{messages.faq_faqTitle}"/>
+				<h:outputText id="footerText6" value=" " escape="false" />|<h:outputText id="footerText7" value=" " escape="false" />
+				<h:outputLink id="footerLink3" value="#{authenticationController.dataProtectionURL}" target="_blank">
+					<h:outputText id="footerText8" value="#{messages.dataProtection_dataProtectionTitle}"/>
 				</h:outputLink>
-				<h:outputText id="footerText7" value=" " escape="false" />|<h:outputText id="footerText8" value=" " escape="false" />
-				<h:outputLink id="footerLink2" value="#{authenticationController.contactURL}">
-					<h:outputText id="footerText5" value="#{messages.contact_contactTitle}"/>
+				<h:outputText id="footerText9" value=" " escape="false" />|<h:outputText id="footerText10" value=" " escape="false" />
+				<h:outputLink id="footerLink2" value="#{authenticationController.faqURL}" target="_blank">
+					<h:outputText id="footerText5" value="#{messages.faq_faqTitle}"/>
+				</h:outputLink>
+				<h:outputText id="footerText3" value=" " escape="false" />|<h:outputText id="footerText4" value=" " escape="false" />
+				<h:outputLink id="footerLink4" value="#{authenticationController.contactURL}" target="_blank">
+					<h:outputText id="footerText11" value="#{messages.contact_contactTitle}"/>
 				</h:outputLink>
 			</p>
 		</div></div>
