@@ -42,7 +42,7 @@ depuis le $latestUpdateDateLabel
 #end
 Voir la liste complète: $itemUrl
 
-Recherches ajoutées près de chez toi
+Souhaits ajoutés près de chez toi
 #if( $latestUpdateDateLabel )
 (depuis le $latestUpdateDateLabel)
 #end
@@ -65,7 +65,7 @@ $needTitle4 $needDetails4
 $needTitle5 $needDetails5
 #end
 #if( $needNbExtra )
-Plus $needNbExtra recherche(s) supplémentaire(s)
+Plus $needNbExtra souhait(s) supplémentaire(s)
 #if( $latestUpdateDateLabel )
 depuis le $latestUpdateDateLabel
 #end

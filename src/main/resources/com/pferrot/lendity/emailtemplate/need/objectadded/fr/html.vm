@@ -2,7 +2,7 @@
 
 Bonjour $requesterFirstName,<br/><br/>
 
-<b>$connectionDisplayName</b> a ajouté un objet répondant à ta recherche "$needTitle":<br/><br/>
+<b>$connectionDisplayName</b> a ajouté un objet répondant à ton souhait "$needTitle":<br/><br/>
 
 <b><a href="$itemUrl">$itemTitle</a></b><br/><br/>
 

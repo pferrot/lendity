@@ -1,5 +1,7 @@
 package com.pferrot.lendity.geolocation;
 
+import java.text.NumberFormat;
+
 import com.pferrot.lendity.i18n.I18nUtils;
 
 public class GeoLocationUtils {
@@ -34,12 +36,14 @@ public class GeoLocationUtils {
 	public static String getApproxDistanceKm(final double pLatitude1, final double pLongitude1, final double pLatitude2, final double pLongitude2) {
 		final double distance = getDistanceKm(pLatitude1, pLongitude1, pLatitude2, pLongitude2);
 		
-		if (distance < 1.0) {
-			return I18nUtils.getMessageResourceString("geolocation_distanceLessThanKm", new Object[]{"1"}, I18nUtils.getDefaultLocale());
+		if (distance < 0.1) {
+			return I18nUtils.getMessageResourceString("geolocation_distanceLessThanKm", new Object[]{"0.1"}, I18nUtils.getDefaultLocale());		
 		}
 		else {
-			final Integer ceilInt = new Integer(Double.valueOf(Math.ceil(distance)).intValue());
-			return I18nUtils.getMessageResourceString("geolocation_distanceAroundKm", new Object[]{ceilInt}, I18nUtils.getDefaultLocale());
+			final NumberFormat nf = NumberFormat.getInstance(I18nUtils.getDefaultLocale());
+			nf.setMaximumFractionDigits(1);
+			nf.setMinimumFractionDigits(1);
+			return I18nUtils.getMessageResourceString("geolocation_distanceAroundKm", new Object[]{nf.format(distance)}, I18nUtils.getDefaultLocale());
 		}		
 	}
 

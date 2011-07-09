@@ -129,7 +129,7 @@ public class JsfUtils {
 	}
 	
 	/**
-	 * Returns the desired full URL with the specified "prefix", usually the application's root URL, e.g. http://www.lendity.com
+	 * Returns the desired full URL with the specified "prefix", usually the application's root URL, e.g. http://www.lendity.ch
 	 * 
 	 * @param pPrefix
 	 * @param pUrl

@@ -4,7 +4,7 @@ $requesterDisplayName recherche l'objet suivant:
 
 $needTitle
 
-Si tu possèdes cet objet, suis ce lien afin de l'ajouter dans lendity: $itemAddUrl. $requesterFirstName sera notifié de ton ajout automatiquement.
+Si tu possèdes cet objet, suis ce lien afin de l'ajouter dans $siteName: $itemAddUrl. $requesterFirstName sera notifié de ton ajout automatiquement.
 
 A bientôt sur $siteName.
 

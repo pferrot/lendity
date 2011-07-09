@@ -703,7 +703,7 @@ public class ItemService extends ObjektService {
 					         to,
 					         null, 
 					         null,
-					         Configuration.getSiteName() + ": object répondant à une recherche",
+					         Configuration.getSiteName() + ": object répondant à un souhait",
 					         objects, 
 					         velocityTemplateLocation,
 					         inlineResources);		

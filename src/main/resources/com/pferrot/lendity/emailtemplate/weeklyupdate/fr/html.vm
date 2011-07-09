@@ -54,13 +54,13 @@ depuis le $latestUpdateDateLabel
 
 <br/>
 <div style="background-color: #d1d1d1; width: 100%;">
-Recherches ajoutées près de chez toi
+Souhaits ajoutés près de chez toi
 #if( $latestUpdateDateLabel )
 (depuis le $latestUpdateDateLabel)
 #end
 </div>
 #if( !$needTitle1 )
-Aucune nouvelle recherche
+Aucune nouveau souhait
 <br/>
 #end
 #if( $needTitle1 )
@@ -79,7 +79,7 @@ Aucune nouvelle recherche
 <a href="$needUrl5">$needTitle5</a> $needDetails5<br/>
 #end
 #if( $needNbExtra )
-Plus $needNbExtra recherche(s) supplémentaire(s)
+Plus $needNbExtra souhait(s) supplémentaire(s)
 #if( $latestUpdateDateLabel )
 depuis le $latestUpdateDateLabel
 #end

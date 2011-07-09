@@ -5,7 +5,7 @@
 <title>Error</title>
 <script type="text/javascript">
 <!--
-window.location = "http://www.lendity.com/public/error/error.faces"
+window.location = "http://www.lendity.ch/public/error/error.faces"
 //-->
 </script>
 </head>
