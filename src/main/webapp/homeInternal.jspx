@@ -67,13 +67,19 @@
 							    </h:column>					
 							</h:dataTable>
 							<center>
-								<h:outputLink value="#{authenticationController.itemsSearchURL}">
-									<span class="fontSizeSmall">
-										<br/>
-										<h:outputText value="#{messages.navigation_viewMore}"/>
-										<br/><br/>
-									</span>
-								</h:outputLink>
+								<c:if test="#{not empty(theBean.itemsList)}">
+									<h:outputLink value="#{authenticationController.itemsSearchURL}">
+										<span class="fontSizeSmall">
+											<br/>
+											<h:outputText value="#{messages.navigation_viewMore}"/>
+											<br/><br/>
+										</span>
+									</h:outputLink>
+								</c:if>
+								<c:if test="#{empty(theBean.itemsList)}">
+									<h:outputText value="#{messages.search_noResult}"/>
+									<br/><br/>
+								</c:if>
 							</center>
 						</div>					
 					</div>
@@ -136,13 +142,19 @@
 							
 							</h:dataTable>
 							<center>
-								<h:outputLink value="#{authenticationController.needsSearchURL}">
-									<span class="fontSizeSmall">
-										<br/>
-										<h:outputText value="#{messages.navigation_viewMore}"/>
-										<br/><br/>
-									</span>
-								</h:outputLink>
+								<c:if test="#{not empty(theBean.needsList)}">
+									<h:outputLink value="#{authenticationController.needsSearchURL}">
+										<span class="fontSizeSmall">
+											<br/>
+											<h:outputText value="#{messages.navigation_viewMore}"/>
+											<br/><br/>
+										</span>
+									</h:outputLink>
+								</c:if>
+								<c:if test="#{empty(theBean.needsList)}">
+									<h:outputText value="#{messages.search_noResult}"/>
+									<br/><br/>
+								</c:if>
 							</center>
 						</div>
 					</div>
@@ -207,13 +219,19 @@
 							
 							</h:dataTable>
 							<center>
-								<h:outputLink value="#{authenticationController.personsURL}">
-									<span class="fontSizeSmall">
-										<br/>
-										<h:outputText value="#{messages.navigation_viewMore}"/>
-										<br/><br/>
-									</span>
-								</h:outputLink>
+								<c:if test="#{not empty(theBean.personsList)}">
+									<h:outputLink value="#{authenticationController.personsURL}">
+										<span class="fontSizeSmall">
+											<br/>
+											<h:outputText value="#{messages.navigation_viewMore}"/>
+											<br/><br/>
+										</span>
+									</h:outputLink>
+								</c:if>
+								<c:if test="#{empty(theBean.personsList)}">
+									<h:outputText value="#{messages.search_noResult}"/>
+									<br/><br/>
+								</c:if>
 							</center>
 						</div>
 						<br/>
@@ -265,13 +283,19 @@
 							
 							</h:dataTable>
 							<center>
-								<h:outputLink value="#{authenticationController.groupsURL}">
-									<span class="fontSizeSmall">
-										<br/>
-										<h:outputText value="#{messages.navigation_viewMore}"/>
-										<br/><br/>
-									</span>
-								</h:outputLink>
+								<c:if test="#{not empty(theBean.groupsList)}">
+									<h:outputLink value="#{authenticationController.groupsURL}">
+										<span class="fontSizeSmall">
+											<br/>
+											<h:outputText value="#{messages.navigation_viewMore}"/>
+											<br/><br/>
+										</span>
+									</h:outputLink>
+								</c:if>
+								<c:if test="#{empty(theBean.groupsList)}">
+									<h:outputText value="#{messages.search_noResult}"/>
+									<br/><br/>
+								</c:if>
 							</center>
 						</div>
 						<br/>	
