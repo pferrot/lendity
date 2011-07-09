@@ -38,9 +38,9 @@
 			<value>Lendity</value>
 		</property>		
 		<property name="rootURL">
-<!--			<value>http://www.lendity.ch</value>-->
+			<value>http://www.lendity.ch</value>
 <!--			<value>http://localhost:8080/lendity</value>-->
-			<value>http://golgoth14.dyndns.org:8080/lendity</value>
+<!--			<value>http://golgoth14.dyndns.org:8080/lendity</value>-->
 		</property>
 		<property name="noReplyEmailAddress">
 			<value>no_reply@lendity.ch</value>
@@ -61,7 +61,7 @@
 			<value>18</value>
 		</property>
 		<property name="facebookLikeEnabled">
-			<value>false</value>
+			<value>true</value>
 		</property>
 		<property name="categoriesNotAllowedPublicVisibility">
 			<set>

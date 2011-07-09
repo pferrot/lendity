@@ -65,6 +65,7 @@
 
 <!--
 	Google analytics. 
+-->	
 	<script type="text/javascript">
 	
 	  var _gaq = _gaq || [];
@@ -78,7 +79,7 @@
 	  })();
 	
 	</script>
- -->	
+
 </head>
 <body class="gt-fixed">
 
@@ -274,9 +275,13 @@
 				
 				<div class="boxheadorange">
                 	<div class="boxtitleright">
+                		<o:separateConversationContext>
                     	<h:outputLink value="#{authenticationController.registrationURL}" styleClass="fontSizeLargeLarge"><h:outputText value="#{messages.login_registerForFree}"/></h:outputLink>
+                    	</o:separateConversationContext>
                     	<br/><br/>
+                    	<o:separateConversationContext>
                     	<h:outputLink value="#{authenticationController.faqURL}" styleClass="fontSizeSmall"><h:outputText value="#{messages.login_registerWhy}"/></h:outputLink>
+                    	</o:separateConversationContext>
                    </div>
              	</div>	
 				
