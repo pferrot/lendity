@@ -75,7 +75,17 @@ public abstract class AbstractLendTransactionsListController extends AbstractLis
 
 	public String getBorrowerOverviewHref() {
 		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
-		return PersonUtils.getPersonOverviewPageUrl(lendTransaction.getBorrower().getId().toString());
+		if (lendTransaction.getBorrower() != null) {
+			return PersonUtils.getPersonOverviewPageUrl(lendTransaction.getBorrower().getId().toString());
+		}
+		else {
+			return null;
+		}
+	}
+	
+	public boolean isInternalBorrower() {
+		final LendTransaction lendTransaction = (LendTransaction)getTable().getRowData();
+		return lendTransaction.getBorrower() != null;
 	}
 	
 	public String getLenderOverviewHref() {

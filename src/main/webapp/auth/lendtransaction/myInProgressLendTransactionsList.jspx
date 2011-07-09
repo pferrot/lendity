@@ -83,9 +83,10 @@
 					<h:outputText id="ownerTitle" value="#{messages.item_lentTo}:" />
 				</th>
 				<td width="50%">
-					<h:outputLink id="ownerLink" value="#{myInProgressLendTransactionsListController.borrowerOverviewHref}">
-						<h:outputText id="ownerLabel" value="#{lendTransaction.borrower.displayName}"/>
+					<h:outputLink id="borrowerLink" value="#{myInProgressLendTransactionsListController.borrowerOverviewHref}" rendered="#{myInProgressLendTransactionsListController.internalBorrower}">
+						<h:outputText id="borrowerLabel" value="#{lendTransaction.borrower.displayName}" rendered="#{myInProgressLendTransactionsListController.internalBorrower}"/>
 					</h:outputLink>
+					<h:outputText id="borrowerLabel2" value="#{lendTransaction.borrowerName}" rendered="#{not myInProgressLendTransactionsListController.internalBorrower}"/>
 				</td>
 			</tr>
 			<tr>
