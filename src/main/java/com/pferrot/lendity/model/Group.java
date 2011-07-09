@@ -26,6 +26,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import com.pferrot.core.CoreUtils;
+import com.pferrot.core.StringUtils;
 
 @Entity
 @Table(name = "GROUPS")
@@ -58,6 +59,9 @@ public class Group implements CommentableWithOwner<GroupComment>, Ownable {
 	// false otherwise.
 	@Column(name = "VALIDATE_MEMBERSHIP", nullable = false)
 	private Boolean validateMembership;
+	
+	@Column(name = "PASSWORD", nullable = true, length = 50)
+	private String password;
 	
 	@ManyToOne(targetEntity = Person.class)
 	@JoinColumn(name = "OWNER_ID")
@@ -160,6 +164,18 @@ public class Group implements CommentableWithOwner<GroupComment>, Ownable {
 
 	public void setValidateMembership(Boolean validateMembership) {
 		this.validateMembership = validateMembership;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public boolean isPasswordProtected() {
+		return !StringUtils.isNullOrEmpty(password);
 	}
 
 	public Person getOwner() {

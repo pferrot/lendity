@@ -1,5 +1,5 @@
 function toggleQuestion(pAnswerId) {
-	$j('#' + pAnswerId).toggle(400);	
+	$j('#' + pAnswerId).toggle();	
 }
 
 function limitTextareaLength(pTextarea, pMaxLength) {
@@ -1247,7 +1247,36 @@ function requestGroupJoinTooltip(pTooltipTarget, pGroupID, pRedirectID) {
  * Click the submit button in the tooltip.
  */
 function submitRequestGroupJoin() {
-	document.getElementById("requestGroupJoinActionButton").click();
+	
+	var noError = submitGroupJoinInternal();
+	
+	if (noError) {
+		document.getElementById("requestGroupJoinActionButton").click();
+	}
+	
+}
+
+function submitGroupJoinInternal() {
+	var noError = true;
+	
+	var groupPasswordHidden = $j('#groupPasswordKey');
+	if (groupPasswordHidden) {
+		var groupPasswordKey = groupPasswordHidden.val();
+		if (groupPasswordKey) {
+			var groupPasswordInput = $j('#groupPasswordEntered');
+			var groupPasswordEntered = groupPasswordInput.val();
+			var groupPasswordEnteredKey = $j.md5(groupPasswordEntered);
+			if (groupPasswordEnteredKey != groupPasswordKey) {
+				groupPasswordInput.addClass("validationError");
+				noError = false;
+			}
+			else {
+				groupPasswordInput.removeClass("validationError");
+			}
+		}
+	}
+	
+	return noError;
 }
 
 /*
@@ -1300,7 +1329,12 @@ function joinGroupTooltip(pTooltipTarget, pGroupID, pRedirectID) {
  * Click the submit button in the tooltip.
  */
 function submitJoinGroup() {
-	document.getElementById("joinGroupActionButton").click();
+	
+	var noError = submitGroupJoinInternal();
+	
+	if (noError) {
+		document.getElementById("joinGroupActionButton").click();
+	}
 }
 
 /*

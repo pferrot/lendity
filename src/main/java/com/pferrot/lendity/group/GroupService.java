@@ -266,7 +266,10 @@ public class GroupService {
 		groupDao.updateGroup(pGroup);
 	}
 	
-	public void updateGroupAddCurrentUserAsMember(final Group pGroup) throws GroupException {
+	public void updateGroupAddCurrentUserAsMember(final Group pGroup, final String pPassword) throws GroupException {
+		if (pGroup.isPasswordProtected() && !pGroup.getPassword().equals(pPassword)) {
+			throw new SecurityException("Password is not correct");
+		}
 		updateGroupAddMember(pGroup, getPersonService().getCurrentPerson());
 	}
 	
@@ -274,8 +277,8 @@ public class GroupService {
 		updateGroupRemoveMemberAndAdministrator(pGroup, getPersonService().getCurrentPerson());
 	}
 	
-	public void updateGroupAddCurrentUserAsMember(final Long pGroupId) throws GroupException {
-		updateGroupAddCurrentUserAsMember(findGroup(pGroupId));
+	public void updateGroupAddCurrentUserAsMember(final Long pGroupId, final String pPassword) throws GroupException {
+		updateGroupAddCurrentUserAsMember(findGroup(pGroupId), pPassword);
 	}
 	
 	public void updateGroupRemoveCurrentUserFromMembersAndAdministrators(final Long pGroupId) throws GroupException {

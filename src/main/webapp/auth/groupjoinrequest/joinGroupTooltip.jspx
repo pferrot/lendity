@@ -17,7 +17,18 @@
 				<td colspan="2" style="text-align: center;">
 					<b><h:outputText value="#{messages.group_joinGroupMessage}"/></b>
 				</td>
-			</tr>
+			</tr>			
+			<c:if test="#{theController.group.passwordProtected}">
+				<tr>
+					<th>
+						<nobr><h:outputText value="#{messages.group_password}:" /> *</nobr>
+					</th>
+					<td>
+						<h:inputText id="groupPasswordEntered" value="#{joinGroupTooltipController.password}" style="width: 100%;"/>
+						<h:inputHidden id="groupPasswordKey" value="#{theController.passwordEncoded}"/>
+					</td>
+				</tr>
+			</c:if>
 			<tr>
 				<td colspan="2" style="text-align: center;">
 					<input type="button" class="fontSizeSmall stylishButton" onclick="submitJoinGroup()" value="#{messages.navigation_ok}"/>

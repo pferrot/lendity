@@ -35,24 +35,24 @@
     
 	<bean id="configuration" class="com.pferrot.lendity.configuration.Configuration" lazy-init="false">
 		<property name="siteName">
-			<value>lendity</value>
+			<value>Lendity</value>
 		</property>		
 		<property name="rootURL">
-<!--			<value>http://www.lendity.com</value>-->
+<!--			<value>http://www.lendity.ch</value>-->
 <!--			<value>http://localhost:8080/lendity</value>-->
 			<value>http://golgoth14.dyndns.org:8080/lendity</value>
 		</property>
 		<property name="noReplyEmailAddress">
-			<value>no_reply@lendity.com</value>
+			<value>no_reply@lendity.ch</value>
 		</property>
 		<property name="noReplySenderName">
-			<value>lendity</value>
+			<value>Lendity</value>
 		</property>
 		<property name="contactEmailAddress">
-			<value>contact@lendity.com</value>
+			<value>contact@lendity.ch</value>
 		</property>
 		<property name="supportEmailAddress">
-			<value>support@lendity.com</value>
+			<value>support@lendity.ch</value>
 		</property>
 		<property name="nbDaysToValidateRegistration">
 			<value>30</value>
@@ -761,7 +761,8 @@
 	<bean id="groupOverviewController" class="com.pferrot.lendity.group.jsf.GroupOverviewController"
 	      scope="conversation.access">
 	      <property name="groupService" ref="groupService"/>
-	      <property name="groupJoinRequestService" ref="groupJoinRequestService"/> 
+	      <property name="groupJoinRequestService" ref="groupJoinRequestService"/>
+	      <property name="passwordEncoder" ref="security.passwordEncoder"/> 
 	</bean>
 
 	<bean id="deleteGroupTooltipController" class="com.pferrot.lendity.group.jsf.DeleteGroupTooltipController"

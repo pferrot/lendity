@@ -85,7 +85,10 @@ public class GroupJoinRequestService {
 	 * @return
 	 * @throws GroupJoinRequestException
 	 */
-	public Long createGroupJoinRequestFromCurrentUser(final Group pGroup) throws GroupJoinRequestException {		
+	public Long createGroupJoinRequestFromCurrentUser(final Group pGroup, final String pPassword) throws GroupJoinRequestException {
+		if (pGroup.isPasswordProtected() && !pGroup.getPassword().equals(pPassword)) {
+			throw new SecurityException("Password is not correct");
+		}
 		return createGroupJoinRequest(pGroup, getPersonService().getCurrentPerson());
 	}
 
@@ -93,11 +96,12 @@ public class GroupJoinRequestService {
 	 * Create a group join request using the current user as requester.
 	 *
 	 * @param pGroupId
+	 * @param pPassword
 	 * @return
 	 * @throws GroupJoinRequestException
 	 */
-	public Long createGroupJoinRequestFromCurrentUser(final Long pGroupId) throws GroupJoinRequestException {		
-		return createGroupJoinRequestFromCurrentUser(getGroupService().findGroup(pGroupId));
+	public Long createGroupJoinRequestFromCurrentUser(final Long pGroupId, final String pPassword) throws GroupJoinRequestException {		
+		return createGroupJoinRequestFromCurrentUser(getGroupService().findGroup(pGroupId), pPassword);
 	}
 	
 	/**

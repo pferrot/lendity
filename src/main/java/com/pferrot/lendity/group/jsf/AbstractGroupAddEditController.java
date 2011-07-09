@@ -15,7 +15,6 @@ import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.group.GroupConsts;
 import com.pferrot.lendity.group.GroupService;
 import com.pferrot.lendity.i18n.I18nUtils;
-import com.pferrot.lendity.item.ItemConsts;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.utils.JsfUtils;
 
@@ -29,6 +28,7 @@ public abstract class AbstractGroupAddEditController implements Serializable {
 	private String title;
 	private String description;
 	private Boolean validateMembership;
+	private String password;
 	
 	
 	public GroupService getGroupService() {
@@ -69,6 +69,14 @@ public abstract class AbstractGroupAddEditController implements Serializable {
 
 	public void setValidateMembership(Boolean validateMembership) {
 		this.validateMembership = validateMembership;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public void validateDescriptionSize(FacesContext context, UIComponent toValidate, Object value) {

@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import org.springframework.security.AccessDeniedException;
+import org.springframework.security.providers.encoding.MessageDigestPasswordEncoder;
 
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
@@ -29,6 +30,7 @@ public class GroupOverviewController  {
 	private Group group;
 	private GroupService groupService;
 	private GroupJoinRequestService groupJoinRequestService;
+	private MessageDigestPasswordEncoder passwordEncoder;
 	
 	private Long groupId;
 	
@@ -55,6 +57,14 @@ public class GroupOverviewController  {
 	public void setGroupJoinRequestService(
 			GroupJoinRequestService groupJoinRequestService) {
 		this.groupJoinRequestService = groupJoinRequestService;
+	}
+
+	public MessageDigestPasswordEncoder getPasswordEncoder() {
+		return passwordEncoder;
+	}
+
+	public void setPasswordEncoder(MessageDigestPasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	public Long getGroupId() {
@@ -194,5 +204,19 @@ public class GroupOverviewController  {
 	public boolean isAuthorizedToAddComments() {
 		return SecurityUtils.isLoggedIn() &&
 		       getGroupService().isCurrentUserOwnerOrAdministratorOrMemberOfGroup(getGroup());
+	}
+	
+	public String getPasswordEncoded() {
+		if (getGroup().isPasswordProtected()) {
+			return getPasswordEncoder().encodePassword(getGroup().getPassword(), null);
+		}
+		else {
+			return "";
+		} 
+	}
+	
+	// Method must exists otherwise we get an exception when trying to join a group.
+	public void setPasswordEncoded(final String pPasswordEncoded) {
+		// Leave empty.
 	}
 }

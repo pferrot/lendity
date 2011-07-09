@@ -58,6 +58,16 @@
 							value="#{groupEditController.description}"
 							validator="#{groupEditController.validateDescriptionSize}"/>						
 					</div><!-- /form row -->
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.group_password}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{messages.group_passwordInfo}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="password"></h:message>			
+						<h:inputText id="password" styleClass="gt-form-text"
+							value="#{groupEditController.password}"
+							maxlength="50"	/>			
+					</div><!-- /form row -->
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">

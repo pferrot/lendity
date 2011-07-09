@@ -17,6 +17,7 @@ public class GroupAddController extends AbstractGroupAddEditController {
 		group.setTitle(getTitle());
 		group.setDescription(getDescription());
 		group.setValidateMembership(getValidateMembership());
+		group.setPassword(getPassword());
 		group.setOwner(getPersonService().getCurrentPerson());			
 		return getGroupService().createGroup(group);
 	}

@@ -21,6 +21,8 @@ public class RequestGroupJoinTooltipController implements Serializable {
 	// 2 == group overview page
 	private Long redirectId;
 	
+	private String password;
+	
 	public GroupJoinRequestService getGroupJoinRequestService() {
 		return groupJoinRequestService;
 	}
@@ -46,6 +48,14 @@ public class RequestGroupJoinTooltipController implements Serializable {
 		this.redirectId = redirectId;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public String submit() {
 		requestGroupJoin();
 		
@@ -62,7 +72,7 @@ public class RequestGroupJoinTooltipController implements Serializable {
 
 	private void requestGroupJoin() {
 		try {
-			getGroupJoinRequestService().createGroupJoinRequestFromCurrentUser(getGroupId());
+			getGroupJoinRequestService().createGroupJoinRequestFromCurrentUser(getGroupId(), getPassword());
 		} 
 		catch (Exception e) {
 			throw new RuntimeException(e);

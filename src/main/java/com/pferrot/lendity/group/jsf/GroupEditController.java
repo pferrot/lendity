@@ -28,6 +28,7 @@ public class GroupEditController extends AbstractGroupAddEditController {
 		setTitle(pGroup.getTitle());
 		setDescription(pGroup.getDescription());
 		setValidateMembership(pGroup.getValidateMembership());
+		setPassword(pGroup.getPassword());
 	}
 
 	@InitView
@@ -66,6 +67,7 @@ public class GroupEditController extends AbstractGroupAddEditController {
 		getGroup().setTitle(getTitle());
 		getGroup().setDescription(getDescription());
 		getGroup().setValidateMembership(getValidateMembership());
+		getGroup().setPassword(getPassword());
 		getGroupService().updateGroup(getGroup());
 
 		return getGroup().getId();

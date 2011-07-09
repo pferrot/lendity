@@ -33,8 +33,16 @@
 <c:if test="#{authenticationController.loggedIn}" var="loggedInUser"/>
 <c:if test="${loggedInUser}">
 	<ui:include src="../../auth/group/deleteGroupTooltip.jspx"/>
-	<ui:include src="../../auth/groupjoinrequest/requestGroupJoinTooltip.jspx"/>
-	<ui:include src="../../auth/groupjoinrequest/joinGroupTooltip.jspx"/>
+	<c:if test="#{groupOverviewController.requestJoinAvailable}">
+		<ui:include src="../../auth/groupjoinrequest/requestGroupJoinTooltip.jspx">
+			<ui:param name="theController" value="#{groupOverviewController}"/>
+		</ui:include>
+	</c:if>
+	<c:if test="#{groupOverviewController.joinAvailable}">
+		<ui:include src="../../auth/groupjoinrequest/joinGroupTooltip.jspx">
+			<ui:param name="theController" value="#{groupOverviewController}"/>
+		</ui:include>
+	</c:if>
 	<ui:include src="../../auth/groupjoinrequest/leaveGroupTooltip.jspx"/>
 </c:if>
 
@@ -99,6 +107,17 @@
 		<br/>
 	</c:if>
 
+	<div class="gt-form-row gt-width-100">
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.group_passwordProtected}:" /></label></div>
+		<c:if test="#{groupOverviewController.group.passwordProtected}">
+			<h:outputText value="#{messages.group_passwordProtectedYes}" />
+		</c:if>
+		<c:if test="#{not groupOverviewController.group.passwordProtected}">
+			<h:outputText value="#{messages.group_passwordProtectedNo}" />
+		</c:if>
+	</div>
+	<br/>
+	
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.group_validateMembership}:" /></label></div>
 		<h:selectBooleanCheckbox id="emailSubscriber" value="#{groupOverviewController.group.validateMembership}" styleClass="gt-form-element-checkbox" disabled="true"/>
