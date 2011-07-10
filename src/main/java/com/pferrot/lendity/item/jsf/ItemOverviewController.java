@@ -1,5 +1,6 @@
 package com.pferrot.lendity.item.jsf;
 
+import java.text.NumberFormat;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -124,7 +125,27 @@ public class ItemOverviewController extends AbstractObjektOverviewController {
 		JsfUtils.getRequest().setAttribute(FacebookConsts.OG_TITLE_ATTRIBUTE_NAME, ogTitle);
 		
 		final Locale locale = I18nUtils.getDefaultLocale();
-		final String ogDescription = I18nUtils.getMessageResourceString("facebook_itemLikeDescription", locale);
+		String ogDescription = null;
+		if (Boolean.TRUE.equals(getItem().getToGiveForFree())) {
+			ogDescription = I18nUtils.getMessageResourceString("facebook_itemLikeDescriptionToGive", locale);
+		}
+		else if (getItem().getSalePrice() != null) {
+			final NumberFormat nf = NumberFormat.getInstance(I18nUtils.getDefaultLocale());
+			nf.setMinimumFractionDigits(2);
+			nf.setMaximumFractionDigits(2);
+			final String price = nf.format(getItem().getSalePrice().doubleValue());
+			ogDescription = I18nUtils.getMessageResourceString("facebook_itemLikeDescriptionToSell", new Object[]{price}, locale);
+		}
+		else if (getItem().getRentalFee() != null) {
+			final NumberFormat nf = NumberFormat.getInstance(I18nUtils.getDefaultLocale());
+			nf.setMinimumFractionDigits(2);
+			nf.setMaximumFractionDigits(2);
+			final String rentalFee = nf.format(getItem().getRentalFee().doubleValue());
+			ogDescription = I18nUtils.getMessageResourceString("facebook_itemLikeDescriptionToRent", new Object[]{rentalFee}, locale);
+		}
+		else {
+			ogDescription = I18nUtils.getMessageResourceString("facebook_itemLikeDescriptionToBorrow", locale);
+		}
 		JsfUtils.getRequest().setAttribute(FacebookConsts.OG_DESCRIPTION_ATTRIBUTE_NAME, ogDescription);
 	}
 
