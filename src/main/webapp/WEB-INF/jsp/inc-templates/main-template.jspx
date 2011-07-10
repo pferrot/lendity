@@ -79,11 +79,11 @@
 
 <!--
 	Google analytics.
--->
+-->	
 	<script type="text/javascript">
 	
 	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', 'UA-21747604-1']);
+	  _gaq.push(['_setAccount', '#{configuration.googleAnalyticsIdNotStatic}']);
 	  _gaq.push(['_trackPageview']);
 	
 	  (function() {
@@ -93,7 +93,7 @@
 	  })();
 	
 	</script>
-	
+
 </head>
 <body class="gt-fixed">
 

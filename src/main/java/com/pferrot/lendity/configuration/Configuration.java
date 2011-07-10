@@ -27,6 +27,7 @@ public class Configuration {
 	private static String supportEmailAddress;
 	private static String contactEmailAddress;
 	private static boolean facebookLikeEnabled;
+	private static String googleAnalyticsId;
 	private static int nbDaysToValidateRegistration;
 	private static int minimumAge;
 	private static Set<String> categoriesNotAllowedPublicVisibility = new HashSet<String>();
@@ -118,6 +119,18 @@ public class Configuration {
 
 	public void setFacebookLikeEnabled(boolean facebookLikeEnabled) {
 		this.facebookLikeEnabled = facebookLikeEnabled;
+	}
+
+	public static String getGoogleAnalyticsId() {
+		return googleAnalyticsId;
+	}
+	
+	public String getGoogleAnalyticsIdNotStatic() {
+		return googleAnalyticsId;
+	}
+
+	public  void setGoogleAnalyticsId(String googleAnalyticsId) {
+		this.googleAnalyticsId = googleAnalyticsId;
 	}
 
 	public static int getNbDaysToValidateRegistration() {
