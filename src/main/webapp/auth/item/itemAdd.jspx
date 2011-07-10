@@ -97,19 +97,19 @@
 					</div><!-- /form row -->
 
 					<ui:include src="component/depositEdit.jspx">
-						<ui:param name="controllerBean" value="#{itemEditController}"/>
+						<ui:param name="controllerBean" value="#{itemAddController}"/>
 					</ui:include>	
 					
 					<ui:include src="component/rentalFeeEdit.jspx">
-						<ui:param name="controllerBean" value="#{itemEditController}"/>
+						<ui:param name="controllerBean" value="#{itemAddController}"/>
 					</ui:include>	
 
 					<ui:include src="component/toGiveForFreeEdit.jspx">
-						<ui:param name="controllerBean" value="#{itemEditController}"/>
+						<ui:param name="controllerBean" value="#{itemAddController}"/>
 					</ui:include>
 					
 					<ui:include src="component/salePriceEdit.jspx">
-						<ui:param name="controllerBean" value="#{itemEditController}"/>
+						<ui:param name="controllerBean" value="#{itemAddController}"/>
 					</ui:include>
 					
 					<!-- form row -->
