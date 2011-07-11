@@ -8,6 +8,16 @@
     xmlns:o="http://myfaces.apache.org/orchestra"
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
+<script type="text/javascript">
+$j(document).ready(function() {
+	$j('.thubnailImageHome').each(function(pIndex, pElement) {
+		if ($j(pElement).height() > 30) {
+			$j(pElement).height(30);
+		}
+	});
+});
+</script>
+												    
 			<table style="width: 100%;">
 				<tr>
 				<td style="width: 50%; padding: 10px; vertical-align: top;">
@@ -43,7 +53,7 @@
 										<table class="thumbnailInnerTable"><tr><td>
 											<h:outputLink id="itemOverviewLink1" value="#{theBean.itemOverviewHref}" rendered="#{theBean.itemThumbnail1Src != null}">
 												<div class="thumbnailDiv">
-												    <img src="#{theBean.itemThumbnail1Src}" height="30"/>
+												    <img class="thubnailImageHome" src="#{theBean.itemThumbnail1Src}"/>
 												</div>
 											</h:outputLink>
 										</td></tr></table>
@@ -117,7 +127,7 @@
 										<table class="thumbnailInnerTable"><tr><td>
 											<h:outputLink id="needOverviewLink1" value="#{theBean.needOverviewHref}" rendered="#{theBean.needThumbnail1Src != null}">
 												<div class="thumbnailDiv">
-												    <img src="#{theBean.needThumbnail1Src}" height="30"/>
+												    <img class="thubnailImageHome" src="#{theBean.needThumbnail1Src}"/>
 												</div>
 											</h:outputLink>
 										</td></tr></table>
@@ -194,7 +204,7 @@
 										<table class="thumbnailInnerTable"><tr><td>
 											<h:outputLink id="personOverviewLink1" value="#{theBean.personOverviewHref}" rendered="#{theBean.personThumbnail1Src != null}">
 												<div class="thumbnailDiv">
-												    <img src="#{theBean.personThumbnail1Src}" height="30"/>
+												    <img class="thubnailImageHome" src="#{theBean.personThumbnail1Src}"/>
 												</div>
 											</h:outputLink>
 										</td></tr></table>
@@ -270,7 +280,7 @@
 										<table class="thumbnailInnerTable"><tr><td>
 											<h:outputLink id="groupOverviewLink1" value="#{theBean.groupOverviewHref}" rendered="#{theBean.groupThumbnail1Src != null}">
 												<div class="thumbnailDiv">
-												    <img src="#{theBean.groupThumbnail1Src}" height="30"/>
+												    <img class="thubnailImageHome" src="#{theBean.groupThumbnail1Src}"/>
 												</div>
 											</h:outputLink>
 										</td></tr></table>
