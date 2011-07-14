@@ -50,28 +50,28 @@ public class LendTransactionOverviewController extends AbstractLendTransactionOv
 	private EvaluationService evaluationService;
 	private PersonConfigurationService personConfigurationService;
 	
-	static {	
-		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_INITIALIZED_LENDER, PersonConfigurationConsts.HIDE_HELP_VALUE);
-		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_INITIALIZED_LENDER_2, PersonConfigurationConsts.HIDE_HELP_VALUE);
-		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_INITIALIZED_BORROWER, PersonConfigurationConsts.HIDE_HELP_VALUE);
-		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_INITIALIZED_BORROWER_2, PersonConfigurationConsts.HIDE_HELP_VALUE);
-		
-		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_OPENED_LENDER, PersonConfigurationConsts.HIDE_HELP_VALUE);
-		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_OPENED_LENDER_2, PersonConfigurationConsts.HIDE_HELP_VALUE);
-		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_OPENED_BORROWER, PersonConfigurationConsts.HIDE_HELP_VALUE);
-		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_OPENED_BORROWER_2, PersonConfigurationConsts.HIDE_HELP_VALUE);
-		
-		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_IN_PROGRESS_LENDER, PersonConfigurationConsts.HIDE_HELP_VALUE);
-		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_IN_PROGRESS_BORROWER, PersonConfigurationConsts.HIDE_HELP_VALUE);
-		
-		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_COMPLETED_LENDER, PersonConfigurationConsts.HIDE_HELP_VALUE);
-		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_COMPLETED_LENDER_2, PersonConfigurationConsts.HIDE_HELP_VALUE);
-		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_COMPLETED_BORROWER, PersonConfigurationConsts.HIDE_HELP_VALUE);
-		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_COMPLETED_BORROWER_2, PersonConfigurationConsts.HIDE_HELP_VALUE);
-		
-		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_CANCELED_LENDER, PersonConfigurationConsts.HIDE_HELP_VALUE);
-		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_CANCELED_BORROWER, PersonConfigurationConsts.HIDE_HELP_VALUE);
-	}
+//	static {	
+//		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_INITIALIZED_LENDER, PersonConfigurationConsts.HIDE_HELP_VALUE);
+//		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_INITIALIZED_LENDER_2, PersonConfigurationConsts.HIDE_HELP_VALUE);
+//		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_INITIALIZED_BORROWER, PersonConfigurationConsts.HIDE_HELP_VALUE);
+//		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_INITIALIZED_BORROWER_2, PersonConfigurationConsts.HIDE_HELP_VALUE);
+//		
+//		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_OPENED_LENDER, PersonConfigurationConsts.HIDE_HELP_VALUE);
+//		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_OPENED_LENDER_2, PersonConfigurationConsts.HIDE_HELP_VALUE);
+//		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_OPENED_BORROWER, PersonConfigurationConsts.HIDE_HELP_VALUE);
+//		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_OPENED_BORROWER_2, PersonConfigurationConsts.HIDE_HELP_VALUE);
+//		
+//		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_IN_PROGRESS_LENDER, PersonConfigurationConsts.HIDE_HELP_VALUE);
+//		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_IN_PROGRESS_BORROWER, PersonConfigurationConsts.HIDE_HELP_VALUE);
+//		
+//		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_COMPLETED_LENDER, PersonConfigurationConsts.HIDE_HELP_VALUE);
+//		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_COMPLETED_LENDER_2, PersonConfigurationConsts.HIDE_HELP_VALUE);
+//		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_COMPLETED_BORROWER, PersonConfigurationConsts.HIDE_HELP_VALUE);
+//		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_COMPLETED_BORROWER_2, PersonConfigurationConsts.HIDE_HELP_VALUE);
+//		
+//		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_CANCELED_LENDER, PersonConfigurationConsts.HIDE_HELP_VALUE);
+//		PersonConfigurationService.addAllowedConfiguration(PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + STATUS_CODE_CANCELED_BORROWER, PersonConfigurationConsts.HIDE_HELP_VALUE);
+//	}
 	
 	@InitView
 	public void initView() {

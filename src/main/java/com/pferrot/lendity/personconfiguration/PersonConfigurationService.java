@@ -1,19 +1,12 @@
 package com.pferrot.lendity.personconfiguration;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.CoreUtils;
-import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.dao.PersonConfigurationDao;
 import com.pferrot.lendity.model.PersonConfiguration;
 import com.pferrot.lendity.person.PersonService;
-import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.personconfiguration.exception.PersonConfigurationException;
 
 public class PersonConfigurationService {
@@ -24,7 +17,7 @@ public class PersonConfigurationService {
 	private PersonConfigurationDao personConfigurationDao;
 
 	// This will prevent anyone from inserting crap in the DB through the json controller.
-	private static Map<String, Collection<String>> allowedConfigurations = new HashMap<String, Collection<String>>();
+//	private static Map<String, Collection<String>> allowedConfigurations = new HashMap<String, Collection<String>>();
 
 	
 	public PersonService getPersonService() {
@@ -44,47 +37,48 @@ public class PersonConfigurationService {
 		this.personConfigurationDao = personConfigurationDao;
 	}
 	
-	public static void addAllowedConfiguration(final String pKey, final String pValue) {
-		CoreUtils.assertNotNullOrEmptyString(pKey);
-		CoreUtils.assertNotNullOrEmptyString(pValue);
-		
-		if (!allowedConfigurations.containsKey(pKey)) {
-			final Collection<String> values = new ArrayList<String>();
-			values.add(pValue);
-			allowedConfigurations.put(pKey, values);
-		}
-		else {
-			final Collection<String> values = allowedConfigurations.get(pKey);
-			if (!values.contains(pValue)) {
-				values.add(pValue);
-			}
-		}		
-	}
-	
-	public static boolean isAllowedConfiguration(final String pKey, final String pValue) {
-		if (StringUtils.isNullOrEmpty(pKey) ||
-			StringUtils.isNullOrEmpty(pValue)) {
-			return false;
-		}
-		
-		if (!allowedConfigurations.containsKey(pKey)) {
-			return false;
-		}
-		else {
-			final Collection<String> values = allowedConfigurations.get(pKey);
-			return values.contains(pValue);
-		}
-	}
-	
-	public void assertAllowedConfiguration(final String pKey, final String pValue) throws PersonConfigurationException {
-		if (!isAllowedConfiguration(pKey, pValue)) {
-			throw new PersonConfigurationException("Configuration is not allowed. Key: '" + pKey + "', value: '" + pValue + "'");
-		}
-	}
+//	public static void addAllowedConfiguration(final String pKey, final String pValue) {
+//		CoreUtils.assertNotNullOrEmptyString(pKey);
+//		CoreUtils.assertNotNullOrEmptyString(pValue);
+//		
+//		if (!allowedConfigurations.containsKey(pKey)) {
+//			final Collection<String> values = new ArrayList<String>();
+//			values.add(pValue);
+//			allowedConfigurations.put(pKey, values);
+//		}
+//		else {
+//			final Collection<String> values = allowedConfigurations.get(pKey);
+//			if (!values.contains(pValue)) {
+//				values.add(pValue);
+//			}
+//		}		
+//	}
+//	
+//	public static boolean isAllowedConfiguration(final String pKey, final String pValue) {
+//		if (StringUtils.isNullOrEmpty(pKey) ||
+//			StringUtils.isNullOrEmpty(pValue)) {
+//			return false;
+//		}
+//		
+//		if (!allowedConfigurations.containsKey(pKey)) {
+//			return false;
+//		}
+//		else {
+//			final Collection<String> values = allowedConfigurations.get(pKey);
+//			return values.contains(pValue);
+//		}
+//	}
+//	
+//	public void assertAllowedConfiguration(final String pKey, final String pValue) throws PersonConfigurationException {
+//		if (!isAllowedConfiguration(pKey, pValue)) {
+//			throw new PersonConfigurationException("Configuration is not allowed. Key: '" + pKey + "', value: '" + pValue + "'");
+//		}
+//	}
 
 	// The identifier is the entity class itself, see http://docs.jboss.org/hibernate/annotations/3.5/reference/en/html_single/ § 2.2.3.2
 	public PersonConfiguration createPersonConfiguration(final PersonConfiguration pPersonConfiguration) throws PersonConfigurationException {
-		assertAllowedConfiguration(pPersonConfiguration.getKey(), pPersonConfiguration.getValue());
+		// TODO: we should validate that not any thing is inserted in the DB...
+//		assertAllowedConfiguration(pPersonConfiguration.getKey(), pPersonConfiguration.getValue());
 		return getPersonConfigurationDao().createPersonConfiguration(pPersonConfiguration);
 	}
 	
@@ -97,7 +91,8 @@ public class PersonConfigurationService {
 	}
 	
 	public void updatePersonConfiguration(final PersonConfiguration pPersonConfiguration) throws PersonConfigurationException {
-		assertAllowedConfiguration(pPersonConfiguration.getKey(), pPersonConfiguration.getValue());
+		// TODO: we should validate that not any thing is inserted in the DB...
+//		assertAllowedConfiguration(pPersonConfiguration.getKey(), pPersonConfiguration.getValue());
 		getPersonConfigurationDao().createPersonConfiguration(pPersonConfiguration);
 	}
 	
