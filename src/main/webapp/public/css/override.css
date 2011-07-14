@@ -130,6 +130,8 @@ a.stylishButtonLarge, .stylishButtonLarge {
 
 /* Sidebar Content */
 .gt-sidebar-content {
-	margin-bottom: 0px!important;
-	color: #333;
+	word-wrap:break-word!important;
+	border: 1px solid #073351;
+	border-radius: 5px;
+	padding: 10px;
 }

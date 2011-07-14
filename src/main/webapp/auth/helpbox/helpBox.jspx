@@ -1,0 +1,90 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<!-- 
+This will probably only work with one help box in the page.
+Would need to do some more work to make it work with more than one (e.g. unique IDs, only import javascript once,...).
+ -->
+ 
+<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/personConfiguration.js"></script>
+
+<script type="text/javascript">
+initPersonConfiguration('#{facesContext.externalContext.requestContextPath}');
+
+$j(document).ready(function() {
+	var theText = $j('#helpBoxContent').html();
+	theText += $j('#helpBoxCheckboxContent').html();
+	$j('.helpBox').qtip({
+	    content: {
+	    	text: theText,
+	    	title: {
+    			text: '#{helpTitle}',
+				button: '#{messages.help_helpBoxCloseLink}'
+			}
+	    },
+	    style: {
+			background: '#094e62',
+		    color: '#ffffff',
+			border: {
+				width: 1,
+				radius: 5,
+				color: '#073351'
+			},
+			padding: 0, 
+			textAlign: 'left',
+			width: 400,
+			padding: 10,
+			tip: true, // Give it a speech bubble tip with automatic corner detection
+			title: {
+				'background': '#b1b1c2',
+				'font-weight': 'bold'
+			},
+			button: {
+				'color': '#ff6600',
+				'background': '#b1b1c2',
+				'font-size': '80%'
+			}
+		},
+		position: {
+			corner: {
+				target: 'topMiddle',
+				tooltip: 'bottomMiddle'
+			}
+		},
+		show: {
+			ready: #{showHelpAutomatically},
+			delay: 400
+		},
+		hide: false		
+	});
+});
+</script>
+
+<div id="helpBoxContent" style="display: none;">
+	<h:outputText value="#{helpTextHtml}" escape="false"/>
+</div>
+
+<div id="helpBoxCheckboxContent" style="display: none;">
+	<br/><br/>
+	<c:if test="#{showHelpAutomatically}" var="helpDisplayedAutomatically"/>
+	<c:if test="${helpDisplayedAutomatically}">
+	<input type="checkbox"
+		   checked="checked"
+	       onClick="showHideHelpAutomaticallyClicked(this, '#{configKey}');"/>
+	</c:if>
+	<c:if test="${not helpDisplayedAutomatically}">
+	<input type="checkbox"
+	       onClick="showHideHelpAutomaticallyClicked(this, '#{configKey}');"/>
+	</c:if>
+	<h:outputText value=" " escape="false" styleClass="small" />
+	<h:outputText value="#{messages.help_showAutomatically}" styleClass="small" />
+</div>
+
+</ui:composition>

@@ -81,5 +81,7 @@
         
         <mapping class="com.pferrot.lendity.model.IpToCountry"/>
         
+        <mapping class="com.pferrot.lendity.model.PersonConfiguration"/>
+        
     </session-factory>
 </hibernate-configuration>

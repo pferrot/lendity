@@ -5,7 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:o="http://myfaces.apache.org/orchestra"
 	xmlns:c="http://java.sun.com/jstl/core">
-
+	
 	<!-- params for page titles-->
 	<ui:define name="pageTitle"><h:outputText value="#{messages.lendTransaction_lendTransactionOverviewTitle}"/><h:outputText value=": " escape="false" /><h:outputText value="#{lendTransactionOverviewController.lendTransaction.title}"/></ui:define>
 	<ui:param name="contentHeader" value="#{messages.lendTransaction_lendTransactionOverviewTitle}" />
@@ -19,14 +19,19 @@
 
 			<!-- insert content here -->
 			<ui:define name="pageContent">
-			
+
+<ui:include src="../../auth/helpbox/helpBox.jspx">
+	<ui:param name="helpTitle" value="#{lendTransactionOverviewController.statusLabel}"/>
+	<ui:param name="helpTextHtml" value="#{lendTransactionOverviewController.sideBarText}"/>
+	<ui:param name="showHelpAutomatically" value="#{lendTransactionOverviewController.showHelpAutomatically}"/>
+	<ui:param name="configKey" value="#{lendTransactionOverviewController.showHelpConfigKey}"/>
+</ui:include>
+
 			<!-- body -->
 			<div class="gt-bd gt-cols clearfix">
 			
 			<!-- main content -->
-			<div class="gt-content">
-						
-			
+			<div class="gt-content">								
 			
 				<f:view>		
 				
@@ -38,7 +43,7 @@
 
 <!-- content box -->
 <div class="gt-form gt-content-box">
-	<div class="gt-form-row gt-width-100">
+	<div id="mainTitle" class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label><h:outputText id="itemTitle" value="#{messages.item_item}:" /></label></div>
 		<h4>
 			<c:if test="#{lendTransactionOverviewController.lendTransaction.item != null}">
@@ -93,7 +98,7 @@
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_status}:" /></label></div>
 		<h:outputText value="#{lendTransactionOverviewController.statusLabel}" />
-		<img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{lendTransactionOverviewController.whatIsNextLabel}"/>
+		<img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="helpBox"/>
 	</div>
 	<br/>
 	
@@ -160,12 +165,11 @@
 </ui:include>
 			
 			</div>
-			<!-- /main content -->
-
-
+			<!-- /main content -->			
 			
 			</div>
 			<!-- /body -->
+			
 			</ui:define>
 		</ui:decorate>
 

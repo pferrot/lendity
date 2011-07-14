@@ -38,8 +38,8 @@
 			<value>Lendity</value>
 		</property>		
 		<property name="rootURL">
-			<value>http://www.lendity.ch</value>
-<!--			<value>http://golgoth14.dyndns.org:8080/lendity</value>-->
+<!--			<value>http://www.lendity.ch</value>-->
+			<value>http://golgoth14.dyndns.org:8080/lendity</value>
 		</property>
 		<property name="noReplyEmailAddress">
 			<value>no_reply@lendity.ch</value>
@@ -60,12 +60,12 @@
 			<value>18</value>
 		</property>
 		<property name="facebookLikeEnabled">
-			<value>true</value>
-<!--			<value>false</value>-->
+<!--			<value>true</value>-->
+			<value>false</value>
 		</property>
 		<property name="googleAnalyticsId">
-			<value>UA-21747604-2</value>
-<!--			<value>UA-21747604-3</value>-->
+<!--			<value>UA-21747604-2</value>-->
+			<value>UA-21747604-3</value>
 		</property>
 		<property name="categoriesNotAllowedPublicVisibility">
 			<set>
@@ -249,6 +249,47 @@
 
 	<!-- 
 	IP TO COUNTRY - end
+	========================================================================================================================
+	 -->
+	 
+	 <!-- 
+	========================================================================================================================
+	PERSON CONFIGURATION - start
+	 -->
+	
+	<bean id="personConfigurationService" parent="baseTransactionProxy">
+		<property name="target" ref="personConfigurationServiceTarget" />
+	</bean>
+		
+	<bean id="personConfigurationServiceTarget" class="com.pferrot.lendity.personconfiguration.PersonConfigurationService">
+		<property name="personConfigurationDao" ref="personConfigurationDao"/>
+		<property name="personService" ref="personService"/>
+	</bean>
+	
+	<bean id="personConfigurationDaoTarget" class="com.pferrot.lendity.dao.hibernate.PersonConfigurationDaoHibernateImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+
+	<bean id="personConfigurationDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target">
+			<ref local="personConfigurationDaoTarget"/>
+		</property>
+		<property name="proxyInterfaces">
+           <value>com.pferrot.lendity.dao.PersonConfigurationDao</value>
+         </property>		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 
+	PERSON CONFIGURATION - end
 	========================================================================================================================
 	 -->
 	 
@@ -665,6 +706,7 @@
 	      <property name="lendTransactionWithCommentService" ref="lendTransactionWithCommentService"/>
 	      <property name="lendRequestService" ref="lendRequestService"/>
 	      <property name="evaluationService" ref="evaluationService"/>
+	      <property name="personConfigurationService" ref="personConfigurationService"/>
 	</bean>
 	
 	<bean id="transferItemTooltipController" class="com.pferrot.lendity.lendtransaction.jsf.TransferItemTooltipController"

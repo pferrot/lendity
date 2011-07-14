@@ -8,5 +8,6 @@
                          http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
  <bean name="commentJsonView" class="com.pferrot.lendity.comment.servlet.CommentJsonView" />
+ <bean name="personConfigurationJsonView" class="com.pferrot.lendity.personconfiguration.servlet.PersonConfigurationJsonView" />
  
 </beans>
