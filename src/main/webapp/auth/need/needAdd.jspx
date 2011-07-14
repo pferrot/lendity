@@ -97,6 +97,20 @@
 						</div><!-- /form row -->
 						
 						<!-- form row -->
+						<div class="gt-form-row gt-width-100">
+							<label><h:outputText value="#{messages.need_sendEmail}"/> * <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{messages.need_sendEmailInfo}"/></label>
+							<h:message styleClass="error" showSummary="true" showDetail="false"
+								for="sendEmail"></h:message>
+							<h:selectOneMenu id="sendEmail" 
+							    value="#{needAddController.sendEmail}" 
+							    converter="javax.faces.Boolean" 
+							    required="true"
+							    requiredMessage="#{messages.validation_requiredMessage}">
+								<f:selectItems value="#{needAddController.sendEmailSelectItems}"/>
+							</h:selectOneMenu>					
+						</div><!-- /form row -->
+						
+						<!-- form row -->
 						<div class="gt-form-row">
 							<br/>
 							<table class="buttonsTable"><tr><td>

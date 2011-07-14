@@ -297,14 +297,15 @@ public class NeedService extends ObjektService {
 		needDao.deleteNeed(pNeed);
 	}
 	
-	public Long createNeed(final Need pNeed) {
+	public Long createNeed(final Need pNeed, final boolean pSendEmail) {
 		try {
 			pNeed.setCreationDate(new Date());
 			final Long result = needDao.createNeed(pNeed);
 			final Long visibilityId = pNeed.getVisibility().getId();
 			// Only send notifications if they can see.
-			if (visibilityId.equals(getPublicVisibilityId()) ||
-				visibilityId.equals(getConnectionsVisibilityId())) {
+			if (pSendEmail &&
+					(visibilityId.equals(getPublicVisibilityId()) ||
+				     visibilityId.equals(getConnectionsVisibilityId()))) {
 				sendNotificationToAllConnections(pNeed);
 			}
 			return result;
@@ -372,12 +373,13 @@ public class NeedService extends ObjektService {
 		
 	}
 
-	public Long createNeed(final Need pNeed, final Long pCategoryId, final Long pVisibilityId) {
+	public Long createNeed(final Need pNeed, final Long pCategoryId, final Long pVisibilityId, final boolean pSendEmail) {
 		pNeed.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
-		return createNeed(pNeed, pCategoryId);
+		return createNeed(pNeed, pCategoryId, pSendEmail);
 	}
 
-	public Long createNeed(final Need pNeed, final Long pCategoryId, final Long pVisibilityId, final List<Long> pAuthorizedGroupsIds) {
+	public Long createNeed(final Need pNeed, final Long pCategoryId, final Long pVisibilityId,
+			final List<Long> pAuthorizedGroupsIds, final boolean pSendEmail) {
 		if (pAuthorizedGroupsIds != null) {
 			Set<Group> groups = new HashSet<Group>();
 			for (Long groupId: pAuthorizedGroupsIds) {
@@ -388,12 +390,12 @@ public class NeedService extends ObjektService {
 			}
 			pNeed.setGroupsAuthorized(groups);
 		}
-		return createNeed(pNeed, pCategoryId, pVisibilityId);
+		return createNeed(pNeed, pCategoryId, pVisibilityId, pSendEmail);
 	}
 	
-	public Long createNeed(final Need pNeed, final Long pCategoryId) {
+	public Long createNeed(final Need pNeed, final Long pCategoryId, final boolean pSendEmail) {
 		pNeed.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
-		return createNeed(pNeed);
+		return createNeed(pNeed, pSendEmail);
 	}
 	
 	public void updateNeed(final Need pNeed) {
