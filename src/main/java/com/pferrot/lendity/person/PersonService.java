@@ -183,6 +183,9 @@ public class PersonService {
 		queryBean.setOrderBy("random");
 		queryBean.setFirstResult(0);
 		queryBean.setMaxResults(5);
+		if (SecurityUtils.isLoggedIn()) {
+			queryBean.setPersonToIgnoreId(PersonUtils.getCurrentPersonId());
+		}
 		
 		return personDao.findPersonsList(queryBean);
 	}
@@ -208,6 +211,9 @@ public class PersonService {
 		queryBean.setOrderBy("random");
 		queryBean.setFirstResult(0);
 		queryBean.setMaxResults(5);
+		if (SecurityUtils.isLoggedIn()) {
+			queryBean.setPersonToIgnoreId(PersonUtils.getCurrentPersonId());
+		}
 		
 		// Try 2km, then 20, then 100, then unlimited.
 		queryBean.setMaxDistanceKm(new Double(2));

@@ -228,6 +228,10 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 				add(Restrictions.eq("id", pQueryBean.getPersonId()));
 		}
 		
+		if (pQueryBean.getPersonToIgnoreId() != null) {
+			criteria.add(Restrictions.not(Restrictions.eq("id", pQueryBean.getPersonToIgnoreId())));
+		}
+		
 		if (pQueryBean.getEnabled() != null) {
 			criteria.add(Restrictions.eq("enabled", pQueryBean.getEnabled()));
 		}

@@ -5,6 +5,7 @@ import java.util.Date;
 public class PersonDaoQueryBean {
 	
 	private Long personId = null;
+	private Long personToIgnoreId = null;
 	private int connectionLink;
 	private String searchString = null;
 	// Set to true when a person should be a match only if his
@@ -33,6 +34,14 @@ public class PersonDaoQueryBean {
 		this.personId = personId;
 	}
 	
+	public Long getPersonToIgnoreId() {
+		return personToIgnoreId;
+	}
+
+	public void setPersonToIgnoreId(Long personToIgnoreId) {
+		this.personToIgnoreId = personToIgnoreId;
+	}
+
 	public int getConnectionLink() {
 		return connectionLink;
 	}
