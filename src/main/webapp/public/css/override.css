@@ -77,7 +77,7 @@ a:hover {
 
 .gt-content-box {
 	word-wrap:break-word!important;
-	border: 1px solid #073351;
+	border: 1px solid #4c4847;
 	border-radius: 5px;
 	padding: 1px;
 }
@@ -131,7 +131,7 @@ a.stylishButtonLarge, .stylishButtonLarge {
 /* Sidebar Content */
 .gt-sidebar-content {
 	word-wrap:break-word!important;
-	border: 1px solid #073351;
+	border: 1px solid #4c4847;
 	border-radius: 5px;
 	padding: 10px;
 }

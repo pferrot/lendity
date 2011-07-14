@@ -98,7 +98,7 @@
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.lendTransaction_status}:" /></label></div>
 		<h:outputText value="#{lendTransactionOverviewController.statusLabel}" />
-		<img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="helpBox"/>
+		<img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/help.png" class="helpBox"/>
 	</div>
 	<br/>
 	

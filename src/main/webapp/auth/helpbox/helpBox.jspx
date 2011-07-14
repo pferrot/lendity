@@ -30,12 +30,12 @@ $j(document).ready(function() {
 			}
 	    },
 	    style: {
-			background: '#094e62',
+			background: '#4c4847',
 		    color: '#ffffff',
 			border: {
 				width: 1,
 				radius: 5,
-				color: '#073351'
+				color: '#4c4847'
 			},
 			padding: 0, 
 			textAlign: 'left',
@@ -43,19 +43,21 @@ $j(document).ready(function() {
 			padding: 10,
 			tip: true, // Give it a speech bubble tip with automatic corner detection
 			title: {
-				'background': '#b1b1c2',
-				'font-weight': 'bold'
+				'color': '#ffffff',
+				'background': '#4c4847',
+				'font-weight': 'bold',
+				'font-size': '120%'
 			},
 			button: {
 				'color': '#ff6600',
-				'background': '#b1b1c2',
+				'background': '#4c4847',
 				'font-size': '80%'
 			}
 		},
 		position: {
 			corner: {
-				target: 'topMiddle',
-				tooltip: 'bottomMiddle'
+				target: 'topRight',
+				tooltip: 'bottomLeft'
 			}
 		},
 		show: {

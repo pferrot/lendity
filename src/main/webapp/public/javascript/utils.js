@@ -12,12 +12,12 @@ function makeQtipTitles() {
 	    	text: false // Use each elements title attribute
 	    },
 	    style: {
-			background: '#094e62',
+			background: '#4c4847',
 		    color: '#ffffff',
 			border: {
 				width: 1,
 				radius: 5,
-				color: '#073351'
+				color: '#4c4847'
 			},
 			padding: 0, 
 			textAlign: 'center',
@@ -186,12 +186,12 @@ function createFormTooltip(pJqueryTooltipTarget, pForm, pOnHideCallbackMethod) {
 			}
 		},
 		style: {
-			background: '#094e62',
+			background: '#4c4847',
 		    color: '#ffffff',
 			border: {
 				width: 1,
 				radius: 5,
-				color: '#073351'
+				color: '#4c4847'
 			},
 			padding: 0, 
 			textAlign: 'center',
