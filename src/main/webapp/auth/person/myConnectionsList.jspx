@@ -94,7 +94,6 @@
 				<h:outputText value="#{person.displayName}" />
 			</h:outputLink>
 		</h4>
-		<p><h:outputText value="#{person.firstName}" /><h:outputText value=" " escape="false" /><h:outputText value="#{person.lastName}" /></p>
 		</td></tr></table>
     </h:column>
 
