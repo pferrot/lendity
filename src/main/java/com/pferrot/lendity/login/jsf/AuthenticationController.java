@@ -204,4 +204,15 @@ public class AuthenticationController {
 		return PersonUtils.getPersonEditPageUrl(PersonUtils.getCurrentPersonId().toString());
 	}
 	
+	public String getSearchConnectionsURL() {
+		return JsfUtils.getFullUrl(PagesURL.POTENTIAL_CONNECTIONS_IMPORT);
+	}
+	
+	public String getMyPotentialConnectionsListURL() {
+		return JsfUtils.getFullUrl(PagesURL.MY_POTENTIAL_CONNECTIONS_LIST);
+	}
+	
+	public String getMyFullPotentialConnectionsListURL() {
+		return JsfUtils.getFullUrl(PagesURL.MY_FULL_POTENTIAL_CONNECTIONS_LIST);
+	}
 }

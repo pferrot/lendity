@@ -111,7 +111,7 @@
 						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_back}"	action="#{itemsImportStep2.back}" />
 						</td><td>
 						<c:if test="#{itemsImportController.nbValidItemsToImport > 0}">
-							<h:commandButton styleClass="stylishButton" value="#{messages.registration_confirm}"	action="#{itemsImportStep2.confirm}" />
+							<h:commandButton styleClass="stylishButton" value="#{messages.navigation_confirm}" action="#{itemsImportStep2.confirm}" />
 						</c:if>
 						</td></tr></table>
 					</div>

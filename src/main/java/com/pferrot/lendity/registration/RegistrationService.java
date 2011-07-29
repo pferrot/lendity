@@ -22,6 +22,9 @@ import com.pferrot.lendity.model.Gender;
 import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.OrderedListValue;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.model.PersonDetailsVisibility;
+import com.pferrot.lendity.potentialconnection.PotentialConnectionService;
+import com.pferrot.lendity.potentialconnection.exception.PotentialConnectionException;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.security.dao.RoleDao;
 import com.pferrot.security.dao.UserDao;
@@ -38,6 +41,7 @@ public class RegistrationService {
 	private RoleDao roleDao;
 	private ListValueDao listValueDao;
 	private MailManager mailManager;
+	private PotentialConnectionService potentialConnectionService;
 
 	public void setMailManager(MailManager mailManager) {
 		this.mailManager = mailManager;
@@ -57,6 +61,15 @@ public class RegistrationService {
 	
 	public void setRoleDao(RoleDao roleDao) {
 		this.roleDao = roleDao;
+	}
+
+	public PotentialConnectionService getPotentialConnectionService() {
+		return potentialConnectionService;
+	}
+
+	public void setPotentialConnectionService(
+			PotentialConnectionService potentialConnectionService) {
+		this.potentialConnectionService = potentialConnectionService;
 	}
 
 	/**
@@ -151,40 +164,47 @@ public class RegistrationService {
 	}
 
 	public void updateUserValidation(final String pUsername, final String pActivationCode) throws RegistrationException {
-		if (StringUtils.isNullOrEmpty(pUsername) || StringUtils.isNullOrEmpty(pActivationCode)) {
-			throw new RegistrationException("Username and activation code must not be null or empty.");
+		try {
+			if (StringUtils.isNullOrEmpty(pUsername) || StringUtils.isNullOrEmpty(pActivationCode)) {
+				throw new RegistrationException("Username and activation code must not be null or empty.");
+			}
+			
+			final User user = userDao.findUser(pUsername);
+			if (user == null) {
+				throw new RegistrationException("No user with username '" + pUsername + "'.");
+			}
+			else if (user.getActivationDate() != null) {
+				throw new RegistrationException("User already activated: '" + pUsername + "'.");
+			}
+			else if (user.getEnabled() != null && user.getEnabled().booleanValue()) {
+				throw new RegistrationException("User already enabled: '" + pUsername + "'.");
+			}
+			else if (! pActivationCode.equals(user.getActivationCode())) {
+				throw new RegistrationException("Activation code '" + pActivationCode + 
+						"' is not correct for: '" + pUsername + "'.");
+			}
+			
+			final Person person = personDao.findPersonFromUsername(pUsername);
+			if (person == null) {
+				throw new RegistrationException("No person associated with username '" + pUsername + "'.");
+			}
+			else if (person.isEnabled()) {
+				throw new RegistrationException("Person already enabled: '" + pUsername + "'.");
+			}
+			
+			// All check done - we can activate the user.
+			final Date now = new Date();
+			user.setActivationDate(now);
+			user.setEnabled(Boolean.TRUE);
+			person.setEnabled(Boolean.TRUE);
+			// Do not send update the first night after the validation...
+			person.setEmailSubscriberLastUpdate(now);
+			getPotentialConnectionService().updateAndNotifyPotentialConnections(person);
+			getPotentialConnectionService().createReverseInvitationPotentialConnections(person);
 		}
-		
-		final User user = userDao.findUser(pUsername);
-		if (user == null) {
-			throw new RegistrationException("No user with username '" + pUsername + "'.");
+		catch (PotentialConnectionException e) {
+			throw new RegistrationException(e);
 		}
-		else if (user.getActivationDate() != null) {
-			throw new RegistrationException("User already activated: '" + pUsername + "'.");
-		}
-		else if (user.getEnabled() != null && user.getEnabled().booleanValue()) {
-			throw new RegistrationException("User already enabled: '" + pUsername + "'.");
-		}
-		else if (! pActivationCode.equals(user.getActivationCode())) {
-			throw new RegistrationException("Activation code '" + pActivationCode + 
-					"' is not correct for: '" + pUsername + "'.");
-		}
-		
-		final Person person = personDao.findPersonFromUsername(pUsername);
-		if (person == null) {
-			throw new RegistrationException("No person associated with username '" + pUsername + "'.");
-		}
-		else if (person.isEnabled()) {
-			throw new RegistrationException("Person already enabled: '" + pUsername + "'.");
-		}
-		
-		// All check done - we can activate the user.
-		final Date now = new Date();
-		user.setActivationDate(now);
-		user.setEnabled(Boolean.TRUE);
-		person.setEnabled(Boolean.TRUE);
-		// Do not send update the first night after the validation...
-		person.setEmailSubscriberLastUpdate(now);
 	}
 	
 	public List<OrderedListValue> getGenders() {
@@ -205,6 +225,10 @@ public class RegistrationService {
 
 	public Country findCountry(String labelCode) {
 		return (Country)listValueDao.findListValue(labelCode);
+	}
+	
+	public PersonDetailsVisibility getDefaultPersonDetailsVisibility() {
+		return (PersonDetailsVisibility)listValueDao.findListValue(PersonDetailsVisibility.PRIVATE);
 	}
 
 }

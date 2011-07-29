@@ -1,0 +1,22 @@
+#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+
+Bonjour $personFirstName,<br/><br/>
+
+Quelqu'un que tu pourrais connaître a rejoint Lendity:<br/><br/>
+
+<b><a href="$connectionUrl">$connectionDisplayName</a></b><br/>
+#if( $connectionName )
+($connectionName, $connectionEmail)
+#end
+#if( !$connectionName )
+($connectionEmail)
+#end
+<br/><br/>
+
+Ajoute dès maintenant <a href="$connectionUrl">$connectionDisplayName</a> comme ami afin d'étendre ton réseau et d'avoir ainsi d'avantage d'objets à emprunter.<br/><br/>
+
+A bientôt sur <a href="$siteUrl">$siteName</a>.<br/>
+
+<br/><span style="font-size: 80%;">Afin de ne plus recevoir ce type de message, mets à jour <a href="$profileUrl">ton profil.</a></span>
+
+#include("com/pferrot/lendity/emailtemplate/html_footer.vm")

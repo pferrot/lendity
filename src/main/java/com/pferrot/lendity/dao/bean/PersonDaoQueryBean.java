@@ -18,6 +18,7 @@ public class PersonDaoQueryBean {
 	private Boolean receiveNeedsNotifications = null;
 	private Boolean emailSubscriber = null;
 	private Date emailSubscriberLastUpdateMax = null;
+	private String email = null;
 	private Double maxDistanceKm = null;
 	private Double originLatitude = null;
 	private Double originLongitude = null;
@@ -46,6 +47,14 @@ public class PersonDaoQueryBean {
 		return connectionLink;
 	}
 	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public void setConnectionLink(int connectionLink) {
 		this.connectionLink = connectionLink;
 	}

@@ -30,6 +30,7 @@ import com.pferrot.lendity.model.LendRequestResponse;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.model.PersonDetailsVisibility;
 import com.pferrot.security.dao.RoleDao;
 import com.pferrot.security.dao.UserDao;
 import com.pferrot.security.model.Role;
@@ -310,8 +311,10 @@ public class InitialData {
 		person.setEmailSubscriber(Boolean.FALSE);
 		person.setReceiveNeedsNotifications(Boolean.FALSE);
 		person.setReceiveCommentsOnCommentedNotif(Boolean.FALSE);
+		person.setReceivePotentialConnectionNotif(Boolean.FALSE);
 		person.setReceiveCommentsOnOwnNotif(Boolean.FALSE);
-		person.setShowContactDetailsToAll(Boolean.FALSE);
+		person.setReceiveNewsletter(Boolean.FALSE);
+		person.setDetailsVisibility((PersonDetailsVisibility)listValueDao.findListValue(PersonDetailsVisibility.PRIVATE));
 		person.setEnabled(Boolean.TRUE);
 		
 		// That is really fake...

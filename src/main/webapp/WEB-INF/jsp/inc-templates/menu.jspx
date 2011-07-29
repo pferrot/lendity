@@ -216,6 +216,13 @@
 	             </h:outputLink>
 		</li>
 		<li>
+			<o:separateConversationContext>
+			    <h:outputLink id="sideMenuSearchConnectionsLink" class="sideMenuLink" value="#{authenticationController.searchConnectionsURL}">
+		            <h:outputText id="sideMenuSearchConnectionsText" value="#{messages.menu_searchConnections}"/>
+		        </h:outputLink>
+	        </o:separateConversationContext>
+	    </li>
+	    <li>
 		    <h:outputLink id="sideMenuPersonsLink" class="sideMenuLink" value="#{authenticationController.personsURL}">
 	            <h:outputText id="sideMenuPersonsText" value="#{messages.menu_persons}"/>
 	        </h:outputLink>

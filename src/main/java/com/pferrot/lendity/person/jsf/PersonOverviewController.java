@@ -106,10 +106,19 @@ public class PersonOverviewController implements Serializable {
 		return personService.isCurrentUserAuthorizedToEdit(person);
 	}
 	
-	public boolean isEmailAvailable() {
-		return personService.isCurrentUserAuthorizedToViewEmail(person) ||
-			Boolean.TRUE.equals(person.getShowContactDetailsToAll());
+	public boolean isDetailsAvailable() {
+		return personService.isCurrentUserAuthorizedToViewDetails(person);
 	}
+	
+	public String getDetailsVisibilityLabel() {
+		if (getPerson() != null && getPerson().getDetailsVisibility() != null) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString(getPerson().getDetailsVisibility().getLabelCode(), locale);
+		}
+		else {
+			return "";
+		}
+	}	
 	
 	public boolean isRequestConnectionDisabled() {
 		try {

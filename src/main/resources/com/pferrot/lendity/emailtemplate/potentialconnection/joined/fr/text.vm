@@ -1,0 +1,19 @@
+Bonjour $personFirstName,
+
+Quelqu'un que tu pourrais connaître a rejoint Lendity:
+
+$connectionDisplayName
+#if( $connectionName )
+($connectionName, $connectionEmail)
+#end
+#if( !$connectionName )
+($connectionEmail)
+#end
+
+Ajoute dès maintenant $connectionDisplayName comme ami afin d'étendre ton réseau et d'avoir ainsi d'avantage d'objets à emprunter: $connectionUrl
+
+A bientôt sur $siteName.
+
+$siteUrl
+
+Afin de ne plus recevoir ce type de message, mets à jour ton profil: $profileUrl

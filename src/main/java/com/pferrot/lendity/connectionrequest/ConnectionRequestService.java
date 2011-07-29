@@ -3,7 +3,10 @@ package com.pferrot.lendity.connectionrequest;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,6 +19,7 @@ import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestExceptio
 import com.pferrot.lendity.dao.ConnectionRequestDao;
 import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.dao.PersonDao;
+import com.pferrot.lendity.dao.PotentialConnectionDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.dao.hibernate.utils.HibernateUtils;
 import com.pferrot.lendity.model.ConnectionRequest;
@@ -34,6 +38,7 @@ public class ConnectionRequestService {
 	private ConnectionRequestDao connectionRequestDao;
 	private ListValueDao listValueDao;
 	private PersonDao personDao;
+	private PotentialConnectionDao potentialConnectionDao;
 	private MailManager mailManager;
 	private PersonService personService;
 
@@ -53,6 +58,15 @@ public class ConnectionRequestService {
 		this.personDao = pPersonDao;
 	}
 	
+	public PotentialConnectionDao getPotentialConnectionDao() {
+		return potentialConnectionDao;
+	}
+
+	public void setPotentialConnectionDao(
+			PotentialConnectionDao potentialConnectionDao) {
+		this.potentialConnectionDao = potentialConnectionDao;
+	}
+
 	public void setListValueDao(final ListValueDao pListValueDao) {
 		this.listValueDao = pListValueDao;
 	}
@@ -60,7 +74,19 @@ public class ConnectionRequestService {
 	public ConnectionRequest findConnectionRequest(final Long pConnectionRequestId) {
 		return connectionRequestDao.findConnectionRequest(pConnectionRequestId);
 	}
-
+	
+	public List<ConnectionRequest> findUserPendingConnectionRequests(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+		CoreUtils.assertNotNull(pPersonId);
+		return connectionRequestDao.findConnectionRequestsList(new Long[]{pPersonId}, null, null, null, null,
+				Boolean.FALSE, null, null, "requestDate", Boolean.FALSE, pFirstResult, pMaxResults);
+	}
+	
+	public List<ConnectionRequest> findUserPendingConnectionRequestsOut(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+		CoreUtils.assertNotNull(pPersonId);
+		return connectionRequestDao.findConnectionRequestsList(null, new Long[]{pPersonId}, null, null, null,
+				Boolean.FALSE, null, null, "requestDate", Boolean.FALSE, pFirstResult, pMaxResults);
+	}
+	
 	public ListWithRowCount findCurrentUserPendingConnectionRequests(final int pFirstResult, final int pMaxResults) {
 		if (!SecurityUtils.isLoggedIn()) {
 			throw new SecurityException("Not logged in");
@@ -88,7 +114,6 @@ public class ConnectionRequestService {
 		}
 		return connectionRequestDao.findConnectionRequests(null, new Long[]{PersonUtils.getCurrentPersonId()}, null, null, null,
 				Boolean.FALSE, null, null, "requestDate", Boolean.FALSE, pFirstResult, pMaxResults);
-		
 	}
 	
 	public ListWithRowCount findCurrentUserConnectionsUpdates(final int pFirstResult, final int pMaxResults) {
@@ -267,24 +292,53 @@ public class ConnectionRequestService {
 	/**
 	 * Returns true if a there is already an connection request pending between two individuals.
 	 *
-	 * @param pPerson1
-	 * @param pPerson2
+	 * @param pPerson1Id
+	 * @param pPerson2Id
 	 * @return
 	 */
-	public boolean isUncompletedConnectionRequestAvailable(final Person pPerson1, final Person pPerson2) {
-		CoreUtils.assertNotNull(pPerson1);
-		CoreUtils.assertNotNull(pPerson2);
-
-		final Long person1Id = pPerson1.getId();
-		final Long person2Id = pPerson2.getId();
+	public boolean isUncompletedConnectionRequestAvailable(final Long pPerson1Id, final Long pPerson2Id) {
+		CoreUtils.assertNotNull(pPerson1Id);
+		CoreUtils.assertNotNull(pPerson2Id);
 		
-		long nbHits = connectionRequestDao.countConnectionRequests(new Long[]{person1Id}, new Long[]{person2Id}, null, null, null, Boolean.FALSE, null, null);
+		long nbHits = connectionRequestDao.countConnectionRequests(new Long[]{pPerson1Id}, new Long[]{pPerson2Id}, null, null, null, Boolean.FALSE, null, null);
 		if (nbHits > 0) {
 			return true;
 		}
 		
-		nbHits = connectionRequestDao.countConnectionRequests(new Long[]{person2Id}, new Long[]{person1Id}, null, null, null, Boolean.FALSE, null, null);
+		nbHits = connectionRequestDao.countConnectionRequests(new Long[]{pPerson2Id}, new Long[]{pPerson1Id}, null, null, null, Boolean.FALSE, null, null);
 		return nbHits > 0;
+	}
+	
+	public boolean isUncompletedConnectionRequestAvailable(final Person pPerson1, final Person pPerson2) {
+		return isUncompletedConnectionRequestAvailable(pPerson1.getId(), pPerson2.getId());
+	}
+	
+	/**
+	 * Returns an array containing the IDs of all persons with whom pPerson has an uncompleted
+	 * connection request.
+	 *
+	 * @param pPerson
+	 * @return
+	 */
+	public Long[] getPersonPendingConnectionRequestsConnectionsIds(final Person pPerson) {
+		CoreUtils.assertNotNull(pPerson);
+		Set<Long> idsSet = new HashSet<Long>();
+		
+		List<ConnectionRequest> pendingRequests = findUserPendingConnectionRequests(pPerson.getId(), 0, 0);
+		for (ConnectionRequest cr: pendingRequests) {
+			idsSet.add(cr.getRequester().getId());
+		}
+		
+		pendingRequests = findUserPendingConnectionRequestsOut(pPerson.getId(), 0, 0);
+		for (ConnectionRequest cr: pendingRequests) {
+			idsSet.add(cr.getConnection().getId());
+		}
+		if (idsSet.isEmpty()) {
+			return new Long[]{Long.valueOf(-1)};
+		}
+		else {
+			return (Long[])idsSet.toArray(new Long[idsSet.size()]);
+		}
 	}
 	
 
@@ -390,6 +444,10 @@ public class ConnectionRequestService {
 			sendResponseEmail(pConnectionRequest,
 					Configuration.getSiteName() + ": demande d'ami refusée et exclusion",
 					"com/pferrot/lendity/emailtemplate/connectionrequest/ban/fr");
+			
+			// If they are banned, they are not potential connections anymore.
+			getPotentialConnectionDao().deletePotentialConnectionForPersonAndConnection(pConnectionRequest.getRequester().getId(), pConnectionRequest.getConnection().getId());
+			getPotentialConnectionDao().deletePotentialConnectionForPersonAndConnection(pConnectionRequest.getConnection().getId(), pConnectionRequest.getRequester().getId());
 
 			if (log.isInfoEnabled()) {
 				log.info("'" + pConnectionRequest.getRequester() + "' is banned by '" + pConnectionRequest.getConnection() + "'.");
@@ -457,6 +515,10 @@ public class ConnectionRequestService {
 					Configuration.getSiteName() + ": demande d'ami acceptée",
 					"com/pferrot/lendity/emailtemplate/connectionrequest/accept/fr");
 
+			// If they are connected, they are not potential connections anymore.
+			getPotentialConnectionDao().deletePotentialConnectionForPersonAndConnection(pConnectionRequest.getRequester().getId(), pConnectionRequest.getConnection().getId());
+			getPotentialConnectionDao().deletePotentialConnectionForPersonAndConnection(pConnectionRequest.getConnection().getId(), pConnectionRequest.getRequester().getId());
+			
 			if (log.isInfoEnabled()) {
 				log.info("'" + pConnectionRequest.getRequester() + "' is accepted by '" + pConnectionRequest.getConnection() + "'.");
 			}

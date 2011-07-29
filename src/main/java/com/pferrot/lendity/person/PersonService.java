@@ -25,7 +25,9 @@ import com.pferrot.lendity.model.Document;
 import com.pferrot.lendity.model.Evaluation;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ListValue;
+import com.pferrot.lendity.model.OrderedListValue;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.model.PersonDetailsVisibility;
 import com.pferrot.lendity.person.exception.PersonException;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.security.SecurityUtils;
@@ -136,6 +138,11 @@ public class PersonService {
 		assertCurrentUserAuthorizedToEdit(pPerson);
 		personDao.updatePerson(pPerson);
 		PersonUtils.updatePersonInSession(pPerson, JsfUtils.getHttpServletRequest());
+	}
+	
+	public void updatePerson(final Person pPerson, final Long pDetailsVisibilityId) {
+		pPerson.setDetailsVisibility((PersonDetailsVisibility)listValueDao.findListValue(pDetailsVisibilityId));
+		updatePerson(pPerson);
 	}
 	
 	public void updatePersonPicture(final Person pPerson, final Document pPicture, final Document pThumbnail) {
@@ -276,6 +283,25 @@ public class PersonService {
 		
 		return personDao.findPersons(queryBean);
 	}
+	
+	public Person findEnabledPersonByEmail(final String pEmail) {
+		CoreUtils.assertNotNullOrEmptyString(pEmail);
+		
+		final PersonDaoQueryBean queryBean = new PersonDaoQueryBean();
+		queryBean.setEnabled(Boolean.TRUE);
+		queryBean.setEmail(pEmail);
+		
+		final List<Person> list = personDao.findPersonsList(queryBean);
+		if (list.isEmpty()) {
+			return null;
+		}
+		else if (list.size() == 1) {
+			return list.get(0);
+		}
+		else {
+			throw new RuntimeException("More than one person with email: " + pEmail);
+		}
+	}
 
 	public ListWithRowCount findConnections(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNull(pPersonId);
@@ -358,6 +384,18 @@ public class PersonService {
 	}
 	
 	/**
+	 * Returns an array containing the IDs of all persons who banned pPerson if
+	 * null is passed as a parameter for pBannedById or of one person if the parameter is not null.
+	 * 
+	 * @param pPerson
+	 * @param pBannedById
+	 * @return
+	 */
+	public Long[] getPersonBannedByIds(final Person pPerson, final Long pBannedById) {
+		return getPersonIdsArray(pPerson, pBannedById, pPerson.getBannedByPersons());
+	}
+	
+	/**
 	 * Returns an array containing the IDs of all connections of the user if
 	 * null is passed as a parameter or of one connection if the parameter is not null.
 	 * 
@@ -366,38 +404,41 @@ public class PersonService {
 	 * @return
 	 */
 	public Long[] getPersonConnectionIds(final Person pPerson, final Long pConnectionId) {
-		Long[] connectionsIds = null;
+		return getPersonIdsArray(pPerson, pConnectionId, pPerson.getConnections());
+	}
+	
+	
+	private static Long[] getPersonIdsArray(final Person pPerson, final Long pPersonId, final Set<Person> pPersons) {
+		Long[] personsIds = null;
 		// All connections
-		if (pConnectionId == null) {
-			final Set<Person> connections = pPerson.getConnections();
-			if (connections == null || connections.isEmpty()) {
+		if (pPersonId == null) {
+			if (pPersons == null || pPersons.isEmpty()) {
 				return new Long[]{Long.valueOf(-1)};
 			}
-			connectionsIds = new Long[connections.size()];
+			personsIds = new Long[pPersons.size()];
 			int counter = 0;
-			for(Person connection: connections) {			
-				connectionsIds[counter] = connection.getId();
+			for(Person connection: pPersons) {			
+				personsIds[counter] = connection.getId();
 				counter++;
 			}
 		}
 		// Only one connection - make sure that it is a connection of the user. If not, it is someone trying to hack...
 		else {
-			final Set<Person> connections = pPerson.getConnections();
 			boolean connectionFound = false;
-			if (connections != null) {
-				for(Person connection: connections) {			
-					if (pConnectionId.equals(connection.getId())) {
+			if (pPersons != null) {
+				for(Person connection: pPersons) {			
+					if (pPersonId.equals(connection.getId())) {
 						connectionFound = true;
 						break;
 					}
 				}
 			}
 			if (!connectionFound) {
-				throw new SecurityException("Person with ID " + pPerson.getId() + " is not a connection of person with ID " + pConnectionId + " (current person: " + PersonUtils.getCurrentPersonId() + ").");
+				throw new SecurityException("Person with ID " + pPerson.getId() + " is not a linked to person with ID " + pPersonId + " (current person: " + PersonUtils.getCurrentPersonId() + ").");
 			}
-			connectionsIds = new Long[]{pConnectionId};
+			personsIds = new Long[]{pPersonId};
 		}
-		return connectionsIds;
+		return personsIds;
 	}
 
 	/**
@@ -473,6 +514,23 @@ public class PersonService {
 	}
 	
 	/**
+	 * Returns true if pBannedId is banned by pBannerId, false otherwise.
+	 *
+	 * @param pBannerId
+	 * @param pBannedId
+	 * @return
+	 */
+	public boolean isBannedBy(final Long pBannerId, final Long pBannedId) {
+		CoreUtils.assertNotNull(pBannerId);
+		CoreUtils.assertNotNull(pBannedId);
+		
+		final Person banner = findPerson(pBannerId);
+		final Person banned = findPerson(pBannedId);
+		
+		return isBannedBy(banner, banned);
+	}
+	
+	/**
 	 * Returns true if the 2 persons are connections, false otherwise.
 	 *
 	 * @param pPerson1
@@ -489,22 +547,44 @@ public class PersonService {
 		return person1Connections.contains(pPerson2);		
 	}
 
+	/**
+	 * Returns true if the pBanned is banned by pBanner.
+	 *
+	 * @param pBanner
+	 * @param pBanned
+	 * @return
+	 */
+	public boolean isBannedBy(final Person pBanner, final Person pBanned) {
+		CoreUtils.assertNotNull(pBanner);
+		CoreUtils.assertNotNull(pBanned);
+		
+		final Collection<Person> person1Banned = findBannedPersonsList(pBanner.getId(), null, 0, 0);
+		
+		
+		return person1Banned.contains(pBanned);		
+	}
+
 	public List<Person> getCurrentPersonEnabledConnections() {
 		return findConnectionsList(PersonUtils.getCurrentPersonId(), null, 0, 0);
 	}
 
 		
-	public boolean isCurrentUserAuthorizedToViewEmail(final Person pPerson) {
+	public boolean isCurrentUserAuthorizedToViewDetails(final Person pPerson) {
 		CoreUtils.assertNotNull(pPerson);
-		if (!SecurityUtils.isLoggedIn()) {
+		
+		final String personDetailsVisibilityCode = pPerson.getDetailsVisibility().getLabelCode(); 
+		
+		if (PersonDetailsVisibility.PUBLIC.equals(personDetailsVisibilityCode)) {
+			return true;
+		}
+		else if (!SecurityUtils.isLoggedIn()) {
 			return false;
 		}
-		if (isCurrentUserAuthorizedToEdit(pPerson)) {
+		else if (isCurrentUserAuthorizedToEdit(pPerson)) {
 			return true;
 		}
-		// Connections can view.
-		if (pPerson.getConnections().contains(getCurrentPerson())) {
-			return true;
+		else if (PersonDetailsVisibility.CONNECTIONS.equals(personDetailsVisibilityCode)) {
+			return pPerson.getConnections().contains(getCurrentPerson());
 		}
 		return false;
 	}
@@ -574,5 +654,9 @@ public class PersonService {
 
 	public List<ListValue> getCountries() {
 		return listValueDao.findListValue(Country.class);
+	}
+
+	public List<OrderedListValue> getDetailsVisibilities() {
+		return listValueDao.findOrderedListValue(PersonDetailsVisibility.class);
 	}	
 }

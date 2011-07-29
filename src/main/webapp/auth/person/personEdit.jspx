@@ -186,16 +186,34 @@
 						<h:selectBooleanCheckbox id="receiveCommentsOnCommentedNotif" value="#{personEditController.receiveCommentsOnCommentedNotif}" styleClass="gt-form-element-checkbox"/>
 						<h:outputText value=" " escape="false" />
 						<h:outputText value="#{messages.person_receiveCommentsOnCommentedNotif}"/>
+						<br/>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="receiveNewsletter"></h:message>
+						<h:selectBooleanCheckbox id="receiveNewsletter" value="#{personEditController.receiveNewsletter}" styleClass="gt-form-element-checkbox"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputText value="#{messages.person_receiveNewsletter}"/>
+						<br/>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="receivePotentialConnectionNotif"></h:message>
+						<h:selectBooleanCheckbox id="receivePotentialConnectionNotif" value="#{personEditController.receivePotentialConnectionNotif}" styleClass="gt-form-element-checkbox"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputText value="#{messages.person_receivePotentialConnectionNotif}"/>
+						
 					</div><!-- /form row -->
+					
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">
-						<label><h:outputText value="#{messages.person_settings}"/></label>
+						<label><h:outputText value="#{messages.person_detailsVisibility}"/> * <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{messages.person_detailsVisibilityInfo}"/></label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
-							for="showContactDetailsToAll"></h:message>
-						<h:selectBooleanCheckbox id="showContactDetailsToAll" value="#{personEditController.showContactDetailsToAll}" styleClass="gt-form-element-checkbox"/>
-						<h:outputText value=" " escape="false" />
-						<h:outputText value="#{messages.person_showContactDetailsToAll}"/>						
+							for="detailsVisibility"></h:message>
+						<h:selectOneMenu id="detailsVisibility"
+						    value="#{personEditController.detailsVisibilityId}" 
+						    converter="javax.faces.Long" 
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}">
+							<f:selectItems value="#{personEditController.detailsVisibilitySelectItems}"/>
+						</h:selectOneMenu>		
 					</div><!-- /form row -->
 
 					<!-- form row -->

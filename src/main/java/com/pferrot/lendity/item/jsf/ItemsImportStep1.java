@@ -26,6 +26,8 @@ import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.StringCaseInsensitiveComparator;
 import com.pferrot.lendity.utils.UiUtils;
+import com.pferrot.lendity.utils.file.FileConsts;
+import com.pferrot.lendity.utils.file.exception.NotUtf8FileException;
 
 @ViewController(viewIds={"/auth/item/itemsImport.jspx"})
 public class ItemsImportStep1 extends AbstractItemsImportStep {
@@ -74,6 +76,49 @@ public class ItemsImportStep1 extends AbstractItemsImportStep {
 		}
 	}
 
+	protected Collection<String> processFile(final InputStream pIs, final String pEncoding) throws IOException, NotUtf8FileException {
+		final InputStreamReader isr = new InputStreamReader(pIs, pEncoding);
+		final BufferedReader bufferedReader = new BufferedReader(isr);
+		String line = null;
+		int counter = 0;
+		
+		final Collection<String> allItems = new ArrayList<String>();
+		// First just read the file - no db access.
+		while ((line = bufferedReader.readLine()) != null) {
+			if (log.isDebugEnabled()) {
+				log.debug(line);
+			}
+			if (!StringUtils.isNullOrEmpty(line)) {
+				// Fix bug when the first character of the first line is the BOM (Byte Order Mark), unicode = 65279.
+				int firstCharUnicode = line.charAt(0);
+				if (firstCharUnicode == 65279) {
+					if (line.length() > 1) {
+						line = line.substring(1);
+					}
+					else {
+						line = null;
+					}
+				}
+				// Still not null or empty !?
+				if (!StringUtils.isNullOrEmpty(line)) {
+					if (line.contains(FileConsts.UNICODE_REPLACEMENT_CHARACTER)) {
+						if (log.isWarnEnabled()) {
+							log.warn("Line contains Unicode Replacement Character: " + line);
+						}
+						throw new NotUtf8FileException();
+					}
+					counter++;
+					if (counter > MAX_NB_ITEMS_TO_IMPORT) {
+						tooManyEntriesInFile(MAX_NB_ITEMS_TO_IMPORT);
+						return null;
+					}
+					allItems.add(line);
+				}
+			}
+		}
+		return allItems;
+	}
+	
 	public String submit() {
 		try {
 			if (log.isDebugEnabled()) {
@@ -90,39 +135,20 @@ public class ItemsImportStep1 extends AbstractItemsImportStep {
 		
 		
 			final InputStream is = getItemsImportController().getUploadFile().getInputStream();
-			final InputStreamReader isr = new InputStreamReader(is, "UTF-8");
-			final BufferedReader bufferedReader = new BufferedReader(isr);
-			String line = null;
-			int counter = 0;
 			
-			final Collection<String> allItems = new ArrayList<String>();
-			// First just read the file - no db access.
-			while ((line = bufferedReader.readLine()) != null) {
-				if (log.isDebugEnabled()) {
-					log.debug(line);
-				}
-				if (!StringUtils.isNullOrEmpty(line)) {
-					// Fix bug when the first character of the first line is the BOM (Byte Order Mark), unicode = 65279.
-					int firstCharUnicode = line.charAt(0);
-					if (firstCharUnicode == 65279) {
-						if (line.length() > 1) {
-							line = line.substring(1);
-						}
-						else {
-							line = null;
-						}
-					}
-					// Still not null or empty !?
-					if (!StringUtils.isNullOrEmpty(line)) {
-						counter++;
-						if (counter > MAX_NB_ITEMS_TO_IMPORT) {
-							tooManyEntriesInFile(MAX_NB_ITEMS_TO_IMPORT);
-							return "error";
-						}
-						allItems.add(line);
-					}
-				}
-			}			
+			is.mark(10000000);
+			Collection<String> allItems = new ArrayList<String>();
+			try {
+				allItems = processFile(is, "UTF-8");
+			}
+			catch (NotUtf8FileException e) {
+				is.reset();
+				allItems = processFile(is, "ISO-8859-1");
+			}
+			
+			if (allItems == null) {
+				return "error";
+			}		
 			Set<String> validItemsToImport = new TreeSet<String>(new StringCaseInsensitiveComparator());
 			Set<String> alreadyExistItemsToImport = new TreeSet<String>(new StringCaseInsensitiveComparator());
 			Set<String> titleTooLongItemsToImport = new TreeSet<String>(new StringCaseInsensitiveComparator());
@@ -145,10 +171,11 @@ public class ItemsImportStep1 extends AbstractItemsImportStep {
 			getItemsImportController().setTitleTooLongItemsToImport(titleTooLongItemsToImport);
 			return "success";
 			
-		} catch (IOException e) {
+		} 
+		catch (Exception e) {
 			ioException();
 			return "error";
-		}				
+		}
     }
 	
 	public UIComponent getFileUIComponent() {

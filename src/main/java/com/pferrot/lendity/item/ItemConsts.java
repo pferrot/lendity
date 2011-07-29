@@ -4,7 +4,7 @@ public interface ItemConsts {
 
 	int NB_ITEMS_PER_PAGE = 20;
 	int NB_CHARACTERS_DESCRIPTION_IN_LISTS = 100;
-	int MAX_DESCRIPTION_SIZE = 1333;
+	int MAX_DESCRIPTION_SIZE = 3999;
 	
 	Long LEND_TYPE_LEND = Long.valueOf(2);
 	Long LEND_TYPE_RENT = Long.valueOf(3);

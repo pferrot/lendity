@@ -1,4 +1,4 @@
-package com.pferrot.lendity.iptocountry;
+package com.pferrot.lendity.iptocountry.exception;
 
 public class IpToCountryException extends Exception {
 

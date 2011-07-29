@@ -32,7 +32,7 @@ public abstract class Comment implements Serializable {
 	@Column(name = "ID")
     private Long id;
 	
-	@Column(name = "TEXT", nullable = false, length = 160)
+	@Column(name = "TEXT", nullable = false, length = 500)
     private String text;
 	
 	@ManyToOne(targetEntity = Person.class)

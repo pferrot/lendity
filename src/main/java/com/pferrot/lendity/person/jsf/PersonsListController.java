@@ -20,6 +20,8 @@ import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestExceptio
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.model.PotentialConnection;
+import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
 import com.pferrot.security.SecurityUtils;
@@ -131,5 +133,49 @@ public class PersonsListController extends AbstractPersonsListController {
 	public boolean isShowAdvancedSearch() {
 		return getMaxDistance() != null ||
 			getOrderBy() != null;
+	}
+	
+	public String getRequestConnectionDisabledLabel() {
+		if (isUncompletedConnectionRequestAvailable()) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString("person_pendingRequestExists", locale);	
+		}
+		else if (isBannedByPerson()) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString("person_bannedByPerson", locale);	
+		}
+		else if (isConnection()) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString("person_alreadyConnection", locale);
+		}
+		else if (isYourSelf()) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString("person_yourSelf", locale);
+		}
+		return null;		
+	}
+	
+	public boolean isBannedByPerson() {
+		final Person p = (Person)getTable().getRowData();
+		return SecurityUtils.isLoggedIn() &&
+			   getPersonService().isBannedBy(p.getId(), PersonUtils.getCurrentPersonId());
+	}
+	
+	public boolean isConnection() {
+		final Person p = (Person)getTable().getRowData();
+		return SecurityUtils.isLoggedIn() &&
+			   getPersonService().isConnection(p.getId(), PersonUtils.getCurrentPersonId());
+	}
+	
+	public boolean isYourSelf() {
+		final Person p = (Person)getTable().getRowData();
+		return SecurityUtils.isLoggedIn() &&
+		       p.getId().equals(PersonUtils.getCurrentPersonId());
+	}
+	
+	public boolean isUncompletedConnectionRequestAvailable() {
+		final Person p = (Person)getTable().getRowData();
+		return SecurityUtils.isLoggedIn() &&
+			   getConnectionRequestService().isUncompletedConnectionRequestAvailable(p.getId(), PersonUtils.getCurrentPersonId());
 	}
 }

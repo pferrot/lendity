@@ -112,7 +112,8 @@ function initMenu(pServletPath) {
 	else if (pServletPath.indexOf('auth/person') > 0 ||
 			 pServletPath.indexOf('public/person') > 0 ||
 			 pServletPath.indexOf('auth/connectionrequest') > 0 ||
-			 pServletPath.indexOf('auth/invitation') > 0) {
+			 pServletPath.indexOf('auth/invitation') > 0 ||
+			 pServletPath.indexOf('auth/potentialconnection') > 0) {
 		mCurrentMenuLinkId = 'menuMyConnectionsLink';
 		mCurrentSubMenuId = 'divSubMenuConnections';
 		menuHighlightConnections();

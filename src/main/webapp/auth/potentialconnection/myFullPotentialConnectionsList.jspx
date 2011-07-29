@@ -1,0 +1,134 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle"><h:outputText value="#{messages.potentialConnection_myFullPotentialConnectionsListTitle}" /></ui:define>
+	<ui:param name="contentHeader" value="#{messages.potentialConnection_myFullPotentialConnectionsListTitle}" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			<!-- main content -->
+			<div class="gt-content">
+
+				
+<f:view>
+
+<ui:include src="deleteAllPotentialConnectionsTooltip.jspx"/>
+
+<h:outputLink value="#{authenticationController.myPotentialConnectionsListURL}">
+	<h:outputText styleClass="fontSizeSmall" value="#{messages.potentialConnection_myPotentialConnectionsListTitle}"/>
+</h:outputLink>
+<h:outputText styleClass="fontSizeSmall" value=" " escape="false"/>
+<h:outputText styleClass="fontSizeSmall" value="#{messages.navigation_pathSeparator}"/>
+
+<h2 class="gt-table-head"><h:outputText value="#{messages.potentialConnection_myFullPotentialConnectionsListTitle}"/></h2>
+<p><h:outputText id="id_01" value="#{messages.potentialConnection_listWithAllPotentialConnections}"/></p>
+<br/>
+
+<c:if test="#{!empty(myFullPotentialConnectionsListController.list)}">
+	<span onclick="deleteAllPotentialConnectionsTooltip(this, 1)">
+		<h:outputText styleClass="stylishButton" value="#{messages.potentialConnection_deleteAll}"/>
+	</span>
+	<br/><br/>
+</c:if>
+
+<!-- content box -->
+<div class="gt-content-box">
+
+	
+
+<c:if test="#{empty(myFullPotentialConnectionsListController.list)}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<h:dataTable value="#{myFullPotentialConnectionsListController.list}" binding="#{myFullPotentialConnectionsListController.table}" var="potentialConnection" 
+   styleClass="gt-table gt-user-table">
+   
+   <h:column id="column1" rendered="#{potentialConnection.connection != null}">
+		<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink value="#{myFullPotentialConnectionsListController.connectionOverviewHref}" rendered="#{potentialConnection.connection != null}">
+					<div class="thumbnailDiv">
+						<img src="#{myFullPotentialConnectionsListController.connectionThumbnailSrc}" rendered="#{potentialConnection.connection != null}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
+		<h4>
+			<h:outputLink value="#{myFullPotentialConnectionsListController.connectionOverviewHref}" rendered="#{potentialConnection.connection != null}">
+				<h:outputText value="#{potentialConnection.connection.displayName}" rendered="#{potentialConnection.connection != null}"/>
+			</h:outputLink>
+		</h4>
+		</td></tr></table>
+    </h:column>
+    
+    <h:column id="column4" rendered="#{potentialConnection.connection == null}">
+    	<i><h:outputText value="#{messages.potentialConnection_noConnection}" rendered="#{potentialConnection.connection == null}"/></i>
+    </h:column>
+
+    <h:column id="column2">
+    		<h:outputText value="#{potentialConnection.email}" />
+    		<br/>
+    		<h:outputText value="#{potentialConnection.name}" rendered="#{potentialConnection.name != null}"/>
+    </h:column>
+    
+    <h:column id="column3">
+		<table border="0" width="150" align="right">
+			<tr>
+				<td>
+					<h:form>
+						<h:commandButton styleClass="stylishButton" action="#{myFullPotentialConnectionsListController.ignorePotentialConnection}" value="#{messages.potentialConnection_ignore}" rendered="#{!myFullPotentialConnectionsListController.ignored}"/>
+					</h:form>
+					<h:form>
+						<h:commandButton styleClass="stylishButton" action="#{myFullPotentialConnectionsListController.unignorePotentialConnection}" value="#{messages.potentialConnection_unignore}" rendered="#{myFullPotentialConnectionsListController.ignored}"/>
+					</h:form>
+					<br/>
+					<h:form>
+						<h:commandButton styleClass="stylishButton" action="#{myFullPotentialConnectionsListController.deletePotentialConnection}" value="#{messages.potentialConnection_delete}"/>
+					</h:form>			
+				</td>
+		    </tr>
+		</table>
+    </h:column>
+
+</h:dataTable>
+
+<ui:include src="../table/tableControls.jspx">
+	<ui:param name="theBean" value="#{myFullPotentialConnectionsListController}"/>
+</ui:include>
+
+</div><!-- /content box -->
+
+</f:view>
+
+			</div>
+			<!-- /main content -->
+			
+			</div>
+			<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>

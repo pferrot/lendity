@@ -38,8 +38,8 @@
 			<value>Lendity</value>
 		</property>		
 		<property name="rootURL">
-			<value>http://www.lendity.ch</value>
-<!--			<value>http://golgoth14.dyndns.org:8080/lendity</value>-->
+<!--			<value>http://www.lendity.ch</value>-->
+			<value>http://golgoth14.dyndns.org:8080/lendity</value>
 		</property>
 		<property name="noReplyEmailAddress">
 			<value>no_reply@lendity.ch</value>
@@ -64,8 +64,8 @@
 <!--			<value>false</value>-->
 		</property>
 		<property name="googleAnalyticsId">
-			<value>UA-21747604-2</value>
-<!--			<value>UA-21747604-3</value>-->
+<!--			<value>UA-21747604-2</value>-->
+			<value>UA-21747604-3</value>
 		</property>
 		<property name="categoriesNotAllowedPublicVisibility">
 			<set>
@@ -252,7 +252,7 @@
 	========================================================================================================================
 	 -->
 	 
-	 <!-- 
+	<!-- 
 	========================================================================================================================
 	PERSON CONFIGURATION - start
 	 -->
@@ -292,6 +292,99 @@
 	PERSON CONFIGURATION - end
 	========================================================================================================================
 	 -->
+
+	<!-- 
+	========================================================================================================================
+	POTENTIAL CONNECTION - start
+	 -->
+
+	<bean id="potentialConnectionsImportController" class="com.pferrot.lendity.potentialconnection.jsf.PotentialConnectionsImportController"
+	      scope="conversation.access" orchestra:conversationName="potentialConnectionsImport">
+	      <property name="potentialConnectionService" ref="potentialConnectionService"/>
+	      <property name="personService" ref="personService"/>
+	      <property name="invitationService" ref="invitationService"/>
+	      <property name="connectionRequestService" ref="connectionRequestService"/>
+	</bean>
+	
+	<bean id="potentialConnectionsImportStep1" class="com.pferrot.lendity.potentialconnection.jsf.PotentialConnectionsImportStep1"
+	      scope="request">
+		<property name="potentialConnectionsImportController" ref="potentialConnectionsImportController"/>
+		<property name="potentialConnectionService" ref="potentialConnectionService"/>
+		<property name="personService" ref="personService"/>
+		<property name="connectionRequestService" ref="connectionRequestService"/>
+	</bean>
+	
+	<bean id="potentialConnectionsImportStep2" class="com.pferrot.lendity.potentialconnection.jsf.PotentialConnectionsImportStep2"
+	      scope="request">
+		<property name="potentialConnectionsImportController" ref="potentialConnectionsImportController"/>
+	</bean>
+	
+	<bean id="potentialConnectionsImportStep3" class="com.pferrot.lendity.potentialconnection.jsf.PotentialConnectionsImportStep3"
+	      scope="request">
+		<property name="potentialConnectionsImportController" ref="potentialConnectionsImportController"/>
+	</bean>
+	
+	<bean id="potentialConnectionsImportStep4" class="com.pferrot.lendity.potentialconnection.jsf.PotentialConnectionsImportStep4"
+	      scope="request">
+		<property name="potentialConnectionsImportController" ref="potentialConnectionsImportController"/>
+	</bean>	
+	
+	<bean id="myPotentialConnectionsListController" class="com.pferrot.lendity.potentialconnection.jsf.MyPotentialConnectionsListController"
+	      scope="session">
+	      <property name="potentialConnectionService" ref="potentialConnectionService"/>
+	      <property name="personService" ref="personService"/>
+	      <property name="connectionRequestService" ref="connectionRequestService"/>
+	</bean>
+	
+	<bean id="myFullPotentialConnectionsListController" class="com.pferrot.lendity.potentialconnection.jsf.MyFullPotentialConnectionsListController"
+	      scope="session">
+	      <property name="potentialConnectionService" ref="potentialConnectionService"/>
+	      <property name="personService" ref="personService"/>
+	      <property name="connectionRequestService" ref="connectionRequestService"/>
+	</bean>
+	
+	<bean id="deleteAllPotentialConnectionsTooltipController" class="com.pferrot.lendity.potentialconnection.jsf.DeleteAllPotentialConnectionsTooltipController"
+	      scope="request">
+	      <property name="potentialConnectionService" ref="potentialConnectionService"/>
+	</bean>
+	
+	<bean id="potentialConnectionService" parent="baseTransactionProxy">
+		<property name="target" ref="potentialConnectionServiceTarget" />
+	</bean>
+		
+	<bean id="potentialConnectionServiceTarget" class="com.pferrot.lendity.potentialconnection.PotentialConnectionService">
+		<property name="potentialConnectionDao" ref="potentialConnectionDao"/>
+		<property name="personService" ref="personService"/>
+		<property name="connectionRequestService" ref="connectionRequestService"/>
+		<property name="mailManager" ref="emailSender.mailManager"/>
+	</bean>
+	
+	<bean id="potentialConnectionDaoTarget" class="com.pferrot.lendity.dao.hibernate.PotentialConnectionDaoHibernateImpl">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+
+	<bean id="potentialConnectionDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="target">
+			<ref local="potentialConnectionDaoTarget"/>
+		</property>
+		<property name="proxyInterfaces">
+           <value>com.pferrot.lendity.dao.PotentialConnectionDao</value>
+         </property>		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Throwable</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 
+	POTENTIAL CONNECTION - end
+	========================================================================================================================
+	 -->
 	 
 	<!-- 
 	========================================================================================================================
@@ -308,6 +401,7 @@
 		<property name="personDao" ref="personDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
+		<property name="potentialConnectionService" ref="potentialConnectionService"/>
 	</bean>
 	
 	<bean id="registrationStep1" class="com.pferrot.lendity.registration.jsf.RegistrationStep1"
@@ -358,6 +452,7 @@
 	<bean id="invitationServiceTarget" class="com.pferrot.lendity.invitation.InvitationService">
 		<property name="personService" ref="personService"/>
 		<property name="registrationService" ref="registrationService"/>
+		<property name="potentialConnectionService" ref="potentialConnectionService"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
 	</bean>
 
@@ -471,6 +566,7 @@
 	      <property name="groupJoinRequestService" ref="groupJoinRequestService"/>
 	      <property name="lendTransactionService" ref="lendTransactionService"/>
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
+	      <property name="potentialConnectionService" ref="potentialConnectionService"/>
 	</bean>
 
 	<!-- 
@@ -1135,6 +1231,7 @@
 		<property name="connectionRequestDao" ref="connectionRequestDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
 		<property name="personDao" ref="personDao"/>
+		<property name="potentialConnectionDao" ref="potentialConnectionDao"/>
 		<property name="mailManager" ref="emailSender.mailManager"/>
 		<property name="personService" ref="personService"/>
 	</bean>

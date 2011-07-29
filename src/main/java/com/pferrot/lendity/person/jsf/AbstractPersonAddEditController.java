@@ -2,6 +2,10 @@ package com.pferrot.lendity.person.jsf;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,6 +15,7 @@ import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.lendity.utils.UiUtils;
 
 public abstract class AbstractPersonAddEditController {
 	
@@ -37,7 +42,12 @@ public abstract class AbstractPersonAddEditController {
 	private Boolean receiveNeedsNotifications;
 	private Boolean receiveCommentsOnOwnNotif;
 	private Boolean receiveCommentsOnCommentedNotif;
-	private Boolean showContactDetailsToAll;
+	private Boolean receivePotentialConnectionNotif;
+	private Boolean receiveNewsletter;
+
+	private List<SelectItem> detailsVisibilitySelectItems;
+	private Long detailsVisibilityId;	
+	
 	
 	public PersonService getPersonService() {
 		return personService;
@@ -46,6 +56,23 @@ public abstract class AbstractPersonAddEditController {
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
 	}	
+
+	public List<SelectItem> getDetailsVisibilitySelectItems() {
+		if (detailsVisibilitySelectItems == null) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			detailsVisibilitySelectItems = UiUtils.getSelectItemsForOrderedListValue(getPersonService().getDetailsVisibilities(), locale);
+			detailsVisibilitySelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
+		}		
+		return detailsVisibilitySelectItems;
+	}
+
+	public Long getDetailsVisibilityId() {
+		return detailsVisibilityId;
+	}
+
+	public void setDetailsVisibilityId(Long detailsVisibilityId) {
+		this.detailsVisibilityId = detailsVisibilityId;
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -191,12 +218,21 @@ public abstract class AbstractPersonAddEditController {
 		this.receiveCommentsOnCommentedNotif = receiveCommentsOnCommentedNotif;
 	}
 
-	public Boolean getShowContactDetailsToAll() {
-		return showContactDetailsToAll;
+	public Boolean getReceivePotentialConnectionNotif() {
+		return receivePotentialConnectionNotif;
 	}
 
-	public void setShowContactDetailsToAll(Boolean showContactDetailsToAll) {
-		this.showContactDetailsToAll = showContactDetailsToAll;
+	public void setReceivePotentialConnectionNotif(
+			Boolean receivePotentialConnectionNotif) {
+		this.receivePotentialConnectionNotif = receivePotentialConnectionNotif;
+	}
+
+	public Boolean getReceiveNewsletter() {
+		return receiveNewsletter;
+	}
+
+	public void setReceiveNewsletter(Boolean receiveNewsletter) {
+		this.receiveNewsletter = receiveNewsletter;
 	}
 
 	public abstract Long processPerson();

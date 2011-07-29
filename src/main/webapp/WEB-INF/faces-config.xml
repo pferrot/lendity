@@ -123,4 +123,45 @@
 		<from-view-id>/auth/item/itemsImport_3.jspx</from-view-id>
 	</navigation-rule>
 
+	<!-- 
+	********************************************************************
+	POTENTIAL CONNECTION IMPORT
+	********************************************************************
+	-->
+	<navigation-rule>
+		<from-view-id>/auth/potentialconnection/potentialConnectionsImport.jspx</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/auth/potentialconnection/potentialConnectionsImport_2.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/auth/potentialconnection/potentialConnectionsImport_2.jspx</from-view-id>
+		<navigation-case>
+			<from-outcome>confirm</from-outcome>
+			<to-view-id>/auth/potentialconnection/potentialConnectionsImport_3.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>back</from-outcome>
+			<to-view-id>/auth/potentialconnection/potentialConnectionsImport.jspx</to-view-id>
+		</navigation-case>		
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/auth/potentialconnection/potentialConnectionsImport_3.jspx</from-view-id>
+		<navigation-case>
+			<from-outcome>confirm</from-outcome>
+			<to-view-id>/auth/potentialconnection/potentialConnectionsImport_4.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>back</from-outcome>
+			<to-view-id>/auth/potentialconnection/potentialConnectionsImport_2.jspx</to-view-id>
+		</navigation-case>		
+	</navigation-rule>
+		
+	<navigation-rule>
+		<from-view-id>/auth/potentialconnection/potentialConnectionsImport_4.jspx</from-view-id>
+	</navigation-rule>
+
 </faces-config>

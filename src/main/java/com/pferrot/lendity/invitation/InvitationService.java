@@ -1,5 +1,6 @@
 package com.pferrot.lendity.invitation;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +12,9 @@ import com.pferrot.emailsender.manager.MailManager;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.model.PotentialConnection;
 import com.pferrot.lendity.person.PersonService;
+import com.pferrot.lendity.potentialconnection.PotentialConnectionService;
 import com.pferrot.lendity.registration.RegistrationService;
 
 public class InvitationService {
@@ -21,6 +24,7 @@ public class InvitationService {
 	private RegistrationService registrationService;
 	private PersonService personService;
 	private MailManager mailManager;
+	private PotentialConnectionService potentialConnectionService;
 	
 	public RegistrationService getRegistrationService() {
 		return registrationService;
@@ -36,6 +40,15 @@ public class InvitationService {
 
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
+	}
+
+	public PotentialConnectionService getPotentialConnectionService() {
+		return potentialConnectionService;
+	}
+
+	public void setPotentialConnectionService(
+			PotentialConnectionService potentialConnectionService) {
+		this.potentialConnectionService = potentialConnectionService;
 	}
 
 	/**
@@ -88,6 +101,26 @@ public class InvitationService {
 				         objects, 
 				         velocityTemplateLocation,
 				         inlineResources);		
+	}
+	
+	/**
+	 * Send the invitation + create/update a potential connection.
+	 * 
+	 * @param pPersonId
+	 * @param pEmail
+	 * @throws InvitationException
+	 */
+	public void updateSendInvitationAndAddPotentialConnection(final Long pPersonId, final String pEmail) throws InvitationException {
+		sendInvitation(pPersonId, pEmail);
+		final Date now = new Date();
+		final PotentialConnection pc = new PotentialConnection();
+		pc.setPerson(personService.findPerson(pPersonId));
+		pc.setEmail(pEmail);
+		pc.setInvitationSentOn(now);
+		pc.setDateAdded(now);
+		pc.setIgnored(Boolean.FALSE);
+		pc.setSource(PotentialConnection.SOURCE_INVITATION);
+		getPotentialConnectionService().createOrUpdatePotentialConnection(pc);		
 	}
 
 }

@@ -33,6 +33,7 @@
 			        </h:outputFormat>
 					<br/><br/>					
 				
+					<table><tr><td style="width: 480px; padding: 5px; vertical-align: top;">
 					<c:if test="#{homeController.emptyHomepage}">
 						<div style="border-width: 0px; border-style: solid; border-color: #dddddd; background-color: #dddddd; padding: 5px; border-radius: 5px;">			
 						<p>
@@ -49,7 +50,7 @@
 					        </h:outputLink>
 					    </li>
 					    <li>
-							<h:outputLink value="#{authenticationController.personsURL}">
+							<h:outputLink value="#{authenticationController.searchConnectionsURL}">
 								<b>
 								<h:outputText value="#{messages.home_searchConnections}"/>
 						        </b>
@@ -113,42 +114,119 @@
 						        </h:outputFormat>
 					        </c:if>
 				        </div>
-					
-						<br/><br/>
 
-					</c:if>
-
-				<table style="width: 100%;">
-				<tr>
-				<td style="width: 100%; padding: 10px; vertical-align: top;">
-				
-				<h:form id="homePublicForm" prependId="false">
-				<div style="width: 100%; text-align: center;">
-
-					<c:if test="#{not homeController.locationAvailable}">
-							<span><h:outputText value="#{messages.geolocation_locationNotAvailable}" /></span>
-							<br/>
-							<h:outputLink value="#{authenticationController.editProfileURL}">
-								<span><h:outputText value="#{messages.geolocation_setYourLocation}" styleClass="fontSizeLarge"/></span>
-							</h:outputLink>
-							<br/><br/>							
 					</c:if>
 					
-					<c:if test="#{homeController.locationAvailable}">
-						<h:outputText value="#{messages.geolocation_yourLocation}" />:
-						<br/><br/>
-						<h:outputText value="#{homeController.addressLabel}" escape="false" styleClass="fontSizeLargeLargeLarge"/>
-						<br/><br/>
-						<h:outputLink value="#{authenticationController.editProfileURL}">
-							<h:outputText value="#{messages.geolocation_changeYourLocation}" styleClass="fontSizeSmall"/>
-						</h:outputLink>
+					</td>
+					<td style="width: 480px; padding: 5px; vertical-align: top;" rowspan="2">
+						<c:if test="#{empty(homeController.potentialConnectionsList)}">
+							<table>
+								<tr>
+									<td style="padding-right: 10px;">
+										<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/star_new.jpg"/>
+									</td><td>
+										<h:outputLink value="#{authenticationController.searchConnectionsURL}">
+											<h:outputText value="#{messages.home_searchConnectionsFromAddressBook}"/>
+										</h:outputLink>
+									</td>
+								</tr>
+							</table>
+							<br/><br/>
+						</c:if>
+						<c:if test="#{not empty(homeController.potentialConnectionsList)}">
+							<div style="border-width: 2px; border-style: solid; border-color: #bbbbbb; background-color: #ffffff; padding: 5px; border-radius: 5px;">			
+								<b><h:outputText value="#{messages.home_peopleYouMayKnow} :"/></b>
+								<h:dataTable value="#{homeController.potentialConnectionsList}" binding="#{homeController.potentialConnectionsTable}" var="potentialConnection" styleClass="gt-table gt-user-table">
+								
+									<h:column id="potentialConnectionColumn1">
+								    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+											<table class="thumbnailInnerTable"><tr><td>
+												<h:outputLink id="potentialConnectionOverviewLink1" value="#{homeController.potentialConnectionOverviewHref}" rendered="#{homeController.potentialConnectionThumbnail1Src != null}">
+													<div class="thumbnailDiv">
+													    <img class="thubnailImageHome" src="#{homeController.potentialConnectionThumbnail1Src}"/>
+													</div>
+												</h:outputLink>
+											</td></tr></table>
+										</td><td>
+											<h:outputLink id="potentialConnectionLink" value="#{homeController.potentialConnectionOverviewHref}">
+												<h:outputText id="potentialConnectionDisplayName" value="#{potentialConnection.connection.displayName}" />
+											</h:outputLink>
+										</td></tr></table>
+								    </h:column>
+								    <h:column id="potentialConnectionColumn2">
+										<table border="0" class="gt-table-categories" width="130" align="right">
+											<tr>
+												<td>
+										    		<h:outputText value="#{potentialConnection.email}" />
+										    		<br/>
+										    		<h:outputText value="#{potentialConnection.name}" rendered="#{potentialConnection.name != null}"/>
+									    		</td>
+											</tr>
+										</table>
+								    </h:column>
+								
+								</h:dataTable>
+								<center>
+									<c:if test="#{not empty(homeController.potentialConnectionsList)}">
+										<h:outputLink value="#{authenticationController.myPotentialConnectionsListURL}">
+											<span class="fontSizeSmall">
+												<br/>
+												<h:outputText value="#{messages.navigation_viewMore}"/>
+												<br/><br/>
+											</span>
+										</h:outputLink>
+									</c:if>
+									<c:if test="#{empty(homeController.potentialConnectionsList)}">
+										<h:outputText value="#{messages.search_noResult}"/>
+										<br/><br/>
+									</c:if>
+								</center>
+							</div>
+						</c:if>					
+					</td>					
+					</tr>
+					<c:if test="#{(not homeController.locationAvailable) or (not empty(homeController.potentialConnectionsList))}">
+					<tr>
+					<td style="vertical-align: top;">
+						<table style="width: 100%;">
+							<tr>
+							<td style="width: 100%; padding: 10px; vertical-align: top;">
+							
+							<h:form id="homePublicForm" prependId="false">
+							<div style="width: 100%; text-align: center;">
+			
+								<c:if test="#{not homeController.locationAvailable}">
+										<span><h:outputText value="#{messages.geolocation_locationNotAvailable}" /></span>
+										<br/>
+										<h:outputLink value="#{authenticationController.editProfileURL}">
+											<span><h:outputText value="#{messages.geolocation_setYourLocation}" styleClass="fontSizeLarge"/></span>
+										</h:outputLink>
+										<br/><br/>							
+								</c:if>
+								<c:if test="#{homeController.locationAvailable}">
+								<table>
+									<tr>
+										<td style="padding-right: 10px;">
+											<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/star_new.jpg"/>
+										</td><td>
+											<h:outputLink value="#{authenticationController.searchConnectionsURL}">
+												<h:outputText value="#{messages.home_searchConnectionsFromAddressBook}"/>
+											</h:outputLink>
+										</td>
+									</tr>
+								</table>
+								</c:if>
+							</div>
+							</h:form>
+							<br/><br/>
+							</td>
+							</tr>
+						</table>
+					</td>
+					</tr>
 					</c:if>
-				</div>
-				</h:form>
-				
-				</td>
-				</tr></table>
-				
+					</table>
+					
 					<ui:include src="../homeInternal.jspx">
 						<ui:param name="theBean" value="#{homeController}"/>
 					</ui:include>

@@ -1,0 +1,281 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportTitleStep1}" /></ui:define>
+	<ui:param name="contentHeader" value="#{messages.potentialConnection_potentialConnectionsImportTitleStep1}" />
+
+		<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				
+				<!-- Item Edit Form -->
+				<h2 class="gt-form-head"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportTitleStep1}"/></h2>
+				<div class="gt-form gt-content-box">
+				
+				<f:view>
+					
+					<div id="fileDiv" style="display: none;">
+						<h:form id="potentialConnectionsImportForm" enctype="multipart/form-data" prependId="false">	
+	
+						<!-- form row -->
+						<div class="gt-form-row gt-width-100">
+							<label><h:outputText value="#{messages.potentialConnection_importFile}"/> *</label>
+							<h:outputText styleClass="small" value="#{messages.potentialConnection_importFileInfo}" escape="false"/>
+							<div id="fileErrorDiv">
+								<h:message styleClass="error" showSummary="true" showDetail="false"
+									for="file"></h:message>
+							</div>
+							<c:if test="#{potentialConnectionsImportStep1.fileTooLargeErrorMessage != null}">
+								<h:outputText value="#{potentialConnectionsImportStep1.fileTooLargeErrorMessage}" styleClass="error"/>
+							</c:if>
+							<t:inputFileUpload id="file"
+											   styleClass="file"
+							                   value="#{potentialConnectionsImportController.uploadFile}"
+							                   required="true"
+							                   accept="text/plain"
+							                   requiredMessage="#{messages.validation_requiredMessage}"
+							                   validator="#{potentialConnectionsImportStep1.validateFile}"/>
+								
+						</div><!-- /form row -->					
+											
+						<!-- form row -->
+						<div class="gt-form-row">
+							<br/>
+							<table class="buttonsTable"><tr><td>
+							<h:commandButton styleClass="stylishButton" value="#{messages.potentialConnection_potentialConnectionsImportSubmit}" action="#{potentialConnectionsImportStep1.submitFile}" />
+							</td></tr></table>
+						</div>
+						<!-- /form row -->					
+						</h:form>
+					
+						<br/><br/>
+						<span class="linkStyleAction" onclick="showBluewinFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromBluewinFile}"/></span>
+						<br/>
+						<span class="linkStyleAction" onclick="showGoogleDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromGoogle}"/></span>
+						<br/>
+						<span class="linkStyleAction" onclick="showTextareaDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromTextarea}"/></span>
+					</div>
+					
+					<div id="bluewinFileDiv" style="display: none;">
+						<h:form enctype="multipart/form-data" prependId="false">	
+	
+						<!-- form row -->
+						<div class="gt-form-row gt-width-100">
+							<label><h:outputText value="#{messages.potentialConnection_importBluewinFile}"/> *</label>
+							<h:outputText styleClass="small" value="#{messages.potentialConnection_importBluewinFileInfo}" escape="false"/>
+							<div id="bluewinFileErrorDiv">
+								<h:message styleClass="error" showSummary="true" showDetail="false"
+									for="bluewinFile"></h:message>
+							</div>
+							<c:if test="#{potentialConnectionsImportStep1.fileTooLargeErrorMessage != null}">
+								<h:outputText value="#{potentialConnectionsImportStep1.fileTooLargeErrorMessage}" styleClass="error"/>
+							</c:if>
+							<t:inputFileUpload id="bluewinFile"
+											   styleClass="file"
+							                   value="#{potentialConnectionsImportController.uploadFile}"
+							                   required="true"
+							                   accept="text/plain"
+							                   requiredMessage="#{messages.validation_requiredMessage}"
+							                   validator="#{potentialConnectionsImportStep1.validateFile}"/>
+								
+						</div><!-- /form row -->					
+											
+						<!-- form row -->
+						<div class="gt-form-row">
+							<br/>
+							<table class="buttonsTable"><tr><td>
+							<h:commandButton styleClass="stylishButton" value="#{messages.potentialConnection_potentialConnectionsImportSubmit}" action="#{potentialConnectionsImportStep1.submitBluewinFile}" />
+							</td></tr></table>
+						</div>
+						<!-- /form row -->					
+						</h:form>
+					
+						<br/><br/>
+						<span class="linkStyleAction" onclick="showGoogleDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromGoogle}"/></span>
+						<br/>
+						<span class="linkStyleAction" onclick="showTextareaDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromTextarea}"/></span>
+						<br/>
+						<span class="linkStyleAction" onclick="showFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromFile}"/></span>
+					</div>
+					
+					<div id="textareaDiv" style="display: none;">
+						<h:form prependId="false">
+	
+	
+						<!-- form row -->
+						<div class="gt-form-row gt-width-100">						
+							<label><h:outputText value="#{messages.potentialConnection_importTextarea}"/> *</label>
+							<h:outputText styleClass="small" value="#{messages.potentialConnection_importTextareaInfo}" escape="false"/>
+							<div id="textareaErrorDiv">
+								<h:message styleClass="error" showSummary="true" showDetail="false"
+									for="textareaContent"></h:message>
+							</div>
+							<h:inputTextarea id="textareaContent"
+							                immediate="true" 
+										    styleClass="gt-form-textarea"
+										    rows="15"
+										    required="true"
+										    requiredMessage="#{messages.validation_requiredMessage}"
+											value="#{potentialConnectionsImportController.textareaContent}"/>
+								
+						</div><!-- /form row -->					
+											
+						<!-- form row -->
+						<div class="gt-form-row">
+							<br/>
+							<table class="buttonsTable"><tr><td>
+							<h:commandButton styleClass="stylishButton" value="#{messages.potentialConnection_potentialConnectionsImportSubmit}" action="#{potentialConnectionsImportStep1.submitTextarea}" />
+							</td></tr></table>
+						</div>
+						<!-- /form row -->					
+						</h:form>
+					
+						<br/><br/>
+						<span class="linkStyleAction" onclick="showGoogleDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromGoogle}"/></span>
+						<br/>
+						<span class="linkStyleAction" onclick="showFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromFile}"/></span>
+						<br/>
+						<span class="linkStyleAction" onclick="showBluewinFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromBluewinFile}"/></span>
+					</div>
+					
+					<div id="googleDiv" style="display: none;">
+					
+						<table><tr><td style="width: 430px;">
+							<label><h:outputText value="#{messages.potentialConnection_importGoogle}"/></label>
+						</td><td>
+							<img src="#{facesContext.externalContext.requestContextPath}/public/images/google_logo_120.png"/>
+						</td></tr></table>						
+						
+						<br/>
+						
+						<h:form prependId="false">
+							<h:commandButton style="display: none;" id="googleSubmitButton" value="HIDDEN_BUTTON" action="#{potentialConnectionsImportStep1.submitGoogle}" />
+							<h:outputLink styleClass="stylishButton" value="#{potentialConnectionsImportStep1.googleLink}"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromGoogle2}"/></h:outputLink>
+						</h:form>
+						
+						<br/>
+						
+						<h:outputText styleClass="small" value="#{messages.potentialConnection_potentialConnectionsImportFromGooglePwdNotStored}"/>
+						<h:outputText styleClass="small" value=" " escape="false"/>						
+						<h:outputLink value="https://www.google.com/support/accounts/bin/answer.py?answer=41192" target="_blank">
+							<h:outputText styleClass="small" value="#{messages.potentialConnection_potentialConnectionsImportFromGooglePwdNotStoredMoreInfo}"/>
+						</h:outputLink>
+						
+						<br/><br/><br/><br/>
+						<span class="linkStyleAction" onclick="showTextareaDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromTextarea}"/></span>
+						<br/>
+						<span class="linkStyleAction" onclick="showFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromFile}"/></span>
+						<br/>
+						<span class="linkStyleAction" onclick="showBluewinFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromBluewinFile}"/></span>
+					</div>
+					
+					<div id="inProgressDiv">
+						<center>
+						<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/inprogress1.gif"/>
+						</center>
+						<br/>
+					</div>
+					
+					
+					<script type="text/javascript">
+						$j(document).ready(function() {
+							if (#{potentialConnectionsImportStep1.googleTokenSet}) {
+								document.getElementById("googleSubmitButton").click();
+							}
+							else if ($j('#fileErrorDiv').children("span.error")[0]) {
+								$j("#file").addClass('validationError'); 
+								showFileDiv();
+							}
+							else if ($j('#bluewinFileErrorDiv').children("span.error")[0]) {
+								$j("#bluewinFile").addClass('validationError'); 
+								showBluewinFileDiv();
+							}
+							else if ($j('#textareaErrorDiv').children("span.error")[0]) {
+								$j("#textareaContent").addClass('validationError'); 
+								showTextareaDiv();
+							}
+							else if ($j('#textareaContent').val() != "") {
+								showTextareaDiv();
+							}
+							else if (#{potentialConnectionsImportStep1.showGoogleImportByDefault}) {
+								showGoogleDiv();
+							}
+							else if (#{potentialConnectionsImportStep1.showBluewinFileImportByDefault}) {
+								showBluewinFileDiv();
+							}
+							else {
+								showTextareaDiv();
+							}
+						});
+
+						function showGoogleDiv() {
+							$j("#inProgressDiv").hide();
+							$j("#textareaDiv").hide();
+							$j("#fileDiv").hide();
+							$j("#bluewinFileDiv").hide();
+							$j("#googleDiv").show();
+						}
+						function showFileDiv() {
+							$j("#inProgressDiv").hide();
+							$j("#googleDiv").hide();
+							$j("#textareaDiv").hide();
+							$j("#bluewinFileDiv").hide();
+							$j("#fileDiv").show();
+						}
+						function showBluewinFileDiv() {
+							$j("#inProgressDiv").hide();
+							$j("#googleDiv").hide();
+							$j("#textareaDiv").hide();
+							$j("#fileDiv").hide();
+							$j("#bluewinFileDiv").show();
+						}
+						function showTextareaDiv() {
+							$j("#inProgressDiv").hide();
+							$j("#googleDiv").hide();
+							$j("#fileDiv").hide();
+							$j("#bluewinFileDiv").hide();
+							$j("#textareaDiv").show();
+						}
+					</script>
+					
+				</f:view>		
+				</div>			
+				<!-- /Item Edit Form -->
+				
+			</div>
+			<!-- /main content -->
+
+			<!-- sidebar -->
+			<div class="gt-sidebar">
+				
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

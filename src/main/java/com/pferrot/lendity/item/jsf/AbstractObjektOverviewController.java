@@ -59,7 +59,6 @@ public abstract class AbstractObjektOverviewController {
 		return UiUtils.getDateAsString(getObjekt().getCreationDate(), I18nUtils.getDefaultLocale());
 	}
 
-	
 	public String getVisibilityLabel() {
 		if (getObjekt() != null && getObjekt().getVisibility() != null) {
 			final Locale locale = I18nUtils.getDefaultLocale();

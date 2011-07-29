@@ -1,0 +1,162 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportTitleStep2}" /></ui:define>
+	<ui:param name="contentHeader" value="#{messages.potentialConnection_potentialConnectionsImportTitleStep2}" />
+
+		<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				
+				<!-- Edit Form -->
+				<h2 class="gt-form-head"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportTitleStep2}"/></h2>
+				<div class="gt-form gt-content-box">
+				
+				<f:view>
+
+					<h:form>
+					
+					<c:if test="#{potentialConnectionsImportController.nbPotential > 0}">
+						<b>
+						<c:if test="#{potentialConnectionsImportController.nbPotential == 1}">
+							<h:outputFormat value="#{messages.potentialConnection_potentialConnectionsImportPotentialFoundSingular}">
+								<f:param value="#{potentialConnectionsImportController.nbPotential}" />
+							</h:outputFormat>
+						</c:if>
+						<c:if test="#{potentialConnectionsImportController.nbPotential > 1}">
+							<h:outputFormat value="#{messages.potentialConnection_potentialConnectionsImportPotentialFound}">
+								<f:param value="#{potentialConnectionsImportController.nbPotential}" />
+							</h:outputFormat>
+						</c:if>
+						</b>
+						<br/>
+						<h:outputFormat value="#{messages.potentialConnection_potentialConnectionsImportPotentialSelect}"/>
+						<br/>
+						
+						<br/>
+						<div id="potentialDetails">
+						
+							<c:if test="#{potentialConnectionsImportController.nbPotential > 15}">
+							<!-- form row -->
+							<div class="gt-form-row">
+								<br/>
+								<table class="buttonsTable"><tr><td>
+								<h:commandButton styleClass="stylishButton" value="#{messages.navigation_back}"	action="#{potentialConnectionsImportStep2.back}" />
+								</td>
+								<c:if test="#{potentialConnectionsImportController.nbPotential > 0}">
+									<td>
+									<h:commandButton styleClass="stylishButton" value="#{messages.potentialConnection_potentialConnectionsImportConfirmImportSelected}" action="#{potentialConnectionsImportStep2.confirm}" />
+									</td>
+								</c:if>
+								<td>
+								<h:commandButton styleClass="stylishButton" value="#{messages.navigation_skip}" action="#{potentialConnectionsImportStep2.skip}" />
+								</td></tr></table>
+							</div>
+							<br/>
+							<!-- /form row -->
+							</c:if>
+					
+							<h:dataTable value="#{potentialConnectionsImportController.potentialAsList}"
+									     binding="#{potentialConnectionsImportController.potentialTable}"
+							             var="potentialConnection"
+							             styleClass="gt-table gt-user-table">
+							    <h:column id="potentialColumn4">
+							    	<f:facet name="header" >
+										<script type="text/javascript">
+											function toggleAllCheckboxes(pCheckBox) {								
+												$j(".checkBoxSelectPc").attr("checked", pCheckBox.checked);
+											}
+										</script>
+										<input type="checkbox" checked="checked" onclick="toggleAllCheckboxes(this);"/>
+									</f:facet>					    	
+									<h:selectBooleanCheckbox styleClass="checkBoxSelectPc" value="#{potentialConnection.selected}" rendered="#{potentialConnectionsImportController.requestConnectionAvailable}" />
+							    </h:column>
+							    <h:column id="potentialColumn1">
+							    	<f:facet name="header" >
+										<h:outputText value="#{messages.person_email}"/>
+									</f:facet>
+									<h:outputText value="#{potentialConnection.email}" />
+							    </h:column>
+							    <h:column id="potentialColumn2">
+							    	<f:facet name="header" >
+										<h:outputText value="#{messages.person_name}"/>
+									</f:facet>
+									<h:outputText value="#{potentialConnection.name}" />
+							    </h:column>
+							    <h:column id="potentialColumn3">
+							    	<f:facet name="header" >
+										<h:outputText value="#{messages.person_displayName}"/>
+									</f:facet>
+									<h:outputLink value="#{potentialConnectionsImportController.potentialConnectionHref}" target="_blank">
+										<h:outputText value="#{potentialConnection.connection.displayName}" />
+									</h:outputLink>
+							    </h:column>							    
+						    </h:dataTable>
+						</div>
+						<br/><br/>
+					</c:if>
+					<c:if test="#{potentialConnectionsImportController.nbPotential == 0}">
+						<h:outputText style="font-weight: bold;" value="#{messages.potentialConnection_potentialConnectionsImportNoPotentialFound}"/>
+						<br/>
+						<h:outputText value="#{messages.potentialConnection_potentialConnectionsImportNoPotentialFoundSendInvitations}"/>
+					</c:if>								
+					
+					<!-- form row -->
+					<div class="gt-form-row">
+						<br/>
+						<table class="buttonsTable"><tr><td>
+						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_back}"	action="#{potentialConnectionsImportStep2.back}" />
+						</td>
+						<c:if test="#{potentialConnectionsImportController.nbPotential > 0}">
+							<td>
+							<h:commandButton styleClass="stylishButton" value="#{messages.potentialConnection_potentialConnectionsImportConfirmImportSelected}" action="#{potentialConnectionsImportStep2.confirm}" />
+							</td>
+						</c:if>
+						<td>
+						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_skip}" action="#{potentialConnectionsImportStep2.skip}" />
+						</td></tr></table>
+					</div>
+					<!-- /form row -->
+					
+					</h:form>
+				</f:view>		
+				</div>			
+				<!-- /Edit Form -->
+				
+			</div>
+			<!-- /main content -->
+
+			<!-- sidebar -->
+			<div class="gt-sidebar">
+				
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

@@ -92,7 +92,7 @@
 		<h4>
 			<h:outputLink value="#{myConnectionsListController.personOverviewHref}">
 				<h:outputText value="#{person.displayName}" />
-			</h:outputLink>
+			</h:outputLink> 
 		</h4>
 		</td></tr></table>
     </h:column>

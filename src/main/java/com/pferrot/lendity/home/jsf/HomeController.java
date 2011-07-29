@@ -1,5 +1,11 @@
 package com.pferrot.lendity.home.jsf;
 
+import java.util.List;
+
+import javax.faces.component.html.HtmlDataTable;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -8,17 +14,26 @@ import com.pferrot.lendity.groupjoinrequest.GroupJoinRequestService;
 import com.pferrot.lendity.lendtransaction.LendTransactionService;
 import com.pferrot.lendity.login.jsf.AbstractHomeController;
 import com.pferrot.lendity.model.Person;
-import com.pferrot.lendity.person.PersonService;
+import com.pferrot.lendity.model.PotentialConnection;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.potentialconnection.PotentialConnectionService;
 import com.pferrot.lendity.utils.HtmlUtils;
+import com.pferrot.lendity.utils.JsfUtils;
 
 public class HomeController extends AbstractHomeController {
 	
 	private final static Log log = LogFactory.getLog(HomeController.class);
+	
+	private final static String POTENTIAL_CONNECTIONS_LIST_LOADED_ATTRIBUTE_NAME = "potentialConnectionsListLoaded";
 
+	private List potentialConnectionsList;
+	
+	private HtmlDataTable potentialConnectionsTable;
+	
 	private ConnectionRequestService connectionRequestService;
 	private GroupJoinRequestService groupJoinRequestService;
 	private LendTransactionService lendTransactionService;
+	private PotentialConnectionService potentialConnectionService;
 	
 	// Keep variables to not hit the DB every time.
 	private long nbGroupJoinRequestsPending = -1;
@@ -50,6 +65,34 @@ public class HomeController extends AbstractHomeController {
 	public void setGroupJoinRequestService(
 			GroupJoinRequestService groupJoinRequestService) {
 		this.groupJoinRequestService = groupJoinRequestService;
+	}
+
+	public List getPotentialConnectionsList() {
+		HttpServletRequest request = JsfUtils.getRequest();
+		if (FacesContext.getCurrentInstance().getRenderResponse()
+			&& ! LIST_LOADED_ATTRIBUTE_VALUE.equals(
+					request.getAttribute(POTENTIAL_CONNECTIONS_LIST_LOADED_ATTRIBUTE_NAME))) {
+				potentialConnectionsList =  getPotentialConnectionService().findCurrentPersonPotentialConnectonsList(0, 3);	
+				request.setAttribute(POTENTIAL_CONNECTIONS_LIST_LOADED_ATTRIBUTE_NAME, LIST_LOADED_ATTRIBUTE_VALUE);
+		}
+        return potentialConnectionsList;
+	}
+
+	public HtmlDataTable getPotentialConnectionsTable() {
+		return potentialConnectionsTable;
+	}
+
+	public void setPotentialConnectionsTable(HtmlDataTable potentialConnectionsTable) {
+		this.potentialConnectionsTable = potentialConnectionsTable;
+	}
+
+	public PotentialConnectionService getPotentialConnectionService() {
+		return potentialConnectionService;
+	}
+
+	public void setPotentialConnectionService(
+			PotentialConnectionService potentialConnectionService) {
+		this.potentialConnectionService = potentialConnectionService;
 	}
 
 	public long getNbPendingConnectionRequests() {
@@ -104,5 +147,15 @@ public class HomeController extends AbstractHomeController {
 			return HtmlUtils.escapeHtmlAndReplaceCr(address);
 		}
 		return "";
+	}
+	
+	public String getPotentialConnectionOverviewHref() {
+		final PotentialConnection pc = (PotentialConnection)getPotentialConnectionsTable().getRowData();
+		return PersonUtils.getPersonOverviewPageUrl(pc.getConnection().getId().toString()); 
+	}
+	
+	public String getPotentialConnectionThumbnail1Src() {
+		final PotentialConnection pc = (PotentialConnection)getPotentialConnectionsTable().getRowData();
+		return getPersonService().getProfileThumbnailSrc(pc.getConnection(), true);
 	}
 }

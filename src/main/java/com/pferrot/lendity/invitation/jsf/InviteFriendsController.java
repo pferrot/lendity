@@ -12,11 +12,14 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
+import com.pferrot.core.StringUtils;
+import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.invitation.InvitationException;
 import com.pferrot.lendity.invitation.InvitationService;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.registration.RegistrationService;
+import com.pferrot.lendity.utils.JsfUtils;
 
 @ViewController(viewIds={"/auth/invitation/inviteFriends.jspx"})
 public class InviteFriendsController {
@@ -30,6 +33,10 @@ public class InviteFriendsController {
 		
 		@InitView
 		public void initView() {
+			final String emailParam = JsfUtils.getRequestParameter(PagesURL.INVITE_FRIENDS_PARAM_EMAIL);
+			if (!StringUtils.isNullOrEmpty(emailParam)) {
+				setEmail(emailParam);
+			}
 		}
 		
 		public InvitationService getInvitationService() {
@@ -75,7 +82,7 @@ public class InviteFriendsController {
 
 		public String submit() {
 			try {
-				getInvitationService().sendInvitation(PersonUtils.getCurrentPersonId(), getEmail());
+				getInvitationService().updateSendInvitationAndAddPotentialConnection(PersonUtils.getCurrentPersonId(), getEmail());
 				return "success";
 			}
 			catch (InvitationException e) {

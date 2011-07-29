@@ -3,6 +3,8 @@ package com.pferrot.lendity;
 import com.pferrot.lendity.login.filter.CustomAuthenticationProcessingFilter;
 
 public interface PagesURL {
+	
+	String CONVERSATION_CONTEXT_PARAMETER_NAME = "conversationContext";
 
 	/////////////////////////////////////////////////////////////////////////
 	// ERROR - start
@@ -70,6 +72,7 @@ public interface PagesURL {
 	// INVITATION - start
 	
 	String INVITE_FRIENDS = "/auth/invitation/inviteFriends.faces";
+	String INVITE_FRIENDS_PARAM_EMAIL = "email";
 	
 	// INVITATION - end
 	/////////////////////////////////////////////////////////////////////////	
@@ -118,6 +121,17 @@ public interface PagesURL {
 	String PERSON_EDIT_PICTURE_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;
 	
 	// PERSON - end
+	/////////////////////////////////////////////////////////////////////////
+	
+	/////////////////////////////////////////////////////////////////////////
+	// POTENTIAL CONNECTION - start	
+	
+	String POTENTIAL_CONNECTIONS_IMPORT = "/auth/potentialconnection/potentialConnectionsImport.faces";
+	
+	String MY_POTENTIAL_CONNECTIONS_LIST = "/auth/potentialconnection/myPotentialConnectionsList.faces";
+	String MY_FULL_POTENTIAL_CONNECTIONS_LIST = "/auth/potentialconnection/myFullPotentialConnectionsList.faces";
+	
+	// POTENTIAL CONNECTION - end
 	/////////////////////////////////////////////////////////////////////////
 	
 	/////////////////////////////////////////////////////////////////////////

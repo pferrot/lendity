@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -43,6 +45,8 @@ public class Person implements Serializable {
 
 	@Id @GeneratedValue
 	@Column(name = "ID")
+	// Allows accessing the ID even when proxy not loaded.
+	@Access(value = AccessType.PROPERTY)
     private Long id;
 
 	@Column(name = "ENABLED", nullable = false)
@@ -147,6 +151,9 @@ public class Person implements Serializable {
 	@Column(name = "EMAIL_SUBSC", nullable = false)
 	private Boolean emailSubscriber;
 	
+	@Column(name = "RECEIVE_NEWSLETTER", nullable = false)
+	private Boolean receiveNewsletter;	
+	
 	// Receive notifications when comments on own objects are added.
 	@Column(name = "RECEIVE_COM_OWN_NOTIF", nullable = false)
 	private Boolean receiveCommentsOnOwnNotif;
@@ -155,6 +162,10 @@ public class Person implements Serializable {
 	@Column(name = "RECEIVE_COM_COM_NOTIF", nullable = false)
 	private Boolean receiveCommentsOnCommentedNotif;
 	
+	// Receive notifications when potential connections join Lendity.
+	@Column(name = "RECEIVE_POT_CON_NOTIF", nullable = false)
+	private Boolean receivePotentialConnectionNotif;
+	
 	/**
 	 * Updated when e-mail is sent OR when there is nothing to
 	 * send but the subscriber is "verified".
@@ -162,10 +173,10 @@ public class Person implements Serializable {
 	@Column(name = "EMAIL_SUBSC_LAST_UPDATE", nullable = true)
 	private Date emailSubscriberLastUpdate;
 	
-	// If true, contact details (address, phone, email,...) will be public.
-	@Column(name = "SHOW_CONTACT_DETAILS_TO_ALL", nullable = false)
-	private Boolean showContactDetailsToAll;
-
+	@ManyToOne(targetEntity = PersonDetailsVisibility.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "DETAILS_VISIBILITY_ID", nullable = false)
+	private PersonDetailsVisibility detailsVisibility;
+	
 	@Column(name = "NB_EVAL_SCORE_1", nullable = false)
 	private Integer nbEvalScore1;
 	
@@ -436,13 +447,30 @@ public class Person implements Serializable {
 			Boolean receiveCommentsOnCommentedNotif) {
 		this.receiveCommentsOnCommentedNotif = receiveCommentsOnCommentedNotif;
 	}
+
+	public Boolean getReceivePotentialConnectionNotif() {
+		return receivePotentialConnectionNotif;
+	}
 	
-	public Boolean getShowContactDetailsToAll() {
-		return showContactDetailsToAll;
+	public void setReceivePotentialConnectionNotif(
+			Boolean receivePotentialConnectionNotif) {
+		this.receivePotentialConnectionNotif = receivePotentialConnectionNotif;
 	}
 
-	public void setShowContactDetailsToAll(Boolean showContactDetailsToAll) {
-		this.showContactDetailsToAll = showContactDetailsToAll;
+	public Boolean getReceiveNewsletter() {
+		return receiveNewsletter;
+	}
+
+	public void setReceiveNewsletter(Boolean receiveNewsletter) {
+		this.receiveNewsletter = receiveNewsletter;
+	}
+
+	public PersonDetailsVisibility getDetailsVisibility() {
+		return detailsVisibility;
+	}
+
+	public void setDetailsVisibility(PersonDetailsVisibility detailsVisibility) {
+		this.detailsVisibility = detailsVisibility;
 	}
 
 	public Boolean getEmailSubscriber() {

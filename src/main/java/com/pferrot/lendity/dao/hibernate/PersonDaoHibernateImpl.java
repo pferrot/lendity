@@ -209,6 +209,10 @@ public class PersonDaoHibernateImpl extends HibernateDaoSupport implements Perso
 			criteria.add(getEmailLastNameFirstNameDisplayNameLogicalExpression(pQueryBean));
 		}
 		
+		if (pQueryBean.getEmail() != null && pQueryBean.getEmail().trim().length() > 0) {
+			criteria.add(Restrictions.ilike("email", pQueryBean.getEmail(), MatchMode.EXACT));
+		}
+		
 		if (pQueryBean.getPersonId() != null) {			
 			String realConnectionLink = null;
 			switch (pQueryBean.getConnectionLink()) {

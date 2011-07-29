@@ -436,6 +436,57 @@ function cancelDeleteItem() {
 	hideDeleteItemTooltip(mDeleteItemTooltipTarget);
 }
 
+/***************************************************************************************************
+ * 
+ * DELETE ALL POTENTIAL CONNECTIONS
+ * 
+ ***************************************************************************************************/
+function hideDeleteAllPotentialConnectionsTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#deleteAllPotentialConnectionsForm'), $j('#deleteAllPotentialConnectionsDiv'));
+}
+
+function deleteAllPotentialConnectionsQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#deleteAllPotentialConnectionsDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip that is used to delete all potential conections.
+ */
+var mDeleteAllPotentialConnectionsTooltip;
+var mDeleteAllPotentialConnectionsTarget;
+function deleteAllPotentialConnectionsTooltip(pTooltipTarget, pRedirectID) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideDeleteAllPotentialConnectionsTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('deleteAllPotentialConnectionsForm').reset();
+	    // Hide error messages if any.
+	    $j('#deleteAllPotentialConnectionsForm').find('input').removeClass('validationError');
+		// Set the correct redirectID.
+		$j('#deleteAllPotentialConnectionsRedirectId').val(pRedirectID);
+		
+	  	mDeleteAllPotentialConnectionsTooltipTarget = pTooltipTarget;
+	  	mDeleteAllPotentialConnectionsTooltip = createFormTooltip($j(pTooltipTarget), $j('#deleteAllPotentialConnectionsForm'), deleteAllPotentialConnectionsQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip to delete all potential connections.
+ */
+function submitDeleteAllPotentialConnections() {	
+	document.getElementById("deleteAllPotentialConnectionsActionButton").click();
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelDeleteAllPotentialConnections() {
+	hideDeleteAllPotentialConnectionsTooltip(mDeleteAllPotentialConnectionsTooltipTarget);
+}
+
 
 
 /***************************************************************************************************

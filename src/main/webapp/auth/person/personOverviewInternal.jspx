@@ -78,7 +78,7 @@
 		</div>
 		<br/>
 	</c:if>
-	<c:if test="#{theBean.emailAvailable}">
+	<c:if test="#{theBean.detailsAvailable}">
 		<div class="gt-form-row gt-width-100">
 			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_firstName}:" /></label></div>
 			<h:outputText value="#{theBean.person.firstName}" />
@@ -158,16 +158,22 @@
 			<h:outputText value=" " escape="false" />
 			<h:outputText value="#{messages.person_receiveCommentsOnOwnNotif}"/>
 			<br/>
-			<h:selectBooleanCheckbox id="receiveCommentsOnCommentedNorifications" value="#{theBean.person.receiveCommentsOnCommentedNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
+			<h:selectBooleanCheckbox id="receiveCommentsOnCommentedNotifications" value="#{theBean.person.receiveCommentsOnCommentedNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
 			<h:outputText value=" " escape="false" />
 			<h:outputText value="#{messages.person_receiveCommentsOnCommentedNotif}"/>
+			<br/>
+			<h:selectBooleanCheckbox id="receiveNewsletter" value="#{theBean.person.receiveNewsletter}" styleClass="gt-form-element-checkbox" disabled="true"/>
+			<h:outputText value=" " escape="false" />
+			<h:outputText value="#{messages.person_receiveNewsletter}"/>
+			<br/>
+			<h:selectBooleanCheckbox id="receivePotentialConnectionNotif" value="#{theBean.person.receivePotentialConnectionNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
+			<h:outputText value=" " escape="false" />
+			<h:outputText value="#{messages.person_receivePotentialConnectionNotif}"/>
 		</div>
 		<br/>
 		<div class="gt-form-row gt-width-100">
-			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_settings}:" /></label></div>
-			<h:selectBooleanCheckbox id="showContactDetailsToAll" value="#{theBean.person.showContactDetailsToAll}" styleClass="gt-form-element-checkbox" disabled="true"/>
-			<h:outputText value=" " escape="false" />
-			<h:outputText value="#{messages.person_showContactDetailsToAll}"/>		
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_detailsVisibility}:" /></label></div>
+			<h:outputText value="#{theBean.detailsVisibilityLabel}" />
 		</div>
 		<br/>
 	</c:if>

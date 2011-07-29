@@ -22,7 +22,6 @@ import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.geolocation.bean.Coordinate;
 import com.pferrot.lendity.geolocation.exception.GeolocalisationException;
 import com.pferrot.lendity.geolocation.googlemaps.GoogleMapsUtils;
-import com.pferrot.lendity.i18n.I18nConsts;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonConsts;
@@ -89,8 +88,11 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		setEmailSubscriber(pPerson.getEmailSubscriber());
 		setReceiveNeedsNotifications(pPerson.getReceiveNeedsNotifications());
 		setReceiveCommentsOnCommentedNotif(pPerson.getReceiveCommentsOnCommentedNotif());
+		setReceivePotentialConnectionNotif(pPerson.getReceivePotentialConnectionNotif());
 		setReceiveCommentsOnOwnNotif(pPerson.getReceiveCommentsOnOwnNotif());
-		setShowContactDetailsToAll(pPerson.getShowContactDetailsToAll());
+		setReceiveNewsletter(pPerson.getReceiveNewsletter());
+		
+		setDetailsVisibilityId(pPerson.getDetailsVisibility().getId());
 		
 		setPhoneHome(pPerson.getPhoneHome());
 		setPhoneMobile(pPerson.getPhoneMobile());
@@ -111,8 +113,9 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		getPerson().setEmailSubscriber(getEmailSubscriber());
 		getPerson().setReceiveNeedsNotifications(getReceiveNeedsNotifications());
 		getPerson().setReceiveCommentsOnCommentedNotif(getReceiveCommentsOnCommentedNotif());
+		getPerson().setReceivePotentialConnectionNotif(getReceivePotentialConnectionNotif());
 		getPerson().setReceiveCommentsOnOwnNotif(getReceiveCommentsOnOwnNotif());
-		getPerson().setShowContactDetailsToAll(getShowContactDetailsToAll());
+		getPerson().setReceiveNewsletter(getReceiveNewsletter());
 		
 		getPerson().setPhoneHome(getPhoneHome());
 		getPerson().setPhoneMobile(getPhoneMobile());
@@ -127,7 +130,7 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		getPerson().setAddressHomeLatitude(getAddressHomeLatitude());
 		getPerson().setAddressHomeLongitude(getAddressHomeLongitude());
 
-		getPersonService().updatePerson(getPerson());
+		getPersonService().updatePerson(getPerson(), getDetailsVisibilityId());
 		
 		return getPerson().getId();
 	}

@@ -33,7 +33,7 @@ public abstract class AbstractHomeController implements Serializable {
 	private final static String NEEDS_LIST_LOADED_ATTRIBUTE_NAME = "needsListLoaded";
 	private final static String GROUPS_LIST_LOADED_ATTRIBUTE_NAME = "groupsListLoaded";
 	
-	private final static String LIST_LOADED_ATTRIBUTE_VALUE = "true";
+	protected final static String LIST_LOADED_ATTRIBUTE_VALUE = "true";
 	
 	private GroupService groupService;
 	private ItemService itemService;

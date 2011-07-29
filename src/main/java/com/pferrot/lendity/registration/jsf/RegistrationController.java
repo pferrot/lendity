@@ -243,8 +243,10 @@ public class RegistrationController {
 			person.setEmailSubscriber(Boolean.TRUE);
 			person.setReceiveNeedsNotifications(Boolean.TRUE);
 			person.setReceiveCommentsOnCommentedNotif(Boolean.TRUE);
+			person.setReceivePotentialConnectionNotif(Boolean.TRUE);
 			person.setReceiveCommentsOnOwnNotif(Boolean.TRUE);
-			person.setShowContactDetailsToAll(Boolean.FALSE);
+			person.setReceiveNewsletter(Boolean.TRUE);
+			person.setDetailsVisibility(registrationService.getDefaultPersonDetailsVisibility());
 			person.setNbEvalScore1(Integer.valueOf(0));
 			person.setNbEvalScore2(Integer.valueOf(0));
 			

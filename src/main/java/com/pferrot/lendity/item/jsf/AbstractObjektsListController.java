@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.faces.component.html.HtmlSelectOneMenu;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
