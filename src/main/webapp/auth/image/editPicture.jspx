@@ -72,7 +72,7 @@
 							                   required="false"
 							                   accept="image/*" 
 							                   validator="#{controllerBean.validateImageFile}"
-							                   onchange="editPictureOnChange('#{facesContext.externalContext.requestContextPath}');"/>					
+							                   onchange="editPictureOnChange('#{facesContext.externalContext.requestContextPath}', '#{messages.navigation_inProgress}');"/>					
 						</div><!-- /form row -->
 					
 					</div>

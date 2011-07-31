@@ -53,10 +53,10 @@ function focusFirtTextInputField() {
     });
 }
 
-function editPictureOnChange(pContextPath) {
+function editPictureOnChange(pContextPath, pInProgressMessage) {
 	document.getElementById('contentDiv').style.display = 'none';
     var inProgressDiv = document.getElementById('inProgressDiv');
-    inProgressDiv.innerHTML = '<center><img src="' + pContextPath + '/public/images/icons/inprogress1.gif"/></center>';
+    inProgressDiv.innerHTML = '<center><img src="' + pContextPath + '/public/images/icons/inprogress1.gif"/><br/><br/><span class="fontSizeSmall">' + pInProgressMessage + '</span></center>';
     inProgressDiv.style.display = 'block';
     document.getElementById('processImageButton').click();	
 }

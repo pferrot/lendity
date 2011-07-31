@@ -35,7 +35,10 @@
 
 					<h:form>
 					
-						blabla
+						<h:outputFormat value="#{messages.potentialConnection_potentialConnectionsImportConfirmationMessage}" escape="false">
+							<f:param value="#{potentialConnectionsImportController.nbConnectionRequestsSent}"/>
+							<f:param value="#{potentialConnectionsImportController.nbInvitationsSent}"/>
+						</h:outputFormat>
 					
 					</h:form>
 				</f:view>		

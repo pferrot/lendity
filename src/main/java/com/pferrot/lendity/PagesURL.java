@@ -145,6 +145,9 @@ public interface PagesURL {
 	String GROUP_EDIT = "/auth/group/groupEdit.faces";
 	String GROUP_EDIT_PARAM_GROUP_ID = GROUP_OVERVIEW_PARAM_GROUP_ID;
 	
+	String GROUP_SHARE_ITEMS = "/auth/group/groupShareItems.faces";
+	String GROUP_SHARE_ITEMS_PARAM_GROUP_ID = GROUP_OVERVIEW_PARAM_GROUP_ID;
+	
 	String GROUP_EDIT_PICTURE = "/auth/group/groupEditPicture.faces";
 	String GROUP_EDIT_PICTURE_PARAM_GROUP_ID = GROUP_OVERVIEW_PARAM_GROUP_ID;
 	

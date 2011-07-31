@@ -191,6 +191,8 @@
 					<div id="inProgressDiv">
 						<center>
 						<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/inprogress1.gif"/>
+						<br/><br/>
+						<span class="fontSizeSmall"><h:outputText value="#{messages.navigation_inProgress}"/></span>
 						</center>
 						<br/>
 					</div>

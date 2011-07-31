@@ -1,16 +1,32 @@
-#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+<table style="background-color: #ffffff; width: 700px; border: 0px solid #4c4847; border-radius: 5px; marginword-wrap:break-word!important; background-color: #ffffff; -webkit-border-radius: 5px; -moz-border-radius: 5px;">
+<tr><td style="padding: 15px 15px 15px 15px;">
+<table width="100%">
 
-Hello,<br/><br/>
+<tr><td style="font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif; font-size: 90%;">
 
-J'utilise "lendity" depuis quelques temps et je t'envoie cette invitation car je pense que cela devrait t'intéresser.<br/><br/>
+$personFirstName $personLastName te propose de le rejoindre sur <a href="$siteUrl">LENDITY.CH</a>, <b>le réseau social suisse du prêt et de l'emprunt</b>.<br/><br/>
 
-Lendity est un réseau social basé sur le principe du prêt et de l'emprunt. Une fois inscrit, tu pourras consulter les objets de tes amis (DVD, livres, outils,...) et emprunter ceux dont tu as besoin.<br/>
-Lendity te permet également de suivre les objets prêtés et de créer des inventaires.<br/><br/>
+Sais-tu qu'autour de toi des milliers d'objets prennent la poussière dans les garages de tes amis et voisins? Pourquoi ne pas les emprunter au lieu de les acheter neufs et de ne les utiliser qu'une seule fois? Outils de jardinage, électroménager, livres, DVD, ...: <b>tout s'emprunte sur <a href="$siteUrl">LENDITY.CH</a></b>.<br/><br/>
 
-<a href="$registrationUrl">Clique ici pour ouvrir un compte</a>.<br/><br/>
+<a href="$siteUrl">LENDITY.CH</a> met à ta disposition tous les outils nécessaires pour emprunter des objets <b>en toute simplicité et sécurité</b>.<br/><br/>
 
-A bientôt sur <a href="$siteUrl">$siteName</a>.<br/><br/>
+Tu trouveras $personFirstName $personLastName sous le pseudo <a href="$personUrl">$personDisplayName</a>, ajoute-le comme ami dès que tu seras inscrit.<br/><br/>
 
-$firstName $lastName
+N'attends plus et rejoins-le sur <a href="$siteUrl">LENDITY.CH</a> !<br/><br/>
 
-#include("com/pferrot/lendity/emailtemplate/html_footer.vm")
+<b>Lendity.ch /// Partager. Simplement.</b><br/>
+<a href="$siteUrl">$siteUrl</a>
+
+<br/><br/><span style="font-size: 80%;">Tu as reçu cet e-mail parce que $personFirstName $personLastName ($personEmail) t'as invité à rejoindre Lendity.</span>
+
+</td></tr>
+
+<tr>
+<td>
+<br/>
+<a href="$siteUrl"><img src="cid:logo_signature" border="0"/></a>
+</td>
+</tr>
+
+</table>
+</td></tr></table>

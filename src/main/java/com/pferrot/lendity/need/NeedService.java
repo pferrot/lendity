@@ -434,4 +434,51 @@ public class NeedService extends ObjektService {
 			 final boolean pAuthorizeDocumentAccess, final HttpSession pSession, final String pUrlPrefix) {
 		return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, NeedConsts.FACEBOOK_LIKE_DEFAULT_IMAGE_URL);
 	}
+	
+	public List<Need> findAllNeedsForPerson(final Long pPersonId) {
+		CoreUtils.assertNotNull(pPersonId);
+		
+		final NeedDaoQueryBean queryBean = new NeedDaoQueryBean();
+		queryBean.setOwnerIds(new Long[]{pPersonId});
+		queryBean.setFirstResult(0);
+		queryBean.setMaxResults(0);
+		
+		return needDao.findNeedsList(queryBean);		
+	}
+	
+	public void updateNeedsRemoveGroupAuthorized(final Long pNeedOwnerId, final Long pGroupId) {
+		CoreUtils.assertNotNull(pNeedOwnerId);
+		CoreUtils.assertNotNull(pGroupId);
+		
+		final Group group = getGroupService().findGroup(pGroupId);
+		
+		getGroupService().assertCurrentUserAuthorizedToEdit(group);
+		
+		final List<Need> needs = findAllNeedsForPerson(pNeedOwnerId);
+		
+		for (Need need: needs) {
+			if (need.getGroupsAuthorized().contains(group)) {
+				assertCurrentUserAuthorizedToEdit(need);
+				need.removeGroupAuthorized(group);
+				updateNeed(need);
+			}
+		}		
+	}
+	
+	public void updateNeedsRemoveGroupAuthorized(final Long pGroupId) {
+		CoreUtils.assertNotNull(pGroupId);
+		
+		final Group group = getGroupService().findGroup(pGroupId);
+		
+		final Set<Need> needs = group.getNeeds();
+		
+		if (needs != null) {
+			for (Need need: needs) {
+				if (need.getGroupsAuthorized().contains(group)) {
+					need.removeGroupAuthorized(group);
+					updateNeed(need);
+				}
+			}		
+		}
+	}
 }

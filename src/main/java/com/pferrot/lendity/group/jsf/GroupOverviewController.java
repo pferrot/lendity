@@ -132,6 +132,10 @@ public class GroupOverviewController  {
 	public boolean isDeleteAvailable() {
 		return getGroupService().isCurrentUserAuthorizedToDelete(getGroup());
 	}
+	
+	public boolean isShareItemsAvailable() {
+		return getGroupService().isCurrentUserOwnerOrAdministratorOrMemberOfGroup(getGroup());
+	}
 
 	public boolean isRequestJoinAvailable() {
 		try {
@@ -169,6 +173,10 @@ public class GroupOverviewController  {
 	
 	public String getGroupEditHref() {
 		return JsfUtils.getFullUrl(PagesURL.GROUP_EDIT, PagesURL.GROUP_EDIT_PARAM_GROUP_ID, getGroup().getId().toString());
+	}
+	
+	public String getGroupShareItemsHref() {
+		return JsfUtils.getFullUrl(PagesURL.GROUP_SHARE_ITEMS, PagesURL.GROUP_SHARE_ITEMS_PARAM_GROUP_ID, getGroup().getId().toString());
 	}
 	
 	public String getGroupMembersUrl() {

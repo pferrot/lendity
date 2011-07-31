@@ -11,6 +11,8 @@ public class GroupBanPersonTooltipController extends AbstractGroupMemberTooltipC
 
 	@Override
 	protected void process() throws GroupException {
+		getItemService().updateItemsRemoveGroupAuthorized(getPersonId(), getGroupId());
+		getNeedService().updateNeedsRemoveGroupAuthorized(getPersonId(), getGroupId());
 		getGroupService().updateGroupBanPerson(getGroupId(), getPersonId());
 	}
 	

@@ -172,6 +172,10 @@
 	    		<h:outputText rendered="#{groupOverviewController.editAvailable}" value="#{messages.navigation_editDetails}"/>
 	    	</h:outputLink>
 		</td><td>
+			<h:outputLink rendered="#{groupOverviewController.shareItemsAvailable}" value="#{groupOverviewController.groupShareItemsHref}" styleClass="stylishButton">
+	    		<h:outputText rendered="#{groupOverviewController.shareItemsAvailable}" value="#{messages.group_shareItemsButton}"/>
+	    	</h:outputLink>
+		</td><td>
 			<h:outputLink rendered="#{groupOverviewController.editAvailable}" value="#{groupOverviewController.groupEditPictureHref}" styleClass="stylishButton">
 	    		<h:outputText rendered="#{groupOverviewController.editAvailable}" value="#{messages.group_changeGroupPicture}"/>
 	    	</h:outputLink>

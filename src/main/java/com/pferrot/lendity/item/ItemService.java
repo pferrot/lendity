@@ -76,6 +76,17 @@ public class ItemService extends ObjektService {
 		return countItems(PersonUtils.getCurrentPersonId(), null, null, null, null, null, null, null);
 	}
 	
+	public List<Item> findAllItemsForPerson(final Long pPersonId) {
+		CoreUtils.assertNotNull(pPersonId);
+		
+		final ItemDaoQueryBean queryBean = new ItemDaoQueryBean();
+		queryBean.setOwnerIds(new Long[]{pPersonId});
+		queryBean.setFirstResult(0);
+		queryBean.setMaxResults(0);
+		
+		return itemDao.findItemsList(queryBean);		
+	}
+	
 	/**
 	 * Returns 5 random public items in the area of pOriginLatitude/pOriginLongitude.
 	 * 
@@ -594,6 +605,39 @@ public class ItemService extends ObjektService {
 			pItem.getThumbnail1().setPublik(pItem.isPublicVisibility());
 		}
  	}
+	
+	public void updateItemsRemoveGroupAuthorized(final Long pItemOwnerId, final Long pGroupId) {
+		CoreUtils.assertNotNull(pItemOwnerId);
+		CoreUtils.assertNotNull(pGroupId);
+		
+		final Group group = getGroupService().findGroup(pGroupId);
+		final List<Item> items = findAllItemsForPerson(pItemOwnerId);
+		
+		for (Item item: items) {
+			if (item.getGroupsAuthorized().contains(group)) {
+				assertCurrentUserAuthorizedToEdit(item);
+				item.removeGroupAuthorized(group);
+				updateItem(item);
+			}
+		}		
+	}
+	
+	public void updateItemsRemoveGroupAuthorized(final Long pGroupId) {
+		CoreUtils.assertNotNull(pGroupId);
+		
+		final Group group = getGroupService().findGroup(pGroupId);
+		
+		getGroupService().assertCurrentUserAuthorizedToEdit(group);
+		
+		final Set<Item> items = group.getItems();
+		
+		if (items != null) {
+			for (Item item: items) {
+				item.removeGroupAuthorized(group);
+				updateItem(item);
+			}
+		}
+	}
 	
 	/**
 	 * Returns the URL for image1 or null if no image1.

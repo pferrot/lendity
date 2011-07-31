@@ -1,0 +1,101 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle"><h:outputText value="#{messages.group_groupShareItemsTitle}" /></ui:define>
+	<ui:param name="contentHeader" value="#{messages.group_groupShareItemsTitle}" />
+
+		<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				
+				<!-- Group Share Items Form -->
+				<h2 class="gt-form-head"><h:outputText value="#{messages.group_groupShareItemsTitle}"/></h2>
+				<div class="gt-form gt-content-box">
+				
+				<f:view>
+
+					<h:form id="groupShareItemsForm" prependId="false">
+					
+					<div class="gt-form-row gt-width-100">
+						<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.group_title}:" /></label></div>
+						<h4><h:outputText value="#{groupShareItemsController.group.title}" /></h4>
+					</div>
+					<br/>
+
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<c:if test="#{not empty(groupShareItemsController.itemsSelectItems)}" var="itemsAvailable"/>
+						<c:if test="${itemsAvailable}">
+							<label><h:outputText value="#{messages.group_shareItems}"/></label>
+							<h:message styleClass="error" showSummary="true" showDetail="false"
+								for="sharedItems"></h:message>			
+							<t:selectManyCheckbox id="sharedItems" value="#{groupShareItemsController.sharedItemsIds}" styleClass="gt-form-element-checkbox" layout="pageDirection" layoutWidth="1" converter="javax.faces.Long">
+								<f:selectItems value="#{groupShareItemsController.itemsSelectItems}"/>
+							</t:selectManyCheckbox>		
+						</c:if>
+						<c:if test="${not itemsAvailable}">
+							<label><h:outputText value="#{messages.group_shareItemsNoItemAvailable}"/></label>
+						</c:if>
+					</div><!-- /form row -->
+					
+					<script type="text/javascript">
+						$j(document).ready(function() {
+							$j("input:checkbox").addClass('gt-form-element-checkbox');
+						});					
+					</script>
+					
+					<!-- form row -->
+					<div class="gt-form-row">
+						<br/>
+						<table class="buttonsTable"><tr><td>
+						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{groupShareItemsController.submit}" />
+						</td><td>
+						<h:outputLink styleClass="stylishButton"  value="#{groupShareItemsController.groupOverviewHref}">
+           					<h:outputText value="#{messages.navigation_cancel}"/>
+         				</h:outputLink>
+         				</td></tr></table>
+					</div>
+					<!-- /form row -->
+					
+					</h:form>
+				</f:view>		
+				</div>			
+				<!-- /Group Share Items Form -->
+				
+			</div>
+			<!-- /main content -->
+
+			<!-- sidebar -->
+			<div class="gt-sidebar">
+				
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

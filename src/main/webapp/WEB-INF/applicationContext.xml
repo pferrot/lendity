@@ -910,11 +910,15 @@
 	<bean id="deleteGroupTooltipController" class="com.pferrot.lendity.group.jsf.DeleteGroupTooltipController"
 	      scope="request">
 	      <property name="groupService" ref="groupService"/>
+	      <property name="itemService" ref="itemService"/>
+	      <property name="needService" ref="needService"/>
 	</bean>
 	
 	<bean id="groupRemoveMemberTooltipController" class="com.pferrot.lendity.group.jsf.GroupRemoveMemberTooltipController"
 	      scope="request">
 	      <property name="groupService" ref="groupService"/>
+	      <property name="itemService" ref="itemService"/>
+	      <property name="needService" ref="needService"/>
 	</bean>
 	
 	<bean id="groupRemoveAdminTooltipController" class="com.pferrot.lendity.group.jsf.GroupRemoveAdminTooltipController"
@@ -930,6 +934,8 @@
 	<bean id="groupBanPersonTooltipController" class="com.pferrot.lendity.group.jsf.GroupBanPersonTooltipController"
 	      scope="request">
 	      <property name="groupService" ref="groupService"/>
+	      <property name="itemService" ref="itemService"/>
+	      <property name="needService" ref="needService"/>
 	</bean>
 	
 	<bean id="groupUnbanPersonTooltipController" class="com.pferrot.lendity.group.jsf.GroupUnbanPersonTooltipController"
@@ -953,6 +959,12 @@
 	      scope="conversation.access">
 	      <property name="groupService" ref="groupService"/>
 	      <property name="documentService" ref="documentService"/>
+	</bean>
+	
+	<bean id="groupShareItemsController" class="com.pferrot.lendity.group.jsf.GroupShareItemsController"
+	      scope="conversation.access">
+	      <property name="groupService" ref="groupService"/>
+	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
 	<bean id="groupsListController" class="com.pferrot.lendity.group.jsf.GroupsListController"
@@ -1054,6 +1066,8 @@
 	<bean id="leaveGroupTooltipController" class="com.pferrot.lendity.groupjoinrequest.jsf.LeaveGroupTooltipController"
 	      scope="request">
 	      <property name="groupService" ref="groupService"/>
+	      <property name="itemService" ref="itemService"/>
+	      <property name="needService" ref="needService"/>
 	</bean>
 	
 	<bean id="requestGroupJoinTooltipController" class="com.pferrot.lendity.groupjoinrequest.jsf.RequestGroupJoinTooltipController"

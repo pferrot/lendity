@@ -327,7 +327,7 @@ public class PotentialConnectionService {
 						         to,
 						         null, 
 						         null,
-						         Configuration.getSiteName() + ": un ami potential a rejoint Lendity",
+						         Configuration.getSiteName() + ": un ami potentiel a rejoint Lendity",
 						         objects, 
 						         velocityTemplateLocation,
 						         inlineResources);					

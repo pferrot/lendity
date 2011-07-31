@@ -166,6 +166,8 @@ public class GroupService {
 		
 		pGroup.removeMember(pMemberToRemove);
 		groupDao.updateGroup(pGroup);
+		
+		// Remove shared items and needs.
 	}
 	
 	public void updateGroupUnbanPerson(final Long pGroupId, final Long pPersonToUnbanId) throws GroupException {

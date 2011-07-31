@@ -529,6 +529,11 @@ div.statusInfoOverview {
 	text-decoration: underline!important;
 }
 
+table.gt-form-element-checkbox label {
+	color: black;
+	font-weight: normal;	
+}
+
 div.blackBox200 {
 	background-image: url(../images/login/lineheadgrey.png);
 	background-repeat: repeat-x;

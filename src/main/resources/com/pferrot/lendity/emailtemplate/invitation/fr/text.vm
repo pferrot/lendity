@@ -1,12 +1,14 @@
-Hello,
+$personFirstName $personLastName te propose de le rejoindre sur LENDITY.CH, le réseau social suisse du prêt et de l'emprunt.
 
-J'utilise "lendity" depuis quelques temps et je t'envoie cette invitation car je pense que cela devrait t'intéresser.
+Sais-tu qu'autour de toi des milliers d'objets prennent la poussière dans les garages de tes amis et voisins? Pourquoi ne pas les emprunter au lieu de les acheter neufs et de ne les utiliser qu'une seule fois? Outils de jardinage, électroménager, livres, DVD, ...: tout s'emprunte sur LENDITY.CH.
 
-Lendity est un réseau social basé sur le principe du prêt et de l'emprunt. Une fois inscrit, tu pourras consulter les objets de tes amis (DVD, livres, outils,...) et emprunter ceux dont tu as besoin.
-Lendity te permet également de suivre les objets prêtés et de créer des inventaires.
+LENDITY.CH met à ta disposition tous les outils nécessaires pour emprunter des objets en toute simplicité et sécurité.
 
-Suis le lien suivant pour ouvrir un compte: $registrationUrl
+Tu trouveras $personFirstName $personLastNameMon sous le pseudo $personDisplayName, ajoute-le comme ami dès que tu seras inscrit.
 
-A bientôt sur $siteUrl.
+N'attends plus et rejoins-le sur LENDITY.CH !
 
-$firstName $lastName
+Lendity.ch /// Partager. Simplement.
+$siteUrl
+
+Tu as reçu cet e-mail parce que $personFirstName $personLastName ($personEmail) t'as invité à rejoindre Lendity.

@@ -51,6 +51,9 @@ public class PotentialConnectionsImportController  {
 	
 	private String googleToken;
 	public final static String GOOGLE_TOKEN_PARAMETER_NAME = "token";
+	
+	int nbConnectionRequestsSent = 0;
+	int nbInvitationsSent = 0;
 
 	public PotentialConnectionService getPotentialConnectionService() {
 		return potentialConnectionService;
@@ -238,6 +241,7 @@ public class PotentialConnectionsImportController  {
 			for (PotentialConnection pc: getPotential()) {
 				if (pc.isSelected() &&
 					getConnectionRequestService().isConnectionRequestAllowedFromCurrentUser(pc.getConnection())) {
+					nbConnectionRequestsSent++;
 					getConnectionRequestService().createConnectionRequestFromCurrentUser(pc.getConnection(), text);
 				}
 				getPotentialConnectionService().createOrUpdatePotentialConnection(pc);
@@ -258,6 +262,7 @@ public class PotentialConnectionsImportController  {
 		try {
 			for (PotentialConnection pc: getDoNotExist()) {
 				if (pc.isSelected()) {
+					nbInvitationsSent++;
 					getInvitationService().sendInvitation(PersonUtils.getCurrentPersonId(), pc.getEmail());
 					pc.setInvitationSentOn(new Date());
 					// Make source = invitation so that "reverse invitations" potential connections
@@ -293,18 +298,6 @@ public class PotentialConnectionsImportController  {
 		return JsfUtils.getFullUrl(PagesURL.INVITE_FRIENDS, PagesURL.INVITE_FRIENDS_PARAM_EMAIL, pc.getEmail());
 	}
 	
-	public String sendInvitation() {
-		try {
-			final PotentialConnection pc = (PotentialConnection)getDoNotExistTable().getRowData();
-			getInvitationService().sendInvitation(PersonUtils.getCurrentPersonId(), pc.getEmail());
-			pc.setInvitationSentOn(new Date());
-			return "success";
-		}
-		catch (InvitationException e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
 	public boolean isSendInvitationAvailable() {
 		final PotentialConnection pc = (PotentialConnection)getDoNotExistTable().getRowData();
 		return pc.getInvitationSentOn() == null;
@@ -335,16 +328,20 @@ public class PotentialConnectionsImportController  {
 	public String getCurrentPersonEmail() {
 		return getPersonService().getCurrentPerson().getEmail();
 	}
-	
-//	public String requestConnection() {
-//		try {
-//			final PotentialConnection pc = (PotentialConnection)getPotentialTable().getRowData();
-//			getConnectionRequestService().createConnectionRequestFromCurrentUser(pc.getConnection(), "TODO");
-//			return "success";
-//		}
-//		catch (ConnectionRequestException e) {
-//			throw new RuntimeException(e);
-//		}	
-//	}
-	
+
+	public int getNbConnectionRequestsSent() {
+		return nbConnectionRequestsSent;
+	}
+
+	public void setNbConnectionRequestsSent(int nbConnectionRequestsSent) {
+		this.nbConnectionRequestsSent = nbConnectionRequestsSent;
+	}
+
+	public int getNbInvitationsSent() {
+		return nbInvitationsSent;
+	}
+
+	public void setNbInvitationsSent(int nbInvitationsSent) {
+		this.nbInvitationsSent = nbInvitationsSent;
+	}	
 }

@@ -1,5 +1,6 @@
 package com.pferrot.lendity.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +34,7 @@ import com.pferrot.core.StringUtils;
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Audited
-public class Group implements CommentableWithOwner<GroupComment>, Ownable {
+public class Group implements CommentableWithOwner<GroupComment>, Ownable, Serializable {
 	
 	@Id @GeneratedValue
 	@Column(name = "ID")
@@ -110,6 +111,14 @@ public class Group implements CommentableWithOwner<GroupComment>, Ownable {
 			inverseJoinColumns = {@JoinColumn(name = "COMMENT_RECIPIENT_ID")}
 	)
 	private Set<Person> commentsRecipients = new HashSet<Person>();
+	
+	@ManyToMany(targetEntity = com.pferrot.lendity.model.Item.class,
+			mappedBy = "groupsAuthorized")
+	private Set<Item> items = new HashSet<Item>();
+	
+	@ManyToMany(targetEntity = com.pferrot.lendity.model.Need.class,
+			mappedBy = "groupsAuthorized")
+	private Set<Need> needs = new HashSet<Need>();
 	
 	@Column(name = "CREATION_DATE", nullable = false)
 	private Date creationDate;
@@ -282,6 +291,22 @@ public class Group implements CommentableWithOwner<GroupComment>, Ownable {
 
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	public Set<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<Item> items) {
+		this.items = items;
+	}
+
+	public Set<Need> getNeeds() {
+		return needs;
+	}
+
+	public void setNeeds(Set<Need> needs) {
+		this.needs = needs;
 	}
 
 	@Override

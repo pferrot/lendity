@@ -7,6 +7,9 @@ import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.group.GroupService;
+import com.pferrot.lendity.item.ItemService;
+import com.pferrot.lendity.need.NeedService;
+import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 
 public class LeaveGroupTooltipController implements Serializable {
@@ -14,6 +17,8 @@ public class LeaveGroupTooltipController implements Serializable {
 	private final static Log log = LogFactory.getLog(LeaveGroupTooltipController.class);
 	
 	private GroupService groupService;
+	private ItemService itemService;
+	private NeedService needService;
 	
 	private Long groupId;
 	
@@ -27,6 +32,22 @@ public class LeaveGroupTooltipController implements Serializable {
 
 	public void setGroupService(GroupService groupService) {
 		this.groupService = groupService;
+	}
+
+	public ItemService getItemService() {
+		return itemService;
+	}
+
+	public void setItemService(ItemService itemService) {
+		this.itemService = itemService;
+	}
+
+	public NeedService getNeedService() {
+		return needService;
+	}
+
+	public void setNeedService(NeedService needService) {
+		this.needService = needService;
 	}
 
 	public Long getGroupId() {
@@ -61,6 +82,8 @@ public class LeaveGroupTooltipController implements Serializable {
 
 	private void leaveGroup() {
 		try {
+			getItemService().updateItemsRemoveGroupAuthorized(PersonUtils.getCurrentPersonId(), getGroupId());
+			getNeedService().updateNeedsRemoveGroupAuthorized(PersonUtils.getCurrentPersonId(), getGroupId());
 			getGroupService().updateGroupRemoveCurrentUserFromMembersAndAdministrators(getGroupId());
 		} 
 		catch (Exception e) {

@@ -14,8 +14,10 @@ import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.model.PotentialConnection;
 import com.pferrot.lendity.person.PersonService;
+import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.potentialconnection.PotentialConnectionService;
 import com.pferrot.lendity.registration.RegistrationService;
+import com.pferrot.lendity.utils.JsfUtils;
 
 public class InvitationService {
 	
@@ -63,7 +65,7 @@ public class InvitationService {
 		CoreUtils.assertNotNull(pPersonId);
 		CoreUtils.assertNotNullOrEmptyString(pEmail);
 		
-		final Person pPerson = personService.findPerson(pPersonId);
+		final Person person = personService.findPerson(pPersonId);
 		
 		if (!getRegistrationService().isUsernameAvailable(pEmail)) {
 			throw new AlreadyUserInvitationException("Already user with username " + pEmail);
@@ -75,9 +77,11 @@ public class InvitationService {
 		
 		// Send email (will actually create a JMS message, i.e. it is async).
 		Map<String, String> objects = new HashMap<String, String>();
-		objects.put("firstName", pPerson.getFirstName());
-		objects.put("lastName", pPerson.getLastName());
-		objects.put("email", pEmail);
+		objects.put("personFirstName", person.getFirstName());
+		objects.put("personLastName", person.getLastName());
+		objects.put("personDisplayName", person.getDisplayName());
+		objects.put("personUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.PERSON_OVERVIEW, PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID, person.getId().toString()));
+		objects.put("personEmail", person.getEmail());
 		objects.put("registrationUrl", registrationLink.toString());
 		objects.put("signature", Configuration.getSiteName());
 		objects.put("siteName", Configuration.getSiteName());
@@ -90,14 +94,15 @@ public class InvitationService {
 		to.put(pEmail, pEmail);
 		
 		Map<String, String> inlineResources = new HashMap<String, String>();
-		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
+		//inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
+		inlineResources.put("logo_signature", "com/pferrot/lendity/emailtemplate/lendity_signature1.gif");
 		
-		mailManager.send(pPerson.getFirstName() + " " + pPerson.getLastName(), 
-				 		 pPerson.getEmail(),
+		mailManager.send(Configuration.getNoReplySenderName(), 
+		         		 Configuration.getNoReplyEmailAddress(),
 				         to,
 				         null, 
 				         null,
-				         Configuration.getSiteName() + ": invitation à ouvrir un compte",
+				         person.getFirstName() + " " + person.getLastName() + " t'invite à le rejoindre sur LENDITY.CH",
 				         objects, 
 				         velocityTemplateLocation,
 				         inlineResources);		

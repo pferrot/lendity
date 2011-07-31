@@ -212,8 +212,8 @@
 		<ul class="sf-menu2">
 		<li>
 		   <h:outputLink id="sideMenuMyConnectionsLink2" class="sideMenuLink" value="#{authenticationController.myConnectionsURL}">
-	             	  <h:outputText id="sideMenuMyConnectionsText2" value="#{messages.menu_myConnections}"/>
-	             </h:outputLink>
+	       	  <h:outputText id="sideMenuMyConnectionsText2" value="#{messages.menu_myConnections}"/>
+           </h:outputLink>
 		</li>
 		<li>
 			<o:separateConversationContext>
@@ -222,6 +222,11 @@
 		        </h:outputLink>
 	        </o:separateConversationContext>
 	    </li>
+	    <li>
+		   <h:outputLink id="sideMenuMyPotentialConnections" class="sideMenuLink" value="#{authenticationController.myPotentialConnectionsListURL}">
+	       		<h:outputText id="sideMenuMyPotentialConnectionsText" value="#{messages.menu_myPotentialConnections}"/>
+	       </h:outputLink>
+		</li>
 	    <li>
 		    <h:outputLink id="sideMenuPersonsLink" class="sideMenuLink" value="#{authenticationController.personsURL}">
 	            <h:outputText id="sideMenuPersonsText" value="#{messages.menu_persons}"/>

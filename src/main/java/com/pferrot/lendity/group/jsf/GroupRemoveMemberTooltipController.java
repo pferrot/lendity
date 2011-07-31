@@ -11,6 +11,8 @@ public class GroupRemoveMemberTooltipController extends AbstractGroupMemberToolt
 
 	@Override
 	protected void process() throws GroupException {
+		getItemService().updateItemsRemoveGroupAuthorized(getPersonId(), getGroupId());
+		getNeedService().updateNeedsRemoveGroupAuthorized(getPersonId(), getGroupId());
 		getGroupService().updateGroupRemoveMember(getGroupId(), getPersonId());
 	}
 	

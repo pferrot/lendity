@@ -16,7 +16,6 @@ import com.pferrot.lendity.dao.DocumentDao;
 import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.document.DocumentService;
 import com.pferrot.lendity.group.GroupService;
-import com.pferrot.lendity.login.jsf.AuthenticationController;
 import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
@@ -39,7 +38,6 @@ public abstract class ObjektService {
 	private DocumentDao documentDao;
 	private DocumentService documentService;
 	private GroupService groupService;
-	
 	
 	public GroupService getGroupService() {
 		return groupService;
