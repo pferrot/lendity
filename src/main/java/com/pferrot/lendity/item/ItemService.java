@@ -627,7 +627,7 @@ public class ItemService extends ObjektService {
 		
 		final Group group = getGroupService().findGroup(pGroupId);
 		
-		getGroupService().assertCurrentUserAuthorizedToEdit(group);
+		getGroupService().assertCurrentUserAuthorizedToDelete(group);
 		
 		final Set<Item> items = group.getItems();
 		

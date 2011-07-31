@@ -252,7 +252,6 @@ public class PotentialConnectionService {
 		if (!SecurityUtils.isLoggedIn()) {
 			throw new SecurityException("User not logged in.");
 		}
-		final Person currentPerson = getPersonService().getCurrentPerson();
 		
 		final PotentialConnectionDaoQueryBean queryBean = new PotentialConnectionDaoQueryBean();
 		queryBean.setPersonId(PersonUtils.getCurrentPersonId());
@@ -277,7 +276,6 @@ public class PotentialConnectionService {
 		try {
 			final PotentialConnectionDaoQueryBean queryBean = new PotentialConnectionDaoQueryBean();
 			queryBean.setEmail(pConnection.getEmail());
-			queryBean.setIgnored(Boolean.FALSE);
 			queryBean.setConnectionExists(Boolean.FALSE);
 			queryBean.setPersonEnabled(Boolean.TRUE);
 			
@@ -290,8 +288,9 @@ public class PotentialConnectionService {
 				pc.setDateFound(new Date());
 				updatePotentialConnection(pc);
 				
-				// Do not notify if person is disabled or do not want to receive those notifs.
-				if (!Boolean.TRUE.equals(person.getReceivePotentialConnectionNotif())) {
+				// Do not notify if person do not want to receive those notifs or potential connection is ignored.
+				if (!Boolean.TRUE.equals(person.getReceivePotentialConnectionNotif()) ||
+					Boolean.TRUE.equals(pc.getIgnored())) {
 					continue;
 				}
 				

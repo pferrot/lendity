@@ -452,8 +452,6 @@ public class NeedService extends ObjektService {
 		
 		final Group group = getGroupService().findGroup(pGroupId);
 		
-		getGroupService().assertCurrentUserAuthorizedToEdit(group);
-		
 		final List<Need> needs = findAllNeedsForPerson(pNeedOwnerId);
 		
 		for (Need need: needs) {
@@ -469,6 +467,8 @@ public class NeedService extends ObjektService {
 		CoreUtils.assertNotNull(pGroupId);
 		
 		final Group group = getGroupService().findGroup(pGroupId);
+		
+		getGroupService().assertCurrentUserAuthorizedToDelete(group);
 		
 		final Set<Need> needs = group.getNeeds();
 		
