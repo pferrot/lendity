@@ -525,7 +525,7 @@ public class GroupService {
 	}
 	
 	public boolean isCurrentUserMemberOfGroup(final Group pGroup) {
-		return isUserMemberOfGroup(getPersonService().getCurrentPerson(), pGroup);
+		return SecurityUtils.isLoggedIn() && isUserMemberOfGroup(getPersonService().getCurrentPerson(), pGroup);
 	}
 
 	public boolean isUserOwnerOrAdministratorOrMemberOfGroup(final Person pPerson, final Group pGroup) {
@@ -538,7 +538,7 @@ public class GroupService {
 	}
 	
 	public boolean isCurrentUserOwnerOrAdministratorOrMemberOfGroup(final Group pGroup) {
-		return isUserOwnerOrAdministratorOrMemberOfGroup(getPersonService().getCurrentPerson(), pGroup);
+		return SecurityUtils.isLoggedIn() && isUserOwnerOrAdministratorOrMemberOfGroup(getPersonService().getCurrentPerson(), pGroup);
 	}
 	
 	public void assertCurrentUserOwnerOrAdministratorOrMemberOfGroup(final Group pGroup) {
@@ -555,7 +555,7 @@ public class GroupService {
 	}
 	
 	public boolean isCurrentUserOwnerOfGroup(final Group pGroup) {
-		return isUserOwnerOfGroup(getPersonService().getCurrentPerson(), pGroup);
+		return SecurityUtils.isLoggedIn() && isUserOwnerOfGroup(getPersonService().getCurrentPerson(), pGroup);
 	}
 	
 	public void assertCurrentUserOwnerOfGroup(final Group pGroup) {
@@ -578,7 +578,7 @@ public class GroupService {
 	}
 	
 	public boolean isCurrentUserAdministratorOfGroup(final Group pGroup) {
-		return isUserAdministratorOfGroup(getPersonService().getCurrentPerson(), pGroup);
+		return SecurityUtils.isLoggedIn() && isUserAdministratorOfGroup(getPersonService().getCurrentPerson(), pGroup);
 	}
 	
 	public void assertCurrentUserAdministratorOfGroup(final Group pGroup) {
@@ -601,7 +601,7 @@ public class GroupService {
 	}
 
 	public boolean isCurrentUserBannedByGroup(final Group pGroup) {
-		return isUserBannedByGroup(getPersonService().getCurrentPerson(), pGroup);
+		return SecurityUtils.isLoggedIn() && isUserBannedByGroup(getPersonService().getCurrentPerson(), pGroup);
 	}
 	
 	public void assertCurrentUserBannedByGroup(final Group pGroup) {
