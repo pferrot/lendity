@@ -101,6 +101,15 @@ public class PotentialConnectionDaoHibernateImpl extends HibernateDaoSupport imp
 			criteria.add(Restrictions.ilike("source", pQueryBean.getSource(), MatchMode.EXACT));
 		}
 		
+		if (pQueryBean.getInvitationSent() != null) {
+			if (pQueryBean.getInvitationSent().booleanValue()) {
+				criteria.add(Restrictions.isNotNull("invitationSentOn"));
+			}
+			else {
+				criteria.add(Restrictions.isNull("invitationSentOn"));
+			}
+		}
+		
 		if (pQueryBean.getIgnored() != null) {
 			criteria.add(Restrictions.eq("ignored", pQueryBean.getIgnored()));
 		}

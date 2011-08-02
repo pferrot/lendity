@@ -11,6 +11,7 @@ public class PotentialConnectionDaoQueryBean {
 	private String source = null;
 	private Boolean ignored = null;	
 	private Boolean connectionExists = null;
+	private Boolean invitationSent = null;
 	
 	private Boolean alreadyConnected = null;
 	private Long[] personConnectionsIds = null; 
@@ -88,6 +89,14 @@ public class PotentialConnectionDaoQueryBean {
 
 	public void setConnectionExists(Boolean connectionExists) {
 		this.connectionExists = connectionExists;
+	}
+
+	public Boolean getInvitationSent() {
+		return invitationSent;
+	}
+
+	public void setInvitationSent(Boolean invitationSent) {
+		this.invitationSent = invitationSent;
 	}
 
 	public Boolean getAlreadyConnected() {
