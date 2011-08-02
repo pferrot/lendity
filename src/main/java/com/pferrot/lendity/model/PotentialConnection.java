@@ -66,6 +66,8 @@ public class PotentialConnection implements Serializable {
 	private Long personId;
 	@Transient
 	private Long connectionId;
+	@Transient
+	private Date invitationAlreadySentOn;
 	
     public PotentialConnection() {
     	super();
@@ -173,6 +175,14 @@ public class PotentialConnection implements Serializable {
 
 	public void setConnectionId(Long connectionId) {
 		this.connectionId = connectionId;
+	}
+
+	public Date getInvitationAlreadySentOn() {
+		return invitationAlreadySentOn;
+	}
+
+	public void setInvitationAlreadySentOn(Date invitationAlreadySentOn) {
+		this.invitationAlreadySentOn = invitationAlreadySentOn;
 	}
 
 	@Override
