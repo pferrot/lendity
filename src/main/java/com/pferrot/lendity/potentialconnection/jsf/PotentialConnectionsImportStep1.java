@@ -164,6 +164,15 @@ public class PotentialConnectionsImportStep1 extends AbstractPotentialConnection
 			pc.setIgnored(Boolean.FALSE);
 			pc.setSource(pSource);
 			if (connection == null) {
+				final Date invitationAlreadySentOn = getPotentialConnectionService().getInvitationSentOnDate(PersonUtils.getCurrentPersonId(), email);
+				// Try to not spam people and not resend invitations to the same persons.
+				if (invitationAlreadySentOn != null) {
+					pc.setSelected(false);
+					pc.setInvitationAlreadySentOn(invitationAlreadySentOn);
+				}
+				else {
+					pc.setSelected(true);
+				}
 				doNotExist.add(pc);
 			}
 			else {

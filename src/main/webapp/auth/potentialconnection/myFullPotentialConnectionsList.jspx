@@ -88,8 +88,11 @@
 
     <h:column id="column2">
     		<h:outputText value="#{potentialConnection.email}" />
-    		<br/>
+    		<h:outputText value="#{messages.html_br}" rendered="#{potentialConnection.name != null}" escape="false"/>
     		<h:outputText value="#{potentialConnection.name}" rendered="#{potentialConnection.name != null}"/>
+    		<h:outputText value="#{messages.html_br}" rendered="#{potentialConnection.invitationSentOn != null}" escape="false"/>
+    		<h:outputText value="#{messages.potentialConnection_invitationSentOn}: " rendered="#{potentialConnection.invitationSentOn != null}"/>
+    		<h:outputText value="#{myFullPotentialConnectionsListController.invitationSentOnLabel}" rendered="#{potentialConnection.invitationSentOn != null}"/>
     </h:column>
     
     <h:column id="column3">

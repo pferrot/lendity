@@ -100,6 +100,13 @@
 										<h:outputText value="#{messages.person_name}"/>
 									</f:facet>
 									<h:outputText value="#{potentialConnection.name}" />
+							    </h:column>	
+							    <h:column id="potentialColumn3">
+							    	<i>
+										<h:outputFormat value="#{messages.potentialConnection_invitationAlreadySentOn}" rendered="#{potentialConnection.invitationAlreadySentOn != null}" styleClass="fontSizeSmallSmall">
+											<f:param value="#{potentialConnectionsImportController.invitationAlreadySentOnLabel}"/>
+										</h:outputFormat>
+									</i>
 							    </h:column>						    
 						    </h:dataTable>
 						</div>

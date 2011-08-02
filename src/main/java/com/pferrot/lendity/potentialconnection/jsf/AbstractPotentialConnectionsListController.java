@@ -1,5 +1,6 @@
 package com.pferrot.lendity.potentialconnection.jsf;
 
+import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.potentialconnection.PotentialConnectionConsts;
 import com.pferrot.lendity.potentialconnection.PotentialConnectionService;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.lendity.utils.UiUtils;
 import com.pferrot.security.SecurityUtils;
 
 public abstract class AbstractPotentialConnectionsListController extends AbstractListController {
@@ -171,5 +173,17 @@ public abstract class AbstractPotentialConnectionsListController extends Abstrac
 	public boolean isIgnored() {
 		final PotentialConnection pc = (PotentialConnection)getTable().getRowData();
 		return Boolean.TRUE.equals(pc.getIgnored());
+	}
+	
+	public String getInvitationSentOnLabel() {
+		final PotentialConnection pc = (PotentialConnection)getTable().getRowData();
+		final Date date = pc.getInvitationSentOn(); 
+		if (date == null) {
+			return "";
+		}
+		else {
+			return UiUtils.getDateAsString(date, I18nUtils.getDefaultLocale());
+		}
+		
 	}
 }

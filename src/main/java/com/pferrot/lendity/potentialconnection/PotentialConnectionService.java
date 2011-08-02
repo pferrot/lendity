@@ -114,7 +114,8 @@ public class PotentialConnectionService {
 			return createPotentialConnection(refreshedPC);
 		}
 		else {
-			if (refreshedPC.getInvitationSentOn() != null && existingPC.getInvitationSentOn() == null) {
+			// Remember the date of the latest invitation.
+			if (refreshedPC.getInvitationSentOn() != null) {
 				existingPC.setInvitationSentOn(refreshedPC.getInvitationSentOn());
 			}
 			if (PotentialConnection.SOURCE_INVITATION.equals(refreshedPC.getSource()) &&
@@ -370,5 +371,27 @@ public class PotentialConnectionService {
 			createPotentialConnection(reversePC);
 		}	
 	}
-	
+
+	public boolean isInvitationSentAlready(final Long pFromPersonId, final String pToEmail) {
+		return getInvitationSentOnDate(pFromPersonId, pToEmail) != null;
+	}
+
+	public Date getInvitationSentOnDate(final Long pFromPersonId, final String pToEmail) {
+		CoreUtils.assertNotNull(pFromPersonId);
+		CoreUtils.assertNotNullOrEmptyString(pToEmail);
+		
+		final PotentialConnectionDaoQueryBean queryBean = new PotentialConnectionDaoQueryBean();
+		queryBean.setPersonId(pFromPersonId);
+		queryBean.setEmail(pToEmail);
+		queryBean.setInvitationSent(Boolean.TRUE);
+		
+		final List<PotentialConnection> l = getPotentialConnectionDao().findPotentialConnectionsList(queryBean);
+		if (l == null || l.isEmpty()) {
+			return null;
+		}
+		else {
+			final PotentialConnection pc = l.get(0);
+			return pc.getInvitationSentOn();
+		}
+	}
 }

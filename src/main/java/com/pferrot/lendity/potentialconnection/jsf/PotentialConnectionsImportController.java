@@ -23,6 +23,7 @@ import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.potentialconnection.PotentialConnectionService;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.lendity.utils.UiUtils;
 import com.pferrot.security.SecurityUtils;
 
 public class PotentialConnectionsImportController  {
@@ -343,5 +344,16 @@ public class PotentialConnectionsImportController  {
 
 	public void setNbInvitationsSent(int nbInvitationsSent) {
 		this.nbInvitationsSent = nbInvitationsSent;
-	}	
+	}
+	
+	public String getInvitationAlreadySentOnLabel() {
+		final PotentialConnection pc = (PotentialConnection)getDoNotExistTable().getRowData();
+		final Date date = pc.getInvitationAlreadySentOn();
+		if (date == null) {
+			return "";
+		}
+		else {
+			return UiUtils.getDateAsString(date, I18nUtils.getDefaultLocale());
+		}
+	}
 }
