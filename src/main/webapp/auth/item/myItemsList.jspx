@@ -210,6 +210,20 @@
 						<h:outputText id="currentlyLentText" value="#{messages.item_currentlyLent}" rendered="#{myItemsListController.borrowed}"/>
 					</h:outputLink>
 				</span>
+				<h:outputText value="#{messages.html_br}" escape="false" rendered="#{myItemsListController.alloCineQueryUrlAvailable}"/>
+				<h:outputText value="#{messages.html_br}" escape="false" rendered="#{myItemsListController.alloCineQueryUrlAvailable}"/>
+				<o:separateConversationContext>
+					<h:outputLink value="#{myItemsListController.alloCineQueryUrl}" target="_blank" rendered="#{myItemsListController.alloCineQueryUrlAvailable}">
+						<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/allocine_35.png" class="qtipTitle"  title="#{messages.item_allocineTooltip}"/>
+					</h:outputLink>
+				</o:separateConversationContext>
+				<h:outputText value="#{messages.html_br}" escape="false" rendered="#{myItemsListController.bibliopocheQueryUrlAvailable}"/>
+				<h:outputText value="#{messages.html_br}" escape="false" rendered="#{myItemsListController.bibliopocheQueryUrlAvailable}"/>
+				<o:separateConversationContext>
+					<h:outputLink value="#{myItemsListController.bibliopocheQueryUrl}" target="_blank" rendered="#{myItemsListController.bibliopocheQueryUrlAvailable}">
+						<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/bibliopoche_25.gif" class="qtipTitle"  title="#{messages.item_bibliopocheTooltip}"/>
+					</h:outputLink>
+				</o:separateConversationContext>
 			</td>
 			</tr>
 		</table>

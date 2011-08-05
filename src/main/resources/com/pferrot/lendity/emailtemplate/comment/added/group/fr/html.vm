@@ -1,0 +1,15 @@
+#include("com/pferrot/lendity/emailtemplate/html_header.vm")
+
+Bonjour $firstName,<br/><br/>
+
+Un commentaire a été ajouté sur le groupe <a href="$objectUrl">$objectTitle</a>:<br/><br/>
+
+<b>$commentEscaped</b><br/><br/>
+
+Tu peux répondre à ce commentaire depuis <a href="$objectUrl">cette page</a>.<br/><br/>
+
+A bientôt sur <a href="$siteUrl">$siteName</a>.<br/>
+
+<br/><span style="font-size: 80%;">Afin de ne plus recevoir cet email, mets à jour <a href="$profileUrl">ton profil.</a></span>
+
+#include("com/pferrot/lendity/emailtemplate/html_footer.vm")

@@ -162,6 +162,14 @@
 			<h:outputText value=" " escape="false" />
 			<h:outputText value="#{messages.person_receiveCommentsOnCommentedNotif}"/>
 			<br/>
+			<h:selectBooleanCheckbox id="receiveCommentsOnGroupsAdminNotifications" value="#{theBean.person.receiveCommentsOnGroupsAdminNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
+			<h:outputText value=" " escape="false" />
+			<h:outputText value="#{messages.person_receiveCommentsOnGroupsAdminNotif}"/>
+			<br/>
+			<h:selectBooleanCheckbox id="receiveCommentsOnGroupsMemberNotifications" value="#{theBean.person.receiveCommentsOnGroupsMemberNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
+			<h:outputText value=" " escape="false" />
+			<h:outputText value="#{messages.person_receiveCommentsOnGroupsMemberNotif}"/>
+			<br/>
 			<h:selectBooleanCheckbox id="receiveNewsletter" value="#{theBean.person.receiveNewsletter}" styleClass="gt-form-element-checkbox" disabled="true"/>
 			<h:outputText value=" " escape="false" />
 			<h:outputText value="#{messages.person_receiveNewsletter}"/>

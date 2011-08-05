@@ -1,0 +1,13 @@
+Bonjour $firstName,
+
+Un commentaire a été ajouté sur le groupe $objectTitle:
+
+$comment
+
+Tu peux répondre à ce commentaire en visitant la page suivante: $objectUrl
+
+A bientôt sur $siteName.
+
+$siteUrl
+
+Afin de ne plus recevoir cet email, mets à jour ton profil: $profileUrl

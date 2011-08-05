@@ -27,6 +27,7 @@ import com.pferrot.lendity.lendtransaction.LendTransactionService;
 import com.pferrot.lendity.lendtransaction.exception.LendTransactionException;
 import com.pferrot.lendity.lendtransaction.jsf.AbstractLendTransactionsListController;
 import com.pferrot.lendity.model.Item;
+import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.LendTransaction;
 import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.person.PersonUtils;
@@ -345,5 +346,25 @@ public class ItemOverviewController extends AbstractObjektOverviewController {
 		else {
 			return nb > 0;
 		}
+	}
+	
+	public boolean isAlloCineQueryUrlAvailable() {
+		String categoryCode = getItem().getCategory().getLabelCode(); 
+		return ItemCategory.BLURAY_LABEL_CODE.equals(categoryCode) ||
+			   ItemCategory.DVD_LABEL_CODE.equals(categoryCode);
+	}
+	
+	public String getAlloCineQueryUrl() {
+		return ItemUtils.getAlloCineQueryUrl(getItem().getTitle());
+	}
+	
+	public boolean isBibliopocheQueryUrlAvailable() {
+		String categoryCode = getItem().getCategory().getLabelCode(); 
+		return ItemCategory.BOOK_LABEL_CODE.equals(categoryCode) ||
+			   ItemCategory.COMICS_LABEL_CODE.equals(categoryCode);
+	}
+	
+	public String getBibliopocheQueryUrl() {
+		return ItemUtils.getBibliopocheQueryUrl(getItem().getTitle());
 	}
 }

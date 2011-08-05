@@ -162,6 +162,14 @@ public class Person implements Serializable {
 	@Column(name = "RECEIVE_COM_COM_NOTIF", nullable = false)
 	private Boolean receiveCommentsOnCommentedNotif;
 	
+	// Receive notifications when comments on groups I administer are added.
+	@Column(name = "RECEIVE_COM_GROUPS_ADMIN_NOTIF", nullable = false)
+	private Boolean receiveCommentsOnGroupsAdminNotif;
+	
+	// Receive notifications when comments on groups I am member of are added.
+	@Column(name = "RECEIVE_COM_GROUPS_MEMBER_NOTIF", nullable = false)
+	private Boolean receiveCommentsOnGroupsMemberNotif;
+	
 	// Receive notifications when potential connections join Lendity.
 	@Column(name = "RECEIVE_POT_CON_NOTIF", nullable = false)
 	private Boolean receivePotentialConnectionNotif;
@@ -446,6 +454,24 @@ public class Person implements Serializable {
 	public void setReceiveCommentsOnCommentedNotif(
 			Boolean receiveCommentsOnCommentedNotif) {
 		this.receiveCommentsOnCommentedNotif = receiveCommentsOnCommentedNotif;
+	}
+
+	public Boolean getReceiveCommentsOnGroupsAdminNotif() {
+		return receiveCommentsOnGroupsAdminNotif;
+	}
+
+	public void setReceiveCommentsOnGroupsAdminNotif(
+			Boolean receiveCommentsOnGroupsAdminNotif) {
+		this.receiveCommentsOnGroupsAdminNotif = receiveCommentsOnGroupsAdminNotif;
+	}
+
+	public Boolean getReceiveCommentsOnGroupsMemberNotif() {
+		return receiveCommentsOnGroupsMemberNotif;
+	}
+
+	public void setReceiveCommentsOnGroupsMemberNotif(
+			Boolean receiveCommentsOnGroupsMemberNotif) {
+		this.receiveCommentsOnGroupsMemberNotif = receiveCommentsOnGroupsMemberNotif;
 	}
 
 	public Boolean getReceivePotentialConnectionNotif() {

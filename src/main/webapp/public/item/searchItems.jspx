@@ -157,7 +157,7 @@
 			<h:outputLink id="overviewLink2" value="#{searchItemsListController.itemOverviewHref}">
 				<h:outputText id="title" value="#{item.title}" />
 			</h:outputLink>
-		</h4>
+		</h4>			
 		</td></tr></table>
     </h:column>
 
@@ -219,6 +219,20 @@
 					<h:outputLink id="requestLendNotAllowedNotLoggedInLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
 						<h:outputText id="requestLendNotAllowedNotLoggedIn" value="#{messages.lendRequest_requestNotAllowedNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
 					</h:outputLink>
+					<h:outputText value="#{messages.html_br}" escape="false" rendered="#{searchItemsListController.alloCineQueryUrlAvailable}"/>
+					<h:outputText value="#{messages.html_br}" escape="false" rendered="#{searchItemsListController.alloCineQueryUrlAvailable}"/>
+					<o:separateConversationContext>
+						<h:outputLink value="#{searchItemsListController.alloCineQueryUrl}" target="_blank" rendered="#{searchItemsListController.alloCineQueryUrlAvailable}">
+							<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/allocine_35.png" class="qtipTitle"  title="#{messages.item_allocineTooltip}"/>
+						</h:outputLink>
+					</o:separateConversationContext>
+					<h:outputText value="#{messages.html_br}" escape="false" rendered="#{searchItemsListController.bibliopocheQueryUrlAvailable}"/>
+					<h:outputText value="#{messages.html_br}" escape="false" rendered="#{searchItemsListController.bibliopocheQueryUrlAvailable}"/>
+					<o:separateConversationContext>
+						<h:outputLink value="#{searchItemsListController.bibliopocheQueryUrl}" target="_blank" rendered="#{searchItemsListController.bibliopocheQueryUrlAvailable}">
+							<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/bibliopoche_25.gif" class="qtipTitle"  title="#{messages.item_bibliopocheTooltip}"/>
+						</h:outputLink>
+					</o:separateConversationContext>
 				</td>
 		    </tr>
 		</table>

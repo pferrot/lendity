@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.faces.component.html.HtmlSelectOneMenu;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +27,7 @@ import com.pferrot.lendity.lendtransaction.LendTransactionService;
 import com.pferrot.lendity.lendtransaction.exception.LendTransactionException;
 import com.pferrot.lendity.lendtransaction.jsf.AbstractLendTransactionsListController;
 import com.pferrot.lendity.model.Item;
+import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.LendTransaction;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -408,5 +408,29 @@ public abstract class AbstractItemsListController extends AbstractObjektsListCon
 			getOwnerType() != null ||
 			getVisibilityId() != null ||
 			getOrderBy() != null;
+	}
+	
+	public boolean isAlloCineQueryUrlAvailable() {
+		final Item item = (Item)getTable().getRowData();
+		String categoryCode = item.getCategory().getLabelCode(); 
+		return ItemCategory.BLURAY_LABEL_CODE.equals(categoryCode) ||
+			   ItemCategory.DVD_LABEL_CODE.equals(categoryCode);
+	}
+	
+	public String getAlloCineQueryUrl() {
+		final Item item = (Item)getTable().getRowData();
+		return ItemUtils.getAlloCineQueryUrl(item.getTitle());
+	}
+	
+	public boolean isBibliopocheQueryUrlAvailable() {
+		final Item item = (Item)getTable().getRowData();
+		String categoryCode = item.getCategory().getLabelCode(); 
+		return ItemCategory.BOOK_LABEL_CODE.equals(categoryCode) ||
+			   ItemCategory.COMICS_LABEL_CODE.equals(categoryCode);
+	}
+	
+	public String getBibliopocheQueryUrl() {
+		final Item item = (Item)getTable().getRowData();
+		return ItemUtils.getBibliopocheQueryUrl(item.getTitle());
 	}
 }

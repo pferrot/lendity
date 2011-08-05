@@ -189,7 +189,21 @@
 				<td>
 					<span onclick="requestLendTooltip(this, '#{item.id}', 4)">
 						<h:outputText id="requestLendLabel" styleClass="stylishButton" value="#{messages.lendRequest_requestLend}" rendered="#{personItemsListController.requestLendAvailable}"/>
-					</span>	
+					</span>
+					<h:outputText value="#{messages.html_br}" escape="false" rendered="#{personItemsListController.alloCineQueryUrlAvailable}"/>
+					<h:outputText value="#{messages.html_br}" escape="false" rendered="#{personItemsListController.alloCineQueryUrlAvailable}"/>
+					<o:separateConversationContext>
+						<h:outputLink value="#{personItemsListController.alloCineQueryUrl}" target="_blank" rendered="#{personItemsListController.alloCineQueryUrlAvailable}">
+							<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/allocine_35.png" class="qtipTitle"  title="#{messages.item_allocineTooltip}"/>
+						</h:outputLink>
+					</o:separateConversationContext>
+					<h:outputText value="#{messages.html_br}" escape="false" rendered="#{personItemsListController.bibliopocheQueryUrlAvailable}"/>
+					<h:outputText value="#{messages.html_br}" escape="false" rendered="#{personItemsListController.bibliopocheQueryUrlAvailable}"/>
+					<o:separateConversationContext>
+						<h:outputLink value="#{personItemsListController.bibliopocheQueryUrl}" target="_blank" rendered="#{personItemsListController.bibliopocheQueryUrlAvailable}">
+							<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/bibliopoche_25.gif" class="qtipTitle"  title="#{messages.item_bibliopocheTooltip}"/>
+						</h:outputLink>
+					</o:separateConversationContext>
 				</td>
 		    </tr>
 		</table>

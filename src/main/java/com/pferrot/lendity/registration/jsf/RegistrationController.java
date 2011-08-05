@@ -243,6 +243,8 @@ public class RegistrationController {
 			person.setEmailSubscriber(Boolean.TRUE);
 			person.setReceiveNeedsNotifications(Boolean.TRUE);
 			person.setReceiveCommentsOnCommentedNotif(Boolean.TRUE);
+			person.setReceiveCommentsOnGroupsAdminNotif(Boolean.TRUE);
+			person.setReceiveCommentsOnGroupsMemberNotif(Boolean.TRUE);
 			person.setReceivePotentialConnectionNotif(Boolean.TRUE);
 			person.setReceiveCommentsOnOwnNotif(Boolean.TRUE);
 			person.setReceiveNewsletter(Boolean.TRUE);

@@ -17,7 +17,6 @@ import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.dao.bean.PersonDaoQueryBean;
 import com.pferrot.lendity.group.GroupService;
 import com.pferrot.lendity.group.exception.GroupException;
-import com.pferrot.lendity.item.jsf.ItemOverviewController;
 import com.pferrot.lendity.model.ConnectionRequestResponse;
 import com.pferrot.lendity.model.Country;
 import com.pferrot.lendity.model.Gender;
@@ -313,6 +312,8 @@ public class InitialData {
 		person.setReceiveCommentsOnCommentedNotif(Boolean.FALSE);
 		person.setReceivePotentialConnectionNotif(Boolean.FALSE);
 		person.setReceiveCommentsOnOwnNotif(Boolean.FALSE);
+		person.setReceiveCommentsOnGroupsAdminNotif(Boolean.FALSE);
+		person.setReceiveCommentsOnGroupsMemberNotif(Boolean.FALSE);
 		person.setReceiveNewsletter(Boolean.FALSE);
 		person.setDetailsVisibility((PersonDetailsVisibility)listValueDao.findListValue(PersonDetailsVisibility.PRIVATE));
 		person.setEnabled(Boolean.TRUE);

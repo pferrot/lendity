@@ -43,6 +43,8 @@ public abstract class AbstractPersonAddEditController {
 	private Boolean receiveCommentsOnOwnNotif;
 	private Boolean receiveCommentsOnCommentedNotif;
 	private Boolean receivePotentialConnectionNotif;
+	private Boolean receiveCommentsOnGroupsAdminNotif;
+	private Boolean receiveCommentsOnGroupsMemberNotif;
 	private Boolean receiveNewsletter;
 
 	private List<SelectItem> detailsVisibilitySelectItems;
@@ -225,6 +227,24 @@ public abstract class AbstractPersonAddEditController {
 	public void setReceivePotentialConnectionNotif(
 			Boolean receivePotentialConnectionNotif) {
 		this.receivePotentialConnectionNotif = receivePotentialConnectionNotif;
+	}
+
+	public Boolean getReceiveCommentsOnGroupsAdminNotif() {
+		return receiveCommentsOnGroupsAdminNotif;
+	}
+
+	public void setReceiveCommentsOnGroupsAdminNotif(
+			Boolean receiveCommentsOnGroupsAdminNotif) {
+		this.receiveCommentsOnGroupsAdminNotif = receiveCommentsOnGroupsAdminNotif;
+	}
+
+	public Boolean getReceiveCommentsOnGroupsMemberNotif() {
+		return receiveCommentsOnGroupsMemberNotif;
+	}
+
+	public void setReceiveCommentsOnGroupsMemberNotif(
+			Boolean receiveCommentsOnGroupsMemberNotif) {
+		this.receiveCommentsOnGroupsMemberNotif = receiveCommentsOnGroupsMemberNotif;
 	}
 
 	public Boolean getReceiveNewsletter() {

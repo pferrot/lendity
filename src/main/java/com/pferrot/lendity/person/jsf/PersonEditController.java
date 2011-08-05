@@ -89,6 +89,8 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		setReceiveNeedsNotifications(pPerson.getReceiveNeedsNotifications());
 		setReceiveCommentsOnCommentedNotif(pPerson.getReceiveCommentsOnCommentedNotif());
 		setReceivePotentialConnectionNotif(pPerson.getReceivePotentialConnectionNotif());
+		setReceiveCommentsOnGroupsAdminNotif(pPerson.getReceiveCommentsOnGroupsAdminNotif());
+		setReceiveCommentsOnGroupsMemberNotif(pPerson.getReceiveCommentsOnGroupsMemberNotif());
 		setReceiveCommentsOnOwnNotif(pPerson.getReceiveCommentsOnOwnNotif());
 		setReceiveNewsletter(pPerson.getReceiveNewsletter());
 		
@@ -114,6 +116,8 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		getPerson().setReceiveNeedsNotifications(getReceiveNeedsNotifications());
 		getPerson().setReceiveCommentsOnCommentedNotif(getReceiveCommentsOnCommentedNotif());
 		getPerson().setReceivePotentialConnectionNotif(getReceivePotentialConnectionNotif());
+		getPerson().setReceiveCommentsOnGroupsAdminNotif(getReceiveCommentsOnGroupsAdminNotif());
+		getPerson().setReceiveCommentsOnGroupsMemberNotif(getReceiveCommentsOnGroupsMemberNotif());
 		getPerson().setReceiveCommentsOnOwnNotif(getReceiveCommentsOnOwnNotif());
 		getPerson().setReceiveNewsletter(getReceiveNewsletter());
 		

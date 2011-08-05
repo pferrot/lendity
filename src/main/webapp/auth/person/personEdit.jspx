@@ -188,6 +188,18 @@
 						<h:outputText value="#{messages.person_receiveCommentsOnCommentedNotif}"/>
 						<br/>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="receiveCommentsOnGroupsAdminNotif"></h:message>
+						<h:selectBooleanCheckbox id="receiveCommentsOnGroupsAdminNotif" value="#{personEditController.receiveCommentsOnGroupsAdminNotif}" styleClass="gt-form-element-checkbox"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputText value="#{messages.person_receiveCommentsOnGroupsAdminNotif}"/>
+						<br/>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="receiveCommentsOnGroupsMemberNotif"></h:message>
+						<h:selectBooleanCheckbox id="receiveCommentsOnGroupsMemberNotif" value="#{personEditController.receiveCommentsOnGroupsMemberNotif}" styleClass="gt-form-element-checkbox"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputText value="#{messages.person_receiveCommentsOnGroupsMemberNotif}"/>
+						<br/>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="receiveNewsletter"></h:message>
 						<h:selectBooleanCheckbox id="receiveNewsletter" value="#{personEditController.receiveNewsletter}" styleClass="gt-form-element-checkbox"/>
 						<h:outputText value=" " escape="false" />

@@ -367,8 +367,7 @@ public class CommentService {
 		group.addCommentRecipient(groupComment.getOwner());
 		groupService.updateGroup(group);
 		
-		// TODO send notification to whom!?
-		//sendCommentAddedNotificationToAll(groupComment);
+		sendCommentAddedOnGroupNotificationToAll(groupComment);
 		
 		return commentID;
 	}
@@ -527,6 +526,47 @@ public class CommentService {
 		}
 		
 	}
+	
+	/**
+	 * Send notifications to owner, administrators and members (if they want to receive notifications).
+	 *
+	 * @param pComment
+	 * @throws CommentException
+	 */
+	private void sendCommentAddedOnGroupNotificationToAll(final GroupComment pComment) throws CommentException {
+		final Group group = pComment.getGroup();
+		final Person owner = group.getOwner();
+		
+		if (owner != null &&
+			owner.isEnabled() &&
+			Boolean.TRUE.equals(owner.getReceiveCommentsOnGroupsAdminNotif()) &&
+			!owner.getId().equals(pComment.getOwner().getId())) {
+			sendCommentAddedNotificationToOnePerson(pComment, owner);
+		}
+		
+		final Set<Person> admins = group.getAdministrators();
+		if (admins != null) {
+			for (Person admin: admins) {
+				if (admin.isEnabled() &&
+						Boolean.TRUE.equals(admin.getReceiveCommentsOnGroupsAdminNotif()) &&
+						!admin.getId().equals(pComment.getOwner().getId())) {
+					sendCommentAddedNotificationToOnePerson(pComment, admin);
+				}
+			}
+		}
+		
+		final Set<Person> members = group.getMembers();
+		if (members != null) {
+			for (Person member: members) {
+				if (member.isEnabled() &&
+						Boolean.TRUE.equals(member.getReceiveCommentsOnGroupsMemberNotif()) &&
+						!member.getId().equals(pComment.getOwner().getId())) {
+					sendCommentAddedNotificationToOnePerson(pComment, member);
+				}
+			}
+		}
+		
+	}
 
 	/**
 	 * Send the notification to one particular person.
@@ -572,6 +612,15 @@ public class CommentService {
 						PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID,
 						lendTransaction.getId().toString()));
 				velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/comment/added/lendtransaction/fr";
+			}
+			else if (commentable instanceof Group) {
+				final Group group = (Group)commentable;
+				objects.put("objectTitle", group.getTitle());
+				objects.put("objectUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
+						PagesURL.GROUP_OVERVIEW,
+						PagesURL.GROUP_OVERVIEW_PARAM_GROUP_ID,
+						group.getId().toString()));
+				velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/comment/added/group/fr";
 			}
 			else {
 				throw new CommentException("Unhandled commentabe type " + commentable.getClass());

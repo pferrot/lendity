@@ -1,5 +1,8 @@
 package com.pferrot.lendity.item;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import com.pferrot.core.CoreUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -54,5 +57,25 @@ public class ItemUtils {
 	 */
 	public static String getItemsListUrl() {		
 		return JsfUtils.getFullUrl(PagesURL.ITEMS_LIST);
+	}
+	
+	public static String getAlloCineQueryUrl(final String pTitle) {
+		try {
+			CoreUtils.assertNotNull(pTitle);
+			return "http://www.allocine.fr/recherche/?q=" + URLEncoder.encode(pTitle, "UTF-8");
+		}
+		catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static String getBibliopocheQueryUrl(final String pTitle) {
+		try {
+			CoreUtils.assertNotNull(pTitle);
+			return "http://www.bibliopoche.com/recherche_simple.php?clef=" + URLEncoder.encode(pTitle, "ISO-8859-1") + "&methode=titre&nbRes=300&b=0";
+		}
+		catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

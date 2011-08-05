@@ -263,7 +263,21 @@
 					<h:outputText styleClass="stylishButton" value="#{messages.item_delete}"/>
 				</span>
 			</c:if>
-		</td></tr></table>	
+		</td></tr></table>
+		<c:if test="#{itemOverviewController.alloCineQueryUrlAvailable}">
+			<o:separateConversationContext>
+				<h:outputLink value="#{itemOverviewController.alloCineQueryUrl}" target="_blank">
+					<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/allocine_50.png" class="qtipTitle"  title="#{messages.item_allocineTooltip}"/>
+				</h:outputLink>			
+			</o:separateConversationContext>
+		</c:if>	
+		<c:if test="#{itemOverviewController.bibliopocheQueryUrlAvailable}">
+			<o:separateConversationContext>
+				<h:outputLink value="#{itemOverviewController.bibliopocheQueryUrl}" target="_blank">
+					<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/bibliopoche_35.gif" class="qtipTitle"  title="#{messages.item_bibliopocheTooltip}"/>
+				</h:outputLink>			
+			</o:separateConversationContext>
+		</c:if>	
 		<c:if test="#{itemOverviewController.facebookLikeButtonAvailable}">
 			<br/> 
 			<c:if test="#{configuration.facebookLikeEnabledNotStatic}"> 
