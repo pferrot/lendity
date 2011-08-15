@@ -16,4 +16,9 @@ public class MyProfileController extends PersonOverviewController {
 	public boolean isShowLinksToObjekts() {
 		return false;
 	}
+
+	@Override
+	public boolean isShowConnectionsAndGroups() {
+		return false;
+	}
 }

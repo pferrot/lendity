@@ -12,6 +12,7 @@ import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.core.StringUtils;
+import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -34,6 +35,7 @@ public class SearchItemsListController extends AbstractItemsListController {
 	}
 
 	@InitView
+	@Override
 	public void initView() {		
 		final String orderBy = JsfUtils.getRequestParameter(FORCE_VIEW_PARAM_NAME);
 		if (FORCE_VIEW_ALL_BY_CREATION_DATE_VALUE.equals(orderBy)) {
@@ -47,7 +49,8 @@ public class SearchItemsListController extends AbstractItemsListController {
 			resetFilters();
 			setSearchString(searchString);
 			return;
-		}		
+		}
+		super.initView();
 	}
 
 	@Override
@@ -73,5 +76,10 @@ public class SearchItemsListController extends AbstractItemsListController {
 			setBorrowStatusSelectItemsInternal(result);
 		}		
 		return getBorrowStatusSelectItemsInternal();	
+	}
+	
+	@Override
+	protected String getCategoryLinkBaseUrl() {
+		return JsfUtils.getFullUrl(PagesURL.ITEMS_SEARCH, PagesURL.ITEMS_SEARCH_PARAM_CATEGORY_ID, PagesURL.ITEMS_SEARCH_PARAM_CATEGORY_ID_TO_REPLACE);
 	}
 }

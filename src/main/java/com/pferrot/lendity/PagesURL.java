@@ -206,6 +206,8 @@ public interface PagesURL {
 	String MY_LENT_ITEMS_LIST = "/auth/item/myLentItemsList.faces";
 	String MY_BORROWED_ITEMS_LIST = "/auth/item/myBorrowedItemsList.faces";
 	String ITEMS_SEARCH = "/public/item/searchItems.faces";
+	String ITEMS_SEARCH_PARAM_CATEGORY_ID = "categoryID";
+	String ITEMS_SEARCH_PARAM_CATEGORY_ID_TO_REPLACE = "THE_CATEGORY_ID";
 	String PERSON_ITEMS_LIST = "/public/item/personItemsList.faces";
 	String PERSON_ITEMS_LIST_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;
 	
@@ -225,6 +227,8 @@ public interface PagesURL {
 	
 	String MY_NEEDS_LIST = "/auth/need/myNeedsList.faces";
 	String NEEDS_SEARCH = "/public/need/searchNeeds.faces";
+	String NEEDS_SEARCH_PARAM_CATEGORY_ID = ITEMS_SEARCH_PARAM_CATEGORY_ID;
+	String NEEDS_SEARCH_PARAM_CATEGORY_ID_TO_REPLACE = ITEMS_SEARCH_PARAM_CATEGORY_ID_TO_REPLACE;
 	String PERSON_NEEDS_LIST = "/public/need/personNeedsList.faces";
 	String PERSON_NEEDS_LIST_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;
 	

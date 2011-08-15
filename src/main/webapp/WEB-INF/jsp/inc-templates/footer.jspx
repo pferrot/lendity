@@ -9,7 +9,7 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
     			
 		<!-- footer -->
-		<div class="gt-footer clearfix"><div class="gt-footer-inner clearfix">
+		<div id="footerMainDiv" class="gt-footer clearfix"><div class="gt-footer-inner clearfix">
 			<p>&#169; 2010-2011<h:outputText id="footerText12" value=" " escape="false" /><h:outputText id="siteNameFooter" value="#{configuration.siteNameNotStatic}"/>
 				<h:outputText id="footerText0" value=" " escape="false" />|<h:outputText id="footerText1" value=" " escape="false" />
 				<o:separateConversationContext>

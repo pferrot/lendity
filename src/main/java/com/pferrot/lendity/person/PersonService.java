@@ -305,12 +305,12 @@ public class PersonService {
 
 	public ListWithRowCount findConnections(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNull(pPersonId);
-		return personDao.findPersons(pPersonId, PersonDao.CONNECTIONS_LINK, pSearchString, Boolean.FALSE, Boolean.TRUE, null, null, null, null, null, null, pFirstResult, pMaxResults);
+		return personDao.findPersons(pPersonId, PersonDao.CONNECTIONS_LINK, pSearchString, Boolean.TRUE, Boolean.TRUE, null, null, null, null, null, null, pFirstResult, pMaxResults);
 	}
 	
 	public List<Person> findConnectionsList(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {
 		CoreUtils.assertNotNull(pPersonId); 
-		return personDao.findPersonsList(pPersonId, PersonDao.CONNECTIONS_LINK, pSearchString, Boolean.FALSE, Boolean.TRUE, null, null, null, null, null, null, pFirstResult, pMaxResults);
+		return personDao.findPersonsList(pPersonId, PersonDao.CONNECTIONS_LINK, pSearchString, Boolean.TRUE, Boolean.TRUE, null, null, null, null, null, null, pFirstResult, pMaxResults);
 	}
 	
 	public long countConnections(final Long pPersonId, final String pSearchString) {
@@ -320,7 +320,7 @@ public class PersonService {
 		queryBean.setConnectionLink(PersonDao.CONNECTIONS_LINK);
 		queryBean.setEnabled(Boolean.TRUE);
 		queryBean.setSearchString(pSearchString);
-		queryBean.setEmailExactMatch(Boolean.FALSE);
+		queryBean.setEmailExactMatch(Boolean.TRUE);
 		return personDao.countPersons(queryBean);
 	}
 	

@@ -240,6 +240,48 @@ span.linkStyleAction:hover {
 	color: #ff9900;
 }
 
+.categoryLink {
+	font-size:85%!important;	
+}
+
+.categoryLink:hover {
+	color: #ffffff!important;
+	background-color: #ff9900!important;
+}
+
+.categoryLinkActive {
+	background-color: #ff6600!important;
+	color: #ffffff!important;
+	font-size:85%!important;	
+}
+
+.categoryLinkActive:hover {
+	background-color: #ff9900!important;	
+}
+
+div.categoriesAndContentContainer {
+	position: relative;
+	height: 1000px;	
+}
+
+div.categoriesDiv {
+	position: absolute;
+	top: 25px;
+	left: 0;
+	width: 160px;
+	border-color: #ff9900;
+	padding: 3px;
+	border-width: 0px;
+	border-style: solid;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;	
+}
+
+div.contentDivNextToCategories {
+	float: right;
+	width: 800px;	
+}
+
 .fontSizeNormal {
 	font-size:100%!important;
 }

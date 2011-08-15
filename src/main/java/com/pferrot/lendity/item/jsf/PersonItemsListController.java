@@ -68,6 +68,7 @@ public class PersonItemsListController extends AbstractItemsListController {
 			setPersonId(Long.valueOf(personIdString));
 			setPersonDisplayName(getPersonService().findPersonDisplayName(getPersonId()));
 		}
+		super.initView();
 	}
 
 	@Override
@@ -96,5 +97,10 @@ public class PersonItemsListController extends AbstractItemsListController {
 				PagesURL.PERSON_OVERVIEW,
 				PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID,
 				getPersonId().toString());
+	}
+	
+	@Override
+	protected String getCategoryLinkBaseUrl() {
+		return JsfUtils.getFullUrl(PagesURL.PERSON_ITEMS_LIST, PagesURL.ITEMS_SEARCH_PARAM_CATEGORY_ID, PagesURL.ITEMS_SEARCH_PARAM_CATEGORY_ID_TO_REPLACE);
 	}
 }

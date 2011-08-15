@@ -16,12 +16,13 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.pferrot.core.StringUtils;
+import com.pferrot.lendity.i18n.HrefLinkComparator;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.i18n.SelectItemComparator;
 import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.OrderedListValue;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.utils.bean.HrefLink;
 
 public class UiUtils {
 	
@@ -74,7 +75,43 @@ public class UiUtils {
 			result.add(0, itemToPlaceFirst);
 		}
 		return result; 
+	}
+	
+	/**
+	 * 
+	 * @param pList
+	 * @param pLocale
+	 * @param pItemToPlaceFirst
+	 * @param pBaseUrl
+	 * @return
+	 */
+	public static List<HrefLink> getHrefLinksForListValueWithItemFirst(final List<ListValue> pList,
+			final Locale pLocale,
+			final String pItemToPlaceFirst,
+			final String pBaseUrl,
+			final String pValueToReplaceWithId) {
+		if (pList == null) {
+			return Collections.EMPTY_LIST;
+		}
+		final TreeSet<HrefLink> treeSet = new TreeSet<HrefLink>(new HrefLinkComparator());
+		HrefLink itemToPlaceFirst = null;
+		for (ListValue lv: pList) {			
+			final HrefLink hl = new HrefLink(pBaseUrl.replace(pValueToReplaceWithId, lv.getId().toString()), I18nUtils.getMessageResourceString(lv.getLabelCode(), pLocale));
+			if (lv.getLabelCode().equals(pItemToPlaceFirst)) {
+				itemToPlaceFirst = hl;
+			}
+			else {
+				treeSet.add(hl);
+			}			
+		}
+		final List result = new ArrayList<HrefLink>();
+		result.addAll(treeSet);
+		if (itemToPlaceFirst != null) {
+			result.add(0, itemToPlaceFirst);
+		}
+		return result; 
 	}	
+	
 	
 
 	/**

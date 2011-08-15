@@ -1,9 +1,12 @@
 package com.pferrot.lendity.person.jsf;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Locale;
 
+import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,8 +19,9 @@ import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
 import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
 import com.pferrot.lendity.geolocation.GeoLocationUtils;
 import com.pferrot.lendity.geolocation.googlemaps.GoogleMapsUtils;
-import com.pferrot.lendity.i18n.I18nConsts;
+import com.pferrot.lendity.group.GroupService;
 import com.pferrot.lendity.i18n.I18nUtils;
+import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
@@ -31,10 +35,22 @@ public class PersonOverviewController implements Serializable {
 	
 	private final static Log log = LogFactory.getLog(PersonOverviewController.class);
 	
+	private final static String CONNECTIONS_LIST_LOADED_ATTRIBUTE_NAME = "usersListLoaded";
+	private final static String GROUPS_LIST_LOADED_ATTRIBUTE_NAME = "groupsListLoaded";
+	
+	protected final static String LIST_LOADED_ATTRIBUTE_VALUE = "true";
+	
 	private PersonService personService;
+	private GroupService groupService;
 	private ConnectionRequestService connectionRequestService;
 	private Long personId;
 	private Person person;
+	
+	private List connectionsList;
+	private HtmlDataTable connectionsTable;
+	
+	private List groupsList;
+	private HtmlDataTable groupsTable;
 	
 	@InitView
 	public void initView() {
@@ -68,10 +84,22 @@ public class PersonOverviewController implements Serializable {
 	protected String getPersonIdString() {
 		return JsfUtils.getRequestParameter(PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID);
 	}
+	
+	public PersonService getPersonService() {
+		return personService;
+	}
 
 	public void setPersonService(final PersonService pPersonService) {
 		this.personService = pPersonService;
 	}
+
+	public GroupService getGroupService() {
+		return groupService;
+	}
+
+	public void setGroupService(GroupService groupService) {
+		this.groupService = groupService;
+	}	
 
 	public void setConnectionRequestService(
 			ConnectionRequestService connectionRequestService) {
@@ -216,4 +244,67 @@ public class PersonOverviewController implements Serializable {
 	public String getBirthdateLabel() {
 		return I18nUtils.getSimpleDateFormat().format(getPerson().getBirthdate());
 	}
+
+	public HtmlDataTable getConnectionsTable() {
+		return connectionsTable;
+	}
+
+	public void setConnectionsTable(HtmlDataTable connectionsTable) {
+		this.connectionsTable = connectionsTable;
+	}
+	
+	public List getConnectionsList() {		
+		HttpServletRequest request = JsfUtils.getRequest();
+		if (FacesContext.getCurrentInstance().getRenderResponse()
+			&& ! LIST_LOADED_ATTRIBUTE_VALUE.equals(
+					request.getAttribute(CONNECTIONS_LIST_LOADED_ATTRIBUTE_NAME))) {	
+				connectionsList = getPersonService().findConnectionsList(personId, null, 0, 0);	
+				request.setAttribute(CONNECTIONS_LIST_LOADED_ATTRIBUTE_NAME, LIST_LOADED_ATTRIBUTE_VALUE);
+		}
+        return connectionsList;
+	}
+	
+	public String getConnectionOverviewHref() {
+		final Person person = (Person)getConnectionsTable().getRowData();
+		return PersonUtils.getPersonOverviewPageUrl(person.getId().toString()); 
+	}
+	
+	public String getConnectionThumbnail1Src() {
+		final Person person = (Person)getConnectionsTable().getRowData();
+		return getPersonService().getProfileThumbnailSrc(person, true);
+	}
+
+	public HtmlDataTable getGroupsTable() {
+		return groupsTable;
+	}
+
+	public void setGroupsTable(HtmlDataTable groupsTable) {
+		this.groupsTable = groupsTable;
+	}
+	
+	public List getGroupsList() {		
+		HttpServletRequest request = JsfUtils.getRequest();
+		if (FacesContext.getCurrentInstance().getRenderResponse()
+			&& ! LIST_LOADED_ATTRIBUTE_VALUE.equals(
+					request.getAttribute(GROUPS_LIST_LOADED_ATTRIBUTE_NAME))) {	
+				groupsList =  getGroupService().findPersonGroupsWhereOwnerOrAdministratorOrMemberList(personId, null, 0, 0);	
+				request.setAttribute(GROUPS_LIST_LOADED_ATTRIBUTE_NAME, LIST_LOADED_ATTRIBUTE_VALUE);
+		}
+        return groupsList;
+	}
+	
+	public String getGroupOverviewHref() {
+		final Group group = (Group)getGroupsTable().getRowData();
+		return JsfUtils.getFullUrl(PagesURL.GROUP_OVERVIEW, PagesURL.GROUP_OVERVIEW_PARAM_GROUP_ID, group.getId().toString());	
+	}
+	
+	public String getGroupThumbnail1Src() {
+		final Group group = (Group)getGroupsTable().getRowData();
+		return getGroupService().getGroupThumbnail1Src(group, true);
+	}
+	
+	public boolean isShowConnectionsAndGroups() {
+		return true;
+	}
+	
 }

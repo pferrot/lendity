@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.faces.component.html.HtmlDataTable;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
@@ -11,6 +12,8 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.pferrot.core.StringUtils;
+import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.geolocation.GeoLocationUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemConsts;
@@ -22,7 +25,9 @@ import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.model.Ownable;
 import com.pferrot.lendity.model.VisibilityEnabled;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
+import com.pferrot.lendity.utils.bean.HrefLink;
 
 public abstract class AbstractObjektsListController extends AbstractListController {
 	
@@ -30,6 +35,9 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 	
 	private List<SelectItem> categoriesSelectItems;
 	private Long categoryId;
+	
+	private List<HrefLink> categoriesHrefLinksList;
+	private HtmlDataTable categoriesHrefLinksTable;
 	
 	private List<SelectItem> orderBySelectItems;
 	// null = by title ascending
@@ -50,6 +58,19 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 	public AbstractObjektsListController() {
 		super();
 		setRowsPerPage(ItemConsts.NB_ITEMS_PER_PAGE);
+	}
+	
+	public void initView() {
+		final String categoryIdString = JsfUtils.getRequestParameter(PagesURL.ITEMS_SEARCH_PARAM_CATEGORY_ID);
+		if (!StringUtils.isNullOrEmpty(categoryIdString)) {
+			final Long categoryIdLong = Long.parseLong(categoryIdString);
+			if (categoryIdLong.longValue() > 0) {
+				setCategoryId(categoryIdLong);
+			}
+			else {
+				setCategoryId(null);
+			}
+		}
 	}
 	
 	@Override
@@ -193,6 +214,45 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 			categoriesSelectItems.add(0, getAllCategoriesSelectItem(locale));
 		}		
 		return categoriesSelectItems;	
+	}
+	
+	public HtmlDataTable getCategoriesHrefLinksTable() {
+		return categoriesHrefLinksTable;
+	}
+
+	public void setCategoriesHrefLinksTable(HtmlDataTable categoriesHrefLinksTable) {
+		this.categoriesHrefLinksTable = categoriesHrefLinksTable;
+	}
+
+	public List getCategoriesHrefLinksList() {
+		if (categoriesHrefLinksList == null) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			categoriesHrefLinksList = UiUtils.getHrefLinksForListValueWithItemFirst(getObjektService().getCategories(), locale, ItemCategory.OTHER_LABEL_CODE, getCategoryLinkBaseUrl(), PagesURL.ITEMS_SEARCH_PARAM_CATEGORY_ID_TO_REPLACE);
+			// Add all categories first.
+			categoriesHrefLinksList.add(0, getAllCategoriesHrefLink(locale));
+		}		
+		return categoriesHrefLinksList;	
+	}
+
+	protected abstract String getCategoryLinkBaseUrl();
+	
+	private HrefLink getAllCategoriesHrefLink(final Locale pLocale) {
+		final String label = I18nUtils.getMessageResourceString("item_categoryAll", pLocale);
+		final HrefLink hl = new HrefLink(getCategoryLinkBaseUrl().replace(PagesURL.ITEMS_SEARCH_PARAM_CATEGORY_ID_TO_REPLACE, "0"), label);
+		return hl;
+	}
+	
+	public String getCategoryLinkStyleClass() {
+		final HrefLink hl = (HrefLink)getCategoriesHrefLinksTable().getRowData();
+		final Long categoryId = getCategoryId();
+		if ((categoryId != null && hl.getUrl().indexOf(PagesURL.ITEMS_SEARCH_PARAM_CATEGORY_ID + "=" + categoryId.toString()) > 0) ||
+		    (categoryId == null && hl.getUrl().indexOf(PagesURL.ITEMS_SEARCH_PARAM_CATEGORY_ID + "=0") > 0)) {
+			return "categoryLinkActive";
+		}
+		else {
+			return "categoryLink";
+		}
+		
 	}
 
 	private SelectItem getAllCategoriesSelectItem(final Locale pLocale) {

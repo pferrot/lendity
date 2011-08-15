@@ -1,5 +1,6 @@
 var mCurrentServletPath;
 var mCurrentSubMenuId;
+var mActiveSubMenuId;
 var mCurrentMenuLinkId;
 var ownItem = false;
 var subMenusToMenuLinksMap = new Object();
@@ -12,6 +13,8 @@ subMenusToMenuLinksMap.divSubMenuLendTransactions = 'menuMyLendTransactionsLink'
 subMenusToMenuLinksMap.divSubMenuConnections = 'menuMyConnectionsLink';
 subMenusToMenuLinksMap.divSubMenuGroups = 'menuMyGroupsLink';
 subMenusToMenuLinksMap.divSubMenuProfile = 'menuProfileLink';
+
+var mCurrentSubMenuTimeout;
 
 
 var menuLinksArray = ['menuHomeLink', 'menuHomeLink2', 'menuMyItemsLink', 'menuMyBorrowedItemsLink', 'menuMyNeedsLink', 'menuMyLendTransactionsLink', 'menuMyConnectionsLink', 'menuMyGroupsLink', 'menuProfileLink'];
@@ -203,17 +206,25 @@ function menuProfileOver() {
 
 function menuOver(pSubMenuId) {
 	var index;
+	mActiveSubMenuId = pSubMenuId;
 	for (var i = 0; i < subMenusArray.length; i++) {
-		var subMenu = subMenusArray[i];
+		var subMenu = subMenusArray[i];		
 		if (pSubMenuId == subMenu) {
 			$j('#' + subMenu).show();
+			if (subMenu != mCurrentSubMenuId) {
+				var linkId = subMenusToMenuLinksMap[subMenu];
+				$j('#' + linkId).addClass('highlightedMenu3');
+			}
 		}
 		else {
 			$j('#' + subMenu).hide();
+			var linkId = subMenusToMenuLinksMap[subMenu];
+			$j('#' + linkId).removeClass('highlightedMenu3');
 		}
 	}
 }
 
+/*
 function menuOut() {
 	for (var i = 0; i < subMenusArray.length; i++) {
 		var subMenu = subMenusArray[i];
@@ -222,8 +233,22 @@ function menuOut() {
 		}
 		else {
 			$j('#' + subMenu).hide();
+			var linkId = subMenusToMenuLinksMap[subMenu];
+			$j('#' + linkId).removeClass('highlightedMenu3');
 		}
 	}
+}
+*/
+
+function menuOut() {
+	var id = mActiveSubMenuId;
+	mActiveSubMenuId = undefined;
+	// Reset the timeout in case there was one already.
+	if (mCurrentSubMenuTimeout) {
+		clearTimeout(mCurrentSubMenuTimeout);
+	}
+	var hideWithTimeout = setTimeout("hideSubmenuWithTimeout('" + id + "')", 2000);
+	mCurrentSubMenuTimeout = hideWithTimeout;
 }
 
 function subMenuConfig(pSubMenuId) {
@@ -238,13 +263,31 @@ function subMenuConfig(pSubMenuId) {
 				menuOver(id);
 			});
 			$j('#' + subMenu).mouseout(function() {
+				mActiveSubMenuId = undefined;
 				var id = $j(this).attr('id');
-				var linkId = subMenusToMenuLinksMap[id];
-				$j('#' + linkId).removeClass('highlightedMenu3');
-				$j(this).hide();
-				menuOver(mCurrentSubMenuId);
+				// Reset the timeout in case there was one already.
+				if (mCurrentSubMenuTimeout) {
+					clearTimeout(mCurrentSubMenuTimeout);
+					//subMenusToTimeoutMap[id] = undefined;
+				}
+				//alert(id);
+				var hideWithTimeout = setTimeout("hideSubmenuWithTimeout('" + id + "')", 2000);
+				mCurrentSubMenuTimeout = hideWithTimeout;
 			});
 		}
+	}
+}
+
+function hideSubmenuWithTimeout(pId) {
+	var linkId = subMenusToMenuLinksMap[pId];
+	// Do not hide if the mouse was over and then back over the div.
+	if (mActiveSubMenuId === undefined) {
+		$j('#' + linkId).removeClass('highlightedMenu3');
+		$j('#' + pId).hide();
+		menuOver(mCurrentSubMenuId);
+	}
+	if (mActiveSubMenuId != pId) {
+		$j('#' + linkId).removeClass('highlightedMenu3');	
 	}
 }
 

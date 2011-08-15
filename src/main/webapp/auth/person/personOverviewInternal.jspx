@@ -227,7 +227,87 @@
 </div>
 <!-- /content box -->
 
-					
+<c:if test="#{theBean.showConnectionsAndGroups}">
+<br/><br/>
+
+<script type="text/javascript">
+$j(document).ready(function() {
+	$j('.thubnailImageHome').each(function(pIndex, pElement) {
+		if ($j(pElement).height() > 30) {
+			$j(pElement).height(30);
+		}
+	});
+});
+</script>
+<table style="width: 100%;"><tr><td style="width: 50%; vertical-align: top; padding-right: 5px;">
+	<div class="gt-form gt-content-box" style="height: 300px; overflow: auto;">	
+		<div class="highlightedBg">
+			<label class="small">
+				<h:outputFormat value="#{messages.person_personConnections}">
+					<f:param value="#{theBean.person.displayName}"/>
+				</h:outputFormat>
+			</label>
+		</div>
+		<h:dataTable value="#{theBean.connectionsList}" binding="#{theBean.connectionsTable}" var="connection" styleClass="gt-table gt-user-table">							
+			<h:column id="personColumn1">
+		    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+					<table class="thumbnailInnerTable"><tr><td>
+						<h:outputLink id="personOverviewLink1" value="#{theBean.connectionOverviewHref}" rendered="#{theBean.connectionThumbnail1Src != null}">
+							<div class="thumbnailDiv">
+							    <img class="thubnailImageHome" src="#{theBean.connectionThumbnail1Src}"/>
+							</div>
+						</h:outputLink>
+					</td></tr></table>
+				</td><td>
+					<h:outputLink id="personLink" value="#{theBean.connectionOverviewHref}">
+						<h:outputText id="personDisplayName" value="#{connection.displayName}" />
+					</h:outputLink>
+				</td></tr></table>
+		    </h:column>	
+		</h:dataTable>
+		<center>
+			<c:if test="#{empty(theBean.connectionsList)}">
+				<h:outputText value="#{messages.person_personConnectionsNone}"/>
+				<br/><br/>
+			</c:if>
+		</center>
+	</div>
+</td>
+<td style="width: 50%; vertical-align: top; padding-left: 5px;">
+	<div class="gt-form gt-content-box" style="height: 300px; overflow: auto;">
+		<div class="highlightedBg">
+			<label class="small">
+				<h:outputFormat value="#{messages.person_personGroups}">
+					<f:param value="#{theBean.person.displayName}"/>
+				</h:outputFormat>
+			</label>
+		</div>
+		<h:dataTable value="#{theBean.groupsList}" binding="#{theBean.groupsTable}" var="group" styleClass="gt-table gt-user-table">		
+		    <h:column id="groupColumn1">
+		    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+					<table class="thumbnailInnerTable"><tr><td>
+						<h:outputLink id="groupOverviewLink1" value="#{theBean.groupOverviewHref}" rendered="#{theBean.groupThumbnail1Src != null}">
+							<div class="thumbnailDiv">
+							    <img class="thubnailImageHome" src="#{theBean.groupThumbnail1Src}"/>
+							</div>
+						</h:outputLink>
+					</td></tr></table>
+				</td><td>
+					<h:outputLink id="groupLink" value="#{theBean.groupOverviewHref}">
+						<h:outputText id="groupDisplayName" value="#{group.title}" />
+					</h:outputLink>
+				</td></tr></table>
+		    </h:column>	
+		</h:dataTable>
+		<center>
+			<c:if test="#{empty(theBean.groupsList)}">
+				<h:outputText value="#{messages.person_personGroupsNone}"/>
+				<br/><br/>
+			</c:if>
+		</center>
+	</div>
+</td></tr></table>
+</c:if>
 				</f:view>	
 			
 			</div>

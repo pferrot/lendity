@@ -57,6 +57,7 @@ public class PersonNeedsListController extends AbstractNeedsListController {
 			setPersonId(Long.valueOf(personIdString));
 			setPersonDisplayName(getPersonService().findPersonDisplayName(getPersonId()));
 		}
+		super.initView();
 	}
 
 	@Override
@@ -70,5 +71,10 @@ public class PersonNeedsListController extends AbstractNeedsListController {
 				PagesURL.PERSON_OVERVIEW,
 				PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID,
 				getPersonId().toString());
+	}
+	
+	@Override
+	protected String getCategoryLinkBaseUrl() {
+		return JsfUtils.getFullUrl(PagesURL.PERSON_NEEDS_LIST, PagesURL.NEEDS_SEARCH_PARAM_CATEGORY_ID, PagesURL.NEEDS_SEARCH_PARAM_CATEGORY_ID_TO_REPLACE);
 	}
 }

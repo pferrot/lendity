@@ -38,8 +38,8 @@
 			<value>Lendity</value>
 		</property>		
 		<property name="rootURL">
-			<value>http://www.lendity.ch</value>
-<!--			<value>http://golgoth14.dyndns.org:8080/lendity</value>-->
+<!--			<value>http://www.lendity.ch</value>-->
+			<value>http://golgoth14.dyndns.org:8080/lendity</value>
 		</property>
 		<property name="noReplyEmailAddress">
 			<value>no_reply@lendity.ch</value>
@@ -60,12 +60,12 @@
 			<value>18</value>
 		</property>
 		<property name="facebookLikeEnabled">
-			<value>true</value>
-<!--			<value>false</value>-->
+<!--			<value>true</value>-->
+			<value>false</value>
 		</property>
 		<property name="googleAnalyticsId">
-			<value>UA-21747604-2</value>
-<!--			<value>UA-21747604-3</value>-->
+<!--			<value>UA-21747604-2</value>-->
+			<value>UA-21747604-3</value>
 		</property>
 		<property name="categoriesNotAllowedPublicVisibility">
 			<set>
@@ -635,12 +635,14 @@
 	<bean id="myProfileController" class="com.pferrot.lendity.person.jsf.MyProfileController"
 	      scope="conversation.access">
 	      <property name="personService" ref="personService"/>
+	      <property name="groupService" ref="groupService"/>
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
 	
 	<bean id="personOverviewController" class="com.pferrot.lendity.person.jsf.PersonOverviewController"
 	      scope="conversation.access">
 	      <property name="personService" ref="personService"/>
+	      <property name="groupService" ref="groupService"/>
 	      <property name="connectionRequestService" ref="connectionRequestService"/>
 	</bean>
 	

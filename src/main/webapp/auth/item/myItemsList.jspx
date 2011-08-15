@@ -23,8 +23,21 @@
 			<ui:define name="pageContent">
 			
 			<!-- body -->
-			<div class="gt-bd gt-cols clearfix">
-
+			<div class="gt-bd gt-cols clearfix categoriesAndContentContainer">
+			
+			<div class="categoriesDiv">
+				<h:dataTable value="#{myItemsListController.categoriesHrefLinksList}" var="categoryHrefLink" binding="#{myItemsListController.categoriesHrefLinksTable}" style="width: 100%;">
+					<h:column>
+						<div style="height: 20px!important;">
+							<h:outputLink value="#{categoryHrefLink.url}" styleClass="#{myItemsListController.categoryLinkStyleClass}">
+								<h:outputText value="#{categoryHrefLink.label}"/>
+							</h:outputLink>
+						</div>
+					</h:column>
+				</h:dataTable>
+			</div>
+			
+			<div class="contentDivNextToCategories">
 				
 <f:view>
 
@@ -149,7 +162,7 @@
     </h:column>
     
 	<h:column id="column2">
-		<table border="0" class="gt-table-categories" width="300" align="right">
+		<table border="0" class="gt-table-categories" width="220" align="right">
 			<tr>
 			    <th width="50%"><h:outputText id="id_1" value="#{messages.item_category}:" /></th>
 				<td width="50%"><h:outputText id="id_2" value="#{myItemsListController.categoryLabel}"/></td>
@@ -199,7 +212,7 @@
     </h:column>
 
 	<h:column id="column3">
-		<table border="0" class="gt-table-categories" width="150" align="right">
+		<table border="0" class="gt-table-categories" width="120" align="right">
 			<tr>
 			<td>
 				<span onclick="lendItemTooltip(this, '#{item.id}', 1)">
@@ -239,6 +252,7 @@
 </div><!-- /content box -->
 
 </f:view>
+</div>
 
 			</div>
 			<!-- /body -->

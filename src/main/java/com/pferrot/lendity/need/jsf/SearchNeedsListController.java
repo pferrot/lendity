@@ -6,6 +6,7 @@ import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.core.StringUtils;
+import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.utils.JsfUtils;
 
@@ -40,6 +41,7 @@ public class SearchNeedsListController extends AbstractNeedsListController {
 			setSearchString(searchString);
 			return;
 		}
+		super.initView();
 	}
 
 	@Override
@@ -50,5 +52,10 @@ public class SearchNeedsListController extends AbstractNeedsListController {
 	    }
 		return getNeedService().findNeeds(getSearchString(), getCategoryId(), 
 				getOwnerType(), maxDistanceDouble, getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
+	}
+	
+	@Override
+	protected String getCategoryLinkBaseUrl() {
+		return JsfUtils.getFullUrl(PagesURL.NEEDS_SEARCH, PagesURL.NEEDS_SEARCH_PARAM_CATEGORY_ID, PagesURL.NEEDS_SEARCH_PARAM_CATEGORY_ID_TO_REPLACE);
 	}
 }
