@@ -4,8 +4,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,14 +16,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.CoreUtils;
+import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.dao.NeedDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.dao.bean.NeedDaoQueryBean;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemConsts;
 import com.pferrot.lendity.item.ObjektService;
 import com.pferrot.lendity.model.Group;
+import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
 import com.pferrot.lendity.model.Need;
@@ -28,6 +34,7 @@ import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.need.exception.NeedException;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.utils.HtmlUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.ListValueUtils;
 import com.pferrot.security.SecurityUtils;
@@ -480,5 +487,57 @@ public class NeedService extends ObjektService {
 				}
 			}		
 		}
+	}
+	
+	/**
+	 * Replaces all occurrences of strings like {n123} with an href link to the
+	 * corresponding object, e.g.:
+	 * 
+	 * <a href="http://www.lendity.ch/need/needOverview.faces?needID=123" target="_blank">The need title</a>
+	 * 
+	 * If pPerson is not authorized to view the need, a standard error text is used instead.
+	 * 
+	 * @param pText
+	 * @param pPerson
+	 * @return
+	 */
+	public String processNeedHref(final String pText, final Person pPerson) {
+		if (StringUtils.isNullOrEmpty(pText)) {
+			return pText;
+		}
+		
+		final String regex = "\\{n[0-9]+\\}";
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(pText);
+
+		final StringBuffer result = new StringBuffer();
+		while (m.find()) {
+			try {
+				final String text = m.group();
+				final Long needId = Long.parseLong(text.substring(2, text.length() - 1));
+				final Need need = findNeed(needId);
+				assertUserAuthorizedToView(pPerson, need);
+				m.appendReplacement(result, getHrefLinkToNeed(need, true));
+			}
+			catch (Exception e) {
+				final Locale locale = I18nUtils.getDefaultLocale();
+				final String s = I18nUtils.getMessageResourceString("comment_replacementError", locale);
+				m.appendReplacement(result, s);	
+			}
+			
+			
+		}
+		m.appendTail(result);	
+		return result.toString();
+	}
+	
+	private String getHrefLinkToNeed(final Need pNeed, final boolean pOpenInNewWindow) {
+		return "<a href=\"" + 
+			JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.NEED_OVERVIEW, PagesURL.NEED_OVERVIEW_PARAM_NEED_ID, pNeed.getId().toString()) +
+			"\"" +
+			(pOpenInNewWindow?" target=\"_blank\"":"") +
+			">" + 
+			HtmlUtils.escapeHtmlAndReplaceCr(pNeed.getTitle()) + 
+			"</a>";
 	}
 }

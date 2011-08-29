@@ -98,30 +98,38 @@ public class CommentController extends AbstractController {
 	 * @return
 	 */
 	protected ModelAndView handleRequestInternal(final HttpServletRequest pRequest, final HttpServletResponse pResponse) throws Exception {
-		final String action = pRequest.getParameter(ACTION_PARAMETER_NAME);
-		if (log.isDebugEnabled()) {
-			log.debug("Action: " + action);
+		try {
+			final String action = pRequest.getParameter(ACTION_PARAMETER_NAME);
+			if (log.isDebugEnabled()) {
+				log.debug("Action: " + action);
+			}
+			
+			Map map = null;
+			
+			if (ACTION_CREATE.equals(action)) {
+				map = create(pRequest, pResponse);	
+			}
+			else if (ACTION_READ.equals(action)) {
+				map = read(pRequest, pResponse);
+			}
+			else if (ACTION_UPDATE.equals(action)) {
+				map = update(pRequest, pResponse);
+			}
+			else if (ACTION_DELETE.equals(action)) {
+				map = delete(pRequest, pResponse);
+			}
+			else {
+				throw new CommentException("Unknonw action: " + action);
+			}
+			
+			return new ModelAndView("commentJsonView", map);
 		}
-		
-		Map map = null;
-		
-		if (ACTION_CREATE.equals(action)) {
-			map = create(pRequest, pResponse);	
+		catch (Exception e) {
+			if (log.isErrorEnabled()) {
+				log.error("Exception for person: " + PersonUtils.getCurrentPersonId(pRequest.getSession()), e);
+			}
+			throw e;
 		}
-		else if (ACTION_READ.equals(action)) {
-			map = read(pRequest, pResponse);
-		}
-		else if (ACTION_UPDATE.equals(action)) {
-			map = update(pRequest, pResponse);
-		}
-		else if (ACTION_DELETE.equals(action)) {
-			map = delete(pRequest, pResponse);
-		}
-		else {
-			throw new CommentException("Unknonw action: " + action);
-		}
-		
-		return new ModelAndView("commentJsonView", map);
 	}
 	
 	/**
@@ -348,10 +356,12 @@ public class CommentController extends AbstractController {
 	 * @return
 	 */
 	private Map<String, Object> getMapForOneComment(final Comment pComment, final HttpServletRequest pRequest) {
+		final Long currentPersonId = PersonUtils.getCurrentPersonId(pRequest.getSession());
+		
 		Map<String, Object> map= new HashMap<String, Object>();
 		
 		map.put("commentID", pComment.getId());
-		map.put("text", HtmlUtils.getTextWithHrefLinks(HtmlUtils.escapeHtmlAndReplaceCr(pComment.getText())));
+		map.put("text", getCommentService().processAllHrefWithPerson(HtmlUtils.getTextWithHrefLinks(HtmlUtils.escapeHtmlAndReplaceCr(pComment.getText())), pComment.getOwner()));
 		map.put("textWithoutHref", HtmlUtils.escapeHtmlAndReplaceCr(pComment.getText()));
 		final Person owner = pComment.getOwner();
 		if (owner != null) {
@@ -362,7 +372,6 @@ public class CommentController extends AbstractController {
 				                                          pComment.getOwner().getId().toString()));
 		}
 		map.put("dateAdded", getDateAsString(pComment.getCreationDate()));
-		final Long currentPersonId = PersonUtils.getCurrentPersonId(pRequest.getSession());
 		final Boolean canEdit = currentPersonId != null &&
 								! (pComment instanceof SystemComment) &&
 								PersonUtils.getCurrentPersonId(pRequest.getSession()).equals(owner.getId());

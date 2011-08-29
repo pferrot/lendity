@@ -100,9 +100,16 @@
 	<br/>
 	
 	<c:if test="#{groupOverviewController.descriptionAvailable}">
-		<div class="gt-form-row gt-width-100">
+		<div class="gt-form-row gt-width-100" id="groupDescriptionDiv">
 			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.group_description}:" /></label></div>
 			<div id="descriptionDiv" style="width: 375px;"><h:outputText value="#{groupOverviewController.description}" escape="false" /></div>
+			<script type="text/javascript">
+				$j(document).ready(function() {
+					appendYouTubeVideosFromDiv('descriptionDiv', 'youTubeVideoForGroup', 50, 480, 290, 'groupDescriptionDiv');
+					appendDailymotionVideosFromDiv('descriptionDiv', 'dailymotionVideoForGroup', 50, 480, 360, 'groupDescriptionDiv');
+					appendSoundCloudFromDiv('descriptionDiv', 'soundCloudForGroup', 0, 'groupDescriptionDiv');
+				});
+			</script>
 		</div>
 		<br/>
 	</c:if>

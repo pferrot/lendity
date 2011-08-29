@@ -71,7 +71,7 @@ public class HtmlUtils {
 		 String url = s;
 		 boolean enclosedParens = false;
 		 if (s.startsWith("(") && s.endsWith(")")) {
-			 url = s.substring(1, s.length() - 2);
+			 url = s.substring(1, s.length() - 1);
 			 enclosedParens = true;
 		 }
 		 

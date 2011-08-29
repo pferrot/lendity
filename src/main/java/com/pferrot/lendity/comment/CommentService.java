@@ -146,6 +146,15 @@ public class CommentService {
 		return commentDao.findItemComments(item, pFirstResult, pMaxResults);
 	}
 	
+	public String processAllHrefWithPerson(final String pText, final Person pPerson) {
+		String result = itemService.processItemHref(pText, pPerson);
+		result = needService.processNeedHref(result, pPerson);
+		result = groupService.processGroupHref(result, pPerson);
+		result = personService.processPersonHref(result, pPerson);
+		
+		return result;
+	}
+	
 	/**
 	 * Returns comments but validates that the specified user is authorized to view those
 	 * comments.

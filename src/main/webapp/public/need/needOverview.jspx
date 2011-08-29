@@ -49,10 +49,17 @@
 	</div>
 	<br/>
 	<c:if test="#{needOverviewController.descriptionAvailable}">
-		<div class="gt-form-row gt-width-100">
+		<div class="gt-form-row gt-width-100" id="needDescriptionDiv">
 			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_description}:" /></label></div>
-			<h:outputText value="#{needOverviewController.description}" escape="false" />
-		</div>
+			<div id="needDescriptionTextDiv"><h:outputText value="#{needOverviewController.description}" escape="false" /></div>
+		</div>		
+		<script type="text/javascript">
+			$j(document).ready(function() {
+				appendYouTubeVideosFromDiv('needDescriptionTextDiv', 'youTubeVideoForNeed', 50, 480, 290, 'needDescriptionDiv');
+				appendDailymotionVideosFromDiv('needDescriptionTextDiv', 'dailymotionVideoForNeed', 50, 480, 360, 'needDescriptionDiv');
+				appendSoundCloudFromDiv('needDescriptionTextDiv', 'soundCloudForNeed', 0, 'needDescriptionDiv');
+			});
+		</script>
 		<br/>
 	</c:if>
 	<div class="gt-form-row gt-width-100">

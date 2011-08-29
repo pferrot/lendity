@@ -88,10 +88,17 @@
 	</c:if>
 	
 	<c:if test="#{itemOverviewController.descriptionAvailable}">
-		<div class="gt-form-row gt-width-100">
+		<div class="gt-form-row gt-width-100" id="itemDescriptionDiv">
 			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_description}:" /></label></div>
-			<h:outputText value="#{itemOverviewController.description}" escape="false" />
-		</div>
+			<div id="itemDescriptionTextDiv"><h:outputText value="#{itemOverviewController.description}" escape="false" /></div>
+		</div>		
+		<script type="text/javascript">
+			$j(document).ready(function() {
+				appendYouTubeVideosFromDiv('itemDescriptionTextDiv', 'youTubeVideoForItem', 50, 480, 290, 'itemDescriptionDiv');
+				appendDailymotionVideosFromDiv('itemDescriptionTextDiv', 'dailymotionVideoForItem', 50, 480, 360, 'itemDescriptionDiv');
+				appendSoundCloudFromDiv('itemDescriptionTextDiv', 'soundCloudForItem', 0, 'itemDescriptionDiv');
+			});
+		</script>
 		<br/>
 	</c:if>
 	<div class="gt-form-row gt-width-100">

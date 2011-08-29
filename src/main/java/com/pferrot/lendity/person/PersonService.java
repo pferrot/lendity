@@ -3,7 +3,10 @@ package com.pferrot.lendity.person;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,8 +14,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.pferrot.core.CoreUtils;
+import com.pferrot.core.StringUtils;
 import com.pferrot.emailsender.manager.MailManager;
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.dao.DocumentDao;
 import com.pferrot.lendity.dao.ListValueDao;
 import com.pferrot.lendity.dao.PersonDao;
@@ -20,15 +25,19 @@ import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.dao.bean.PersonDaoQueryBean;
 import com.pferrot.lendity.dao.hibernate.utils.HibernateUtils;
 import com.pferrot.lendity.document.DocumentService;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Country;
 import com.pferrot.lendity.model.Document;
 import com.pferrot.lendity.model.Evaluation;
+import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ListValue;
+import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.OrderedListValue;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.model.PersonDetailsVisibility;
 import com.pferrot.lendity.person.exception.PersonException;
+import com.pferrot.lendity.utils.HtmlUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.security.SecurityUtils;
 
@@ -658,5 +667,56 @@ public class PersonService {
 
 	public List<OrderedListValue> getDetailsVisibilities() {
 		return listValueDao.findOrderedListValue(PersonDetailsVisibility.class);
-	}	
+	}
+
+	/**
+	 * Replaces all occurrences of strings like {p123} with an href link to the
+	 * corresponding object, e.g.:
+	 * 
+	 * <a href="http://www.lendity.ch/person/personOverview.faces?personID=123" target="_blank">The person title</a>
+	 * 
+	 * If pPerson is not authorized to view the person, a standard error text is used instead.
+	 * 
+	 * @param pText
+	 * @param pPerson
+	 * @return
+	 */
+	public String processPersonHref(final String pText, final Person pPerson) {
+		if (StringUtils.isNullOrEmpty(pText)) {
+			return pText;
+		}
+		
+		final String regex = "\\{p[0-9]+\\}";
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(pText);
+
+		final StringBuffer result = new StringBuffer();
+		while (m.find()) {
+			try {
+				final String text = m.group();
+				final Long personId = Long.parseLong(text.substring(2, text.length() - 1));
+				final Person person = findPerson(personId);
+				m.appendReplacement(result, getHrefLinkToPerson(person, true));
+			}
+			catch (Exception e) {
+				final Locale locale = I18nUtils.getDefaultLocale();
+				final String s = I18nUtils.getMessageResourceString("comment_replacementError", locale);
+				m.appendReplacement(result, s);	
+			}
+			
+			
+		}
+		m.appendTail(result);	
+		return result.toString();
+	}
+	
+	private String getHrefLinkToPerson(final Person pPerson, final boolean pOpenInNewWindow) {
+		return "<a href=\"" + 
+			JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.PERSON_OVERVIEW, PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID, pPerson.getId().toString()) +
+			"\"" +
+			(pOpenInNewWindow?" target=\"_blank\"":"") +
+			">" + 
+			HtmlUtils.escapeHtmlAndReplaceCr(pPerson.getDisplayName()) + 
+			"</a>";
+	}
 }

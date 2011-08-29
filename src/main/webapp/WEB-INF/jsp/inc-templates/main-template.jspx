@@ -33,7 +33,8 @@
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/md5/jquery.md5.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/utils.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/menu.js"></script>
-	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/comments.js"></script>	
+	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/comments.js"></script>
+	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/media.js"></script>	
 	
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/superfish/superfish.js"></script>
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/superfish/hoverIntent.js"></script>

@@ -653,7 +653,7 @@ function addCommentInDbResponse(pData, pTextStatus, pXmlHttpRequest) {
 	else {
 		var commentId = pData.commentID;
 		var text = pData.text;
-		var textWithoutHref = pData.textWithoutHref
+		var textWithoutHref = pData.textWithoutHref;
 		var ownerName = pData.ownerName;
 		var ownerUrl = pData.ownerUrl;
 		var dateAdded = pData.dateAdded;
@@ -736,8 +736,10 @@ function editComment(pSpanLink) {
 function getCommentTextFromHtml(pCommentId) {
 	//var commentSpan = $j("#commentSpan" + pCommentId);
 	//return br2nl(commentSpan.html());
-	var commentDiv = $j("#comment" + pCommentId);
-	return br2nl(commentDiv.attr("textWithoutHref"));
+	//var commentDiv = $j("#comment" + pCommentId);	
+	//return br2nl(commentDiv.attr("textWithoutHref"));
+	var commentWithoutHrefDiv = $j("#commentWithoutHref" + pCommentId);
+	return br2nl(commentWithoutHrefDiv.html());
 }
 
 /**
@@ -807,6 +809,14 @@ function editCommentInDbResponse(pJsonData, pTextStatus, pXmlHttpRequest) {
 		var newText = pJsonData.text;
 		var commentSpan = $j("#commentSpan" + commentID);
 		commentSpan.html(newText);
+		
+		var newTextWithoutHref = pJsonData.textWithoutHref;
+		
+		//var commentDiv = $j("#comment" + commentID);
+		//commentDiv.attr("textWithoutHref", newTextWithoutHref);
+		
+		var commentWithoutHrefDiv = $j("#commentWithoutHref" + commentID);
+		commentWithoutHrefDiv.html(newTextWithoutHref);
 		
 		var editCommentInProgress = $j("#editCommentInProgress");
 		editCommentInProgress.hide();
@@ -939,8 +949,12 @@ function addChildCommentInternal(pCommentId, pParentCommentId, pText, pTextWitho
 function getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
 		pProfilePictureUrl, pEditEnabled, pSystemComment, pCommentBackgroundClass, pHeaderClass) {
 
+	//mCommentIdToTextWithoutHrefMap.divSubMenuLogin
+	
 	var result = 
-	'<div class="gt-form-row gt-width-100 commentBox" commentId="' + pCommentId + '" id="comment' + pCommentId + '" textWithoutHref="' + pTextWithoutHref + '">' +
+	'<div style="display: none;" id="commentWithoutHref' + pCommentId + '">' + pTextWithoutHref + '</div>' +
+	//'<div class="gt-form-row gt-width-100 commentBox" commentId="' + pCommentId + '" id="comment' + pCommentId + '" textWithoutHref="' + pTextWithoutHref + '">' +
+	'<div class="gt-form-row gt-width-100 commentBox" commentId="' + pCommentId + '" id="comment' + pCommentId + '">' +
 	'<table class="thumbnailOutterTable" width="100%" style="vertical-align: top;"><tr><td class="thumbnailOutterTd" valign="top">' +
 	'	<table class="thumbnailInnerTable"><tr><td valign="top">';
 	if (pOwnerUrl) {
@@ -994,88 +1008,19 @@ function getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerU
 	return result;
 }
 
-function removeYoutubeEmbeddedVideosForComment(pCommentId) {
-	$j(".youtubeVideoFor" + pCommentId).remove();	
+function removeYouTubeEmbeddedVideosForComment(pCommentId) {
+	$j(".youTubeVideoFor" + pCommentId).remove();	
 }
 
 function addAllEmbeddedStuff(pCommentId, pText) {
-	addYoutubeEmbeddedVideosForComment(pCommentId, pText);
+	addYouTubeEmbeddedVideosForComment(pCommentId, pText);
 	addDailymotionEmbeddedVideosForComment(pCommentId, pText);
-	addSoundcloudEmbeddedMusicForComment(pCommentId, pText);
+	addSoundCloudEmbeddedMusicForComment(pCommentId, pText);
 }
 
-function addYoutubeEmbeddedVideosForComment(pCommentId, pText) {
-	removeYoutubeEmbeddedVideosForComment(pCommentId);
-	
-	var youtubeVideoIds = getYoutubeVideoIds(pText);
-	getDailymotionVideoIds(pText);
-	
-	var html = '';
-	for (var i = 0; i < youtubeVideoIds.length; i++) {
-		var videoId = youtubeVideoIds[i];
-		//var test = '<iframe class="youtube-player" type="text/html" width="320" height="193" src="http://www.youtube.com/embed/"' + videoId + ' frameborder="0"></iframe>';
-		//alert(test);
-		html += 
-			'<div style="width: 72px; float: left;" class="youtubeVideoFor' + pCommentId + '">&nbsp;</div>' +
-			'<div style="float: left;" class="youtubeVideoFor' + pCommentId + '">' +
-			'<br/>' +
-			'<iframe type="text/html" width="320" height="193" src="http://www.youtube.com/embed/' + videoId + '" frameborder="0"></iframe>' +
-			'<br/>' +
-		    '</div>' +
-		    '<div style="clear: both;" class="youtubeVideoFor' + pCommentId + '"></div>';	
-	}
-	
-	if (html.length > 0) {
-		$j("#comment" + pCommentId).append(html);
-	}
-}
-
-function getYoutubeVideoIds(pText) {
-    /* Commented regex (in PHP syntax)
-    $text = preg_replace('%
-        # Match any youtube URL in the wild.
-        (?:https?://)?   # Optional scheme. Either http or https
-        (?:www\.)?       # Optional www subdomain
-        (?:              # Group host alternatives
-          youtu\.be/     # Either youtu.be,
-        | youtube\.com   # or youtube.com
-          (?:            # Group path alternatives
-            /embed/      # Either /embed/
-          | /v/          # or /v/
-          | /watch\?v=   # or /watch\?v=
-          )              # End path alternatives.
-        )                # End host alternatives.
-        ([\w\-]{10,12})  # $1: Allow 10-12 for 11 char youtube id.
-        \b               # Anchor end to word boundary.
-        [?=&\w]*         # Consume any URL (query) remainder.
-        (?!              # But don\'t match URLs already linked.
-          [\'"][^<>]*>   # Not inside a start tag,
-        | </a>           # or <a> element text contents.
-        )                # End negative lookahead assertion.
-        %ix', 
-        '<a href="http://www.youtube.com/watch?v=$1">YouTube link: $1</a>',
-        $text);
-    */
-    // Here is the same regex in JavaScript literal regexp syntax:
-	var result = new Array();
-	var urls = pText.match(/(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=))([\w\-]{10,12})/ig);
-	if (urls) {
-		for (var i = 0; i < urls.length; i++) {
-			var url = urls[i];
-			if (url.length > 11) {
-				var videoId = url.substring(url.length - 11, url.length);
-				//alert(videoId);
-				if (result.indexOf(videoId) < 0) {
-					result.push(videoId);
-				}
-			}
-		}
-	}
-	
-	//if (result.length > 0) {
-	//	alert(result);
-	//}
-	return result;
+function addYouTubeEmbeddedVideosForComment(pCommentId, pText) {
+	removeYouTubeEmbeddedVideosForComment(pCommentId);
+	appendYouTubeVideosFromText(pText, "youTubeVideoFor" + pCommentId, 72, 320, 193, "comment" + pCommentId);
 }
 
 function removeDailymotionEmbeddedVideosForComment(pCommentId) {
@@ -1084,100 +1029,17 @@ function removeDailymotionEmbeddedVideosForComment(pCommentId) {
 
 function addDailymotionEmbeddedVideosForComment(pCommentId, pText) {
 	removeDailymotionEmbeddedVideosForComment(pCommentId);
+	appendDailymotionVideosFromText(pText, "dailymotionVideoFor" + pCommentId, 72, 320, 240, "comment" + pCommentId);
 	
-	var videoIds = getDailymotionVideoIds(pText);
-	
-	var html = '';
-	for (var i = 0; i < videoIds.length; i++) {
-		var videoId = videoIds[i];
-		//var test = '<iframe class="youtube-player" type="text/html" width="320" height="193" src="http://www.youtube.com/embed/"' + videoId + ' frameborder="0"></iframe>';
-		//alert(test);
-		html += 
-			'<div style="width: 72px; float: left;" class="dailymotionVideoFor' + pCommentId + '">&nbsp;</div>' +
-			'<div style="float: left;" class="dailymotionVideoFor' + pCommentId + '">' +
-			'<br/>' +
-			'<iframe type="text/html" width="320" height="140" src="http://www.dailymotion.com/embed/video/' + videoId + '" frameborder="0"></iframe>' +
-			'<br/>' +
-		    '</div>' +
-		    '<div style="clear: both;" class="dailymotionVideoFor' + pCommentId + '"></div>';	
-	}
-	
-	if (html.length > 0) {
-		$j("#comment" + pCommentId).append(html);
-	}
 }
 
-function getDailymotionVideoIds(pText) {
-    // Here is the same regex in JavaScript literal regexp syntax:
-	var result = new Array();
-	var urls = pText.match(/(?:https?:\/\/)?(?:www\.)?(dailymotion\.com\/video\/)([a-zA-Z0-9]{5,7})/ig);
-	if (urls) {
-		for (var i = 0; i < urls.length; i++) {
-			var url = urls[i];
-			if (url.length > 6) {
-				var videoId = url.substring(url.length - 6, url.length);
-				if (result.indexOf(videoId) < 0) {
-					result.push(videoId);
-				}
-			}
-		}
-	}
-	//if (result.length > 0) {
-	//	alert(result);
-	//}
-	return result;
+function removeSoundCloudEmbeddedMusicForComment(pCommentId) {
+	$j(".soundCloudFor" + pCommentId).remove();	
 }
 
-function removeSoundcloudEmbeddedMusicForComment(pCommentId) {
-	$j(".soundcloudFor" + pCommentId).remove();	
-}
-
-function addSoundcloudEmbeddedMusicForComment(pCommentId, pText) {
-	removeSoundcloudEmbeddedMusicForComment(pCommentId);
-	
-	var urls = getSoundcloudUrls(pText);
-	
-	var html = '';
-	for (var i = 0; i < urls.length; i++) {
-		var url = urls[i];
-		var encodedUrl = encodeURIComponent(url);
-		//var test = '<iframe class="youtube-player" type="text/html" width="320" height="193" src="http://www.youtube.com/embed/"' + videoId + ' frameborder="0"></iframe>';
-		//alert(test);		 
-		html += 
-			'<table class="soundcloudFor' + pCommentId + '" style="width: 100%;"><tr><td style="width: 72px;">&nbsp;</td><td>' + 
-			//'<div style="width: 75px; float: left;" class="soundcloudFor' + pCommentId + '">&nbsp;</div>' +
-			//'<div style="float: left; width: 100%;" class="soundcloudFor' + pCommentId + '">' +
-			'<br/>' +
-			// See http://developers.soundcloud.com/docs/widget#embed-code
-			'<object height="81" width="100%" id="myPlayer" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">' +
-			  '<param name="movie" value="http://player.soundcloud.com/player.swf?url=' + encodedUrl + '&enable_api=true&object_id=myPlayer"></param>' +
-			  '<param name="allowscriptaccess" value="always"></param>' +
-			  '<embed allowscriptaccess="always" height="81" src="http://player.soundcloud.com/player.swf?url=' + encodedUrl + '&enable_api=true&object_id=myPlayer" type="application/x-shockwave-flash" width="100%" name="myPlayer"></embed>' +
-			'</object>' +
-			'<br/>' +
-		    //'</div>' +
-		    //'<div style="clear: both;" class="soundcloudFor' + pCommentId + '"></div>';
-		    '</td></tr></table>';
-	}
-	
-	if (html.length > 0) {
-		$j("#comment" + pCommentId).append(html);
-	}
-}
-
-function getSoundcloudUrls(pText) {
-    // Here is the same regex in JavaScript literal regexp syntax:
-	var result = new Array();
-	var urls = pText.match(/(?:https?:\/\/)?(?:www\.)?(soundcloud\.com\/)([\w\-]+)\/([\w\-]+)/ig);
-	if (urls) {
-		for (var i = 0; i < urls.length; i++) {
-			var url = urls[i];
-			if (result.indexOf(url) < 0) {
-				result.push(url);
-			}
-		}
-	}
-	return result;
+function addSoundCloudEmbeddedMusicForComment(pCommentId, pText) {
+	removeSoundCloudEmbeddedMusicForComment(pCommentId);
+	appendSoundCloudFromText(pText, "soundCloudFor" + pCommentId, 72, "comment" + pCommentId);
 }
 
 /**
