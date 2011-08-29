@@ -8,7 +8,7 @@
     xmlns:o="http://myfaces.apache.org/orchestra"
     xmlns:t="http://myfaces.apache.org/tomahawk">
     
-<div id="commentsMainContainer" class="gt-form gt-content-box">
+<div id="commentsMainContainer" class="gt-form ">
 
 <c:if test="#{authorizedToAdd}">
 	<div id="addCommentBox">
@@ -23,6 +23,23 @@
 				<tr>
 					<td>
 						<span id="commentSubmit" class="stylishButton" onClick="postComment('#{containerID}', '#{containerType}');"><h:outputText value="#{messages.comment_submit}"/></span>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div id="addChildCommentBox" class="childComment" style="display: none;">
+		<div class="gt-form-row gt-width-100">
+			<textarea id="childCommentTextarea" rows="3" style="width: 100%;" class="fontSizeSmall"/>
+			<script type="text/javascript">
+				setupSearchField('childCommentTextarea', '<h:outputText value="#{messages.comment_addComment}"/>', true);
+			</script>
+		</div>
+		<div class="gt-form-row gt-width-100">
+			<table class="buttonsTable">
+				<tr>
+					<td>
+						<span id="childCommentSubmit" class="stylishButton" onClick="postChildComment();"><h:outputText value="#{messages.comment_submit}"/></span>
 					</td>
 				</tr>
 			</table>
@@ -64,15 +81,18 @@
 		<script type="text/javascript">
 			initComments('#{containerID}',
 					'#{containerType}',
+					#{authorizedToReply},
 					'#{facesContext.externalContext.requestContextPath}',
 					'<h:outputText value="#{messages.comment_addComment}"/>',
+					'<h:outputText value="#{messages.comment_addReply}"/>',
+					'<h:outputText value="#{messages.comment_submit}"/>',
 					'<h:outputText value="#{messages.comment_editCommentShort}"/>',
 					'<h:outputText value="#{messages.comment_deleteCommentShort}"/>');
 		</script>
 	</div>
 	<div id="loadMoreCommentsContainer" style="display: none;">
 		<br/>
-		<b><span id="nbExtraComments"></span><h:outputText value=" " escape="false" /><h:outputText value="#{messages.comment_nbExtra}"/></b>
+		<b><nobr><span id="nbExtraComments"></span><h:outputText value=" " escape="false" /><h:outputText value="#{messages.comment_nbExtra}"/></nobr></b>
 		<br/>
 		<span id="loadMoreComments" class="linkStyleAction" onClick="loadMoreComments('#{containerID}', '#{containerType}');">
 			<h:outputText value="#{messages.comment_loadMore}"/>

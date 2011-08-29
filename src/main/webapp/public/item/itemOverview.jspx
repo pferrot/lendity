@@ -297,6 +297,7 @@
 	<a name="commentsAnchor"/>
 	<ui:include src="../../auth/comment/comment.jspx">
 		<ui:param name="authorizedToAdd" value="${loggedInUser}"/>
+		<ui:param name="authorizedToReply" value="${loggedInUser}"/>
 		<ui:param name="containerID" value="#{itemOverviewController.item.id}"/>
 		<ui:param name="containerType" value="item"/>
 	</ui:include>

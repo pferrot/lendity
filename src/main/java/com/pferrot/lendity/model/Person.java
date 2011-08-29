@@ -152,7 +152,10 @@ public class Person implements Serializable {
 	private Boolean emailSubscriber;
 	
 	@Column(name = "RECEIVE_NEWSLETTER", nullable = false)
-	private Boolean receiveNewsletter;	
+	private Boolean receiveNewsletter;
+	
+	@Column(name = "RECEIVE_COM_REP_NOTIF", nullable = false)
+	private Boolean receiveCommentsRepliesNotif;
 	
 	// Receive notifications when comments on own objects are added.
 	@Column(name = "RECEIVE_COM_OWN_NOTIF", nullable = false)
@@ -491,6 +494,14 @@ public class Person implements Serializable {
 		this.receiveNewsletter = receiveNewsletter;
 	}
 
+	public Boolean getReceiveCommentsRepliesNotif() {
+		return receiveCommentsRepliesNotif;
+	}
+	
+	public void setReceiveCommentsRepliesNotif(Boolean receiveCommentsRepliesNotif) {
+		this.receiveCommentsRepliesNotif = receiveCommentsRepliesNotif;
+	}
+	
 	public PersonDetailsVisibility getDetailsVisibility() {
 		return detailsVisibility;
 	}

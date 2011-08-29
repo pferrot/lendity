@@ -244,6 +244,5 @@ public class UiUtils {
 		String message = "";
 		message = I18nUtils.getMessageResourceString("validation_fileTooLarge", pLocale);
 		return message;
-	}
-		
+	}		
 }

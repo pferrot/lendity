@@ -12,6 +12,7 @@ public class GroupDaoQueryBean {
 	private Long[] ownerOrAdministratorsIds = null;
 	private Long[] bannedPersonsIds = null;
 	private Boolean validateMembership = null;
+	private Boolean onlyMembersCanSeeComments = null;
 	private String orderBy = "title";
 	private Boolean orderByAscending = null;
 	private int firstResult = 0;
@@ -91,6 +92,14 @@ public class GroupDaoQueryBean {
 		this.validateMembership = validateMembership;
 	}
 	
+	public Boolean getOnlyMembersCanSeeComments() {
+		return onlyMembersCanSeeComments;
+	}
+
+	public void setOnlyMembersCanSeeComments(Boolean onlyMembersCanSeeComments) {
+		this.onlyMembersCanSeeComments = onlyMembersCanSeeComments;
+	}
+
 	public String getOrderBy() {
 		return orderBy;
 	}

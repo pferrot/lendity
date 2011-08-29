@@ -25,6 +25,8 @@
 	<ui:param name="helpTextHtml" value="#{lendTransactionOverviewController.sideBarText}"/>
 	<ui:param name="showHelpAutomatically" value="#{lendTransactionOverviewController.showHelpAutomatically}"/>
 	<ui:param name="configKey" value="#{lendTransactionOverviewController.showHelpConfigKey}"/>
+	<ui:param name="targetPosition" value="topRight"/>
+	<ui:param name="tooltipPosition" value="bottomLeft"/>
 </ui:include>
 
 			<!-- body -->
@@ -160,6 +162,7 @@
 <a name="commentsAnchor"/>
 <ui:include src="../../auth/comment/comment.jspx">
 	<ui:param name="authorizedToAdd" value="#{authenticationController.loggedIn}"/>
+	<ui:param name="authorizedToReply" value="#{authenticationController.loggedIn}"/>
 	<ui:param name="containerID" value="#{lendTransactionOverviewController.lendTransaction.id}"/>
 	<ui:param name="containerType" value="lendTransaction"/>
 </ui:include>

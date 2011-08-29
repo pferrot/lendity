@@ -16,6 +16,8 @@ import com.pferrot.lendity.login.jsf.AbstractHomeController;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.model.PotentialConnection;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.personconfiguration.PersonConfigurationConsts;
+import com.pferrot.lendity.personconfiguration.PersonConfigurationService;
 import com.pferrot.lendity.potentialconnection.PotentialConnectionService;
 import com.pferrot.lendity.utils.HtmlUtils;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -34,12 +36,22 @@ public class HomeController extends AbstractHomeController {
 	private GroupJoinRequestService groupJoinRequestService;
 	private LendTransactionService lendTransactionService;
 	private PotentialConnectionService potentialConnectionService;
+	private PersonConfigurationService personConfigurationService;
 	
 	// Keep variables to not hit the DB every time.
 	private long nbGroupJoinRequestsPending = -1;
 	private long nbPendingConnectionRequests = -1;
 	private long nbTransactionsWaitingForMyInput = -1;
 	
+	public PersonConfigurationService getPersonConfigurationService() {
+		return personConfigurationService;
+	}
+
+	public void setPersonConfigurationService(
+			PersonConfigurationService personConfigurationService) {
+		this.personConfigurationService = personConfigurationService;
+	}
+
 	public LendTransactionService getLendTransactionService() {
 		return lendTransactionService;
 	}
@@ -157,5 +169,14 @@ public class HomeController extends AbstractHomeController {
 	public String getPotentialConnectionThumbnail1Src() {
 		final PotentialConnection pc = (PotentialConnection)getPotentialConnectionsTable().getRowData();
 		return getPersonService().getProfileThumbnailSrc(pc.getConnection(), true);
+	}
+
+	public boolean isShowWallCommentHelpAutomatically() {
+		return !PersonConfigurationConsts.HIDE_HELP_VALUE.
+			equals(getPersonConfigurationService().findPersonConfigurationValue(PersonUtils.getCurrentPersonId(), getShowWallCommentHelpConfigKey()));
+	}
+	
+	public String getShowWallCommentHelpConfigKey() {
+		return PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + "wallComment"; 
 	}
 }

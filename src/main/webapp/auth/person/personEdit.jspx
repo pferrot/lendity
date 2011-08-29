@@ -200,6 +200,12 @@
 						<h:outputText value="#{messages.person_receiveCommentsOnGroupsMemberNotif}"/>
 						<br/>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="receiveCommentsRepliesNotif"></h:message>
+						<h:selectBooleanCheckbox id="receiveCommentsRepliesNotif" value="#{personEditController.receiveCommentsRepliesNotif}" styleClass="gt-form-element-checkbox"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputText value="#{messages.person_receiveCommentsRepliesNotif}"/>
+						<br/>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="receiveNewsletter"></h:message>
 						<h:selectBooleanCheckbox id="receiveNewsletter" value="#{personEditController.receiveNewsletter}" styleClass="gt-form-element-checkbox"/>
 						<h:outputText value=" " escape="false" />

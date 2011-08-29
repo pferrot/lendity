@@ -28,6 +28,7 @@ public abstract class AbstractGroupAddEditController implements Serializable {
 	private String title;
 	private String description;
 	private Boolean validateMembership;
+	private Boolean onlyMembersCanSeeComments;
 	private String password;
 	
 	
@@ -69,6 +70,14 @@ public abstract class AbstractGroupAddEditController implements Serializable {
 
 	public void setValidateMembership(Boolean validateMembership) {
 		this.validateMembership = validateMembership;
+	}
+
+	public Boolean getOnlyMembersCanSeeComments() {
+		return onlyMembersCanSeeComments;
+	}
+
+	public void setOnlyMembersCanSeeComments(Boolean onlyMembersCanSeeComments) {
+		this.onlyMembersCanSeeComments = onlyMembersCanSeeComments;
 	}
 
 	public String getPassword() {

@@ -24,101 +24,121 @@
 		<!-- body -->
 		<div class="gt-bd gt-cols clearfix">
 		
-<h2 class="gt-table-head"><h:outputText value="#{messages.menu_home}"/></h2>
-
-				<div class="gt-form gt-content-box">
-				
-					<h:outputFormat value="#{messages.home_greetings}">
-				    	<f:param value="#{authenticationController.currentUserFirstName}" />
-			        </h:outputFormat>
-					<br/><br/>					
-				
-					<table><tr><td style="width: 480px; padding: 5px; vertical-align: top;">
-					<c:if test="#{homeController.emptyHomepage}">
-						<div style="border-width: 0px; border-style: solid; border-color: #dddddd; background-color: #dddddd; padding: 5px; border-radius: 5px;">			
-						<p>
-							<b>
-							<h:outputText value="#{messages.home_whereToStart} :"/>
-					        </b>    
-						</p>
-						<ul>
-						<li>
-							<h:outputLink value="#{authenticationController.itemAddURL}">
-								<b>
-								<h:outputText value="#{messages.home_addObject}"/>
-						        </b>
-					        </h:outputLink>
-					    </li>
-					    <li>
-							<h:outputLink value="#{authenticationController.searchConnectionsURL}">
-								<b>
-								<h:outputText value="#{messages.home_searchConnections}"/>
-						        </b>
-					        </h:outputLink>
-					    </li>
-					    <li>
-							<h:outputLink value="#{authenticationController.itemsSearchURL}">
-								<b>
-								<h:outputText value="#{messages.home_borrowStuff}"/>
-						        </b>
-					        </h:outputLink>
-					    </li>
-						</ul>
-						</div>
-					</c:if>
+				<div class="gt-form ">
 					
-					<c:if test="#{not homeController.emptyHomepage}">
-						<div style="border-width: 0px; border-style: solid; border-color: #dddddd; background-color: #dddddd; padding: 5px; border-radius: 5px;">			
-					        <c:if test="#{homeController.nbTransactionsWaitingForMyInput > 0}">
-								<h:outputLink value="#{authenticationController.myLendTransactionsWaitingForInputURL}">
+					
+					<div style="float: left; width: 455px; border-style: solid; border-width: 0 1px 0 0; border-color: #cccccc; padding-right: 25px;">
+						<c:if test="#{homeController.emptyHomepage}">
+							<div style="border-width: 0px; border-style: solid; border-color: #dddddd; background-color: #dddddd; padding: 5px; border-radius: 5px;">			
+							<p>
+								<b>
+								<h:outputText value="#{messages.home_whereToStart} :"/>
+						        </b>    
+							</p>
+							<ul>
+							<li>
+								<h:outputLink value="#{authenticationController.itemAddURL}">
 									<b>
-									<h:outputFormat value="#{messages.home_lendTransactionsWaitingForMyInput}">
+									<h:outputText value="#{messages.home_addObject}"/>
+							        </b>
+						        </h:outputLink>
+						    </li>
+						    <li>
+								<h:outputLink value="#{authenticationController.searchConnectionsURL}">
+									<b>
+									<h:outputText value="#{messages.home_searchConnections}"/>
+							        </b>
+						        </h:outputLink>
+						    </li>
+						    <li>
+								<h:outputLink value="#{authenticationController.itemsSearchURL}">
+									<b>
+									<h:outputText value="#{messages.home_borrowStuff}"/>
+							        </b>
+						        </h:outputLink>
+						    </li>
+							</ul>
+							</div>
+						</c:if>
+						
+						<c:if test="#{not (homeController.emptyHomepage)}">
+						<div >
+							<ui:include src="helpbox/helpBox.jspx">
+								<ui:param name="helpTitle" value="#{messages.comment_wallCommentHelpTitle}"/>
+								<ui:param name="helpTextHtml" value="#{messages.comment_wallCommentHelpTextHtml}"/>
+								<ui:param name="showHelpAutomatically" value="#{homeController.showWallCommentHelpAutomatically}"/>
+								<ui:param name="configKey" value="#{homeController.showWallCommentHelpConfigKey}"/>
+								<ui:param name="targetPosition" value="bottomRight"/>
+								<ui:param name="tooltipPosition" value="topLeft"/>
+							</ui:include>
+							
+							<div class="gt-form-row gt-width-100 fontSizeLargeLarge">
+								<b><h:outputText value="#{messages.comment_wallCommentTitle} " /><img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/help.png" class="helpBox"/></b>
+							</div>
+							<br/>
+
+							<ui:include src="comment/comment.jspx">
+								<ui:param name="authorizedToAdd" value="true"/>
+								<ui:param name="authorizedToReply" value="true"/>
+								<ui:param name="containerID" value="FAKE"/>
+								<ui:param name="containerType" value="wall"/>
+							</ui:include>
+						</div>
+						</c:if>
+					</div>
+					
+					<div style="float: right; width: 455px; border-style: solid; border-width: 0px; border-color: blue">
+					
+						<c:if test="#{not homeController.emptyHomepage}">
+							<div style="border-width: 0px; border-style: solid; border-color: #dddddd; background-color: #dddddd; padding: 5px; border-radius: 5px;">			
+						        <c:if test="#{homeController.nbTransactionsWaitingForMyInput > 0}">
+									<h:outputLink value="#{authenticationController.myLendTransactionsWaitingForInputURL}">
+										<b>
+										<h:outputFormat value="#{messages.home_lendTransactionsWaitingForMyInput}">
+									    	<f:param value="#{homeController.nbTransactionsWaitingForMyInput}" />
+								        </h:outputFormat>
+								        </b>
+							        </h:outputLink>
+						        </c:if>
+						        <c:if test="#{homeController.nbTransactionsWaitingForMyInput == 0}">
+						        	<h:outputFormat value="#{messages.home_lendTransactionsWaitingForMyInput}">
 								    	<f:param value="#{homeController.nbTransactionsWaitingForMyInput}" />
 							        </h:outputFormat>
-							        </b>
-						        </h:outputLink>
-					        </c:if>
-					        <c:if test="#{homeController.nbTransactionsWaitingForMyInput == 0}">
-					        	<h:outputFormat value="#{messages.home_lendTransactionsWaitingForMyInput}">
-							    	<f:param value="#{homeController.nbTransactionsWaitingForMyInput}" />
-						        </h:outputFormat>
-					        </c:if>
-					        <br/>
-					        <c:if test="#{homeController.nbGroupJoinRequestsPending > 0}">
-								<h:outputLink value="#{authenticationController.myPendingGroupJoinRequestsListURL}">
-									<b>
-									<h:outputFormat value="#{messages.home_groupJoinRequestsPending}">
+						        </c:if>
+						        <br/>
+						        <c:if test="#{homeController.nbGroupJoinRequestsPending > 0}">
+									<h:outputLink value="#{authenticationController.myPendingGroupJoinRequestsListURL}">
+										<b>
+										<h:outputFormat value="#{messages.home_groupJoinRequestsPending}">
+									    	<f:param value="#{homeController.nbGroupJoinRequestsPending}" />
+								        </h:outputFormat>
+								        </b>
+							        </h:outputLink>
+						        </c:if>
+						        <c:if test="#{homeController.nbGroupJoinRequestsPending == 0}">
+						        	<h:outputFormat value="#{messages.home_groupJoinRequestsPending}">
 								    	<f:param value="#{homeController.nbGroupJoinRequestsPending}" />
 							        </h:outputFormat>
-							        </b>
-						        </h:outputLink>
-					        </c:if>
-					        <c:if test="#{homeController.nbGroupJoinRequestsPending == 0}">
-					        	<h:outputFormat value="#{messages.home_groupJoinRequestsPending}">
-							    	<f:param value="#{homeController.nbGroupJoinRequestsPending}" />
-						        </h:outputFormat>
-					        </c:if>
-					        <br/>
-					        <c:if test="#{homeController.nbPendingConnectionRequests > 0}">
-								<h:outputLink value="#{authenticationController.myPendingConnectionRequestsURL}">
-									<b>
-									<h:outputFormat value="#{messages.home_pendingConnectionRequests}">
+						        </c:if>
+						        <br/>
+						        <c:if test="#{homeController.nbPendingConnectionRequests > 0}">
+									<h:outputLink value="#{authenticationController.myPendingConnectionRequestsURL}">
+										<b>
+										<h:outputFormat value="#{messages.home_pendingConnectionRequests}">
+									    	<f:param value="#{homeController.nbPendingConnectionRequests}" />
+								        </h:outputFormat>
+								        </b>
+							        </h:outputLink>
+						        </c:if>
+						        <c:if test="#{homeController.nbPendingConnectionRequests == 0}">
+						        	<h:outputFormat value="#{messages.home_pendingConnectionRequests}">
 								    	<f:param value="#{homeController.nbPendingConnectionRequests}" />
 							        </h:outputFormat>
-							        </b>
-						        </h:outputLink>
-					        </c:if>
-					        <c:if test="#{homeController.nbPendingConnectionRequests == 0}">
-					        	<h:outputFormat value="#{messages.home_pendingConnectionRequests}">
-							    	<f:param value="#{homeController.nbPendingConnectionRequests}" />
-						        </h:outputFormat>
-					        </c:if>
-				        </div>
-
-					</c:if>
-					
-					</td>
-					<td style="width: 480px; padding: 5px; vertical-align: top;" rowspan="2">
+						        </c:if>
+					        </div>
+					        <br/><br/>
+						</c:if>
+						
 						<c:if test="#{empty(homeController.potentialConnectionsList)}">
 							<table>
 								<tr>
@@ -133,6 +153,7 @@
 							</table>
 							<br/><br/>
 						</c:if>
+						
 						<c:if test="#{not empty(homeController.potentialConnectionsList)}">
 							<div style="border-width: 4px; border-style: solid; border-color: #bbbbbb; padding: 5px; border-radius: 5px;">			
 								<b><h:outputText value="#{messages.home_peopleYouMayKnow} :"/></b>
@@ -182,55 +203,52 @@
 									</c:if>
 								</center>
 							</div>
-						</c:if>					
-					</td>					
-					</tr>
-					<c:if test="#{(not homeController.locationAvailable) or (not empty(homeController.potentialConnectionsList))}">
-					<tr>
-					<td style="vertical-align: top;">
-						<table style="width: 100%;">
-							<tr>
-							<td style="width: 100%; padding: 10px; vertical-align: top;">
-							
-							<h:form id="homePublicForm" prependId="false">
-							<div style="width: 100%; text-align: center;">
-			
-								<c:if test="#{not homeController.locationAvailable}">
-										<span><h:outputText value="#{messages.geolocation_locationNotAvailable}" /></span>
-										<br/>
-										<h:outputLink value="#{authenticationController.editProfileURL}">
-											<span><h:outputText value="#{messages.geolocation_setYourLocation}" styleClass="fontSizeLarge"/></span>
-										</h:outputLink>
-										<br/><br/>							
-								</c:if>
-								<c:if test="#{homeController.locationAvailable}">
-								<table>
-									<tr>
-										<td style="padding-right: 10px;">
-											<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/star_new.jpg"/>
-										</td><td>
-											<h:outputLink value="#{authenticationController.searchConnectionsURL}">
-												<h:outputText value="#{messages.home_searchConnectionsFromAddressBook}"/>
-											</h:outputLink>
-										</td>
-									</tr>
-								</table>
-								</c:if>
-							</div>
-							</h:form>
 							<br/><br/>
-							</td>
-							</tr>
-						</table>
-					</td>
-					</tr>
-					</c:if>
-					</table>
+						</c:if>
 					
-					<ui:include src="../homeInternal.jspx">
-						<ui:param name="theBean" value="#{homeController}"/>
-					</ui:include>
-					
+						<c:if test="#{(not homeController.locationAvailable) or (not empty(homeController.potentialConnectionsList))}">
+							<table>
+								<tr>
+									<td style="vertical-align: top;">
+										<table style="width: 100%;">
+											<tr>
+												<td style="width: 100%; padding: 10px; vertical-align: top;">												
+													<h:form id="homePublicForm" prependId="false">
+														<div style="width: 100%; text-align: center;">										
+															<c:if test="#{not homeController.locationAvailable}">
+																	<span><h:outputText value="#{messages.geolocation_locationNotAvailable}" /></span>
+																	<br/>
+																	<h:outputLink value="#{authenticationController.editProfileURL}">
+																		<span><h:outputText value="#{messages.geolocation_setYourLocation}" styleClass="fontSizeLarge"/></span>
+																	</h:outputLink>
+																	<br/><br/>							
+															</c:if>
+															<c:if test="#{homeController.locationAvailable}">
+																<table>
+																	<tr>
+																		<td style="padding-right: 10px;">
+																			<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/star_new.jpg"/>
+																		</td>
+																		<td>
+																			<h:outputLink value="#{authenticationController.searchConnectionsURL}">
+																				<h:outputText value="#{messages.home_searchConnectionsFromAddressBook}"/>
+																			</h:outputLink>
+																		</td>
+																	</tr>
+																</table>
+															</c:if>
+														</div>
+													</h:form>
+												<br/><br/>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+							<br/><br/>
+						</c:if>
+					</div>				
 					
 				</div>
 

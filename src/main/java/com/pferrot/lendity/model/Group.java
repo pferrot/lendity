@@ -61,6 +61,9 @@ public class Group implements CommentableWithOwner<GroupComment>, Ownable, Seria
 	@Column(name = "VALIDATE_MEMBERSHIP", nullable = false)
 	private Boolean validateMembership;
 	
+	@Column(name = "ONLY_MEMBERS_COMMENTS", nullable = false)
+	private Boolean onlyMembersCanSeeComments;
+	
 	@Column(name = "PASSWORD", nullable = true, length = 50)
 	private String password;
 	
@@ -173,6 +176,14 @@ public class Group implements CommentableWithOwner<GroupComment>, Ownable, Seria
 
 	public void setValidateMembership(Boolean validateMembership) {
 		this.validateMembership = validateMembership;
+	}
+
+	public Boolean getOnlyMembersCanSeeComments() {
+		return onlyMembersCanSeeComments;
+	}
+
+	public void setOnlyMembersCanSeeComments(Boolean onlyMembersCanSeeComments) {
+		this.onlyMembersCanSeeComments = onlyMembersCanSeeComments;
 	}
 
 	public String getPassword() {

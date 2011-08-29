@@ -137,6 +137,10 @@ public class GroupDaoHibernateImpl extends HibernateDaoSupport implements GroupD
 			criteria.add(Restrictions.eq("validateMembership", pGroupDaoQueryBean.getValidateMembership()));
 		}
 		
+		if (pGroupDaoQueryBean.getOnlyMembersCanSeeComments() != null) {
+			criteria.add(Restrictions.eq("onlyMembersCanSeeComments", pGroupDaoQueryBean.getOnlyMembersCanSeeComments()));
+		}
+		
 		if (useSubquery) {
 			final DetachedCriteria selectCriteria = DetachedCriteria.forClass(Group.class);
 			selectCriteria.add(Subqueries.propertyIn("id", criteria));

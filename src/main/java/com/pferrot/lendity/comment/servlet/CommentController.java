@@ -24,6 +24,7 @@ import com.pferrot.lendity.comment.CommentService;
 import com.pferrot.lendity.comment.exception.CommentException;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
+import com.pferrot.lendity.model.ChildComment;
 import com.pferrot.lendity.model.Comment;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.model.SystemComment;
@@ -59,6 +60,11 @@ public class CommentController extends AbstractController {
 	public final static String CONTAINER_LEND_TRANSACTION_ID_PARAMETER_NAME = "lendTransactionID";
 	
 	public final static String CONTAINER_GROUP_ID_PARAMETER_NAME = "groupID";
+	
+	public final static String PARENT_COMMENT_ID_PARAMETER_NAME = "parentCommentID";
+	
+	public final static String WALL_PARAMETER_NAME = "wall";
+	public final static String WALL_PARAMETER_VALUE = "true";
 	
 	private CommentService commentService;
 	private PersonService personService;
@@ -164,20 +170,27 @@ public class CommentController extends AbstractController {
 		final String needIdAsString = pRequest.getParameter(CONTAINER_NEED_ID_PARAMETER_NAME);
 		final String lendTransactionIdAsString = pRequest.getParameter(CONTAINER_LEND_TRANSACTION_ID_PARAMETER_NAME);
 		final String groupIdAsString = pRequest.getParameter(CONTAINER_GROUP_ID_PARAMETER_NAME);
+		final String wall = pRequest.getParameter(WALL_PARAMETER_NAME);
 		// Load a given comment.
 		if (commentIdAsString != null && commentIdAsString.trim().length() > 0) {
 			final Long commentId = Long.parseLong(commentIdAsString);
 			List<Map> comments = new ArrayList<Map>();
+			List<Map> childComments = new ArrayList<Map>();
 			try {
 				final Comment comment = commentService.findCommentWithAC(commentId,
 						PersonUtils.getCurrentPersonId(pRequest.getSession()));
 				comments.add(getMapForOneComment(comment, pRequest));
+				final List<ChildComment> childCommentsList = commentService.findChildCommentsByCreationDateAsc(comment);
+				for (ChildComment childComment: childCommentsList) {
+					childComments.add(getMapForOneComment(childComment, pRequest));
+				}
 				result.put("nb", 1);
 			}
 			catch (ObjectNotFoundException e) {
 				result.put("nb", 0);
 			}
 			result.put("comments", comments);
+			result.put("childComments", childComments);
 			result.put("nbExtra", 0);
 			result.put("firstResult", 0);
 		}
@@ -265,6 +278,24 @@ public class CommentController extends AbstractController {
 			
 			populateMultipleCommentsMap(result, lwrc, firstResult, maxResults, pRequest);
 		}
+		// Load wall comments.
+		else if (WALL_PARAMETER_VALUE.equals(wall)) {			
+			final String firstResultAsString = pRequest.getParameter("firstResult");
+			int firstResult = 0;
+			if (!StringUtils.isNullOrEmpty(firstResultAsString)) {
+				firstResult = Integer.valueOf(firstResultAsString);
+			}
+			int maxResults = CommentConsts.DEFAULT_NB_COMMENTS_TO_LOAD;
+			final String maxResultsAsString = pRequest.getParameter("maxResults");
+			if (!StringUtils.isNullOrEmpty(maxResultsAsString)) {
+				maxResults = Integer.valueOf(maxResultsAsString);
+			}
+			final ListWithRowCount lwrc = commentService.findWallCommentsForPerson(PersonUtils.getCurrentPersonId(pRequest.getSession()),
+					firstResult,
+					maxResults);
+			
+			populateMultipleCommentsMap(result, lwrc, firstResult, maxResults, pRequest);
+		}
 		
 		return result;
 	}
@@ -294,11 +325,17 @@ public class CommentController extends AbstractController {
 		final List list = pLwrc.getList();
 		final Iterator ite = list.iterator();
 		final List<Map> comments = new ArrayList<Map>();
+		final List<Map> childComments = new ArrayList<Map>();
 		while (ite.hasNext()) {
 			final Comment comment = (Comment)ite.next();
 			comments.add(getMapForOneComment(comment, pRequest));
+			final List<ChildComment> childCommentsList = commentService.findChildCommentsByCreationDateAsc(comment);
+			for (ChildComment childComment: childCommentsList) {
+				childComments.add(getMapForOneComment(childComment, pRequest));
+			}
 		}
 		pMap.put("comments", comments);
+		pMap.put("childComments", childComments);
 	}
 	
 	/**
@@ -314,7 +351,8 @@ public class CommentController extends AbstractController {
 		Map<String, Object> map= new HashMap<String, Object>();
 		
 		map.put("commentID", pComment.getId());
-		map.put("text", HtmlUtils.escapeHtmlAndReplaceCr(pComment.getText()));
+		map.put("text", HtmlUtils.getTextWithHrefLinks(HtmlUtils.escapeHtmlAndReplaceCr(pComment.getText())));
+		map.put("textWithoutHref", HtmlUtils.escapeHtmlAndReplaceCr(pComment.getText()));
 		final Person owner = pComment.getOwner();
 		if (owner != null) {
 			map.put("ownerName", HtmlUtils.escapeHtmlAndReplaceCr(owner.getDisplayName()));		
@@ -330,6 +368,9 @@ public class CommentController extends AbstractController {
 								PersonUtils.getCurrentPersonId(pRequest.getSession()).equals(owner.getId());
 		map.put("canEdit", canEdit);
 		map.put("systemComment", pComment instanceof SystemComment);
+		if (pComment instanceof ChildComment) {
+			map.put("parentCommentID", ((ChildComment)pComment).getParentComment().getId());
+		}
 		map.put("profilePictureUrl",
 				personService.getProfileThumbnailSrc(
 						owner, 
@@ -382,10 +423,17 @@ public class CommentController extends AbstractController {
 	private Map<String, Object> create(final HttpServletRequest pRequest, final HttpServletResponse pResponse) {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
+		String parentCommentID = null;
 		try {
 			final String text = pRequest.getParameter(TEXT_PARAMETER_NAME);
-			if (!isValidComment(text)) {
+			parentCommentID = pRequest.getParameter(PARENT_COMMENT_ID_PARAMETER_NAME);
+			final boolean isChildComment = !StringUtils.isNullOrEmpty(parentCommentID);
+			if ((!isChildComment && !isValidComment(text)) ||
+				(isChildComment && !isValidChildComment(text)) ) {
 				map.put("errorMessage", getCommentValidationErrorMessage());
+				if (isChildComment) {
+					map.put("parentCommentID", parentCommentID);	
+				}
 			}
 			else {
 				// Need to pass the session since not in a faces context.
@@ -397,6 +445,8 @@ public class CommentController extends AbstractController {
 				final String needID = pRequest.getParameter(CONTAINER_NEED_ID_PARAMETER_NAME);
 				final String lendTransactionID = pRequest.getParameter(CONTAINER_LEND_TRANSACTION_ID_PARAMETER_NAME);
 				final String groupID = pRequest.getParameter(CONTAINER_GROUP_ID_PARAMETER_NAME);
+				final String wall = pRequest.getParameter(WALL_PARAMETER_NAME);
+				
 				if (!StringUtils.isNullOrEmpty(itemID)) {
 					commentID = commentService.createCommentOnItemWithAC(text, Long.valueOf(itemID), currentPersonId);
 				}
@@ -409,6 +459,12 @@ public class CommentController extends AbstractController {
 				else if (!StringUtils.isNullOrEmpty(groupID)) {
 					commentID = commentService.createCommentOnGroupWithAC(text, Long.valueOf(groupID), currentPersonId);
 				}
+				else if (WALL_PARAMETER_VALUE.equals(wall)) {
+					commentID = commentService.createCommentOnWallWithAC(text, currentPersonId);
+				}
+				else if (!StringUtils.isNullOrEmpty(parentCommentID)) {
+					commentID = commentService.createChildCommentWithAC(text, Long.valueOf(parentCommentID), currentPersonId);
+				}
 				
 				map = getMapForOneComment(commentService.findComment(commentID), pRequest);
 			}
@@ -418,6 +474,9 @@ public class CommentController extends AbstractController {
 				log.error(e);
 			}
 			map.put("errorMessage", getInternalErrorMessage());
+			if (!StringUtils.isNullOrEmpty(parentCommentID)) {
+				map.put("parentCommentID", parentCommentID);	
+			}
 		}
 		
 		return map;
@@ -432,6 +491,12 @@ public class CommentController extends AbstractController {
 	private boolean isValidComment(final String pComment) {
 		return pComment != null &&
 			!pComment.equals(getAddCommentDefaultText()) &&
+			pComment.length() <= CommentConsts.COMMENT_MAX_LENGTH;
+	}
+	
+	private boolean isValidChildComment(final String pComment) {
+		return pComment != null &&
+			!pComment.equals(getAddChildCommentDefaultText()) &&
 			pComment.length() <= CommentConsts.COMMENT_MAX_LENGTH;
 	}
 
@@ -453,7 +518,11 @@ public class CommentController extends AbstractController {
 	
 	private String getAddCommentDefaultText() {
 		final Locale locale = I18nUtils.getDefaultLocale();
-		return HtmlUtils.escapeHtmlAndReplaceCr(
-				I18nUtils.getMessageResourceString("comment_addComment", locale));
+		return I18nUtils.getMessageResourceString("comment_addComment", locale);
+	}
+	
+	private String getAddChildCommentDefaultText() {
+		final Locale locale = I18nUtils.getDefaultLocale();
+		return I18nUtils.getMessageResourceString("comment_addReply", locale);
 	}
 }

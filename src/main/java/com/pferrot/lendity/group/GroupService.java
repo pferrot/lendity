@@ -688,6 +688,22 @@ public class GroupService {
 		return true;
 	}
 	
+	public boolean isCurrentUserAuthorizedToViewComments(final Group pGroup) {
+		return isUserAuthorizedToViewComments(personService.getCurrentPerson(), pGroup);
+	}
+	
+	public boolean isUserAuthorizedToViewComments(final Person pPerson, final Group pGroup) {
+		if (!SecurityUtils.isLoggedIn()) {
+			return false;
+		}
+		if (Boolean.TRUE.equals(pGroup.getOnlyMembersCanSeeComments())) {
+			return pPerson != null && isUserOwnerOrAdministratorOrMemberOfGroup(pPerson, pGroup);
+		}
+		else {
+			return isUserAuthorizedToView(pPerson, pGroup);
+		}
+	}	
+	
 	public void assertCurrentUserAuthorizedToView(final Group pGroup) {
 		if (!isCurrentUserAuthorizedToView(pGroup)) {
 			throw new SecurityException("Current user is not authorized to view group");

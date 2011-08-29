@@ -2,7 +2,10 @@ package com.pferrot.lendity.comment;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,8 +22,10 @@ import com.pferrot.lendity.dao.CommentDao;
 import com.pferrot.lendity.dao.PersonDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.group.GroupService;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.lendtransaction.LendTransactionService;
+import com.pferrot.lendity.model.ChildComment;
 import com.pferrot.lendity.model.Comment;
 import com.pferrot.lendity.model.Commentable;
 import com.pferrot.lendity.model.CommentableWithOwner;
@@ -35,11 +40,13 @@ import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.NeedComment;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.model.SystemComment;
+import com.pferrot.lendity.model.WallComment;
 import com.pferrot.lendity.need.NeedService;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.HtmlUtils;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.security.SecurityUtils;
 
 public class CommentService {
 
@@ -214,6 +221,18 @@ public class CommentService {
 		return commentDao.findGroupComments(group, pFirstResult, pMaxResults);
 	}
 	
+	public ListWithRowCount findWallCommentsForPerson(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+		if (!SecurityUtils.isLoggedIn()) {
+			throw new SecurityException("Not logged in");
+		}
+		final Person person = personDao.findPerson(pPersonId);
+		final Long[] connectionsIds = personService.getPersonConnectionIds(person, null);
+		final Long[] personAndConnectionsIds = new Long[connectionsIds.length + 1];
+		System.arraycopy(connectionsIds, 0, personAndConnectionsIds, 0, connectionsIds.length);
+		personAndConnectionsIds[personAndConnectionsIds.length-1] = pPersonId;
+		return commentDao.findWallComments(personAndConnectionsIds, pFirstResult, pMaxResults);
+	}
+	
 	/**
 	 * Creates the comment and sends notifications to others who commented and container owner.
 	 * Also, access control is verified.
@@ -372,6 +391,40 @@ public class CommentService {
 		return commentID;
 	}
 	
+	public Long createCommentOnWallWithAC(final String pText, final Long pCommentOwnerId) throws CommentException {		
+		final Person commentOwner = personService.findPerson(pCommentOwnerId);
+		
+		final WallComment wallComment = new WallComment();
+		wallComment.setCreationDate(new Date());
+		wallComment.setOwner(commentOwner);
+		wallComment.setText(pText);
+		
+		Long commentID = commentDao.createComment(wallComment);
+		
+		return commentID;
+	}
+
+	public Long createChildCommentWithAC(final String pText, final Long pParentCommentId, final Long pCommentOwnerId) throws CommentException {
+		final Person commentOwner = personService.findPerson(pCommentOwnerId);
+		
+		final Comment parentComment = commentDao.findComment(pParentCommentId);
+		
+		assertUserAuthorizedToAddChildComment(commentOwner, parentComment);
+		
+		final ChildComment childComment = new ChildComment();
+		
+		childComment.setCreationDate(new Date());
+		childComment.setOwner(commentOwner);
+		childComment.setText(pText);
+		childComment.setParentComment(parentComment);
+		
+		Long commentID = commentDao.createComment(childComment);
+		
+		sendChildCommentAddedNotificationToAll(childComment);
+		
+		return commentID;
+	}
+	
 	public void deleteComment(final Long pCommentId) {		
 		final Comment comment = commentDao.findComment(pCommentId);
 		removeCommentRecipientFromContainerIfNeeded(comment);
@@ -394,6 +447,10 @@ public class CommentService {
 		commentDao.deleteComment(comment);
 	}
 	
+	public List<ChildComment> findChildCommentsByCreationDateAsc(final Comment pParentComment) {
+		return commentDao.findChildCommentsList(pParentComment, 0, 0);
+	}
+	
 	/**
 	 * Remove the owner of the comment from the list of comment recipients in case the
 	 * comment to be deleted is the only comment he made on that object.
@@ -406,7 +463,8 @@ public class CommentService {
 			pComment == null || 
 			pComment.getId() == null ||
 			pComment.getOwner() == null ||
-			pComment.getOwner().getId() == null) {
+			pComment.getOwner().getId() == null ||
+			pComment.getContainer() == null) {
 			return;
 		}
 		final Long deletedCommentId = pComment.getId();
@@ -418,20 +476,16 @@ public class CommentService {
 		
 		while (ite.hasNext()) {
 			final Comment comment = (Comment)ite.next();
-			if (comment != null &&
-				comment.getId() != null &&
-				comment.getOwner() != null &&
-				comment.getOwner().getId() != null) {
-				final Long oneCommentId = comment.getId();
-				final Long oneCommentOwnerId = comment.getOwner().getId();
-				// Not the comment to delete.
-				if (!oneCommentId.equals(deletedCommentId)) {
-					// Same owner, so he should still be in the people to notify list.
-					if (oneCommentOwnerId.equals(deletedCommentOwnerId)) {
+			if (!isRecipientToBeRemoved(comment, deletedCommentId, deletedCommentOwnerId)) {
+				return;
+			}
+			if (comment.getChildComments() != null) {
+				for (ChildComment childComment: comment.getChildComments()) {
+					if (!isRecipientToBeRemoved(childComment, deletedCommentId, deletedCommentOwnerId)) {
 						return;
 					}
 				}
-			}
+			}			
 		}
 		
 		// User was only owner of that comment, so he should 
@@ -446,6 +500,24 @@ public class CommentService {
 		else {
 			throw new RuntimeException("Unhandled commentable type: " + commentable.getClass());
 		}
+	}
+	
+	private boolean isRecipientToBeRemoved(final Comment pComment, final Long pDeletedCommentId, final Long pDeletedCommentOwnerId) {
+		if (pComment != null &&
+			pComment.getId() != null &&
+			pComment.getOwner() != null &&
+			pComment.getOwner().getId() != null) {
+			final Long oneCommentId = pComment.getId();
+			final Long oneCommentOwnerId = pComment.getOwner().getId();
+			// Not the comment to delete.
+			if (!oneCommentId.equals(pDeletedCommentId)) {
+				// Same owner, so he should still be in the people to notify list.
+				if (oneCommentOwnerId.equals(pDeletedCommentOwnerId)) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 	
 	public void updateComment(final Long pCommentId, final String pNewText) {		
@@ -495,7 +567,7 @@ public class CommentService {
 		
 		// Send to owner.
 		Person containerOwner = null;		
-		if (pComment instanceof CommentableWithOwner) {
+		if (commentable instanceof CommentableWithOwner) {
 			containerOwner = ((CommentableWithOwner)commentable).getOwner(); 
 		}		
 		
@@ -523,8 +595,7 @@ public class CommentService {
 					sendCommentAddedNotificationToOnePerson(pComment, recipient);
 				}
 			}
-		}
-		
+		}		
 	}
 	
 	/**
@@ -564,8 +635,35 @@ public class CommentService {
 					sendCommentAddedNotificationToOnePerson(pComment, member);
 				}
 			}
+		}		
+	}
+
+	private void sendChildCommentAddedNotificationToAll(final ChildComment pChildComment) throws CommentException {
+		
+		final Set<Person> recipients = new HashSet<Person>();
+		
+		final Person childCommentOwner = pChildComment.getOwner();
+		
+		final Comment parentComment = pChildComment.getParentComment();
+		final Person parentCommentOwner = parentComment.getOwner();
+		if (!childCommentOwner.equals(parentCommentOwner) &&
+			Boolean.TRUE.equals(parentCommentOwner.getReceiveCommentsRepliesNotif())) {
+			recipients.add(parentComment.getOwner());
 		}
 		
+		if (parentComment.getChildComments() != null) {
+			for (ChildComment childComment: parentComment.getChildComments()) {
+				final Person childCommentOwner2 = childComment.getOwner();
+				if (!childCommentOwner.equals(childCommentOwner2) &&
+					Boolean.TRUE.equals(childCommentOwner2.getReceiveCommentsRepliesNotif())) {
+					recipients.add(childCommentOwner2);
+				}	
+			}
+		}
+		
+		for (Person recipient: recipients) {
+			sendChildCommentAddedNotificationToOnePerson(pChildComment, recipient);
+		}		
 	}
 
 	/**
@@ -659,35 +757,128 @@ public class CommentService {
 		
 	}
 
+	private void sendChildCommentAddedNotificationToOnePerson(final ChildComment pChildComment, final Person pPerson) throws CommentException {
+		CoreUtils.assertNotNull(pChildComment);
+		CoreUtils.assertNotNull(pPerson);
+		try {	
+			final Comment parentComment = pChildComment.getParentComment();
+			final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/comment/reply/fr";
+			
+			// Send email (will actually create a JMS message, i.e. it is async).
+			Map<String, String> objects = new HashMap<String, String>();
+			objects.put("firstName", pPerson.getFirstName());
+			objects.put("commenterDisplayName", pChildComment.getOwner().getDisplayName());			
+			objects.put("commentUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
+					PagesURL.COMMENT_OVERVIEW,
+					PagesURL.COMMENT_OVERVIEW_PARAM_COMMENT_ID,
+					parentComment.getId().toString()));			
+			objects.put("comment", pChildComment.getText());
+			// For the HTML template to correctly display new lines.
+			objects.put("commentEscaped", HtmlUtils.escapeHtmlAndReplaceCr(pChildComment.getText()));
+			objects.put("signature", Configuration.getSiteName());
+			objects.put("siteName", Configuration.getSiteName());
+			objects.put("siteUrl", Configuration.getRootURL());
+			objects.put("profileUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.MY_PROFILE));
+			
+			Map<String, String> to = new HashMap<String, String>();
+			to.put(pPerson.getEmail(), pPerson.getEmail());
+			
+			Map<String, String> inlineResources = new HashMap<String, String>();
+			inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
+			
+			getMailManager().send(Configuration.getNoReplySenderName(), 
+					         Configuration.getNoReplyEmailAddress(),
+					         to,
+					         null, 
+					         null,
+					         Configuration.getSiteName() + ": réponse à un commentaire",
+					         objects, 
+					         velocityTemplateLocation,
+					         inlineResources);		
+		} 
+		catch (Exception e) {
+			throw new CommentException(e);
+		}
+		
+	}
+
 	private Person getCurrentPerson() {
 		return personDao.findPerson(PersonUtils.getCurrentPersonId());
+	}
+
+	public String getCommentContainerTitle(final Comment pComment) throws CommentException {
+		CoreUtils.assertNotNull(pComment);
+		if (Hibernate.getClass(pComment).isAssignableFrom(ItemComment.class)) {
+			final ItemComment itemComment = commentDao.findItemComment(pComment.getId());
+			final Item item = itemComment.getItem();
+			return item.getTitle();
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(NeedComment.class)) {
+			final NeedComment needComment = commentDao.findNeedComment(pComment.getId());
+			final Need need = needComment.getNeed();
+			return need.getTitle();
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(LendTransactionComment.class)) {
+			final LendTransactionComment lendTransactionComment = commentDao.findLendTransactionComment(pComment.getId());
+			final LendTransaction lendTransaction = lendTransactionComment.getLendTransaction();
+			return lendTransaction.getTitle();
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(GroupComment.class)) {
+			final GroupComment groupComment = commentDao.findGroupComment(pComment.getId());
+			final Group group = groupComment.getGroup();
+			return group.getTitle();
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(WallComment.class)) {
+			final Person commentOwner = pComment.getOwner();
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString("menu_home", locale);
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(ChildComment.class)) {
+			throw new CommentException("Not supported for child comments.");
+		}
+		else {
+			throw new SecurityException("Unknown comment type: " + pComment.getClass().getName());
+		}
+	}
+	
+	public String getCommentContainerUrl(final Comment pComment) throws CommentException {
+		CoreUtils.assertNotNull(pComment);
+		if (Hibernate.getClass(pComment).isAssignableFrom(ItemComment.class)) {
+			final ItemComment itemComment = commentDao.findItemComment(pComment.getId());
+			final Item item = itemComment.getItem();
+			return JsfUtils.getFullUrl(PagesURL.ITEM_OVERVIEW, PagesURL.ITEM_OVERVIEW_PARAM_ITEM_ID, item.getId().toString());
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(NeedComment.class)) {
+			final NeedComment needComment = commentDao.findNeedComment(pComment.getId());
+			final Need need = needComment.getNeed();
+			return JsfUtils.getFullUrl(PagesURL.NEED_OVERVIEW, PagesURL.NEED_OVERVIEW_PARAM_NEED_ID, need.getId().toString());
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(LendTransactionComment.class)) {
+			final LendTransactionComment lendTransactionComment = commentDao.findLendTransactionComment(pComment.getId());
+			final LendTransaction lendTransaction = lendTransactionComment.getLendTransaction();
+			return JsfUtils.getFullUrl(PagesURL.LEND_TRANSACTION_OVERVIEW, PagesURL.LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID, lendTransaction.getId().toString());
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(GroupComment.class)) {
+			final GroupComment groupComment = commentDao.findGroupComment(pComment.getId());
+			final Group group = groupComment.getGroup();
+			return JsfUtils.getFullUrl(PagesURL.GROUP_OVERVIEW, PagesURL.GROUP_OVERVIEW_PARAM_GROUP_ID, group.getId().toString());
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(WallComment.class)) {
+			return JsfUtils.getFullUrl(PagesURL.HOME);
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(ChildComment.class)) {
+			throw new CommentException("Not supported for child comments.");
+		}
+		else {
+			throw new SecurityException("Unknown comment type: " + pComment.getClass().getName());
+		}
 	}
 	
     /////////////////////////////////////////////////////////
 	// Access control - start
 	
 	public boolean isCurrentUserAuthorizedToView(final Comment pComment) {
-		CoreUtils.assertNotNull(pComment);
-		if (isCurrentUserAuthorizedToEdit(pComment)) {
-			return true;
-		}
-		if (pComment instanceof ItemComment) {
-			ItemComment itemComment = (ItemComment)pComment;
-			Item item = itemComment.getItem();
-			return itemService.isCurrentUserAuthorizedToView(item);
-		}
-		else if (pComment instanceof NeedComment) {
-			NeedComment needComment = (NeedComment)pComment;
-			Need need = needComment.getNeed();
-			return needService.isCurrentUserAuthorizedToView(need);
-		}
-		else if (pComment instanceof LendTransactionComment) {
-			LendTransactionComment lendTransactionComment = (LendTransactionComment)pComment;
-			LendTransaction lendTransaction = lendTransactionComment.getLendTransaction();
-			return lendTransactionService.isCurrentUserAuthorizedToView(lendTransaction);
-		}
-		
-		return false;
+		return isUserAuthorizedToView(personService.getCurrentPerson(), pComment);
 	}
 	
 	public boolean isUserAuthorizedToView(final Person pPerson, final Comment pComment) {
@@ -695,23 +886,38 @@ public class CommentService {
 		if (isUserAuthorizedToEdit(pPerson, pComment)) {
 			return true;
 		}
-		if (pComment instanceof ItemComment) {
-			ItemComment itemComment = (ItemComment)pComment;
-			Item item = itemComment.getItem();
+		if (Hibernate.getClass(pComment).isAssignableFrom(ItemComment.class)) {
+			final ItemComment itemComment = commentDao.findItemComment(pComment.getId());
+			final Item item = itemComment.getItem();
 			return itemService.isUserAuthorizedToView(pPerson, item);
 		}
-		else if (pComment instanceof NeedComment) {
-			NeedComment needComment = (NeedComment)pComment;
-			Need need = needComment.getNeed();
+		else if (Hibernate.getClass(pComment).isAssignableFrom(NeedComment.class)) {
+			final NeedComment needComment = commentDao.findNeedComment(pComment.getId());
+			final Need need = needComment.getNeed();
 			return needService.isUserAuthorizedToView(pPerson, need);
 		}
-		else if (pComment instanceof LendTransactionComment) {
-			LendTransactionComment lendTransactionComment = (LendTransactionComment)pComment;
-			LendTransaction lendTransaction = lendTransactionComment.getLendTransaction();
+		else if (Hibernate.getClass(pComment).isAssignableFrom(LendTransactionComment.class)) {
+			final LendTransactionComment lendTransactionComment = commentDao.findLendTransactionComment(pComment.getId());
+			final LendTransaction lendTransaction = lendTransactionComment.getLendTransaction();
 			return lendTransactionService.isUserAuthorizedToView(pPerson, lendTransaction);
 		}
-		
-		return false;
+		else if (Hibernate.getClass(pComment).isAssignableFrom(GroupComment.class)) {
+			final GroupComment groupComment = commentDao.findGroupComment(pComment.getId());
+			final Group group = groupComment.getGroup();
+			return groupService.isUserAuthorizedToViewComments(pPerson, group);
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(WallComment.class)) {
+			final Person commentOwner = pComment.getOwner();
+			return pPerson.equals(commentOwner) ||
+			       personService.isConnection(commentOwner, pPerson);
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(ChildComment.class)) {
+			final ChildComment childComment = commentDao.findChildComment(pComment.getId());
+			return isUserAuthorizedToView(pPerson, childComment.getParentComment());
+		}
+		else {
+			throw new SecurityException("Unknown comment type: " + pComment.getClass().getName());
+		}
 	}
 	
 	public void assertCurrentUserAuthorizedToView(final Comment pComment) {
@@ -738,6 +944,9 @@ public class CommentService {
 		if (pPerson.getUser() != null &&
 			pPerson.getUser().isAdmin()) {
 			return true;
+		}
+		if (pComment instanceof SystemComment) {
+			return false;
 		}
 		final Person commentOwner = pComment.getOwner();
 		if (pPerson.equals(commentOwner)) {
@@ -773,6 +982,47 @@ public class CommentService {
 	
 	public boolean isUserAuthorizedToAddCommentOnLendTransaction(final Person pPerson, final LendTransaction pLendTransaction) {
 		return lendTransactionService.isUserAuthorizedToView(pPerson, pLendTransaction);
+	}
+	
+	public void assertUserAuthorizedToAddChildComment(final Person pPerson, final Comment pComment) {
+		if (!isUserAuthorizedToAddChildComment(pPerson, pComment)) {
+			throw new SecurityException("Person " + pPerson.getId() + " is not authorized to add child comment on comment " + pComment.getId());
+		}
+	}
+	public boolean isCurrentUserAuthorizedToAddChildComment(final Comment pComment) {
+		return isUserAuthorizedToAddChildComment(personService.getCurrentPerson(), pComment);
+	}
+	
+	public boolean isUserAuthorizedToAddChildComment(final Person pPerson, final Comment pComment) {
+		CoreUtils.assertNotNull(pPerson);
+		CoreUtils.assertNotNull(pComment);
+		
+		if (Hibernate.getClass(pComment).isAssignableFrom(ChildComment.class)) {
+			return false;
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(ItemComment.class)) {
+			final ItemComment itemComment = commentDao.findItemComment(pComment.getId());
+			return isUserAuthorizedToAddCommentOnItem(pPerson, itemComment.getItem());
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(NeedComment.class)) {
+			final NeedComment needComment = commentDao.findNeedComment(pComment.getId());
+			return isUserAuthorizedToAddCommentOnNeed(pPerson, needComment.getNeed());
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(GroupComment.class)) {
+			final GroupComment groupComment = commentDao.findGroupComment(pComment.getId());
+			return isUserAuthorizedToAddCommentOnGroup(pPerson, groupComment.getGroup());
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(LendTransactionComment.class)) {
+			final LendTransactionComment lendTransactionComment = commentDao.findLendTransactionComment(pComment.getId());
+			return isUserAuthorizedToAddCommentOnLendTransaction(pPerson, lendTransactionComment.getLendTransaction());
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(WallComment.class)) {
+			final Person parentCommentOwner = pComment.getOwner();
+			return (parentCommentOwner.equals(pPerson) ||	personService.isConnection(parentCommentOwner, pPerson));
+		}
+		else {
+			throw new RuntimeException("Unknown comment type: " + pComment.getClass().getName());
+		}
 	}
 	
 	public boolean isUserAuthorizedToAddCommentOnGroup(final Person pPerson, final Group pGroup) {

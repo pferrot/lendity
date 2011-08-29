@@ -170,6 +170,10 @@
 			<h:outputText value=" " escape="false" />
 			<h:outputText value="#{messages.person_receiveCommentsOnGroupsMemberNotif}"/>
 			<br/>
+			<h:selectBooleanCheckbox id="receiveCommentsRepliesNotifications" value="#{theBean.person.receiveCommentsRepliesNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
+			<h:outputText value=" " escape="false" />
+			<h:outputText value="#{messages.person_receiveCommentsRepliesNotif}"/>
+			<br/>
 			<h:selectBooleanCheckbox id="receiveNewsletter" value="#{theBean.person.receiveNewsletter}" styleClass="gt-form-element-checkbox" disabled="true"/>
 			<h:outputText value=" " escape="false" />
 			<h:outputText value="#{messages.person_receiveNewsletter}"/>

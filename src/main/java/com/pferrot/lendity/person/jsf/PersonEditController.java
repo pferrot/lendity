@@ -92,6 +92,7 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		setReceiveCommentsOnGroupsAdminNotif(pPerson.getReceiveCommentsOnGroupsAdminNotif());
 		setReceiveCommentsOnGroupsMemberNotif(pPerson.getReceiveCommentsOnGroupsMemberNotif());
 		setReceiveCommentsOnOwnNotif(pPerson.getReceiveCommentsOnOwnNotif());
+		setReceiveCommentsRepliesNotif(pPerson.getReceiveCommentsRepliesNotif());
 		setReceiveNewsletter(pPerson.getReceiveNewsletter());
 		
 		setDetailsVisibilityId(pPerson.getDetailsVisibility().getId());
@@ -119,6 +120,7 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		getPerson().setReceiveCommentsOnGroupsAdminNotif(getReceiveCommentsOnGroupsAdminNotif());
 		getPerson().setReceiveCommentsOnGroupsMemberNotif(getReceiveCommentsOnGroupsMemberNotif());
 		getPerson().setReceiveCommentsOnOwnNotif(getReceiveCommentsOnOwnNotif());
+		getPerson().setReceiveCommentsRepliesNotif(getReceiveCommentsRepliesNotif());
 		getPerson().setReceiveNewsletter(getReceiveNewsletter());
 		
 		getPerson().setPhoneHome(getPhoneHome());

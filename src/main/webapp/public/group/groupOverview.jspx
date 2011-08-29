@@ -106,25 +106,22 @@
 		</div>
 		<br/>
 	</c:if>
-
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.group_passwordProtected}:" /></label></div>
-		<c:if test="#{groupOverviewController.group.passwordProtected}">
-			<h:outputText value="#{messages.group_passwordProtectedYes}" />
-		</c:if>
-		<c:if test="#{not groupOverviewController.group.passwordProtected}">
-			<h:outputText value="#{messages.group_passwordProtectedNo}" />
-		</c:if>
-	</div>
-	<br/>
 	
 	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.group_validateMembership}:" /></label></div>
-		<h:selectBooleanCheckbox id="emailSubscriber" value="#{groupOverviewController.group.validateMembership}" styleClass="gt-form-element-checkbox" disabled="true"/>
+		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.group_options}:" /></label></div>
+		<h:selectBooleanCheckbox id="passwordProtected" value="#{groupOverviewController.group.passwordProtected}" styleClass="gt-form-element-checkbox" disabled="true"/>
+		<h:outputText value=" " escape="false" />
+		<h:outputText value="#{messages.group_passwordProtected}"/>
+		<br/>
+		<h:selectBooleanCheckbox id="validateMembership" value="#{groupOverviewController.group.validateMembership}" styleClass="gt-form-element-checkbox" disabled="true"/>
 		<h:outputText value=" " escape="false" />
 		<h:outputText value="#{messages.group_validateMembership}"/>
+		<br/>
+		<h:selectBooleanCheckbox id="onlyMembersCanSeeComments" value="#{groupOverviewController.group.onlyMembersCanSeeComments}" styleClass="gt-form-element-checkbox" disabled="true"/>
+		<h:outputText value=" " escape="false" />
+		<h:outputText value="#{messages.group_onlyMembersCanSeeComments}"/>
 	</div>
-	<br/>
+	<br/> 
 	
 	<div class="gt-form-row gt-width-100">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.group_owner}:" /></label></div>
@@ -194,11 +191,12 @@
 				
 
 <!-- comments -->
-<c:if test="#{authenticationController.loggedIn}">
+<c:if test="#{groupOverviewController.authorizedToViewComments}">
 	<br/><br/>
 	<a name="commentsAnchor"/>
 	<ui:include src="../../auth/comment/comment.jspx">
 		<ui:param name="authorizedToAdd" value="#{groupOverviewController.authorizedToAddComments}"/>
+		<ui:param name="authorizedToReply" value="#{groupOverviewController.authorizedToAddComments}"/>
 		<ui:param name="containerID" value="#{groupOverviewController.group.id}"/>
 		<ui:param name="containerType" value="group"/>
 	</ui:include>

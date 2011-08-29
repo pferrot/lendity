@@ -10,7 +10,9 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.pferrot.lendity.dao.CommentDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
+import com.pferrot.lendity.model.ChildComment;
 import com.pferrot.lendity.model.Comment;
+import com.pferrot.lendity.model.WallComment;
 import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.GroupComment;
 import com.pferrot.lendity.model.Item;
@@ -38,8 +40,38 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return (Comment)getHibernateTemplate().load(Comment.class, pCommentId);
 	}
 	
+	public ItemComment findItemComment(final Long pCommentId) {
+		return (ItemComment)getHibernateTemplate().load(ItemComment.class, pCommentId);
+	}
+	
+	public NeedComment findNeedComment(final Long pCommentId) {
+		return (NeedComment)getHibernateTemplate().load(NeedComment.class, pCommentId);
+	}
+	
+	public GroupComment findGroupComment(final Long pCommentId) {
+		return (GroupComment)getHibernateTemplate().load(GroupComment.class, pCommentId);
+	}
+	
+	public LendTransactionComment findLendTransactionComment(final Long pCommentId) {
+		return (LendTransactionComment)getHibernateTemplate().load(LendTransactionComment.class, pCommentId);
+	}
+	
+	public WallComment findWallComment(final Long pCommentId) {
+		return (WallComment)getHibernateTemplate().load(WallComment.class, pCommentId);
+	}
+	
+	public ChildComment findChildComment(final Long pCommentId) {
+		return (ChildComment)getHibernateTemplate().load(ChildComment.class, pCommentId);
+	}
+	
 	public List<ItemComment> findItemCommentsList(final Item pItem, final int pFirstResult, final int pMaxResults) {
 		final DetachedCriteria criteria = getItemCommentsDetachedCriteria(pItem);
+		criteria.addOrder(Order.desc("creationDate"));		
+		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
+	}
+	
+	public List<WallComment> findWallCommentsList(final Long[] pOwnerIds, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria criteria = getWallCommentsDetachedCriteria(pOwnerIds);
 		criteria.addOrder(Order.desc("creationDate"));		
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
 	}
@@ -61,9 +93,20 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		criteria.addOrder(Order.desc("creationDate"));		
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
 	}
+	
+	public List<ChildComment> findChildCommentsList(final Comment pParentComment, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria criteria = getChildCommentsDetachedCriteria(pParentComment);
+		criteria.addOrder(Order.asc("creationDate"));		
+		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
+	}
 
 	public long countItemComments(final Item pItem) {
 		final DetachedCriteria criteria = getItemCommentsDetachedCriteria(pItem);
+		return rowCount(criteria);
+	}
+	
+	public long countWallComments(final Long[] pOwnerIds) {
+		final DetachedCriteria criteria = getWallCommentsDetachedCriteria(pOwnerIds);
 		return rowCount(criteria);
 	}
 	
@@ -81,12 +124,26 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		final DetachedCriteria criteria = getGroupCommentsDetachedCriteria(pGroup);
 		return rowCount(criteria);
 	}
+	
+	public long countChildComments(final Comment pParentComment) {
+		final DetachedCriteria criteria = getChildCommentsDetachedCriteria(pParentComment);
+		return rowCount(criteria);
+	}
 
 	private DetachedCriteria getItemCommentsDetachedCriteria(final Item pItem) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(ItemComment.class);
 	
 		if (pItem != null) {
 			criteria.add(Restrictions.eq("item", pItem));
+		}		
+		return criteria;	
+	}
+	
+	private DetachedCriteria getWallCommentsDetachedCriteria(final Long[] pOwnerIds) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(WallComment.class);
+	
+		if (pOwnerIds != null && pOwnerIds.length > 0) {
+			criteria.add(Restrictions.in("owner.id", pOwnerIds));
 		}		
 		return criteria;	
 	}
@@ -117,6 +174,15 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		}		
 		return criteria;	
 	}
+	
+	private DetachedCriteria getChildCommentsDetachedCriteria(final Comment pParentComment) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(ChildComment.class);
+	
+		if (pParentComment != null) {
+			criteria.add(Restrictions.eq("parentComment", pParentComment));
+		}		
+		return criteria;	
+	}
 
 	/**
 	 * Returns the number of rows for a giver DetachedCriteria.
@@ -135,6 +201,12 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return new ListWithRowCount(list, count);
 	}
 	
+	public ListWithRowCount findWallComments(final Long[] pOwnerIds, final int pFirstResult, final int pMaxResults) {
+		final List list = findWallCommentsList(pOwnerIds, pFirstResult, pMaxResults);
+		final long count = countWallComments(pOwnerIds);
+		return new ListWithRowCount(list, count);
+	}
+	
 	public ListWithRowCount findNeedComments(final Need pNeed, final int pFirstResult, final int pMaxResults) {
 		final List list = findNeedCommentsList(pNeed, pFirstResult, pMaxResults);
 		final long count = countNeedComments(pNeed);
@@ -150,6 +222,12 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 	public ListWithRowCount findGroupComments(final Group pGroup, final int pFirstResult, final int pMaxResults) {
 		final List list = findGroupCommentsList(pGroup, pFirstResult, pMaxResults);
 		final long count = countGroupComments(pGroup);
+		return new ListWithRowCount(list, count);
+	}
+	
+	public ListWithRowCount findChildComments(final Comment pParentComment, final int pFirstResult, final int pMaxResults) {
+		final List list = findChildCommentsList(pParentComment, pFirstResult, pMaxResults);
+		final long count = countChildComments(pParentComment);
 		return new ListWithRowCount(list, count);
 	}
 }

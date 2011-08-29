@@ -46,6 +46,7 @@ public abstract class AbstractPersonAddEditController {
 	private Boolean receiveCommentsOnGroupsAdminNotif;
 	private Boolean receiveCommentsOnGroupsMemberNotif;
 	private Boolean receiveNewsletter;
+	private Boolean receiveCommentsRepliesNotif;
 
 	private List<SelectItem> detailsVisibilitySelectItems;
 	private Long detailsVisibilityId;	
@@ -253,6 +254,14 @@ public abstract class AbstractPersonAddEditController {
 
 	public void setReceiveNewsletter(Boolean receiveNewsletter) {
 		this.receiveNewsletter = receiveNewsletter;
+	}
+
+	public Boolean getReceiveCommentsRepliesNotif() {
+		return receiveCommentsRepliesNotif;
+	}
+
+	public void setReceiveCommentsRepliesNotif(Boolean receiveCommentsRepliesNotif) {
+		this.receiveCommentsRepliesNotif = receiveCommentsRepliesNotif;
 	}
 
 	public abstract Long processPerson();

@@ -247,6 +247,7 @@ public class RegistrationController {
 			person.setReceiveCommentsOnGroupsMemberNotif(Boolean.TRUE);
 			person.setReceivePotentialConnectionNotif(Boolean.TRUE);
 			person.setReceiveCommentsOnOwnNotif(Boolean.TRUE);
+			person.setReceiveCommentsRepliesNotif(Boolean.TRUE);
 			person.setReceiveNewsletter(Boolean.TRUE);
 			person.setDetailsVisibility(registrationService.getDefaultPersonDetailsVisibility());
 			person.setNbEvalScore1(Integer.valueOf(0));

@@ -112,7 +112,7 @@ public class GroupOverviewController  {
 	public String getDescription() {
 		final String desc = getGroup().getDescription();
 		if (desc != null) {
-			return HtmlUtils.escapeHtmlAndReplaceCr(desc);
+			return HtmlUtils.getTextWithHrefLinks(HtmlUtils.escapeHtmlAndReplaceCr(desc));
 		}
 		return "";
 	}
@@ -226,5 +226,9 @@ public class GroupOverviewController  {
 	// Method must exists otherwise we get an exception when trying to join a group.
 	public void setPasswordEncoded(final String pPasswordEncoded) {
 		// Leave empty.
+	}
+	
+	public boolean isAuthorizedToViewComments() {
+		return getGroupService().isCurrentUserAuthorizedToViewComments(getGroup());
 	}
 }

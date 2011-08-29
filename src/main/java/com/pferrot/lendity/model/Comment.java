@@ -2,7 +2,10 @@ package com.pferrot.lendity.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -13,6 +16,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.envers.Audited;
@@ -44,6 +48,9 @@ public abstract class Comment implements Serializable {
 	
 	@Column(name = "MODIFICATION_DATE", nullable = true)
 	private Date modificationDate;
+	
+	@OneToMany(targetEntity = com.pferrot.lendity.model.ChildComment.class, mappedBy = "parentComment", cascade = CascadeType.REMOVE)
+	private Set<ChildComment> childComments = new HashSet<ChildComment>();	
 
 	public Long getId() {
 		return id;
@@ -85,6 +92,14 @@ public abstract class Comment implements Serializable {
 		this.modificationDate = modificationDate;
 	}
 	
+	public Set<ChildComment> getChildComments() {
+		return childComments;
+	}
+
+	public void setChildComments(Set<ChildComment> childComments) {
+		this.childComments = childComments;
+	}
+
 	public abstract Commentable getContainer();
 
 	@Override

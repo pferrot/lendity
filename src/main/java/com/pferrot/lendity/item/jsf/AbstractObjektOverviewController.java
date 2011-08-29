@@ -2,8 +2,6 @@ package com.pferrot.lendity.item.jsf;
 
 import java.util.Locale;
 
-import javax.faces.context.FacesContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -37,7 +35,7 @@ public abstract class AbstractObjektOverviewController {
 	public String getDescription() {
 		final String itemDescription = getObjekt().getDescription();
 		if (itemDescription != null) {
-			return HtmlUtils.escapeHtmlAndReplaceCr(itemDescription);
+			return HtmlUtils.getTextWithHrefLinks(HtmlUtils.escapeHtmlAndReplaceCr(itemDescription));
 		}
 		return "";
 	}

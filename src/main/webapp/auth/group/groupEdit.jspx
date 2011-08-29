@@ -58,26 +58,29 @@
 							value="#{groupEditController.description}"
 							validator="#{groupEditController.validateDescriptionSize}"/>						
 					</div><!-- /form row -->
-
-					<!-- form row -->
-					<div class="gt-form-row gt-width-100">
-						<label><h:outputText value="#{messages.group_password}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{messages.group_passwordInfo}"/></label>
-						<h:message styleClass="error" showSummary="true" showDetail="false"
-							for="password"></h:message>			
-						<h:inputText id="password" styleClass="gt-form-text"
-							value="#{groupEditController.password}"
-							maxlength="50"	/>			
-					</div><!-- /form row -->
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">
-						<label><h:outputText value="#{messages.group_validateMembership}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{messages.group_validateMembershipInfo}"/></label>
+						<label><h:outputText value="#{messages.group_options}"/> </label>
+						<h:outputText value="#{messages.group_password}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{messages.group_passwordInfo}"/>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="password"></h:message>
+						<h:inputText id="password" styleClass="gt-form-text"
+							value="#{groupEditController.password}"
+							maxlength="50"	/>
+						<br/>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="validateMembership"></h:message>
 						<h:selectBooleanCheckbox id="validateMembership" value="#{groupEditController.validateMembership}" styleClass="gt-form-element-checkbox"/>
 						<h:outputText value=" " escape="false" />
-						<h:outputText value="#{messages.group_validateMembership}"/>
-					</div><!-- /form row -->		
+						<h:outputText value="#{messages.group_validateMembership}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{messages.group_validateMembershipInfo}"/>
+						<br/>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="onlyMembersCanSeeComments"></h:message>
+						<h:selectBooleanCheckbox id="onlyMembersCanSeeComments" value="#{groupEditController.onlyMembersCanSeeComments}" styleClass="gt-form-element-checkbox"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputText value="#{messages.group_onlyMembersCanSeeComments}"/> <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{messages.group_onlyMembersCanSeeCommentsInfo}"/>
+					</div><!-- /form row -->	
 					
 					<!-- form row -->
 					<div class="gt-form-row">

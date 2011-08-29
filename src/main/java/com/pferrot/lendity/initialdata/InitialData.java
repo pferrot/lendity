@@ -229,15 +229,15 @@ public class InitialData {
 		
 		for (int i = 0; i < pNumberToCreate; i++) {
 			title = PasswordGenerator.getNewPassword(PasswordGenerator.getRandom(4, 20));
-			description = PasswordGenerator.getNewPassword(PasswordGenerator.getRandom(20, 1000));
-			validateMembership = getRandomBoolean();			
+			description = PasswordGenerator.getNewPassword(PasswordGenerator.getRandom(20, 1000));		
 			
 			group = new Group();
 			group.setTitle(title);
 			group.setDescription(description);
 			group.setCreationDate(new Date());
 			group.setOwner(findRandomPerson());
-			group.setValidateMembership(validateMembership);
+			group.setValidateMembership(getRandomBoolean());
+			group.setOnlyMembersCanSeeComments(getRandomBoolean());
 			
 			groupDao.createGroup(group);
 			
@@ -314,6 +314,7 @@ public class InitialData {
 		person.setReceiveCommentsOnOwnNotif(Boolean.FALSE);
 		person.setReceiveCommentsOnGroupsAdminNotif(Boolean.FALSE);
 		person.setReceiveCommentsOnGroupsMemberNotif(Boolean.FALSE);
+		person.setReceiveCommentsRepliesNotif(Boolean.FALSE);
 		person.setReceiveNewsletter(Boolean.FALSE);
 		person.setDetailsVisibility((PersonDetailsVisibility)listValueDao.findListValue(PersonDetailsVisibility.PRIVATE));
 		person.setEnabled(Boolean.TRUE);

@@ -1,0 +1,13 @@
+Bonjour $firstName,
+
+$commenterDisplayName a répondu à un commentaire avec ce message:
+
+$comment
+
+Tu peux à ton tour répondre à ce commentaire en visitant la page suivante: $commentUrl
+
+A bientôt sur $siteName.
+
+$siteUrl
+
+Afin de ne plus recevoir cet email, mets à jour ton profil: $profileUrl

@@ -56,8 +56,8 @@ $j(document).ready(function() {
 		},
 		position: {
 			corner: {
-				target: 'topRight',
-				tooltip: 'bottomLeft'
+				target: '#{targetPosition}',
+				tooltip: '#{tooltipPosition}'
 			}
 		},
 		show: {
