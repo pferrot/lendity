@@ -384,14 +384,14 @@ function addCommentsFromJsonData(pJsonData) {
 	for (var i = 0; i < nb; i++) {
 		var comment = comments[i];
 		addCommentInternal(comment.commentID, comment.text, comment.textWithoutHref, comment.ownerName, comment.ownerUrl,
-				comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.systemComment, false);
+				comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.systemComment, comment.adminComment, false);
 	}
 	var childComments = pJsonData.childComments;
 	if (childComments != null) {
 		for (var i = 0; i < childComments.length; i++) {
 			var comment = childComments[i];
 			addChildCommentInternal(comment.commentID, comment.parentCommentID, comment.text, comment.textWithoutHref, comment.ownerName, comment.ownerUrl,
-					comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.systemComment, false);
+					comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.systemComment, comment.adminComment, false);
 		}
 	}
 	mNbCommentsLoaded = mNbCommentsLoaded + nb;
@@ -660,7 +660,8 @@ function addCommentInDbResponse(pData, pTextStatus, pXmlHttpRequest) {
 		var profilePictureUrl = pData.profilePictureUrl;
 		var canEdit = pData.canEdit;
 		var systemComment = pData.systemComment;
-		addCommentInternal(commentId, text, textWithoutHref, ownerName, ownerUrl, dateAdded, profilePictureUrl, canEdit, systemComment, true);
+		var adminComment = pData.adminComment;
+		addCommentInternal(commentId, text, textWithoutHref, ownerName, ownerUrl, dateAdded, profilePictureUrl, canEdit, systemComment, adminComment, true);
 		resetCommentTextArea();
 		mNbCommentsLoaded = mNbCommentsLoaded + 1;
 		hideNoCommentDiv();
@@ -691,7 +692,8 @@ function addChildCommentInDbResponse(pData, pTextStatus, pXmlHttpRequest) {
 		var profilePictureUrl = pData.profilePictureUrl;
 		var canEdit = pData.canEdit;
 		var systemComment = pData.systemComment;
-		addChildCommentInternal(commentId, parentCommentId, text, textWithoutHref, ownerName, ownerUrl, dateAdded, profilePictureUrl, canEdit, systemComment, false);
+		var adminComment = pData.adminComment;
+		addChildCommentInternal(commentId, parentCommentId, text, textWithoutHref, ownerName, ownerUrl, dateAdded, profilePictureUrl, canEdit, systemComment, adminComment, false);
 		resetChildCommentTextArea(parentCommentId);
 	}
 	addChildCommentStopProgress(parentCommentId);
@@ -841,11 +843,13 @@ function editCommentInDbResponse(pJsonData, pTextStatus, pXmlHttpRequest) {
  * @return
  */
 function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
-		pProfilePictureUrl, pEditEnabled, pSystemComment, pAddFirst) {
+		pProfilePictureUrl, pEditEnabled, pSystemComment, pAdminComment, pAddFirst) {
 	var containerDiv = $j('#commentsContainer');
 	
 	var html = getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
-			pProfilePictureUrl, pEditEnabled, pSystemComment, 'commentBackground', 'highlightedBgDark');
+			pProfilePictureUrl, pEditEnabled, pSystemComment,
+			pAdminComment?'adminCommentBackground':'commentBackground',
+			pAdminComment?'adminCommentHighlightedBgDark':'highlightedBgDark');
 	
 	html =
 		'<div id="commentsFamily' + pCommentId + '">' +
@@ -857,7 +861,7 @@ function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOw
 	//	'<span class="linkStyleActionSmall">REPLY</span>' + 
 	//	'</div>';
 
-	if (mAuthorizedToReply) {
+	if (mAuthorizedToReply && !pAdminComment) {
 		html += 
 			'<div id="addChildCommentBox' + pCommentId + '" class="childComment">' +
 				'<div class="gt-form-row gt-width-100">' +
@@ -922,12 +926,14 @@ function showReplyTextarea(pParentCommentId) {
  * @return
  */
 function addChildCommentInternal(pCommentId, pParentCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
-		pProfilePictureUrl, pEditEnabled, pSystemComment, pAddFirst) {
+		pProfilePictureUrl, pEditEnabled, pSystemComment, pAdminComment, pAddFirst) {
 	
 	var parentCommentDiv = $j('#commentsFamily' + pParentCommentId);
 	
 	var html = getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
-		pProfilePictureUrl, pEditEnabled, pSystemComment, 'childCommentBackground', 'highlightedBg');
+		pProfilePictureUrl, pEditEnabled, pSystemComment,
+		pAdminComment?'adminChildCommentBackground':'childCommentBackground',
+	   pAdminComment?'adminChildCommentHighlightedBg':'highlightedBg');
 	
 	html = 
 		'<div class="childComment">' +

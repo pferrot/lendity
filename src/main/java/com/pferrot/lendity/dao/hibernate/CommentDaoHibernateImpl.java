@@ -2,6 +2,7 @@ package com.pferrot.lendity.dao.hibernate;
 
 import java.util.List;
 
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -70,8 +71,8 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
 	}
 	
-	public List<WallComment> findWallCommentsList(final Long[] pOwnerIds, final int pFirstResult, final int pMaxResults) {
-		final DetachedCriteria criteria = getWallCommentsDetachedCriteria(pOwnerIds);
+	public List<WallComment> findWallCommentsList(final Long[] pOwnerIds, final Boolean pIncludePublicComments, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria criteria = getWallCommentsDetachedCriteria(pOwnerIds, pIncludePublicComments);
 		criteria.addOrder(Order.desc("creationDate"));		
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
 	}
@@ -105,8 +106,8 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return rowCount(criteria);
 	}
 	
-	public long countWallComments(final Long[] pOwnerIds) {
-		final DetachedCriteria criteria = getWallCommentsDetachedCriteria(pOwnerIds);
+	public long countWallComments(final Long[] pOwnerIds, final Boolean pIncludePublicComments) {
+		final DetachedCriteria criteria = getWallCommentsDetachedCriteria(pOwnerIds, pIncludePublicComments);
 		return rowCount(criteria);
 	}
 	
@@ -139,12 +140,34 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return criteria;	
 	}
 	
-	private DetachedCriteria getWallCommentsDetachedCriteria(final Long[] pOwnerIds) {
-		DetachedCriteria criteria = DetachedCriteria.forClass(WallComment.class);
+	private DetachedCriteria getWallCommentsDetachedCriteria(final Long[] pOwnerIds, final Boolean pIncludePublicComments) {
+		final DetachedCriteria criteria = DetachedCriteria.forClass(WallComment.class);
 	
+		Criterion finalCriterion = null;
+		Criterion ownersCriterion = null;
+		Criterion includePublicCommentsCriterion = null;
 		if (pOwnerIds != null && pOwnerIds.length > 0) {
-			criteria.add(Restrictions.in("owner.id", pOwnerIds));
-		}		
+			ownersCriterion = Restrictions.in("owner.id", pOwnerIds);
+			
+		}
+		if (Boolean.TRUE.equals(pIncludePublicComments)) {
+			includePublicCommentsCriterion = Restrictions.eq("publicComment", Boolean.TRUE);
+		}
+		
+		if (ownersCriterion != null && includePublicCommentsCriterion != null) {
+			finalCriterion = Restrictions.or(ownersCriterion, includePublicCommentsCriterion);
+		}
+		else if (ownersCriterion != null) {
+			finalCriterion = ownersCriterion;
+		}
+		else if (includePublicCommentsCriterion != null) {
+			finalCriterion = includePublicCommentsCriterion;
+		}
+		
+		if (finalCriterion != null) {
+			criteria.add(finalCriterion);
+		}
+		
 		return criteria;	
 	}
 	
@@ -201,9 +224,9 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return new ListWithRowCount(list, count);
 	}
 	
-	public ListWithRowCount findWallComments(final Long[] pOwnerIds, final int pFirstResult, final int pMaxResults) {
-		final List list = findWallCommentsList(pOwnerIds, pFirstResult, pMaxResults);
-		final long count = countWallComments(pOwnerIds);
+	public ListWithRowCount findWallComments(final Long[] pOwnerIds, final Boolean pIncludePublicComments, final int pFirstResult, final int pMaxResults) {
+		final List list = findWallCommentsList(pOwnerIds, pIncludePublicComments, pFirstResult, pMaxResults);
+		final long count = countWallComments(pOwnerIds, pIncludePublicComments);
 		return new ListWithRowCount(list, count);
 	}
 	

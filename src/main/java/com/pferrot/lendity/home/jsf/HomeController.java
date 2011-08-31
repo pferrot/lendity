@@ -172,7 +172,7 @@ public class HomeController extends AbstractHomeController {
 	}
 
 	public boolean isShowWallCommentHelpAutomatically() {
-		return !PersonConfigurationConsts.HIDE_HELP_VALUE.
+		return PersonConfigurationConsts.SHOW_HELP_VALUE.
 			equals(getPersonConfigurationService().findPersonConfigurationValue(PersonUtils.getCurrentPersonId(), getShowWallCommentHelpConfigKey()));
 	}
 	

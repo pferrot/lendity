@@ -239,7 +239,7 @@ public class CommentService {
 		final Long[] personAndConnectionsIds = new Long[connectionsIds.length + 1];
 		System.arraycopy(connectionsIds, 0, personAndConnectionsIds, 0, connectionsIds.length);
 		personAndConnectionsIds[personAndConnectionsIds.length-1] = pPersonId;
-		return commentDao.findWallComments(personAndConnectionsIds, pFirstResult, pMaxResults);
+		return commentDao.findWallComments(personAndConnectionsIds, Boolean.TRUE, pFirstResult, pMaxResults);
 	}
 	
 	/**
@@ -263,6 +263,8 @@ public class CommentService {
 		itemComment.setItem(item);
 		itemComment.setOwner(commentOwner);
 		itemComment.setText(pText);
+		itemComment.setAdminComment(Boolean.FALSE);
+		itemComment.setPublicComment(Boolean.FALSE);
 		
 		Long commentID = commentDao.createComment(itemComment);
 		
@@ -296,6 +298,8 @@ public class CommentService {
 		needComment.setNeed(need);
 		needComment.setOwner(commentOwner);
 		needComment.setText(pText);
+		needComment.setAdminComment(Boolean.FALSE);
+		needComment.setPublicComment(Boolean.FALSE);
 		
 		Long commentID = commentDao.createComment(needComment);
 		
@@ -329,6 +333,8 @@ public class CommentService {
 		lendTransactionComment.setLendTransaction(lendTransaction);
 		lendTransactionComment.setOwner(commentOwner);
 		lendTransactionComment.setText(pText);
+		lendTransactionComment.setAdminComment(Boolean.FALSE);
+		lendTransactionComment.setPublicComment(Boolean.FALSE);
 		
 		Long commentID = commentDao.createComment(lendTransactionComment);
 		
@@ -352,6 +358,8 @@ public class CommentService {
 		lendTransactionSystemComment.setLendTransaction(lendTransaction);
 		lendTransactionSystemComment.setText(pText);
 		lendTransactionSystemComment.setOwner(owner);
+		lendTransactionSystemComment.setAdminComment(Boolean.FALSE);
+		lendTransactionSystemComment.setPublicComment(Boolean.FALSE);
 		
 		Long commentID = commentDao.createComment(lendTransactionSystemComment);
 		
@@ -388,6 +396,8 @@ public class CommentService {
 		groupComment.setGroup(group);
 		groupComment.setOwner(commentOwner);
 		groupComment.setText(pText);
+		groupComment.setAdminComment(Boolean.FALSE);
+		groupComment.setPublicComment(Boolean.FALSE);
 		
 		Long commentID = commentDao.createComment(groupComment);
 		
@@ -407,6 +417,8 @@ public class CommentService {
 		wallComment.setCreationDate(new Date());
 		wallComment.setOwner(commentOwner);
 		wallComment.setText(pText);
+		wallComment.setAdminComment(Boolean.FALSE);
+		wallComment.setPublicComment(Boolean.FALSE);
 		
 		Long commentID = commentDao.createComment(wallComment);
 		
@@ -426,6 +438,8 @@ public class CommentService {
 		childComment.setOwner(commentOwner);
 		childComment.setText(pText);
 		childComment.setParentComment(parentComment);
+		childComment.setAdminComment(Boolean.FALSE);
+		childComment.setPublicComment(Boolean.FALSE);
 		
 		Long commentID = commentDao.createComment(childComment);
 		

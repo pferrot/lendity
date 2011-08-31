@@ -363,6 +363,7 @@ public class CommentController extends AbstractController {
 		map.put("commentID", pComment.getId());
 		map.put("text", getCommentService().processAllHrefWithPerson(HtmlUtils.getTextWithHrefLinks(HtmlUtils.escapeHtmlAndReplaceCr(pComment.getText())), pComment.getOwner()));
 		map.put("textWithoutHref", HtmlUtils.escapeHtmlAndReplaceCr(pComment.getText()));
+		map.put("adminComment", pComment.getAdminComment());
 		final Person owner = pComment.getOwner();
 		if (owner != null) {
 			map.put("ownerName", HtmlUtils.escapeHtmlAndReplaceCr(owner.getDisplayName()));		

@@ -28,14 +28,14 @@ public interface CommentDao {
 	
 	ChildComment findChildComment(final Long pCommentId);
 	
+	ListWithRowCount findWallComments(Long[] pOwnerIds, Boolean pIncludePublicComments, int pFirstResult, int pMaxResults);
+	List<WallComment> findWallCommentsList(Long[] pOwnerIds, Boolean pIncludePublicComments, int pFirstResult, int pMaxResults);
+	long countWallComments(Long[] pOwnerIds, Boolean pIncludePublicComments);
+	
 	ListWithRowCount findItemComments(Item pItem, int pFirstResult, int pMaxResults);
 	List<ItemComment> findItemCommentsList(Item pItem, int pFirstResult, int pMaxResults);
 	long countItemComments(Item pItem);
-	
-	ListWithRowCount findWallComments(Long[] pOwnerIds, int pFirstResult, int pMaxResults);
-	List<WallComment> findWallCommentsList(Long[] pOwnerIds, int pFirstResult, int pMaxResults);
-	long countWallComments(Long[] pOwnerIds);
-	
+		
 	ListWithRowCount findNeedComments(Need pNeed, int pFirstResult, int pMaxResults);
 	List<NeedComment> findNeedCommentsList(Need pNeed, int pFirstResult, int pMaxResults);
 	long countNeedComments(Need pNeed);

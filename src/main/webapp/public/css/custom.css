@@ -517,6 +517,62 @@ div.childComment {
 	background-color: #d1d1d1;
 }
 
+/********************************************/
+/* ADMIN COMMENTS (start) */
+.adminCommentBackground {
+	background-color: #ff9900;
+	color: #000000!important;
+}
+
+.adminCommentBackground label {
+	color: #000000!important;
+}
+
+.adminCommentBackground a,
+.adminCommentBackground span.linkStyleActionSmall {
+	color: #ffffff!important;
+}
+
+.adminCommentBackground a:hover,
+.adminCommentBackground span.linkStyleActionSmall:hover {
+	color: #dddddd!important;
+}
+
+div.adminCommentHighlightedBgDark {
+	background-color: #ff6600;
+	width: 100%;
+}
+
+
+/* ADMIN CHILD COMMENTS*/
+
+.adminChildCommentBackground {
+	background-color: #ff9900;
+	color: #000000!important;
+}
+
+.adminChildCommentBackground label {
+	color: #000000!important;
+}
+
+.adminChildCommentBackground a,
+.adminChildCommentBackground span.linkStyleActionSmall {
+	color: #ffffff!important;
+}
+
+.adminChildCommentBackground a:hover,
+.adminChildCommentBackground span.linkStyleActionSmall:hover {
+	color: #dddddd!important;
+}
+
+div.adminChildCommentHighlightedBg {
+	background-color: #ff6600;
+	width: 100%;
+}
+
+/* ADMIN COMMENTS (end) */
+/********************************************/
+
 .childCommentBackground {
 	background-color: #f1f1f1;
 }

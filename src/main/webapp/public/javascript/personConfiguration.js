@@ -47,7 +47,7 @@ function deletePersonConfigurationResponse(pData, pTextStatus, pXmlHttpRequest) 
  */
 function showHideHelpAutomaticallyClicked(pCheckBox, pKey) {
 	if (pCheckBox.checked) {
-		deletePersonConfiguration(pKey);
+		updatePersonConfiguration(pKey, 'true');
 	}
 	else {
 		updatePersonConfiguration(pKey, 'false');

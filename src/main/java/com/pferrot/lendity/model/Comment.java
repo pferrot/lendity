@@ -49,6 +49,12 @@ public abstract class Comment implements Serializable {
 	@Column(name = "MODIFICATION_DATE", nullable = true)
 	private Date modificationDate;
 	
+	@Column(name = "ADMIN_COMMENT", nullable = false)
+	private Boolean adminComment;
+	
+	@Column(name = "PUBLIC_COMMENT", nullable = false)
+	private Boolean publicComment;
+	
 	@OneToMany(targetEntity = com.pferrot.lendity.model.ChildComment.class, mappedBy = "parentComment", cascade = CascadeType.REMOVE)
 	private Set<ChildComment> childComments = new HashSet<ChildComment>();	
 
@@ -98,6 +104,22 @@ public abstract class Comment implements Serializable {
 
 	public void setChildComments(Set<ChildComment> childComments) {
 		this.childComments = childComments;
+	}
+
+	public Boolean getAdminComment() {
+		return adminComment;
+	}
+
+	public void setAdminComment(Boolean adminComment) {
+		this.adminComment = adminComment;
+	}
+
+	public Boolean getPublicComment() {
+		return publicComment;
+	}
+
+	public void setPublicComment(Boolean publicComment) {
+		this.publicComment = publicComment;
 	}
 
 	public abstract Commentable getContainer();

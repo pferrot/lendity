@@ -27,7 +27,34 @@
 				<div class="gt-form ">
 					
 					
-					<div style="float: left; width: 455px; border-style: solid; border-width: 0 1px 0 0; border-color: #cccccc; padding-right: 25px;">
+					<div style="float: left; width: 455px; border-style: solid; border-width: 0 1px 0 0; border-color: #cccccc; padding-right: 25px;">						
+						<div >
+							<ui:include src="helpbox/helpBox.jspx">
+								<ui:param name="helpTitle" value="#{messages.comment_wallCommentHelpTitle}"/>
+								<ui:param name="helpTextHtml" value="#{messages.comment_wallCommentHelpTextHtml}"/>
+								<ui:param name="showHelpAutomatically" value="#{homeController.showWallCommentHelpAutomatically}"/>
+								<ui:param name="configKey" value="#{homeController.showWallCommentHelpConfigKey}"/>
+								<ui:param name="targetPosition" value="bottomRight"/>
+								<ui:param name="tooltipPosition" value="topLeft"/>
+							</ui:include>
+							
+							
+							<div class="gt-form-row gt-width-100 fontSizeLarge">
+								<b><h:outputText value="#{messages.comment_wallCommentTitle} " /><img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/help.png" class="helpBox"/></b>
+							</div>
+							<br/>
+
+							<ui:include src="comment/comment.jspx">
+								<ui:param name="authorizedToAdd" value="true"/>
+								<ui:param name="authorizedToReply" value="true"/>
+								<ui:param name="containerID" value="FAKE"/>
+								<ui:param name="containerType" value="wall"/>
+							</ui:include>
+						</div>
+					</div>
+					
+					<div style="float: right; width: 455px; border-style: solid; border-width: 0px; border-color: blue">
+					
 						<c:if test="#{homeController.emptyHomepage}">
 							<div style="border-width: 0px; border-style: solid; border-color: #dddddd; background-color: #dddddd; padding: 5px; border-radius: 5px;">			
 							<p>
@@ -61,34 +88,6 @@
 							</div>
 						</c:if>
 						
-						<c:if test="#{not (homeController.emptyHomepage)}">
-						<div >
-							<ui:include src="helpbox/helpBox.jspx">
-								<ui:param name="helpTitle" value="#{messages.comment_wallCommentHelpTitle}"/>
-								<ui:param name="helpTextHtml" value="#{messages.comment_wallCommentHelpTextHtml}"/>
-								<ui:param name="showHelpAutomatically" value="#{homeController.showWallCommentHelpAutomatically}"/>
-								<ui:param name="configKey" value="#{homeController.showWallCommentHelpConfigKey}"/>
-								<ui:param name="targetPosition" value="bottomRight"/>
-								<ui:param name="tooltipPosition" value="topLeft"/>
-							</ui:include>
-							
-							<div class="gt-form-row gt-width-100 fontSizeLargeLarge">
-								<b><h:outputText value="#{messages.comment_wallCommentTitle} " /><img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/help.png" class="helpBox"/></b>
-							</div>
-							<br/>
-
-							<ui:include src="comment/comment.jspx">
-								<ui:param name="authorizedToAdd" value="true"/>
-								<ui:param name="authorizedToReply" value="true"/>
-								<ui:param name="containerID" value="FAKE"/>
-								<ui:param name="containerType" value="wall"/>
-							</ui:include>
-						</div>
-						</c:if>
-					</div>
-					
-					<div style="float: right; width: 455px; border-style: solid; border-width: 0px; border-color: blue">
-					
 						<c:if test="#{not homeController.emptyHomepage}">
 							<div style="border-width: 0px; border-style: solid; border-color: #dddddd; background-color: #dddddd; padding: 5px; border-radius: 5px;">			
 						        <c:if test="#{homeController.nbTransactionsWaitingForMyInput > 0}">
@@ -136,8 +135,9 @@
 							        </h:outputFormat>
 						        </c:if>
 					        </div>
-					        <br/><br/>
 						</c:if>
+						
+						<br/><br/>
 						
 						<c:if test="#{empty(homeController.potentialConnectionsList)}">
 							<table>
