@@ -29,13 +29,13 @@ import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Country;
 import com.pferrot.lendity.model.Document;
 import com.pferrot.lendity.model.Evaluation;
-import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ListValue;
-import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.OrderedListValue;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.model.PersonDetailsVisibility;
+import com.pferrot.lendity.model.WallCommentsAddPermission;
+import com.pferrot.lendity.model.WallCommentsVisibility;
 import com.pferrot.lendity.person.exception.PersonException;
 import com.pferrot.lendity.utils.HtmlUtils;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -149,8 +149,10 @@ public class PersonService {
 		PersonUtils.updatePersonInSession(pPerson, JsfUtils.getHttpServletRequest());
 	}
 	
-	public void updatePerson(final Person pPerson, final Long pDetailsVisibilityId) {
+	public void updatePerson(final Person pPerson, final Long pDetailsVisibilityId, final Long pWallCommentsVisibilityId, final Long pWallCommentsAddPermissionId) {
 		pPerson.setDetailsVisibility((PersonDetailsVisibility)listValueDao.findListValue(pDetailsVisibilityId));
+		pPerson.setWallCommentsVisibility((WallCommentsVisibility)listValueDao.findListValue(pWallCommentsVisibilityId));
+		pPerson.setWallCommentsAddPermission((WallCommentsAddPermission)listValueDao.findListValue(pWallCommentsAddPermissionId));
 		updatePerson(pPerson);
 	}
 	
@@ -667,6 +669,14 @@ public class PersonService {
 
 	public List<OrderedListValue> getDetailsVisibilities() {
 		return listValueDao.findOrderedListValue(PersonDetailsVisibility.class);
+	}
+	
+	public List<OrderedListValue> getWallCommentsVisibilities() {
+		return listValueDao.findOrderedListValue(WallCommentsVisibility.class);
+	}
+	
+	public List<OrderedListValue> getWallCommentsAddPermissions() {
+		return listValueDao.findOrderedListValue(WallCommentsAddPermission.class);
 	}
 
 	/**

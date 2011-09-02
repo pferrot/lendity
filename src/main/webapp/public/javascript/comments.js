@@ -40,8 +40,11 @@ function initComments(pContainerId, pContainerType, pAuthorizedToReply, pContext
 	else if (pContainerType == "group") {
 		loadCommentsForGroup(pContainerId);
 	}
-	else if (pContainerType == "wall") {
-		loadCommentsForWall();
+	else if (pContainerType == "ownWall") {
+		loadCommentsForOwnWall();
+	}
+	else if (pContainerType == "otherWall") {
+		loadCommentsForOtherWall(pContainerId);
 	}
 	else if (pContainerType == "none") {
 		loadOneComment(pContainerId);
@@ -61,8 +64,11 @@ function loadMoreComments(pContainerId, pContainerType) {
 	else if (pContainerType == "group") {
 		loadMoreCommentsInternalForGroup(pContainerId);
 	}
-	else if (pContainerType == "wall") {
-		loadMoreCommentsInternalForWall();
+	else if (pContainerType == "ownWall") {
+		loadMoreCommentsInternalForOwnWall();
+	}
+	else if (pContainerType == "otherWall") {
+		loadMoreCommentsInternalForOtherWall(pContainerId);
 	}
 }
 
@@ -99,8 +105,11 @@ function addCommentInDb(pContainerId, pContainerType) {
 	else if (pContainerType == "group") {
 		addCommentInDbInternalForGroup(pContainerId);
 	}
-	else if (pContainerType == "wall") {
-		addCommentInDbInternalForWall();
+	else if (pContainerType == "ownWall") {
+		addCommentInDbInternalForOwnWall();
+	}
+	else if (pContainerType == "otherWall") {
+		addCommentInDbInternalForOtherWall(pContainerId);
 	}
 }
 
@@ -158,13 +167,25 @@ function loadCommentsForGroup(pGroupId) {
 	});
 }
 
-function loadCommentsForWall() {
+function loadCommentsForOwnWall() {
 	addCommentInProgress();
 	$j.ajax({
 		url: mContextPath + '/public/comment/comment.json',
 		dataType: 'json',
 		contentType: 'application/json',
-		data: {action: 'read', wall: 'true', firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
+		data: {action: 'read', wall: 'own', firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
+		success: loadCommentsResponse,
+		cache: false
+	});
+}
+
+function loadCommentsForOtherWall(pOtherPersonId) {
+	addCommentInProgress();
+	$j.ajax({
+		url: mContextPath + '/public/comment/comment.json',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: {action: 'read', wall: pOtherPersonId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
 		success: loadCommentsResponse,
 		cache: false
 	});
@@ -192,6 +213,9 @@ function addCommentInDbInternalForItem(pItemId) {
 	var commentTextarea = $j('#commentTextarea');
 	var text = commentTextarea.val();
 	text = $j.trim(text);
+	if (text == mAddCommentDefaultText) {
+		text = '';
+	}
 	// Add in DB.
 	$j.ajax({
 			url: mContextPath + '/public/comment/comment.json',
@@ -207,6 +231,9 @@ function addCommentInDbInternalForNeed(pNeedId) {
 	var commentTextarea = $j('#commentTextarea');
 	var text = commentTextarea.val();
 	text = $j.trim(text);
+	if (text == mAddCommentDefaultText) {
+		text = '';
+	}
 	// Add in DB.
 	$j.ajax({
 			url: mContextPath + '/public/comment/comment.json',
@@ -222,6 +249,9 @@ function addCommentInDbInternalForLendTransaction(pLendTransactionId) {
 	var commentTextarea = $j('#commentTextarea');
 	var text = commentTextarea.val();
 	text = $j.trim(text);
+	if (text == mAddCommentDefaultText) {
+		text = '';
+	}
 	// Add in DB.
 	$j.ajax({
 			url: mContextPath + '/public/comment/comment.json',
@@ -237,6 +267,9 @@ function addCommentInDbInternalForGroup(pGroupId) {
 	var commentTextarea = $j('#commentTextarea');
 	var text = commentTextarea.val();
 	text = $j.trim(text);
+	if (text == mAddCommentDefaultText) {
+		text = '';
+	}
 	// Add in DB.
 	$j.ajax({
 			url: mContextPath + '/public/comment/comment.json',
@@ -248,16 +281,39 @@ function addCommentInDbInternalForGroup(pGroupId) {
 	});
 }
 
-function addCommentInDbInternalForWall() {
+function addCommentInDbInternalForOwnWall() {
 	var commentTextarea = $j('#commentTextarea');
 	var text = commentTextarea.val();
 	text = $j.trim(text);
+	if (text == mAddCommentDefaultText) {
+		text = '';
+	}
+	var isPublicComment = $j("#addCommentPublicCommentCheckbox").attr("checked");
 	// Add in DB.
 	$j.ajax({
 			url: mContextPath + '/public/comment/comment.json',
 			dataType: 'json',
 			contentType: 'application/json',
-			data: {action: 'create', wall: 'true', text: text},
+			data: {action: 'create', wall: 'own', text: text, publicComment: isPublicComment},
+			success: addCommentInDbResponse,
+			cache: false
+	});
+}
+
+function addCommentInDbInternalForOtherWall(pOtherPersonId) {
+	var commentTextarea = $j('#commentTextarea');
+	var text = commentTextarea.val();
+	text = $j.trim(text);
+	if (text == mAddCommentDefaultText) {
+		text = '';
+	}
+	var isPublicComment = $j("#addCommentPublicCommentCheckbox").attr("checked");
+	// Add in DB.
+	$j.ajax({
+			url: mContextPath + '/public/comment/comment.json',
+			dataType: 'json',
+			contentType: 'application/json',
+			data: {action: 'create', wall: pOtherPersonId, text: text, publicComment: isPublicComment},
 			success: addCommentInDbResponse,
 			cache: false
 	});
@@ -267,6 +323,9 @@ function addChildCommentInDb(pParentCommentId) {
 	var childCommentTextarea = $j('#childCommentTextarea' + pParentCommentId);
 	var text = childCommentTextarea.val();
 	text = $j.trim(text);
+	if (text == mAddChildCommentDefaultText) {
+		text = '';
+	}
 	// Add in DB.
 	$j.ajax({
 			url: mContextPath + '/public/comment/comment.json',
@@ -342,7 +401,7 @@ function loadMoreCommentsInternalForGroup(pGroupId) {
 	});	
 }
 
-function loadMoreCommentsInternalForWall() {
+function loadMoreCommentsInternalForOwnWall() {
 	hideLoadExtraCommentsDiv();	
 	
 	positionEditCommentInProgressBottom();
@@ -352,7 +411,23 @@ function loadMoreCommentsInternalForWall() {
 		url: mContextPath + '/public/comment/comment.json',
 		dataType: 'json',
 		contentType: 'application/json',
-		data: {action: 'read', wall: 'true', firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
+		data: {action: 'read', wall: 'own', firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
+		success: loadCommentsResponse,
+		cache: false
+	});	
+}
+
+function loadMoreCommentsInternalForOtherWall(pOtherPersonId) {
+	hideLoadExtraCommentsDiv();	
+	
+	positionEditCommentInProgressBottom();
+	editCommentInProgress();
+	
+	$j.ajax({
+		url: mContextPath + '/public/comment/comment.json',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: {action: 'read', wall: pOtherPersonId, firstResult: mNbCommentsLoaded, maxResults: mMaxResults},
 		success: loadCommentsResponse,
 		cache: false
 	});	
@@ -384,14 +459,14 @@ function addCommentsFromJsonData(pJsonData) {
 	for (var i = 0; i < nb; i++) {
 		var comment = comments[i];
 		addCommentInternal(comment.commentID, comment.text, comment.textWithoutHref, comment.ownerName, comment.ownerUrl,
-				comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.systemComment, comment.adminComment, false);
+				comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.canDelete, comment.systemComment, comment.adminComment, comment.publicComment, comment.otherWallComment, false);
 	}
 	var childComments = pJsonData.childComments;
 	if (childComments != null) {
 		for (var i = 0; i < childComments.length; i++) {
 			var comment = childComments[i];
 			addChildCommentInternal(comment.commentID, comment.parentCommentID, comment.text, comment.textWithoutHref, comment.ownerName, comment.ownerUrl,
-					comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.systemComment, comment.adminComment, false);
+					comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.canDelete, comment.systemComment, comment.adminComment, comment.publicComment, comment.otherWallComment, false);
 		}
 	}
 	mNbCommentsLoaded = mNbCommentsLoaded + nb;
@@ -502,6 +577,8 @@ function resetCommentTextArea() {
 	addCommentErrorRemove();
 	$j('#commentTextarea').val(mAddCommentDefaultText);
 	$j('#commentTextarea').addClass('grayColor');
+	$j('#addCommentPublicCommentCheckbox').attr('checked', false);
+	
 }
 
 function resetChildCommentTextArea(pParentCommentId) {
@@ -659,9 +736,12 @@ function addCommentInDbResponse(pData, pTextStatus, pXmlHttpRequest) {
 		var dateAdded = pData.dateAdded;
 		var profilePictureUrl = pData.profilePictureUrl;
 		var canEdit = pData.canEdit;
+		var canDelete = pData.canDelete;
 		var systemComment = pData.systemComment;
 		var adminComment = pData.adminComment;
-		addCommentInternal(commentId, text, textWithoutHref, ownerName, ownerUrl, dateAdded, profilePictureUrl, canEdit, systemComment, adminComment, true);
+		var publicComment = pData.publicComment;
+		var otherWallComment = pData.otherWallComment;
+		addCommentInternal(commentId, text, textWithoutHref, ownerName, ownerUrl, dateAdded, profilePictureUrl, canEdit, canDelete, systemComment, adminComment, publicComment, otherWallComment, true);
 		resetCommentTextArea();
 		mNbCommentsLoaded = mNbCommentsLoaded + 1;
 		hideNoCommentDiv();
@@ -691,9 +771,12 @@ function addChildCommentInDbResponse(pData, pTextStatus, pXmlHttpRequest) {
 		var dateAdded = pData.dateAdded;
 		var profilePictureUrl = pData.profilePictureUrl;
 		var canEdit = pData.canEdit;
+		var canDelete = pData.canDelete;
 		var systemComment = pData.systemComment;
 		var adminComment = pData.adminComment;
-		addChildCommentInternal(commentId, parentCommentId, text, textWithoutHref, ownerName, ownerUrl, dateAdded, profilePictureUrl, canEdit, systemComment, adminComment, false);
+		var publicComment = pData.publicComment;
+		var otherWallComment = pData.otherWallComment;
+		addChildCommentInternal(commentId, parentCommentId, text, textWithoutHref, ownerName, ownerUrl, dateAdded, profilePictureUrl, canEdit, canDelete, systemComment, adminComment, publicComment, otherWallComment, false);
 		resetChildCommentTextArea(parentCommentId);
 	}
 	addChildCommentStopProgress(parentCommentId);
@@ -717,11 +800,29 @@ function editComment(pSpanLink) {
 		editCommentCancel();
 	}
 	
+	
+	
 	editCommentBox.insertAfter(commentBox);
 	var editCommentInProgress = $j("#editCommentInProgress");
 	editCommentInProgress.insertAfter(commentBox);
 	commentBox.hide();
 	editCommentInProgress.show();
+	
+	var editCommentPublicCommentTd = $j("#editCommentPublicCommentTd");
+	if (editCommentPublicCommentTd) {
+		if (commentBox.parent().hasClass("childComment")) {
+			editCommentPublicCommentTd.hide();
+		}
+		else {
+			editCommentPublicCommentTd.show();
+			// Set the checkbox according to the value in the DB.
+			var isPublicComment = "true" == $j('#comment' + commentId).attr("publicComment");
+			$j("#editCommentPublicCommentCheckbox").attr("checked", isPublicComment);
+			
+		}
+	}
+	
+	
 	
 	editCommentBox.attr('commentId', commentId);
 	$j('#editCommentTextarea').val(getCommentTextFromHtml(commentId));
@@ -768,18 +869,25 @@ function editCommentSubmit() {
 	var editCommentInProgress = $j("#editCommentInProgress");
 	
 	var commentId = editCommentBox.attr('commentId');
+	var isPublicComment = $j('#comment' + commentId).attr('publicComment');
+
+	if (!editCommentBox.parent().hasClass("childComment")) {
+		var editCommentPublicCommentCheckbox = $j("#editCommentPublicCommentCheckbox");
+		if (editCommentPublicCommentCheckbox.is(":visible")) {
+			isPublicComment = editCommentPublicCommentCheckbox.attr('checked');
+		}
+	}
 	
 	editCommentBox.hide();
 	editCommentInProgress.show();
 	
-	var newText = $j('#editCommentTextarea').val();
-	
+	var newText = $j('#editCommentTextarea').val();	
 	
 	$j.ajax({
 		url: mContextPath + '/public/comment/comment.json',
 		dataType: 'json',
 		contentType: 'application/json',
-		data: {action: 'update', commentID: commentId, text: newText},
+		data: {action: 'update', commentID: commentId, text: newText, publicComment: isPublicComment},
 		success: editCommentInDbResponse,
 		cache: false
 	});
@@ -811,6 +919,8 @@ function editCommentInDbResponse(pJsonData, pTextStatus, pXmlHttpRequest) {
 		var newText = pJsonData.text;
 		var commentSpan = $j("#commentSpan" + commentID);
 		commentSpan.html(newText);
+		// Update the value of the publicComment attribute.
+		$j('#comment' + commentID).attr("publicComment", pJsonData.publicComment);
 		
 		var newTextWithoutHref = pJsonData.textWithoutHref;
 		
@@ -838,18 +948,37 @@ function editCommentInDbResponse(pJsonData, pTextStatus, pXmlHttpRequest) {
  * @param pCommentDate
  * @param pProfilePictureUrl
  * @param pEditEnabled
+ * @param pDeleteEnabled
  * @param pSystemComment
+ * @param pAdminComment
+ * @param pPublicComment 
  * @param pAddFirst
  * @return
  */
 function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
-		pProfilePictureUrl, pEditEnabled, pSystemComment, pAdminComment, pAddFirst) {
+		pProfilePictureUrl, pEditEnabled, pDeleteEnabled, pSystemComment,
+		pAdminComment, pPublicComment, pOtherWallComment, pAddFirst) {
 	var containerDiv = $j('#commentsContainer');
 	
+	var commentBackgroundClass = 'commentBackground';
+	if (pAdminComment) {
+		commentBackgroundClass = 'adminCommentBackground';
+	}
+	else if (pOtherWallComment) {
+		commentBackgroundClass = 'otherWallCommentBackground';
+	}
+		
+	var headerClass = 'highlightedBgDark';
+	if (pAdminComment) {
+		headerClass = 'adminCommentHighlightedBgDark';
+	}
+	else if (pOtherWallComment) {
+		headerClass = 'otherWallCommentHighlightedBgDark';
+	}
+	
 	var html = getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
-			pProfilePictureUrl, pEditEnabled, pSystemComment,
-			pAdminComment?'adminCommentBackground':'commentBackground',
-			pAdminComment?'adminCommentHighlightedBgDark':'highlightedBgDark');
+			pProfilePictureUrl, pEditEnabled, pDeleteEnabled, pSystemComment, pPublicComment,
+			commentBackgroundClass, headerClass);
 	
 	html =
 		'<div id="commentsFamily' + pCommentId + '">' +
@@ -921,19 +1050,36 @@ function showReplyTextarea(pParentCommentId) {
  * @param pCommentDate
  * @param pProfilePictureUrl
  * @param pEditEnabled
+ * @param pDeleteEnabled
  * @param pSystemComment
+ * @param pAdminComment
+ * @param pPublicComment
  * @param pAddFirst
  * @return
  */
 function addChildCommentInternal(pCommentId, pParentCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
-		pProfilePictureUrl, pEditEnabled, pSystemComment, pAdminComment, pAddFirst) {
+		pProfilePictureUrl, pEditEnabled, pDeleteEnabled, pSystemComment, pAdminComment, pPublicComment, pOtherWallComment, pAddFirst) {
 	
 	var parentCommentDiv = $j('#commentsFamily' + pParentCommentId);
 	
+	var commentBackgroundClass = 'childCommentBackground';
+	if (pAdminComment) {
+		commentBackgroundClass = 'adminChildCommentBackground';
+	}
+	else if (pOtherWallComment) {
+		commentBackgroundClass = 'otherWallChildCommentBackground';
+	}
+		
+	var headerClass = 'highlightedBg';
+	if (pAdminComment) {
+		headerClass = 'adminChildCommentHighlightedBg';
+	}
+	else if (pOtherWallComment) {
+		headerClass = 'otherWallChildCommentHighlightedBg';
+	}
+	
 	var html = getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
-		pProfilePictureUrl, pEditEnabled, pSystemComment,
-		pAdminComment?'adminChildCommentBackground':'childCommentBackground',
-	   pAdminComment?'adminChildCommentHighlightedBg':'highlightedBg');
+		pProfilePictureUrl, pEditEnabled, pDeleteEnabled, pSystemComment, pPublicComment, commentBackgroundClass, headerClass);
 	
 	html = 
 		'<div class="childComment">' +
@@ -953,14 +1099,11 @@ function addChildCommentInternal(pCommentId, pParentCommentId, pText, pTextWitho
 }
 
 function getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
-		pProfilePictureUrl, pEditEnabled, pSystemComment, pCommentBackgroundClass, pHeaderClass) {
-
-	//mCommentIdToTextWithoutHrefMap.divSubMenuLogin
+		pProfilePictureUrl, pEditEnabled, pDeleteEnabled, pSystemComment, pPublicComment, pCommentBackgroundClass, pHeaderClass) {
 	
 	var result = 
 	'<div style="display: none;" id="commentWithoutHref' + pCommentId + '">' + pTextWithoutHref + '</div>' +
-	//'<div class="gt-form-row gt-width-100 commentBox" commentId="' + pCommentId + '" id="comment' + pCommentId + '" textWithoutHref="' + pTextWithoutHref + '">' +
-	'<div class="gt-form-row gt-width-100 commentBox" commentId="' + pCommentId + '" id="comment' + pCommentId + '">' +
+	'<div class="gt-form-row gt-width-100 commentBox" commentId="' + pCommentId + '" id="comment' + pCommentId + '" publicComment="' + pPublicComment + '">' +
 	'<table class="thumbnailOutterTable" width="100%" style="vertical-align: top;"><tr><td class="thumbnailOutterTd" valign="top">' +
 	'	<table class="thumbnailInnerTable"><tr><td valign="top">';
 	if (pOwnerUrl) {
@@ -999,9 +1142,18 @@ function getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerU
 		result += '					<label class="small">System comment, ' + pCommentDate + '</label>';
 	}
 	result += '				</td>';
-	if (pEditEnabled) {
+	if (pEditEnabled || pDeleteEnabled) {
 		result += '				<td style="text-align: right;">' +
-			'					<label class="small"><span class="linkStyleActionSmall" onClick="removeComment(this);">' + mDeleteCommentLabel + '</span> | <span class="linkStyleActionSmall" onClick="editComment(this);">' + mEditCommentLabel + '</span></label>' +
+			'					<label class="small">';
+		if (pDeleteEnabled) {
+			result += '<span class="linkStyleActionSmall" onClick="removeComment(this);">' + mDeleteCommentLabel + '</span>';
+		}
+		if (pEditEnabled && pDeleteEnabled) {
+			result += ' | ';
+		}
+		if (pEditEnabled) {
+			result += '<span class="linkStyleActionSmall" onClick="editComment(this);">' + mEditCommentLabel + '</span></label>';
+		}
 			'				</td>';
 	}
 	result += '			</tr>' +

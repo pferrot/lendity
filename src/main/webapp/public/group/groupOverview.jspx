@@ -206,6 +206,8 @@
 		<ui:param name="authorizedToReply" value="#{groupOverviewController.authorizedToAddComments}"/>
 		<ui:param name="containerID" value="#{groupOverviewController.group.id}"/>
 		<ui:param name="containerType" value="group"/>
+		<ui:param name="addCommentDefaultText" value="#{messages.comment_addComment}"/>
+		<ui:param name="noCommentAvailableText" value="#{messages.comment_noCommentAvailable}"/>
 	</ui:include>
 </c:if>
 			

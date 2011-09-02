@@ -1,0 +1,13 @@
+Bonjour $firstName,
+
+$commenterDisplayName a ajouté un commentaire sur ton mur:
+
+$comment
+
+Tu peux répondre à ce commentaire depuis ton mur: $homeUrl
+
+A bientôt sur $siteName.
+
+$siteUrl
+
+Afin de ne plus recevoir cet email, mets à jour ton profil: $profileUrl

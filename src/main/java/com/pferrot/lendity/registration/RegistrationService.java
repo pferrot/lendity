@@ -23,6 +23,8 @@ import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.OrderedListValue;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.model.PersonDetailsVisibility;
+import com.pferrot.lendity.model.WallCommentsAddPermission;
+import com.pferrot.lendity.model.WallCommentsVisibility;
 import com.pferrot.lendity.potentialconnection.PotentialConnectionService;
 import com.pferrot.lendity.potentialconnection.exception.PotentialConnectionException;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -229,6 +231,14 @@ public class RegistrationService {
 	
 	public PersonDetailsVisibility getDefaultPersonDetailsVisibility() {
 		return (PersonDetailsVisibility)listValueDao.findListValue(PersonDetailsVisibility.PRIVATE);
+	}
+	
+	public WallCommentsVisibility getDefaultWallCommentsVisibility() {
+		return (WallCommentsVisibility)listValueDao.findListValue(WallCommentsVisibility.PUBLIC);
+	}
+	
+	public WallCommentsAddPermission getDefaultWallCommentsAddPermission() {
+		return (WallCommentsAddPermission)listValueDao.findListValue(WallCommentsAddPermission.CONNECTIONS);
 	}
 
 }

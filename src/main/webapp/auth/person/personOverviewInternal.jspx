@@ -9,10 +9,7 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
     
     			<!-- body -->
-			<div class="gt-bd gt-cols clearfix">
-			
-			<!-- main content -->
-			<div class="gt-content">			
+			<div class="gt-bd gt-cols clearfix">		
 			
 			
 				<f:view>
@@ -42,280 +39,309 @@
 	<br/>
 </c:if>
 
-<!-- content box -->
-<div id="personOverviewMainDiv" class="gt-form gt-content-box" style="position: relative;">
-	<div id="personOverviewPictureDiv" class="profilePictureDiv">
-		<img src="#{theBean.profilePictureSrc}"/>
+<div style="float: left; width: 455px; border-style: solid; border-width: 0 1px 0 0; border-color: #cccccc; padding-right: 25px;">
+	<!-- content box -->
+	<div id="personOverviewMainDiv" class="gt-form gt-content-box" style="position: relative;">
+		<div id="personOverviewPictureDiv" class="profilePictureDiv">
+			<img src="#{theBean.profilePictureSrc}"/>
+		</div>
+		<!-- 
+		This will avoid a picture that does not fit in the main div in case there is not
+		a lot of info to display.
+		 -->
+		<script type="text/javascript">
+			$j(document).ready(function() {
+				var mainDivHeight = $j('#personOverviewMainDiv').height();
+				var pictureDivHeight = $j('#personOverviewPictureDiv').height();
+				if (pictureDivHeight > mainDivHeight) {
+					$j('#personOverviewMainDiv').height(pictureDivHeight + 20);
+				}
+			});
+		</script>
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_displayName}:" /></label></div>
+			<h4><h:outputText value="#{theBean.person.displayName}" /></h4>
+		</div>
+		<br/>
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_evaluations}:" /></label></div>
+			<h:outputText value="#{messages.evaluation_score1}: " /><h:outputText value="#{theBean.person.nbEvalScore1}" /><br/>
+			<h:outputText value="#{messages.evaluation_score2}: " /><h:outputText value="#{theBean.person.nbEvalScore2}" />
+		</div>
+		<br/>
+		<c:if test="#{not theBean.ownProfile}">
+			<div class="gt-form-row gt-width-100">
+				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.geolocation_distance}:" /></label></div>
+				<h:outputText value="#{theBean.distanceLabel}" />
+			</div>
+			<br/>
+		</c:if>
+		<c:if test="#{theBean.detailsAvailable}">
+			<div class="gt-form-row gt-width-100">
+				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_firstName}:" /></label></div>
+				<h:outputText value="#{theBean.person.firstName}" />
+			</div>
+			<br/>
+			<div class="gt-form-row gt-width-100">
+				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_lastName}:" /></label></div>
+				<h:outputText value="#{theBean.person.lastName}" />
+			</div>
+			<br/>
+			<div class="gt-form-row gt-width-100">
+				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_birthdate}:" /></label></div>
+				<h:outputText value="#{theBean.birthdateLabel}" />
+			</div>
+			<br/>
+			<div class="gt-form-row gt-width-100">
+				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_email}:" /></label></div>
+				<a href="mailto:#{theBean.person.email}"><h:outputText value="#{theBean.person.email}" /></a>
+			</div>
+			<br/>
+			<c:if test="#{theBean.addressHomeAvailable}">
+				<div class="gt-form-row gt-width-100">
+					<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_addressHome}:"/></label></div>
+					<table><tr><td>
+						<h:outputText value="#{theBean.addressHome}"  escape="false"/>
+					</td><td style="padding-left: 20px;">
+						<o:separateConversationContext>
+							<h:outputLink value="#{theBean.addressHomeGoogleMapsUrl}" target="_blank">
+								<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/google_maps_icon.png" alt="#{messages.geolocation_seeOnMap}" title="#{messages.geolocation_seeOnMap}"/>
+							</h:outputLink>
+						</o:separateConversationContext>
+					</td></tr></table>
+				</div>
+				<br/>
+			</c:if>
+			<c:if test="#{theBean.person.phoneMobile != null and (not empty(theBean.person.phoneMobile))}">
+				<div class="gt-form-row gt-width-100">
+					<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_phoneMobile}:"/></label></div>
+					<h:outputText value="#{theBean.person.phoneMobile}" />
+				</div>
+				<br/>
+			</c:if>
+			<c:if test="#{theBean.person.phoneHome != null and (not empty(theBean.person.phoneHome))}">
+				<div class="gt-form-row gt-width-100">
+					<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_phoneHome}:"/></label></div>
+					<h:outputText value="#{theBean.person.phoneHome}" />
+				</div>
+				<br/>
+			</c:if>
+			<c:if test="#{theBean.person.phoneProfessional != null and (not empty(theBean.person.phoneProfessional))}">
+				<div class="gt-form-row gt-width-100">
+					<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_phoneProfessional}:"/></label></div>
+					<h:outputText value="#{theBean.person.phoneProfessional}" />
+				</div>
+				<br/>
+			</c:if>
+			<c:if test="#{theBean.person.website != null and (not empty(theBean.person.website))}">
+				<div class="gt-form-row gt-width-100">
+					<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_website}:"/></label></div>
+					<a href="#{theBean.person.website}" target="_blank"><h:outputText value="#{theBean.person.website}" /></a>
+				</div>
+				<br/>
+			</c:if>
+		</c:if>
+		<c:if test="#{theBean.editAvailable}">
+			<div class="gt-form-row gt-width-100">
+				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_emailNotificationSettings}:" /></label></div>
+				<h:selectBooleanCheckbox id="emailSubscriber" value="#{theBean.person.emailSubscriber}" styleClass="gt-form-element-checkbox" disabled="true"/>
+				<h:outputText value=" " escape="false" />
+				<h:outputText value="#{messages.person_emailSubscriber}"/>
+				<br/>
+				<h:selectBooleanCheckbox id="receiveNeedsNotifications" value="#{theBean.person.receiveNeedsNotifications}" styleClass="gt-form-element-checkbox" disabled="true"/>
+				<h:outputText value=" " escape="false" />
+				<h:outputText value="#{messages.person_receiveNeedsNotifications}"/>
+				<br/>
+				<h:selectBooleanCheckbox id="receiveCommentsOnWallNotifications" value="#{theBean.person.receiveCommentsOnWallNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
+				<h:outputText value=" " escape="false" />
+				<h:outputText value="#{messages.person_receiveCommentsOnWallNotif}"/>
+				<br/>
+				<h:selectBooleanCheckbox id="receiveCommentsOnOwnNorifications" value="#{theBean.person.receiveCommentsOnOwnNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
+				<h:outputText value=" " escape="false" />
+				<h:outputText value="#{messages.person_receiveCommentsOnOwnNotif}"/>
+				<br/>
+				<h:selectBooleanCheckbox id="receiveCommentsOnCommentedNotifications" value="#{theBean.person.receiveCommentsOnCommentedNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
+				<h:outputText value=" " escape="false" />
+				<h:outputText value="#{messages.person_receiveCommentsOnCommentedNotif}"/>
+				<br/>
+				<h:selectBooleanCheckbox id="receiveCommentsOnGroupsAdminNotifications" value="#{theBean.person.receiveCommentsOnGroupsAdminNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
+				<h:outputText value=" " escape="false" />
+				<h:outputText value="#{messages.person_receiveCommentsOnGroupsAdminNotif}"/>
+				<br/>
+				<h:selectBooleanCheckbox id="receiveCommentsOnGroupsMemberNotifications" value="#{theBean.person.receiveCommentsOnGroupsMemberNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
+				<h:outputText value=" " escape="false" />
+				<h:outputText value="#{messages.person_receiveCommentsOnGroupsMemberNotif}"/>
+				<br/>
+				<h:selectBooleanCheckbox id="receiveCommentsRepliesNotifications" value="#{theBean.person.receiveCommentsRepliesNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
+				<h:outputText value=" " escape="false" />
+				<h:outputText value="#{messages.person_receiveCommentsRepliesNotif}"/>
+				<br/>
+				<h:selectBooleanCheckbox id="receiveNewsletter" value="#{theBean.person.receiveNewsletter}" styleClass="gt-form-element-checkbox" disabled="true"/>
+				<h:outputText value=" " escape="false" />
+				<h:outputText value="#{messages.person_receiveNewsletter}"/>
+				<br/>
+				<h:selectBooleanCheckbox id="receivePotentialConnectionNotif" value="#{theBean.person.receivePotentialConnectionNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
+				<h:outputText value=" " escape="false" />
+				<h:outputText value="#{messages.person_receivePotentialConnectionNotif}"/>
+			</div>
+			<br/>
+			<div class="gt-form-row gt-width-100">
+				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_detailsVisibility}:" /></label></div>
+				<h:outputText value="#{theBean.detailsVisibilityLabel}" />
+			</div>
+			<br/>
+			<div class="gt-form-row gt-width-100">
+				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_wallCommentsVisibility}:" /></label></div>
+				<h:outputText value="#{theBean.wallCommentsVisibilityLabel}" />
+			</div>
+			<br/>
+			<div class="gt-form-row gt-width-100">
+				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_wallCommentsAddPermission}:" /></label></div>
+				<h:outputText value="#{theBean.wallCommentsAddPermissionLabel}" />
+			</div>
+			<br/>
+		</c:if>
+		<div class="gt-form-row gt-width-100">
+			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_memberSince}:" /></label></div>
+			<h:outputText value="#{theBean.memberSinceLabel}" />
+		</div>
+		<br/>
+		
+		<c:if test="#{theBean.uncompletedConnectionRequestAvailable}">
+			<div class="statusInfoOverview">
+				<h:outputText value="#{messages.person_pendingRequestExists}"/>
+			</div>
+		</c:if>
+		
+		<c:if test="#{theBean.bannedByPerson}">
+			<div class="statusInfoOverview">
+				<h:outputText value="#{messages.person_bannedByPerson}"/>
+			</div>
+		</c:if>
+		
+		<div class="gt-form-row gt-width-100">
+			<table class="buttonsTable"><tr><td>
+			<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.personEditHref}" styleClass="stylishButton">
+	    		<h:outputText rendered="#{theBean.editAvailable}" value="#{messages.navigation_editDetails}"/>
+	    	</h:outputLink>
+	    	<span onclick="requestConnectionTooltip(this, '#{theBean.person.id}', 2)">
+				<h:outputText styleClass="stylishButton" value="#{messages.connectionRequest_requestConnection}" rendered="#{!theBean.requestConnectionDisabled}"/>
+			</span>
+			<h:outputLink id="addFriendNotAvailableNotLoggedInLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
+				<h:outputText id="addFriendNotAvailableNotLoggedIn" value="#{messages.person_requestConnectionNotAvailableNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
+			</h:outputLink>
+	    	</td><td>
+	    	<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.personEditPictureHref}" styleClass="stylishButton">
+	    		<h:outputText rendered="#{theBean.editAvailable}" value="#{messages.person_changeProfilePicure}"/>
+	    	</h:outputLink>
+	    	</td><td>
+	    	<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.changePasswordHref}" styleClass="stylishButton">
+	    		<h:outputText rendered="#{theBean.editAvailable}" value="#{messages.changePassword_changePassword}"/>
+	    	</h:outputLink>
+	    	</td></tr></table>
+		</div>
 	</div>
-	<!-- 
-	This will avoid a picture that does not fit in the main div in case there is not
-	a lot of info to display.
-	 -->
+	<!-- /content box -->
+	
+	<c:if test="#{theBean.showConnectionsAndGroups}">
+	<br/><br/>
+	
 	<script type="text/javascript">
-		$j(document).ready(function() {
-			var mainDivHeight = $j('#personOverviewMainDiv').height();
-			var pictureDivHeight = $j('#personOverviewPictureDiv').height();
-			if (pictureDivHeight > mainDivHeight) {
-				$j('#personOverviewMainDiv').height(pictureDivHeight + 20);
+	$j(document).ready(function() {
+		$j('.thubnailImageHome').each(function(pIndex, pElement) {
+			if ($j(pElement).height() > 30) {
+				$j(pElement).height(30);
 			}
 		});
-	</script>
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_displayName}:" /></label></div>
-		<h4><h:outputText value="#{theBean.person.displayName}" /></h4>
-	</div>
-	<br/>
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_evaluations}:" /></label></div>
-		<h:outputText value="#{messages.evaluation_score1}: " /><h:outputText value="#{theBean.person.nbEvalScore1}" /><br/>
-		<h:outputText value="#{messages.evaluation_score2}: " /><h:outputText value="#{theBean.person.nbEvalScore2}" />
-	</div>
-	<br/>
-	<c:if test="#{not theBean.ownProfile}">
-		<div class="gt-form-row gt-width-100">
-			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.geolocation_distance}:" /></label></div>
-			<h:outputText value="#{theBean.distanceLabel}" />
-		</div>
-		<br/>
-	</c:if>
-	<c:if test="#{theBean.detailsAvailable}">
-		<div class="gt-form-row gt-width-100">
-			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_firstName}:" /></label></div>
-			<h:outputText value="#{theBean.person.firstName}" />
-		</div>
-		<br/>
-		<div class="gt-form-row gt-width-100">
-			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_lastName}:" /></label></div>
-			<h:outputText value="#{theBean.person.lastName}" />
-		</div>
-		<br/>
-		<div class="gt-form-row gt-width-100">
-			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_birthdate}:" /></label></div>
-			<h:outputText value="#{theBean.birthdateLabel}" />
-		</div>
-		<br/>
-		<div class="gt-form-row gt-width-100">
-			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_email}:" /></label></div>
-			<a href="mailto:#{theBean.person.email}"><h:outputText value="#{theBean.person.email}" /></a>
-		</div>
-		<br/>
-		<c:if test="#{theBean.addressHomeAvailable}">
-			<div class="gt-form-row gt-width-100">
-				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_addressHome}:"/></label></div>
-				<table><tr><td>
-					<h:outputText value="#{theBean.addressHome}"  escape="false"/>
-				</td><td style="padding-left: 20px;">
-					<o:separateConversationContext>
-						<h:outputLink value="#{theBean.addressHomeGoogleMapsUrl}" target="_blank">
-							<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/google_maps_icon.png" alt="#{messages.geolocation_seeOnMap}" title="#{messages.geolocation_seeOnMap}"/>
-						</h:outputLink>
-					</o:separateConversationContext>
-				</td></tr></table>
-			</div>
-			<br/>
-		</c:if>
-		<c:if test="#{theBean.person.phoneMobile != null and (not empty(theBean.person.phoneMobile))}">
-			<div class="gt-form-row gt-width-100">
-				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_phoneMobile}:"/></label></div>
-				<h:outputText value="#{theBean.person.phoneMobile}" />
-			</div>
-			<br/>
-		</c:if>
-		<c:if test="#{theBean.person.phoneHome != null and (not empty(theBean.person.phoneHome))}">
-			<div class="gt-form-row gt-width-100">
-				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_phoneHome}:"/></label></div>
-				<h:outputText value="#{theBean.person.phoneHome}" />
-			</div>
-			<br/>
-		</c:if>
-		<c:if test="#{theBean.person.phoneProfessional != null and (not empty(theBean.person.phoneProfessional))}">
-			<div class="gt-form-row gt-width-100">
-				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_phoneProfessional}:"/></label></div>
-				<h:outputText value="#{theBean.person.phoneProfessional}" />
-			</div>
-			<br/>
-		</c:if>
-		<c:if test="#{theBean.person.website != null and (not empty(theBean.person.website))}">
-			<div class="gt-form-row gt-width-100">
-				<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_website}:"/></label></div>
-				<a href="#{theBean.person.website}" target="_blank"><h:outputText value="#{theBean.person.website}" /></a>
-			</div>
-			<br/>
-		</c:if>
-	</c:if>
-	<c:if test="#{theBean.editAvailable}">
-		<div class="gt-form-row gt-width-100">
-			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_emailNotificationSettings}:" /></label></div>
-			<h:selectBooleanCheckbox id="emailSubscriber" value="#{theBean.person.emailSubscriber}" styleClass="gt-form-element-checkbox" disabled="true"/>
-			<h:outputText value=" " escape="false" />
-			<h:outputText value="#{messages.person_emailSubscriber}"/>
-			<br/>
-			<h:selectBooleanCheckbox id="receiveNeedsNotifications" value="#{theBean.person.receiveNeedsNotifications}" styleClass="gt-form-element-checkbox" disabled="true"/>
-			<h:outputText value=" " escape="false" />
-			<h:outputText value="#{messages.person_receiveNeedsNotifications}"/>
-			<br/>
-			<h:selectBooleanCheckbox id="receiveCommentsOnOwnNorifications" value="#{theBean.person.receiveCommentsOnOwnNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
-			<h:outputText value=" " escape="false" />
-			<h:outputText value="#{messages.person_receiveCommentsOnOwnNotif}"/>
-			<br/>
-			<h:selectBooleanCheckbox id="receiveCommentsOnCommentedNotifications" value="#{theBean.person.receiveCommentsOnCommentedNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
-			<h:outputText value=" " escape="false" />
-			<h:outputText value="#{messages.person_receiveCommentsOnCommentedNotif}"/>
-			<br/>
-			<h:selectBooleanCheckbox id="receiveCommentsOnGroupsAdminNotifications" value="#{theBean.person.receiveCommentsOnGroupsAdminNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
-			<h:outputText value=" " escape="false" />
-			<h:outputText value="#{messages.person_receiveCommentsOnGroupsAdminNotif}"/>
-			<br/>
-			<h:selectBooleanCheckbox id="receiveCommentsOnGroupsMemberNotifications" value="#{theBean.person.receiveCommentsOnGroupsMemberNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
-			<h:outputText value=" " escape="false" />
-			<h:outputText value="#{messages.person_receiveCommentsOnGroupsMemberNotif}"/>
-			<br/>
-			<h:selectBooleanCheckbox id="receiveCommentsRepliesNotifications" value="#{theBean.person.receiveCommentsRepliesNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
-			<h:outputText value=" " escape="false" />
-			<h:outputText value="#{messages.person_receiveCommentsRepliesNotif}"/>
-			<br/>
-			<h:selectBooleanCheckbox id="receiveNewsletter" value="#{theBean.person.receiveNewsletter}" styleClass="gt-form-element-checkbox" disabled="true"/>
-			<h:outputText value=" " escape="false" />
-			<h:outputText value="#{messages.person_receiveNewsletter}"/>
-			<br/>
-			<h:selectBooleanCheckbox id="receivePotentialConnectionNotif" value="#{theBean.person.receivePotentialConnectionNotif}" styleClass="gt-form-element-checkbox" disabled="true"/>
-			<h:outputText value=" " escape="false" />
-			<h:outputText value="#{messages.person_receivePotentialConnectionNotif}"/>
-		</div>
-		<br/>
-		<div class="gt-form-row gt-width-100">
-			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_detailsVisibility}:" /></label></div>
-			<h:outputText value="#{theBean.detailsVisibilityLabel}" />
-		</div>
-		<br/>
-	</c:if>
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.person_memberSince}:" /></label></div>
-		<h:outputText value="#{theBean.memberSinceLabel}" />
-	</div>
-	<br/>
-	
-	<c:if test="#{theBean.uncompletedConnectionRequestAvailable}">
-		<div class="statusInfoOverview">
-			<h:outputText value="#{messages.person_pendingRequestExists}"/>
-		</div>
-	</c:if>
-	
-	<c:if test="#{theBean.bannedByPerson}">
-		<div class="statusInfoOverview">
-			<h:outputText value="#{messages.person_bannedByPerson}"/>
-		</div>
-	</c:if>
-	
-	<div class="gt-form-row gt-width-100">
-		<table class="buttonsTable"><tr><td>
-		<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.personEditHref}" styleClass="stylishButton">
-    		<h:outputText rendered="#{theBean.editAvailable}" value="#{messages.navigation_editDetails}"/>
-    	</h:outputLink>
-    	<span onclick="requestConnectionTooltip(this, '#{theBean.person.id}', 2)">
-			<h:outputText styleClass="stylishButton" value="#{messages.connectionRequest_requestConnection}" rendered="#{!theBean.requestConnectionDisabled}"/>
-		</span>
-		<h:outputLink id="addFriendNotAvailableNotLoggedInLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
-			<h:outputText id="addFriendNotAvailableNotLoggedIn" value="#{messages.person_requestConnectionNotAvailableNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
-		</h:outputLink>
-    	</td><td>
-    	<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.personEditPictureHref}" styleClass="stylishButton">
-    		<h:outputText rendered="#{theBean.editAvailable}" value="#{messages.person_changeProfilePicure}"/>
-    	</h:outputLink>
-    	</td><td>
-    	<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.changePasswordHref}" styleClass="stylishButton">
-    		<h:outputText rendered="#{theBean.editAvailable}" value="#{messages.changePassword_changePassword}"/>
-    	</h:outputLink>
-    	</td></tr></table>
-	</div>
-</div>
-<!-- /content box -->
-
-<c:if test="#{theBean.showConnectionsAndGroups}">
-<br/><br/>
-
-<script type="text/javascript">
-$j(document).ready(function() {
-	$j('.thubnailImageHome').each(function(pIndex, pElement) {
-		if ($j(pElement).height() > 30) {
-			$j(pElement).height(30);
-		}
 	});
-});
-</script>
-<table style="width: 100%;"><tr><td style="width: 50%; vertical-align: top; padding-right: 5px;">
-	<div class="gt-form gt-content-box" style="height: 300px; overflow: auto;">	
-		<div class="highlightedBg">
-			<label class="small">
-				<h:outputFormat value="#{messages.person_personConnections}">
-					<f:param value="#{theBean.person.displayName}"/>
-				</h:outputFormat>
-			</label>
-		</div>
-		<h:dataTable value="#{theBean.connectionsList}" binding="#{theBean.connectionsTable}" var="connection" styleClass="gt-table gt-user-table">							
-			<h:column id="personColumn1">
-		    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
-					<table class="thumbnailInnerTable"><tr><td>
-						<h:outputLink id="personOverviewLink1" value="#{theBean.connectionOverviewHref}" rendered="#{theBean.connectionThumbnail1Src != null}">
-							<div class="thumbnailDiv">
-							    <img class="thubnailImageHome" src="#{theBean.connectionThumbnail1Src}"/>
-							</div>
-						</h:outputLink>
-					</td></tr></table>
-				</td><td>
-					<h:outputLink id="personLink" value="#{theBean.connectionOverviewHref}">
-						<h:outputText id="personDisplayName" value="#{connection.displayName}" />
-					</h:outputLink>
-				</td></tr></table>
-		    </h:column>	
-		</h:dataTable>
-		<center>
-			<c:if test="#{empty(theBean.connectionsList)}">
-				<h:outputText value="#{messages.person_personConnectionsNone}"/>
-				<br/><br/>
-			</c:if>
-		</center>
-	</div>
-</td>
-<td style="width: 50%; vertical-align: top; padding-left: 5px;">
-	<div class="gt-form gt-content-box" style="height: 300px; overflow: auto;">
-		<div class="highlightedBg">
-			<label class="small">
-				<h:outputFormat value="#{messages.person_personGroups}">
-					<f:param value="#{theBean.person.displayName}"/>
-				</h:outputFormat>
-			</label>
-		</div>
-		<h:dataTable value="#{theBean.groupsList}" binding="#{theBean.groupsTable}" var="group" styleClass="gt-table gt-user-table">		
-		    <h:column id="groupColumn1">
-		    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
-					<table class="thumbnailInnerTable"><tr><td>
-						<h:outputLink id="groupOverviewLink1" value="#{theBean.groupOverviewHref}" rendered="#{theBean.groupThumbnail1Src != null}">
-							<div class="thumbnailDiv">
-							    <img class="thubnailImageHome" src="#{theBean.groupThumbnail1Src}"/>
-							</div>
-						</h:outputLink>
-					</td></tr></table>
-				</td><td>
-					<h:outputLink id="groupLink" value="#{theBean.groupOverviewHref}">
-						<h:outputText id="groupDisplayName" value="#{group.title}" />
-					</h:outputLink>
-				</td></tr></table>
-		    </h:column>	
-		</h:dataTable>
-		<center>
-			<c:if test="#{empty(theBean.groupsList)}">
-				<h:outputText value="#{messages.person_personGroupsNone}"/>
-				<br/><br/>
-			</c:if>
-		</center>
-	</div>
-</td></tr></table>
-</c:if>
-				</f:view>	
-			
+	</script>
+	<table style="width: 100%;"><tr><td style="width: 50%; vertical-align: top; padding-right: 5px;">
+		<div class="gt-form gt-content-box" style="height: 300px; overflow: auto;">	
+			<div class="highlightedBg">
+				<label class="small">
+					<h:outputFormat value="#{messages.person_personConnections}">
+						<f:param value="#{theBean.person.displayName}"/>
+					</h:outputFormat>
+				</label>
 			</div>
-			<!-- /main content -->
+			<h:dataTable value="#{theBean.connectionsList}" binding="#{theBean.connectionsTable}" var="connection" styleClass="gt-table gt-user-table">							
+				<h:column id="personColumn1">
+			    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+						<table class="thumbnailInnerTable"><tr><td>
+							<h:outputLink id="personOverviewLink1" value="#{theBean.connectionOverviewHref}" rendered="#{theBean.connectionThumbnail1Src != null}">
+								<div class="thumbnailDiv">
+								    <img class="thubnailImageHome" src="#{theBean.connectionThumbnail1Src}"/>
+								</div>
+							</h:outputLink>
+						</td></tr></table>
+					</td><td>
+						<h:outputLink id="personLink" value="#{theBean.connectionOverviewHref}">
+							<h:outputText id="personDisplayName" value="#{connection.displayName}" />
+						</h:outputLink>
+					</td></tr></table>
+			    </h:column>	
+			</h:dataTable>
+			<center>
+				<c:if test="#{empty(theBean.connectionsList)}">
+					<h:outputText value="#{messages.person_personConnectionsNone}"/>
+					<br/><br/>
+				</c:if>
+			</center>
+		</div>
+	</td>
+	<td style="width: 50%; vertical-align: top; padding-left: 5px;">
+		<div class="gt-form gt-content-box" style="height: 300px; overflow: auto;">
+			<div class="highlightedBg">
+				<label class="small">
+					<h:outputFormat value="#{messages.person_personGroups}">
+						<f:param value="#{theBean.person.displayName}"/>
+					</h:outputFormat>
+				</label>
+			</div>
+			<h:dataTable value="#{theBean.groupsList}" binding="#{theBean.groupsTable}" var="group" styleClass="gt-table gt-user-table">		
+			    <h:column id="groupColumn1">
+			    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+						<table class="thumbnailInnerTable"><tr><td>
+							<h:outputLink id="groupOverviewLink1" value="#{theBean.groupOverviewHref}" rendered="#{theBean.groupThumbnail1Src != null}">
+								<div class="thumbnailDiv">
+								    <img class="thubnailImageHome" src="#{theBean.groupThumbnail1Src}"/>
+								</div>
+							</h:outputLink>
+						</td></tr></table>
+					</td><td>
+						<h:outputLink id="groupLink" value="#{theBean.groupOverviewHref}">
+							<h:outputText id="groupDisplayName" value="#{group.title}" />
+						</h:outputLink>
+					</td></tr></table>
+			    </h:column>	
+			</h:dataTable>
+			<center>
+				<c:if test="#{empty(theBean.groupsList)}">
+					<h:outputText value="#{messages.person_personGroupsNone}"/>
+					<br/><br/>
+				</c:if>
+			</center>
+		</div>
+	</td></tr></table>
+	</c:if>
+
+</div>
+
+<div style="float: right; width: 455px; border-style: solid; border-width: 0px; border-color: blue">
+
+	<ui:include src="../comment/comment.jspx">
+		<ui:param name="authorizedToAdd" value="#{theBean.addCommentsAvailable}"/>
+		<ui:param name="authorizedToReply" value="#{theBean.addCommentsAvailable}"/>
+		<ui:param name="containerID" value="#{theBean.person.id}"/>
+		<ui:param name="containerType" value="otherWall"/>
+		<ui:param name="addCommentDefaultText" value="#{theBean.addCommentDefaultText}"/>
+		<ui:param name="noCommentAvailableText" value="#{messages.comment_noWallCommentAvailable}"/>
+		<ui:param name="showPublicCheckbox" value="#{theBean.ownProfile}"/>
+	</ui:include>
+
+</div>
+
+				</f:view>	
 			
 			</div>
 			<!-- /body -->

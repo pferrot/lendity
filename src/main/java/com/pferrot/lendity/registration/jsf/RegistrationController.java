@@ -248,8 +248,11 @@ public class RegistrationController {
 			person.setReceivePotentialConnectionNotif(Boolean.TRUE);
 			person.setReceiveCommentsOnOwnNotif(Boolean.TRUE);
 			person.setReceiveCommentsRepliesNotif(Boolean.TRUE);
+			person.setReceiveCommentsOnWallNotif(Boolean.TRUE);
 			person.setReceiveNewsletter(Boolean.TRUE);
 			person.setDetailsVisibility(registrationService.getDefaultPersonDetailsVisibility());
+			person.setWallCommentsVisibility(registrationService.getDefaultWallCommentsVisibility());
+			person.setWallCommentsAddPermission(registrationService.getDefaultWallCommentsAddPermission());
 			person.setNbEvalScore1(Integer.valueOf(0));
 			person.setNbEvalScore2(Integer.valueOf(0));
 			

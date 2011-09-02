@@ -573,6 +573,32 @@ div.adminChildCommentHighlightedBg {
 /* ADMIN COMMENTS (end) */
 /********************************************/
 
+/********************************************/
+/* OTHER WALL COMMENTS (start) */
+.otherWallCommentBackground {
+	background-color: #d3d3e1;
+}
+
+div.otherWallCommentHighlightedBgDark {
+	background-color: #8888a2;
+	width: 100%;
+}
+
+
+/* OTHER WALL CHILD COMMENTS*/
+
+.otherWallChildCommentBackground {
+	background-color: #eaeaf2;
+}
+
+div.otherWallChildCommentHighlightedBg {
+	background-color: #d3d3e1;
+	width: 100%;
+}
+
+/* OTHER WALL COMMENTS (end) */
+/********************************************/
+
 .childCommentBackground {
 	background-color: #f1f1f1;
 }

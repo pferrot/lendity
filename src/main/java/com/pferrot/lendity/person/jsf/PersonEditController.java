@@ -93,9 +93,12 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		setReceiveCommentsOnGroupsMemberNotif(pPerson.getReceiveCommentsOnGroupsMemberNotif());
 		setReceiveCommentsOnOwnNotif(pPerson.getReceiveCommentsOnOwnNotif());
 		setReceiveCommentsRepliesNotif(pPerson.getReceiveCommentsRepliesNotif());
+		setReceiveCommentsOnWallNotif(pPerson.getReceiveCommentsOnWallNotif());
 		setReceiveNewsletter(pPerson.getReceiveNewsletter());
 		
 		setDetailsVisibilityId(pPerson.getDetailsVisibility().getId());
+		setWallCommentsVisibilityId(pPerson.getWallCommentsVisibility().getId());
+		setWallCommentsAddPermissionId(pPerson.getWallCommentsAddPermission().getId());
 		
 		setPhoneHome(pPerson.getPhoneHome());
 		setPhoneMobile(pPerson.getPhoneMobile());
@@ -121,6 +124,7 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		getPerson().setReceiveCommentsOnGroupsMemberNotif(getReceiveCommentsOnGroupsMemberNotif());
 		getPerson().setReceiveCommentsOnOwnNotif(getReceiveCommentsOnOwnNotif());
 		getPerson().setReceiveCommentsRepliesNotif(getReceiveCommentsRepliesNotif());
+		getPerson().setReceiveCommentsOnWallNotif(getReceiveCommentsOnWallNotif());
 		getPerson().setReceiveNewsletter(getReceiveNewsletter());
 		
 		getPerson().setPhoneHome(getPhoneHome());
@@ -136,7 +140,7 @@ public class PersonEditController extends AbstractPersonAddEditController {
 		getPerson().setAddressHomeLatitude(getAddressHomeLatitude());
 		getPerson().setAddressHomeLongitude(getAddressHomeLongitude());
 
-		getPersonService().updatePerson(getPerson(), getDetailsVisibilityId());
+		getPersonService().updatePerson(getPerson(), getDetailsVisibilityId(), getWallCommentsVisibilityId(), getWallCommentsAddPermissionId());
 		
 		return getPerson().getId();
 	}

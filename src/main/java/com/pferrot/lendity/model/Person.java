@@ -157,6 +157,9 @@ public class Person implements Serializable {
 	@Column(name = "RECEIVE_COM_REP_NOTIF", nullable = false)
 	private Boolean receiveCommentsRepliesNotif;
 	
+	@Column(name = "RECEIVE_COM_WALL_NOTIF", nullable = false)
+	private Boolean receiveCommentsOnWallNotif;
+	
 	// Receive notifications when comments on own objects are added.
 	@Column(name = "RECEIVE_COM_OWN_NOTIF", nullable = false)
 	private Boolean receiveCommentsOnOwnNotif;
@@ -187,6 +190,14 @@ public class Person implements Serializable {
 	@ManyToOne(targetEntity = PersonDetailsVisibility.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "DETAILS_VISIBILITY_ID", nullable = false)
 	private PersonDetailsVisibility detailsVisibility;
+	
+	@ManyToOne(targetEntity = WallCommentsVisibility.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "WALL_COMMENTS_VISIBILITY_ID", nullable = false)
+	private WallCommentsVisibility wallCommentsVisibility;
+	
+	@ManyToOne(targetEntity = WallCommentsAddPermission.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "WALL_COMMENTS_ADD_PERMISSION_ID", nullable = false)
+	private WallCommentsAddPermission wallCommentsAddPermission;
 	
 	@Column(name = "NB_EVAL_SCORE_1", nullable = false)
 	private Integer nbEvalScore1;
@@ -502,12 +513,38 @@ public class Person implements Serializable {
 		this.receiveCommentsRepliesNotif = receiveCommentsRepliesNotif;
 	}
 	
+	public Boolean getReceiveCommentsOnWallNotif() {
+		return receiveCommentsOnWallNotif;
+	}
+	
+	public void setReceiveCommentsOnWallNotif(Boolean receiveCommentsOnWallNotif) {
+		this.receiveCommentsOnWallNotif = receiveCommentsOnWallNotif;
+	}
+
 	public PersonDetailsVisibility getDetailsVisibility() {
 		return detailsVisibility;
 	}
 
 	public void setDetailsVisibility(PersonDetailsVisibility detailsVisibility) {
 		this.detailsVisibility = detailsVisibility;
+	}
+
+	public WallCommentsVisibility getWallCommentsVisibility() {
+		return wallCommentsVisibility;
+	}
+
+	public void setWallCommentsVisibility(
+			WallCommentsVisibility wallCommentsVisibility) {
+		this.wallCommentsVisibility = wallCommentsVisibility;
+	}
+
+	public WallCommentsAddPermission getWallCommentsAddPermission() {
+		return wallCommentsAddPermission;
+	}
+
+	public void setWallCommentsAddPermission(
+			WallCommentsAddPermission wallCommentsAddPermission) {
+		this.wallCommentsAddPermission = wallCommentsAddPermission;
 	}
 
 	public Boolean getEmailSubscriber() {

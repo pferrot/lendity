@@ -176,6 +176,12 @@
 						<h:outputText value="#{messages.person_receiveNeedsNotifications}"/>
 						<br/>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="receiveCommentsOnWallNotif"></h:message>
+						<h:selectBooleanCheckbox id="receiveCommentsOnWallNotif" value="#{personEditController.receiveCommentsOnWallNotif}" styleClass="gt-form-element-checkbox"/>
+						<h:outputText value=" " escape="false" />
+						<h:outputText value="#{messages.person_receiveCommentsOnWallNotif}"/>
+						<br/>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
 							for="receiveCommentsOnOwnNotif"></h:message>
 						<h:selectBooleanCheckbox id="receiveCommentsOnOwnNotif" value="#{personEditController.receiveCommentsOnOwnNotif}" styleClass="gt-form-element-checkbox"/>
 						<h:outputText value=" " escape="false" />
@@ -231,6 +237,34 @@
 						    required="true"
 						    requiredMessage="#{messages.validation_requiredMessage}">
 							<f:selectItems value="#{personEditController.detailsVisibilitySelectItems}"/>
+						</h:selectOneMenu>		
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.person_wallCommentsVisibility}"/> * <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{messages.person_wallCommentsVisibilityInfo}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="wallCommentsVisibility"></h:message>
+						<h:selectOneMenu id="wallCommentsVisibility"
+						    value="#{personEditController.wallCommentsVisibilityId}" 
+						    converter="javax.faces.Long" 
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}">
+							<f:selectItems value="#{personEditController.wallCommentsVisibilitySelectItems}"/>
+						</h:selectOneMenu>		
+					</div><!-- /form row -->
+					
+					<!-- form row -->
+					<div class="gt-form-row gt-width-100">
+						<label><h:outputText value="#{messages.person_wallCommentsAddPermission}"/> * <img src="#{facesContext.externalContext.requestContextPath}/public/images/famfamfam/icons/information.png" class="qtipTitle"  title="#{messages.person_wallCommentsAddPermissionInfo}"/></label>
+						<h:message styleClass="error" showSummary="true" showDetail="false"
+							for="wallCommentsAddPermission"></h:message>
+						<h:selectOneMenu id="wallCommentsAddPermission"
+						    value="#{personEditController.wallCommentsAddPermissionId}" 
+						    converter="javax.faces.Long" 
+						    required="true"
+						    requiredMessage="#{messages.validation_requiredMessage}">
+							<f:selectItems value="#{personEditController.wallCommentsAddPermissionSelectItems}"/>
 						</h:selectOneMenu>		
 					</div><!-- /form row -->
 

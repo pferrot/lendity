@@ -9,6 +9,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import com.pferrot.core.CoreUtils;
 import com.pferrot.lendity.dao.CommentDao;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.model.ChildComment;
@@ -71,8 +72,14 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
 	}
 	
-	public List<WallComment> findWallCommentsList(final Long[] pOwnerIds, final Boolean pIncludePublicComments, final int pFirstResult, final int pMaxResults) {
-		final DetachedCriteria criteria = getWallCommentsDetachedCriteria(pOwnerIds, pIncludePublicComments);
+	public List<WallComment> findOwnWallCommentsList(final Long pOwnerId, final Long[] pConnectionIds, final Boolean pIncludeAdminPublicComments, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria criteria = getOwnWallCommentsDetachedCriteria(pOwnerId, pConnectionIds, pIncludeAdminPublicComments, null);
+		criteria.addOrder(Order.desc("creationDate"));		
+		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
+	}
+	
+	public List<WallComment> findOtherWallCommentsList(final Long pWallOwnerId, final Long pVisitorId, final Boolean pIncludeWallOwnerPrivateComments, final Boolean pIncludeOtherPublicCommentsWithOwner, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria criteria = getOtherWallCommentsDetachedCriteria(pWallOwnerId, pVisitorId, pIncludeWallOwnerPrivateComments, pIncludeOtherPublicCommentsWithOwner);
 		criteria.addOrder(Order.desc("creationDate"));		
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
 	}
@@ -106,8 +113,13 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return rowCount(criteria);
 	}
 	
-	public long countWallComments(final Long[] pOwnerIds, final Boolean pIncludePublicComments) {
-		final DetachedCriteria criteria = getWallCommentsDetachedCriteria(pOwnerIds, pIncludePublicComments);
+	public long countOwnWallComments(final Long pOwnerId, final Long[] pConnectionIds, final Boolean pIncludeAdminPublicComments) {
+		final DetachedCriteria criteria = getOwnWallCommentsDetachedCriteria(pOwnerId, pConnectionIds, pIncludeAdminPublicComments, null);
+		return rowCount(criteria);
+	}
+	
+	public long countOtherWallComments(final Long pWallOwnerId, final Long pVisitorId, final Boolean pIncludeWallOwnerPrivateComments, final Boolean pIncludeOtherPublicCommentsWithOwner) {
+		final DetachedCriteria criteria = getOtherWallCommentsDetachedCriteria(pWallOwnerId, pVisitorId, pIncludeWallOwnerPrivateComments, pIncludeOtherPublicCommentsWithOwner);
 		return rowCount(criteria);
 	}
 	
@@ -140,35 +152,100 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return criteria;	
 	}
 	
-	private DetachedCriteria getWallCommentsDetachedCriteria(final Long[] pOwnerIds, final Boolean pIncludePublicComments) {
+	private DetachedCriteria getOwnWallCommentsDetachedCriteria(final Long pPersonId, final Long[] pConnectionIds, final Boolean pIncludeAdminPublicComments,
+			final Boolean pOnlyShowPrivateComments) {
+		
+		CoreUtils.assertNotNull(pPersonId);
+		
 		final DetachedCriteria criteria = DetachedCriteria.forClass(WallComment.class);
 	
 		Criterion finalCriterion = null;
-		Criterion ownersCriterion = null;
-		Criterion includePublicCommentsCriterion = null;
-		if (pOwnerIds != null && pOwnerIds.length > 0) {
-			ownersCriterion = Restrictions.in("owner.id", pOwnerIds);
-			
+		// Own comments on own wall.
+		final Criterion ownCommentsCriterion =	Restrictions.and(
+													Restrictions.eq("owner.id", pPersonId),
+													Restrictions.isNull("wallOwner")
+												);
+		final Criterion otherCommentsCriterion =	Restrictions.eq("wallOwner.id", pPersonId);
+		
+		finalCriterion = Restrictions.or(ownCommentsCriterion, otherCommentsCriterion);
+		
+		if (pConnectionIds != null && pConnectionIds.length > 0) {
+			finalCriterion = Restrictions.or(
+								finalCriterion,
+								Restrictions.and(
+										Restrictions.in("owner.id", pConnectionIds),
+										Restrictions.and(
+												Restrictions.eq("privateComment", Boolean.FALSE),
+												Restrictions.isNull("wallOwner"))
+										));
 		}
-		if (Boolean.TRUE.equals(pIncludePublicComments)) {
-			includePublicCommentsCriterion = Restrictions.eq("publicComment", Boolean.TRUE);
+					
+		if (Boolean.TRUE.equals(pIncludeAdminPublicComments)) {
+			final Criterion adminPublicCriterion = Restrictions.and(
+					Restrictions.eq("publicComment", Boolean.TRUE),
+					Restrictions.eq("adminComment", Boolean.TRUE)); 
+			finalCriterion = Restrictions.or(finalCriterion, adminPublicCriterion);
 		}
 		
-		if (ownersCriterion != null && includePublicCommentsCriterion != null) {
-			finalCriterion = Restrictions.or(ownersCriterion, includePublicCommentsCriterion);
-		}
-		else if (ownersCriterion != null) {
-			finalCriterion = ownersCriterion;
-		}
-		else if (includePublicCommentsCriterion != null) {
-			finalCriterion = includePublicCommentsCriterion;
+		if (Boolean.TRUE.equals(pOnlyShowPrivateComments)) {
+			finalCriterion = Restrictions.and(finalCriterion, Restrictions.eq("privateComment", Boolean.TRUE));
 		}
 		
-		if (finalCriterion != null) {
-			criteria.add(finalCriterion);
-		}
-		
+		criteria.add(finalCriterion);
+				
 		return criteria;	
+	}
+	
+	private DetachedCriteria getOtherWallCommentsDetachedCriteria(final Long pWallOwnerId, final Long pVisitorId, final Boolean pIncludeWallOwnerPrivateComments, final Boolean pIncludeOtherPublicCommentsWithOwner) {
+		CoreUtils.assertNotNull(pWallOwnerId);
+		
+		final DetachedCriteria criteria = DetachedCriteria.forClass(WallComment.class);
+		
+		Criterion finalCriterion = null;
+		
+		Criterion ownerComments = null;
+		if (Boolean.TRUE.equals(pIncludeWallOwnerPrivateComments)) {
+			ownerComments = Restrictions.and(
+								Restrictions.eq("owner.id", pWallOwnerId),
+								Restrictions.isNull("wallOwner")
+							);
+		}
+		// Do not include wall owner private comments.
+		else {
+			ownerComments = Restrictions.and(
+								Restrictions.eq("owner.id", pWallOwnerId),
+								Restrictions.and(
+									Restrictions.eq("publicComment", Boolean.TRUE),
+									Restrictions.isNull("wallOwner")
+								)
+							);	
+		}
+		
+		finalCriterion = ownerComments;
+		
+		if (pVisitorId != null) {
+			final Criterion visitorCommentsToOwner =	Restrictions.and(
+															Restrictions.eq("owner.id", pVisitorId),
+															Restrictions.eq("wallOwner.id", pWallOwnerId));
+			finalCriterion = Restrictions.or(
+					finalCriterion,
+					visitorCommentsToOwner);
+		}
+
+		
+		
+		if (Boolean.TRUE.equals(pIncludeOtherPublicCommentsWithOwner)) {
+			// Comments 
+			final Criterion otherPublicCommentsWithOwner = 	Restrictions.and(
+																Restrictions.eq("wallOwner.id", pWallOwnerId),
+																Restrictions.eq("privateComment", Boolean.FALSE)
+															);
+			finalCriterion = Restrictions.or(finalCriterion, otherPublicCommentsWithOwner);
+		}
+		
+		criteria.add(finalCriterion);
+
+		return criteria;
 	}
 	
 	private DetachedCriteria getNeedCommentsDetachedCriteria(final Need pNeed) {
@@ -224,9 +301,15 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return new ListWithRowCount(list, count);
 	}
 	
-	public ListWithRowCount findWallComments(final Long[] pOwnerIds, final Boolean pIncludePublicComments, final int pFirstResult, final int pMaxResults) {
-		final List list = findWallCommentsList(pOwnerIds, pIncludePublicComments, pFirstResult, pMaxResults);
-		final long count = countWallComments(pOwnerIds, pIncludePublicComments);
+	public ListWithRowCount findOwnWallComments(final Long pOwnerId, final Long[] pConnectionIds, final Boolean pIncludeAdminPublicComments, final int pFirstResult, final int pMaxResults) {
+		final List list = findOwnWallCommentsList(pOwnerId, pConnectionIds, pIncludeAdminPublicComments, pFirstResult, pMaxResults);
+		final long count = countOwnWallComments(pOwnerId, pConnectionIds, pIncludeAdminPublicComments);
+		return new ListWithRowCount(list, count);
+	}
+	
+	public ListWithRowCount findOtherWallComments(final Long pWallOwnerId, final Long pVisitorId, final Boolean pIncludeWallOwnerPrivateComments, final Boolean pIncludeOtherPublicCommentsWithOwner, int pFirstResult, final int pMaxResults) {
+		final List list = findOtherWallCommentsList(pWallOwnerId, pVisitorId, pIncludeWallOwnerPrivateComments, pIncludeOtherPublicCommentsWithOwner, pFirstResult, pMaxResults);
+		final long count = countOtherWallComments(pWallOwnerId, pVisitorId, pIncludeWallOwnerPrivateComments, pIncludeOtherPublicCommentsWithOwner);
 		return new ListWithRowCount(list, count);
 	}
 	

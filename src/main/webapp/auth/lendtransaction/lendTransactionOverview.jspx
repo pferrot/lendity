@@ -165,6 +165,8 @@
 	<ui:param name="authorizedToReply" value="#{authenticationController.loggedIn}"/>
 	<ui:param name="containerID" value="#{lendTransactionOverviewController.lendTransaction.id}"/>
 	<ui:param name="containerType" value="lendTransaction"/>
+	<ui:param name="addCommentDefaultText" value="#{messages.comment_addComment}"/>
+	<ui:param name="noCommentAvailableText" value="#{messages.comment_noCommentAvailable}"/>
 </ui:include>
 			
 			</div>

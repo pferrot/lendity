@@ -307,6 +307,8 @@
 		<ui:param name="authorizedToReply" value="${loggedInUser}"/>
 		<ui:param name="containerID" value="#{itemOverviewController.item.id}"/>
 		<ui:param name="containerType" value="item"/>
+		<ui:param name="addCommentDefaultText" value="#{messages.comment_addComment}"/>
+		<ui:param name="noCommentAvailableText" value="#{messages.comment_noCommentAvailable}"/>
 	</ui:include>
 </c:if>
 			

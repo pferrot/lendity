@@ -43,6 +43,8 @@
         <mapping class="com.pferrot.lendity.model.OrderedListValue"/>
         <mapping class="com.pferrot.lendity.model.Person"/>
         <mapping class="com.pferrot.lendity.model.PersonDetailsVisibility"/>
+        <mapping class="com.pferrot.lendity.model.WallCommentsVisibility"/>
+        <mapping class="com.pferrot.lendity.model.WallCommentsAddPermission"/>
         <mapping class="com.pferrot.lendity.model.Language"/>
         
         <mapping class="com.pferrot.lendity.model.Item"/>

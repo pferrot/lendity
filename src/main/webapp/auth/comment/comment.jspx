@@ -15,7 +15,7 @@
 		<div class="gt-form-row gt-width-100">
 			<textarea id="commentTextarea" rows="3" style="width: 100%;" class="fontSizeSmall"/>
 			<script type="text/javascript">
-				setupSearchField('commentTextarea', '<h:outputText value="#{messages.comment_addComment}"/>', true);
+				setupSearchField('commentTextarea', '#{addCommentDefaultText}', true);
 			</script>
 		</div>
 		<div class="gt-form-row gt-width-100">
@@ -24,6 +24,11 @@
 					<td>
 						<span id="commentSubmit" class="stylishButton" onClick="postComment('#{containerID}', '#{containerType}');"><h:outputText value="#{messages.comment_submit}"/></span>
 					</td>
+					<c:if test="#{showPublicCheckbox}">
+						<td width="100%">
+							<input id="addCommentPublicCommentCheckbox" type="checkbox"/> <span class="fontSizeSmall qtipTitle" title="#{messages.comment_publicCommentInfo}"><h:outputText value="#{messages.comment_publicComment}"/></span>
+						</td>
+					</c:if>
 				</tr>
 			</table>
 		</div>
@@ -66,6 +71,11 @@
 					<td>
 						<span id="editCommentCancel" class="stylishButton" onClick="editCommentCancel();"><h:outputText value="#{messages.navigation_cancel}"/></span>
 					</td>
+					<c:if test="#{showPublicCheckbox}">
+						<td width="100%" id="editCommentPublicCommentTd">
+							<input id="editCommentPublicCommentCheckbox" type="checkbox"/> <span class="fontSizeSmall qtipTitle" title="#{messages.comment_publicCommentInfo}"><h:outputText value="#{messages.comment_publicComment}"/></span>
+						</td>
+					</c:if>
 				</tr>
 			</table>
 		</div>
@@ -83,7 +93,7 @@
 					'#{containerType}',
 					#{authorizedToReply},
 					'#{facesContext.externalContext.requestContextPath}',
-					'<h:outputText value="#{messages.comment_addComment}"/>',
+					'#{addCommentDefaultText}',
 					'<h:outputText value="#{messages.comment_addReply}"/>',
 					'<h:outputText value="#{messages.comment_submit}"/>',
 					'<h:outputText value="#{messages.comment_editCommentShort}"/>',
@@ -101,7 +111,7 @@
 		<br/>
 	</div>
 	<div id="noCommentContainer" style="display: none;">
-		<h:outputText value="#{messages.comment_noCommentAvailable}"/>
+		<h:outputText value="#{noCommentAvailableText}"/>
 		<br/>
 		<br/>
 	</div>

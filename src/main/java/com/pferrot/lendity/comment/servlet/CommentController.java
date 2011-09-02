@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Hibernate;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
@@ -26,8 +27,10 @@ import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.ChildComment;
 import com.pferrot.lendity.model.Comment;
+import com.pferrot.lendity.model.LendTransactionComment;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.model.SystemComment;
+import com.pferrot.lendity.model.WallComment;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.HtmlUtils;
@@ -64,7 +67,9 @@ public class CommentController extends AbstractController {
 	public final static String PARENT_COMMENT_ID_PARAMETER_NAME = "parentCommentID";
 	
 	public final static String WALL_PARAMETER_NAME = "wall";
-	public final static String WALL_PARAMETER_VALUE = "true";
+	public final static String OWN_WALL_PARAMETER_VALUE = "own";
+	
+	public final static String PUBLIC_COMMENT_PARAMETER_NAME = "publicComment";
 	
 	private CommentService commentService;
 	private PersonService personService;
@@ -174,11 +179,6 @@ public class CommentController extends AbstractController {
 		final Map<String, Object> result = new HashMap<String, Object>();
 		
 		final String commentIdAsString = pRequest.getParameter("commentID");
-		final String itemIdAsString = pRequest.getParameter(CONTAINER_ITEM_ID_PARAMETER_NAME);
-		final String needIdAsString = pRequest.getParameter(CONTAINER_NEED_ID_PARAMETER_NAME);
-		final String lendTransactionIdAsString = pRequest.getParameter(CONTAINER_LEND_TRANSACTION_ID_PARAMETER_NAME);
-		final String groupIdAsString = pRequest.getParameter(CONTAINER_GROUP_ID_PARAMETER_NAME);
-		final String wall = pRequest.getParameter(WALL_PARAMETER_NAME);
 		// Load a given comment.
 		if (commentIdAsString != null && commentIdAsString.trim().length() > 0) {
 			final Long commentId = Long.parseLong(commentIdAsString);
@@ -202,8 +202,14 @@ public class CommentController extends AbstractController {
 			result.put("nbExtra", 0);
 			result.put("firstResult", 0);
 		}
-		// Load comments for an item.
-		else if (itemIdAsString != null && itemIdAsString.trim().length() > 0) {
+		// Load multiple comments.
+		else {
+			final String itemIdAsString = pRequest.getParameter(CONTAINER_ITEM_ID_PARAMETER_NAME);
+			final String needIdAsString = pRequest.getParameter(CONTAINER_NEED_ID_PARAMETER_NAME);
+			final String lendTransactionIdAsString = pRequest.getParameter(CONTAINER_LEND_TRANSACTION_ID_PARAMETER_NAME);
+			final String groupIdAsString = pRequest.getParameter(CONTAINER_GROUP_ID_PARAMETER_NAME);
+			final String wall = pRequest.getParameter(WALL_PARAMETER_NAME);
+			
 			final String firstResultAsString = pRequest.getParameter("firstResult");
 			int firstResult = 0;
 			if (!StringUtils.isNullOrEmpty(firstResultAsString)) {
@@ -214,95 +220,60 @@ public class CommentController extends AbstractController {
 			if (!StringUtils.isNullOrEmpty(maxResultsAsString)) {
 				maxResults = Integer.valueOf(maxResultsAsString);
 			}
-			
-			final Long itemId = Long.parseLong(itemIdAsString);
-			final ListWithRowCount lwrc = commentService.findItemCommentsWithAC(itemId,
-					PersonUtils.getCurrentPersonId(pRequest.getSession()),
-					firstResult,
-					maxResults);
-			
-			populateMultipleCommentsMap(result, lwrc, firstResult, maxResults, pRequest);
-		}
-		// Load comments for a need.
-		else if (needIdAsString != null && needIdAsString.trim().length() > 0) {			
-			final String firstResultAsString = pRequest.getParameter("firstResult");
-			int firstResult = 0;
-			if (!StringUtils.isNullOrEmpty(firstResultAsString)) {
-				firstResult = Integer.valueOf(firstResultAsString);
+			ListWithRowCount lwrc = null;
+			// Load comments for an item.
+			if (itemIdAsString != null && itemIdAsString.trim().length() > 0) {				
+				final Long itemId = Long.parseLong(itemIdAsString);
+				lwrc = commentService.findItemCommentsWithAC(itemId,
+						PersonUtils.getCurrentPersonId(pRequest.getSession()),
+						firstResult,
+						maxResults);
 			}
-			int maxResults = CommentConsts.DEFAULT_NB_COMMENTS_TO_LOAD;
-			final String maxResultsAsString = pRequest.getParameter("maxResults");
-			if (!StringUtils.isNullOrEmpty(maxResultsAsString)) {
-				maxResults = Integer.valueOf(maxResultsAsString);
+			// Load comments for a need.
+			else if (needIdAsString != null && needIdAsString.trim().length() > 0) {							
+				final Long needId = Long.parseLong(needIdAsString);
+				lwrc = commentService.findNeedCommentsWithAC(needId,
+						PersonUtils.getCurrentPersonId(pRequest.getSession()),
+						firstResult,
+						maxResults);
 			}
-			
-			final Long needId = Long.parseLong(needIdAsString);
-			final ListWithRowCount lwrc = commentService.findNeedCommentsWithAC(needId,
-					PersonUtils.getCurrentPersonId(pRequest.getSession()),
-					firstResult,
-					maxResults);
-			
-			populateMultipleCommentsMap(result, lwrc, firstResult, maxResults, pRequest);
-		}
-		// Load comments for a lend transaction.
-		else if (lendTransactionIdAsString != null && lendTransactionIdAsString.trim().length() > 0) {			
-			final String firstResultAsString = pRequest.getParameter("firstResult");
-			int firstResult = 0;
-			if (!StringUtils.isNullOrEmpty(firstResultAsString)) {
-				firstResult = Integer.valueOf(firstResultAsString);
+			// Load comments for a lend transaction.
+			else if (lendTransactionIdAsString != null && lendTransactionIdAsString.trim().length() > 0) {							
+				final Long lendTransactionId = Long.parseLong(lendTransactionIdAsString);
+				lwrc = commentService.findLendTransactionCommentsWithAC(lendTransactionId,
+						PersonUtils.getCurrentPersonId(pRequest.getSession()),
+						firstResult,
+						maxResults);
 			}
-			int maxResults = CommentConsts.DEFAULT_NB_COMMENTS_TO_LOAD;
-			final String maxResultsAsString = pRequest.getParameter("maxResults");
-			if (!StringUtils.isNullOrEmpty(maxResultsAsString)) {
-				maxResults = Integer.valueOf(maxResultsAsString);
+			// Load comments for a group.
+			else if (groupIdAsString != null && groupIdAsString.trim().length() > 0) {						
+				final Long groupId = Long.parseLong(groupIdAsString);
+				lwrc = commentService.findGroupCommentsWithAC(groupId,
+						PersonUtils.getCurrentPersonId(pRequest.getSession()),
+						firstResult,
+						maxResults);
 			}
-			
-			final Long lendTransactionId = Long.parseLong(lendTransactionIdAsString);
-			final ListWithRowCount lwrc = commentService.findLendTransactionCommentsWithAC(lendTransactionId,
-					PersonUtils.getCurrentPersonId(pRequest.getSession()),
-					firstResult,
-					maxResults);
-			
-			populateMultipleCommentsMap(result, lwrc, firstResult, maxResults, pRequest);
-		}
-		// Load comments for a group.
-		else if (groupIdAsString != null && groupIdAsString.trim().length() > 0) {			
-			final String firstResultAsString = pRequest.getParameter("firstResult");
-			int firstResult = 0;
-			if (!StringUtils.isNullOrEmpty(firstResultAsString)) {
-				firstResult = Integer.valueOf(firstResultAsString);
+			// Load wall comments.
+			else if (!StringUtils.isNullOrEmpty(wall)) {	
+				final Long currentPersonId = PersonUtils.getCurrentPersonId(pRequest.getSession());
+				// Own wall.
+				if (OWN_WALL_PARAMETER_VALUE.equals(wall) ||
+					(currentPersonId != null && wall.equals(currentPersonId.toString()))) {
+					lwrc = commentService.findOwnWallCommentsForPerson(currentPersonId, firstResult, maxResults);
+				}
+				// Someone else's wall.
+				else {
+					final Long wallOwnerId = Long.valueOf(wall);
+					lwrc = commentService.findOtherWallCommentsForPerson(
+																currentPersonId,
+																wallOwnerId,
+																firstResult,
+																maxResults);
+				}
 			}
-			int maxResults = CommentConsts.DEFAULT_NB_COMMENTS_TO_LOAD;
-			final String maxResultsAsString = pRequest.getParameter("maxResults");
-			if (!StringUtils.isNullOrEmpty(maxResultsAsString)) {
-				maxResults = Integer.valueOf(maxResultsAsString);
+			if (lwrc != null) {
+				populateMultipleCommentsMap(result, lwrc, firstResult, maxResults, pRequest);
 			}
-			
-			final Long groupId = Long.parseLong(groupIdAsString);
-			final ListWithRowCount lwrc = commentService.findGroupCommentsWithAC(groupId,
-					PersonUtils.getCurrentPersonId(pRequest.getSession()),
-					firstResult,
-					maxResults);
-			
-			populateMultipleCommentsMap(result, lwrc, firstResult, maxResults, pRequest);
-		}
-		// Load wall comments.
-		else if (WALL_PARAMETER_VALUE.equals(wall)) {			
-			final String firstResultAsString = pRequest.getParameter("firstResult");
-			int firstResult = 0;
-			if (!StringUtils.isNullOrEmpty(firstResultAsString)) {
-				firstResult = Integer.valueOf(firstResultAsString);
-			}
-			int maxResults = CommentConsts.DEFAULT_NB_COMMENTS_TO_LOAD;
-			final String maxResultsAsString = pRequest.getParameter("maxResults");
-			if (!StringUtils.isNullOrEmpty(maxResultsAsString)) {
-				maxResults = Integer.valueOf(maxResultsAsString);
-			}
-			final ListWithRowCount lwrc = commentService.findWallCommentsForPerson(PersonUtils.getCurrentPersonId(pRequest.getSession()),
-					firstResult,
-					maxResults);
-			
-			populateMultipleCommentsMap(result, lwrc, firstResult, maxResults, pRequest);
 		}
 		
 		return result;
@@ -364,6 +335,8 @@ public class CommentController extends AbstractController {
 		map.put("text", getCommentService().processAllHrefWithPerson(HtmlUtils.getTextWithHrefLinks(HtmlUtils.escapeHtmlAndReplaceCr(pComment.getText())), pComment.getOwner()));
 		map.put("textWithoutHref", HtmlUtils.escapeHtmlAndReplaceCr(pComment.getText()));
 		map.put("adminComment", pComment.getAdminComment());
+		map.put("publicComment", pComment.getPublicComment());
+		
 		final Person owner = pComment.getOwner();
 		if (owner != null) {
 			map.put("ownerName", HtmlUtils.escapeHtmlAndReplaceCr(owner.getDisplayName()));		
@@ -375,8 +348,33 @@ public class CommentController extends AbstractController {
 		map.put("dateAdded", getDateAsString(pComment.getCreationDate()));
 		final Boolean canEdit = currentPersonId != null &&
 								! (pComment instanceof SystemComment) &&
-								PersonUtils.getCurrentPersonId(pRequest.getSession()).equals(owner.getId());
+								currentPersonId.equals(owner.getId());
 		map.put("canEdit", canEdit);
+		// Indicate whether that message was posted on someone else's wall.
+		Boolean canDelete = canEdit;
+		Boolean otherWallComment = Boolean.FALSE;
+		WallComment refWallComment = null;
+		if (Hibernate.getClass(pComment).isAssignableFrom(WallComment.class)) {
+			refWallComment = commentService.findWallComment(pComment.getId()); 			
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(ChildComment.class)) {
+			final ChildComment childComment = commentService.findChildComment(pComment.getId());
+			if (Hibernate.getClass(childComment.getParentComment()).isAssignableFrom(WallComment.class)) {
+				refWallComment = commentService.findWallComment(childComment.getParentComment().getId());
+			} 			
+		}
+		if (refWallComment != null) {
+			Long wallCommentWallOwnerId = null;
+			if (refWallComment.getWallOwner() != null) {
+				wallCommentWallOwnerId = refWallComment.getWallOwner().getId();
+			}
+			canDelete = canEdit || (currentPersonId != null && currentPersonId.equals(wallCommentWallOwnerId));
+			
+			otherWallComment = refWallComment.getWallOwner() != null; 		
+		}
+		map.put("canDelete", canDelete);
+		map.put("otherWallComment", otherWallComment);
+		
 		map.put("systemComment", pComment instanceof SystemComment);
 		if (pComment instanceof ChildComment) {
 			map.put("parentCommentID", ((ChildComment)pComment).getParentComment().getId());
@@ -403,8 +401,9 @@ public class CommentController extends AbstractController {
 				final Long currentPersonId = PersonUtils.getCurrentPersonId(pRequest.getSession());
 				final String commentIdAsString = pRequest.getParameter("commentID");
 				final Long commentID = Long.valueOf(commentIdAsString);
+				final Boolean publicComment = Boolean.valueOf("true".equals(pRequest.getParameter(PUBLIC_COMMENT_PARAMETER_NAME)));
 				
-				commentService.updateCommentWithAC(commentID, text, currentPersonId);
+				commentService.updateCommentWithAC(commentID, text, publicComment, currentPersonId);
 				
 				map = getMapForOneComment(commentService.findComment(commentID), pRequest);
 			}
@@ -438,8 +437,7 @@ public class CommentController extends AbstractController {
 			final String text = pRequest.getParameter(TEXT_PARAMETER_NAME);
 			parentCommentID = pRequest.getParameter(PARENT_COMMENT_ID_PARAMETER_NAME);
 			final boolean isChildComment = !StringUtils.isNullOrEmpty(parentCommentID);
-			if ((!isChildComment && !isValidComment(text)) ||
-				(isChildComment && !isValidChildComment(text)) ) {
+			if (!isValidComment(text)) {
 				map.put("errorMessage", getCommentValidationErrorMessage());
 				if (isChildComment) {
 					map.put("parentCommentID", parentCommentID);	
@@ -469,8 +467,15 @@ public class CommentController extends AbstractController {
 				else if (!StringUtils.isNullOrEmpty(groupID)) {
 					commentID = commentService.createCommentOnGroupWithAC(text, Long.valueOf(groupID), currentPersonId);
 				}
-				else if (WALL_PARAMETER_VALUE.equals(wall)) {
-					commentID = commentService.createCommentOnWallWithAC(text, currentPersonId);
+				else if (!StringUtils.isNullOrEmpty(wall)) {
+					if (OWN_WALL_PARAMETER_VALUE.equals(wall) ||
+						(currentPersonId != null && wall.equals(currentPersonId.toString()))) {
+						final Boolean publicComment = Boolean.valueOf("true".equals(pRequest.getParameter(PUBLIC_COMMENT_PARAMETER_NAME)));
+						commentID = commentService.createCommentOnOwnWallWithAC(text, publicComment, currentPersonId);	
+					}
+					else {
+						commentID = commentService.createCommentOnOtherWallWithAC(text, currentPersonId, Long.valueOf(wall), Boolean.FALSE);
+					}
 				}
 				else if (!StringUtils.isNullOrEmpty(parentCommentID)) {
 					commentID = commentService.createChildCommentWithAC(text, Long.valueOf(parentCommentID), currentPersonId);
@@ -500,15 +505,15 @@ public class CommentController extends AbstractController {
 	 */
 	private boolean isValidComment(final String pComment) {
 		return pComment != null &&
-			!pComment.equals(getAddCommentDefaultText()) &&
-			pComment.length() <= CommentConsts.COMMENT_MAX_LENGTH;
+			   pComment.trim().length() > 0 &&
+			   pComment.length() <= CommentConsts.COMMENT_MAX_LENGTH;
 	}
 	
-	private boolean isValidChildComment(final String pComment) {
-		return pComment != null &&
-			!pComment.equals(getAddChildCommentDefaultText()) &&
-			pComment.length() <= CommentConsts.COMMENT_MAX_LENGTH;
-	}
+//	private boolean isValidChildComment(final String pComment) {
+//		return pComment != null &&
+//			!pComment.equals(getAddChildCommentDefaultText()) &&
+//			pComment.length() <= CommentConsts.COMMENT_MAX_LENGTH;
+//	}
 
 	private String getCommentValidationErrorMessage() {
 		final Locale locale = I18nUtils.getDefaultLocale();

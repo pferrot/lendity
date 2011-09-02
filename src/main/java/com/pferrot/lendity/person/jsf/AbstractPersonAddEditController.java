@@ -47,9 +47,16 @@ public abstract class AbstractPersonAddEditController {
 	private Boolean receiveCommentsOnGroupsMemberNotif;
 	private Boolean receiveNewsletter;
 	private Boolean receiveCommentsRepliesNotif;
+	private Boolean receiveCommentsOnWallNotif;
 
 	private List<SelectItem> detailsVisibilitySelectItems;
 	private Long detailsVisibilityId;	
+	
+	private List<SelectItem> wallCommentsVisibilitySelectItems;
+	private Long wallCommentsVisibilityId;	
+	
+	private List<SelectItem> wallCommentsAddPermissionSelectItems;
+	private Long wallCommentsAddPermissionId;	
 	
 	
 	public PersonService getPersonService() {
@@ -75,6 +82,40 @@ public abstract class AbstractPersonAddEditController {
 
 	public void setDetailsVisibilityId(Long detailsVisibilityId) {
 		this.detailsVisibilityId = detailsVisibilityId;
+	}
+	
+	public List<SelectItem> getWallCommentsVisibilitySelectItems() {
+		if (wallCommentsVisibilitySelectItems == null) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			wallCommentsVisibilitySelectItems = UiUtils.getSelectItemsForOrderedListValue(getPersonService().getWallCommentsVisibilities(), locale);
+			wallCommentsVisibilitySelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
+		}		
+		return wallCommentsVisibilitySelectItems;
+	}
+
+	public Long getWallCommentsVisibilityId() {
+		return wallCommentsVisibilityId;
+	}
+
+	public void setWallCommentsVisibilityId(Long wallCommentsVisibilityId) {
+		this.wallCommentsVisibilityId = wallCommentsVisibilityId;
+	}
+	
+	public List<SelectItem> getWallCommentsAddPermissionSelectItems() {
+		if (wallCommentsAddPermissionSelectItems == null) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			wallCommentsAddPermissionSelectItems = UiUtils.getSelectItemsForOrderedListValue(getPersonService().getWallCommentsAddPermissions(), locale);
+			wallCommentsAddPermissionSelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
+		}		
+		return wallCommentsAddPermissionSelectItems;
+	}
+
+	public Long getWallCommentsAddPermissionId() {
+		return wallCommentsAddPermissionId;
+	}
+
+	public void setWallCommentsAddPermissionId(Long wallCommentsAddPermissionId) {
+		this.wallCommentsAddPermissionId = wallCommentsAddPermissionId;
 	}
 
 	public String getFirstName() {
@@ -262,6 +303,14 @@ public abstract class AbstractPersonAddEditController {
 
 	public void setReceiveCommentsRepliesNotif(Boolean receiveCommentsRepliesNotif) {
 		this.receiveCommentsRepliesNotif = receiveCommentsRepliesNotif;
+	}
+
+	public Boolean getReceiveCommentsOnWallNotif() {
+		return receiveCommentsOnWallNotif;
+	}
+
+	public void setReceiveCommentsOnWallNotif(Boolean receiveCommentsOnWallNotif) {
+		this.receiveCommentsOnWallNotif = receiveCommentsOnWallNotif;
 	}
 
 	public abstract Long processPerson();

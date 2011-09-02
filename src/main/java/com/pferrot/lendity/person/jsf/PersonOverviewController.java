@@ -23,6 +23,7 @@ import com.pferrot.lendity.group.GroupService;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.Person;
+import com.pferrot.lendity.model.WallCommentsAddPermission;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.HtmlUtils;
@@ -146,7 +147,27 @@ public class PersonOverviewController implements Serializable {
 		else {
 			return "";
 		}
-	}	
+	}
+	
+	public String getWallCommentsVisibilityLabel() {
+		if (getPerson() != null && getPerson().getWallCommentsVisibility() != null) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString(getPerson().getWallCommentsVisibility().getLabelCode(), locale);
+		}
+		else {
+			return "";
+		}
+	}
+	
+	public String getWallCommentsAddPermissionLabel() {
+		if (getPerson() != null && getPerson().getWallCommentsAddPermission() != null) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString(getPerson().getWallCommentsAddPermission().getLabelCode(), locale);
+		}
+		else {
+			return "";
+		}
+	}
 	
 	public boolean isRequestConnectionDisabled() {
 		try {
@@ -306,5 +327,58 @@ public class PersonOverviewController implements Serializable {
 	public boolean isShowConnectionsAndGroups() {
 		return true;
 	}
+	
+	public boolean isAddCommentsAvailable() {
+		if (!SecurityUtils.isLoggedIn()) {
+			return false;
+		}
+		else if (isOwnProfile()) {
+			return true;
+		}
+		final Long currentPersonId = PersonUtils.getCurrentPersonId();
+		if (personService.isBannedBy(getPerson().getId(), currentPersonId)) {
+			return false;
+		}
+		final String addCommentsLabelCode = getPerson().getWallCommentsAddPermission().getLabelCode();
+		
+		if (WallCommentsAddPermission.EVERYONE.equals(addCommentsLabelCode)) {
+			return true;
+		}
+		else if (WallCommentsAddPermission.CONNECTIONS.equals(addCommentsLabelCode)) {
+			return getPersonService().isConnection(currentPersonId, getPerson().getId());
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public String getAddCommentDefaultText() {
+		final Locale locale = I18nUtils.getDefaultLocale();
+		if (isOwnProfile()) {
+			return I18nUtils.getMessageResourceString("comment_addWallComment", locale);
+		}
+		else {
+			return I18nUtils.getMessageResourceString("comment_addOtherWallComment", new Object[] {getPerson().getDisplayName()}, locale);
+		}
+	}
+	
+//	public boolean isViewCommentsAvailable() {
+//		final String commentsVisibilityLabelCode = getPerson().getWallCommentsVisibility().getLabelCode();
+//		if (!SecurityUtils.isLoggedIn()) {
+//			return WallCommentsVisibility.PUBLIC.equals(commentsVisibilityLabelCode);
+//		}
+//		if (isOwnProfile()) {
+//			return true;
+//		}		
+//		if (WallCommentsVisibility.PUBLIC.equals(commentsVisibilityLabelCode)) {
+//			return true;
+//		}
+//		else if (WallCommentsVisibility.CONNECTIONS.equals(commentsVisibilityLabelCode)) {
+//			return getPersonService().isConnection(PersonUtils.getCurrentPersonId(), getPerson().getId());
+//		}
+//		else {
+//			return false;
+//		}
+//	}
 	
 }

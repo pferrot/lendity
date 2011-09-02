@@ -703,6 +703,9 @@ public class GroupService {
 		if (!SecurityUtils.isLoggedIn()) {
 			return false;
 		}
+		if (pPerson.getUser() != null && pPerson.getUser().isAdmin()) {
+			return true;
+		}
 		if (Boolean.TRUE.equals(pGroup.getOnlyMembersCanSeeComments())) {
 			return pPerson != null && isUserOwnerOrAdministratorOrMemberOfGroup(pPerson, pGroup);
 		}

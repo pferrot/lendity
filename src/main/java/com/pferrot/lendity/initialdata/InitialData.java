@@ -30,6 +30,8 @@ import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.model.PersonDetailsVisibility;
+import com.pferrot.lendity.model.WallCommentsAddPermission;
+import com.pferrot.lendity.model.WallCommentsVisibility;
 import com.pferrot.security.dao.RoleDao;
 import com.pferrot.security.dao.UserDao;
 import com.pferrot.security.model.Role;
@@ -315,8 +317,11 @@ public class InitialData {
 		person.setReceiveCommentsOnGroupsAdminNotif(Boolean.FALSE);
 		person.setReceiveCommentsOnGroupsMemberNotif(Boolean.FALSE);
 		person.setReceiveCommentsRepliesNotif(Boolean.FALSE);
+		person.setReceiveCommentsOnWallNotif(Boolean.FALSE);
 		person.setReceiveNewsletter(Boolean.FALSE);
 		person.setDetailsVisibility((PersonDetailsVisibility)listValueDao.findListValue(PersonDetailsVisibility.PRIVATE));
+		person.setWallCommentsVisibility((WallCommentsVisibility)listValueDao.findListValue(WallCommentsVisibility.PUBLIC));
+		person.setWallCommentsAddPermission((WallCommentsAddPermission)listValueDao.findListValue(WallCommentsAddPermission.CONNECTIONS));
 		person.setEnabled(Boolean.TRUE);
 		
 		// That is really fake...

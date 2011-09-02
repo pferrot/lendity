@@ -28,9 +28,13 @@ public interface CommentDao {
 	
 	ChildComment findChildComment(final Long pCommentId);
 	
-	ListWithRowCount findWallComments(Long[] pOwnerIds, Boolean pIncludePublicComments, int pFirstResult, int pMaxResults);
-	List<WallComment> findWallCommentsList(Long[] pOwnerIds, Boolean pIncludePublicComments, int pFirstResult, int pMaxResults);
-	long countWallComments(Long[] pOwnerIds, Boolean pIncludePublicComments);
+	ListWithRowCount findOwnWallComments(Long pPersonId, final Long[] pConnectionIds, Boolean pIncludeAdminPublicComments, int pFirstResult, int pMaxResults);
+	List<WallComment> findOwnWallCommentsList(Long pPersonId, final Long[] pConnectionIds, Boolean pIncludeAdminPublicComments, int pFirstResult, int pMaxResults);
+	long countOwnWallComments(Long pPersonId, final Long[] pConnectionIds, Boolean pIncludeAdminPublicComments);
+	
+	ListWithRowCount findOtherWallComments(Long pWallOwnerId, Long pVisitorId, Boolean pIncludeWallOwnerPrivateComments, Boolean pIncludeOtherPublicCommentsWithOwner, int pFirstResult, int pMaxResults);
+	List<WallComment> findOtherWallCommentsList(Long pWallOwnerId, Long pVisitorId, Boolean pIncludeWallOwnerPrivateComments, Boolean pIncludeOtherPublicCommentsWithOwner, int pFirstResult, int pMaxResults);
+	long countOtherWallComments(Long pWallOwnerId, Long pVisitorId, Boolean pIncludeWallOwnerPrivateComments, Boolean pIncludeOtherPublicCommentsWithOwner);
 	
 	ListWithRowCount findItemComments(Item pItem, int pFirstResult, int pMaxResults);
 	List<ItemComment> findItemCommentsList(Item pItem, int pFirstResult, int pMaxResults);

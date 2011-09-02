@@ -41,6 +41,8 @@ import com.pferrot.lendity.model.NeedComment;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.model.SystemComment;
 import com.pferrot.lendity.model.WallComment;
+import com.pferrot.lendity.model.WallCommentsAddPermission;
+import com.pferrot.lendity.model.WallCommentsVisibility;
 import com.pferrot.lendity.need.NeedService;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
@@ -101,6 +103,14 @@ public class CommentService {
 	
 	public Comment findComment(final Long pCommentId) {
 		return commentDao.findComment(pCommentId);
+	}
+	
+	public WallComment findWallComment(final Long pWallCommentId) {
+		return commentDao.findWallComment(pWallCommentId);
+	}
+	
+	public ChildComment findChildComment(final Long pChildCommentId) {
+		return commentDao.findChildComment(pChildCommentId);
 	}
 	
 	/**
@@ -230,16 +240,44 @@ public class CommentService {
 		return commentDao.findGroupComments(group, pFirstResult, pMaxResults);
 	}
 	
-	public ListWithRowCount findWallCommentsForPerson(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+	public ListWithRowCount findOwnWallCommentsForPerson(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
 		if (!SecurityUtils.isLoggedIn()) {
 			throw new SecurityException("Not logged in");
 		}
 		final Person person = personDao.findPerson(pPersonId);
 		final Long[] connectionsIds = personService.getPersonConnectionIds(person, null);
-		final Long[] personAndConnectionsIds = new Long[connectionsIds.length + 1];
-		System.arraycopy(connectionsIds, 0, personAndConnectionsIds, 0, connectionsIds.length);
-		personAndConnectionsIds[personAndConnectionsIds.length-1] = pPersonId;
-		return commentDao.findWallComments(personAndConnectionsIds, Boolean.TRUE, pFirstResult, pMaxResults);
+		return commentDao.findOwnWallComments(pPersonId, connectionsIds, Boolean.TRUE, pFirstResult, pMaxResults);
+	}
+	
+	public ListWithRowCount findOtherWallCommentsForPerson(final Long pVisitorId, final Long pWallOwnerId, final int pFirstResult, final int pMaxResults) {
+		final Person wallOwner = personDao.findPerson(pWallOwnerId);
+		final WallCommentsVisibility visibility = wallOwner.getWallCommentsVisibility();
+		final String visibilityLabelCode = visibility.getLabelCode();
+		Boolean includeWallOwnerPrivateComments = Boolean.FALSE;
+		if (SecurityUtils.isLoggedIn() &&
+			personService.isConnection(pVisitorId, pWallOwnerId)) {
+			includeWallOwnerPrivateComments = Boolean.TRUE;
+		}
+		
+		if (WallCommentsVisibility.PUBLIC.equals(visibilityLabelCode)) {
+			return commentDao.findOtherWallComments(pWallOwnerId, pVisitorId, includeWallOwnerPrivateComments, Boolean.TRUE, pFirstResult, pMaxResults);
+			
+		}
+		else if (WallCommentsVisibility.CONNECTIONS.equals(visibilityLabelCode)) {
+			// Not logged in or not a connection
+			if (pVisitorId == null ||
+				!personService.isConnection(pVisitorId, pWallOwnerId)) {
+				return commentDao.findOtherWallComments(pWallOwnerId, pVisitorId, includeWallOwnerPrivateComments, Boolean.FALSE, pFirstResult, pMaxResults); 
+			}
+			// Connection.
+			else {
+				return commentDao.findOtherWallComments(pWallOwnerId, pVisitorId, includeWallOwnerPrivateComments, Boolean.TRUE, pFirstResult, pMaxResults); 
+			}
+		}
+		// Private.
+		else {
+			return commentDao.findOtherWallComments(pWallOwnerId, pVisitorId, includeWallOwnerPrivateComments, Boolean.FALSE, pFirstResult, pMaxResults);			
+		}
 	}
 	
 	/**
@@ -410,7 +448,7 @@ public class CommentService {
 		return commentID;
 	}
 	
-	public Long createCommentOnWallWithAC(final String pText, final Long pCommentOwnerId) throws CommentException {		
+	public Long createCommentOnOwnWallWithAC(final String pText, final Boolean pPublicComment, final Long pCommentOwnerId) throws CommentException {		
 		final Person commentOwner = personService.findPerson(pCommentOwnerId);
 		
 		final WallComment wallComment = new WallComment();
@@ -418,7 +456,32 @@ public class CommentService {
 		wallComment.setOwner(commentOwner);
 		wallComment.setText(pText);
 		wallComment.setAdminComment(Boolean.FALSE);
+		wallComment.setPublicComment(pPublicComment);
+		wallComment.setPrivateComment(Boolean.FALSE);
+		
+		Long commentID = commentDao.createComment(wallComment);
+		
+		return commentID;
+	}
+
+	public Long createCommentOnOtherWallWithAC(final String pText, final Long pCommentOwnerId, final Long pWallOwnerId, final Boolean pPrivateComment) throws CommentException {		
+		final Person commentOwner = personService.findPerson(pCommentOwnerId);
+		final Person wallOwner = personService.findPerson(pWallOwnerId);
+		
+		assertUserAuthorizedToAddCommentOnWall(commentOwner, wallOwner);
+		
+		final WallComment wallComment = new WallComment();
+		wallComment.setCreationDate(new Date());
+		wallComment.setOwner(commentOwner);
+		wallComment.setWallOwner(wallOwner);
+		wallComment.setText(pText);
+		wallComment.setAdminComment(Boolean.FALSE);
 		wallComment.setPublicComment(Boolean.FALSE);
+		wallComment.setPrivateComment(pPrivateComment);
+		
+		if (Boolean.TRUE.equals(wallOwner.getReceiveCommentsOnWallNotif())) {
+			sendCommentAddedNotificationToOnePerson(wallComment, wallOwner);
+		}
 		
 		Long commentID = commentDao.createComment(wallComment);
 		
@@ -560,7 +623,7 @@ public class CommentService {
 	 * @param pCurrentPersonId
 	 * @throws CommentException 
 	 */
-	public void updateCommentWithAC(final Long pCommentId, final String pNewText, final Long pCurrentPersonId) throws CommentException {		
+	public void updateCommentWithAC(final Long pCommentId, final String pNewText, final Boolean pPublicComment, final Long pCurrentPersonId) throws CommentException {		
 		final Comment comment = commentDao.findComment(pCommentId);
 		if (comment instanceof SystemComment) {
 			throw new CommentException("System comment cannot be edited");
@@ -572,6 +635,7 @@ public class CommentService {
 		
 		comment.setModificationDate(new Date());
 		comment.setText(pNewText);
+		comment.setPublicComment(pPublicComment);
 		
 		commentDao.updateComment(comment);
 	}
@@ -684,6 +748,19 @@ public class CommentService {
 			}
 		}
 		
+		// Force sending notification to wall owner.
+		if (Hibernate.getClass(parentComment).isAssignableFrom(WallComment.class)) {
+			final WallComment wallComment = findWallComment(parentComment.getId());
+			if (wallComment.getWallOwner() != null) {
+				final Person wallOwner = wallComment.getWallOwner();
+				if (!recipients.contains(wallOwner) &&
+					Boolean.TRUE.equals(wallOwner.getReceiveCommentsOnWallNotif()) &&
+					!wallOwner.equals(childCommentOwner)) {
+					recipients.add(wallOwner);
+				}
+			}
+		}
+		
 		for (Person recipient: recipients) {
 			sendChildCommentAddedNotificationToOnePerson(pChildComment, recipient);
 		}		
@@ -703,7 +780,8 @@ public class CommentService {
 			// Send email (will actually create a JMS message, i.e. it is async).
 			Map<String, String> objects = new HashMap<String, String>();
 			objects.put("firstName", pPerson.getFirstName());
-			objects.put("commenterDisplayName", pComment.getOwner().getDisplayName());
+			objects.put("displayName", pPerson.getDisplayName());
+			objects.put("commenterDisplayName", pComment.getOwner().getDisplayName());		
 			
 			final Commentable commentable = pComment.getContainer();
 			String velocityTemplateLocation = null;
@@ -742,6 +820,11 @@ public class CommentService {
 						PagesURL.GROUP_OVERVIEW_PARAM_GROUP_ID,
 						group.getId().toString()));
 				velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/comment/added/group/fr";
+			}
+			// WallComment.
+			else if (commentable == null) {
+				objects.put("homeUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.HOME));
+				velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/comment/added/wall/fr";
 			}
 			else {
 				throw new CommentException("Unhandled commentabe type " + commentable.getClass());
@@ -790,6 +873,7 @@ public class CommentService {
 			// Send email (will actually create a JMS message, i.e. it is async).
 			Map<String, String> objects = new HashMap<String, String>();
 			objects.put("firstName", pPerson.getFirstName());
+			objects.put("displayName", pPerson.getDisplayName());
 			objects.put("commenterDisplayName", pChildComment.getOwner().getDisplayName());			
 			objects.put("commentUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(),
 					PagesURL.COMMENT_OVERVIEW,
@@ -906,7 +990,13 @@ public class CommentService {
 	
 	public boolean isUserAuthorizedToView(final Person pPerson, final Comment pComment) {
 		CoreUtils.assertNotNull(pComment);
-		if (isUserAuthorizedToEdit(pPerson, pComment)) {
+		if (pPerson == null) {
+			return false;
+		}
+		else if (isUserAuthorizedToEdit(pPerson, pComment)) {
+			return true;
+		}
+		else if (Boolean.TRUE.equals(pComment.getPublicComment())) {
 			return true;
 		}
 		if (Hibernate.getClass(pComment).isAssignableFrom(ItemComment.class)) {
@@ -931,8 +1021,45 @@ public class CommentService {
 		}
 		else if (Hibernate.getClass(pComment).isAssignableFrom(WallComment.class)) {
 			final Person commentOwner = pComment.getOwner();
-			return pPerson.equals(commentOwner) ||
-			       personService.isConnection(commentOwner, pPerson);
+			if (pPerson.equals(commentOwner)) {
+				return true;
+			}
+			final WallComment wallComment = commentDao.findWallComment(pComment.getId());
+			final Person wallOwner = wallComment.getWallOwner();
+			if (pPerson.equals(wallOwner)) {
+				return true;
+			}
+			if (wallOwner != null) {
+				if (Boolean.TRUE.equals(wallComment.getPrivateComment())) {
+					return false;
+				}
+				else {
+					final String wallCommentVisibility = wallOwner.getWallCommentsVisibility().getLabelCode();
+					if (WallCommentsVisibility.PUBLIC.equals(wallCommentVisibility)) {
+						return true;
+					}
+					else if (WallCommentsVisibility.CONNECTIONS.equals(wallCommentVisibility)) {
+						return personService.isConnection(wallOwner, pPerson);
+					}
+					// Private visibility.
+					else {
+						return false;
+					}
+					
+				}
+			}
+			else {
+				if (Boolean.TRUE.equals(wallComment.getPrivateComment())) {
+					return false;
+				}
+				else if (Boolean.TRUE.equals(wallComment.getPublicComment())) {
+					return true;
+				}
+				else {
+					return personService.isConnection(commentOwner, pPerson);
+				}
+				
+			}
 		}
 		else if (Hibernate.getClass(pComment).isAssignableFrom(ChildComment.class)) {
 			final ChildComment childComment = commentDao.findChildComment(pComment.getId());
@@ -1003,6 +1130,27 @@ public class CommentService {
 		return needService.isUserAuthorizedToView(pPerson, pNeed);
 	}
 	
+	public boolean isUserAuthorizedToAddCommentOnWall(final Person pPerson, final Person pWallOwner) {
+		CoreUtils.assertNotNull(pWallOwner);
+		if (pPerson == null) {
+			return false;
+		}
+		else if (pPerson.equals(pWallOwner)) {
+			return true;
+		}
+		final String wallCommentAddPermission = pWallOwner.getWallCommentsAddPermission().getLabelCode();
+		if (WallCommentsAddPermission.EVERYONE.equals(wallCommentAddPermission)) {
+			return true;
+		}
+		else if (WallCommentsAddPermission.CONNECTIONS.equals(wallCommentAddPermission)) {
+			return personService.isConnection(pPerson, pWallOwner);
+		}
+		// None.
+		else {
+			return false;
+		}
+	}
+	
 	public boolean isUserAuthorizedToAddCommentOnLendTransaction(final Person pPerson, final LendTransaction pLendTransaction) {
 		return lendTransactionService.isUserAuthorizedToView(pPerson, pLendTransaction);
 	}
@@ -1040,8 +1188,14 @@ public class CommentService {
 			return isUserAuthorizedToAddCommentOnLendTransaction(pPerson, lendTransactionComment.getLendTransaction());
 		}
 		else if (Hibernate.getClass(pComment).isAssignableFrom(WallComment.class)) {
+			final WallComment wallComment = commentDao.findWallComment(pComment.getId());
+			Person wallOwner = wallComment.getWallOwner();
+			if (wallOwner == null) {
+				wallOwner = wallComment.getOwner();
+			}
 			final Person parentCommentOwner = pComment.getOwner();
-			return (parentCommentOwner.equals(pPerson) ||	personService.isConnection(parentCommentOwner, pPerson));
+			return isUserAuthorizedToView(pPerson, pComment) &&
+			       isUserAuthorizedToAddCommentOnWall(pPerson, wallOwner);
 		}
 		else {
 			throw new RuntimeException("Unknown comment type: " + pComment.getClass().getName());
@@ -1060,6 +1214,12 @@ public class CommentService {
 	
 	public void assertUserAuthorizedToAddCommentOnNeed(final Person pPerson, final Need pNeed) {
 		if (!isUserAuthorizedToAddCommentOnNeed(pPerson, pNeed)) {
+			throw new SecurityException("User is not authorized to add comment");
+		}
+	}
+	
+	public void assertUserAuthorizedToAddCommentOnWall(final Person pPerson, final Person pWallOwner) {
+		if (!isUserAuthorizedToAddCommentOnWall(pPerson, pWallOwner)) {
 			throw new SecurityException("User is not authorized to add comment");
 		}
 	}
@@ -1087,6 +1247,23 @@ public class CommentService {
 	}
 	
 	public boolean isUserAuthorizedToDelete(final Person pPerson, final Comment pComment) {
+		WallComment refWallComment = null;
+		if (Hibernate.getClass(pComment).isAssignableFrom(WallComment.class)) {
+			refWallComment = commentDao.findWallComment(pComment.getId());
+			
+		}
+		else if (Hibernate.getClass(pComment).isAssignableFrom(ChildComment.class)) {
+			final ChildComment childComment = findChildComment(pComment.getId());
+			if (Hibernate.getClass(childComment.getParentComment()).isAssignableFrom(WallComment.class)) {
+				refWallComment = findWallComment(childComment.getParentComment().getId());
+			} 			
+		}
+		if (refWallComment != null) {
+			// Users can delete others comments on their own wall.
+			if (pPerson != null && pPerson.equals(refWallComment.getWallOwner())) {
+				return true;
+			}
+		}
 		return isUserAuthorizedToEdit(pPerson, pComment);
 	}
 
