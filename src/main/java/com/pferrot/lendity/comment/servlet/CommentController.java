@@ -27,7 +27,6 @@ import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.ChildComment;
 import com.pferrot.lendity.model.Comment;
-import com.pferrot.lendity.model.LendTransactionComment;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.model.SystemComment;
 import com.pferrot.lendity.model.WallComment;

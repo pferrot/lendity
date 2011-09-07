@@ -521,6 +521,14 @@ public ListWithRowCount findPersonNeeds(final Long pOwnerId, final String pTitle
 	 * @return
 	 */
 	public String processNeedHref(final String pText, final Person pPerson) {
+		return processNeedHrefInternal(pText, pPerson, true);
+	}
+	
+	public String processNeedNoHref(final String pText, final Person pPerson) {
+		return processNeedHrefInternal(pText, pPerson, false);
+	}
+	
+	private String processNeedHrefInternal(final String pText, final Person pPerson, final boolean pWithHref) {
 		if (StringUtils.isNullOrEmpty(pText)) {
 			return pText;
 		}
@@ -536,7 +544,12 @@ public ListWithRowCount findPersonNeeds(final Long pOwnerId, final String pTitle
 				final Long needId = Long.parseLong(text.substring(2, text.length() - 1));
 				final Need need = findNeed(needId);
 				assertUserAuthorizedToView(pPerson, need);
-				m.appendReplacement(result, getHrefLinkToNeed(need, true));
+				if (pWithHref) {
+					m.appendReplacement(result, getHrefLinkToNeed(need, true));
+				}
+				else {
+					m.appendReplacement(result, need.getTitle());
+				}
 			}
 			catch (Exception e) {
 				final Locale locale = I18nUtils.getDefaultLocale();

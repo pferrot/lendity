@@ -156,11 +156,35 @@ public class CommentService {
 		return commentDao.findItemComments(item, pFirstResult, pMaxResults);
 	}
 	
+	/**
+	 * Replaces {iXYZ}, {nXYZ}, {gXYZ}, {pXYZ} strings with labels and href links to the
+	 * corresponding objects.
+	 * 
+	 * @param pText
+	 * @param pPerson
+	 * @return
+	 */
 	public String processAllHrefWithPerson(final String pText, final Person pPerson) {
 		String result = itemService.processItemHref(pText, pPerson);
 		result = needService.processNeedHref(result, pPerson);
 		result = groupService.processGroupHref(result, pPerson);
 		result = personService.processPersonHref(result, pPerson);
+		
+		return result;
+	}
+	
+	/**
+	 * Replaces {iXYZ}, {nXYZ}, {gXYZ}, {pXYZ} strings with labels but NO href links.
+	 * 
+	 * @param pText
+	 * @param pPerson
+	 * @return
+	 */
+	public String processAllNoHrefWithPerson(final String pText, final Person pPerson) {
+		String result = itemService.processItemNoHref(pText, pPerson);
+		result = needService.processNeedNoHref(result, pPerson);
+		result = groupService.processGroupNoHref(result, pPerson);
+		result = personService.processPersonNoHref(result, pPerson);
 		
 		return result;
 	}
@@ -830,9 +854,10 @@ public class CommentService {
 				throw new CommentException("Unhandled commentabe type " + commentable.getClass());
 			}
 			
-			objects.put("comment", pComment.getText());
+			objects.put("comment", processAllNoHrefWithPerson(pComment.getText(), pPerson));
 			// For the HTML template to correctly display new lines.
-			objects.put("commentEscaped", HtmlUtils.escapeHtmlAndReplaceCr(pComment.getText()));
+			
+			objects.put("commentEscaped", processAllHrefWithPerson(HtmlUtils.getTextWithHrefLinks(HtmlUtils.escapeHtmlAndReplaceCr(pComment.getText())), pPerson));
 			objects.put("signature", Configuration.getSiteName());
 			objects.put("siteName", Configuration.getSiteName());
 			objects.put("siteUrl", Configuration.getRootURL());
@@ -879,9 +904,9 @@ public class CommentService {
 					PagesURL.COMMENT_OVERVIEW,
 					PagesURL.COMMENT_OVERVIEW_PARAM_COMMENT_ID,
 					parentComment.getId().toString()));			
-			objects.put("comment", pChildComment.getText());
+			objects.put("comment", processAllNoHrefWithPerson(pChildComment.getText(), pPerson));
 			// For the HTML template to correctly display new lines.
-			objects.put("commentEscaped", HtmlUtils.escapeHtmlAndReplaceCr(pChildComment.getText()));
+			objects.put("commentEscaped", processAllHrefWithPerson(HtmlUtils.getTextWithHrefLinks(HtmlUtils.escapeHtmlAndReplaceCr(pChildComment.getText())), pPerson));
 			objects.put("signature", Configuration.getSiteName());
 			objects.put("siteName", Configuration.getSiteName());
 			objects.put("siteUrl", Configuration.getRootURL());

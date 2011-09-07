@@ -692,6 +692,14 @@ public class PersonService {
 	 * @return
 	 */
 	public String processPersonHref(final String pText, final Person pPerson) {
+		return processPersonHref(pText, pPerson, true);
+	}
+	
+	public String processPersonNoHref(final String pText, final Person pPerson) {
+		return processPersonHref(pText, pPerson, false);
+	}
+	
+	private String processPersonHref(final String pText, final Person pPerson, final boolean pWithHref) {
 		if (StringUtils.isNullOrEmpty(pText)) {
 			return pText;
 		}
@@ -706,7 +714,12 @@ public class PersonService {
 				final String text = m.group();
 				final Long personId = Long.parseLong(text.substring(2, text.length() - 1));
 				final Person person = findPerson(personId);
-				m.appendReplacement(result, getHrefLinkToPerson(person, true));
+				if (pWithHref) {
+					m.appendReplacement(result, getHrefLinkToPerson(person, true));
+				}
+				else {
+					m.appendReplacement(result, person.getDisplayName());
+				}
 			}
 			catch (Exception e) {
 				final Locale locale = I18nUtils.getDefaultLocale();

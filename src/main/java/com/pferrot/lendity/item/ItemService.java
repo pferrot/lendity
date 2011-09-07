@@ -805,6 +805,14 @@ public class ItemService extends ObjektService {
 	 * @return
 	 */
 	public String processItemHref(final String pText, final Person pPerson) {
+		return processItemHrefInternal(pText, pPerson, true);
+	}
+	
+	public String processItemNoHref(final String pText, final Person pPerson) {
+		return processItemHrefInternal(pText, pPerson, false);
+	}
+	
+	private String processItemHrefInternal(final String pText, final Person pPerson, final boolean pWithHref) {
 		if (StringUtils.isNullOrEmpty(pText)) {
 			return pText;
 		}
@@ -820,7 +828,12 @@ public class ItemService extends ObjektService {
 				final Long itemId = Long.parseLong(text.substring(2, text.length() - 1));
 				final Item item = findItem(itemId);
 				assertUserAuthorizedToView(pPerson, item);
-				m.appendReplacement(result, getHrefLinkToItem(item, true));
+				if (pWithHref) {
+					m.appendReplacement(result, getHrefLinkToItem(item, true));
+				}
+				else {
+					m.appendReplacement(result, item.getTitle());
+				}
 			}
 			catch (Exception e) {
 				final Locale locale = I18nUtils.getDefaultLocale();

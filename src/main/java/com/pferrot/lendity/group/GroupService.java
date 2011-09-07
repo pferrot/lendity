@@ -975,6 +975,14 @@ public class GroupService {
 	 * @return
 	 */
 	public String processGroupHref(final String pText, final Person pPerson) {
+		return processGroupHrefInternal(pText, pPerson, true);
+	}
+	
+	public String processGroupNoHref(final String pText, final Person pPerson) {
+		return processGroupHrefInternal(pText, pPerson, false);
+	}
+	
+	private String processGroupHrefInternal(final String pText, final Person pPerson, final boolean pWithHref) {
 		if (StringUtils.isNullOrEmpty(pText)) {
 			return pText;
 		}
@@ -990,7 +998,12 @@ public class GroupService {
 				final Long groupId = Long.parseLong(text.substring(2, text.length() - 1));
 				final Group group = findGroup(groupId);
 				assertUserAuthorizedToView(pPerson, group);
-				m.appendReplacement(result, getHrefLinkToGroup(group, true));
+				if (pWithHref) {
+					m.appendReplacement(result, getHrefLinkToGroup(group, true));
+				}
+				else {
+					m.appendReplacement(result, group.getTitle());
+				}
 			}
 			catch (Exception e) {
 				final Locale locale = I18nUtils.getDefaultLocale();
