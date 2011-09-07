@@ -45,6 +45,9 @@
 		<ui:param name="authorizedToReply" value="#{commentOverviewController.currentUserAuthorizedToReply}"/>
 		<ui:param name="containerID" value="#{commentOverviewController.commentId}"/>
 		<ui:param name="containerType" value="none"/>
+		<ui:param name="addCommentDefaultText" value="#{messages.comment_addComment}"/>
+		<ui:param name="addReplyDefaultText" value="#{messages.comment_addReply}"/>								
+		<ui:param name="noCommentAvailableText" value="#{messages.comment_noCommentAvailable}"/>
 	</ui:include>
 </div>
 <!-- /content box -->
