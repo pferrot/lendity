@@ -13,6 +13,7 @@ import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.HtmlUtils;
 import com.pferrot.lendity.utils.UiUtils;
+import com.pferrot.security.SecurityUtils;
 
 public abstract class AbstractObjektOverviewController {
 
@@ -88,5 +89,9 @@ public abstract class AbstractObjektOverviewController {
 	
 	public boolean isFacebookLikeButtonAvailable() {
 		return getObjekt().isPublicVisibility();
+	}
+	
+	public boolean isRecommendAvailable() {
+		return SecurityUtils.isLoggedIn();
 	}
 }

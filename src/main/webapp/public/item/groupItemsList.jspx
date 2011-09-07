@@ -1,0 +1,243 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle">
+		<h:outputFormat value="#{messages.item_groupItemsTitle}">
+			<f:param value="#{groupItemsListController.groupTitle}" />			
+		</h:outputFormat>
+	</ui:define>
+	<ui:param name="contentHeader" value="#{messages.item_groupItemsTitle}" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix categoriesAndContentContainer">
+			
+			<div class="categoriesDiv">
+				<h:dataTable value="#{groupItemsListController.categoriesHrefLinksList}" var="categoryHrefLink" binding="#{groupItemsListController.categoriesHrefLinksTable}" style="width: 100%;">
+					<h:column>
+						<div style="height: 20px!important;">
+							<h:outputLink value="#{categoryHrefLink.url}" styleClass="#{groupItemsListController.categoryLinkStyleClass}">
+								<h:outputText value="#{categoryHrefLink.label}"/>
+							</h:outputLink>
+						</div>
+					</h:column>
+				</h:dataTable>
+			</div>
+			
+			<div class="contentDivNextToCategories">
+					
+<f:view>
+
+<h:outputLink value="#{groupItemsListController.groupUrl}">
+	<h:outputText styleClass="fontSizeSmall" value="#{groupItemsListController.groupTitle}"/>
+</h:outputLink>
+<h:outputText styleClass="fontSizeSmall" value=" " escape="false"/>
+<h:outputText styleClass="fontSizeSmall" value="#{messages.navigation_pathSeparator}"/>
+
+<h2 class="gt-table-head">
+	<h:outputFormat value="#{messages.item_groupItemsTitle}">
+		<f:param value="#{groupItemsListController.groupTitle}" />			
+	</h:outputFormat>
+</h2>
+
+<br/>
+
+<table class="filtersTable">
+<tr>
+
+<td class="itemSearchCell">
+<ui:include src="../../auth/item/filter/searchFilter.jspx">
+	<ui:param name="theBean" value="#{groupItemsListController}"/>
+	<ui:param name="defaultSearchString" value="#{messages.item_searchItemDefaultText}"/>
+</ui:include>
+</td>
+
+</tr>
+</table>
+
+<script type="text/javascript">
+	$j(document).ready(function() {
+		var showAdvancedSearch = #{groupItemsListController.showAdvancedSearch};
+		if (showAdvancedSearch) {
+			$j('#advancedSearch').show();
+		}
+		else {
+			$j('#showAdvancedSearch').show();
+		}
+	});
+</script>
+
+<span id="showAdvancedSearch" style="display: none;" class="linkStyleActionSmall" onClick="toggleVisibility('advancedSearch'); toggleVisibility('showAdvancedSearch');"><br/><h:outputText value="#{messages.navigation_advancedSearch}"/><br/><br/></span>
+
+<div id="advancedSearch" style="display: none;">	
+
+	<br/>
+	<table class="filtersTable">
+	<tr>
+		
+	<td>
+	<ui:include src="../../auth/item/filter/categoryFilter.jspx">
+		<ui:param name="theBean" value="#{groupItemsListController}"/>
+	</ui:include>
+	</td>
+	
+	<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
+	
+	<td>
+	<ui:include src="../../auth/item/filter/borrowStatusFilter.jspx">
+		<ui:param name="theBean" value="#{groupItemsListController}"/>
+		<ui:param name="borrowStatusTitle" value="#{messages.item_availableStatus}"/>	
+	</ui:include>
+	</td>
+	
+	</tr>
+	
+	</table>
+	
+	<br/>
+	<table class="filtersTable">
+	<tr>
+	<td >
+	<ui:include src="../../auth/item/sort/orderBy.jspx">
+		<ui:param name="theBean" value="#{groupItemsListController}"/>
+	</ui:include>
+	</td>
+	
+	</tr>
+	</table>
+	
+</div>
+
+<br/>
+
+<!-- content box -->
+<div class="gt-content-box">
+
+<c:if test="#{empty(groupItemsListController.list)}">
+	<br/><br/>
+	<center>
+	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<ui:include src="../../auth/lendrequest/requestLendTooltip.jspx"/>
+
+<h:dataTable value="#{groupItemsListController.list}" binding="#{groupItemsListController.table}" var="item" 
+   styleClass="gt-table gt-user-table">
+
+
+    <h:column id="column1">
+    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<h:outputLink id="overviewLink1" value="#{groupItemsListController.itemOverviewHref}" rendered="#{groupItemsListController.thumbnail1Src != null}">
+					<div class="thumbnailDiv">
+					    <img src="#{groupItemsListController.thumbnail1Src}"/>
+					</div>
+				</h:outputLink>
+			</td></tr></table>
+		</td><td>
+		<h4>
+			<h:outputLink id="overviewLink2" value="#{groupItemsListController.itemOverviewHref}">
+				<h:outputText id="title" value="#{item.title}" />
+			</h:outputLink>
+		</h4>
+		</td></tr></table>
+    </h:column>
+
+	<h:column id="column2">
+		<table border="0" class="gt-table-categories" width="220" align="right">
+			<tr>
+			    <th width="50%"><h:outputText id="categoryTitle" value="#{messages.item_category}:" /></th>
+				<td width="50%"><h:outputText id="categoryLabel" value="#{groupItemsListController.categoryLabel}"/></td>
+		    </tr>
+			<tr>
+				<th>
+					<h:outputText id="ownerTitle" value="#{messages.item_owner}:" />
+				</th>
+				<td>
+					<h:outputLink id="ownerLink" value="#{groupItemsListController.ownerHref}">
+						<h:outputText id="ownerLabel" value="#{groupItemsListController.ownerLabel}"/>
+					</h:outputLink>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<h:outputText id="creationDateTitle" value="#{messages.item_creationDate}:" />
+				</th>
+				<td>					
+					<h:outputText id="creationDateLabel" value="#{groupItemsListController.creationDateLabel}" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<h:outputText id="availableTitle" value="#{messages.item_available}:" />
+				</th>
+				<td>					
+					<h:outputText id="availableLabel" value="#{groupItemsListController.availableLabel}" />
+				</td>
+			</tr>
+		</table>
+    </h:column>
+    
+	<h:column id="column3">
+		<table border="0" class="gt-table-categories" width="120" align="right">
+			<tr>
+				<td>
+					<span onclick="requestLendTooltip(this, '#{item.id}', 4)">
+						<h:outputText id="requestLendLabel" styleClass="stylishButton" value="#{messages.lendRequest_requestLend}" rendered="#{groupItemsListController.requestLendAvailable}"/>
+					</span>
+					<h:outputText value="#{messages.html_br}" escape="false" rendered="#{groupItemsListController.alloCineQueryUrlAvailable}"/>
+					<h:outputText value="#{messages.html_br}" escape="false" rendered="#{groupItemsListController.alloCineQueryUrlAvailable}"/>
+					<o:separateConversationContext>
+						<h:outputLink value="#{groupItemsListController.alloCineQueryUrl}" target="_blank" rendered="#{groupItemsListController.alloCineQueryUrlAvailable}">
+							<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/allocine_35.png" class="qtipTitle"  title="#{messages.item_allocineTooltip}"/>
+						</h:outputLink>
+					</o:separateConversationContext>
+					<h:outputText value="#{messages.html_br}" escape="false" rendered="#{groupItemsListController.bibliopocheQueryUrlAvailable}"/>
+					<h:outputText value="#{messages.html_br}" escape="false" rendered="#{groupItemsListController.bibliopocheQueryUrlAvailable}"/>
+					<o:separateConversationContext>
+						<h:outputLink value="#{groupItemsListController.bibliopocheQueryUrl}" target="_blank" rendered="#{groupItemsListController.bibliopocheQueryUrlAvailable}">
+							<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/bibliopoche_25.gif" class="qtipTitle"  title="#{messages.item_bibliopocheTooltip}"/>
+						</h:outputLink>
+					</o:separateConversationContext>
+				</td>
+		    </tr>
+		</table>
+    </h:column>
+
+</h:dataTable>
+
+<ui:include src="../../auth/table/tableControls.jspx">
+	<ui:param name="theBean" value="#{groupItemsListController}"/>
+</ui:include>
+
+</div><!-- /content box -->
+
+</f:view>
+</div>
+			</div>
+			<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

@@ -1061,7 +1061,7 @@ function banConnectionQtipOnHide(pEvent) {
  */
 var mBanConnectionTooltip;
 var mBanConnectionTooltipTarget;
-function banConnectionTooltip(pTooltipTarget, pConnectionRequestID, pRedirectID) {
+function banConnectionTooltip(pTooltipTarget, pConnectionRequestID, pPersonToBanID, pRedirectID) {
   // The tooltip is just closed.
   if ($j(pTooltipTarget).data("qtip")) {
 	  hideBanConnectionTooltip(pTooltipTarget);
@@ -1073,7 +1073,12 @@ function banConnectionTooltip(pTooltipTarget, pConnectionRequestID, pRedirectID)
 	    // Hide error messages if any.
 	    $j('#banConnectionForm').find('input').removeClass('validationError');
 		// Set the correct ID.
-		$j('#banConnectionConnectionRequestId').val(pConnectionRequestID);
+	    if (pConnectionRequestID) {
+	    	$j('#banConnectionConnectionRequestId').val(pConnectionRequestID);
+	    }
+	    if (pPersonToBanID) {
+	    	$j('#banConnectionPersonToBanId').val(pPersonToBanID);
+	    }
 		// Set the correct redirectID.
 		$j('#banConnectionRedirectId').val(pRedirectID);
 		
@@ -1533,6 +1538,72 @@ function submitRequestLend() {
  */
 function cancelRequestLend() {
 	hideRequestLendTooltip(mRequestLendTooltipTarget);
+}
+
+/***************************************************************************************************
+ * 
+ * RECOMMEND
+ * 
+ ***************************************************************************************************/
+function hideRecommendTooltip(pTooltipTarget) {
+	hideTooltip(pTooltipTarget, $j('#recommendForm'), $j('#recommendDiv'));
+}
+
+function recommendQtipOnHide(pEvent) {
+	qtipOnHide(this.elements['content'], this.elements['target'], $j('#recommendDiv'));
+}
+
+/*
+ * That method will display / hide the tooltip.
+ */
+var mRecommendTooltip;
+var mRecommendTooltipTarget;
+function recommendTooltip(pTooltipTarget, pID, pType) {
+  // The tooltip is just closed.
+  if ($j(pTooltipTarget).data("qtip")) {
+	  hideRecommendTooltip(pTooltipTarget);
+  }
+  // The tooltip is opened.
+  else {
+	  	// Reset the form when it is displayed.
+	    document.getElementById('recommendForm').reset();
+	    // Hide error messages if any.
+	    $j('#recommendForm').find('input').removeClass('validationError');
+		// Set the correct ID.
+		$j('#recommendId').val(pID);
+		// Set the correct redirectID.
+		$j('#recommendType').val(pType);
+		
+	  	mRecommendTooltipTarget = pTooltipTarget;
+	  	mRecommendTooltip = createFormTooltip($j(pTooltipTarget), $j('#recommendForm'), recommendQtipOnHide);
+	}    
+}
+
+/*
+ * Click the submit button in the tooltip.
+ */
+function submitRecommend() {
+	var noError = true;
+	
+	var personDropDown = document.getElementById('recommendPersonId');
+	if (personDropDown.selectedIndex == 0) {
+		$j(personDropDown).addClass("validationError");
+		noError = false;
+	}
+	else {
+		$j(personDropDown).removeClass("validationError");
+	}	
+	
+	if (noError) {
+		document.getElementById("recommendActionButton").click();
+	}
+}
+
+/*
+ * Click the cancel button to close the tooltip.
+ */
+function cancelRecommend() {
+	hideRecommendTooltip(mRecommendTooltipTarget);
 }
 
 /***************************************************************************************************

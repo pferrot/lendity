@@ -17,7 +17,6 @@ public abstract class AbstractConnectionResponseTooltipController implements Ser
 	
 	private Long connectionRequestId;
 	
-	// Not used for now - always redirects to the persons list.
 	private Long redirectId;
 
 	public ConnectionRequestService getConnectionRequestService() {

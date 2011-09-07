@@ -11,6 +11,7 @@ var mMaxResults = 10;
 
 var mEditCommentLabel = "";
 var mDeleteCommentLabel = "";
+var mPublicIndicatorLabel = "";
 // The ID of the parent comment when adding child comments.
 var mTargetParentCommentId;
 
@@ -20,7 +21,7 @@ var mTargetParentCommentId;
  * @param pItemId
  * @return
  */
-function initComments(pContainerId, pContainerType, pAuthorizedToReply, pContextPath, pAddCommentDefaultText, pAddChildCommentDefaultText, pSubmitButtonText, pEditCommentLabel, pDeleteCommentLabel) {
+function initComments(pContainerId, pContainerType, pAuthorizedToReply, pContextPath, pAddCommentDefaultText, pAddChildCommentDefaultText, pSubmitButtonText, pEditCommentLabel, pDeleteCommentLabel, pPublicIndicatorLabel) {
 	mContextPath = pContextPath;
 	mAddCommentDefaultText = pAddCommentDefaultText;
 	mAuthorizedToReply = pAuthorizedToReply;
@@ -28,6 +29,7 @@ function initComments(pContainerId, pContainerType, pAuthorizedToReply, pContext
 	mSubmitButtonText = pSubmitButtonText;
 	mEditCommentLabel = pEditCommentLabel;
 	mDeleteCommentLabel = pDeleteCommentLabel;
+	mPublicIndicatorLabel = pPublicIndicatorLabel;
 	if (pContainerType == "item") {
 		loadCommentsForItem(pContainerId);
 	}
@@ -929,6 +931,12 @@ function editCommentInDbResponse(pJsonData, pTextStatus, pXmlHttpRequest) {
 		
 		var commentWithoutHrefDiv = $j("#commentWithoutHref" + commentID);
 		commentWithoutHrefDiv.html(newTextWithoutHref);
+		if (pJsonData.publicComment) {
+			$j("#publicIndicatior" + commentID).show();
+		}
+		else {
+			$j("#publicIndicatior" + commentID).hide();
+		}
 		
 		var editCommentInProgress = $j("#editCommentInProgress");
 		editCommentInProgress.hide();
@@ -1142,20 +1150,34 @@ function getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerU
 		result += '					<label class="small">System comment, ' + pCommentDate + '</label>';
 	}
 	result += '				</td>';
-	if (pEditEnabled || pDeleteEnabled) {
-		result += '				<td style="text-align: right;">' +
-			'					<label class="small">';
-		if (pDeleteEnabled) {
-			result += '<span class="linkStyleActionSmall" onClick="removeComment(this);">' + mDeleteCommentLabel + '</span>';
-		}
-		if (pEditEnabled && pDeleteEnabled) {
-			result += ' | ';
-		}
-		if (pEditEnabled) {
-			result += '<span class="linkStyleActionSmall" onClick="editComment(this);">' + mEditCommentLabel + '</span></label>';
-		}
-			'				</td>';
+	
+	
+	result += '				<td style="text-align: right;"><label class="small">';
+	
+	var publicCommentIndicatorStyle = "";
+	if (!pPublicComment) {
+		publicCommentIndicatorStyle =  'style="display: none;"';
 	}
+	result += '<span id="publicIndicatior' + pCommentId + '" ' + publicCommentIndicatorStyle + '>';
+	result += '<span class="small90"><b>' + mPublicIndicatorLabel + '</b></span>';
+	if (pDeleteEnabled || pEditEnabled) {
+		result += ' | ';
+	}	
+	result += '</span>';
+	
+	
+	if (pDeleteEnabled) {
+		result += '<span class="linkStyleActionSmall" onClick="removeComment(this);">' + mDeleteCommentLabel + '</span>';
+	}
+	if (pEditEnabled && pDeleteEnabled) {
+		result += ' | ';
+	}
+	if (pEditEnabled) {
+		result += '<span class="linkStyleActionSmall" onClick="editComment(this);">' + mEditCommentLabel + '</span>';
+	}
+		'				</td>';
+	
+	result += '</label></td>';
 	result += '			</tr>' +
 	'		</table>' +
 	'	</div>' +

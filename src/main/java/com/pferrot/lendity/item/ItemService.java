@@ -298,7 +298,7 @@ public class ItemService extends ObjektService {
 	}
 
 	public ListWithRowCount findPersonItems(final Long pOwnerId, final String pTitle, final Long pCategoryId, final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
-				
+		
 		CoreUtils.assertNotNull(pOwnerId);
 		
 		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
@@ -316,6 +316,25 @@ public class ItemService extends ObjektService {
 		else {
 			itemQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
 		}
+		itemQuery.setBorrowed(pBorrowed);		
+		itemQuery.setOrderBy(pOrderBy);
+		itemQuery.setOrderByAscending(pOrderByAscending);
+		itemQuery.setFirstResult(pFirstResult);
+		itemQuery.setMaxResults(pMaxResults);
+		
+		return itemDao.findItems(itemQuery);
+	}
+	
+	public ListWithRowCount findGroupItems(final Long pGroupId, final String pTitle, final Long pCategoryId, final Boolean pBorrowed, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+		
+		CoreUtils.assertNotNull(pGroupId);
+		
+		final ItemDaoQueryBean itemQuery = new ItemDaoQueryBean();
+		
+		itemQuery.setGroupIds(getIds(pGroupId));
+		itemQuery.setOwnerEnabled(Boolean.TRUE);
+		itemQuery.setTitle(pTitle);
+		itemQuery.setCategoryIds(getCategoryIds(pCategoryId));
 		itemQuery.setBorrowed(pBorrowed);		
 		itemQuery.setOrderBy(pOrderBy);
 		itemQuery.setOrderByAscending(pOrderByAscending);

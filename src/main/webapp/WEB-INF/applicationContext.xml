@@ -1212,6 +1212,12 @@
 	      scope="conversation.access">
 	      <property name="commentService" ref="commentService"/> 
 	</bean>
+	
+	<bean id="recommendTooltipController" class="com.pferrot.lendity.comment.jsf.RecommendTooltipController"
+	      scope="request">
+	      <property name="commentService" ref="commentService"/>
+	      <property name="personService" ref="personService"/>
+	</bean>
 
 	<!-- 
 	COMMENT - end
@@ -1390,6 +1396,13 @@
 	      <property name="lendRequestService" ref="lendRequestService"/>
 	      <property name="personService" ref="personService"/>
 	</bean>
+	
+	<bean id="groupItemsListController" class="com.pferrot.lendity.item.jsf.GroupItemsListController"
+	      scope="session">
+	      <property name="itemService" ref="itemService"/>
+	      <property name="lendRequestService" ref="lendRequestService"/>
+	      <property name="groupService" ref="groupService"/>
+	</bean>
 
 	<bean id="itemLendTooltipController" class="com.pferrot.lendity.item.jsf.ItemLendTooltipController"
 	      scope="request">
@@ -1504,6 +1517,12 @@
 	      scope="session">
 	      <property name="needService" ref="needService"/>
 	      <property name="personService" ref="personService"/>
+	</bean>
+	
+	<bean id="groupNeedsListController" class="com.pferrot.lendity.need.jsf.GroupNeedsListController"
+	      scope="session">
+	      <property name="needService" ref="needService"/>
+	      <property name="groupService" ref="groupService"/>
 	</bean>
 
 	<bean id="deleteNeedTooltipController" class="com.pferrot.lendity.need.jsf.DeleteNeedTooltipController"

@@ -42,6 +42,7 @@
 	<ui:include src="../../auth/item/lendTooltip.jspx"/>
 	<ui:include src="../../auth/item/deleteItemTooltip.jspx"/>
 	<ui:include src="../../auth/lendrequest/requestLendTooltip.jspx"/>
+	<ui:include src="../../auth/comment/recommendTooltip.jspx"/>
 </c:if>
 
 <h2 class="gt-table-head"><h:outputText value="#{messages.item_itemOverviewTitle}"/></h2>
@@ -251,6 +252,13 @@
 					</h:outputLink>
 				</c:if>
 			</td>
+			<td>
+				<c:if test="#{itemOverviewController.recommendAvailable}">
+					<span onclick="recommendTooltip(this, '#{itemOverviewController.item.id}', 'item')">
+						<h:outputText styleClass="stylishButton" value="#{messages.comment_recommend}"/>
+					</span>
+				</c:if>
+			</td>
 		</tr></table>
 		<table class="buttonsTable"><tr>
     	<td>    		
@@ -308,6 +316,7 @@
 		<ui:param name="containerID" value="#{itemOverviewController.item.id}"/>
 		<ui:param name="containerType" value="item"/>
 		<ui:param name="addCommentDefaultText" value="#{messages.comment_addComment}"/>
+		<ui:param name="addReplyDefaultText" value="#{messages.comment_addReply}"/>
 		<ui:param name="noCommentAvailableText" value="#{messages.comment_noCommentAvailable}"/>
 	</ui:include>
 </c:if>

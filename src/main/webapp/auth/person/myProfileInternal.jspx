@@ -1,0 +1,35 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+    
+    			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">		
+			
+			<!-- main content -->
+			<div class="gt-content">	
+			
+				<f:view>
+
+	<ui:include src="personOverviewInternalHeader.jspx">
+		<ui:param name="theBean" value="#{theBean}"/>
+	</ui:include>
+
+	<ui:include src="personOverviewInternalContent.jspx">
+		<ui:param name="theBean" value="#{theBean}"/>
+	</ui:include>
+
+				</f:view>
+			
+			</div>
+			<!-- main content -->
+			
+			</div>
+			<!-- /body -->
+			
+</ui:composition>

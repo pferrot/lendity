@@ -216,7 +216,7 @@ public class NeedService extends ObjektService {
 		return needDao.findNeeds(needDaoQueryBean);
 	}
 
-	public ListWithRowCount findPersonNeeds(final Long pOwnerId, final String pTitle, final Long pCategoryId, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+public ListWithRowCount findPersonNeeds(final Long pOwnerId, final String pTitle, final Long pCategoryId, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
 		
 		CoreUtils.assertNotNull(pOwnerId);
 		
@@ -235,6 +235,25 @@ public class NeedService extends ObjektService {
 		else {
 			needQuery.setVisibilityIds(new Long[]{getPublicVisibilityId()});
 		}		
+		needQuery.setOrderBy(pOrderBy);
+		needQuery.setOrderByAscending(pOrderByAscending);
+		needQuery.setFirstResult(pFirstResult);
+		needQuery.setMaxResults(pMaxResults);
+		
+		return needDao.findNeeds(needQuery);
+	}
+
+	public ListWithRowCount findGroupNeeds(final Long pGroupId, final String pTitle, final Long pCategoryId, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+		
+		CoreUtils.assertNotNull(pGroupId);
+		
+		final NeedDaoQueryBean needQuery = new NeedDaoQueryBean();
+		
+		needQuery.setGroupIds(getIds(pGroupId));
+		needQuery.setOwnerEnabled(Boolean.TRUE);
+		needQuery.setTitle(pTitle);
+		needQuery.setCategoryIds(getCategoryIds(pCategoryId));
+		
 		needQuery.setOrderBy(pOrderBy);
 		needQuery.setOrderByAscending(pOrderByAscending);
 		needQuery.setFirstResult(pFirstResult);

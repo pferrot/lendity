@@ -49,7 +49,9 @@
 
 <ui:include src="acceptConnectionTooltip.jspx"/>
 <ui:include src="refuseConnectionTooltip.jspx"/>
-<ui:include src="banConnectionTooltip.jspx"/>
+<ui:include src="banConnectionTooltip.jspx">
+	<ui:param name="theMessage" value="#{messages.connectionRequest_banConnectionMessage}"/>
+</ui:include>
 
 <h:dataTable id="id_03" value="#{myPendingConnectionRequestsListController.list}" binding="#{myPendingConnectionRequestsListController.table}" var="connectionRequest" styleClass="gt-table gt-user-table">
 
@@ -99,7 +101,7 @@
 		    </tr>
 		    <tr>
 				<td>
-					<span onclick="banConnectionTooltip(this, '#{connectionRequest.id}', 1)">
+					<span onclick="banConnectionTooltip(this, '#{connectionRequest.id}', null, 1)">
 						<h:outputText id="id_11" styleClass="stylishButton" value="#{messages.connectionRequest_responseBan}"/>
 					</span>
 				</td>

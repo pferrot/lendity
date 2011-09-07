@@ -11,11 +11,12 @@
 <div id="banConnectionDiv" style="display: none;">
 	<h:form id="banConnectionForm" prependId="false">
 		<h:inputHidden id="banConnectionConnectionRequestId" value="#{banConnectionTooltipController.connectionRequestId}" />
+		<h:inputHidden id="banConnectionPersonToBanId" value="#{banConnectionTooltipController.personToBanId}" />
 		<h:inputHidden id="banConnectionRedirectId" value="#{banConnectionTooltipController.redirectId}" />
 		<table> 
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<b><h:outputText value="#{messages.connectionRequest_banConnectionMessage}"/></b>
+					<b><h:outputText value="#{theMessage}"/></b>
 				</td>
 			</tr>
 			<tr>

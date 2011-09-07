@@ -32,6 +32,7 @@
 
 <c:if test="#{authenticationController.loggedIn}" var="loggedInUser"/>
 <c:if test="${loggedInUser}">
+	<ui:include src="../../auth/comment/recommendTooltip.jspx"/>
 	<ui:include src="../../auth/group/deleteGroupTooltip.jspx"/>
 	<c:if test="#{groupOverviewController.requestJoinAvailable}">
 		<ui:include src="../../auth/groupjoinrequest/requestGroupJoinTooltip.jspx">
@@ -66,6 +67,20 @@
 	<h:outputLink value="#{groupOverviewController.groupBannedUrl}">
 		<h:outputText styleClass="fontSizeSmall" value="#{messages.group_banned}"/>	
 	</h:outputLink>
+	<c:if test="#{groupOverviewController.ownerOrAdministratorOrMemberOfGroup}">
+	<br/>
+		<h:outputText styleClass="fontSizeSmall" value="#{messages.navigation_pathSeparator}"/>
+		<h:outputText styleClass="fontSizeSmall" value=" " escape="false"/>
+		<h:outputLink value="#{groupOverviewController.groupItemsUrl}">
+			<h:outputText styleClass="fontSizeSmall" value="#{messages.group_items}"/>	
+		</h:outputLink>
+		<br/>
+		<h:outputText styleClass="fontSizeSmall" value="#{messages.navigation_pathSeparator}"/>
+		<h:outputText styleClass="fontSizeSmall" value=" " escape="false"/>
+		<h:outputLink value="#{groupOverviewController.groupNeedsUrl}">
+			<h:outputText styleClass="fontSizeSmall" value="#{messages.group_needs}"/>	
+		</h:outputLink>
+	</c:if>
 </div>
 <br/>
  
@@ -160,6 +175,17 @@
 		<table class="buttonsTable">
 		<tr>
     	<td>
+			<c:if test="#{groupOverviewController.recommendAvailable}">
+				<span onclick="recommendTooltip(this, '#{groupOverviewController.group.id}', 'group')">
+					<h:outputText styleClass="stylishButton" value="#{messages.comment_recommend}"/>
+				</span>
+			</c:if>
+		</td>
+    	</tr>
+    	</table>    	
+    	<table class="buttonsTable">
+		<tr>
+    	<td>
 	    	<span onclick="requestGroupJoinTooltip(this, '#{groupOverviewController.group.id}', 2)">
 				<h:outputText styleClass="stylishButton" value="#{messages.groupJoinRequest_requestGroupJoin}" rendered="#{groupOverviewController.requestJoinAvailable}"/>
 			</span>
@@ -207,6 +233,7 @@
 		<ui:param name="containerID" value="#{groupOverviewController.group.id}"/>
 		<ui:param name="containerType" value="group"/>
 		<ui:param name="addCommentDefaultText" value="#{messages.comment_addComment}"/>
+		<ui:param name="addReplyDefaultText" value="#{messages.comment_addReply}"/>
 		<ui:param name="noCommentAvailableText" value="#{messages.comment_noCommentAvailable}"/>
 	</ui:include>
 </c:if>

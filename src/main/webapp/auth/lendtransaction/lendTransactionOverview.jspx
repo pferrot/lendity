@@ -166,6 +166,7 @@
 	<ui:param name="containerID" value="#{lendTransactionOverviewController.lendTransaction.id}"/>
 	<ui:param name="containerType" value="lendTransaction"/>
 	<ui:param name="addCommentDefaultText" value="#{messages.comment_addComment}"/>
+	<ui:param name="addReplyDefaultText" value="#{messages.comment_addReply}"/>
 	<ui:param name="noCommentAvailableText" value="#{messages.comment_noCommentAvailable}"/>
 </ui:include>
 			

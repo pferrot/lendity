@@ -9,11 +9,11 @@
 
 	<!-- params for page titles-->
 	<ui:define name="pageTitle">
-		<h:outputFormat value="#{messages.need_personNeedsTitle}">
-			<f:param value="#{personNeedsListController.personDisplayName}" />			
+		<h:outputFormat value="#{messages.need_groupNeedsTitle}">
+			<f:param value="#{groupNeedsListController.groupTitle}" />			
 		</h:outputFormat>
 	</ui:define>
-	<ui:param name="contentHeader" value="#{messages.need_personNeedsTitle}" />
+	<ui:param name="contentHeader" value="#{messages.need_groupNeedsTitle}" />
 
 	<ui:define name="content">
 
@@ -29,10 +29,10 @@
 			<div class="gt-bd gt-cols clearfix categoriesAndContentContainer">
 			
 			<div class="categoriesDiv">
-				<h:dataTable value="#{personNeedsListController.categoriesHrefLinksList}" var="categoryHrefLink" binding="#{personNeedsListController.categoriesHrefLinksTable}" style="width: 100%;">
+				<h:dataTable value="#{groupNeedsListController.categoriesHrefLinksList}" var="categoryHrefLink" binding="#{groupNeedsListController.categoriesHrefLinksTable}" style="width: 100%;">
 					<h:column>
 						<div style="height: 20px!important;">
-							<h:outputLink value="#{categoryHrefLink.url}" styleClass="#{personNeedsListController.categoryLinkStyleClass}">
+							<h:outputLink value="#{categoryHrefLink.url}" styleClass="#{groupNeedsListController.categoryLinkStyleClass}">
 								<h:outputText value="#{categoryHrefLink.label}"/>
 							</h:outputLink>
 						</div>
@@ -45,15 +45,15 @@
 				
 <f:view>
 
-<h:outputLink styleClass="fontSizeSmall" value="#{personNeedsListController.personUrl}">
-	<h:outputText value="#{personNeedsListController.personDisplayName}"/>
+<h:outputLink styleClass="fontSizeSmall" value="#{groupNeedsListController.groupUrl}">
+	<h:outputText value="#{groupNeedsListController.groupTitle}"/>
 </h:outputLink>
 <h:outputText styleClass="fontSizeSmall" value=" " escape="false"/>
 <h:outputText styleClass="fontSizeSmall" value="#{messages.navigation_pathSeparator}"/>
 
 <h2 class="gt-table-head">
-	<h:outputFormat value="#{messages.need_personNeedsTitle}">
-		<f:param value="#{personNeedsListController.personDisplayName}" />			
+	<h:outputFormat value="#{messages.need_groupNeedsTitle}">
+		<f:param value="#{groupNeedsListController.groupTitle}" />			
 	</h:outputFormat>
 </h2>
 
@@ -64,7 +64,7 @@
 
 <td class="itemSearchCell">
 <ui:include src="../../auth/item/filter/searchFilter.jspx">
-	<ui:param name="theBean" value="#{personNeedsListController}"/>
+	<ui:param name="theBean" value="#{groupNeedsListController}"/>
 	<ui:param name="defaultSearchString" value="#{messages.need_searchNeedDefaultText}"/>
 </ui:include>
 </td>
@@ -73,7 +73,7 @@
 
 <script type="text/javascript">
 	$j(document).ready(function() {
-		var showAdvancedSearch = #{personNeedsListController.showAdvancedSearch};
+		var showAdvancedSearch = #{groupNeedsListController.showAdvancedSearch};
 		if (showAdvancedSearch) {
 			$j('#advancedSearch').show();
 		}
@@ -93,7 +93,7 @@
 	
 	<td>
 	<ui:include src="../../auth/item/filter/categoryFilter.jspx">
-		<ui:param name="theBean" value="#{personNeedsListController}"/>
+		<ui:param name="theBean" value="#{groupNeedsListController}"/>
 	</ui:include>
 	</td>
 	
@@ -101,7 +101,7 @@
 	
 	<td >
 	<ui:include src="../../auth/item/sort/orderBy.jspx">
-		<ui:param name="theBean" value="#{personNeedsListController}"/>
+		<ui:param name="theBean" value="#{groupNeedsListController}"/>
 	</ui:include>
 	</td>
 	
@@ -116,7 +116,7 @@
 <!-- content box -->
 <div class="gt-content-box">
 
-<c:if test="#{empty(personNeedsListController.list)}">
+<c:if test="#{empty(groupNeedsListController.list)}">
 	<br/><br/>
 	<center>
 	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
@@ -124,21 +124,21 @@
 	<br/>
 </c:if>
 
-<h:dataTable value="#{personNeedsListController.list}" binding="#{personNeedsListController.table}" var="need" 
+<h:dataTable value="#{groupNeedsListController.list}" binding="#{groupNeedsListController.table}" var="need" 
    styleClass="gt-table gt-user-table">
 
     <h:column id="column1">
     	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
 			<table class="thumbnailInnerTable"><tr><td>
-				<h:outputLink value="#{personNeedsListController.needOverviewHref}" rendered="#{personNeedsListController.thumbnail1Src != null}">
+				<h:outputLink value="#{groupNeedsListController.needOverviewHref}" rendered="#{groupNeedsListController.thumbnail1Src != null}">
 					<div class="thumbnailDiv">
-					    <img src="#{personNeedsListController.thumbnail1Src}"/>
+					    <img src="#{groupNeedsListController.thumbnail1Src}"/>
 					</div>
 				</h:outputLink>
 			</td></tr></table>
 		</td><td>
 		<h4>
-			<h:outputLink value="#{personNeedsListController.needOverviewHref}">
+			<h:outputLink value="#{groupNeedsListController.needOverviewHref}">
 				<h:outputText value="#{need.title}" />
 			</h:outputLink>
 		</h4>
@@ -149,15 +149,15 @@
 		<table border="0" class="gt-table-categories" width="220" align="right">
 			<tr>
 			    <th width="50%"><h:outputText id="categoryTitle" value="#{messages.item_category}:" /></th>
-				<td width="50%"><h:outputText id="categoryLabel" value="#{personNeedsListController.categoryLabel}"/></td>
+				<td width="50%"><h:outputText id="categoryLabel" value="#{groupNeedsListController.categoryLabel}"/></td>
 		    </tr>
 			<tr>
 				<th>
 					<h:outputText value="#{messages.need_owner}:" />
 				</th>
 				<td>
-					<h:outputLink value="#{personNeedsListController.ownerHref}">
-						<h:outputText value="#{personNeedsListController.ownerLabel}"/>
+					<h:outputLink value="#{groupNeedsListController.ownerHref}">
+						<h:outputText value="#{groupNeedsListController.ownerLabel}"/>
 					</h:outputLink>
 				</td>
 			</tr>
@@ -166,7 +166,7 @@
 					<h:outputText value="#{messages.item_creationDate}:" />
 				</th>
 				<td>					
-					<h:outputText value="#{personNeedsListController.creationDateLabel}" />
+					<h:outputText value="#{groupNeedsListController.creationDateLabel}" />
 				</td>
 			</tr>
 		</table>
@@ -176,7 +176,7 @@
 		<table border="0" class="gt-table-categories" width="120" align="right">
 			<tr>
 			<td>
-				<h:outputLink styleClass="stylishButton" value="#{personNeedsListController.gotItHref}">
+				<h:outputLink styleClass="stylishButton" value="#{groupNeedsListController.gotItHref}">
 					<h:outputText value="#{messages.need_gotIt}" />
 				</h:outputLink>
 			</td>
@@ -187,7 +187,7 @@
 </h:dataTable>
 
 <ui:include src="../../auth/table/tableControls.jspx">
-	<ui:param name="theBean" value="#{personNeedsListController}"/>
+	<ui:param name="theBean" value="#{groupNeedsListController}"/>
 </ui:include>
 
 </div><!-- /content box -->

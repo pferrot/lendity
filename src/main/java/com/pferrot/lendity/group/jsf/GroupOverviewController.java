@@ -190,6 +190,14 @@ public class GroupOverviewController  {
 	public String getGroupBannedUrl() {
 		return JsfUtils.getFullUrl(PagesURL.GROUP_BANNED_LIST, PagesURL.GROUP_BANNED_LIST_PARAM_GROUP_ID, getGroupId().toString());
 	}
+	
+	public String getGroupItemsUrl() {
+		return JsfUtils.getFullUrl(PagesURL.GROUP_ITEMS_LIST, PagesURL.GROUP_ITEMS_LIST_PARAM_GROUP_ID, getGroupId().toString());
+	}
+	
+	public String getGroupNeedsUrl() {
+		return JsfUtils.getFullUrl(PagesURL.GROUP_NEEDS_LIST, PagesURL.GROUP_NEEDS_LIST_PARAM_GROUP_ID, getGroupId().toString());
+	}
 
 	public String getGroupPicture1Src() {
 		if (FacesContext.getCurrentInstance().getRenderResponse()) {
@@ -210,8 +218,12 @@ public class GroupOverviewController  {
 	}
 	
 	public boolean isAuthorizedToAddComments() {
+		return isOwnerOrAdministratorOrMemberOfGroup();
+	}
+	
+	public boolean isOwnerOrAdministratorOrMemberOfGroup() {
 		return SecurityUtils.isLoggedIn() &&
-		       getGroupService().isCurrentUserOwnerOrAdministratorOrMemberOfGroup(getGroup());
+	       getGroupService().isCurrentUserOwnerOrAdministratorOrMemberOfGroup(getGroup());
 	}
 	
 	public String getPasswordEncoded() {
@@ -230,5 +242,9 @@ public class GroupOverviewController  {
 	
 	public boolean isAuthorizedToViewComments() {
 		return getGroupService().isCurrentUserAuthorizedToViewComments(getGroup());
+	}
+	
+	public boolean isRecommendAvailable() {
+		return SecurityUtils.isLoggedIn();
 	}
 }

@@ -20,7 +20,7 @@
 			<!-- insert content here -->
 			<ui:define name="pageContent">
 			
-<ui:include src="personOverviewInternal.jspx">
+<ui:include src="myProfileInternal.jspx">
 	<ui:param name="theBean" value="#{myProfileController}"/>
 </ui:include>
 

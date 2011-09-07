@@ -132,7 +132,7 @@ public class PersonOverviewController implements Serializable {
 	}
 
 	public boolean isEditAvailable() {
-		return personService.isCurrentUserAuthorizedToEdit(person);
+		return false;
 	}
 	
 	public boolean isDetailsAvailable() {
@@ -179,13 +179,7 @@ public class PersonOverviewController implements Serializable {
 	}
 	
 	public String getPageTitle() {
-		if (isEditAvailable()) {
-			final Locale locale = I18nUtils.getDefaultLocale();
-			return I18nUtils.getMessageResourceString("menu_profile", locale);
-		}
-		else {
-			return getPerson().getDisplayName();
-		}		
+		return getPerson().getDisplayName();
 	}
 	
 	public String getProfilePictureSrc() {
@@ -362,23 +356,53 @@ public class PersonOverviewController implements Serializable {
 		}
 	}
 	
-//	public boolean isViewCommentsAvailable() {
-//		final String commentsVisibilityLabelCode = getPerson().getWallCommentsVisibility().getLabelCode();
-//		if (!SecurityUtils.isLoggedIn()) {
-//			return WallCommentsVisibility.PUBLIC.equals(commentsVisibilityLabelCode);
-//		}
-//		if (isOwnProfile()) {
-//			return true;
-//		}		
-//		if (WallCommentsVisibility.PUBLIC.equals(commentsVisibilityLabelCode)) {
-//			return true;
-//		}
-//		else if (WallCommentsVisibility.CONNECTIONS.equals(commentsVisibilityLabelCode)) {
-//			return getPersonService().isConnection(PersonUtils.getCurrentPersonId(), getPerson().getId());
-//		}
-//		else {
-//			return false;
-//		}
-//	}
+	public boolean isBanPersonAvailable() {
+		if (!SecurityUtils.isLoggedIn()) {
+			return false;
+		}
+		if (isOwnProfile()) {
+			return false;
+		}
+		return !getPersonService().isConnection(PersonUtils.getCurrentPersonId(), getPerson().getId()) &&
+		       !getPersonService().isBannedBy(PersonUtils.getCurrentPersonId(), getPerson().getId());
+	}
 	
+	public String getRequestConnectionDisabledLabel() {
+		if (isUncompletedConnectionRequestAvailable()) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString("person_pendingRequestExists", locale);	
+		}
+		else if (isBannedByPerson()) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString("person_bannedByPerson", locale);	
+		}
+		else if (isBannedPerson()) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString("person_bannedPerson", locale);	
+		}
+		else if (isConnection()) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString("person_alreadyConnection2", locale);
+		}
+//		else if (isYourSelf()) {
+//			final Locale locale = I18nUtils.getDefaultLocale();
+//			return I18nUtils.getMessageResourceString("person_yourSelf", locale);
+//		}
+		return null;		
+	}
+	
+	public boolean isBannedPerson() {
+		return SecurityUtils.isLoggedIn() &&
+			   getPersonService().isBannedBy(PersonUtils.getCurrentPersonId(), getPerson().getId());
+	}
+	
+	public boolean isConnection() {
+		return SecurityUtils.isLoggedIn() &&
+			   getPersonService().isConnection(getPerson().getId(), PersonUtils.getCurrentPersonId());
+	}
+	
+	public boolean isYourSelf() {
+		return SecurityUtils.isLoggedIn() &&
+		getPerson().getId().equals(PersonUtils.getCurrentPersonId());
+	}
 }

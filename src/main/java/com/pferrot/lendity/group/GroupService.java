@@ -26,7 +26,6 @@ import com.pferrot.lendity.group.exception.GroupException;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Document;
 import com.pferrot.lendity.model.Group;
-import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
@@ -546,6 +545,10 @@ public class GroupService {
 	
 	public boolean isCurrentUserOwnerOrAdministratorOrMemberOfGroup(final Group pGroup) {
 		return SecurityUtils.isLoggedIn() && isUserOwnerOrAdministratorOrMemberOfGroup(getPersonService().getCurrentPerson(), pGroup);
+	}
+	
+	public boolean isCurrentUserOwnerOrAdministratorOrMemberOfGroup(final Long pGroupId) {
+		return isCurrentUserOwnerOrAdministratorOrMemberOfGroup(findGroup(pGroupId));
 	}
 	
 	public void assertCurrentUserOwnerOrAdministratorOrMemberOfGroup(final Group pGroup) {

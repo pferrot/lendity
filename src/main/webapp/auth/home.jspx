@@ -35,6 +35,7 @@
 								<ui:param name="containerID" value="FAKE"/>
 								<ui:param name="containerType" value="ownWall"/>
 								<ui:param name="addCommentDefaultText" value="#{messages.comment_addWallComment}"/>
+								<ui:param name="addReplyDefaultText" value="#{messages.comment_addReplyWall}"/>								
 								<ui:param name="noCommentAvailableText" value="#{messages.comment_noWallCommentAvailable}"/>
 								<ui:param name="showPublicCheckbox" value="true"/>
 							</ui:include>

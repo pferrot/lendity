@@ -220,6 +220,8 @@ public interface PagesURL {
 	String ITEMS_SEARCH_PARAM_CATEGORY_ID_TO_REPLACE = "THE_CATEGORY_ID";
 	String PERSON_ITEMS_LIST = "/public/item/personItemsList.faces";
 	String PERSON_ITEMS_LIST_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;
+	String GROUP_ITEMS_LIST = "/public/item/groupItemsList.faces";
+	String GROUP_ITEMS_LIST_PARAM_GROUP_ID = GROUP_OVERVIEW_PARAM_GROUP_ID;
 	
 	// ITEM - end
 	/////////////////////////////////////////////////////////////////////////
@@ -241,6 +243,8 @@ public interface PagesURL {
 	String NEEDS_SEARCH_PARAM_CATEGORY_ID_TO_REPLACE = ITEMS_SEARCH_PARAM_CATEGORY_ID_TO_REPLACE;
 	String PERSON_NEEDS_LIST = "/public/need/personNeedsList.faces";
 	String PERSON_NEEDS_LIST_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;
+	String GROUP_NEEDS_LIST = "/public/need/groupNeedsList.faces";
+	String GROUP_NEEDS_LIST_PARAM_GROUP_ID = GROUP_OVERVIEW_PARAM_GROUP_ID;
 	
 	// NEED - end
 	/////////////////////////////////////////////////////////////////////////

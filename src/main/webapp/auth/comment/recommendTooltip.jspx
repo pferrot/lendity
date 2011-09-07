@@ -1,0 +1,43 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+    
+<div id="recommendDiv" style="display: none;">
+	<h:form id="recommendForm" prependId="false">
+		<h:inputHidden id="recommendId" value="#{recommendTooltipController.id}" />
+		<h:inputHidden id="recommendType" value="#{recommendTooltipController.type}" />
+		<table> 
+			<tr>
+				<td colspan="2" style="text-align: center;">
+					<b><h:outputText value="#{messages.comment_recommendMessage}"/></b>
+				</td>
+			</tr>
+			<tr style="padding-bottom: 0px; width: 100%">
+				<th style="padding-bottom: 0px; width: 50%">
+					<nobr><h:outputText value="#{messages.comment_recommendTo}:" /> *</nobr>
+				</th>
+				<td style="padding-bottom: 0px;">
+					<h:selectOneMenu id="recommendPersonId" value="#{recommendTooltipController.personId}" converter="javax.faces.Long" style="width: 100%;">
+						<f:selectItems value="#{recommendTooltipController.personSelectItems}"/>
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align: center;">
+					<span onclick="submitRecommend()"><h:outputText styleClass="fontSizeSmall stylishButton" value="#{messages.navigation_ok}"/></span>
+					<span onclick="cancelRecommend()"><h:outputText styleClass="fontSizeSmall stylishButton" value="#{messages.navigation_cancel}"/></span>
+					<h:commandButton id="recommendActionButton" action="#{recommendTooltipController.submit}" style="display: none"  value="not_displayed"/>
+				</td>
+			</tr>
+		</table>
+	</h:form>
+</div>
+
+</ui:composition>
+

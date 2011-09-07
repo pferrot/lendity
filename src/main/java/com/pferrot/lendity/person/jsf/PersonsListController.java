@@ -144,6 +144,10 @@ public class PersonsListController extends AbstractPersonsListController {
 			final Locale locale = I18nUtils.getDefaultLocale();
 			return I18nUtils.getMessageResourceString("person_bannedByPerson", locale);	
 		}
+		else if (isBannedPerson()) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString("person_bannedPerson", locale);	
+		}
 		else if (isConnection()) {
 			final Locale locale = I18nUtils.getDefaultLocale();
 			return I18nUtils.getMessageResourceString("person_alreadyConnection", locale);
@@ -159,6 +163,12 @@ public class PersonsListController extends AbstractPersonsListController {
 		final Person p = (Person)getTable().getRowData();
 		return SecurityUtils.isLoggedIn() &&
 			   getPersonService().isBannedBy(p.getId(), PersonUtils.getCurrentPersonId());
+	}
+	
+	public boolean isBannedPerson() {
+		final Person p = (Person)getTable().getRowData();
+		return SecurityUtils.isLoggedIn() &&
+			   getPersonService().isBannedBy(PersonUtils.getCurrentPersonId(), p.getId());
 	}
 	
 	public boolean isConnection() {

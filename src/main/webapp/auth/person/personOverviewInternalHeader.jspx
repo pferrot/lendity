@@ -1,0 +1,35 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+    
+
+<h2 class="gt-table-head"><h:outputText value="#{theBean.pageTitle}"/></h2>
+
+<c:if test="#{theBean.showLinksToObjekts}">
+	<div class="gt-form-row gt-width-100">
+		<h:outputText styleClass="fontSizeSmall" value="#{messages.navigation_pathSeparator}"/>
+		<h:outputText styleClass="fontSizeSmall" value=" " escape="false"/>
+		<h:outputLink value="#{theBean.personItemsUrl}">
+			<h:outputFormat styleClass="fontSizeSmall" value="#{messages.item_personItemsTitle}">
+				<f:param value="#{theBean.person.displayName}" />			
+			</h:outputFormat>
+		</h:outputLink>
+		<br/>
+		<h:outputText styleClass="fontSizeSmall" value="#{messages.navigation_pathSeparator}"/>
+		<h:outputText styleClass="fontSizeSmall" value=" " escape="false"/>
+		<h:outputLink value="#{theBean.personNeedsUrl}">
+			<h:outputFormat styleClass="fontSizeSmall" value="#{messages.need_personNeedsTitle}">
+				<f:param value="#{theBean.person.displayName}" />			
+			</h:outputFormat>
+		</h:outputLink>
+	</div>
+	<br/>
+</c:if>
+			
+</ui:composition>

@@ -32,6 +32,7 @@
 <c:if test="#{authenticationController.loggedIn}" var="loggedInUser"/>
 <c:if test="${loggedInUser}">
 	<ui:include src="../../auth/need/deleteNeedTooltip.jspx"/>
+	<ui:include src="../../auth/comment/recommendTooltip.jspx"/>
 </c:if>
 
 <h2 class="gt-table-head"><h:outputText value="#{messages.need_needOverviewTitle}"/></h2>
@@ -110,6 +111,13 @@
 	<br/>
 	<div class="gt-form-row gt-width-100">
 		<table class="buttonsTable"><tr><td>
+			<c:if test="#{itemOverviewController.recommendAvailable}">
+				<span onclick="recommendTooltip(this, '#{needOverviewController.need.id}', 'need')">
+					<h:outputText styleClass="stylishButton" value="#{messages.comment_recommend}"/>
+				</span>
+			</c:if>
+		</td></tr></table>
+		<table class="buttonsTable"><tr><td>
 			<h:outputLink rendered="#{needOverviewController.editAvailable}" value="#{needOverviewController.needEditHref}" styleClass="stylishButton">
 	    		<h:outputText rendered="#{needOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
 	    	</h:outputLink>
@@ -148,6 +156,7 @@
 		<ui:param name="containerID" value="#{needOverviewController.need.id}"/>
 		<ui:param name="containerType" value="need"/>
 		<ui:param name="addCommentDefaultText" value="#{messages.comment_addComment}"/>
+		<ui:param name="addReplyDefaultText" value="#{messages.comment_addReply}"/>
 		<ui:param name="noCommentAvailableText" value="#{messages.comment_noCommentAvailable}"/>
 	</ui:include>
 </c:if>

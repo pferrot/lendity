@@ -95,6 +95,19 @@ public class ConnectionRequestService {
 				Boolean.FALSE, null, null, "requestDate", Boolean.FALSE, pFirstResult, pMaxResults);
 	}
 	
+	public List<ConnectionRequest> findPersonPendingConnectionRequestsTo(final Long pRequesterId, final Long pConnectionId) {
+		CoreUtils.assertNotNull(pRequesterId);
+		CoreUtils.assertNotNull(pConnectionId);
+		
+		return connectionRequestDao.findConnectionRequestsList(
+				new Long[]{pConnectionId},
+				new Long[]{pRequesterId},
+				null, null, null,
+				Boolean.FALSE,
+				null, null, null, null,
+				0, 0);
+	}
+	
 	public long countCurrentUserPendingConnectionRequests() {
 		if (!SecurityUtils.isLoggedIn()) {
 			throw new SecurityException("Not logged in");
@@ -181,10 +194,19 @@ public class ConnectionRequestService {
 		
 		// Request is banned.
 		// Avoid LazyInitializationException
-		final Collection<Person> bannedPersons = personService.findBannedPersonsList(pConnection.getId(), null, 0, 0);
+		Collection<Person> bannedPersons = personService.findBannedPersonsList(pConnection.getId(), null, 0, 0);
 		if (bannedPersons.contains(pRequester)) {
 			if (log.isDebugEnabled()) {
 				log.debug("Requester (" + pRequester + ") is banned by connection (" + pConnection + ") .");
+			}			
+			return false;
+		}
+		
+		// Connection is banned. Requester should unban first.
+		bannedPersons = personService.findBannedPersonsList(pRequester.getId(), null, 0, 0);
+		if (bannedPersons.contains(pConnection)) {
+			if (log.isDebugEnabled()) {
+				log.debug("Connection (" + pRequester + ") is banned by requester (" + pConnection + ") .");
 			}			
 			return false;
 		}
@@ -417,37 +439,14 @@ public class ConnectionRequestService {
 	public void updateBanConnectionRequest(final ConnectionRequest pConnectionRequest) throws ConnectionRequestException {
 		try {
 			CoreUtils.assertNotNull(pConnectionRequest);
-			HibernateUtils.evictQueryCacheRegion("query.connections");
 			
 			setConnectionRequestResponse(pConnectionRequest, (ConnectionRequestResponse)listValueDao.findListValue(ConnectionRequestResponse.BAN_LABEL_CODE));
 
-			// If the user is banned, it cannot be a connection.
-			if (pConnectionRequest.getConnection().getConnections().contains(pConnectionRequest.getRequester()) ||
-				pConnectionRequest.getRequester().getConnections().contains(pConnectionRequest.getConnection())) {
-				if (log.isWarnEnabled()) {
-					log.warn("'" + pConnectionRequest.getRequester() + "' is a connection of '" + pConnectionRequest.getConnection() + "' before ban.");
-				}				
-				// Reverse link is updated with this.
-				pConnectionRequest.getConnection().removeConnection(pConnectionRequest.getRequester());
-			}
-			
-			// This test should not be necessary, but it can eventually avoid inserting redundant information.
-			if (!pConnectionRequest.getConnection().getBannedPersons().contains(pConnectionRequest.getRequester())) {
-				// Ban connection.
-				pConnectionRequest.getConnection().addBannedPerson(pConnectionRequest.getRequester());
-			} else {
-				if (log.isWarnEnabled()) {
-					log.warn("'" + pConnectionRequest.getRequester() + "' was already banned by '" + pConnectionRequest.getConnection() + "'.");
-				}
-			}
+			updateBanPersonInternal(pConnectionRequest.getConnection(), pConnectionRequest.getRequester());
 			
 			sendResponseEmail(pConnectionRequest,
 					Configuration.getSiteName() + ": demande d'ami refusée et exclusion",
 					"com/pferrot/lendity/emailtemplate/connectionrequest/ban/fr");
-			
-			// If they are banned, they are not potential connections anymore.
-			getPotentialConnectionDao().deletePotentialConnectionForPersonAndConnection(pConnectionRequest.getRequester().getId(), pConnectionRequest.getConnection().getId());
-			getPotentialConnectionDao().deletePotentialConnectionForPersonAndConnection(pConnectionRequest.getConnection().getId(), pConnectionRequest.getRequester().getId());
 
 			if (log.isInfoEnabled()) {
 				log.info("'" + pConnectionRequest.getRequester() + "' is banned by '" + pConnectionRequest.getConnection() + "'.");
@@ -459,6 +458,43 @@ public class ConnectionRequestService {
 		catch (Exception e) {
 			throw new ConnectionRequestException(e);
 		}	
+	}
+	
+	private void updateBanPersonInternal(final Person pBanner, final Person pBannedPerson) {
+		CoreUtils.assertNotNull(pBanner);
+		CoreUtils.assertNotNull(pBannedPerson);
+		
+		HibernateUtils.evictQueryCacheRegion("query.connections");
+		
+		// If the user is banned, it cannot be a connection.
+		if (pBanner.getConnections().contains(pBannedPerson) ||
+			pBannedPerson.getConnections().contains(pBanner)) {
+			if (log.isWarnEnabled()) {
+				log.warn("'" + pBannedPerson + "' is a connection of '" + pBanner + "' before ban.");
+			}				
+			// Reverse link is updated with this.
+			pBanner.removeConnection(pBannedPerson);
+		}
+		
+		// This test should not be necessary, but it can eventually avoid inserting redundant information.
+		if (!pBanner.getBannedPersons().contains(pBannedPerson)) {
+			// Ban connection.
+			pBanner.addBannedPerson(pBannedPerson);
+		} else {
+			if (log.isWarnEnabled()) {
+				log.warn("'" + pBannedPerson + "' was already banned by '" + pBanner + "'.");
+			}
+		}
+		
+		// If they are banned, they are not potential connections anymore.
+		getPotentialConnectionDao().deletePotentialConnectionForPersonAndConnection(pBanner.getId(),pBannedPerson.getId());
+		getPotentialConnectionDao().deletePotentialConnectionForPersonAndConnection(pBannedPerson.getId(), pBanner.getId());
+	}
+	
+	public void updateCancelConnectionRequest(final ConnectionRequest pConnectionRequest) throws ConnectionRequestException {
+		CoreUtils.assertNotNull(pConnectionRequest);
+		
+		setCancelConnectionRequestResponse(pConnectionRequest);
 	}
 
 	/**
@@ -473,6 +509,38 @@ public class ConnectionRequestService {
 		final ConnectionRequest connectionRequest = connectionRequestDao.findConnectionRequest(pConnectionRequestId);
 
 		updateBanConnectionRequest(connectionRequest);	
+	}
+	
+	/**
+	 * Ban a person, even if no connection request exists.
+	 * If connection requests exist, they are closed.
+	 *
+	 * @param pPersonId
+	 */
+	public void updateBanPerson(final Long pPersonToBanId) throws ConnectionRequestException {
+		CoreUtils.assertNotNull(pPersonToBanId);
+		final Long currentPersonId = PersonUtils.getCurrentPersonId();
+		CoreUtils.assertNotNull(currentPersonId);
+		if (pPersonToBanId.equals(currentPersonId)) {
+			throw new ConnectionRequestException("Cannot ban yourself...");
+		}
+		boolean personBanned = false;
+		
+		final List<ConnectionRequest> connectionRequestsFromPersonToBan = findPersonPendingConnectionRequestsTo(pPersonToBanId, currentPersonId);
+		for (ConnectionRequest cr: connectionRequestsFromPersonToBan) {
+			updateBanConnectionRequest(cr);
+			personBanned = true;
+		}
+		
+		final List<ConnectionRequest> connectionRequestsFromCurrentPerson = findPersonPendingConnectionRequestsTo(currentPersonId, pPersonToBanId);
+		for (ConnectionRequest cr: connectionRequestsFromCurrentPerson) {
+			updateCancelConnectionRequest(cr);
+		}
+		
+		
+		if (!personBanned) {
+			updateBanPersonInternal(personService.findPerson(currentPersonId), personService.findPerson(pPersonToBanId));
+		}		
 	}
 	
 	/**
@@ -556,6 +624,19 @@ public class ConnectionRequestService {
 			throw new ConnectionRequestException("Connection request with ID '" + pConnectionRequest.getId().toString() + "' already has a response.");
 		}
 		pConnectionRequest.setResponse(pConnectionRequestResponse);
+		pConnectionRequest.setResponseDate(new Date());
+	}
+	
+	private void setCancelConnectionRequestResponse(final ConnectionRequest pConnectionRequest) throws ConnectionRequestException {
+		CoreUtils.assertNotNull(pConnectionRequest);
+		
+		assertRequesterIsCurrentUser(pConnectionRequest);
+		
+//		final Person connection = pConnectionRequest.getConnection();
+		if (pConnectionRequest.getResponse() != null) {
+			throw new ConnectionRequestException("Connection request with ID '" + pConnectionRequest.getId().toString() + "' already has a response.");
+		}
+		pConnectionRequest.setResponse((ConnectionRequestResponse)listValueDao.findListValue(ConnectionRequestResponse.CANCEL_LABEL_CODE));
 		pConnectionRequest.setResponseDate(new Date());
 	}
 	
