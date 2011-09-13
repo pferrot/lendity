@@ -3,7 +3,6 @@ package com.pferrot.lendity.dao.hibernate;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
@@ -247,10 +246,11 @@ public class LendTransactionDaoHibernateImpl extends HibernateDaoSupport impleme
 		final SimpleExpression completedCriteria = Restrictions.eq("status.id", completedStatus.getId());
 		final Criterion lenderEvaluationNullCriteria = Restrictions.isNull("evaluationByLender");
 		final Criterion borrowerEvaluationNullCriteria = Restrictions.isNull("evaluationByBorrower");
-		final LogicalExpression lenderAndCompletedAndNotEvaluated = Restrictions.and(lenderCriteria, Restrictions.and(completedCriteria, lenderEvaluationNullCriteria));
+		final Criterion borrowerNotNullCriteria = Restrictions.isNotNull("borrower");
+		final LogicalExpression lenderAndCompletedAndNotEvaluatedAndBorrowerNotNull = Restrictions.and(lenderCriteria, Restrictions.and(completedCriteria, Restrictions.and(lenderEvaluationNullCriteria, borrowerNotNullCriteria)));
 		final LogicalExpression borrowerAndCompletedAndNotEvaluated = Restrictions.and(borrowerCriteria, Restrictions.and(completedCriteria, borrowerEvaluationNullCriteria));
 		
-		le = Restrictions.or(le, Restrictions.or(lenderAndCompletedAndNotEvaluated, borrowerAndCompletedAndNotEvaluated));
+		le = Restrictions.or(le, Restrictions.or(lenderAndCompletedAndNotEvaluatedAndBorrowerNotNull, borrowerAndCompletedAndNotEvaluated));
 		
 		criteria.add(le);
 		
