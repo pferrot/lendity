@@ -51,20 +51,25 @@
 					<ui:include src="component/descriptionEdit.jspx">
 						<ui:param name="controllerBean" value="#{itemAddController}"/>
 					</ui:include>
-
+					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">
 						<label><h:outputText value="#{messages.item_category}"/> *</label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
-							for="category"></h:message>
-						<h:selectOneMenu id="category" 
-						    value="#{itemAddController.categoryId}" 
-						    converter="javax.faces.Long" 
-						    required="true"
-						    requiredMessage="#{messages.validation_requiredMessage}">
+							for="categories"></h:message>
+						<t:selectManyCheckbox id="categories"
+						                      value="#{itemAddController.categoriesIds}"
+						                      styleClass="gt-form-element-checkbox"
+						                      layout="pageDirection"
+						                      layoutWidth="3"
+						                      converter="javax.faces.Long"
+						                      required="true"
+						                      requiredMessage="#{messages.validation_requiredMessage}"
+						                      validator="#{itemAddController.validateCategories}">
 							<f:selectItems value="#{itemAddController.categoriesSelectItems}"/>
-						</h:selectOneMenu>					
+						</t:selectManyCheckbox>
 					</div><!-- /form row -->
+					
 					
 					<!-- form row -->
 					<div class="gt-form-row gt-width-100">

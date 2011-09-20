@@ -30,6 +30,7 @@ public class Configuration {
 	private static String googleAnalyticsId;
 	private static int nbDaysToValidateRegistration;
 	private static int minimumAge;
+	private static int maxNbCategories;
 	private static Set<String> categoriesNotAllowedPublicVisibility = new HashSet<String>();
 	private static Set<String> categoriesNotAllowedToRent = new HashSet<String>();
 
@@ -148,6 +149,14 @@ public class Configuration {
 
 	public void setMinimumAge(int minimumAge) {
 		this.minimumAge = minimumAge;
+	}
+
+	public static int getMaxNbCategories() {
+		return maxNbCategories;
+	}
+
+	public void setMaxNbCategories(int maxNbCategories) {
+		Configuration.maxNbCategories = maxNbCategories;
 	}
 
 	public static Set<String> getCategoriesNotAllowedPublicVisibility() {

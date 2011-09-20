@@ -1,6 +1,7 @@
 package com.pferrot.lendity.item.jsf;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -16,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.fileupload.UploadedFile;
 
+import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.model.Item;
@@ -33,7 +35,7 @@ public class ItemsImportController  {
 	private UploadedFile uploadFile;
 	
 	private List<SelectItem> categoriesSelectItems;
-	private Long categoryId;
+	private List<Long> categoriesIds;
 	
 	private List<SelectItem> visibilitySelectItems;
 	private Long visibilityId;
@@ -64,20 +66,19 @@ public class ItemsImportController  {
 	public List<SelectItem> getCategoriesSelectItems() {
 		if (categoriesSelectItems == null) {
 			final Locale locale = I18nUtils.getDefaultLocale();
-			categoriesSelectItems = UiUtils.getSelectItemsForListValueWithItemFirst(itemService.getCategories(), locale, ItemCategory.OTHER_LABEL_CODE);
-			categoriesSelectItems.add(0, UiUtils.getPleaseSelectSelectItem(locale));
+			categoriesSelectItems = UiUtils.getSelectItemsForListValueWithItemLast(itemService.getCategories(), locale, ItemCategory.OTHER_LABEL_CODE);
 		}		
 		return categoriesSelectItems;	
 	}	
-
-	public Long getCategoryId() {
-		return categoryId;
-	}
-
-	public void setCategoryId(final Long pCategoryId) {
-		this.categoryId = UiUtils.getPositiveLongOrNull(pCategoryId);
-	}
 	
+	public List<Long> getCategoriesIds() {
+		return categoriesIds;
+	}
+
+	public void setCategoriesIds(List<Long> categoriesIds) {
+		this.categoriesIds = categoriesIds;
+	}
+
 	public List<SelectItem> getVisibilitySelectItems() {
 		if (visibilitySelectItems == null) {
 			final Locale locale = I18nUtils.getDefaultLocale();
@@ -150,7 +151,7 @@ public class ItemsImportController  {
 			item.setTitle(itemTitle);
 			item.setOwner(getItemService().getCurrentPerson());
 			item.setToGiveForFree(Boolean.FALSE);
-			getItemService().createItem(item, getCategoryId(), getVisibilityId());
+			getItemService().createItem(item, getCategoriesIds(), getVisibilityId());
 		}
 	}
 	
@@ -164,31 +165,43 @@ public class ItemsImportController  {
 	}
 	
 	public String getCategoryLabel() {
-		final ItemCategory category = (ItemCategory)getItemService().getListValue(getCategoryId());
-		if (category == null || category.getLabelCode() == null) {
-			return null;
-		}
-		final Locale locale = I18nUtils.getDefaultLocale();
-		return I18nUtils.getMessageResourceString(category.getLabelCode(), locale);
+		final Set<ItemCategory> categories = new HashSet<ItemCategory>();
+		for (Long categoryId: getCategoriesIds()) {
+			categories.add((ItemCategory)getItemService().getListValue(categoryId));
+		}		
+		return UiUtils.getListValuesLabels(categories, ", ", I18nUtils.getDefaultLocale());
 	}
-
+	
+	public void validateCategories(FacesContext context, UIComponent toValidate, Object value) {
+		String message = "";
+		final List<Long> categoriesIds = (List<Long>) value;		
+		if (categoriesIds != null &&
+			categoriesIds.size() > Configuration.getMaxNbCategories()) {
+			((UIInput)toValidate).setValid(false);
+			final Locale locale = I18nUtils.getDefaultLocale();
+			message = I18nUtils.getMessageResourceString("validation_maxNbCategories", new Object[]{Configuration.getMaxNbCategories()}, locale);
+			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));		
+		}
+	}
+	
 	public void validateVisibility(FacesContext context, UIComponent toValidate, Object value) {
 		String message = "";
 		Long visibilityId = (Long) value;
 		
-		final UIComponent categoryComponent = toValidate.findComponent("category");
+		final UIComponent categoryComponent = toValidate.findComponent("categories");
 		final EditableValueHolder categoryEditableValueHolder = (EditableValueHolder)categoryComponent;
-		final Long categoryId = (Long)categoryEditableValueHolder.getValue();
+		final List<Long> categoriesIds = (List<Long>)categoryEditableValueHolder.getValue();
 		
-		if (categoryId != null &&
-			visibilityId != null &&
-			!getItemService().isVisibilityAllowed(visibilityId, categoryId)) {
-			((UIInput)toValidate).setValid(false);
-			final Locale locale = I18nUtils.getDefaultLocale();
-			final ListValue category = getItemService().getListValueDao().findListValue(categoryId);
-			final String categoryLabel = I18nUtils.getMessageResourceString(category.getLabelCode(), locale);
-			message = I18nUtils.getMessageResourceString("validation_visibilityNotAllowedIntellectualProperty", new Object[]{categoryLabel}, locale);
-			context.addMessage(toValidate.getClientId(context), new FacesMessage(message));			
+		if (categoriesIds != null &&
+			visibilityId != null) {
+			final ItemCategory forbiddenCategory = getItemService().getForbiddenCategoryWithVisibility(visibilityId, categoriesIds);
+			if (forbiddenCategory != null) {
+				((UIInput)toValidate).setValid(false);
+				final Locale locale = I18nUtils.getDefaultLocale();
+				final String categoryLabel = I18nUtils.getMessageResourceString(forbiddenCategory.getLabelCode(), locale);
+				message = I18nUtils.getMessageResourceString("validation_visibilityNotAllowedIntellectualProperty", new Object[]{categoryLabel}, locale);
+				context.addMessage(toValidate.getClientId(context), new FacesMessage(message));		
+			}
 		}
 	}
 }

@@ -217,6 +217,7 @@
 			<h:outputLink id="requestLendNotAllowed2Link" value="#{itemOverviewController.requestLendNotAvailableUncompletedTransactionUrl}" rendered="#{itemOverviewController.requestLendNotAvailableUncompletedTransaction}">
 				<h:outputText id="requestLendNotAllowed2" value="#{messages.lendRequest_requestNotAllowedUncompletedTransaction}" rendered="#{itemOverviewController.requestLendNotAvailableUncompletedTransaction}"/>
 			</h:outputLink>
+			<br/><br/>
 		</div>
 	</c:if>
 	<c:if test="#{itemOverviewController.requestLendNotAvailableBannedPerson}">
@@ -226,59 +227,76 @@
 	</c:if>
 	
 	<div class="gt-form-row gt-width-100">
-		<table class="buttonsTable"><tr><td>
-			<c:if test="#{itemOverviewController.lendAvailable}">
+		<c:if test="#{itemOverviewController.lendAvailable}">
+			<div class="buttonsDiv">
 				<span onclick="lendItemTooltip(this, '#{itemOverviewController.item.id}', 2)">
 					<h:outputText styleClass="stylishButton" value="#{itemOverviewController.lendButtonLabel}"/>
 				</span>
-			</c:if>
-			<c:if test="#{itemOverviewController.requestLendAvailable}">
+			</div>
+		</c:if>
+		<c:if test="#{itemOverviewController.requestLendAvailable}">
+			<div class="buttonsDiv">
 				<span onclick="requestLendTooltip(this, '#{itemOverviewController.item.id}', 2)">
 					<h:outputText styleClass="stylishButton" value="#{messages.lendRequest_requestLend}"/>
 				</span>
-			</c:if>
-			</td><td>
-				<c:if test="#{itemOverviewController.lendBackAvailable}">
-					<h:outputLink id="accessUncompletedTransactionsLink" value="#{itemOverviewController.myUncompletedLendTransactionsUrl}" rendered="#{itemOverviewController.activeTransactionsLinkAvailable}">
-						<h:outputFormat styleClass="stylishButton" id="accessUncompletedTransactionsText" value="#{messages.lendTransaction_uncompletedLendTransactionWithNumber}">
-							<f:param value="#{itemOverviewController.nbUncompletedLendTransactionsCurrentPerson}"/>
-						</h:outputFormat>
-					</h:outputLink>
-				</c:if>
-			</td><td>
-				<c:if test="#{itemOverviewController.lendBackAvailable}">
-					<h:outputLink id="accessTransactionLink" value="#{itemOverviewController.inProgressLendTransactionUrl}">
-						<h:outputText styleClass="stylishButton" id="currentlyLentText" value="#{messages.item_currentlyLent}"/>
-					</h:outputLink>
-				</c:if>
-			</td>
-			<td>
-				<c:if test="#{itemOverviewController.recommendAvailable}">
-					<span onclick="recommendTooltip(this, '#{itemOverviewController.item.id}', 'item')">
-						<h:outputText styleClass="stylishButton" value="#{messages.comment_recommend}"/>
-					</span>
-				</c:if>
-			</td>
-		</tr></table>
-		<table class="buttonsTable"><tr>
-    	<td>    		
-			<h:outputLink rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.itemEditHref}" styleClass="stylishButton">
-	    		<h:outputText rendered="#{itemOverviewController.editAvailable}" value="#{messages.navigation_editDetails}"/>
-	    	</h:outputLink>
-	    	<h:outputLink id="requestLendNotAllowedNotLoggedInLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
-				<h:outputText id="requestLendNotAllowedNotLoggedIn" value="#{messages.lendRequest_requestNotAllowedNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
-			</h:outputLink>
-		</td><td>
-			<h:outputLink rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.itemEditPictureHref}" styleClass="stylishButton">
-	    		<h:outputText rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.imageButtonLabel}"/>
-	    	</h:outputLink>
-		</td><td>
-			<c:if test="#{itemOverviewController.editAvailable}">
-				<span onclick="deleteItemTooltip(this, '#{itemOverviewController.item.id}', 1)">
-					<h:outputText styleClass="stylishButton" value="#{messages.item_delete}"/>
+			</div>
+		</c:if>
+		<c:if test="#{itemOverviewController.activeTransactionsLinkAvailable}">
+			<div class="buttonsDiv">
+				<h:outputLink id="accessUncompletedTransactionsLink" value="#{itemOverviewController.myUncompletedLendTransactionsUrl}" rendered="#{itemOverviewController.activeTransactionsLinkAvailable}">
+					<h:outputFormat styleClass="stylishButton" id="accessUncompletedTransactionsText" value="#{messages.lendTransaction_uncompletedLendTransactionWithNumber}">
+						<f:param value="#{itemOverviewController.nbUncompletedLendTransactionsCurrentPerson}"/>
+					</h:outputFormat>
+				</h:outputLink>
+			</div>
+		</c:if>
+		<c:if test="#{itemOverviewController.lendBackAvailable}">
+			<div class="buttonsDiv">
+				<h:outputLink id="accessTransactionLink" value="#{itemOverviewController.inProgressLendTransactionUrl}">
+					<h:outputText styleClass="stylishButton" id="currentlyLentText" value="#{messages.item_currentlyLent}"/>
+				</h:outputLink>
+			</div>
+		</c:if>
+		<c:if test="#{itemOverviewController.recommendAvailable}">
+			<div class="buttonsDiv">
+				<span onclick="recommendTooltip(this, '#{itemOverviewController.item.id}', 'item')">
+					<h:outputText styleClass="stylishButton" value="#{messages.comment_recommend}"/>
 				</span>
-			</c:if>
-		</td></tr></table>
+			</div>
+		</c:if>
+		<c:if test="#{!authenticationController.loggedIn}">
+		    <div class="buttonsDiv">    
+		    	<h:outputLink id="requestLendNotAllowedNotLoggedInLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
+					<h:outputText id="requestLendNotAllowedNotLoggedIn" value="#{messages.lendRequest_requestNotAllowedNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
+				</h:outputLink>
+			</div>
+		</c:if>
+		
+		<c:if test="#{itemOverviewController.editAvailable}">
+			<br/><br/>
+			<div class="buttonsDiv">    		
+				<h:outputLink rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.itemEditHref}" styleClass="stylishButton">
+		    		<h:outputText rendered="#{itemOverviewController.editAvailable}" value="#{messages.navigation_editDetails}"/>
+		    	</h:outputLink>
+		    </div>
+	    </c:if>
+		<c:if test="#{itemOverviewController.editAvailable}">
+			<div class="buttonsDiv">    
+				<h:outputLink rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.itemEditPictureHref}" styleClass="stylishButton">
+		    		<h:outputText rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.imageButtonLabel}"/>
+		    	</h:outputLink>
+			</div>
+		</c:if>
+		<c:if test="#{itemOverviewController.editAvailable}">
+			<div class="buttonsDiv">			
+					<span onclick="deleteItemTooltip(this, '#{itemOverviewController.item.id}', 1)">
+						<h:outputText styleClass="stylishButton" value="#{messages.item_delete}"/>
+					</span>
+			</div>
+		</c:if>
+		
+		<br/><br/><br/>
+		
 		<c:if test="#{itemOverviewController.alloCineQueryUrlAvailable}">
 			<o:separateConversationContext>
 				<h:outputLink value="#{itemOverviewController.alloCineQueryUrl}" target="_blank">
@@ -294,8 +312,8 @@
 			</o:separateConversationContext>
 		</c:if>	
 		<c:if test="#{itemOverviewController.facebookLikeButtonAvailable}">
-			<br/> 
-			<c:if test="#{configuration.facebookLikeEnabledNotStatic}"> 
+			<c:if test="#{configuration.facebookLikeEnabledNotStatic}">
+				<br/><br/><br/>
 				<iframe src="http://www.facebook.com/plugins/like.php?app_id=242769605735680&amp;href=#{configuration.rootURLFacebookEncodedNotStatic}%2Fpublic%2Fitem%2FitemOverview.faces%3FitemID%3D#{itemOverviewController.item.id}&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>
 			</c:if>
 		</c:if>	

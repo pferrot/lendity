@@ -24,13 +24,7 @@ public abstract class AbstractObjektOverviewController {
 	
 	
 	public String getCategoryLabel() {
-		if (getObjekt() != null && getObjekt().getCategory() != null) {
-			final Locale locale = I18nUtils.getDefaultLocale();
-			return I18nUtils.getMessageResourceString(getObjekt().getCategory().getLabelCode(), locale);
-		}
-		else {
-			return "";
-		}
+		return UiUtils.getListValuesLabels(getObjekt().getCategories(), ", ", I18nUtils.getDefaultLocale());
 	}	
 
 	public String getDescription() {

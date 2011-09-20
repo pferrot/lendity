@@ -2,6 +2,7 @@ package com.pferrot.lendity.item.jsf;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -339,6 +340,9 @@ public class ItemOverviewController extends AbstractObjektOverviewController {
 	}
 
 	public boolean isActiveTransactionsLinkAvailable() {
+		if (!SecurityUtils.isLoggedIn()) {
+			return false;
+		}
 		final long nb = getNbUncompletedLendTransactionsCurrentPerson();
 		if (isBorrowed()) {
 			return nb > 1;
@@ -349,9 +353,16 @@ public class ItemOverviewController extends AbstractObjektOverviewController {
 	}
 	
 	public boolean isAlloCineQueryUrlAvailable() {
-		String categoryCode = getItem().getCategory().getLabelCode(); 
-		return ItemCategory.BLURAY_LABEL_CODE.equals(categoryCode) ||
-			   ItemCategory.DVD_LABEL_CODE.equals(categoryCode);
+		final Set<ItemCategory> categories = getItem().getCategories();
+		if (categories != null) {
+			for (ItemCategory cat: categories) {
+				if (ItemCategory.BLURAY_LABEL_CODE.equals(cat.getLabelCode()) ||
+					ItemCategory.DVD_LABEL_CODE.equals(cat.getLabelCode())) {
+					return true;
+				}
+			}			
+		}
+		return false;
 	}
 	
 	public String getAlloCineQueryUrl() {
@@ -359,9 +370,16 @@ public class ItemOverviewController extends AbstractObjektOverviewController {
 	}
 	
 	public boolean isBibliopocheQueryUrlAvailable() {
-		String categoryCode = getItem().getCategory().getLabelCode(); 
-		return ItemCategory.BOOK_LABEL_CODE.equals(categoryCode) ||
-			   ItemCategory.COMICS_LABEL_CODE.equals(categoryCode);
+		final Set<ItemCategory> categories = getItem().getCategories();
+		if (categories != null) {
+			for (ItemCategory cat: categories) {
+				if (ItemCategory.BOOK_LABEL_CODE.equals(cat.getLabelCode()) ||
+					ItemCategory.COMICS_LABEL_CODE.equals(cat.getLabelCode())) {
+					return true;
+				}
+			}			
+		}
+		return false;
 	}
 	
 	public String getBibliopocheQueryUrl() {

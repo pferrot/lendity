@@ -60,7 +60,7 @@ public class ItemEditController extends AbstractItemAddEditController {
 		// Initialize the model to be edited.
 		setTitle(pItem.getTitle());
 		setDescription(pItem.getDescription());
-		setCategoryId(pItem.getCategory().getId());
+		setCategoriesIdsFromObjekt(pItem);
 		setVisibilityId(pItem.getVisibility().getId());
 		setDeposit(pItem.getDeposit());
 		setRentalFee(pItem.getRentalFee());
@@ -76,7 +76,7 @@ public class ItemEditController extends AbstractItemAddEditController {
 		getItem().setRentalFee(getRentalFee());
 		getItem().setToGiveForFree(getToGiveForFree());
 		getItem().setSalePrice(getSalePrice());
-		getItemService().updateItem(getItem(), getCategoryId(), getVisibilityId(), getAuthorizedGroupsIds());
+		getItemService().updateItem(getItem(), getCategoriesIds(), getVisibilityId(), getAuthorizedGroupsIds());
 
 		return getItem().getId();
 	}

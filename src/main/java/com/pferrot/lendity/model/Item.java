@@ -23,6 +23,8 @@ import javax.persistence.Version;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -61,9 +63,15 @@ public class Item implements Objekt, Borrowable, CommentableWithOwner<ItemCommen
 	@NotAudited
 	private Document thumbnail1;
 	
-	@ManyToOne(targetEntity = ItemCategory.class, fetch = FetchType.EAGER)
-	@JoinColumn(name = "CATEGORY_ID", nullable = false)
-	private ItemCategory category;
+	@ManyToMany(targetEntity = com.pferrot.lendity.model.ItemCategory.class, fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "ITEMS_CATEGORIES",
+			joinColumns = {@JoinColumn(name = "ITEM_ID")},
+			inverseJoinColumns = {@JoinColumn(name = "CATEGORY_ID")}
+	)
+	// This prevents duplicates items in lists when they have multiple categories.
+	@Fetch (FetchMode.SELECT)
+	private Set<ItemCategory> categories = new HashSet<ItemCategory>();
 
 	// If the borrower if a user of the system.
 	@ManyToOne(targetEntity = Person.class)
@@ -362,12 +370,12 @@ public class Item implements Objekt, Borrowable, CommentableWithOwner<ItemCommen
 		this.thumbnail1 = thumbnail1;
 	}
 
-	public ItemCategory getCategory() {
-		return category;
+	public Set<ItemCategory> getCategories() {
+		return categories;
 	}
 
-	public void setCategory(ItemCategory category) {
-		this.category = category;
+	public void setCategories(Set<ItemCategory> categories) {
+		this.categories = categories;
 	}
 
 	public Person getBorrower() {

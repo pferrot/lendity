@@ -148,71 +148,96 @@ public abstract class ObjektService {
 	public String getThumbnail1Src(final Objekt pObjekt, final boolean pAuthorizeDocumentAccess) {
 		return getThumbnail1Src(pObjekt, pAuthorizeDocumentAccess, JsfUtils.getSession(), JsfUtils.getContextRoot());		
 	}
+	
+	public String getThumbnail1Src(final Objekt pObjekt, final boolean pAuthorizeDocumentAccess, final Long pPreferredCategoryId) {
+		return getThumbnail1Src(pObjekt, pAuthorizeDocumentAccess, JsfUtils.getSession(), JsfUtils.getContextRoot(), pPreferredCategoryId);		
+	}
 
-	public String getThumbnail1Src(final Objekt pObjekt, final boolean pAuthorizeDocumentAccess,
+	public String getThumbnail1Src(final Objekt pObjekt,
+			final boolean pAuthorizeDocumentAccess,
 			final HttpSession pSession, final String pUrlPrefix) {
-		final ItemCategory category = pObjekt.getCategory();
-		final String categoryLabelCode = category.getLabelCode();
-		
-		if (ItemCategory.BABY_LABEL_CODE.equals(categoryLabelCode)) {
+		return getThumbnail1Src(pObjekt, pAuthorizeDocumentAccess, pSession, pUrlPrefix, null);					
+	}
+	
+	public String getThumbnail1Src(final Objekt pObjekt,
+			final boolean pAuthorizeDocumentAccess,
+			final HttpSession pSession, final String pUrlPrefix, final Long pPreferredCategoryId) {
+		String categoryLabelCode = null;
+		if (pPreferredCategoryId != null) {
+			categoryLabelCode = getListValueDao().findListValue(pPreferredCategoryId).getLabelCode();
+		}
+		else {
+			categoryLabelCode = pObjekt.getCategories().iterator().next().getLabelCode();	
+		}
+		return getCategoryThumbnailSrc(categoryLabelCode, pUrlPrefix);						
+	}
+	
+	public String getCategoryThumbnailSrc(final Long pCategoryId) {
+		CoreUtils.assertNotNull(pCategoryId);
+		final String labelCode = getListValueDao().findListValue(pCategoryId).getLabelCode();
+		return getCategoryThumbnailSrc(labelCode, JsfUtils.getContextRoot());
+	}
+	
+	public String getCategoryThumbnailSrc(final String pCategoryLabelCode, final String pUrlPrefix) {
+		if (ItemCategory.BABY_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_BABY_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.BLURAY_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.BLURAY_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_BLURAY_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.BOARD_GAME_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.BOARD_GAME_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_BOARDGAME_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.BOOK_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.BOOK_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_BOOK_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.CD_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.CD_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_CD_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.COMICS_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.COMICS_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_COMICS_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.DVD_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.DVD_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_DVD_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.ELECTRONIC_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.ELECTRONIC_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_ELECTRONIC_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.HOUSEHOLD_ELECTRICAL_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.HOUSEHOLD_ELECTRICAL_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_HOUSEHOLDELECTRICAL_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.MUSIC_INSTRUMENT_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.MUSIC_INSTRUMENT_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_MUSICINSTRUMENT_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.OTHER_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.OTHER_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_OTHER_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.SPORT_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.SPORT_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_SPORT_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.TOOL_DO_IT_YOURSELF_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.TOOL_DO_IT_YOURSELF_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_TOOLDOITYOURSELF_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.TOOL_GARDEN_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.TOOL_GARDEN_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_TOOLGARDEN_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.VIDEOGAME_OTHER_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.VIDEOGAME_OTHER_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VIDEOGAMEOTHER_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.VIDEOGAME_PC_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.VIDEOGAME_PC_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VIDEOGAMEPC_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.VIDEOGAME_PS3_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.VIDEOGAME_PS3_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VIDEOGAMEPS3_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.VIDEOGAME_WII_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.VIDEOGAME_WII_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VIDEOGAMEWII_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.VIDEOGAME_XBOX360_LABEL_CODE.equals(categoryLabelCode)) {
+		else if (ItemCategory.VIDEOGAME_XBOX360_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VIDEOGAMEXBOX360_THUMBNAIL_URL);
 		}
 		
-		return null;				
+		return null;
 	}
 	
 	public String getFacebookLikeImageSrc(final Objekt pObjekt, final boolean pAuthorizeDocumentAccess) {
@@ -222,18 +247,29 @@ public abstract class ObjektService {
 	public abstract String getFacebookLikeImageSrc(final Objekt pObjekt, final boolean pAuthorizeDocumentAccess,
 			final HttpSession pSession, final String pUrlPrefix);
 	
-	public boolean isVisibilityAllowed(final Long pVisibilityId, final Long pCategoryId) {
+	/**
+	 * Returns null if OK or the first ItemCategory that is not allowed if any.
+	 *
+	 * @param pVisibilityId
+	 * @param pCategoriesIds
+	 * @return
+	 */
+	public ItemCategory getForbiddenCategoryWithVisibility(final Long pVisibilityId, final List<Long> pCategoriesIds) {
 		CoreUtils.assertNotNull(pVisibilityId);
-		CoreUtils.assertNotNull(pCategoryId);
+		CoreUtils.assertNotNull(pCategoriesIds);
 		
 		final ListValue visibility = getListValueDao().findListValue(pVisibilityId);
-		final ListValue category = getListValueDao().findListValue(pCategoryId);
 		
-		if (ItemVisibility.PUBLIC.equals(visibility.getLabelCode()) &&
-			Configuration.getCategoriesNotAllowedPublicVisibility().contains(category.getLabelCode())) {
-			return false;
+		
+		if (ItemVisibility.PUBLIC.equals(visibility.getLabelCode()))  {
+			for (Long categoryId: pCategoriesIds) {
+				final ListValue category = getListValueDao().findListValue(categoryId);
+				if (Configuration.getCategoriesNotAllowedPublicVisibility().contains(category.getLabelCode())) {
+					return (ItemCategory)category;
+				}
+			}
 		}		
-		return true;
+		return null;
 	}
 
 	/////////////////////////////////////////////////////////

@@ -6,9 +6,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 import javax.faces.model.SelectItem;
@@ -53,17 +55,32 @@ public class UiUtils {
 	}
 
 	public static List<SelectItem> getSelectItemsForListValueWithItemFirst(final List<ListValue> pList,
+			   final Locale pLocale,
+			   final String pItemToPlaceFirst) {
+		
+		return getSelectItemsForListValueWithItemPosition(pList, pLocale, pItemToPlaceFirst, true);
+	}
+	
+	public static List<SelectItem> getSelectItemsForListValueWithItemLast(final List<ListValue> pList,
+			   final Locale pLocale,
+			   final String pItemToPlaceLast) {
+		
+		return getSelectItemsForListValueWithItemPosition(pList, pLocale, pItemToPlaceLast, false);
+	}
+	
+	private static List<SelectItem> getSelectItemsForListValueWithItemPosition(final List<ListValue> pList,
 																		   final Locale pLocale,
-																		   final String pItemToPlaceFirst) {
+																		   final String pItemToPlace,
+																		   final boolean pPlaceFirst) {
 		if (pList == null) {
 			return Collections.EMPTY_LIST;
 		}
 		final TreeSet<SelectItem> treeSet = new TreeSet<SelectItem>(new SelectItemComparator());
-		SelectItem itemToPlaceFirst = null;
+		SelectItem itemToPlace = null;
 		for (ListValue lv: pList) {			
 			final SelectItem selectItem = new SelectItem(lv.getId(), I18nUtils.getMessageResourceString(lv.getLabelCode(), pLocale));
-			if (lv.getLabelCode().equals(pItemToPlaceFirst)) {
-				itemToPlaceFirst = selectItem;
+			if (lv.getLabelCode().equals(pItemToPlace)) {
+				itemToPlace = selectItem;
 			}
 			else {
 				treeSet.add(selectItem);
@@ -71,8 +88,13 @@ public class UiUtils {
 		}
 		final List result = new ArrayList<SelectItem>();
 		result.addAll(treeSet);
-		if (itemToPlaceFirst != null) {
-			result.add(0, itemToPlaceFirst);
+		if (itemToPlace != null) {
+			if (pPlaceFirst) {
+				result.add(0, itemToPlace);
+			}
+			else {
+				result.add(itemToPlace);
+			}
 		}
 		return result; 
 	}
@@ -90,15 +112,32 @@ public class UiUtils {
 			final String pItemToPlaceFirst,
 			final String pBaseUrl,
 			final String pValueToReplaceWithId) {
+		return getHrefLinksForListValueWithItemPosition(pList, pLocale, pItemToPlaceFirst, pBaseUrl, pValueToReplaceWithId, true);
+	}
+	
+	public static List<HrefLink> getHrefLinksForListValueWithItemLast(final List<ListValue> pList,
+			final Locale pLocale,
+			final String pItemToPlaceLast,
+			final String pBaseUrl,
+			final String pValueToReplaceWithId) {
+		return getHrefLinksForListValueWithItemPosition(pList, pLocale, pItemToPlaceLast, pBaseUrl, pValueToReplaceWithId, false);
+	}
+	
+	private static List<HrefLink> getHrefLinksForListValueWithItemPosition(final List<ListValue> pList,
+			final Locale pLocale,
+			final String pItemToPlaceFirst,
+			final String pBaseUrl,
+			final String pValueToReplaceWithId,
+			final boolean pPlaceFirst) {
 		if (pList == null) {
 			return Collections.EMPTY_LIST;
 		}
 		final TreeSet<HrefLink> treeSet = new TreeSet<HrefLink>(new HrefLinkComparator());
-		HrefLink itemToPlaceFirst = null;
+		HrefLink itemToPlace = null;
 		for (ListValue lv: pList) {			
 			final HrefLink hl = new HrefLink(pBaseUrl.replace(pValueToReplaceWithId, lv.getId().toString()), I18nUtils.getMessageResourceString(lv.getLabelCode(), pLocale));
 			if (lv.getLabelCode().equals(pItemToPlaceFirst)) {
-				itemToPlaceFirst = hl;
+				itemToPlace = hl;
 			}
 			else {
 				treeSet.add(hl);
@@ -106,11 +145,16 @@ public class UiUtils {
 		}
 		final List result = new ArrayList<HrefLink>();
 		result.addAll(treeSet);
-		if (itemToPlaceFirst != null) {
-			result.add(0, itemToPlaceFirst);
+		if (itemToPlace != null) {
+			if (pPlaceFirst) {
+				result.add(0, itemToPlace);
+			}
+			else {
+				result.add(itemToPlace);
+			}
 		}
 		return result; 
-	}	
+	}
 	
 	
 
@@ -244,5 +288,26 @@ public class UiUtils {
 		String message = "";
 		message = I18nUtils.getMessageResourceString("validation_fileTooLarge", pLocale);
 		return message;
-	}		
+	}
+	
+	public static String getListValuesLabels(final Set pListValues, final String pSeparator, final Locale pLocale) {
+		if (pListValues == null) {
+			return "";
+		}
+		final Set<String> labelsSet = new TreeSet<String>();
+		final Iterator iteLv = pListValues.iterator();
+		while (iteLv.hasNext()) {
+			final ListValue lv = (ListValue)iteLv.next();
+			labelsSet.add(I18nUtils.getMessageResourceString(lv.getLabelCode(), pLocale));
+		}
+		final StringBuffer sb = new StringBuffer();
+		final Iterator<String> ite = labelsSet.iterator();
+		while (ite.hasNext()) {
+			sb.append(ite.next());
+			if (ite.hasNext()) {
+				sb.append(", ");
+			}
+		}
+		return sb.toString();
+	}
 }

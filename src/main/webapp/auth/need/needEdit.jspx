@@ -56,14 +56,18 @@
 					<div class="gt-form-row gt-width-100">
 						<label><h:outputText value="#{messages.item_category}"/> *</label>
 						<h:message styleClass="error" showSummary="true" showDetail="false"
-							for="category"></h:message>
-						<h:selectOneMenu id="category" 
-						    value="#{needEditController.categoryId}" 
-						    converter="javax.faces.Long" 
-						    required="true"
-						    requiredMessage="#{messages.validation_requiredMessage}">
+							for="categories"></h:message>
+						<t:selectManyCheckbox id="categories" 
+						                      value="#{needEditController.categoriesIds}"
+						                      styleClass="gt-form-element-checkbox"
+						                      layout="pageDirection"
+						                      layoutWidth="3"
+						                      converter="javax.faces.Long"
+						                      required="true"
+						                      requiredMessage="#{messages.validation_requiredMessage}"
+						                      validator="#{needEditController.validateCategories}">
 							<f:selectItems value="#{needEditController.categoriesSelectItems}"/>
-						</h:selectOneMenu>					
+						</t:selectManyCheckbox>
 					</div><!-- /form row -->
 					
 					<!-- form row -->

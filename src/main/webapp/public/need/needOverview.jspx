@@ -110,33 +110,48 @@
 	</div>
 	<br/>
 	<div class="gt-form-row gt-width-100">
-		<table class="buttonsTable"><tr><td>
-			<c:if test="#{itemOverviewController.recommendAvailable}">
+	
+		<c:if test="#{itemOverviewController.recommendAvailable}">
+			<div class="buttonsDiv">
 				<span onclick="recommendTooltip(this, '#{needOverviewController.need.id}', 'need')">
 					<h:outputText styleClass="stylishButton" value="#{messages.comment_recommend}"/>
 				</span>
-			</c:if>
-		</td></tr></table>
-		<table class="buttonsTable"><tr><td>
-			<h:outputLink rendered="#{needOverviewController.editAvailable}" value="#{needOverviewController.needEditHref}" styleClass="stylishButton">
-	    		<h:outputText rendered="#{needOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
-	    	</h:outputLink>
-	    	<h:outputLink rendered="#{needOverviewController.gotItAvailable}" value="#{needOverviewController.gotItHref}" styleClass="stylishButton" >
-			    <h:outputText rendered="#{needOverviewController.gotItAvailable}" value="#{messages.need_gotIt}" />
-		    </h:outputLink>
-		    <h:outputLink id="gotItNotAvailableLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
-				<h:outputText id="gotItNotAvailable" value="#{messages.need_gotItNotAvailableNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
-			</h:outputLink>
-    	</td><td>
-			<c:if test="#{needOverviewController.editAvailable}">
+			</div>
+			<br/><br/>
+		</c:if>	
+		
+		<c:if test="#{needOverviewController.editAvailable}">
+			<div class="buttonsDiv">
+				<h:outputLink rendered="#{needOverviewController.editAvailable}" value="#{needOverviewController.needEditHref}" styleClass="stylishButton">
+		    		<h:outputText rendered="#{needOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
+		    	</h:outputLink>
+		    </div>
+	    </c:if>
+	    <c:if test="#{needOverviewController.gotItAvailable}">
+	    	<div class="buttonsDiv">
+		    	<h:outputLink rendered="#{needOverviewController.gotItAvailable}" value="#{needOverviewController.gotItHref}" styleClass="stylishButton" >
+				    <h:outputText rendered="#{needOverviewController.gotItAvailable}" value="#{messages.need_gotIt}" />
+			    </h:outputLink>
+			</div>
+		</c:if>
+	    <c:if test="#{!authenticationController.loggedIn}">
+	    	<div class="buttonsDiv">
+			    <h:outputLink id="gotItNotAvailableLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
+					<h:outputText id="gotItNotAvailable" value="#{messages.need_gotItNotAvailableNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
+				</h:outputLink>
+			</div>
+		</c:if>
+		<c:if test="#{needOverviewController.editAvailable}">
+			<div class="buttonsDiv">
 				<span onclick="deleteNeedTooltip(this, '#{needOverviewController.need.id}', 1)">
 					<h:outputText styleClass="stylishButton" value="#{messages.item_delete}"/>
 				</span>
-			</c:if>
-		</td></tr></table>
+			</div>
+		</c:if>
+			
 		<c:if test="#{needOverviewController.facebookLikeButtonAvailable}">
-			<br/>
 			<c:if test="#{configuration.facebookLikeEnabledNotStatic}">
+				<br/><br/><br/>
 				<iframe src="http://www.facebook.com/plugins/like.php?app_id=242769605735680&amp;href=#{configuration.rootURLFacebookEncodedNotStatic}%2Fpublic%2Fneed%2FneedOverview.faces%3FneedID%3D#{needOverviewController.need.id}&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>
 		 	</c:if>
 		</c:if>		

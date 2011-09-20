@@ -495,6 +495,11 @@ table.buttonsTable td {
 	padding-bottom: 10px;
 }
 
+div.buttonsDiv {
+	padding-right: 8px;
+	float: left;	
+}
+
 div.lightBorder {
 	border-color: #cccccc;
 }
@@ -681,6 +686,10 @@ div.statusInfoOverview {
 table.gt-form-element-checkbox label {
 	color: black;
 	font-weight: normal;	
+}
+
+table.gt-form-element-checkbox td {
+	padding-right: 20px;	
 }
 
 div.blackBox200 {

@@ -317,7 +317,7 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 			return "";
 		}
 		final Locale locale = I18nUtils.getDefaultLocale();
-		final String param1 = UiUtils.getListValueLabel(pItem.getCategory(), locale) ;
+		final String param1 = UiUtils.getListValuesLabels(pItem.getCategories(), ", ", locale) ;
 		final String param2 = pItem.getOwner().getDisplayName() ;
 		final String param3 = UiUtils.getDateAsString(pItem.getCreationDate(), locale);
 		return I18nUtils.getMessageResourceString("home_latestConnectionItemsDetails", new Object[]{param1, param2, param3}, locale);	

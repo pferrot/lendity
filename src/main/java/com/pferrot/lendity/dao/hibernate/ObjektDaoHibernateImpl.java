@@ -59,6 +59,7 @@ public abstract class ObjektDaoHibernateImpl extends HibernateDaoSupport {
 				c = Restrictions.or(c, c1);
 			}
 		}
+		// We muset always use subqueries sonce multiple categories are allowed.
 		boolean useSubquery = false;
 		if (pObjectDaoQueryBean.getGroupIds() != null && pObjectDaoQueryBean.getGroupIds().length > 0) {
 			criteria.createAlias("groupsAuthorized", "ga", CriteriaSpecification.LEFT_JOIN);
@@ -72,8 +73,8 @@ public abstract class ObjektDaoHibernateImpl extends HibernateDaoSupport {
 			else {
 				c = c1;
 			}
-			useSubquery = true;
-			criteria.setProjection(Projections.distinct(Projections.id()));
+//			useSubquery = true;
+//			criteria.setProjection(Projections.distinct(Projections.id()));
 		}
 		if (c != null) {
 			criteria.add(c);
@@ -101,7 +102,7 @@ public abstract class ObjektDaoHibernateImpl extends HibernateDaoSupport {
 		}
 		
 		if (pObjectDaoQueryBean.getCategoryIds() != null && pObjectDaoQueryBean.getCategoryIds().length > 0) {
-			criteria.createCriteria("category", CriteriaSpecification.INNER_JOIN).
+			criteria.createCriteria("categories", CriteriaSpecification.INNER_JOIN).
 				add(Restrictions.in("id", pObjectDaoQueryBean.getCategoryIds()));
 		}
 

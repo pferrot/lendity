@@ -1,7 +1,8 @@
 package com.pferrot.lendity.model;
 
-public interface CategoryEnabled {
-	
-	ItemCategory getCategory();
-	void setCategory(ItemCategory category);
+import java.util.Set;
+
+public interface CategoryEnabled {	
+	Set<ItemCategory> getCategories();
+	void setCategories(Set<ItemCategory> categories);
 }

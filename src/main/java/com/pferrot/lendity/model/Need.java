@@ -22,6 +22,8 @@ import javax.persistence.Version;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.envers.Audited;
 
 import com.pferrot.core.CoreUtils;
@@ -51,9 +53,15 @@ public class Need implements Objekt, CommentableWithOwner<NeedComment> {
 	@Column(name = "DESCRIPTION", nullable = true, length = 3999)
 	private String description;
 	
-	@ManyToOne(targetEntity = ItemCategory.class, fetch = FetchType.EAGER)
-	@JoinColumn(name = "CATEGORY_ID", nullable = false)
-	private ItemCategory category;
+	@ManyToMany(targetEntity = com.pferrot.lendity.model.ItemCategory.class, fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "NEEDS_CATEGORIES",
+			joinColumns = {@JoinColumn(name = "NEED_ID")},
+			inverseJoinColumns = {@JoinColumn(name = "CATEGORY_ID")}
+	)
+	// This prevents duplicates needs in lists when they have multiple categories.
+	@Fetch (FetchMode.SELECT)
+	private Set<ItemCategory> categories = new HashSet<ItemCategory>();
 	
 	@ManyToOne(targetEntity = ItemVisibility.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "VISIBILITY_ID", nullable = false)
@@ -134,13 +142,13 @@ public class Need implements Objekt, CommentableWithOwner<NeedComment> {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public ItemCategory getCategory() {
-		return category;
+	
+	public Set<ItemCategory> getCategories() {
+		return categories;
 	}
 
-	public void setCategory(ItemCategory category) {
-		this.category = category;
+	public void setCategories(Set<ItemCategory> categories) {
+		this.categories = categories;
 	}
 
 	public Date getCreationDate() {

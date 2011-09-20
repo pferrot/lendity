@@ -26,7 +26,6 @@ import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemConsts;
 import com.pferrot.lendity.item.ObjektService;
 import com.pferrot.lendity.model.Group;
-import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
 import com.pferrot.lendity.model.Need;
@@ -399,12 +398,12 @@ public ListWithRowCount findPersonNeeds(final Long pOwnerId, final String pTitle
 		
 	}
 
-	public Long createNeed(final Need pNeed, final Long pCategoryId, final Long pVisibilityId, final boolean pSendEmail) {
+	public Long createNeed(final Need pNeed, final List<Long> pCategoriesIds, final Long pVisibilityId, final boolean pSendEmail) {
 		pNeed.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
-		return createNeed(pNeed, pCategoryId, pSendEmail);
+		return createNeed(pNeed, pCategoriesIds, pSendEmail);
 	}
 
-	public Long createNeed(final Need pNeed, final Long pCategoryId, final Long pVisibilityId,
+	public Long createNeed(final Need pNeed, final List<Long> pCategoriesIds, final Long pVisibilityId,
 			final List<Long> pAuthorizedGroupsIds, final boolean pSendEmail) {
 		if (pAuthorizedGroupsIds != null) {
 			Set<Group> groups = new HashSet<Group>();
@@ -416,11 +415,18 @@ public ListWithRowCount findPersonNeeds(final Long pOwnerId, final String pTitle
 			}
 			pNeed.setGroupsAuthorized(groups);
 		}
-		return createNeed(pNeed, pCategoryId, pVisibilityId, pSendEmail);
+		return createNeed(pNeed, pCategoriesIds, pVisibilityId, pSendEmail);
 	}
 	
-	public Long createNeed(final Need pNeed, final Long pCategoryId, final boolean pSendEmail) {
-		pNeed.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
+	public Long createNeed(final Need pNeed, final List<Long> pCategoriesIds, final boolean pSendEmail) {
+		Set<ItemCategory> categories = new HashSet<ItemCategory>();
+		if (pCategoriesIds != null) {			
+			for (Long categoryId: pCategoriesIds) {
+				final ItemCategory catgory = (ItemCategory) ListValueUtils.getListValueFromId(categoryId, getListValueDao());
+				categories.add(catgory);
+			}					
+		}
+		pNeed.setCategories(categories);
 		return createNeed(pNeed, pSendEmail);
 	}
 	
@@ -428,19 +434,26 @@ public ListWithRowCount findPersonNeeds(final Long pOwnerId, final String pTitle
 		needDao.updateNeed(pNeed);
 	}
 
-	public void updateNeed(final Need pNeed, final Long pCategoryId) {
+	public void updateNeed(final Need pNeed, final List<Long> pCategoriesIds) {
 		assertCurrentUserAuthorizedToEdit(pNeed);
-		pNeed.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
+		Set<ItemCategory> categories = new HashSet<ItemCategory>();
+		if (pCategoriesIds != null) {			
+			for (Long categoryId: pCategoriesIds) {
+				final ItemCategory catgory = (ItemCategory) ListValueUtils.getListValueFromId(categoryId, getListValueDao());
+				categories.add(catgory);
+			}					
+		}
+		pNeed.setCategories(categories);
 		updateNeed(pNeed);
 	}
 
-	public void updateNeed(final Need pNeed, final Long pCategoryId, final Long pVisibilityId) {
+	public void updateNeed(final Need pNeed, final List<Long> pCategoriesIds, final Long pVisibilityId) {
 		assertCurrentUserAuthorizedToEdit(pNeed);
 		pNeed.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
-		updateNeed(pNeed, pCategoryId);
+		updateNeed(pNeed, pCategoriesIds);
 	}
 	
-	public void updateNeed(final Need pNeed, final Long pCategoryId, final Long pVisibilityId, final List<Long> pAuthorizedGroupsIds) {
+	public void updateNeed(final Need pNeed, final List<Long> pCategoriesIds, final Long pVisibilityId, final List<Long> pAuthorizedGroupsIds) {
 		assertCurrentUserAuthorizedToEdit(pNeed);
 		if (pAuthorizedGroupsIds != null) {
 			Set<Group> groups = new HashSet<Group>();
@@ -452,7 +465,7 @@ public ListWithRowCount findPersonNeeds(final Long pOwnerId, final String pTitle
 			}
 			pNeed.setGroupsAuthorized(groups);
 		}
-		updateNeed(pNeed, pCategoryId, pVisibilityId);
+		updateNeed(pNeed, pCategoriesIds, pVisibilityId);
 	}
 
 	@Override

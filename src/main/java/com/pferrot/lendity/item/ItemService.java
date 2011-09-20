@@ -527,17 +527,24 @@ public class ItemService extends ObjektService {
 		deleteItem(itemDao.findItem(pItemId));
 	}
 	
-	public Long createItem(final Item pItem, final Long pCategoryId, final Long pVisibilityId) {
-		return createItem(pItem, pCategoryId, pVisibilityId, null);
+	public Long createItem(final Item pItem, final List<Long> pCategoriesIds, final Long pVisibilityId) {
+		return createItem(pItem, pCategoriesIds, pVisibilityId, null);
 	}
 
-	public Long createItem(final Item pItem, final Long pCategoryId, final Long pVisibilityId, final Need pNeed) {
-		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
+	public Long createItem(final Item pItem, final List<Long> pCategoriesIds, final Long pVisibilityId, final Need pNeed) {
+		Set<ItemCategory> categories = new HashSet<ItemCategory>();
+		if (pCategoriesIds != null) {			
+			for (Long categoryId: pCategoriesIds) {
+				final ItemCategory catgory = (ItemCategory) ListValueUtils.getListValueFromId(categoryId, getListValueDao());
+				categories.add(catgory);
+			}					
+		}
+		pItem.setCategories(categories);	
 		pItem.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
 		return createItem(pItem, pNeed);
 	}
 	
-	public Long createItem(final Item pItem, final Long pCategoryId, final Long pVisibilityId, final Need pNeed, final List<Long> pAuthorizedGroupsIds) {
+	public Long createItem(final Item pItem, final List<Long> pCategorieIds, final Long pVisibilityId, final Need pNeed, final List<Long> pAuthorizedGroupsIds) {
 		if (pAuthorizedGroupsIds != null) {
 			Set<Group> groups = new HashSet<Group>();
 			for (Long groupId: pAuthorizedGroupsIds) {
@@ -548,7 +555,7 @@ public class ItemService extends ObjektService {
 			}
 			pItem.setGroupsAuthorized(groups);
 		}
-		return createItem(pItem, pCategoryId, pVisibilityId, pNeed);
+		return createItem(pItem, pCategorieIds, pVisibilityId, pNeed);
 	}
 
 	public void updateItem(final Item pItem) {
@@ -556,13 +563,13 @@ public class ItemService extends ObjektService {
 		itemDao.updateItem(pItem);
 	}
 
-	public void updateItem(final Item pItem, final Long pCategoryId, final Long pVisibilityId) {
+	public void updateItem(final Item pItem, final List<Long> pCategoriesIds, final Long pVisibilityId) {
 		assertCurrentUserAuthorizedToEdit(pItem);
 		pItem.setVisibility((ItemVisibility) ListValueUtils.getListValueFromId(pVisibilityId, getListValueDao()));
-		updateItem(pItem, pCategoryId);
+		updateItem(pItem, pCategoriesIds);
 	}
 	
-	public void updateItem(final Item pItem, final Long pCategoryId, final Long pVisibilityId, final List<Long> pAuthorizedGroupsIds) {
+	public void updateItem(final Item pItem, final List<Long> pCategoriesIds, final Long pVisibilityId, final List<Long> pAuthorizedGroupsIds) {
 		assertCurrentUserAuthorizedToEdit(pItem);
 		if (pAuthorizedGroupsIds != null) {
 			Set<Group> groups = new HashSet<Group>();
@@ -574,12 +581,19 @@ public class ItemService extends ObjektService {
 			}
 			pItem.setGroupsAuthorized(groups);
 		}
-		updateItem(pItem, pCategoryId, pVisibilityId);
+		updateItem(pItem, pCategoriesIds, pVisibilityId);
 	}
 
-	public void updateItem(final Item pItem, final Long pCategoryId) {
+	public void updateItem(final Item pItem, final List<Long> pCategoriesIds) {
 		assertCurrentUserAuthorizedToEdit(pItem);
-		pItem.setCategory((ItemCategory) ListValueUtils.getListValueFromId(pCategoryId, getListValueDao()));
+		Set<ItemCategory> categories = new HashSet<ItemCategory>();
+		if (pCategoriesIds != null) {			
+			for (Long categoryId: pCategoriesIds) {
+				final ItemCategory catgory = (ItemCategory) ListValueUtils.getListValueFromId(categoryId, getListValueDao());
+				categories.add(catgory);
+			}					
+		}
+		pItem.setCategories(categories);	
 		updateItem(pItem);
 	}
 
@@ -687,14 +701,13 @@ public class ItemService extends ObjektService {
 		}			
 	}
 	
-	
 	@Override
 	public String getThumbnail1Src(final Objekt pObjekt,
-			 final boolean pAuthorizeDocumentAccess, final HttpSession pSession, final String pUrlPrefix) {
+			 final boolean pAuthorizeDocumentAccess, final HttpSession pSession, final String pUrlPrefix, final Long pPreferredCategoryId) {
 		final Item item = (Item)pObjekt;
 		final Document thumbnail1 = item.getThumbnail1();
 		if (thumbnail1 == null ) {
-			return super.getThumbnail1Src(pObjekt, pAuthorizeDocumentAccess, pSession, pUrlPrefix);
+			return super.getThumbnail1Src(pObjekt, pAuthorizeDocumentAccess, pSession, pUrlPrefix, pPreferredCategoryId);
 		}
 		else {
 			if (pAuthorizeDocumentAccess) {
@@ -705,8 +718,7 @@ public class ItemService extends ObjektService {
 					PagesURL.DOCUMENT_DOWNLOAD_PARAM_DOCUMENT_ID, 
 					thumbnail1.getId().toString());
 		}
-	}
-	
+	}	
 	
 
 	@Override

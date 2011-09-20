@@ -1,8 +1,11 @@
 package com.pferrot.lendity.item.jsf;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.component.html.HtmlSelectOneMenu;
@@ -21,6 +24,7 @@ import com.pferrot.lendity.item.ObjektService;
 import com.pferrot.lendity.jsf.list.AbstractListController;
 import com.pferrot.lendity.model.CategoryEnabled;
 import com.pferrot.lendity.model.ItemCategory;
+import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.model.Ownable;
 import com.pferrot.lendity.model.VisibilityEnabled;
@@ -209,7 +213,7 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 	public List<SelectItem> getCategoriesSelectItems() {
 		if (categoriesSelectItems == null) {
 			final Locale locale = I18nUtils.getDefaultLocale();
-			categoriesSelectItems = UiUtils.getSelectItemsForListValueWithItemFirst(getObjektService().getCategories(), locale, ItemCategory.OTHER_LABEL_CODE);
+			categoriesSelectItems = UiUtils.getSelectItemsForListValueWithItemLast(getObjektService().getCategories(), locale, ItemCategory.OTHER_LABEL_CODE);
 			// Add all categories first.
 			categoriesSelectItems.add(0, getAllCategoriesSelectItem(locale));
 		}		
@@ -227,7 +231,7 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 	public List getCategoriesHrefLinksList() {
 		if (categoriesHrefLinksList == null) {
 			final Locale locale = I18nUtils.getDefaultLocale();
-			categoriesHrefLinksList = UiUtils.getHrefLinksForListValueWithItemFirst(getObjektService().getCategories(), locale, ItemCategory.OTHER_LABEL_CODE, getCategoryLinkBaseUrl(), PagesURL.ITEMS_SEARCH_PARAM_CATEGORY_ID_TO_REPLACE);
+			categoriesHrefLinksList = UiUtils.getHrefLinksForListValueWithItemLast(getObjektService().getCategories(), locale, ItemCategory.OTHER_LABEL_CODE, getCategoryLinkBaseUrl(), PagesURL.ITEMS_SEARCH_PARAM_CATEGORY_ID_TO_REPLACE);
 			// Add all categories first.
 			categoriesHrefLinksList.add(0, getAllCategoriesHrefLink(locale));
 		}		
@@ -358,13 +362,7 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 
 	public String getCategoryLabel() {
 		final CategoryEnabled ce = (CategoryEnabled)getTable().getRowData();
-		if (ce != null && ce.getCategory() != null) {
-			final Locale locale = I18nUtils.getDefaultLocale();
-			return I18nUtils.getMessageResourceString(ce.getCategory().getLabelCode(), locale);
-		}
-		else {
-			return "";
-		}
+		return UiUtils.getListValuesLabels(ce.getCategories(), ", ", I18nUtils.getDefaultLocale());
 	}
 
 	public boolean isOwner() {
@@ -398,7 +396,7 @@ public abstract class AbstractObjektsListController extends AbstractListControll
 	
 	public String getThumbnail1Src() {
 		final Objekt objekt = (Objekt)getTable().getRowData();
-		return getObjektService().getThumbnail1Src(objekt, true);
+		return getObjektService().getThumbnail1Src(objekt, true, getCategoryId());
 	}
 	
 	protected abstract ObjektService getObjektService();

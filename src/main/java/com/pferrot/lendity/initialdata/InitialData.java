@@ -1,7 +1,9 @@
 package com.pferrot.lendity.initialdata;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -466,7 +468,9 @@ public class InitialData {
 			pObjekt.setVisibility((ItemVisibility)listValueDao.findListValue(ItemVisibility.PUBLIC));
 		}
 		
-		pObjekt.setCategory(getRandomItemCategory());
+		final Set<ItemCategory> categories = new HashSet<ItemCategory>();
+		categories.add(getRandomItemCategory());
+		pObjekt.setCategories(categories);
 		
 		final ListWithRowCount groups = groupService.findPersonGroupsWhereOwnerOrAdministratorOrMember(pOwner.getId(), null, 0, 0);
 		if (groups != null && groups.getRowCount() > 0) {

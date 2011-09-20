@@ -105,50 +105,78 @@
 	<br/>
 	
 	<div class="gt-form-row gt-width-100">
-		<table class="buttonsTable"><tr>
+		<c:if test="#{lendTransactionOverviewController.acceptRequestAvailable}">
+			<div class="buttonsDiv">
+				<h:commandButton styleClass="stylishButton"
+					value="#{messages.lendTransaction_buttonAccept}"
+					action="#{lendTransactionOverviewController.acceptRequest}"
+					rendered="#{lendTransactionOverviewController.acceptRequestAvailable}"/>
+			</div>
+		</c:if>
 		
-		<td>		
-			<h:commandButton styleClass="stylishButton"
-				value="#{messages.lendTransaction_buttonAccept}"
-				action="#{lendTransactionOverviewController.acceptRequest}"
-				rendered="#{lendTransactionOverviewController.acceptRequestAvailable}"/>
-			<h:commandButton styleClass="stylishButton"
-				value="#{messages.lendTransaction_buttonLend}"
-				action="#{lendTransactionOverviewController.lend}"
-				rendered="#{lendTransactionOverviewController.lendAvailable}"/>
-			<h:commandButton styleClass="stylishButton"
-				value="#{messages.lendTransaction_buttonComplete}"
-				action="#{lendTransactionOverviewController.complete}"
-				rendered="#{lendTransactionOverviewController.completeAvailable}"/>
-			<h:outputLink styleClass="stylishButton"  
-			              value="#{lendTransactionOverviewController.evaluationAddHref}"
-			              rendered="#{lendTransactionOverviewController.evaluateAvailable}">
-	        	<h:outputText value="#{messages.lendTransaction_buttonEvaluate}" rendered="#{lendTransactionOverviewController.evaluateAvailable}"/>
-	        </h:outputLink>
-		</td><td>
-			<h:commandButton styleClass="stylishButton"
-				value="#{messages.lendTransaction_buttonRefuse}"
-				action="#{lendTransactionOverviewController.refuseRequest}"
-				rendered="#{lendTransactionOverviewController.refuseRequestAvailable}"/>
-			<c:if test="#{lendTransactionOverviewController.giveOrSellAvailable}">
+		<c:if test="#{lendTransactionOverviewController.lendAvailable}">
+			<div class="buttonsDiv">
+				<h:commandButton styleClass="stylishButton"
+					value="#{messages.lendTransaction_buttonLend}"
+					action="#{lendTransactionOverviewController.lend}"
+					rendered="#{lendTransactionOverviewController.lendAvailable}"/>
+			</div>
+		</c:if>
+		
+		<c:if test="#{lendTransactionOverviewController.completeAvailable}">
+			<div class="buttonsDiv">
+				<h:commandButton styleClass="stylishButton"
+					value="#{messages.lendTransaction_buttonComplete}"
+					action="#{lendTransactionOverviewController.complete}"
+					rendered="#{lendTransactionOverviewController.completeAvailable}"/>
+			</div>
+		</c:if>
+		
+		<c:if test="#{lendTransactionOverviewController.evaluateAvailable}">
+			<div class="buttonsDiv">
+				<h:outputLink styleClass="stylishButton"  
+				              value="#{lendTransactionOverviewController.evaluationAddHref}"
+				              rendered="#{lendTransactionOverviewController.evaluateAvailable}">
+		        	<h:outputText value="#{messages.lendTransaction_buttonEvaluate}" rendered="#{lendTransactionOverviewController.evaluateAvailable}"/>
+		        </h:outputLink>
+		    </div>
+		</c:if>
+			
+		<c:if test="#{lendTransactionOverviewController.refuseRequestAvailable}">
+			<div class="buttonsDiv">
+				<h:commandButton styleClass="stylishButton"
+					value="#{messages.lendTransaction_buttonRefuse}"
+					action="#{lendTransactionOverviewController.refuseRequest}"
+					rendered="#{lendTransactionOverviewController.refuseRequestAvailable}"/>
+			</div>
+		</c:if>
+		
+		<c:if test="#{lendTransactionOverviewController.giveOrSellAvailable}">
+			<div class="buttonsDiv">			
 				<span onclick="transferItemTooltip(this, '#{lendTransactionOverviewController.lendTransaction.id}')">
 					<h:outputText styleClass="stylishButton" value="#{messages.lendTransaction_buttonGiveOrSell}"/>
 				</span>
-			</c:if>
-		</td><td>
-			<h:commandButton styleClass="stylishButton"
-				value="#{messages.lendTransaction_buttonCancel}"
-				action="#{lendTransactionOverviewController.cancel}"
-				rendered="#{lendTransactionOverviewController.cancelAvailable}"/>			
-		</td></tr></table>
+			</div>
+		</c:if>
 		
-		<table class="buttonsTable"><tr><td>
-			<h:outputLink rendered="#{lendTransactionOverviewController.editAvailable}" value="#{lendTransactionOverviewController.lendTransactionEditHref}" styleClass="stylishButton">
-	    		<h:outputText rendered="#{lendTransactionOverviewController.editAvailable}" value="#{messages.lendTransaction_edit}"/>
-	    	</h:outputLink>
-		</td></tr></table>
+		<c:if test="#{lendTransactionOverviewController.cancelAvailable}">
+			<div class="buttonsDiv">
+				<h:commandButton styleClass="stylishButton"
+					value="#{messages.lendTransaction_buttonCancel}"
+					action="#{lendTransactionOverviewController.cancel}"
+					rendered="#{lendTransactionOverviewController.cancelAvailable}"/>			
+			</div>
+		</c:if>
+		
+		<c:if test="#{lendTransactionOverviewController.editAvailable}">
+			<br/><br/>
+			<div class="buttonsDiv">
+				<h:outputLink rendered="#{lendTransactionOverviewController.editAvailable}" value="#{lendTransactionOverviewController.lendTransactionEditHref}" styleClass="stylishButton">
+		    		<h:outputText rendered="#{lendTransactionOverviewController.editAvailable}" value="#{messages.lendTransaction_edit}"/>
+		    	</h:outputLink>
+			</div>
+		</c:if>
 	</div>
-	<br/>
 	
 </div>
 <!-- /content box -->

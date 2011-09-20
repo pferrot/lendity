@@ -62,17 +62,14 @@ public class NeedEditController extends AbstractNeedAddEditController {
 		setTitle(pNeed.getTitle());
 		setDescription(pNeed.getDescription());
 		setVisibilityId(pNeed.getVisibility().getId());
-		final ItemCategory category = pNeed.getCategory();
-		if (category != null) {
-			setCategoryId(category.getId());
-		}
+		setCategoriesIdsFromObjekt(pNeed);
 		setAuthorizedGroupsIdsFromObjekt(pNeed);
 	}	
 
 	public Long updateNeed() {		
 		getNeed().setTitle(getTitle());
 		getNeed().setDescription(getDescription());
-		getNeedService().updateNeed(getNeed(), getCategoryId(), getVisibilityId(), getAuthorizedGroupsIds());
+		getNeedService().updateNeed(getNeed(), getCategoriesIds(), getVisibilityId(), getAuthorizedGroupsIds());
 
 		return getNeed().getId();
 	}

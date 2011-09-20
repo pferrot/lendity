@@ -3,6 +3,7 @@ package com.pferrot.lendity.item.jsf;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.event.ValueChangeEvent;
@@ -410,11 +411,18 @@ public abstract class AbstractItemsListController extends AbstractObjektsListCon
 			getOrderBy() != null;
 	}
 	
-	public boolean isAlloCineQueryUrlAvailable() {
+	public boolean isAlloCineQueryUrlAvailable() {		
 		final Item item = (Item)getTable().getRowData();
-		String categoryCode = item.getCategory().getLabelCode(); 
-		return ItemCategory.BLURAY_LABEL_CODE.equals(categoryCode) ||
-			   ItemCategory.DVD_LABEL_CODE.equals(categoryCode);
+		final Set<ItemCategory> categories = item.getCategories();
+		if (categories != null) {
+			for (ItemCategory cat: categories) {
+				if (ItemCategory.BLURAY_LABEL_CODE.equals(cat.getLabelCode()) ||
+					ItemCategory.DVD_LABEL_CODE.equals(cat.getLabelCode())) {
+					return true;
+				}
+			}			
+		}
+		return false;
 	}
 	
 	public String getAlloCineQueryUrl() {
@@ -424,9 +432,16 @@ public abstract class AbstractItemsListController extends AbstractObjektsListCon
 	
 	public boolean isBibliopocheQueryUrlAvailable() {
 		final Item item = (Item)getTable().getRowData();
-		String categoryCode = item.getCategory().getLabelCode(); 
-		return ItemCategory.BOOK_LABEL_CODE.equals(categoryCode) ||
-			   ItemCategory.COMICS_LABEL_CODE.equals(categoryCode);
+		final Set<ItemCategory> categories = item.getCategories();
+		if (categories != null) {
+			for (ItemCategory cat: categories) {
+				if (ItemCategory.BOOK_LABEL_CODE.equals(cat.getLabelCode()) ||
+					ItemCategory.COMICS_LABEL_CODE.equals(cat.getLabelCode())) {
+					return true;
+				}
+			}			
+		}
+		return false;
 	}
 	
 	public String getBibliopocheQueryUrl() {

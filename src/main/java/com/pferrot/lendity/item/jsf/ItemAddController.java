@@ -71,7 +71,7 @@ public class ItemAddController extends AbstractItemAddEditController {
 		item.setToGiveForFree(getToGiveForFree());
 		item.setSalePrice(getSalePrice());
 				
-		return getItemService().createItem(item, getCategoryId(), getVisibilityId(), getNeed(), getAuthorizedGroupsIds());
+		return getItemService().createItem(item, getCategoriesIds(), getVisibilityId(), getNeed(), getAuthorizedGroupsIds());
 	}
 	
 	@Override
