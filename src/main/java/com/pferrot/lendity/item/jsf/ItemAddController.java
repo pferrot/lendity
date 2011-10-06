@@ -1,12 +1,18 @@
 package com.pferrot.lendity.item.jsf;
 
+import java.util.Locale;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.comment.CommentService;
+import com.pferrot.lendity.comment.exception.CommentException;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Item;
+import com.pferrot.lendity.model.ItemVisibility;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.need.NeedService;
 import com.pferrot.lendity.person.PersonUtils;
@@ -18,6 +24,7 @@ public class ItemAddController extends AbstractItemAddEditController {
 	private final static Log log = LogFactory.getLog(ItemAddController.class);
 
 	private NeedService needService;
+	private CommentService commentService;
 	private Need need;
 	
 	public NeedService getNeedService() {
@@ -60,7 +67,7 @@ public class ItemAddController extends AbstractItemAddEditController {
 		}
 	}
 
-	public Long createItem() {
+	public Long createItem() throws CommentException {
 		Item item = new Item();
 		
 		item.setTitle(getTitle());
@@ -71,11 +78,30 @@ public class ItemAddController extends AbstractItemAddEditController {
 		item.setToGiveForFree(getToGiveForFree());
 		item.setSalePrice(getSalePrice());
 				
-		return getItemService().createItem(item, getCategoriesIds(), getVisibilityId(), getNeed(), getAuthorizedGroupsIds());
+		final Long id = getItemService().createItem(item, getCategoriesIds(), getVisibilityId(), getNeed(), getAuthorizedGroupsIds());
+		
+		// Post a comment on the wall.
+		final String visibilityLabelCode = item.getVisibility().getLabelCode();
+		if (!ItemVisibility.PRIVATE.equals(visibilityLabelCode)) {
+			Boolean publicComment = ItemVisibility.PUBLIC.equals(visibilityLabelCode);
+			final Locale locale = I18nUtils.getDefaultLocale();			
+			final String text = I18nUtils.getMessageResourceString("item_itemAddedWallComment", new Object[]{"{i" + id + "}"}, locale);
+			getCommentService().createCommentOnOwnWallWithAC(text, publicComment, item.getOwner().getId());
+		}
+		
+		return id;
 	}
 	
 	@Override
-	public Long processItem() {
+	public Long processItem() throws Exception {
 		return createItem();
+	}
+
+	public CommentService getCommentService() {
+		return commentService;
+	}
+
+	public void setCommentService(CommentService commentService) {
+		this.commentService = commentService;
 	}
 }

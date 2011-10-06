@@ -17,13 +17,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.fileupload.UploadedFile;
 
+import com.pferrot.lendity.comment.CommentService;
+import com.pferrot.lendity.comment.exception.CommentException;
 import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.ItemVisibility;
-import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.utils.UiUtils;
 
 public class ItemsImportController  {
@@ -31,6 +32,7 @@ public class ItemsImportController  {
 	private final static Log log = LogFactory.getLog(ItemsImportController.class);
 
 	private ItemService itemService;
+	private CommentService commentService;
 	
 	private UploadedFile uploadFile;
 	
@@ -53,6 +55,14 @@ public class ItemsImportController  {
 
 	public void setItemService(ItemService itemService) {
 		this.itemService = itemService;
+	}
+
+	public CommentService getCommentService() {
+		return commentService;
+	}
+
+	public void setCommentService(CommentService commentService) {
+		this.commentService = commentService;
 	}
 
 	public UploadedFile getUploadFile() {
@@ -145,13 +155,30 @@ public class ItemsImportController  {
 		return getTitleTooLongItemsToImport().size();
 	}
 	
-	public void createItems() {
+	public void createItems() throws CommentException {
+		Item item = null;
+		Long itemId = null;
 		for (String itemTitle: validItemsToImport) {
-			final Item item = new Item();
+			item = new Item();
 			item.setTitle(itemTitle);
 			item.setOwner(getItemService().getCurrentPerson());
 			item.setToGiveForFree(Boolean.FALSE);
-			getItemService().createItem(item, getCategoriesIds(), getVisibilityId());
+			itemId = getItemService().createItem(item, getCategoriesIds(), getVisibilityId());
+		}
+		if (item != null) {
+			final String visibilityLabelCode = item.getVisibility().getLabelCode();
+			if (!ItemVisibility.PRIVATE.equals(visibilityLabelCode)) {
+				Boolean publicComment = ItemVisibility.PUBLIC.equals(visibilityLabelCode);
+				final Locale locale = I18nUtils.getDefaultLocale();
+				if (validItemsToImport.size() > 1) {
+					final String text = I18nUtils.getMessageResourceString("item_itemAddedFromImportWallComment", new Object[]{"{i" + itemId + "}", validItemsToImport.size()}, locale);
+					getCommentService().createCommentOnOwnWallWithAC(text, publicComment, item.getOwner().getId());
+				}
+				else {
+					final String text = I18nUtils.getMessageResourceString("item_itemAddedWallComment", new Object[]{"{i" + itemId + "}"}, locale);
+					getCommentService().createCommentOnOwnWallWithAC(text, publicComment, item.getOwner().getId());
+				}
+			}
 		}
 	}
 	

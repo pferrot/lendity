@@ -79,7 +79,7 @@ public class NeedEditController extends AbstractNeedAddEditController {
 	}	
 
 	@Override
-	public Long processNeed() {
+	public Long processNeed() throws Exception {
 		return updateNeed();
 	}	
 }

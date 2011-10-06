@@ -13,25 +13,33 @@ public interface ItemConsts {
 	
 	Long OWNER_TYPE_CONNECTIONS = Long.valueOf(1);
 	
-	String CATEGORY_BABY_THUMBNAIL_URL = "/public/images/icons/categories/baby.gif";
-	String CATEGORY_BLURAY_THUMBNAIL_URL = "/public/images/icons/categories/bluray.gif";
-	String CATEGORY_BOARDGAME_THUMBNAIL_URL = "/public/images/icons/categories/boardgame.gif";
-	String CATEGORY_BOOK_THUMBNAIL_URL = "/public/images/icons/categories/book.gif";
-	String CATEGORY_CD_THUMBNAIL_URL = "/public/images/icons/categories/cd.gif";
-	String CATEGORY_COMICS_THUMBNAIL_URL = "/public/images/icons/categories/comics.gif";
-	String CATEGORY_DVD_THUMBNAIL_URL = "/public/images/icons/categories/dvd.gif";
+	String CATEGORY_ANIMAL_THUMBNAIL_URL = "/public/images/icons/categories/animal.gif";
 	String CATEGORY_ELECTRONIC_THUMBNAIL_URL = "/public/images/icons/categories/electronic.gif";
-	String CATEGORY_HOUSEHOLDELECTRICAL_THUMBNAIL_URL = "/public/images/icons/categories/householdelectrical.gif";
+	String CATEGORY_BABY_THUMBNAIL_URL = "/public/images/icons/categories/baby.gif";
+	String CATEGORY_GARDEN_THUMBNAIL_URL = "/public/images/icons/categories/garden.gif";
+	String CATEGORY_CAMPING_THUMBNAIL_URL = "/public/images/icons/categories/camping.gif";
+	String CATEGORY_COSTUME_THUMBNAIL_URL = "/public/images/icons/categories/costume.gif";
+	String CATEGORY_COOKING_THUMBNAIL_URL = "/public/images/icons/categories/cooking.gif";
+	String CATEGORY_MOVIE_THUMBNAIL_URL = "/public/images/icons/categories/movie.gif";
+	String CATEGORY_BOARDGAME_THUMBNAIL_URL = "/public/images/icons/categories/boardgame.gif";
+	String CATEGORY_VIDEOGAME_THUMBNAIL_URL = "/public/images/icons/categories/videogame.gif";
+	String CATEGORY_BOOK_THUMBNAIL_URL = "/public/images/icons/categories/book.gif";
+	String CATEGORY_HOUSE_THUMBNAIL_URL = "/public/images/icons/categories/house.gif";
+	String CATEGORY_FURNITURE_THUMBNAIL_URL = "/public/images/icons/categories/furniture.gif";
+	String CATEGORY_CD_THUMBNAIL_URL = "/public/images/icons/categories/cd.gif";
 	String CATEGORY_MUSICINSTRUMENT_THUMBNAIL_URL = "/public/images/icons/categories/musicinstrument.gif";
-	String CATEGORY_OTHER_THUMBNAIL_URL = "/public/images/icons/categories/other.gif";
+	String CATEGORY_COMPUTER_THUMBNAIL_URL = "/public/images/icons/categories/computer.gif";
+	String CATEGORY_TOOL_THUMBNAIL_URL = "/public/images/icons/categories/tool.gif";
+	String CATEGORY_PHOTOGRAPHY_THUMBNAIL_URL = "/public/images/icons/categories/photography.gif";
+	String CATEGORY_SERVICE_THUMBNAIL_URL = "/public/images/icons/categories/service.gif";
+	String CATEGORY_COSMETIC_THUMBNAIL_URL = "/public/images/icons/categories/cosmetic.gif";
 	String CATEGORY_SPORT_THUMBNAIL_URL = "/public/images/icons/categories/sport.gif";
-	String CATEGORY_TOOLDOITYOURSELF_THUMBNAIL_URL = "/public/images/icons/categories/tooldoityourself.gif";
-	String CATEGORY_TOOLGARDEN_THUMBNAIL_URL = "/public/images/icons/categories/toolgarden.gif";
-	String CATEGORY_VIDEOGAMEOTHER_THUMBNAIL_URL = "/public/images/icons/categories/videogameother.gif";
-	String CATEGORY_VIDEOGAMEPC_THUMBNAIL_URL = "/public/images/icons/categories/videogamepc.gif";
-	String CATEGORY_VIDEOGAMEPS3_THUMBNAIL_URL = "/public/images/icons/categories/videogameps3.gif";
-	String CATEGORY_VIDEOGAMEWII_THUMBNAIL_URL = "/public/images/icons/categories/videogamewii.gif";
-	String CATEGORY_VIDEOGAMEXBOX360_THUMBNAIL_URL = "/public/images/icons/categories/videogamexbox360.gif";
-
+	String CATEGORY_HOLIDAYS_THUMBNAIL_URL = "/public/images/icons/categories/holidays.gif";
+	String CATEGORY_VEHICLE_THUMBNAIL_URL = "/public/images/icons/categories/vehicle.gif";
+	String CATEGORY_CLOTHING_THUMBNAIL_URL = "/public/images/icons/categories/clothing.gif";
+	String CATEGORY_OTHER_THUMBNAIL_URL = "/public/images/icons/categories/other.gif";
+	
+	
+	
 	String FACEBOOK_LIKE_DEFAULT_IMAGE_URL = "/public/images/login/objet_dispo.png";
 }

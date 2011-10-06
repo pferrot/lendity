@@ -86,7 +86,7 @@ public class ItemEditController extends AbstractItemAddEditController {
 	}	
 
 	@Override
-	public Long processItem() {
+	public Long processItem() throws Exception {
 		return updateItem();
 	}	
 }

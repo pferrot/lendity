@@ -179,65 +179,82 @@ public abstract class ObjektService {
 	}
 	
 	public String getCategoryThumbnailSrc(final String pCategoryLabelCode, final String pUrlPrefix) {
-		if (ItemCategory.BABY_LABEL_CODE.equals(pCategoryLabelCode)) {
-			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_BABY_THUMBNAIL_URL);
-		}
-		else if (ItemCategory.BLURAY_LABEL_CODE.equals(pCategoryLabelCode)) {
-			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_BLURAY_THUMBNAIL_URL);
-		}
-		else if (ItemCategory.BOARD_GAME_LABEL_CODE.equals(pCategoryLabelCode)) {
-			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_BOARDGAME_THUMBNAIL_URL);
-		}
-		else if (ItemCategory.BOOK_LABEL_CODE.equals(pCategoryLabelCode)) {
-			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_BOOK_THUMBNAIL_URL);
-		}
-		else if (ItemCategory.CD_LABEL_CODE.equals(pCategoryLabelCode)) {
-			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_CD_THUMBNAIL_URL);
-		}
-		else if (ItemCategory.COMICS_LABEL_CODE.equals(pCategoryLabelCode)) {
-			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_COMICS_THUMBNAIL_URL);
-		}
-		else if (ItemCategory.DVD_LABEL_CODE.equals(pCategoryLabelCode)) {
-			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_DVD_THUMBNAIL_URL);
+		if (ItemCategory.ANIMAL_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_ANIMAL_THUMBNAIL_URL);
 		}
 		else if (ItemCategory.ELECTRONIC_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_ELECTRONIC_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.HOUSEHOLD_ELECTRICAL_LABEL_CODE.equals(pCategoryLabelCode)) {
-			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_HOUSEHOLDELECTRICAL_THUMBNAIL_URL);
+		else if (ItemCategory.BABY_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_BABY_THUMBNAIL_URL);
+		}
+		else if (ItemCategory.TOOL_GARDEN_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_GARDEN_THUMBNAIL_URL);
+		}
+		else if (ItemCategory.CAMPING_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_CAMPING_THUMBNAIL_URL);
+		}
+		else if (ItemCategory.COSTUME_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_COSTUME_THUMBNAIL_URL);
+		}
+		else if (ItemCategory.COOKING_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_COOKING_THUMBNAIL_URL);
+		}
+		else if (ItemCategory.MOVIE_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_MOVIE_THUMBNAIL_URL);
+		}
+		else if (ItemCategory.BOARD_GAME_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_BOARDGAME_THUMBNAIL_URL);
+		}
+		else if (ItemCategory.VIDEO_GAME_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VIDEOGAME_THUMBNAIL_URL);
+		}
+		else if (ItemCategory.BOOK_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_BOOK_THUMBNAIL_URL);
+		}
+		else if (ItemCategory.HOUSE_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_HOUSE_THUMBNAIL_URL);
+		}
+		else if (ItemCategory.FURNITURE_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_FURNITURE_THUMBNAIL_URL);
+		}
+		else if (ItemCategory.CD_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_CD_THUMBNAIL_URL);
 		}
 		else if (ItemCategory.MUSIC_INSTRUMENT_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_MUSICINSTRUMENT_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.OTHER_LABEL_CODE.equals(pCategoryLabelCode)) {
-			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_OTHER_THUMBNAIL_URL);
+		else if (ItemCategory.COMPUTER_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_COMPUTER_THUMBNAIL_URL);
+		}
+		else if (ItemCategory.TOOL_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_TOOL_THUMBNAIL_URL);
+		}
+		else if (ItemCategory.PHOTOGRAPHY_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_PHOTOGRAPHY_THUMBNAIL_URL);
+		}
+		else if (ItemCategory.SERVICE_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_SERVICE_THUMBNAIL_URL);
+		}
+		else if (ItemCategory.COSMETIC_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_COSMETIC_THUMBNAIL_URL);
 		}
 		else if (ItemCategory.SPORT_LABEL_CODE.equals(pCategoryLabelCode)) {
 			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_SPORT_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.TOOL_DO_IT_YOURSELF_LABEL_CODE.equals(pCategoryLabelCode)) {
-			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_TOOLDOITYOURSELF_THUMBNAIL_URL);
+		else if (ItemCategory.HOLIDAYS_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_HOLIDAYS_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.TOOL_GARDEN_LABEL_CODE.equals(pCategoryLabelCode)) {
-			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_TOOLGARDEN_THUMBNAIL_URL);
+		else if (ItemCategory.VEHICLE_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VEHICLE_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.VIDEOGAME_OTHER_LABEL_CODE.equals(pCategoryLabelCode)) {
-			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VIDEOGAMEOTHER_THUMBNAIL_URL);
+		else if (ItemCategory.CLOTHING_LABEL_CODE.equals(pCategoryLabelCode)) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_CLOTHING_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.VIDEOGAME_PC_LABEL_CODE.equals(pCategoryLabelCode)) {
-			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VIDEOGAMEPC_THUMBNAIL_URL);
+		// OTHER
+		else {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_OTHER_THUMBNAIL_URL);
 		}
-		else if (ItemCategory.VIDEOGAME_PS3_LABEL_CODE.equals(pCategoryLabelCode)) {
-			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VIDEOGAMEPS3_THUMBNAIL_URL);
-		}
-		else if (ItemCategory.VIDEOGAME_WII_LABEL_CODE.equals(pCategoryLabelCode)) {
-			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VIDEOGAMEWII_THUMBNAIL_URL);
-		}
-		else if (ItemCategory.VIDEOGAME_XBOX360_LABEL_CODE.equals(pCategoryLabelCode)) {
-			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, ItemConsts.CATEGORY_VIDEOGAMEXBOX360_THUMBNAIL_URL);
-		}
-		
-		return null;
 	}
 	
 	public String getFacebookLikeImageSrc(final Objekt pObjekt, final boolean pAuthorizeDocumentAccess) {

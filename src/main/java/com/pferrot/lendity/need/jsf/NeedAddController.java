@@ -13,7 +13,10 @@ import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.core.StringUtils;
+import com.pferrot.lendity.comment.CommentService;
+import com.pferrot.lendity.comment.exception.CommentException;
 import com.pferrot.lendity.i18n.I18nUtils;
+import com.pferrot.lendity.model.ItemVisibility;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
@@ -29,6 +32,16 @@ public class NeedAddController extends AbstractNeedAddEditController {
 	private Boolean sendEmail;
 	
 	private List<SelectItem> sendEmailSelectItems;
+	
+	private CommentService commentService;
+
+	public CommentService getCommentService() {
+		return commentService;
+	}
+
+	public void setCommentService(CommentService commentService) {
+		this.commentService = commentService;
+	}
 
 	@InitView
 	public void initView() {
@@ -39,18 +52,29 @@ public class NeedAddController extends AbstractNeedAddEditController {
 		}
 	}
 
-	public Long createNeed() {
+	public Long createNeed() throws CommentException {
 		Need need = new Need();
 		
 		need.setTitle(getTitle());
 		need.setDescription(getDescription());
 		need.setOwner(getNeedService().getCurrentPerson());
-				
-		return getNeedService().createNeed(need, getCategoriesIds(), getVisibilityId(), getAuthorizedGroupsIds(), isSendEmailBoolean());		
+		
+		final Long id = getNeedService().createNeed(need, getCategoriesIds(), getVisibilityId(), getAuthorizedGroupsIds(), isSendEmailBoolean());
+		
+		// Post a comment on the wall.
+		final String visibilityLabelCode = need.getVisibility().getLabelCode();
+		if (!ItemVisibility.PRIVATE.equals(visibilityLabelCode)) {
+			Boolean publicComment = ItemVisibility.PUBLIC.equals(visibilityLabelCode);
+			final Locale locale = I18nUtils.getDefaultLocale();			
+			final String text = I18nUtils.getMessageResourceString("need_needAddedWallComment", new Object[]{"{n" + id + "}"}, locale);
+			getCommentService().createCommentOnOwnWallWithAC(text, publicComment, need.getOwner().getId());
+		}
+		
+		return id;		
 	}
 	
 	@Override
-	public Long processNeed() {
+	public Long processNeed() throws Exception {
 		return createNeed();
 	}
 	

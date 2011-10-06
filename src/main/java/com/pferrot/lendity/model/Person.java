@@ -204,6 +204,9 @@ public class Person implements Serializable {
 	
 	@Column(name = "NB_EVAL_SCORE_2", nullable = false)
 	private Integer nbEvalScore2;
+	
+	@Column(name = "JOIN_DATE", nullable = true)
+	private Date joinDate;
 
     public Person() {
     	super();
@@ -649,6 +652,14 @@ public class Person implements Serializable {
 	public void removeGroupBanned(final Group pGroup) {
 		CoreUtils.assertNotNull(pGroup);
 		groupsBanned.remove(pGroup);
+	}
+
+	public Date getJoinDate() {
+		return joinDate;
+	}
+	
+	public void setJoinDate(Date joinDate) {
+		this.joinDate = joinDate;
 	}
 
 	@Override

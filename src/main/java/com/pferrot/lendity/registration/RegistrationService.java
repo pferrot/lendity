@@ -198,6 +198,7 @@ public class RegistrationService {
 			final Date now = new Date();
 			user.setActivationDate(now);
 			user.setEnabled(Boolean.TRUE);
+			person.setJoinDate(now);
 			person.setEnabled(Boolean.TRUE);
 			// Do not send update the first night after the validation...
 			person.setEmailSubscriberLastUpdate(now);

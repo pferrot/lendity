@@ -416,8 +416,7 @@ public abstract class AbstractItemsListController extends AbstractObjektsListCon
 		final Set<ItemCategory> categories = item.getCategories();
 		if (categories != null) {
 			for (ItemCategory cat: categories) {
-				if (ItemCategory.BLURAY_LABEL_CODE.equals(cat.getLabelCode()) ||
-					ItemCategory.DVD_LABEL_CODE.equals(cat.getLabelCode())) {
+				if (ItemCategory.MOVIE_LABEL_CODE.equals(cat.getLabelCode())) {
 					return true;
 				}
 			}			
@@ -435,8 +434,7 @@ public abstract class AbstractItemsListController extends AbstractObjektsListCon
 		final Set<ItemCategory> categories = item.getCategories();
 		if (categories != null) {
 			for (ItemCategory cat: categories) {
-				if (ItemCategory.BOOK_LABEL_CODE.equals(cat.getLabelCode()) ||
-					ItemCategory.COMICS_LABEL_CODE.equals(cat.getLabelCode())) {
+				if (ItemCategory.BOOK_LABEL_CODE.equals(cat.getLabelCode())) {
 					return true;
 				}
 			}			

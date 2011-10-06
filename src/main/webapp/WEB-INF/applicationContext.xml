@@ -38,8 +38,8 @@
 			<value>Lendity</value>
 		</property>		
 		<property name="rootURL">
-<!--			<value>http://www.lendity.ch</value>-->
-			<value>http://golgoth14.dyndns.org:8080/lendity</value>
+			<value>http://www.lendity.ch</value>
+<!--			<value>http://golgoth14.dyndns.org:8080/lendity</value>-->
 		</property>
 		<property name="noReplyEmailAddress">
 			<value>no_reply@lendity.ch</value>
@@ -64,31 +64,21 @@
 <!--			<value>false</value>-->
 		</property>
 		<property name="googleAnalyticsId">
-<!--			<value>UA-21747604-2</value>-->
-			<value>UA-21747604-3</value>
+			<value>UA-21747604-2</value>
+<!--			<value>UA-21747604-3</value>-->
 		</property>
 		<property name="categoriesNotAllowedPublicVisibility">
 			<set>
+				<value>item_categoryMovie</value>
+				<value>item_categoryVideoGame</value>
 				<value>item_categoryCd</value>
-				<value>item_categoryDvd</value>
-				<value>item_categoryBluRay</value>
-				<value>item_categoryVideoGameOther</value>
-				<value>item_categoryVideoGamePS3</value>
-				<value>item_categoryVideoGamePC</value>
-				<value>item_categoryVideoGameXbox360</value>
-				<value>item_categoryVideoGameWii</value>
 			</set>		
 		</property>
 		<property name="categoriesNotAllowedToRent">
 			<set>
+				<value>item_categoryMovie</value>
+				<value>item_categoryVideoGame</value>
 				<value>item_categoryCd</value>
-				<value>item_categoryDvd</value>
-				<value>item_categoryBluRay</value>
-				<value>item_categoryVideoGameOther</value>
-				<value>item_categoryVideoGamePS3</value>
-				<value>item_categoryVideoGamePC</value>
-				<value>item_categoryVideoGameXbox360</value>
-				<value>item_categoryVideoGameWii</value>
 			</set>
 		</property>
 		<property name="maxNbCategories">
@@ -1366,6 +1356,7 @@
 	      <property name="itemService" ref="itemService"/>
 	      <property name="needService" ref="needService"/>
 	      <property name="personService" ref="personService"/>
+	      <property name="commentService" ref="commentService"/>
 	</bean>
 	
 	<bean id="itemEditController" class="com.pferrot.lendity.item.jsf.ItemEditController"
@@ -1421,6 +1412,7 @@
 	<bean id="itemsImportController" class="com.pferrot.lendity.item.jsf.ItemsImportController"
 	      scope="conversation.access" orchestra:conversationName="itemsImport">
 	      <property name="itemService" ref="itemService"/>
+	      <property name="commentService" ref="commentService"/>
 	</bean>
 	
 	<bean id="itemsImportStep1" class="com.pferrot.lendity.item.jsf.ItemsImportStep1"
@@ -1498,6 +1490,7 @@
 	      scope="conversation.access">
 	      <property name="needService" ref="needService"/>
 	      <property name="personService" ref="personService"/>
+	      <property name="commentService" ref="commentService"/>
 	</bean>
 	
 	<bean id="needEditController" class="com.pferrot.lendity.need.jsf.NeedEditController"

@@ -28,14 +28,19 @@ public abstract class AbstractNeedAddEditController extends AbstractObjektAddEdi
 		return getNeedService();
 	}
 
-	public abstract Long processNeed();
+	public abstract Long processNeed() throws Exception;
 	
 	public String submit() {
-		Long needId = processNeed();
+		try {
+			Long needId = processNeed();
+			
+			JsfUtils.redirect(PagesURL.NEED_OVERVIEW, PagesURL.NEED_OVERVIEW_PARAM_NEED_ID, needId.toString());
 		
-		JsfUtils.redirect(PagesURL.NEED_OVERVIEW, PagesURL.NEED_OVERVIEW_PARAM_NEED_ID, needId.toString());
-	
-		// As a redirect is used, this is actually useless.
-		return null;
+			// As a redirect is used, this is actually useless.
+			return null;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

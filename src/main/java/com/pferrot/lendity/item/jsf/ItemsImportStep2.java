@@ -17,8 +17,13 @@ public class ItemsImportStep2 extends AbstractItemsImportStep {
 	}
 	
 	public String confirm() {
-		getItemsImportController().createItems();
-		return "confirm";
+		try {
+			getItemsImportController().createItems();
+			return "confirm";
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	public String back() {

@@ -91,6 +91,7 @@ public abstract class AbstractPersonsListController extends AbstractListControll
 			if (PersonUtils.isCurrentPersonIsAddressDefined()) {
 				result.add(new SelectItem(new Long(1), I18nUtils.getMessageResourceString("geolocation_orderByDistanceAsc", locale)));
 			}
+			result.add(new SelectItem(new Long(2), I18nUtils.getMessageResourceString("person_orderByJoinDateDesc", locale)));
 			
 			orderBySelectItems = result;
 		}		
@@ -126,6 +127,9 @@ public abstract class AbstractPersonsListController extends AbstractListControll
 			}
 			return "distance";
 		}
+		else if (orderByLong.longValue() == 2) {
+			return "joinDate";
+		}
 		throw new RuntimeException("Unsupported orderBy value: " + orderByLong);
 	}
 	
@@ -140,6 +144,9 @@ public abstract class AbstractPersonsListController extends AbstractListControll
 				return Boolean.TRUE;
 			}
 			return Boolean.TRUE;
+		}
+		else if (orderByLong.longValue() == 2) {
+			return Boolean.FALSE;
 		}
 		throw new RuntimeException("Unsupported orderBy value: " + orderByLong);
 	}

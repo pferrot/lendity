@@ -42,7 +42,7 @@ public abstract class AbstractItemAddEditController extends AbstractObjektAddEdi
 		return getItemService();
 	}
 
-	public abstract Long processItem();
+	public abstract Long processItem() throws Exception;
 
 	public Boolean getToGiveForFree() {
 		if (toGiveForFree == null) {
@@ -109,11 +109,16 @@ public abstract class AbstractItemAddEditController extends AbstractObjektAddEdi
 	}
 	
 	public String submit() {
-		Long itemId = processItem();
+		try {
+			Long itemId = processItem();
+			
+			JsfUtils.redirect(PagesURL.ITEM_OVERVIEW, PagesURL.ITEM_OVERVIEW_PARAM_ITEM_ID, itemId.toString());
 		
-		JsfUtils.redirect(PagesURL.ITEM_OVERVIEW, PagesURL.ITEM_OVERVIEW_PARAM_ITEM_ID, itemId.toString());
-	
-		// As a redirect is used, this is actually useless.
-		return null;
+			// As a redirect is used, this is actually useless.
+			return null;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 }
