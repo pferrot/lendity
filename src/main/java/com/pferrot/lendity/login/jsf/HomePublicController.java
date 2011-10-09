@@ -9,6 +9,8 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.orchestra.viewController.annotations.InitView;
+import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.core.StringUtils;
 import com.pferrot.lendity.PagesURL;
@@ -18,7 +20,9 @@ import com.pferrot.lendity.geolocation.googlemaps.GoogleMapsUtils;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.utils.CookieUtils;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.security.SecurityUtils;
 
+@ViewController(viewIds={"/public/login.jspx"})
 public class HomePublicController extends AbstractHomeController {
 	
 	private final static Log log = LogFactory.getLog(HomePublicController.class);
@@ -30,6 +34,13 @@ public class HomePublicController extends AbstractHomeController {
 	// City, NPA,...
 	private String location;
 
+	@InitView
+	public void initView() {
+		if (SecurityUtils.isLoggedIn()) {
+			JsfUtils.redirect(PagesURL.HOME);
+		}		
+	}
+	
 	public String getLocation() {
 		return location;
 	}

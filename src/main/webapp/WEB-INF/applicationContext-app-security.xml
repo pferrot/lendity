@@ -29,7 +29,6 @@ security module.
 		<intercept-url pattern="/login.faces" filters="none" />
 		<intercept-url pattern="/public/**" filters="none" />
 		 -->
-		<intercept-url pattern="/login.faces" access="ROLE_ANONYMOUS, ROLE_USER" />
 		<intercept-url pattern="/public/**" access="ROLE_ANONYMOUS, ROLE_USER" />
 		<intercept-url pattern="/favicon.ico" access="ROLE_ANONYMOUS, ROLE_USER" />
 		<intercept-url pattern="/faces/myFacesExtensionResource/**" access="ROLE_ANONYMOUS, ROLE_USER" />
@@ -143,7 +142,7 @@ security module.
 	</beans:bean>
 
 	<beans:bean id="authenticationProcessingFilterEntryPoint"	class="org.springframework.security.ui.webapp.AuthenticationProcessingFilterEntryPoint">
-		<beans:property name="loginFormUrl" value="/login.faces" />
+		<beans:property name="loginFormUrl" value="/public/login.faces" />
 		<beans:property name="forceHttps" value="false" />
 	</beans:bean>
 

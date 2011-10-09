@@ -51,7 +51,7 @@ public interface PagesURL {
 	/////////////////////////////////////////////////////////////////////////
 	// LOGIN - start
 	
-	String LOGIN = "/login.faces";
+	String LOGIN = "/public/login.faces";
 	String HOME_PUBLIC = LOGIN;
 	String LOGIN_PARAM_REDIRECT_TO = CustomAuthenticationProcessingFilter.REDIRECT_TO_PARAMETER_NAME;
 	
