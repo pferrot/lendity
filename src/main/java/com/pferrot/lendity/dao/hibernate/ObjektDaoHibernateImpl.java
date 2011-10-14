@@ -73,8 +73,10 @@ public abstract class ObjektDaoHibernateImpl extends HibernateDaoSupport {
 			else {
 				c = c1;
 			}
-//			useSubquery = true;
-//			criteria.setProjection(Projections.distinct(Projections.id()));
+			if (pObjectDaoQueryBean.getGroupIds().length > 1) {
+				useSubquery = true;
+				criteria.setProjection(Projections.distinct(Projections.id()));
+			}
 		}
 		if (c != null) {
 			criteria.add(c);
