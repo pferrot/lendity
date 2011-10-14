@@ -26,8 +26,6 @@
 			
 			<!-- body -->
 			<div class="gt-bd gt-cols clearfix">
-			<!-- main content -->
-			<div class="gt-content">
 
 				
 <f:view>
@@ -67,17 +65,14 @@
     <h:column id="column1">
     	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
 			<table class="thumbnailInnerTable"><tr><td>
-				<h:outputLink id="link1" value="#{myLendTransactionsListController.lendTransactionOverviewHref}" rendered="#{myLendTransactionsListController.thumbnail1Src != null}">
-					<div class="thumbnailDiv">
-					    <img src="#{myLendTransactionsListController.thumbnail1Src}"/>
-					</div>
-				</h:outputLink>
+				<div class="thumbnailDiv">
+				    <img src="#{myLendTransactionsListController.thumbnail1Src}"/>
+				</div>
 			</td></tr></table>
 		</td><td>
+		<span class="fontSizeSmall"><h:outputText value="#{messages.lendTransaction_transactionFor}"/></span>
 		<h4>
-			<h:outputLink id="link2" value="#{myLendTransactionsListController.lendTransactionOverviewHref}">
-				<h:outputText value="#{lendTransaction.title}" />
-			</h:outputLink>			
+			<h:outputText value="#{lendTransaction.title}" />		
 		</h4>
 		</td></tr></table>
     </h:column>
@@ -134,6 +129,18 @@
 			</tr>
 		</table>
     </h:column>
+    
+    <h:column id="column3">
+		<table border="0" class="gt-table-categories" width="120" align="right">
+			<tr>
+				<td>
+					<h:outputLink id="accessTransactionLink" value="#{myLendTransactionsListController.lendTransactionOverviewHref}" styleClass="stylishButton">
+						<h:outputText id="accessTransactionLinkLabel" value="#{messages.lendTransaction_accessTransaction}"/>
+					</h:outputLink>				
+				</td>
+		    </tr>
+		</table>
+    </h:column>
 
 </h:dataTable>
 
@@ -144,8 +151,6 @@
 </div><!-- /content box -->
 
 </f:view>
-			</div>
-			<!-- /main content -->
 			</div>
 			<!-- /body -->
 			
