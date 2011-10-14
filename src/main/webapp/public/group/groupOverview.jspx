@@ -94,7 +94,7 @@
 	a lot of info to display.
 	 -->
 	<script type="text/javascript">
-		$j(document).ready(function() {
+		$j(window).load(function() {
 			var mainDivHeight = $j('#groupOverviewMainDiv').height();
 			var pictureDivHeight = $j('#groupOverviewPictureDiv').height();
 			if (pictureDivHeight > mainDivHeight) {

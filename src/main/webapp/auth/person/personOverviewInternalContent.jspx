@@ -22,7 +22,7 @@
 		a lot of info to display.
 		 -->
 		<script type="text/javascript">
-			$j(document).ready(function() {
+			$j(window).load(function() {
 				var mainDivHeight = $j('#personOverviewMainDiv').height();
 				var pictureDivHeight = $j('#personOverviewPictureDiv').height();
 				if (pictureDivHeight > mainDivHeight) {

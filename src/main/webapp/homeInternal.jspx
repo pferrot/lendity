@@ -9,7 +9,7 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
 <script type="text/javascript">
-$j(document).ready(function() {
+$j(window).load(function() {
 	$j('.thubnailImageHome').each(function(pIndex, pElement) {
 		if ($j(pElement).height() > 30) {
 			$j(pElement).height(30);
