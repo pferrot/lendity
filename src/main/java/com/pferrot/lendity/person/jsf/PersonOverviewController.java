@@ -352,7 +352,8 @@ public class PersonOverviewController implements Serializable {
 			return I18nUtils.getMessageResourceString("comment_addWallComment", locale);
 		}
 		else {
-			return I18nUtils.getMessageResourceString("comment_addOtherWallComment", new Object[] {getPerson().getDisplayName()}, locale);
+			// Avoid broken wall if display name contains the ' character.
+			return I18nUtils.getMessageResourceString("comment_addOtherWallComment", new Object[] {getPerson().getDisplayName()}, locale).replaceAll("'", "\\\\'");
 		}
 	}
 	
