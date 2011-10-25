@@ -6,7 +6,7 @@ Hello $requesterFirstName,<br/><br/>
 
 <b>$itemTitle</b><br/><br/>
 
-Etape suivante: <a href="$lendTransactionUrl">régler les détails de la transaction</a>.<br/><br/>
+Etape suivante: <a href="$lendTransactionUrl">régler les détails du prêt</a>.<br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
 

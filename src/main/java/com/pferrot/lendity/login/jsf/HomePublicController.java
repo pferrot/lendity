@@ -122,6 +122,14 @@ public class HomePublicController extends AbstractHomeController {
 		return getLocationLabelCookieValue() != null;
 	}
 
+	public boolean isLocationLongitudeCookieAvailable() {
+		return getLocationLongitudeCookieValue() != null;
+	}
+	
+	public boolean isLocationLatitudeCookieAvailable() {
+		return getLocationLatitudeCookieValue() != null;
+	}
+	
 	public String getLocationLabelCookieValue() {
 		return CookieUtils.getCookieValue(COOKIE_LOCATION_LABEL);		
 	}
@@ -160,7 +168,9 @@ public class HomePublicController extends AbstractHomeController {
 	
 	@Override
 	protected boolean isLocationAvailable() {
-		return isLocationLabelCookieAvailable();
+		// Check the 3 of them! It may happen that only 1 is deleted by the time the page is reloaded. This happened with
+		// safari on iPad in particular and led to an exception.
+		return isLocationLabelCookieAvailable() && isLocationLatitudeCookieAvailable() && isLocationLongitudeCookieAvailable();
 	}
 	
 	@Override
@@ -170,6 +180,7 @@ public class HomePublicController extends AbstractHomeController {
 	
 	@Override
 	protected Double getLocationLongitude() {
-		return Double.valueOf(getLocationLongitudeCookieValue());
+		final String longitudeCookieValue = getLocationLongitudeCookieValue(); 
+		return Double.valueOf(longitudeCookieValue);
 	}
 }

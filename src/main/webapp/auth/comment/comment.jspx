@@ -22,7 +22,7 @@
 			<table class="buttonsTable">
 				<tr>
 					<td>
-						<span id="commentSubmit" class="stylishButton" onClick="postComment('#{containerID}', '#{containerType}');"><h:outputText value="#{messages.comment_submit}"/></span>
+						<span id="commentSubmit" class="buttonLight" onClick="postComment('#{containerID}', '#{containerType}');"><h:outputText value="#{messages.comment_submit}"/></span>
 					</td>
 					<c:if test="#{showPublicCheckbox}">
 						<td width="100%">

@@ -153,10 +153,16 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 			objects.put("groupJoinRequestsUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.MY_PENDING_GROUP_JOIN_REQUESTS_LIST));
 		}
 		
-		long nbTransactionsWaitingForMyInput = lendTransactionService.countLendTransactionsWaitingForInput(pPerson.getId());
-		if (nbTransactionsWaitingForMyInput > 0) {
-			objects.put("nbTransactionsWaitingForInput", String.valueOf(nbTransactionsWaitingForMyInput));
+		long nbTransactionsAsLenderWaitingForMyInput = lendTransactionService.countLendTransactionsAsLenderWaitingForInput(pPerson.getId());
+		if (nbTransactionsAsLenderWaitingForMyInput > 0) {
+			objects.put("nbTransactionsAsLenderWaitingForInput", String.valueOf(nbTransactionsAsLenderWaitingForMyInput));
 			objects.put("transactionsWaitingForInputUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.MY_LEND_TRANSACTIONS_WAITING_FOR_INPUT_LIST));
+		}
+		
+		long nbTransactionsAsBorrowerWaitingForMyInput = lendTransactionService.countLendTransactionsAsBorrowerWaitingForInput(pPerson.getId());
+		if (nbTransactionsAsBorrowerWaitingForMyInput > 0) {
+			objects.put("nbTransactionsAsBorrowerWaitingForInput", String.valueOf(nbTransactionsAsBorrowerWaitingForMyInput));
+			objects.put("transactionsOutWaitingForInputUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.MY_LEND_TRANSACTIONS_OUT_WAITING_FOR_INPUT_LIST));
 		}
 		
 		long nbPendingConnectionRequests = connectionRequestService.countUserPendingConnectionRequests(pPerson.getId());
@@ -263,7 +269,8 @@ public class EmailSubscriberJob extends TransactionalQuartzJobBean {
 //		objects.put("lentItemUrl", getLentItemsUrl());
 		
 		// Do not send the email if nothing to say...
-		if (nbTransactionsWaitingForMyInput > 0 ||
+		if (nbTransactionsAsLenderWaitingForMyInput > 0 ||
+			nbTransactionsAsBorrowerWaitingForMyInput > 0 ||
 			nbPendingConnectionRequests > 0 ||
 			nbGroupJoinRequestsPending > 0 ||
 			itemsCounter > 0 ||

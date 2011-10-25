@@ -41,7 +41,8 @@ public class HomeController extends AbstractHomeController {
 	// Keep variables to not hit the DB every time.
 	private long nbGroupJoinRequestsPending = -1;
 	private long nbPendingConnectionRequests = -1;
-	private long nbTransactionsWaitingForMyInput = -1;
+	private long nbTransactionsAsLenderWaitingForMyInput = -1;
+	private long nbTransactionsAsBorrowerWaitingForMyInput = -1;
 	
 	public PersonConfigurationService getPersonConfigurationService() {
 		return personConfigurationService;
@@ -121,11 +122,18 @@ public class HomeController extends AbstractHomeController {
 		return nbGroupJoinRequestsPending;
 	}
 	
-	public long getNbTransactionsWaitingForMyInput() {
-		if (nbTransactionsWaitingForMyInput < 0) {
-			nbTransactionsWaitingForMyInput = getLendTransactionService().countCurrentPersonLendTransactionsWaitingForInput();
+	public long getNbTransactionsAsLenderWaitingForMyInput() {
+		if (nbTransactionsAsLenderWaitingForMyInput < 0) {
+			nbTransactionsAsLenderWaitingForMyInput = getLendTransactionService().countCurrentPersonLendTransactionsAsLenderWaitingForInput();
 		}
-		return nbTransactionsWaitingForMyInput;
+		return nbTransactionsAsLenderWaitingForMyInput;
+	}
+	
+	public long getNbTransactionsAsBorrowerWaitingForMyInput() {
+		if (nbTransactionsAsBorrowerWaitingForMyInput < 0) {
+			nbTransactionsAsBorrowerWaitingForMyInput = getLendTransactionService().countCurrentPersonLendTransactionsAsBorrowerWaitingForInput();
+		}
+		return nbTransactionsAsBorrowerWaitingForMyInput;
 	}
 	
 	public boolean isEmptyHomepage() {
@@ -133,7 +141,8 @@ public class HomeController extends AbstractHomeController {
 		return getPersonService().countConnections(currentPersonId, null) == 0 &&
 			   getItemService().countAllMyItems() == 0 &&
 			   getNbGroupJoinRequestsPending() == 0 &&
-			   getNbTransactionsWaitingForMyInput() == 0 &&
+			   getNbTransactionsAsLenderWaitingForMyInput() == 0 &&
+			   getNbTransactionsAsBorrowerWaitingForMyInput() == 0 &&
 			   getNbPendingConnectionRequests() == 0;
 	}
 

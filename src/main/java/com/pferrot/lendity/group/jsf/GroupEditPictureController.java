@@ -12,6 +12,8 @@ import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.group.GroupConsts;
 import com.pferrot.lendity.group.GroupService;
 import com.pferrot.lendity.image.jsf.AbstractEditPictureController;
+import com.pferrot.lendity.item.ItemUtils;
+import com.pferrot.lendity.model.Document;
 import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -24,8 +26,8 @@ public class GroupEditPictureController  extends AbstractEditPictureController {
 	private static final int IMAGE_MAX_HEIGHT = 200;
 	private static final int IMAGE_MAX_WIDTH = 200;
 	
-	private static final int THUMBNAIL_MAX_HEIGHT = 45;
-	private static final int THUMBNAIL_MAX_WIDTH = 45;
+	private static final int THUMBNAIL_MAX_HEIGHT = 50;
+	private static final int THUMBNAIL_MAX_WIDTH = 50;
 	
 	private GroupService groupService;
 	
@@ -84,6 +86,9 @@ public class GroupEditPictureController  extends AbstractEditPictureController {
 			if (getTempFileLocation() != null) {
 				getGroupService().updateGroupPicture(getGroup(), getImageDocumentFromTempFile(), getThumbnailDocumentFromTempFile());
 			}
+			else if (getTempThumbnailLocation() != null) {
+				getGroupService().updateGroupThumbnail(getGroup(), getThumbnailDocumentFromTempFile());
+			}
 			else if (Boolean.TRUE.equals(getRemoveCurrentImage())) {
 				getGroupService().updateGroupPicture(getGroup(), null, null);
 			}			
@@ -99,14 +104,20 @@ public class GroupEditPictureController  extends AbstractEditPictureController {
 	}
 
 	public String submit() {
-		Long groupId = updateGroup();
+		try {
+			processThumbnailSelection();
+			Long groupId = updateGroup();
+			
+			if (groupId != null) {
+				JsfUtils.redirect(PagesURL.GROUP_OVERVIEW, PagesURL.GROUP_OVERVIEW_PARAM_GROUP_ID, groupId.toString());
+			}
 		
-		if (groupId != null) {
-			JsfUtils.redirect(PagesURL.GROUP_OVERVIEW, PagesURL.GROUP_OVERVIEW_PARAM_GROUP_ID, groupId.toString());
+			// Return to the same page.
+			return "error";
 		}
-	
-		// Return to the same page.
-		return "error";
+		catch (Exception e) {
+			return "error";
+		}
 	}
 	
 	public String getImgSrc() {
@@ -152,14 +163,23 @@ public class GroupEditPictureController  extends AbstractEditPictureController {
 	protected int getThumbnailMaxWidth() {
 		return THUMBNAIL_MAX_WIDTH;
 	}
+	
+	public String getGroupOverviewHref() {		
+		return JsfUtils.getFullUrl(PagesURL.GROUP_OVERVIEW, PagesURL.GROUP_OVERVIEW_PARAM_GROUP_ID, getGroup().getId().toString());
+	}
 
 	@Override
 	public String getCancelHref() {
-		return getMyProfileHref();
+		return getGroupOverviewHref();
 	}
 
 	@Override
 	public boolean isExistingImage() {
 		return getGroup().getImage1() != null;
+	}
+
+	@Override
+	protected Document getCurrentImage() {
+		return getGroup().getImage1();
 	}
 }

@@ -258,24 +258,11 @@ public interface PagesURL {
 	String LEND_TRANSACTION_EDIT = "/auth/lendtransaction/lendTransactionEdit.faces";
 	String LEND_TRANSACTION_EDIT_PARAM_LEND_TRANSACTION_ID = LEND_TRANSACTION_OVERVIEW_PARAM_LEND_TRANSACTION_ID;
 	
-	String MY_IN_PROGRESS_LEND_TRANSACTIONS_LIST = "/auth/lendtransaction/myInProgressLendTransactionsList.faces";
-	String MY_IN_PROGRESS_LEND_TRANSACTIONS_OUT_LIST = "/auth/lendtransaction/myInProgressLendTransactionsOutList.faces";
-
-	String MY_COMPLETED_LEND_TRANSACTIONS_LIST = "/auth/lendtransaction/myClosedLendTransactionsList.faces";
-	String MY_COMPLETED_LEND_TRANSACTIONS_OUT_LIST = "/auth/lendtransaction/myClosedLendTransactionsOutList.faces";
-
 	String MY_LEND_TRANSACTIONS_LIST = "/auth/lendtransaction/myLendTransactionsList.faces";
+	String MY_LEND_TRANSACTIONS_OUT_LIST = "/auth/lendtransaction/myLendTransactionsOutList.faces";
 	
 	String MY_LEND_TRANSACTIONS_WAITING_FOR_INPUT_LIST = "/auth/lendtransaction/myLendTransactionsWaitingForInputList.faces";
-
-	// Does not exist. Take care of AC if implement!!!
-//	String LEND_TRANSACTIONS_FOR_ITEM_AND_PERSON_LIST = "/auth/lendtransaction/lendTransactionsItemPersonList.faces";
-	String LEND_TRANSACTIONS_FOR_ITEM_AND_PERSON_LIST_PARAM_ITEM_ID = ITEM_OVERVIEW_PARAM_ITEM_ID;
-	String LEND_TRANSACTIONS_FOR_ITEM_AND_PERSON_LIST_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;
-	
-	String MY_LEND_TRANSACTIONS_FOR_ITEM_LIST = "/auth/lendtransaction/myLendTransactionsForItemList.faces";
-	String MY_LEND_TRANSACTIONS_FOR_ITEM_LIST_PARAM_ITEM_ID = LEND_TRANSACTIONS_FOR_ITEM_AND_PERSON_LIST_PARAM_ITEM_ID;
-
+	String MY_LEND_TRANSACTIONS_OUT_WAITING_FOR_INPUT_LIST = "/auth/lendtransaction/myLendTransactionsOutWaitingForInputList.faces";
 	
 	// LEND TRANSACTION - end
 	/////////////////////////////////////////////////////////////////////////

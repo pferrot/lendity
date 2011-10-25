@@ -28,16 +28,7 @@
 	
 	<c:if test="#{theBean.showConnectionsAndGroups}">
 	<br/><br/>
-	
-	<script type="text/javascript">
-	$j(window).load(function() {
-		$j('.thubnailImageHome').each(function(pIndex, pElement) {
-			if ($j(pElement).height() > 30) {
-				$j(pElement).height(30);
-			}
-		});
-	});
-	</script>
+
 	<table style="width: 100%;"><tr>
 	<td style="width: 100%; vertical-align: top; padding-right: 0px;">
 		<div class="gt-form gt-content-box" style="height: 300px; overflow: auto;">	
@@ -50,11 +41,11 @@
 			</div>
 			<h:dataTable value="#{theBean.connectionsList}" binding="#{theBean.connectionsTable}" var="connection" styleClass="gt-table gt-user-table">							
 				<h:column id="personColumn1">
-			    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTdSmall">
 						<table class="thumbnailInnerTable"><tr><td>
 							<h:outputLink id="personOverviewLink1" value="#{theBean.connectionOverviewHref}" rendered="#{theBean.connectionThumbnail1Src != null}">
 								<div class="thumbnailDiv">
-								    <img class="thubnailImageHome" src="#{theBean.connectionThumbnail1Src}"/>
+								    <img src="#{theBean.connectionThumbnail1Src}"/>
 								</div>
 							</h:outputLink>
 						</td></tr></table>
@@ -85,11 +76,11 @@
 			</div>
 			<h:dataTable value="#{theBean.groupsList}" binding="#{theBean.groupsTable}" var="group" styleClass="gt-table gt-user-table">		
 			    <h:column id="groupColumn1">
-			    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTdSmall">
 						<table class="thumbnailInnerTable"><tr><td>
 							<h:outputLink id="groupOverviewLink1" value="#{theBean.groupOverviewHref}" rendered="#{theBean.groupThumbnail1Src != null}">
 								<div class="thumbnailDiv">
-								    <img class="thubnailImageHome" src="#{theBean.groupThumbnail1Src}"/>
+								    <img src="#{theBean.groupThumbnail1Src}"/>
 								</div>
 							</h:outputLink>
 						</td></tr></table>

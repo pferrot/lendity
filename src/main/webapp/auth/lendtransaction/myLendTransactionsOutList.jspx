@@ -1,0 +1,311 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle">
+		<h:outputText value="#{messages.lendTransaction_myLendTransactionsOutTitle}"/>
+	</ui:define>
+	<ui:param name="contentHeader" value="#{messages.lendTransaction_myLendTransactionsOutTitle}" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+			
+			<!-- body -->
+			<div class="gt-bd gt-cols clearfix">
+			<!-- main content -->
+			<div class="gt-content-intermediate">
+
+				
+<f:view>
+
+<h2 class="gt-table-head">
+	<h:outputText value="#{messages.lendTransaction_myInProgressLendTransactionsOut}"/>
+</h2>
+
+<br/>
+
+<!-- content box -->
+<div class="gt-content-box">
+
+<c:if test="#{empty(myLendTransactionsOutListController.inProgressList)}">
+	<center>
+	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<h:dataTable value="#{myLendTransactionsOutListController.inProgressList}" binding="#{myLendTransactionsOutListController.inProgressTable}" var="lendTransaction" styleClass="gt-table gt-user-table">
+
+    <h:column id="column1">
+    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<div class="thumbnailDiv">
+				    <img src="#{myLendTransactionsOutListController.inProgressThumbnail1Src}"/>
+				</div>
+			</td></tr></table>
+		</td><td>
+		<span class="fontSizeSmall"><h:outputText value="#{messages.lendTransaction_transactionOutFor}"/></span>
+		<h4>
+			<h:outputText value="#{lendTransaction.title}" />		
+		</h4>
+		</td></tr></table>
+    </h:column>
+
+	<h:column id="column2">
+		<table border="0" class="gt-table-categories" width="250" align="right">
+			<tr>
+				<th width="50%">
+					<h:outputText id="itemTitle" value="#{messages.item_item}:" />
+				</th>
+				<td width="50%">
+					<h:outputLink id="itemLink" value="#{myLendTransactionsOutListController.inProgressItemOverviewHref}" rendered="#{myLendTransactionsOutListController.inProgressItemAvailable}">
+						<h:outputText id="itemLabel" value="#{lendTransaction.item.title}"  rendered="#{myLendTransactionsOutListController.inProgressItemAvailable}"/>
+					</h:outputLink>
+					<i><h:outputText id="itemLabel2" value="#{messages.lendTransaction_itemDeleted}"  rendered="#{not myLendTransactionsOutListController.inProgressItemAvailable}"/></i>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<h:outputText id="lenderTitle" value="#{messages.lendTransaction_lender}:" />
+				</th>
+				<td>
+					<h:outputLink id="lenderLink" value="#{myLendTransactionsOutListController.inProgressLenderOverviewHref}">
+						<h:outputText id="lenderLabel" value="#{lendTransaction.lender.displayName}"/>
+					</h:outputLink>
+				</td>
+			</tr>   
+			<tr>
+				<th>
+					<h:outputText id="endDateTitle" value="#{messages.lendTransaction_endDate}:" />
+				</th>
+				<td>
+					<h:outputText id="endDateLabel" value="#{myLendTransactionsOutListController.inProgressEndDateLabel}"/>
+				</td>
+			</tr>
+		</table>
+    </h:column>
+    
+    <h:column id="column3">
+		<table border="0" class="gt-table-categories" width="120" align="right">
+			<tr>
+				<td>
+					<h:outputLink id="accessTransactionLink" value="#{myLendTransactionsOutListController.inProgressLendTransactionOverviewHref}" styleClass="stylishButton">
+						<h:outputText id="accessTransactionLinkLabel" value="#{messages.lendTransaction_accessTransactionAsBorrower}"/>
+					</h:outputLink>				
+				</td>
+		    </tr>
+		</table>
+    </h:column>
+
+</h:dataTable>
+
+</div><!-- /content box -->
+
+
+
+<center>
+<div class="lineSeparator"></div>
+</center>
+
+
+
+<h2 class="gt-table-head">
+	<h:outputText value="#{messages.lendTransaction_myFutureLendTransactionsOut}"/>
+</h2>
+
+<br/>
+
+<!-- content box -->
+<div class="gt-content-box">
+
+<c:if test="#{empty(myLendTransactionsOutListController.futureList)}">
+	<center>
+	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<h:dataTable value="#{myLendTransactionsOutListController.futureList}" binding="#{myLendTransactionsOutListController.futureTable}" var="lendTransaction" styleClass="gt-table gt-user-table">
+
+    <h:column id="column1">
+    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<div class="thumbnailDiv">
+				    <img src="#{myLendTransactionsOutListController.futureThumbnail1Src}"/>
+				</div>
+			</td></tr></table>
+		</td><td>
+		<span class="fontSizeSmall"><h:outputText value="#{messages.lendTransaction_transactionOutFor}"/></span>
+		<h4>
+			<h:outputText value="#{lendTransaction.title}" />		
+		</h4>
+		</td></tr></table>
+    </h:column>
+
+	<h:column id="column2">
+		<table border="0" class="gt-table-categories" width="250" align="right">
+			<tr>
+				<th width="50%">
+					<h:outputText id="itemTitle" value="#{messages.item_item}:" />
+				</th>
+				<td width="50%">
+					<h:outputLink id="itemLink" value="#{myLendTransactionsOutListController.futureItemOverviewHref}" rendered="#{myLendTransactionsOutListController.futureItemAvailable}">
+						<h:outputText id="itemLabel" value="#{lendTransaction.item.title}"  rendered="#{myLendTransactionsOutListController.futureItemAvailable}"/>
+					</h:outputLink>
+					<i><h:outputText id="itemLabel2" value="#{messages.lendTransaction_itemDeleted}"  rendered="#{not myLendTransactionsOutListController.futureItemAvailable}"/></i>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<h:outputText id="lenderTitle" value="#{messages.lendTransaction_lender}:" />
+				</th>
+				<td>
+					<h:outputLink id="lenderLink" value="#{myLendTransactionsOutListController.futureLenderOverviewHref}">
+						<h:outputText id="lenderLabel" value="#{lendTransaction.lender.displayName}"/>
+					</h:outputLink>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<h:outputText id="statusTitle" value="#{messages.lendTransaction_status}:" />
+				</th>
+				<td>
+					<h:outputText id="statusLabel" value="#{myLendTransactionsOutListController.futureStatusLabel}"/>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<h:outputText id="startDateTitle" value="#{messages.lendTransaction_startDate}:" />
+				</th>
+				<td>
+					<h:outputText id="startDateLabel" value="#{myLendTransactionsOutListController.futureStartDateLabel}"/>
+				</td>
+			</tr>
+		</table>
+    </h:column>
+    
+    <h:column id="column3">
+		<table border="0" class="gt-table-categories" width="120" align="right">
+			<tr>
+				<td>
+					<h:outputLink id="accessTransactionLink" value="#{myLendTransactionsOutListController.futureLendTransactionOverviewHref}" styleClass="stylishButton">
+						<h:outputText id="accessTransactionLinkLabel" value="#{messages.lendTransaction_accessTransactionAsBorrower}"/>
+					</h:outputLink>				
+				</td>
+		    </tr>
+		</table>
+    </h:column>
+
+</h:dataTable>
+
+</div><!-- /content box -->
+
+
+<center>
+<div class="lineSeparator"></div>
+</center>
+
+
+
+<h2 class="gt-table-head">
+	<h:outputText value="#{messages.lendTransaction_myToEvaluateLendTransactionsOut}"/>
+</h2>
+
+<br/>
+
+<!-- content box -->
+<div class="gt-content-box">
+
+<c:if test="#{empty(myLendTransactionsOutListController.toEvaluateList)}">
+	<center>
+	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
+	</center>
+	<br/>
+</c:if>
+
+<h:dataTable value="#{myLendTransactionsOutListController.toEvaluateList}" binding="#{myLendTransactionsOutListController.toEvaluateTable}" var="lendTransaction" styleClass="gt-table gt-user-table">
+
+    <h:column id="column1">
+    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+			<table class="thumbnailInnerTable"><tr><td>
+				<div class="thumbnailDiv">
+				    <img src="#{myLendTransactionsOutListController.toEvaluateThumbnail1Src}"/>
+				</div>
+			</td></tr></table>
+		</td><td>
+		<span class="fontSizeSmall"><h:outputText value="#{messages.lendTransaction_transactionOutFor}"/></span>
+		<h4>
+			<h:outputText value="#{lendTransaction.title}" />		
+		</h4>
+		</td></tr></table>
+    </h:column>
+
+	<h:column id="column2">
+		<table border="0" class="gt-table-categories" width="250" align="right">
+			<tr>
+				<th width="50%">
+					<h:outputText id="itemTitle" value="#{messages.item_item}:" />
+				</th>
+				<td width="50%">
+					<h:outputLink id="itemLink" value="#{myLendTransactionsOutListController.toEvaluateItemOverviewHref}" rendered="#{myLendTransactionsOutListController.toEvaluateItemAvailable}">
+						<h:outputText id="itemLabel" value="#{lendTransaction.item.title}"  rendered="#{myLendTransactionsOutListController.toEvaluateItemAvailable}"/>
+					</h:outputLink>
+					<i><h:outputText id="itemLabel2" value="#{messages.lendTransaction_itemDeleted}"  rendered="#{not myLendTransactionsOutListController.toEvaluateItemAvailable}"/></i>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<h:outputText id="lenderTitle" value="#{messages.lendTransaction_lender}:" />
+				</th>
+				<td>
+					<h:outputLink id="lenderLink" value="#{myLendTransactionsOutListController.toEvaluateLenderOverviewHref}">
+						<h:outputText id="lenderLabel" value="#{lendTransaction.lender.displayName}"/>
+					</h:outputLink>
+				</td>
+			</tr>   
+		</table>
+    </h:column>
+    
+    <h:column id="column3">
+		<table border="0" class="gt-table-categories" width="120" align="right">
+			<tr>
+				<td>
+					<h:outputLink id="accessTransactionLink" value="#{myLendTransactionsOutListController.toEvaluateLendTransactionOverviewHref}" styleClass="stylishButton">
+						<h:outputText id="accessTransactionLinkLabel" value="#{messages.lendTransaction_accessTransactionAsBorrower}"/>
+					</h:outputLink>				
+				</td>
+		    </tr>
+		</table>
+    </h:column>
+
+</h:dataTable>
+
+</div><!-- /content box -->
+
+</f:view>
+
+			</div>
+			<!-- /main content -->
+			</div>
+			<!-- /body -->
+			
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>
+

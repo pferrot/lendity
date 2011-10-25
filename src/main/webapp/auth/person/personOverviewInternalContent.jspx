@@ -12,10 +12,31 @@
 	<ui:param name="theMessage" value="#{messages.connectionRequest_banConnectionMessage2}"/>
 </ui:include>
 
+	
+
 	<!-- content box -->
 	<div id="personOverviewMainDiv" class="gt-form gt-content-box" style="position: relative;">
 		<div id="personOverviewPictureDiv" class="profilePictureDiv">
-			<img src="#{theBean.profilePictureSrc}"/>
+			
+			<c:if test="#{theBean.editAvailable}">
+				<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.personEditPictureHref}">
+					<div id="editPictureInfo" style="background-color: black; color: white; font-size: 90%; position: absolute; display: none;"  onmouseover="showHelpText();" onmouseout="hideHelpText();"><h:outputText value="#{messages.image_editPicture}" /></div>
+				</h:outputLink>
+				<script type="text/javascript">
+					function showHelpText() {
+						$j("#editPictureInfo").show();
+					}
+					function hideHelpText() {
+						$j("#editPictureInfo").hide();
+					}
+				</script>
+				<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.personEditPictureHref}">
+					<img src="#{theBean.profilePictureSrc}" onmouseover="showHelpText();" onmouseout="hideHelpText();"/>
+				</h:outputLink>
+			</c:if>
+			<c:if test="#{not theBean.editAvailable}">
+				<img src="#{theBean.profilePictureSrc}"/>
+			</c:if>
 		</div>
 		<!-- 
 		This will avoid a picture that does not fit in the main div in case there is not

@@ -156,6 +156,13 @@ public class PersonService {
 		updatePerson(pPerson);
 	}
 	
+	/**
+	 * Updates both the picture and the thumbnail.
+	 * 
+	 * @param pPerson
+	 * @param pPicture
+	 * @param pThumbnail
+	 */
 	public void updatePersonPicture(final Person pPerson, final Document pPicture, final Document pThumbnail) {
 		assertCurrentUserAuthorizedToEdit(pPerson);
 		if (pPicture != null) {
@@ -182,6 +189,28 @@ public class PersonService {
 			documentDao.deleteDocument(oldThumbnail);
 		}
 		
+		personDao.updatePerson(pPerson);
+ 	}
+	
+	/**
+	 * Only updates the thumbnail.
+	 * 
+	 * @param pPerson
+	 * @param pThumbnail
+	 */
+	public void updatePersonThumbnail(final Person pPerson, final Document pThumbnail) {
+		assertCurrentUserAuthorizedToEdit(pPerson);
+		if (pThumbnail != null) {
+			pThumbnail.setPublik(Boolean.TRUE);
+		}
+		final Document oldThumbnail = pPerson.getThumbnail();		
+		if (pThumbnail != null) {
+			documentDao.createDocument(pThumbnail);
+		}
+		pPerson.setThumbnail(pThumbnail);
+		if (oldThumbnail != null) {
+			documentDao.deleteDocument(oldThumbnail);
+		}		
 		personDao.updatePerson(pPerson);
  	}
 	

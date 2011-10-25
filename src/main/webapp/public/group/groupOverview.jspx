@@ -47,7 +47,7 @@
 	<ui:include src="../../auth/groupjoinrequest/leaveGroupTooltip.jspx"/>
 </c:if>
 
-<h2 class="gt-table-head"><h:outputText value="#{messages.group_groupOverviewTitle}"/></h2>
+<h2 class="gt-table-head"><h:outputText value="#{groupOverviewController.group.title}" /></h2>
 
 <div class="gt-form-row gt-width-100">
 	<h:outputText styleClass="fontSizeSmall" value="#{messages.navigation_pathSeparator}"/>
@@ -87,7 +87,25 @@
 <!-- content box -->
 <div id="groupOverviewMainDiv" class="gt-form gt-content-box" style="position: relative;">
 	<div id="groupOverviewPictureDiv" class="profilePictureDiv">
-		<img src="#{groupOverviewController.groupPicture1Src}"/>
+		<c:if test="#{groupOverviewController.editAvailable}">
+			<h:outputLink rendered="#{groupOverviewController.editAvailable}" value="#{groupOverviewController.groupEditPictureHref}">
+				<div id="editPictureInfo" style="background-color: black; color: white; font-size: 90%; position: absolute; display: none;" onmouseover="showHelpText();" onmouseout="hideHelpText();"><h:outputText value="#{messages.image_editPicture}" /></div>
+			</h:outputLink>
+			<script type="text/javascript">
+				function showHelpText() {
+					$j("#editPictureInfo").show();
+				}
+				function hideHelpText() {
+					$j("#editPictureInfo").hide();
+				}
+			</script>
+			<h:outputLink rendered="#{groupOverviewController.editAvailable}" value="#{groupOverviewController.groupEditPictureHref}">
+				<img src="#{groupOverviewController.groupPicture1Src}" onmouseover="showHelpText();" onmouseout="hideHelpText();"/>
+			</h:outputLink>
+		</c:if>
+		<c:if test="#{not groupOverviewController.editAvailable}">
+			<img src="#{groupOverviewController.groupPicture1Src}"/>
+		</c:if>
 	</div>
 	<!-- 
 	This will avoid a picture that does not fit in the main div in case there is not
@@ -106,13 +124,6 @@
 			}
 		});
 	</script>
-	
-	
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.group_title}:" /></label></div>
-		<h4><h:outputText value="#{groupOverviewController.group.title}" /></h4>
-	</div>
-	<br/>
 	
 	<c:if test="#{groupOverviewController.descriptionAvailable}">
 		<div class="gt-form-row gt-width-100" id="groupDescriptionDiv">

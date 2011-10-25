@@ -3,22 +3,22 @@ var mCurrentSubMenuId;
 var mActiveSubMenuId;
 var mCurrentMenuLinkId;
 var ownItem = false;
+var isTransaction = false;
+var isTransactionOut = false;
 var subMenusToMenuLinksMap = new Object();
 subMenusToMenuLinksMap.divSubMenuLogin = 'menuHomeLink';
 subMenusToMenuLinksMap.divSubMenuHome = 'menuHomeLink2';
 subMenusToMenuLinksMap.divSubMenuItems = 'menuMyItemsLink';
 subMenusToMenuLinksMap.divSubMenuBorrowedItems = 'menuMyBorrowedItemsLink';
 subMenusToMenuLinksMap.divSubMenuNeeds = 'menuMyNeedsLink';
-subMenusToMenuLinksMap.divSubMenuLendTransactions = 'menuMyLendTransactionsLink';
 subMenusToMenuLinksMap.divSubMenuConnections = 'menuMyConnectionsLink';
 subMenusToMenuLinksMap.divSubMenuGroups = 'menuMyGroupsLink';
-subMenusToMenuLinksMap.divSubMenuProfile = 'menuProfileLink';
 
 var mCurrentSubMenuTimeout;
 
 
-var menuLinksArray = ['menuHomeLink', 'menuHomeLink2', 'menuMyItemsLink', 'menuMyBorrowedItemsLink', 'menuMyNeedsLink', 'menuMyLendTransactionsLink', 'menuMyConnectionsLink', 'menuMyGroupsLink', 'menuProfileLink'];
-var subMenusArray = ['divSubMenuLogin', 'divSubMenuHome', 'divSubMenuItems', 'divSubMenuBorrowedItems', 'divSubMenuNeeds', 'divSubMenuLendTransactions', 'divSubMenuConnections', 'divSubMenuGroups', 'divSubMenuProfile'];
+var menuLinksArray = ['menuHomeLink', 'menuHomeLink2', 'menuMyItemsLink', 'menuMyBorrowedItemsLink', 'menuMyNeedsLink', 'menuMyConnectionsLink', 'menuMyGroupsLink'];
+var subMenusArray = ['divSubMenuLogin', 'divSubMenuHome', 'divSubMenuItems', 'divSubMenuBorrowedItems', 'divSubMenuNeeds', 'divSubMenuConnections', 'divSubMenuGroups'];
 
 function initMenu(pServletPath) {
 	mCurrentServletPath = pServletPath;
@@ -50,7 +50,9 @@ function initMenu(pServletPath) {
 	}
 	else if (!ownItem &&
 			 (pServletPath.indexOf('public/item') > 0 ||
-			  pServletPath.indexOf('auth/lendtransaction/myInProgressLendTransactionsOutList') > 0)) {
+			  pServletPath.indexOf('auth/lendtransaction/myLendTransactionsOutList') > 0 ||
+			  pServletPath.indexOf('auth/lendtransaction/myLendTransactionsOutWaitingForInputList') > 0) ||
+			  isTransactionOut) {
 		mCurrentMenuLinkId = 'menuMyBorrowedItemsLink';
 		mCurrentSubMenuId = 'divSubMenuBorrowedItems';
 		menuHighlightBorrowedItems();
@@ -61,7 +63,9 @@ function initMenu(pServletPath) {
 	}
 	else if (ownItem ||
 			 pServletPath.indexOf('auth/item') > 0 ||
-			 pServletPath.indexOf('auth/lendtransaction/myInProgressLendTransactionsList') > 0) {
+			 pServletPath.indexOf('auth/lendtransaction/myLendTransactionsList') > 0 ||
+			 isTransaction ||
+			 pServletPath.indexOf('auth/lendtransaction/myLendTransactionsWaitingForInputList') > 0) {
 		mCurrentMenuLinkId = 'menuMyItemsLink';
 		mCurrentSubMenuId = 'divSubMenuItems';
 		menuHighlightItems();
@@ -80,16 +84,6 @@ function initMenu(pServletPath) {
 		menuLinkConfig('menuMyNeedsLink');
 		subMenuConfig('divSubMenuNeeds');
 	}
-	else if (pServletPath.indexOf('auth/lendtransaction') > 0 ||
-			pServletPath.indexOf('auth/evaluation') > 0) {
-		mCurrentMenuLinkId = 'menuMyLendTransactionsLink';
-		mCurrentSubMenuId = 'divSubMenuLendTransactions';
-		menuHighlightLendTransactions();
-		menuLendTransactionsOver();
-		
-		menuLinkConfig('menuMyLendTransactionsLink');
-		subMenuConfig('divSubMenuLendTransactions');
-	}
 	else if (pServletPath.indexOf('auth/group') > 0 ||
 			pServletPath.indexOf('public/group') > 0 ||
 			pServletPath.indexOf('auth/groupjoinrequest') > 0) {
@@ -101,22 +95,15 @@ function initMenu(pServletPath) {
 		menuLinkConfig('menuMyGroupsLink');
 		subMenuConfig('divSubMenuGroups');
 	}
-	else if (pServletPath.indexOf('auth/person/myProfile') > 0 ||
-			pServletPath.indexOf('auth/changepassword') > 0 ||
-			 pServletPath.indexOf('auth/person/personEdit') > 0) {
-		mCurrentMenuLinkId = 'menuProfileLink';
-		mCurrentSubMenuId = 'divSubMenuProfile';
-		menuHighlightProfile();
-		menuProfileOver();
-		
-		menuLinkConfig('menuProfileLink');
-		subMenuConfig('divSubMenuProfile');
-	}
-	else if (pServletPath.indexOf('auth/person') > 0 ||
+	else if ((pServletPath.indexOf('auth/person') > 0 ||
 			 pServletPath.indexOf('public/person') > 0 ||
 			 pServletPath.indexOf('auth/connectionrequest') > 0 ||
 			 pServletPath.indexOf('auth/invitation') > 0 ||
-			 pServletPath.indexOf('auth/potentialconnection') > 0) {
+			 pServletPath.indexOf('auth/potentialconnection') > 0) &&
+			 !(pServletPath.indexOf('auth/person/myProfile') > 0 ||
+			   pServletPath.indexOf('auth/person/personEdit') > 0 ||
+			   pServletPath.indexOf('auth/person/personEditPicture') > 0 ||
+			   pServletPath.indexOf('auth/changepassword/changepassword') > 0)) {
 		mCurrentMenuLinkId = 'menuMyConnectionsLink';
 		mCurrentSubMenuId = 'divSubMenuConnections';
 		menuHighlightConnections();
@@ -152,16 +139,8 @@ function menuHighlightGroups() {
 	menuHighlight('menuMyGroupsLink');
 }
 
-function menuHighlightLendTransactions() {
-	menuHighlight('menuMyLendTransactionsLink');
-}
-
 function menuHighlightConnections() {
 	menuHighlight('menuMyConnectionsLink');
-}
-
-function menuHighlightProfile() {
-	menuHighlight('menuProfileLink');
 }
 
 function menuHighlight(pMenuId) {
@@ -192,16 +171,8 @@ function menuGroupsOver() {
 	menuOver('divSubMenuGroups');
 }
 
-function menuLendTransactionsOver() {
-	menuOver('divSubMenuLendTransactions');
-}
-
 function menuConnectionsOver() {
 	menuOver('divSubMenuConnections');
-}
-
-function menuProfileOver() {
-	menuOver('divSubMenuProfile');
 }
 
 function menuOver(pSubMenuId) {

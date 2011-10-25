@@ -35,20 +35,10 @@
 	<ui:include src="../../auth/comment/recommendTooltip.jspx"/>
 </c:if>
 
-<h2 class="gt-table-head"><h:outputText value="#{messages.need_needOverviewTitle}"/></h2>
-
-<c:if test="${loggedInUser}">
-	<a href="#commentsAnchor"><h:outputText styleClass="fontSizeSmall" value="#{messages.comment_addReadComments}"/></a>
-	<br/><br/>
-</c:if>
+<h2 class="gt-table-head"><h:outputText value="#{needOverviewController.need.title}" /></h2>
 
 <!-- content box -->
 <div class="gt-form gt-content-box">
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_title}:" /></label></div>
-		<h4><h:outputText value="#{needOverviewController.need.title}" /></h4>
-	</div>
-	<br/>
 	<c:if test="#{needOverviewController.descriptionAvailable}">
 		<div class="gt-form-row gt-width-100" id="needDescriptionDiv">
 			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_description}:" /></label></div>

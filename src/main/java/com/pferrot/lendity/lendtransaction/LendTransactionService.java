@@ -164,22 +164,91 @@ public class LendTransactionService {
 		return lendTransactionDao.findLendTransactions(queryBean);
 	}
 	
-	public ListWithRowCount findCurrentPersonLendTransactionsWaitingForInput(final int pFirstResult, final int pMaxResults) {
+//	public ListWithRowCount findCurrentPersonLendTransactionsWaitingForInput(final int pFirstResult, final int pMaxResults) {
+//		if (!SecurityUtils.isLoggedIn()) {
+//			throw new SecurityException("Not logged in");
+//		}
+//		return findLendTransactionsWaitingForInput(PersonUtils.getCurrentPersonId(), pFirstResult, pMaxResults);
+//	}
+	
+	public ListWithRowCount findCurrentPersonLendTransactionsAsLenderWaitingForInput(final int pFirstResult, final int pMaxResults) {
 		if (!SecurityUtils.isLoggedIn()) {
 			throw new SecurityException("Not logged in");
 		}
-		return findLendTransactionsWaitingForInput(PersonUtils.getCurrentPersonId(), pFirstResult, pMaxResults);
+		return findLendTransactionsAsLenderWaitingForInput(PersonUtils.getCurrentPersonId(), pFirstResult, pMaxResults);
 	}
 	
-	public long countCurrentPersonLendTransactionsWaitingForInput() {
+	public ListWithRowCount findCurrentPersonLendTransactionsAsBorrowerWaitingForInput(final int pFirstResult, final int pMaxResults) {
 		if (!SecurityUtils.isLoggedIn()) {
 			throw new SecurityException("Not logged in");
 		}
-		return countLendTransactionsWaitingForInput(PersonUtils.getCurrentPersonId());
+		return findLendTransactionsAsBorrowerWaitingForInput(PersonUtils.getCurrentPersonId(), pFirstResult, pMaxResults);
+	}
+
+//	public List<LendTransaction> findCurrentPersonLendTransactionsWaitingForInputList() {
+//		if (!SecurityUtils.isLoggedIn()) {
+//			throw new SecurityException("Not logged in");
+//		}
+//		return findLendTransactionsWaitingForInputList(PersonUtils.getCurrentPersonId(), 0, 0);
+//	}
+	
+	public List<LendTransaction> findCurrentPersonLendTransactionsAsLenderWaitingForInputList() {
+		if (!SecurityUtils.isLoggedIn()) {
+			throw new SecurityException("Not logged in");
+		}
+		return findLendTransactionsAsLenderWaitingForInputList(PersonUtils.getCurrentPersonId(), 0, 0);
+	}
+	
+	public List<LendTransaction> findCurrentPersonLendTransactionsAsBorrowerWaitingForInputList() {
+		if (!SecurityUtils.isLoggedIn()) {
+			throw new SecurityException("Not logged in");
+		}
+		return findLendTransactionsAsBorrowerWaitingForInputList(PersonUtils.getCurrentPersonId(), 0, 0);
+	}
+	
+//	public long countCurrentPersonLendTransactionsWaitingForInput() {
+//		if (!SecurityUtils.isLoggedIn()) {
+//			throw new SecurityException("Not logged in");
+//		}
+//		return countLendTransactionsWaitingForInput(PersonUtils.getCurrentPersonId());
+//	}
+	
+	public long countCurrentPersonLendTransactionsAsBorrowerWaitingForInput() {
+		if (!SecurityUtils.isLoggedIn()) {
+			throw new SecurityException("Not logged in");
+		}
+		return countLendTransactionsAsBorrowerWaitingForInput(PersonUtils.getCurrentPersonId());
+	}
+	
+	public long countCurrentPersonLendTransactionsAsLenderWaitingForInput() {
+		if (!SecurityUtils.isLoggedIn()) {
+			throw new SecurityException("Not logged in");
+		}
+		return countLendTransactionsAsLenderWaitingForInput(PersonUtils.getCurrentPersonId());
 	}
 
 	public ListWithRowCount findLendTransactionsWaitingForInput(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
 		return lendTransactionDao.findLendTransactionsWaitingForInput(pPersonId, pFirstResult, pMaxResults);
+	}
+	
+	public List<LendTransaction> findLendTransactionsWaitingForInputList(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+		return lendTransactionDao.findLendTransactionsWaitingForInputList(pPersonId, pFirstResult, pMaxResults);
+	}
+	
+	public ListWithRowCount findLendTransactionsAsLenderWaitingForInput(final Long pLenderId, final int pFirstResult, final int pMaxResults) {
+		return lendTransactionDao.findLendTransactionsAsLenderWaitingForInput(pLenderId, pFirstResult, pMaxResults);
+	}
+	
+	public List<LendTransaction> findLendTransactionsAsLenderWaitingForInputList(final Long pLenderId, final int pFirstResult, final int pMaxResults) {
+		return lendTransactionDao.findLendTransactionsAsLenderWaitingForInputList(pLenderId, pFirstResult, pMaxResults);
+	}
+	
+	public ListWithRowCount findLendTransactionsAsBorrowerWaitingForInput(final Long pBorrowerId, final int pFirstResult, final int pMaxResults) {
+		return lendTransactionDao.findLendTransactionsAsBorrowerWaitingForInput(pBorrowerId, pFirstResult, pMaxResults);
+	}
+	
+	public List<LendTransaction> findLendTransactionsAsBorrowerWaitingForInputList(final Long pBorrowerId, final int pFirstResult, final int pMaxResults) {
+		return lendTransactionDao.findLendTransactionsAsBorrowerWaitingForInputList(pBorrowerId, pFirstResult, pMaxResults);
 	}
 	
 	/**
@@ -274,9 +343,19 @@ public class LendTransactionService {
 		return lendTransactionDao.findLendTransactionsList(queryBean);		
 	}
 
-	public long countLendTransactionsWaitingForInput(final Long pPersonId) {
-		CoreUtils.assertNotNull(pPersonId);
-		return lendTransactionDao.countLendTransactionsWaitingForInput(pPersonId);
+//	public long countLendTransactionsWaitingForInput(final Long pPersonId) {
+//		CoreUtils.assertNotNull(pPersonId);
+//		return lendTransactionDao.countLendTransactionsWaitingForInput(pPersonId);
+//	}
+	
+	public long countLendTransactionsAsLenderWaitingForInput(final Long pLenderId) {
+		CoreUtils.assertNotNull(pLenderId);
+		return lendTransactionDao.countLendTransactionsAsLenderWaitingForInput(pLenderId);
+	}
+	
+	public long countLendTransactionsAsBorrowerWaitingForInput(final Long pBorrowerId) {
+		CoreUtils.assertNotNull(pBorrowerId);
+		return lendTransactionDao.countLendTransactionsAsBorrowerWaitingForInput(pBorrowerId);
 	}
 
 	public long countLendTransactionsForItemAndPerson(final Long pItemId, final Long pPersonId, final Long pStatusId) {
@@ -348,6 +427,75 @@ public class LendTransactionService {
 		queryBean.setMaxResults(pMaxResults);
 		return lendTransactionDao.findLendTransactions(queryBean);
 	}
+	
+	public List<LendTransaction> findCurrentUserInProgressLendTransactionsAsBorrowerList() {
+		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
+		queryBean.setBorrowerId(PersonUtils.getCurrentPersonId());
+		
+		final ListValue inProgress = listValueDao.findListValue(LendTransactionStatus.IN_PROGRESS_LABEL_CODE);
+		final Long[] inProgressIds = new Long[]{inProgress.getId()};
+		queryBean.setStatusIds(inProgressIds);
+		
+		queryBean.setFirstResult(0);
+		queryBean.setMaxResults(0);
+		
+		queryBean.setOrderBy("endDate");
+		queryBean.setOrderByAscending(Boolean.TRUE);
+		
+		return lendTransactionDao.findLendTransactionsList(queryBean);
+	}
+	
+	public List<LendTransaction> findCurrentUserFutureLendTransactionsAsBorrowerList() {
+		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
+		queryBean.setBorrowerId(PersonUtils.getCurrentPersonId());
+		
+		final ListValue initialized = listValueDao.findListValue(LendTransactionStatus.INITIALIZED_LABEL_CODE);
+		final ListValue opened = listValueDao.findListValue(LendTransactionStatus.OPENED_LABEL_CODE);
+		final Long[] ids = new Long[]{initialized.getId(), opened.getId()};
+		queryBean.setStatusIds(ids);
+		
+		queryBean.setFirstResult(0);
+		queryBean.setMaxResults(0);
+		
+		queryBean.setOrderBy("startDate");
+		queryBean.setOrderByAscending(Boolean.TRUE);
+		
+		
+		return lendTransactionDao.findLendTransactionsList(queryBean);
+	}
+	
+	public List<LendTransaction> findCurrentUserPastLendTransactionsAsBorrowerList() {
+		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
+		queryBean.setBorrowerId(PersonUtils.getCurrentPersonId());
+		
+		final ListValue completed = listValueDao.findListValue(LendTransactionStatus.COMPLETED_LABEL_CODE);
+		final ListValue canceled = listValueDao.findListValue(LendTransactionStatus.CANCELED_LABEL_CODE);
+		final Long[] ids = new Long[]{completed.getId(), canceled.getId()};
+		queryBean.setStatusIds(ids);
+		
+		queryBean.setFirstResult(0);
+		queryBean.setMaxResults(0);
+		return lendTransactionDao.findLendTransactionsList(queryBean);
+	}
+	
+	public List<LendTransaction> findCurrentUserToEvaluateLendTransactionsAsBorrowerList() {
+		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
+		queryBean.setBorrowerId(PersonUtils.getCurrentPersonId());
+		
+		final ListValue completed = listValueDao.findListValue(LendTransactionStatus.COMPLETED_LABEL_CODE);
+		final Long[] ids = new Long[]{completed.getId()};
+		queryBean.setStatusIds(ids);
+		queryBean.setToEvaluateByBorrower(Boolean.TRUE);
+		
+		queryBean.setFirstResult(0);
+		queryBean.setMaxResults(0);
+		
+		queryBean.setOrderBy("endDate");
+		queryBean.setOrderByAscending(Boolean.FALSE);
+		
+		
+		return lendTransactionDao.findLendTransactionsList(queryBean);
+	}
 
 	public ListWithRowCount findCurrentUserInProgressLendTransactionsAsLender(final int pFirstResult, final int pMaxResults) {
 		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
@@ -362,17 +510,84 @@ public class LendTransactionService {
 		return lendTransactionDao.findLendTransactions(queryBean);
 	}
 	
-	public long countCurrentUserUncompletedLendTransactions() {		
+	public List<LendTransaction> findCurrentUserInProgressLendTransactionsAsLenderList() {
 		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
-		queryBean.setBorrowerOrLenderId(PersonUtils.getCurrentPersonId());
+		queryBean.setLenderId(PersonUtils.getCurrentPersonId());
 		
-		final ListValue opened = listValueDao.findListValue(LendTransactionStatus.OPENED_LABEL_CODE);
 		final ListValue inProgress = listValueDao.findListValue(LendTransactionStatus.IN_PROGRESS_LABEL_CODE);
-		final Long[] uncompletedIds = new Long[]{opened.getId(), inProgress.getId()};
-		queryBean.setStatusIds(uncompletedIds);
+		final Long[] inProgressIds = new Long[]{inProgress.getId()};
+		queryBean.setStatusIds(inProgressIds);
 		
-		return lendTransactionDao.countLendTransactions(queryBean);
+		queryBean.setFirstResult(0);
+		queryBean.setMaxResults(0);
+		
+		queryBean.setOrderBy("endDate");
+		queryBean.setOrderByAscending(Boolean.TRUE);
+		
+		return lendTransactionDao.findLendTransactionsList(queryBean);
 	}
+	
+	public List<LendTransaction> findCurrentUserFutureLendTransactionsAsLenderList() {
+		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
+		queryBean.setLenderId(PersonUtils.getCurrentPersonId());
+		
+		final ListValue initialized = listValueDao.findListValue(LendTransactionStatus.INITIALIZED_LABEL_CODE);
+		final ListValue opened = listValueDao.findListValue(LendTransactionStatus.OPENED_LABEL_CODE);
+		final Long[] ids = new Long[]{initialized.getId(), opened.getId()};
+		queryBean.setStatusIds(ids);
+		
+		queryBean.setFirstResult(0);
+		queryBean.setMaxResults(0);
+		
+		queryBean.setOrderBy("startDate");
+		queryBean.setOrderByAscending(Boolean.TRUE);
+		
+		return lendTransactionDao.findLendTransactionsList(queryBean);
+	}
+	
+	public List<LendTransaction> findCurrentUserPastLendTransactionsAsLenderList() {
+		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
+		queryBean.setLenderId(PersonUtils.getCurrentPersonId());
+		
+		final ListValue completed = listValueDao.findListValue(LendTransactionStatus.COMPLETED_LABEL_CODE);
+		final ListValue canceled = listValueDao.findListValue(LendTransactionStatus.CANCELED_LABEL_CODE);
+		final Long[] ids = new Long[]{completed.getId(), canceled.getId()};
+		queryBean.setStatusIds(ids);
+		
+		queryBean.setFirstResult(0);
+		queryBean.setMaxResults(0);
+		return lendTransactionDao.findLendTransactionsList(queryBean);
+	}
+	
+	public List<LendTransaction> findCurrentUserToEvaluateLendTransactionsAsLenderList() {
+		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
+		queryBean.setLenderId(PersonUtils.getCurrentPersonId());
+		
+		final ListValue completed = listValueDao.findListValue(LendTransactionStatus.COMPLETED_LABEL_CODE);
+		final Long[] ids = new Long[]{completed.getId()};
+		queryBean.setStatusIds(ids);
+		queryBean.setToEvaluateByLender(Boolean.TRUE);
+		
+		queryBean.setFirstResult(0);
+		queryBean.setMaxResults(0);
+		
+		queryBean.setOrderBy("endDate");
+		queryBean.setOrderByAscending(Boolean.FALSE);		
+		
+		return lendTransactionDao.findLendTransactionsList(queryBean);
+	}
+	
+//	public long countCurrentUserUncompletedLendTransactions() {		
+//		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
+//		queryBean.setBorrowerOrLenderId(PersonUtils.getCurrentPersonId());
+//		
+//		final ListValue opened = listValueDao.findListValue(LendTransactionStatus.OPENED_LABEL_CODE);
+//		final ListValue inProgress = listValueDao.findListValue(LendTransactionStatus.IN_PROGRESS_LABEL_CODE);
+//		final Long[] uncompletedIds = new Long[]{opened.getId(), inProgress.getId()};
+//		queryBean.setStatusIds(uncompletedIds);
+//		
+//		return lendTransactionDao.countLendTransactions(queryBean);
+//	}
 
 	/**
 	 * This operation will create a lend transaction with a status initialized.
@@ -635,30 +850,6 @@ public class LendTransactionService {
 			}
 			return null;
 		}			
-	}
-
-	public ListWithRowCount findLendTransactionsWaitingEvaluationFromPerson(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
-		CoreUtils.assertNotNull(pPersonId);
-		final Long completedId = listValueDao.findListValue(LendTransactionStatus.COMPLETED_LABEL_CODE).getId();
-		
-		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
-		queryBean.setFirstResult(pFirstResult);
-		queryBean.setMaxResults(pMaxResults);
-		queryBean.setToEvaluateByPersonId(pPersonId);
-		queryBean.setCompletedStatusId(completedId);
-		
-		return lendTransactionDao.findLendTransactions(queryBean);
-	}
-
-	public long countLendTransactionsWaitingEvaluationFromPerson(final Long pPersonId) {
-		CoreUtils.assertNotNull(pPersonId);
-		final Long completedId = listValueDao.findListValue(LendTransactionStatus.COMPLETED_LABEL_CODE).getId();
-		
-		final LendTransactionDaoQueryBean queryBean = new LendTransactionDaoQueryBean();
-		queryBean.setToEvaluateByPersonId(pPersonId);
-		queryBean.setCompletedStatusId(completedId);
-		
-		return lendTransactionDao.countLendTransactions(queryBean);
 	}
 
 	/////////////////////////////////////////////////////////

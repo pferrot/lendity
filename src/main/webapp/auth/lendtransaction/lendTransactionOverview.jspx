@@ -35,13 +35,35 @@
 			<!-- main content -->
 			<div class="gt-content">								
 			
-				<f:view>		
+				<f:view>
+			
+<c:if test="#{not lendTransactionOverviewController.currentPersonLender}">	
+	<script type="text/javascript">
+		// See menu.js
+		isTransactionOut = true;
+	</script>
+</c:if>
+
+<c:if test="#{lendTransactionOverviewController.currentPersonLender}">
+	<script type="text/javascript">
+		// See menu.js
+		isTransaction = true;
+	</script>
+</c:if>
 				
 <ui:include src="transferItemTooltip.jspx"/>
 						
 					<h:form id="lendTransactionOverviewForm" prependId="false">
 
-<h2 class="gt-table-head"><h:outputText value="#{messages.lendTransaction_lendTransactionOverviewTitle}"/></h2>
+<h2 class="gt-table-head">
+	<c:if test="#{not lendTransactionOverviewController.currentPersonLender}">	
+		<h:outputText value="#{messages.lendTransaction_lendTransactionOutOverviewTitle}"/>
+	</c:if>
+	
+	<c:if test="#{lendTransactionOverviewController.currentPersonLender}">
+		<h:outputText value="#{messages.lendTransaction_lendTransactionOverviewTitle}"/>
+	</c:if>
+</h2>
 
 <!-- content box -->
 <div class="gt-form gt-content-box">

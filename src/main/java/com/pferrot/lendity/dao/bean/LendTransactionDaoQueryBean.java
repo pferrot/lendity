@@ -11,7 +11,8 @@ public class LendTransactionDaoQueryBean {
 	private Long[] statusIds = null;
 	private Long itemId = null;
 	private Long lendRequestId;
-	private Long toEvaluateByPersonId;
+	private Boolean toEvaluateByBorrower = null;
+	private Boolean toEvaluateByLender = null;
 	private Long completedStatusId;
 	private String orderBy = "creationDate";
 	private Boolean orderByAscending = Boolean.FALSE;
@@ -70,12 +71,20 @@ public class LendTransactionDaoQueryBean {
 		this.lendRequestId = lendRequestId;
 	}
 
-	public Long getToEvaluateByPersonId() {
-		return toEvaluateByPersonId;
+	public Boolean getToEvaluateByBorrower() {
+		return toEvaluateByBorrower;
 	}
 
-	public void setToEvaluateByPersonId(Long toEvaluateByPersonId) {
-		this.toEvaluateByPersonId = toEvaluateByPersonId;
+	public void setToEvaluateByBorrower(Boolean toEvaluateByBorrower) {
+		this.toEvaluateByBorrower = toEvaluateByBorrower;
+	}
+
+	public Boolean getToEvaluateByLender() {
+		return toEvaluateByLender;
+	}
+
+	public void setToEvaluateByLender(Boolean toEvaluateByLender) {
+		this.toEvaluateByLender = toEvaluateByLender;
 	}
 
 	public Long getCompletedStatusId() {

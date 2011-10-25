@@ -976,7 +976,7 @@ function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOw
 		commentBackgroundClass = 'otherWallCommentBackground';
 	}
 		
-	var headerClass = 'highlightedBgDark';
+	var headerClass = 'commentHighlightedBgDark';
 	if (pAdminComment) {
 		headerClass = 'adminCommentHighlightedBgDark';
 	}
@@ -985,7 +985,7 @@ function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOw
 	}
 	
 	var html = getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
-			pProfilePictureUrl, pEditEnabled, pDeleteEnabled, pSystemComment, pPublicComment,
+			pProfilePictureUrl, "thumbnailOutterTd", pEditEnabled, pDeleteEnabled, pSystemComment, pPublicComment,
 			commentBackgroundClass, headerClass);
 	
 	html =
@@ -1008,7 +1008,7 @@ function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOw
 					'<table class="buttonsTable">' +
 						'<tr>' +
 							'<td>' +
-								'<span id="childCommentSubmit' + pCommentId +'" class="stylishButton" onClick="postChildComment('+ pCommentId +');">' + mSubmitButtonText + '</span>' +
+								'<span id="childCommentSubmit' + pCommentId +'" class="buttonLight" onClick="postChildComment('+ pCommentId +');">' + mSubmitButtonText + '</span>' +
 							'</td>' +
 						'</tr>' +
 					'</table>' +
@@ -1039,7 +1039,7 @@ function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOw
 	addAllEmbeddedStuff(pCommentId, pText);
 	
 	setupSearchField('childCommentTextarea' + pCommentId, mAddChildCommentDefaultText, true);
-	$j("#childCommentSubmit" + pCommentId).button();
+	//$j("#childCommentSubmit" + pCommentId).button();
 }
 
 function showReplyTextarea(pParentCommentId) {
@@ -1078,7 +1078,7 @@ function addChildCommentInternal(pCommentId, pParentCommentId, pText, pTextWitho
 		commentBackgroundClass = 'otherWallChildCommentBackground';
 	}
 		
-	var headerClass = 'highlightedBg';
+	var headerClass = 'commentHighlightedBg';
 	if (pAdminComment) {
 		headerClass = 'adminChildCommentHighlightedBg';
 	}
@@ -1087,7 +1087,7 @@ function addChildCommentInternal(pCommentId, pParentCommentId, pText, pTextWitho
 	}
 	
 	var html = getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
-		pProfilePictureUrl, pEditEnabled, pDeleteEnabled, pSystemComment, pPublicComment, commentBackgroundClass, headerClass);
+		pProfilePictureUrl, "thumbnailOutterTdSmall",  pEditEnabled, pDeleteEnabled, pSystemComment, pPublicComment, commentBackgroundClass, headerClass);
 	
 	html = 
 		'<div class="childComment">' +
@@ -1107,12 +1107,12 @@ function addChildCommentInternal(pCommentId, pParentCommentId, pText, pTextWitho
 }
 
 function getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
-		pProfilePictureUrl, pEditEnabled, pDeleteEnabled, pSystemComment, pPublicComment, pCommentBackgroundClass, pHeaderClass) {
+		pProfilePictureUrl, pThumbnailOutterTdClass, pEditEnabled, pDeleteEnabled, pSystemComment, pPublicComment, pCommentBackgroundClass, pHeaderClass) {
 	
 	var result = 
 	'<div style="display: none;" id="commentWithoutHref' + pCommentId + '">' + pTextWithoutHref + '</div>' +
 	'<div class="gt-form-row gt-width-100 commentBox" commentId="' + pCommentId + '" id="comment' + pCommentId + '" publicComment="' + pPublicComment + '">' +
-	'<table class="thumbnailOutterTable" width="100%" style="vertical-align: top;"><tr><td class="thumbnailOutterTd" valign="top">' +
+	'<table class="thumbnailOutterTable" width="100%" style="vertical-align: top;"><tr><td class="' + pThumbnailOutterTdClass + '" valign="top">' +
 	'	<table class="thumbnailInnerTable"><tr><td valign="top">';
 	if (pOwnerUrl) {
 		result +=
@@ -1138,11 +1138,11 @@ function getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerU
 	if (pOwnerUrl) {
 		// Normal comment.
 		if (!pSystemComment) {
-			result += '					<label class="small"><a href="' + pOwnerUrl + '">' + pOwnerName + '</a>, ' + pCommentDate + '</label>';
+			result += '					<label class="fontSizeNormalSmall"><a href="' + pOwnerUrl + '">' + pOwnerName + '</a>, ' + pCommentDate + '</label>';
 		}
 		// System comment in the name of a normal user.
 		else {
-			result += '					<label class="small"><a href="' + pOwnerUrl + '">' + pOwnerName + '</a> (system generated), ' + pCommentDate + '</label>';
+			result += '					<label class="fontSizeNormalSmall"><a href="' + pOwnerUrl + '">' + pOwnerName + '</a> (system generated), ' + pCommentDate + '</label>';
 		}
 	}
 	// Pure system comment.
@@ -1181,7 +1181,7 @@ function getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerU
 	result += '			</tr>' +
 	'		</table>' +
 	'	</div>' +
-	'	<span class="fontSizeSmall" id="commentSpan' + pCommentId + '">' + pText + '</span>' +
+	'	<div class="commentContent"><span class="fontSizeComment" id="commentSpan' + pCommentId + '">' + pText + '</span></div>' +
 	'</td></tr></table>' + 
     '</div>';	
 		

@@ -136,61 +136,47 @@ public class LendTransactionDaoHibernateImpl extends HibernateDaoSupport impleme
 			criteria.add(Restrictions.le("endDate", pLendTransactionDaoQueryBean.getEndDateMax()));
 		}
 		
+		if (Boolean.TRUE.equals(pLendTransactionDaoQueryBean.getToEvaluateByBorrower())) {
+			criteria.add(Restrictions.and(
+							Restrictions.isNotNull("borrower"), 
+							Restrictions.isNull("evaluationByBorrower")));			
+		}
+		else if (Boolean.FALSE.equals(pLendTransactionDaoQueryBean.getToEvaluateByBorrower())) {
+			throw new RuntimeException("Not implemented");			
+		}
+		
+		if (Boolean.TRUE.equals(pLendTransactionDaoQueryBean.getToEvaluateByLender())) {
+			criteria.add(Restrictions.and(
+							Restrictions.isNotNull("borrower"), 
+					        Restrictions.isNull("evaluationByLender")));			
+		}
+		else if (Boolean.FALSE.equals(pLendTransactionDaoQueryBean.getToEvaluateByLender())) {
+			throw new RuntimeException("Not implemented");			
+		}
+		
 		return criteria;	
 	}
 
-	private DetachedCriteria getLendTransactionToEvaluateDetachedCriteria(final LendTransactionDaoQueryBean pLendTransactionDaoQueryBean) {
-		DetachedCriteria criteria = DetachedCriteria.forClass(LendTransaction.class);
+	public List<LendTransaction> findLendTransactionsWaitingForInputList(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria criteria = getLendTransactionsWaitingForInputDetachedCriteria(pPersonId, pPersonId);
 		
-		if (pLendTransactionDaoQueryBean.getStatusIds() != null) {
-			final DetachedCriteria itemCriteria = criteria.createCriteria("status", CriteriaSpecification.INNER_JOIN);
-			itemCriteria.add(Restrictions.in("id", pLendTransactionDaoQueryBean.getStatusIds()));
-		}
 		
-		if (pLendTransactionDaoQueryBean.getLendRequestId() != null) {
-			final DetachedCriteria itemCriteria = criteria.createCriteria("lendRequest", CriteriaSpecification.INNER_JOIN);
-			itemCriteria.add(Restrictions.eq("id", pLendTransactionDaoQueryBean.getLendRequestId()));
-		}
-		
-		if (pLendTransactionDaoQueryBean.getBorrowerOrLenderId() != null) {
-			Criterion c = Restrictions.or(
-					Restrictions.eq("borrower.id", pLendTransactionDaoQueryBean.getBorrowerOrLenderId()),
-					Restrictions.eq("lender.id", pLendTransactionDaoQueryBean.getBorrowerOrLenderId()));
-			criteria.add(c);
-		}
-		
-		if (pLendTransactionDaoQueryBean.getBorrowerId() != null) {
-			final DetachedCriteria requesterCriteria = criteria.createCriteria("borrower", CriteriaSpecification.INNER_JOIN);
-			requesterCriteria.add(Restrictions.eq("id", pLendTransactionDaoQueryBean.getBorrowerId()));
-		}
-		
-		if (pLendTransactionDaoQueryBean.getLenderId() != null) {
-			final DetachedCriteria requesterCriteria = criteria.createCriteria("lender", CriteriaSpecification.INNER_JOIN);
-			requesterCriteria.add(Restrictions.eq("id", pLendTransactionDaoQueryBean.getLenderId()));
-		}
-		
-		if (pLendTransactionDaoQueryBean.getItemId() != null) {
-			final DetachedCriteria requesterCriteria = criteria.createCriteria("item", CriteriaSpecification.INNER_JOIN);
-			requesterCriteria.add(Restrictions.eq("id", pLendTransactionDaoQueryBean.getItemId()));
-		}
-		
-		if (pLendTransactionDaoQueryBean.getToEvaluateByPersonId() != null) {
-			CoreUtils.assertNotNull(pLendTransactionDaoQueryBean.getCompletedStatusId());
-			criteria.add(
-				Restrictions.or(
-						Restrictions.and(Restrictions.eq("lender.id", pLendTransactionDaoQueryBean.getToEvaluateByPersonId()),
-										 Restrictions.eq("status.id", pLendTransactionDaoQueryBean.getCompletedStatusId())),
-						Restrictions.and(Restrictions.eq("borrower.id", pLendTransactionDaoQueryBean.getToEvaluateByPersonId()),
-								         Restrictions.eq("status.id", pLendTransactionDaoQueryBean.getCompletedStatusId())))
-			);
-		}
-		
-		return criteria;	
+		return getHibernateTemplate().findByCriteria(criteria,
+													 pFirstResult,
+													 pMaxResults);		
 	}
 	
-
-	private List<LendTransaction> findLendTransactionsWaitingForInputList(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
-		final DetachedCriteria criteria = getLendTransactionsWaitingForInputDetachedCriteria(pPersonId);
+	public List<LendTransaction> findLendTransactionsAsBorrowerWaitingForInputList(final Long pBorrowerId, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria criteria = getLendTransactionsWaitingForInputDetachedCriteria(null, pBorrowerId);
+		
+		
+		return getHibernateTemplate().findByCriteria(criteria,
+													 pFirstResult,
+													 pMaxResults);		
+	}
+	
+	public List<LendTransaction> findLendTransactionsAsLenderWaitingForInputList(final Long pLenderId, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria criteria = getLendTransactionsWaitingForInputDetachedCriteria(pLenderId, null);
 		
 		
 		return getHibernateTemplate().findByCriteria(criteria,
@@ -199,24 +185,44 @@ public class LendTransactionDaoHibernateImpl extends HibernateDaoSupport impleme
 	}
 	
 	public long countLendTransactionsWaitingForInput(final Long pPersonId) {
-		final DetachedCriteria criteria = getLendTransactionsWaitingForInputDetachedCriteria(pPersonId);
+		final DetachedCriteria criteria = getLendTransactionsWaitingForInputDetachedCriteria(pPersonId, pPersonId);
+		return rowCount(criteria);
+	}
+	
+	public long countLendTransactionsAsBorrowerWaitingForInput(final Long pBorrowerId) {
+		final DetachedCriteria criteria = getLendTransactionsWaitingForInputDetachedCriteria(null, pBorrowerId);
+		return rowCount(criteria);
+	}
+	
+	public long countLendTransactionsAsLenderWaitingForInput(final Long pLenderId) {
+		final DetachedCriteria criteria = getLendTransactionsWaitingForInputDetachedCriteria(pLenderId, null);
 		return rowCount(criteria);
 	}
 
-	private DetachedCriteria getLendTransactionsWaitingForInputDetachedCriteria(final Long pPersonId) {
-		CoreUtils.assertNotNull(pPersonId);
+	private DetachedCriteria getLendTransactionsWaitingForInputDetachedCriteria(final Long pLenderId, final Long pBorrowerId) {
+		if (pLenderId == null && pBorrowerId == null) {
+			throw new AssertionError("At least of of lender ID or borrower ID must be defined");
+		}
 		
 		DetachedCriteria criteria = DetachedCriteria.forClass(LendTransaction.class);
 		
 		final Date now = new Date();
 		
 		
-		final SimpleExpression borrowerCriteria = Restrictions.eq("borrower.id", pPersonId);
-		final SimpleExpression lenderCriteria = Restrictions.eq("lender.id", pPersonId);
 		
-		final LogicalExpression lenderOrBorrowerExpression = Restrictions.or(
-																Restrictions.eq("lender.id", pPersonId),
-																Restrictions.eq("borrower.id", pPersonId));
+		
+		Criterion lenderOrBorrowerExpression = null;
+		if (pLenderId != null && pBorrowerId != null) {
+			lenderOrBorrowerExpression = Restrictions.or(
+														Restrictions.eq("lender.id", pLenderId),
+														Restrictions.eq("borrower.id", pBorrowerId));
+		}
+		else if (pLenderId != null) {
+			lenderOrBorrowerExpression = Restrictions.eq("lender.id", pLenderId);
+		}
+		else {
+			lenderOrBorrowerExpression = Restrictions.eq("borrower.id", pBorrowerId);
+		}
 		
 		final SimpleExpression startDatePassedExpression = Restrictions.le("startDate", now);
 		final SimpleExpression endDatePassedExpression = Restrictions.le("endDate", now);
@@ -238,19 +244,40 @@ public class LendTransactionDaoHibernateImpl extends HibernateDaoSupport impleme
 		le = Restrictions.or(openedAndOverdue, inProgressAndOverdue);
 		
 		le = Restrictions.and(lenderOrBorrowerExpression, le);
-		final LogicalExpression lenderAndInitialized = Restrictions.and(lenderCriteria, initializedCriteria);
 		
-		le = Restrictions.or(le, lenderAndInitialized);
+		SimpleExpression lenderCriteria = null;
+		if (pLenderId != null) {			
+			lenderCriteria = Restrictions.eq("lender.id", pLenderId);
+			final LogicalExpression lenderAndInitialized = Restrictions.and(lenderCriteria, initializedCriteria);
+			le = Restrictions.or(le, lenderAndInitialized);
+		}
 		
 		// This will take the lend transactions that must be evaluated.
 		final SimpleExpression completedCriteria = Restrictions.eq("status.id", completedStatus.getId());
-		final Criterion lenderEvaluationNullCriteria = Restrictions.isNull("evaluationByLender");
-		final Criterion borrowerEvaluationNullCriteria = Restrictions.isNull("evaluationByBorrower");
-		final Criterion borrowerNotNullCriteria = Restrictions.isNotNull("borrower");
-		final LogicalExpression lenderAndCompletedAndNotEvaluatedAndBorrowerNotNull = Restrictions.and(lenderCriteria, Restrictions.and(completedCriteria, Restrictions.and(lenderEvaluationNullCriteria, borrowerNotNullCriteria)));
-		final LogicalExpression borrowerAndCompletedAndNotEvaluated = Restrictions.and(borrowerCriteria, Restrictions.and(completedCriteria, borrowerEvaluationNullCriteria));
 		
-		le = Restrictions.or(le, Restrictions.or(lenderAndCompletedAndNotEvaluatedAndBorrowerNotNull, borrowerAndCompletedAndNotEvaluated));
+		LogicalExpression lenderAndCompletedAndNotEvaluatedAndBorrowerNotNull = null;
+		if (pLenderId != null) {
+			final Criterion lenderEvaluationNullCriteria = Restrictions.isNull("evaluationByLender");
+			final Criterion borrowerNotNullCriteria = Restrictions.isNotNull("borrower");
+			lenderAndCompletedAndNotEvaluatedAndBorrowerNotNull = Restrictions.and(lenderCriteria, Restrictions.and(completedCriteria, Restrictions.and(lenderEvaluationNullCriteria, borrowerNotNullCriteria)));
+		}
+		
+		LogicalExpression borrowerAndCompletedAndNotEvaluated = null;
+		if (pBorrowerId != null) {
+			final SimpleExpression borrowerCriteria = Restrictions.eq("borrower.id", pBorrowerId);
+			final Criterion borrowerEvaluationNullCriteria = Restrictions.isNull("evaluationByBorrower");
+			borrowerAndCompletedAndNotEvaluated = Restrictions.and(borrowerCriteria, Restrictions.and(completedCriteria, borrowerEvaluationNullCriteria));
+		}
+		
+		if (pLenderId != null && pBorrowerId != null) {
+			le = Restrictions.or(le, Restrictions.or(lenderAndCompletedAndNotEvaluatedAndBorrowerNotNull, borrowerAndCompletedAndNotEvaluated));
+		}
+		else if (pLenderId != null) {
+			le = Restrictions.or(le, lenderAndCompletedAndNotEvaluatedAndBorrowerNotNull);
+		}
+		else {
+			le = Restrictions.or(le, borrowerAndCompletedAndNotEvaluated);
+		}
 		
 		criteria.add(le);
 		
@@ -278,6 +305,20 @@ public class LendTransactionDaoHibernateImpl extends HibernateDaoSupport impleme
 	public ListWithRowCount findLendTransactionsWaitingForInput(final Long pPersonId, final int pFirstResult, final int pMaxResults) {
 		final List list = findLendTransactionsWaitingForInputList(pPersonId, pFirstResult, pMaxResults);
 		final long count = countLendTransactionsWaitingForInput(pPersonId);
+		
+		return new ListWithRowCount(list, count);
+	}
+	
+	public ListWithRowCount findLendTransactionsAsLenderWaitingForInput(final Long pLenderId, final int pFirstResult, final int pMaxResults) {
+		final List list = findLendTransactionsAsLenderWaitingForInputList(pLenderId, pFirstResult, pMaxResults);
+		final long count = countLendTransactionsAsLenderWaitingForInput(pLenderId);
+		
+		return new ListWithRowCount(list, count);
+	}
+	
+	public ListWithRowCount findLendTransactionsAsBorrowerWaitingForInput(final Long pBorrowerId, final int pFirstResult, final int pMaxResults) {
+		final List list = findLendTransactionsAsBorrowerWaitingForInputList(pBorrowerId, pFirstResult, pMaxResults);
+		final long count = countLendTransactionsAsBorrowerWaitingForInput(pBorrowerId);
 		
 		return new ListWithRowCount(list, count);
 	}

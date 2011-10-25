@@ -1,6 +1,6 @@
 Bonjour $firstName,
 
-Un commentaire a été ajouté sur la transaction $objectTitle:
+Un commentaire a été ajouté sur le prêt $objectTitle:
 
 $comment
 

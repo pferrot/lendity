@@ -27,5 +27,14 @@ public interface LendTransactionDao {
 	void updateLendTransactionsSetNullItem(Long pItemId);
 	
 	ListWithRowCount findLendTransactionsWaitingForInput(Long pPersonId, int pFirstResult, int pMaxResults);
+	List<LendTransaction> findLendTransactionsWaitingForInputList(Long pPersonId, int pFirstResult, int pMaxResults);
 	long countLendTransactionsWaitingForInput(Long pPersonId);
+	
+	ListWithRowCount findLendTransactionsAsBorrowerWaitingForInput(Long pBorrowerId, int pFirstResult, int pMaxResults);
+	List<LendTransaction> findLendTransactionsAsBorrowerWaitingForInputList(Long pBorrowerId, int pFirstResult, int pMaxResults);
+	long countLendTransactionsAsBorrowerWaitingForInput(Long pBorrowerId);
+	
+	ListWithRowCount findLendTransactionsAsLenderWaitingForInput(Long pLenderId, int pFirstResult, int pMaxResults);
+	List<LendTransaction> findLendTransactionsAsLenderWaitingForInputList(Long pLenderId, int pFirstResult, int pMaxResults);
+	long countLendTransactionsAsLenderWaitingForInput(Long pLenderId);
 }

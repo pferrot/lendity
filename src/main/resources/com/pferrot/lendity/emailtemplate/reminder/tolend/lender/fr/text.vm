@@ -2,7 +2,7 @@ Hello $lenderFirstName,
 
 Ceci est un rappel concernant l'objet que tu dois prêter à $borrowerName le $startDateLabel.
 
-Accéder à la transaction $lendTransactionTitle: $lendTransactionUrl
+Accéder au prêt $lendTransactionTitle: $lendTransactionUrl
 
 A bientôt sur $siteName.
 

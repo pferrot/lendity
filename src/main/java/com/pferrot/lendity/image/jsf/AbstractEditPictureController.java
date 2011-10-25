@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.SQLException;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -20,10 +21,11 @@ import org.apache.myfaces.custom.fileupload.UploadedFile;
 import org.apache.myfaces.orchestra.viewController.annotations.PreRenderView;
 
 import com.pferrot.lendity.PagesURL;
-import com.pferrot.lendity.document.DocumentConsts;
 import com.pferrot.lendity.document.DocumentService;
 import com.pferrot.lendity.document.DocumentUtils;
 import com.pferrot.lendity.document.exception.DocumentException;
+import com.pferrot.lendity.document.exception.PictureException;
+import com.pferrot.lendity.document.exception.PictureTooSmallException;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.model.Document;
 import com.pferrot.lendity.utils.JsfUtils;
@@ -54,8 +56,15 @@ public abstract class AbstractEditPictureController  {
 	private String tempThumbnailMimeType;
 	private String tempThumbnailOriginalFileName;
 	
+	private Integer thumbnailSelectionX1;
+	private Integer thumbnailSelectionY1;
+	private Integer thumbnailSelectionWidth;
+	private Integer thumbnailSelectionHeight;
+	
 	// Set to TRUE when the user clicks the link to remove the image.
 	private Boolean removeCurrentImage;
+	
+	private Boolean scaleToFit;
 	
 	public DocumentService getDocumentService() {
 		return documentService;
@@ -122,6 +131,14 @@ public abstract class AbstractEditPictureController  {
 		this.removeCurrentImage = removeCurrentImage;
 	}
 
+	public Boolean getScaleToFit() {
+		return scaleToFit;
+	}
+
+	public void setScaleToFit(Boolean scaleToFit) {
+		this.scaleToFit = scaleToFit;
+	}
+
 	public String getTempFileLocation() {
 		return tempFileLocation;
 	}
@@ -169,6 +186,38 @@ public abstract class AbstractEditPictureController  {
 	public void setTempThumbnailOriginalFileName(
 			String tempThumbnailOriginalFileName) {
 		this.tempThumbnailOriginalFileName = tempThumbnailOriginalFileName;
+	}
+
+	public Integer getThumbnailSelectionX1() {
+		return thumbnailSelectionX1;
+	}
+
+	public void setThumbnailSelectionX1(Integer thumbnailSelectionX1) {
+		this.thumbnailSelectionX1 = thumbnailSelectionX1;
+	}
+
+	public Integer getThumbnailSelectionY1() {
+		return thumbnailSelectionY1;
+	}
+
+	public void setThumbnailSelectionY1(Integer thumbnailSelectionY1) {
+		this.thumbnailSelectionY1 = thumbnailSelectionY1;
+	}
+
+	public Integer getThumbnailSelectionWidth() {
+		return thumbnailSelectionWidth;
+	}
+
+	public void setThumbnailSelectionWidth(Integer thumbnailSelectionWidth) {
+		this.thumbnailSelectionWidth = thumbnailSelectionWidth;
+	}
+
+	public Integer getThumbnailSelectionHeight() {
+		return thumbnailSelectionHeight;
+	}
+
+	public void setThumbnailSelectionHeight(Integer thumbnailSelectionHeight) {
+		this.thumbnailSelectionHeight = thumbnailSelectionHeight;
 	}
 
 	/**
@@ -290,8 +339,9 @@ public abstract class AbstractEditPictureController  {
 	 * 
 	 * @throws IOException
 	 * @throws DocumentException 
+	 * @throws PictureException 
 	 */
-	protected void saveImageInTempFiles() throws IOException, DocumentException {		
+	protected void saveImageInTempFiles() throws IOException, DocumentException, PictureException {		
 		OutputStream out = null;
 		InputStream is = null;
 		try {
@@ -299,24 +349,35 @@ public abstract class AbstractEditPictureController  {
 			final BufferedImage originalBufferedImage = ImageIO.read(is);
 			final String mimeType = getImageFile().getContentType();
 			
-			BufferedImage targetBufferedImage = DocumentUtils.getHighQualityScaledInstance(originalBufferedImage, getImageMaxHeight(), getImageMaxWidth());
-			File tempFile = File.createTempFile("lendity-", ".tmp");
-			ImageIO.write(targetBufferedImage, DocumentUtils.getFormat(mimeType), tempFile);
-			setTempFileLocation(tempFile.getAbsolutePath());
-			setTempFileMimeType(mimeType);
-			setTempFileOriginalFileName(getImageFile().getName());
-			if (log.isDebugEnabled()) {
-				log.debug("Saved picture into temp file: " + getTempFileLocation());
-			}
+			// Process thumbnail first because it can cause the PictureTooSmallException which must be handled before
+			// the normal image is processed.
 			
-			targetBufferedImage = DocumentUtils.getHighQualityScaledInstance(originalBufferedImage, getThumbnailMaxHeight(), getThumbnailMaxWidth());
-			tempFile = File.createTempFile("lendity-", ".tmp");
+			// First resize.
+			BufferedImage targetBufferedImage = DocumentUtils.getHighQualityScaledInstanceWithMinSize(originalBufferedImage, getThumbnailMaxWidth(), getThumbnailMaxHeight());
+			// Then crop to make sure it is a square.
+			targetBufferedImage = DocumentUtils.getHighQualityCroppedInstance(targetBufferedImage, 
+					0, 
+					0, 
+					getThumbnailMaxWidth(), 
+					getThumbnailMaxHeight());
+			File tempFile = File.createTempFile("lendity-", ".tmp");
 			ImageIO.write(targetBufferedImage, DocumentUtils.getFormat(mimeType), tempFile);
 			setTempThumbnailLocation(tempFile.getAbsolutePath());
 			setTempThumbnailMimeType(mimeType);
 			setTempThumbnailOriginalFileName(getImageFile().getName());
 			if (log.isDebugEnabled()) {
 				log.debug("Saved thumbnail into temp file: " + getTempThumbnailLocation());
+			}
+			
+			// Now that the thumbnail was processed without any exception, we can proceed with the normal version.
+			targetBufferedImage = DocumentUtils.getHighQualityScaledInstance(originalBufferedImage, getImageMaxHeight(), getImageMaxWidth());
+			tempFile = File.createTempFile("lendity-", ".tmp");
+			ImageIO.write(targetBufferedImage, DocumentUtils.getFormat(mimeType), tempFile);
+			setTempFileLocation(tempFile.getAbsolutePath());
+			setTempFileMimeType(mimeType);
+			setTempFileOriginalFileName(getImageFile().getName());
+			if (log.isDebugEnabled()) {
+				log.debug("Saved picture into temp file: " + getTempFileLocation());
 			}
 		}
 		finally {
@@ -329,6 +390,8 @@ public abstract class AbstractEditPictureController  {
 		}
 	}
 	
+	
+	
 	/**
 	 * Validate the image and save it in two temp files (image and
 	 * thumbnail) if ok.
@@ -337,6 +400,7 @@ public abstract class AbstractEditPictureController  {
 	 */
 	public String processImage() {
 		try {
+			resetSelection();
 			if (validateImage()) {
 				saveImageInTempFiles();
 				return "success";
@@ -347,11 +411,27 @@ public abstract class AbstractEditPictureController  {
 		}
 		catch (IOException e) {
 			throw new RuntimeException(e);
-		} catch (DocumentException e) {
+		} 
+		catch (DocumentException e) {
 			throw new RuntimeException(e);
 		}
+		catch (PictureTooSmallException e) {
+			errorImageFile();
+			return "error";
+		}
+		catch (PictureException e) {
+			throw new RuntimeException(e);
+		}		
 	}
 	
+	protected void resetSelection() {
+		setThumbnailSelectionHeight(null);
+		setThumbnailSelectionWidth(null);
+		setThumbnailSelectionX1(null);
+		setThumbnailSelectionY1(null);
+		setScaleToFit(null);
+	}
+
 	/**
 	 * When the user clicks the link to remove the current image.
 	 *
@@ -376,4 +456,80 @@ public abstract class AbstractEditPictureController  {
 	 * @return
 	 */
 	public abstract boolean isExistingImage();
+	
+	
+	protected void processThumbnailSelection() throws IOException, DocumentException, SQLException, PictureException {
+		OutputStream out = null;
+		InputStream is = null;
+		try {			
+			
+			if (Boolean.TRUE.equals(getScaleToFit()) ||
+				(getThumbnailSelectionWidth() != 0 && getThumbnailSelectionHeight() != 0)) {
+				
+				String mimeType = null;
+				// Work with a new image.
+				if (getTempFileLocation() != null) {
+					is = new FileInputStream(getTempFileLocation());
+					
+				}
+				// Only the thumbnail of the already selected image profile is modified.
+				else {
+					final Document document = getCurrentImage();
+					is = document.getContent().getBinaryStream();
+					// Retrieve from already existing thumbnail.
+					setTempThumbnailMimeType(document.getMimeType());
+					setTempThumbnailOriginalFileName(document.getName());
+				}
+					
+				mimeType = getTempThumbnailMimeType();
+				
+				final BufferedImage originalBufferedImage = ImageIO.read(is);
+				
+				if (Boolean.TRUE.equals(getScaleToFit())) {
+					// Then resize
+					BufferedImage targetBufferedImage = DocumentUtils.getHighQualityScaledInstanceWithTotalSize(originalBufferedImage, getThumbnailMaxWidth(), getThumbnailMaxHeight(), getThumbnailMaxWidth(), getThumbnailMaxHeight());
+					File tempFile = File.createTempFile("lendity-", ".tmp");
+					ImageIO.write(targetBufferedImage, DocumentUtils.getFormat(mimeType), tempFile);
+					setTempThumbnailLocation(tempFile.getAbsolutePath());
+		//			setTempThumbnailMimeType(mimeType);
+		//			setTempThumbnailOriginalFileName(getImageFile().getName());
+					if (log.isDebugEnabled()) {
+						log.debug("Saved thumbnail into temp file (after processing selection): " + getTempThumbnailLocation());
+					}				
+				}
+				else {
+					// First crop.
+					BufferedImage targetBufferedImage = DocumentUtils.getHighQualityCroppedInstance(originalBufferedImage, 
+							getThumbnailSelectionX1(), 
+							getThumbnailSelectionY1(), 
+							getThumbnailSelectionWidth(), 
+							getThumbnailSelectionHeight());
+					// Then resize
+					targetBufferedImage = DocumentUtils.getHighQualityScaledInstance(targetBufferedImage, getThumbnailMaxWidth(), getThumbnailMaxHeight());
+					File tempFile = File.createTempFile("lendity-", ".tmp");
+					ImageIO.write(targetBufferedImage, DocumentUtils.getFormat(mimeType), tempFile);
+					setTempThumbnailLocation(tempFile.getAbsolutePath());
+		//			setTempThumbnailMimeType(mimeType);
+		//			setTempThumbnailOriginalFileName(getImageFile().getName());
+					if (log.isDebugEnabled()) {
+						log.debug("Saved thumbnail into temp file (after processing selection): " + getTempThumbnailLocation());
+					}			
+				}
+			}
+		}
+		finally {
+			if (out != null) {
+				out.close();
+			}
+			if (is != null) {
+				is.close();
+			}
+		}
+	}
+	
+	/**
+	 * Returns the current image (not the thumbnail) that is saved in the DB.
+	 * @return
+	 */
+	protected abstract Document getCurrentImage();
 }

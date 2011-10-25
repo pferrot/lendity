@@ -45,35 +45,10 @@
 	<ui:include src="../../auth/comment/recommendTooltip.jspx"/>
 </c:if>
 
-<h2 class="gt-table-head"><h:outputText value="#{messages.item_itemOverviewTitle}"/></h2>
-
-<c:if test="${loggedInUser}">
-	<div class="gt-form-row gt-width-100">
-		<h:outputText styleClass="fontSizeSmall" value="#{messages.navigation_pathSeparator}"/>
-		<h:outputText styleClass="fontSizeSmall" value=" " escape="false"/>
-		<c:if test="#{itemOverviewController.nbLendTransactionsCurrentPerson > 0}" var="hasLendTransactions"/>
-		<c:if test="${hasLendTransactions}">			
-			<h:outputLink value="#{itemOverviewController.myLendTransactionsUrl}">
-				<h:outputText styleClass="fontSizeSmall" value="#{messages.lendTransaction_myLendTransactionsForItem}"/>	
-			</h:outputLink>		
-		</c:if>
-		<c:if test="${not hasLendTransactions}">
-			<h:outputText styleClass="fontSizeSmall" value="#{messages.lendTransaction_noLendTransactionsForItem}"/>
-		</c:if>
-	</div>
-	<br/>
-	
-	<a href="#commentsAnchor"><h:outputText styleClass="fontSizeSmall" value="#{messages.comment_addReadComments}"/></a>
-	<br/><br/>
-</c:if>
+<h2 class="gt-table-head"><h:outputText value="#{itemOverviewController.item.title}" /></h2>
 
 <!-- content box -->
 <div class="gt-form gt-content-box">
-	<div class="gt-form-row gt-width-100">
-		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_title}:" /></label></div>
-		<h4><h:outputText value="#{itemOverviewController.item.title}" /></h4>
-	</div>
-	<br/>
 	
 	<c:if test="#{itemOverviewController.image1URL != null}">
 		<center>
@@ -239,15 +214,6 @@
 				<span onclick="requestLendTooltip(this, '#{itemOverviewController.item.id}', 2)">
 					<h:outputText styleClass="stylishButton" value="#{messages.lendRequest_requestLend}"/>
 				</span>
-			</div>
-		</c:if>
-		<c:if test="#{itemOverviewController.activeTransactionsLinkAvailable}">
-			<div class="buttonsDiv">
-				<h:outputLink id="accessUncompletedTransactionsLink" value="#{itemOverviewController.myUncompletedLendTransactionsUrl}" rendered="#{itemOverviewController.activeTransactionsLinkAvailable}">
-					<h:outputFormat styleClass="stylishButton" id="accessUncompletedTransactionsText" value="#{messages.lendTransaction_uncompletedLendTransactionWithNumber}">
-						<f:param value="#{itemOverviewController.nbUncompletedLendTransactionsCurrentPerson}"/>
-					</h:outputFormat>
-				</h:outputLink>
 			</div>
 		</c:if>
 		<c:if test="#{itemOverviewController.lendBackAvailable}">

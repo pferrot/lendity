@@ -4,7 +4,7 @@ $ownerDisplayName refuse de te prêter l'objet suivant:
 
 $itemTitle
 
-Tu peux encore contacter $ownerDisplayName en ajoutant un commentaire sur cette transaction: $lendTransactionUrl
+Tu peux encore contacter $ownerDisplayName en ajoutant un commentaire sur cette demande d'emprunt: $lendTransactionUrl
 
 A bientôt sur $siteName.
 

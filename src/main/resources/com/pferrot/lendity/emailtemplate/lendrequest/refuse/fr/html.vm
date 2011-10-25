@@ -6,7 +6,7 @@ $ownerDisplayName a refusé de te prêter l'objet suivant:<br/><br/>
 
 <b>$itemTitle</b><br/><br/>
 
-Tu peux encore contacter $ownerDisplayName en ajoutant un commentaire sur <a href="$lendTransactionUrl">cette transaction</a>.<br/><br/>
+Tu peux encore contacter $ownerDisplayName en ajoutant un commentaire sur <a href="$lendTransactionUrl">cette demande d'emprunt</a>.<br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
 

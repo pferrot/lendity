@@ -20,9 +20,8 @@ Misc - anything that doesn't fit elsewhere
 
 /* @group HTML, Body */
 html {
-	background-image: url(../images/fond_triangle.png);
-	background-repeat: repeat-y;
-	background-color: #C5C5C5;
+
+	background-color: #ffffff;
 	background-position: center;
 	height: 101%; /*trick to always display the vertical scroll bar in firefox*/
 	
@@ -37,10 +36,20 @@ body {
 .gt-hd {
 	padding-top: 1px;
 }
+
 .gt-hd-top {
 	overflow: hidden;
 	padding: 0 0 10px 0;
+	background-image: url(../images/fond_triangle.png);
+	background-repeat: repeat-y;
+	background-position: center;
 }
+
+.gt-hd-top-login {
+	overflow: hidden;
+	padding: 0 0 10px 0;
+}
+
 .gt-hd .gt-logo {
 	margin-left: 35px;
 	margin-bottom: 0;
@@ -74,6 +83,11 @@ body {
 /* Standard 2 Column */
 .gt-cols .gt-content {
 	width: 65%;
+	float: left;
+	display: inline;
+}
+.gt-cols .gt-content-intermediate {
+	width: 85%;
 	float: left;
 	display: inline;
 }
@@ -148,7 +162,7 @@ body {
 
 /* Footer Styles */
 .gt-footer {
-	font-size: 93%;
+	font-size: 75%;
 	color: #4c4847;
 	margin: 20px 0px;
 	text-align: center;
@@ -217,7 +231,7 @@ body {
 
 /* Default List Table */
 .gt-content-box {
-	border: 1px solid #ccc;
+	border: 0px solid #ccc;
 	border-radius: 5px;
 	padding: 1px;
 }
@@ -232,7 +246,7 @@ body {
 	font-size: 100%;
 	padding: 7px 10px;
 	color: #333;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 0px solid #ccc;
 }
 .gt-table td {
 	padding: 7px 10px;
@@ -294,11 +308,11 @@ body {
 	padding: 7px 10px;
 }
 .gt-content-box .gt-table-controls {
-	border-bottom: 1px solid #ccc;
+	border-bottom: 0px solid #ccc;
 }
 .gt-content-box .gt-table-controls-btm {
 	border-bottom: none!important;
-	border-top: 1px solid #ccc;
+	border-top: 0px solid #ccc;
 	text-align: right; 
 }
 .gt-table-controls .gt-table-picker {

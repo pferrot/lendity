@@ -1,8 +1,8 @@
 Hello $lenderFirstName,
 
-Ceci est un rappel concernant l'objet que $borrowerName dois te retourner le $endDateLabel.
+Ceci est un rappel concernant l'objet que $borrowerName doit te retourner le $endDateLabel.
 
-Accéder à la transaction $lendTransactionTitle: $lendTransactionUrl
+Accéder au prêt $lendTransactionTitle: $lendTransactionUrl
 
 A bientôt sur $siteName.
 

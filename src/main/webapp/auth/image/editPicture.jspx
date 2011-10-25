@@ -31,19 +31,119 @@
 				<h2 class="gt-form-head"><h:outputText value="#{pageTitle}"/></h2>
 				<div class="gt-form gt-content-box">
 				
+				<!-- 
+				Only if not the default image.
+				 -->
+				<c:if test="#{controllerBean.tempFileLocation != null or 
+						((not controllerBean.removeCurrentImage) and controllerBean.existingImage)}">
+					<script type="text/javascript">
+					// the ImageAreaSelect member variable.
+					var mIas;
+					
+					function preview(img, selection) {
+					    if (!selection.width || !selection.height)
+					        return;
+
+					    $j('#scaleToFitCheckbox').attr('checked', false);
+					    
+					    var scaleX = 50 / selection.width;
+					    var scaleY = 50 / selection.height;
+						var sourceWidth = $j("#picture").width();
+						var sourceHeight = $j("#picture").height();
+					    $j('#preview img').css({
+					        width: Math.round(scaleX * sourceWidth),
+					        height: Math.round(scaleY * sourceHeight),
+					        marginLeft: -Math.round(scaleX * selection.x1),
+					        marginTop: -Math.round(scaleY * selection.y1)
+					    });
+
+					    $j('#previewInitial').hide();
+					    $j('#preview').show();
+
+					    $j('#thumbnailSelectionX1').val(selection.x1);
+					    $j('#thumbnailSelectionY1').val(selection.y1);
+					    $j('#thumbnailSelectionWidth').val(selection.width);
+					    $j('#thumbnailSelectionHeight').val(selection.height);
+					}
+
+					function scaleToFit() {
+						if ($j('#scaleToFitCheckbox').is(':checked')) {
+							mIas.cancelSelection();
+							
+							var sourceWidth = $j("#picture").width();
+							var sourceHeight = $j("#picture").height();
+							var scale;
+							var theWidth;
+						    var theHeight;
+						    var theMarginLeft = 0;
+						    var theMarginTop = 0;
+							if (sourceWidth > sourceHeight) {
+								theWidth = 50;
+								scale = 50 / sourceWidth;
+								theHeight = Math.round(scale * sourceHeight);
+								theMarginTop = Math.round((50 - theHeight) / 2);
+							}
+							else {
+								theHeight = 50;
+								scale = 50 / sourceHeight;
+								theWidth = Math.round(scale * sourceWidth);
+								theMarginLeft = Math.round((50 - theWidth) / 2);								
+							}
+							//alert('theMarginTop: ' + theMarginTop);
+							//alert('theMarginLeft: ' + theMarginLeft);
+							
+						    $j('#preview img').css({
+						        width: theWidth,
+						        height: theHeight,
+						        marginLeft: theMarginLeft,
+						        marginTop: theMarginTop
+						    });
+	
+						    $j('#previewInitial').hide();
+						    $j('#preview').show();
+						}
+					}
+					
+					$j(document).ready(function () {
+						mIas = $j('img#picture').imgAreaSelect({ instance: true, aspectRatio: '1:1', handles: true, fadeSpeed: 200, onSelectChange: preview });
+					});
+					</script>
+				</c:if>
+				
 				<f:view>
 
 					<h:form id="editPictureForm" prependId="false" enctype="multipart/form-data">
+					
+					<h:inputHidden id="thumbnailSelectionX1" value="#{controllerBean.thumbnailSelectionX1}" />
+					<h:inputHidden id="thumbnailSelectionY1" value="#{controllerBean.thumbnailSelectionY1}" />
+					<h:inputHidden id="thumbnailSelectionWidth" value="#{controllerBean.thumbnailSelectionWidth}" />
+					<h:inputHidden id="thumbnailSelectionHeight" value="#{controllerBean.thumbnailSelectionHeight}" />
 					
 					<div id="contentDiv">
 					
 						<c:if test="#{controllerBean.imgSrc != null}">
 							<label><h:outputText value="#{messages.image_normalSize}"/></label>						
-							<img src="#{controllerBean.imgSrc}"/>								
+							<img id="picture" src="#{controllerBean.imgSrc}"/>								
 							<br/><br/>
 							
 							<label><h:outputText value="#{messages.image_thumbnail}"/></label>
-							<img src="#{controllerBean.thumbnailSrc}"/>								
+							<div id="previewInitial" style="width: 50px; height: 50px; overflow: hidden; border-style: solid; border-color: black; border-width: 1px;">
+								<img src="#{controllerBean.thumbnailSrc}" style="width: 50px; height: 50px;"/>
+							</div>
+							<div id="preview" style="width: 50px; height: 50px; overflow: hidden; display: none; border-style: solid; border-color: black; border-width: 1px;">
+						    	<img src="#{controllerBean.imgSrc}" style="width: 50px; height: 50px;"/>
+						    </div>
+						    <c:if test="#{controllerBean.tempFileLocation != null or 
+									((not controllerBean.removeCurrentImage) and controllerBean.existingImage)}">
+							<div style="padding-top: 5px;">
+								<span style="font-size: 82%;">
+								<h:outputText value="#{messages.image_thumbnailHelp}"/>
+								<br/>
+								<h:selectBooleanCheckbox id="scaleToFitCheckbox" onclick="scaleToFit();" value="#{controllerBean.scaleToFit}" styleClass="gt-form-element-checkbox"/><h:outputText value=" " escape="false" /><h:outputText value="#{messages.image_scaleToFit}"/>
+								</span>
+							</div>
+						
+							</c:if>
 							<br/><br/>
 						</c:if>					
 						
@@ -74,6 +174,20 @@
 							                   validator="#{controllerBean.validateImageFile}"
 							                   onchange="editPictureOnChange('#{facesContext.externalContext.requestContextPath}', '#{messages.navigation_inProgress}');"/>					
 						</div><!-- /form row -->
+						
+						<!-- form row -->
+						<div class="gt-form-row">
+							<h:commandButton id="processImageButton" style="display: none;" value="#{messages.navigation_save}" action="#{controllerBean.processImage}" />
+							<br/>
+							<table class="buttonsTable"><tr><td>
+							<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{controllerBean.submit}" />
+							</td><td>
+							<h:outputLink styleClass="stylishButton"  value="#{controllerBean.cancelHref}">
+	           					<h:outputText value="#{messages.navigation_cancel}"/>
+	         				</h:outputLink>
+	         				</td></tr></table>
+						</div>
+						<!-- /form row -->
 					
 					</div>
 					
@@ -82,20 +196,6 @@
 						<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/inprogress1.gif"/>
 						</center>
 					</div>
-					
-					<!-- form row -->
-					<div class="gt-form-row">
-						<h:commandButton id="processImageButton" style="display: none;" value="#{messages.navigation_save}" action="#{controllerBean.processImage}" />
-						<br/>
-						<table class="buttonsTable"><tr><td>
-						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{controllerBean.submit}" />
-						</td><td>
-						<h:outputLink styleClass="stylishButton"  value="#{controllerBean.cancelHref}">
-           					<h:outputText value="#{messages.navigation_cancel}"/>
-         				</h:outputLink>
-         				</td></tr></table>
-					</div>
-					<!-- /form row -->
 					
 					</h:form>
 				</f:view>		

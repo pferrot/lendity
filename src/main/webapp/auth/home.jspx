@@ -79,18 +79,33 @@
 						
 						<c:if test="#{not homeController.emptyHomepage}">
 							<div style="border-width: 0px; border-style: solid; border-color: #dddddd; background-color: #dddddd; padding: 5px; border-radius: 5px;">			
-						        <c:if test="#{homeController.nbTransactionsWaitingForMyInput > 0}">
+						        <c:if test="#{homeController.nbTransactionsAsLenderWaitingForMyInput > 0}">
 									<h:outputLink value="#{authenticationController.myLendTransactionsWaitingForInputURL}">
 										<b>
-										<h:outputFormat value="#{messages.home_lendTransactionsWaitingForMyInput}">
-									    	<f:param value="#{homeController.nbTransactionsWaitingForMyInput}" />
+										<h:outputFormat value="#{messages.home_lendTransactionsAsLenderWaitingForMyInput}">
+									    	<f:param value="#{homeController.nbTransactionsAsLenderWaitingForMyInput}" />
 								        </h:outputFormat>
 								        </b>
 							        </h:outputLink>
 						        </c:if>
-						        <c:if test="#{homeController.nbTransactionsWaitingForMyInput == 0}">
-						        	<h:outputFormat value="#{messages.home_lendTransactionsWaitingForMyInput}">
-								    	<f:param value="#{homeController.nbTransactionsWaitingForMyInput}" />
+						        <c:if test="#{homeController.nbTransactionsAsLenderWaitingForMyInput == 0}">
+						        	<h:outputFormat value="#{messages.home_lendTransactionsAsLenderWaitingForMyInput}">
+								    	<f:param value="#{homeController.nbTransactionsAsLenderWaitingForMyInput}" />
+							        </h:outputFormat>
+						        </c:if>
+						        <br/>
+						        <c:if test="#{homeController.nbTransactionsAsBorrowerWaitingForMyInput > 0}">
+									<h:outputLink value="#{authenticationController.myLendTransactionsOutWaitingForInputURL}">
+										<b>
+										<h:outputFormat value="#{messages.home_lendTransactionsAsBorrowerWaitingForMyInput}">
+									    	<f:param value="#{homeController.nbTransactionsAsBorrowerWaitingForMyInput}" />
+								        </h:outputFormat>
+								        </b>
+							        </h:outputLink>
+						        </c:if>
+						        <c:if test="#{homeController.nbTransactionsAsBorrowerWaitingForMyInput == 0}">
+						        	<h:outputFormat value="#{messages.home_lendTransactionsAsBorrowerWaitingForMyInput}">
+								    	<f:param value="#{homeController.nbTransactionsAsBorrowerWaitingForMyInput}" />
 							        </h:outputFormat>
 						        </c:if>
 						        <br/>

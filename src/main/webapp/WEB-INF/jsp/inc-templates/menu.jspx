@@ -56,11 +56,6 @@
         </h:outputLink>
 	</li>
 	<li>
-        <h:outputLink id="menuMyLendTransactionsLink" value="#{authenticationController.myLendTransactionsWaitingForInputURL}" onmouseover="menuLendTransactionsOver();" onmouseout="menuOut();">
-        	<h:outputText id="menuMyLendTransactionsText" value="#{messages.menu_lendTransactions}"/>
-        </h:outputLink>
-	</li>
-	<li>
       	<h:outputLink id="menuMyConnectionsLink" value="#{authenticationController.myConnectionsURL}" onmouseover="menuConnectionsOver();" onmouseout="menuOut();">
             <h:outputText id="menuMyConnectionsText" value="#{messages.menu_friends}"/>
         </h:outputLink>
@@ -70,11 +65,6 @@
         	<h:outputText id="menuMyGroupsText" value="#{messages.menu_groups}"/>
         </h:outputLink>
 	</li>
-	<li>
-        <h:outputLink id="menuProfileLink" value="#{authenticationController.myProfileURL}" onmouseover="menuProfileOver();" onmouseout="menuOut();">
-   	        <h:outputText id="menuProfileText" value="#{messages.menu_profile}"/>
-   	    </h:outputLink>
-	</li>	
 	</c:if>
 </ul>
 
@@ -116,6 +106,10 @@
 		<h:outputLink id="sideMenuMyLentItemsLink" class="sideMenuLink" value="#{authenticationController.myLentItemsURL}">
 			<h:outputText id="sideMenuMyLentItemsText" value="#{messages.menu_myLentItems}" />
 		</h:outputLink>	
+		</li><li>
+		<h:outputLink id="sideMenuMyLentItemsWaitingForInputLink" class="sideMenuLink" value="#{authenticationController.myLendTransactionsWaitingForInputURL}">
+			<h:outputText id="sideMenuMyLentItemsWaitingForInputText" value="#{messages.menu_myLendTransactionsWaitingForInput}" />
+		</h:outputLink>	
 		</li>
 		</ul>	
 		</td>
@@ -137,6 +131,10 @@
 		<h:outputLink id="sideMenuMyBorrowedItemsLink" class="sideMenuLink" value="#{authenticationController.myBorrowedItemsURL}">
 			<h:outputText id="sideMenuMyBorrowedItemsText" value="#{messages.menu_myBorrowedItems}"/>
 		</h:outputLink>
+		</li><li>
+		<h:outputLink id="sideMenuMyBorrowedItemsWaitingForInputLink" class="sideMenuLink" value="#{authenticationController.myLendTransactionsOutWaitingForInputURL}">
+			<h:outputText id="sideMenuMyBorrowedItemsWaitingForInputText" value="#{messages.menu_myLendTransactionsOutWaitingForInput}" />
+		</h:outputLink>	
 		</li>
 		</ul>	
 		</td>
@@ -170,39 +168,6 @@
 		</tr>
 		</table>
 	</div></div></div>
-	
-	<!-- navbar -->
-	<div id="divSubMenuLendTransactions" class="gt-subnavbar clearfix" style="display: none; position: relative;"><div class="gt-fixed-wrap clearfix"><div>
-		<table class="subMenuTable">
-		<tr>
-		<td>
-		<ul class="sf-menu2">
-		<li>
-		   <h:outputLink id="sideMenuMyLendTransactionsWaitingForInputLink" class="sideMenuLink" value="#{authenticationController.myLendTransactionsWaitingForInputURL}">
-	       		<h:outputText id="sideMenuMyLendTransactionsWaitingForInputText" value="#{messages.menu_myLendTransactionsWaitingForInput}"/>
-	       </h:outputLink>
-		</li>	
-		<li>
-		   <h:outputLink id="sideMenuMyLendTransactionsLink" class="sideMenuLink" value="#{authenticationController.myLendTransactionsURL}">
-	       		<h:outputText id="sideMenuMyLendTransactionsText" value="#{messages.menu_myLendTransactions}"/>
-	       </h:outputLink>
-		</li>
-		<li>
-		    <h:outputLink id="sideMenuMyEvaluationsLink" class="sideMenuLink" value="#{authenticationController.myEvaluationsURL}">
-			    <h:outputText id="sideMenuMyEvaluationsText" value="#{messages.menu_myEvaluations}" />
-		    </h:outputLink>
-		</li>
-		<li>
-		    <h:outputLink id="sideMenuMyEvaluationsMadeLink" class="sideMenuLink" value="#{authenticationController.myEvaluationsMadeURL}">
-			    <h:outputText id="sideMenuMyEvaluationsMadeText" value="#{messages.menu_myEvaluationsMade}" />
-		    </h:outputLink>
-		</li>
-		</ul>	
-		</td>
-		</tr>
-		</table>
-	</div></div></div>
-	
 	
 	<!-- navbar -->
 	<div id="divSubMenuConnections" class="gt-subnavbar clearfix" style="display: none; position: relative;"><div class="gt-fixed-wrap clearfix"><div>
@@ -317,17 +282,7 @@
 		</tr>
 		</table>
 	</div></div></div>
-	
-	<!-- navbar -->
-	<div id="divSubMenuProfile" class="gt-subnavbar clearfix" style="display: none;"><div class="gt-fixed-wrap clearfix"><div>
-		<table class="subMenuTable">
-		<tr>
-		<td>
-			<img src="#{facesContext.externalContext.requestContextPath}/public/images/transparent.gif" width="1" height="27"/>
-		</td>
-		</tr>
-		</table>
-	</div></div></div>
+
 </c:if>
 </div>
 

@@ -185,16 +185,6 @@
 			</tr>
 			<tr>
 				<th>
-					<h:outputText id="id_11" value="#{messages.lendTransaction_uncompletedLendTransaction}:" />
-				</th>
-				<td>
-					<h:outputLink id="id_12" value="#{myItemsListController.myUncompletedLendTransactionsUrl}">
-						<h:outputText id="id_13" value="#{myItemsListController.nbUncompletedLendTransactionsCurrentPerson}"/>
-					</h:outputLink>
-				</td>
-			</tr>
-			<tr>
-				<th>
 					<h:outputText id="id_5" rendered="#{myItemsListController.borrowed}" value="#{messages.item_lentTo}:" />
 				</th>
 				<td>

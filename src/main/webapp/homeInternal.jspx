@@ -7,16 +7,6 @@
     xmlns:c="http://java.sun.com/jstl/core"
     xmlns:o="http://myfaces.apache.org/orchestra"
     xmlns:t="http://myfaces.apache.org/tomahawk">
-
-<script type="text/javascript">
-$j(window).load(function() {
-	$j('.thubnailImageHome').each(function(pIndex, pElement) {
-		if ($j(pElement).height() > 30) {
-			$j(pElement).height(30);
-		}
-	});
-});
-</script>
 												    
 			<table style="width: 100%;">
 				<tr>
@@ -45,15 +35,15 @@ $j(window).load(function() {
 							</div>
 						</center>
 						
-						<div style="border-width: 1px; border-style: solid; border-color: #dddddd; padding: 0px; border-radius: 5px; margin-top: 10px;">
+						<div style="border-width: 0px; border-style: solid; border-color: #dddddd; padding: 0px; border-radius: 5px; margin-top: 10px;">
 							<h:dataTable value="#{theBean.itemsList}" binding="#{theBean.itemsTable}" var="item" styleClass="gt-table gt-user-table">
 							
 								<h:column id="itemColumn1">
-							    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+							    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTdSmall">
 										<table class="thumbnailInnerTable"><tr><td>
 											<h:outputLink id="itemOverviewLink1" value="#{theBean.itemOverviewHref}" rendered="#{theBean.itemThumbnail1Src != null}">
 												<div class="thumbnailDiv">
-												    <img class="thubnailImageHome" src="#{theBean.itemThumbnail1Src}"/>
+												    <img src="#{theBean.itemThumbnail1Src}"/>
 												</div>
 											</h:outputLink>
 										</td></tr></table>
@@ -119,15 +109,15 @@ $j(window).load(function() {
 							</div>
 						</center>
 						
-						<div style="border-width: 1px; border-style: solid; border-color: #dddddd; padding: 0px; border-radius: 5px; margin-top: 10px;">
+						<div style="border-width: 0px; border-style: solid; border-color: #dddddd; padding: 0px; border-radius: 5px; margin-top: 10px;">
 							<h:dataTable value="#{theBean.needsList}" binding="#{theBean.needsTable}" var="need" styleClass="gt-table gt-user-table">
 							
 								<h:column id="needColumn1">
-							    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+							    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTdSmall">
 										<table class="thumbnailInnerTable"><tr><td>
 											<h:outputLink id="needOverviewLink1" value="#{theBean.needOverviewHref}" rendered="#{theBean.needThumbnail1Src != null}">
 												<div class="thumbnailDiv">
-												    <img class="thubnailImageHome" src="#{theBean.needThumbnail1Src}"/>
+												    <img src="#{theBean.needThumbnail1Src}"/>
 												</div>
 											</h:outputLink>
 										</td></tr></table>
@@ -196,15 +186,15 @@ $j(window).load(function() {
 							</div>
 						</center>
 						
-						<div style="border-width: 1px; border-style: solid; border-color: #dddddd; padding: 0px; border-radius: 5px; margin-top: 10px;">
+						<div style="border-width: 0px; border-style: solid; border-color: #dddddd; padding: 0px; border-radius: 5px; margin-top: 10px;">
 							<h:dataTable value="#{theBean.personsList}" binding="#{theBean.personsTable}" var="person" styleClass="gt-table gt-user-table">
 							
 								<h:column id="personColumn1">
-							    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+							    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTdSmall">
 										<table class="thumbnailInnerTable"><tr><td>
 											<h:outputLink id="personOverviewLink1" value="#{theBean.personOverviewHref}" rendered="#{theBean.personThumbnail1Src != null}">
 												<div class="thumbnailDiv">
-												    <img class="thubnailImageHome" src="#{theBean.personThumbnail1Src}"/>
+												    <img src="#{theBean.personThumbnail1Src}"/>
 												</div>
 											</h:outputLink>
 										</td></tr></table>
@@ -272,15 +262,15 @@ $j(window).load(function() {
 							</div>
 						</center>
 						
-						<div style="border-width: 1px; border-style: solid; border-color: #dddddd; padding: 0px; border-radius: 5px; margin-top: 10px;">
+						<div style="border-width: 0px; border-style: solid; border-color: #dddddd; padding: 0px; border-radius: 5px; margin-top: 10px;">
 							<h:dataTable value="#{theBean.groupsList}" binding="#{theBean.groupsTable}" var="group" styleClass="gt-table gt-user-table">
 		
 							    <h:column id="groupColumn1">
-							    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTd">
+							    	<table class="thumbnailOutterTable"><tr><td class="thumbnailOutterTdSmall">
 										<table class="thumbnailInnerTable"><tr><td>
 											<h:outputLink id="groupOverviewLink1" value="#{theBean.groupOverviewHref}" rendered="#{theBean.groupThumbnail1Src != null}">
 												<div class="thumbnailDiv">
-												    <img class="thubnailImageHome" src="#{theBean.groupThumbnail1Src}"/>
+												    <img src="#{theBean.groupThumbnail1Src}"/>
 												</div>
 											</h:outputLink>
 										</td></tr></table>

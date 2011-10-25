@@ -812,34 +812,27 @@
 	      <property name="lendTransactionWithCommentService" ref="lendTransactionWithCommentService"/>
 	      <property name="lendRequestService" ref="lendRequestService"/>
 	</bean>
-
-    <bean id="myInProgressLendTransactionsListController" class="com.pferrot.lendity.lendtransaction.jsf.MyInProgressLendTransactionsListController"
-	      scope="session">
+	
+	<bean id="myLendTransactionsListController" class="com.pferrot.lendity.lendtransaction.jsf.MyLendTransactionsListController"
+	      scope="conversation.access">
 	      <property name="lendTransactionService" ref="lendTransactionService"/>
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
-	<bean id="myInProgressLendTransactionsOutListController" class="com.pferrot.lendity.lendtransaction.jsf.MyInProgressLendTransactionsOutListController"
-	      scope="session">
-	      <property name="lendTransactionService" ref="lendTransactionService"/>
-	      <property name="itemService" ref="itemService"/>
-	</bean>
-
-	<bean id="myLendTransactionsForItemListController" class="com.pferrot.lendity.lendtransaction.jsf.MyLendTransactionsForItemListController"
-	      scope="session">
-	      <property name="lendTransactionService" ref="lendTransactionService"/>
-	      <property name="itemService" ref="itemService"/>
-	      <property name="personService" ref="personService"/>
-	</bean>
-
-	<bean id="myLendTransactionsListController" class="com.pferrot.lendity.lendtransaction.jsf.MyLendTransactionsListController"
-	      scope="session">
+	<bean id="myLendTransactionsOutListController" class="com.pferrot.lendity.lendtransaction.jsf.MyLendTransactionsOutListController"
+	      scope="conversation.access">
 	      <property name="lendTransactionService" ref="lendTransactionService"/>
 	      <property name="itemService" ref="itemService"/>
 	</bean>
 	
 	<bean id="myLendTransactionsWaitingForInputListController" class="com.pferrot.lendity.lendtransaction.jsf.MyLendTransactionsWaitingForInputListController"
-	      scope="session">
+	      scope="conversation.access">
+	      <property name="lendTransactionService" ref="lendTransactionService"/>
+	      <property name="itemService" ref="itemService"/>
+	</bean>
+
+	<bean id="myLendTransactionsOutWaitingForInputListController" class="com.pferrot.lendity.lendtransaction.jsf.MyLendTransactionsOutWaitingForInputListController"
+	      scope="conversation.access">
 	      <property name="lendTransactionService" ref="lendTransactionService"/>
 	      <property name="itemService" ref="itemService"/>
 	</bean>

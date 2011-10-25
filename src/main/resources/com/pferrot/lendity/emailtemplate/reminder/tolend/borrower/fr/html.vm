@@ -4,7 +4,7 @@ Hello $borrowerFirstName,<br/><br/>
 
 Ceci est un rappel concernant l'objet que <b>$lenderName</b> devrait te prêter le <b>$startDateLabel</b>.<br/><br/>
 
-<a href="$lendTransactionUrl">Accéder à la transaction $lendTransactionTitle</a><br/><br/>
+<a href="$lendTransactionUrl">Accéder à l'emprunt $lendTransactionTitle</a><br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
 

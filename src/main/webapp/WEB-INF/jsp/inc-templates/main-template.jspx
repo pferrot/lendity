@@ -40,6 +40,9 @@
 	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/superfish/hoverIntent.js"></script>
 	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/jquery/superfish/superfish.css" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/jquery/superfish/superfish2.css" type="text/css" media="screen, projection" />
+	
+	<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/jquery/imgareaselect/imgareaselect-default.css" type="text/css" media="screen, projection" />
+	<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/imgareaselect/jquery.imgareaselect.min-0.9.8.js"></script>
 
 	<script type="text/javascript">
 		var $j = jQuery.noConflict();
@@ -124,6 +127,13 @@
 						<c:if test="${loggedInUser}">
 							<p><strong><h:outputText id="currentUser" value="#{authenticationController.currentUserDisplayName}"/></strong></p>
 							<p>
+								<o:separateConversationContext>
+	                        		<h:outputLink id="myAccountLink" value="#{authenticationController.myProfileURL}">
+		            					<h:outputText id="myAccountText" value="#{messages.menu_profile}"/>
+					         		</h:outputLink>
+				         		</o:separateConversationContext>
+		         			</p>
+		         			<p>
                         		<h:outputLink id="logoutLink" value="#{authenticationController.logoutURL}">
 	            					<h:outputText id="logoutText" value="#{messages.logout_logout}"/>
 				         		</h:outputLink>

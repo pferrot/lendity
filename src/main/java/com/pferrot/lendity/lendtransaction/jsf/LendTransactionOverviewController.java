@@ -123,6 +123,10 @@ public class LendTransactionOverviewController extends AbstractLendTransactionOv
 		return getLendTransactionService().isCurrentUserAuthorizedToEdit(getLendTransaction());
 	}
 	
+	public boolean isCurrentPersonLender() {
+		return getLendTransaction().getLender().getId().equals(PersonUtils.getCurrentPersonId());
+	}
+	
 	public String getLendTransactionEditHref() {
 		return JsfUtils.getFullUrl(PagesURL.LEND_TRANSACTION_EDIT,
 				PagesURL.LEND_TRANSACTION_EDIT_PARAM_LEND_TRANSACTION_ID,

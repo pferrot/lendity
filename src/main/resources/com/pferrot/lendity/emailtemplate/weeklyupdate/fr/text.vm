@@ -1,7 +1,10 @@
 Bonjour $firstName,
 
-#if( $nbTransactionsWaitingForInput )
-$nbTransactionsWaitingForInput transaction(s) en attente d'action: $transactionsWaitingForInputUrl
+#if( $nbTransactionsAsLenderWaitingForInput )
+$nbTransactionsAsLenderWaitingForInput prêt(s) à traiter: $transactionsWaitingForInputUrl
+#end
+#if( $nbTransactionsAsBorrowerWaitingForInput )
+$nbTransactionsAsBorrowerWaitingForInput emprunt(s) à traiter: $transactionsOutWaitingForInputUrl
 #end
 #if( $nbGroupJoinRequests )
 $nbGroupJoinRequests demande(s) d'adhésion à un groupe en attente: $groupJoinRequestsUrl

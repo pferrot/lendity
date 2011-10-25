@@ -10,6 +10,7 @@ import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.item.ItemUtils;
+import com.pferrot.lendity.model.Document;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.image.jsf.AbstractEditPictureController;
@@ -23,8 +24,8 @@ public class ItemEditPictureController  extends AbstractEditPictureController {
 	private static final int IMAGE_MAX_HEIGHT = 550;
 	private static final int IMAGE_MAX_WIDTH = 550;
 	
-	private static final int THUMBNAIL_MAX_HEIGHT = 45;
-	private static final int THUMBNAIL_MAX_WIDTH = 45;
+	private static final int THUMBNAIL_MAX_HEIGHT = 50;
+	private static final int THUMBNAIL_MAX_WIDTH = 50;
 	
 	private ItemService itemService;
 	
@@ -78,6 +79,9 @@ public class ItemEditPictureController  extends AbstractEditPictureController {
 			if (getTempFileLocation() != null) {
 				getItemService().updateItemPicture1(getItem(), getImageDocumentFromTempFile(), getThumbnailDocumentFromTempFile());
 			}
+			else if (getTempThumbnailLocation() != null) {
+				getItemService().updateItemThumbnail1(getItem(), getThumbnailDocumentFromTempFile());
+			}
 			else if (Boolean.TRUE.equals(getRemoveCurrentImage())) {
 				getItemService().updateItemPicture1(getItem(), null, null);
 			}			
@@ -93,14 +97,20 @@ public class ItemEditPictureController  extends AbstractEditPictureController {
 	}
 
 	public String submit() {
-		Long itemId = updateItem();
+		try {
+			processThumbnailSelection();
+			Long itemId = updateItem();
+			
+			if (itemId != null) {
+				JsfUtils.redirect(PagesURL.ITEM_OVERVIEW, PagesURL.ITEM_OVERVIEW_PARAM_ITEM_ID, itemId.toString());
+			}
 		
-		if (itemId != null) {
-			JsfUtils.redirect(PagesURL.ITEM_OVERVIEW, PagesURL.ITEM_OVERVIEW_PARAM_ITEM_ID, itemId.toString());
+			// Return to the same page.
+			return "error";
 		}
-	
-		// Return to the same page.
-		return "error";
+		catch (Exception e) {
+			return "error";
+		}
 	}
 	
 	public String getImgSrc() {
@@ -155,5 +165,10 @@ public class ItemEditPictureController  extends AbstractEditPictureController {
 	@Override
 	public boolean isExistingImage() {
 		return getItem().getImage1() != null;
+	}
+
+	@Override
+	protected Document getCurrentImage() {
+		return getItem().getImage1();
 	}
 }

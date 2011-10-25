@@ -597,6 +597,13 @@ public class ItemService extends ObjektService {
 		updateItem(pItem);
 	}
 
+	/**
+	 * Updates both the image and the thumbnail.
+	 * 
+	 * @param pItem
+	 * @param pPicture
+	 * @param pThumbnail
+	 */
 	public void updateItemPicture1(final Item pItem, final Document pPicture, final Document pThumbnail) {
 		assertCurrentUserAuthorizedToEdit(pItem);
 		if (pItem.isPublicVisibility()) {
@@ -633,6 +640,35 @@ public class ItemService extends ObjektService {
 			getDocumentDao().deleteDocument(oldThumbnail);
 		}
 		
+		itemDao.updateItem(pItem);
+ 	}
+	
+	/**
+	 * Only updates the thumbnail.
+	 * 
+	 * @param pItem
+	 * @param pThumbnail
+	 */
+	public void updateItemThumbnail1(final Item pItem, final Document pThumbnail) {
+		assertCurrentUserAuthorizedToEdit(pItem);
+		if (pItem.isPublicVisibility()) {
+			if (pThumbnail != null) {
+				pThumbnail.setPublik(Boolean.TRUE);
+			}
+		}
+		else {
+			if (pThumbnail != null) {
+				pThumbnail.setPublik(Boolean.FALSE);
+			}
+		}
+		final Document oldThumbnail = pItem.getThumbnail1();		
+		if (pThumbnail != null) {
+			getDocumentDao().createDocument(pThumbnail);
+		}
+		pItem.setThumbnail1(pThumbnail);
+		if (oldThumbnail != null) {
+			getDocumentDao().deleteDocument(oldThumbnail);
+		}		
 		itemDao.updateItem(pItem);
  	}
 	

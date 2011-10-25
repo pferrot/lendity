@@ -113,7 +113,7 @@ public class AuthenticationController {
 	}
 
 	public String getMyBorrowedItemsURL() {
-		return JsfUtils.getContextRoot() + PagesURL.MY_IN_PROGRESS_LEND_TRANSACTIONS_OUT_LIST;
+		return JsfUtils.getContextRoot() + PagesURL.MY_LEND_TRANSACTIONS_OUT_LIST;
 	}
 
 	public String getItemsSearchURL() {
@@ -127,7 +127,7 @@ public class AuthenticationController {
 	}
 
 	public String getMyLentItemsURL() {
-		return JsfUtils.getFullUrl(PagesURL.MY_IN_PROGRESS_LEND_TRANSACTIONS_LIST);
+		return JsfUtils.getFullUrl(PagesURL.MY_LEND_TRANSACTIONS_LIST);
 	}
 	
 	public String getItemAddURL() {
@@ -162,6 +162,10 @@ public class AuthenticationController {
 	
 	public String getMyLendTransactionsWaitingForInputURL() {
 		return JsfUtils.getFullUrl(PagesURL.MY_LEND_TRANSACTIONS_WAITING_FOR_INPUT_LIST);
+	}
+	
+	public String getMyLendTransactionsOutWaitingForInputURL() {
+		return JsfUtils.getFullUrl(PagesURL.MY_LEND_TRANSACTIONS_OUT_WAITING_FOR_INPUT_LIST);
 	}
 
 	public String getMyEvaluationsURL() {

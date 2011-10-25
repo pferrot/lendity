@@ -144,7 +144,7 @@ text-decoration: none!important;
 }
 
 div.highlightedBg {
-	background-color: #d1d1d1;
+	background-color: #f1f1f1;
 	width: 100%;
 }
 
@@ -220,11 +220,11 @@ table.subMenuTable {
 }
 
 .gt-search {
-	width: 160px!important;	
+	width: 210px!important;	
 }
 
 input.shortcutSearchInput {
-	width: 170px;	
+	width: 210px;	
 }
 
 input.listerSearchInput {
@@ -295,8 +295,16 @@ div.contentDivNextToCategories {
 	font-size:100%!important;
 }
 
+.fontSizeNormalSmall {
+	font-size:93%!important;
+}
+
 .fontSizeSmall {
 	font-size:85%!important;
+}
+
+.fontSizeComment {
+	font-size:90%!important;
 }
 
 .fontSizeSmallSmall {
@@ -449,6 +457,21 @@ td.thumbnailOutterTd {
 	padding: 0px;
 }
 
+td.thumbnailOutterTd img {
+	width: 50px;
+	height: 50px;
+}
+
+td.thumbnailOutterTdSmall {
+	width: 55px;
+	padding: 0px;
+}
+
+td.thumbnailOutterTdSmall img {
+	width: 35px;
+	height: 35px;
+}
+
 table.thumbnailInnerTable {
 	width: 1px;
 	padding: 0px;
@@ -459,8 +482,8 @@ table.thumbnailInnerTable {
 div.thumbnailDiv {
 	border-color: #d3d3e1;
 	border-style: solid;
-	border-width: 1px;
-	padding: 2px;
+	border-width: 0px;
+	padding: 0px;
 	background-color: #ffffff; 
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -473,7 +496,7 @@ div.profilePictureDiv {
 	z-index: 10;
 	border-color: #d3d3e1;
 	border-style: solid;
-	border-width: 1px;
+	border-width: 0px;
 	padding: 5px;
 	background-color: #ffffff;
 	-webkit-border-radius: 5px;
@@ -483,7 +506,7 @@ div.profilePictureDiv {
 div.itemPictureDiv {
 	border-color: #d3d3e1;
 	border-style: solid;
-	border-width: 1px;
+	border-width: 0px;
 	padding: 5px;
 	background-color: #ffffff;
 	-webkit-border-radius: 5px;
@@ -523,59 +546,79 @@ div.childComment {
 }
 
 .commentBackground {
-	background-color: #d1d1d1;
 }
+
+div.commentHighlightedBg {
+	background-color: #e1e1e1;
+	width: 100%;
+}
+
+div.commentHighlightedBgDark {
+	background-color: #e1e1e1;
+	width: 100%;
+}
+
+.childCommentBackground {
+	background-color: #f1f1f1;
+}
+
+div.commentContent {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	padding-right: 0px;	
+}
+
 
 /********************************************/
 /* ADMIN COMMENTS (start) */
 .adminCommentBackground {
-	background-color: #ff9900;
-	color: #000000!important;
 }
 
 .adminCommentBackground label {
-	color: #000000!important;
 }
 
 .adminCommentBackground a,
 .adminCommentBackground span.linkStyleActionSmall {
-	color: #ffffff!important;
 }
 
 .adminCommentBackground a:hover,
 .adminCommentBackground span.linkStyleActionSmall:hover {
-	color: #dddddd!important;
 }
 
 div.adminCommentHighlightedBgDark {
-	background-color: #ff6600;
+	background-color: #e1e1e1;
 	width: 100%;
+}
+
+div.adminCommentHighlightedBgDark .adminCommentBackground a,
+div.adminCommentHighlightedBgDark .adminCommentBackground span.linkStyleActionSmall {
+}
+
+div.adminCommentHighlightedBgDark .adminCommentBackground a:hover,
+div.adminCommentHighlightedBgDark .adminCommentBackground span.linkStyleActionSmall:hover {
 }
 
 
 /* ADMIN CHILD COMMENTS*/
 
 .adminChildCommentBackground {
-	background-color: #ff9900;
-	color: #000000!important;
+	background-color: #f1f1f1;
 }
 
 .adminChildCommentBackground label {
-	color: #000000!important;
 }
 
 .adminChildCommentBackground a,
 .adminChildCommentBackground span.linkStyleActionSmall {
-	color: #ffffff!important;
 }
 
 .adminChildCommentBackground a:hover,
 .adminChildCommentBackground span.linkStyleActionSmall:hover {
-	color: #dddddd!important;
 }
 
 div.adminChildCommentHighlightedBg {
-	background-color: #ff6600;
+	background-color: #e1e1e1;
 	width: 100%;
 }
 
@@ -585,11 +628,10 @@ div.adminChildCommentHighlightedBg {
 /********************************************/
 /* OTHER WALL COMMENTS (start) */
 .otherWallCommentBackground {
-	background-color: #d3d3e1;
 }
 
 div.otherWallCommentHighlightedBgDark {
-	background-color: #8888a2;
+	background-color: #e1e1e1;
 	width: 100%;
 }
 
@@ -597,20 +639,16 @@ div.otherWallCommentHighlightedBgDark {
 /* OTHER WALL CHILD COMMENTS*/
 
 .otherWallChildCommentBackground {
-	background-color: #eaeaf2;
+	background-color: #f1f1f1;
 }
 
 div.otherWallChildCommentHighlightedBg {
-	background-color: #d3d3e1;
+	background-color: #e1e1e1;
 	width: 100%;
 }
 
 /* OTHER WALL COMMENTS (end) */
 /********************************************/
-
-.childCommentBackground {
-	background-color: #f1f1f1;
-}
 
 div.statusInfoOverview {
 	font-size:110%;
@@ -630,7 +668,7 @@ div.statusInfoOverview {
 	
 #headshadow {
 	height: 20px;
-	background-image: url(../images/login/head_shadow.png);
+	background-image: url(../images/login/head_shadow_2.png);
 	background-repeat: no-repeat;
 	background-position: center;
 	margin-top:10px;
@@ -714,4 +752,32 @@ div.blackBox2 {
 	font-size: 100%;
 	text-align: center;
 	padding-top: 10px;
+}
+
+div.lineSeparator {
+	width: 80%;
+	height: 5px;
+	background-color: #b1b1b1;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.buttonLight {
+	background-color: #d1d1d1;
+	color: black;
+	border-color: #b1b1b1;
+	border-style: solid;
+	border-width: 1px;
+	padding-left: 7px;
+	padding-right: 7px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	cursor: pointer; 
+	font-size: 100%;
+}
+
+.buttonLight:hover {
+	background-color: #f1f1f1;
 }

@@ -4,7 +4,7 @@ $lenderDisplayName a indiqué qu'il t'a prêté / va te prêter l'objet suivant:
 
 $itemTitle
 
-Tu peux maintenant suivre cette transaction ici: $lendTransactionUrl
+Tu peux maintenant suivre cet emprunt ici: $lendTransactionUrl
 
 A bientôt sur $siteName.
 

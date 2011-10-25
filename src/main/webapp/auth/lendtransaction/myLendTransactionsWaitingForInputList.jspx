@@ -26,7 +26,10 @@
 			
 			<!-- body -->
 			<div class="gt-bd gt-cols clearfix">
+			<!-- main content -->
+			<div class="gt-content-intermediate">
 
+				
 <f:view>
 
 <h2 class="gt-table-head">
@@ -35,24 +38,10 @@
 
 <br/>
 
-
-<table class="filtersTable">
-<tr>
-<td>
-<ui:include src="filter/statusFilter.jspx">
-	<ui:param name="theBean" value="#{myLendTransactionsWaitingForInputListController}"/>
-</ui:include>
-</td>
-</tr>
-</table>
-
-<br/>
-
 <!-- content box -->
 <div class="gt-content-box">
 
 <c:if test="#{empty(myLendTransactionsWaitingForInputListController.list)}">
-	<br/><br/>
 	<center>
 	<h4><h:outputText value="#{messages.search_noResult}"></h:outputText></h4>
 	</center>
@@ -68,10 +57,10 @@
 				    <img src="#{myLendTransactionsWaitingForInputListController.thumbnail1Src}"/>
 				</div>
 			</td></tr></table>
-		</td><td> 
+		</td><td>
 		<span class="fontSizeSmall"><h:outputText value="#{messages.lendTransaction_transactionFor}"/></span>
 		<h4>
-			<h:outputText value="#{lendTransaction.title}" />			
+			<h:outputText value="#{lendTransaction.title}" />		
 		</h4>
 		</td></tr></table>
     </h:column>
@@ -91,17 +80,7 @@
 			</tr>
 			<tr>
 				<th>
-					<h:outputText id="lenderTitle" value="#{messages.item_owner}:" />
-				</th>
-				<td>
-					<h:outputLink id="lenderLink" value="#{myLendTransactionsWaitingForInputListController.lenderOverviewHref}">
-						<h:outputText id="lenderLabel" value="#{lendTransaction.lender.displayName}"/>
-					</h:outputLink>
-				</td>
-			</tr>   
-			<tr>
-				<th>
-					<h:outputText id="borrowerTitle" value="#{messages.lendTransaction_requester}:" />
+					<h:outputText id="borrowerTitle" value="#{messages.lendTransaction_borrower}:" />
 				</th>
 				<td>
 					<h:outputLink id="borrowerLink" value="#{myLendTransactionsWaitingForInputListController.borrowerOverviewHref}" rendered="#{myLendTransactionsWaitingForInputListController.borrowerHrefAvailable}">
@@ -120,10 +99,18 @@
 			</tr>
 			<tr>
 				<th>
-					<h:outputText id="creationDateTitle" value="#{messages.lendTransaction_creationDate}:" />
+					<h:outputText id="startDateTitle" value="#{messages.lendTransaction_startDate}:" />
 				</th>
 				<td>
-					<h:outputText id="creationDateLabel" value="#{myLendTransactionsWaitingForInputListController.creationDateLabel}"/>
+					<h:outputText id="startDateLabel" value="#{myLendTransactionsWaitingForInputListController.startDateLabel}"/>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<h:outputText id="endDateTitle" value="#{messages.lendTransaction_endDate}:" />
+				</th>
+				<td>
+					<h:outputText id="endDateLabel" value="#{myLendTransactionsWaitingForInputListController.endDateLabel}"/>
 				</td>
 			</tr>
 		</table>
@@ -134,24 +121,20 @@
 			<tr>
 				<td>
 					<h:outputLink id="accessTransactionLink" value="#{myLendTransactionsWaitingForInputListController.lendTransactionOverviewHref}" styleClass="stylishButton">
-						<h:outputText id="accessTransactionLinkLabel" value="#{messages.lendTransaction_accessTransaction}"/>
-					</h:outputLink>
-				
+						<h:outputText id="accessTransactionLinkLabel" value="#{messages.lendTransaction_accessTransactionAsLender}"/>
+					</h:outputLink>				
 				</td>
 		    </tr>
 		</table>
     </h:column>
-    
 
 </h:dataTable>
-
-<ui:include src="../table/tableControls.jspx">
-	<ui:param name="theBean" value="#{myLendTransactionsWaitingForInputListController}"/>
-</ui:include>
 
 </div><!-- /content box -->
 
 </f:view>
+			</div>
+			<!-- /main content -->
 			</div>
 			<!-- /body -->
 			

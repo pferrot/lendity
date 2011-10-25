@@ -295,29 +295,12 @@ public class ItemOverviewController extends AbstractObjektOverviewController {
 			return I18nUtils.getMessageResourceString("image_changeImage", locale);
 		}
 	}
-	
-	public String getMyLendTransactionsUrl() {
-		return JsfUtils.getFullUrl(
-				PagesURL.MY_LEND_TRANSACTIONS_FOR_ITEM_LIST,
-				PagesURL.MY_LEND_TRANSACTIONS_FOR_ITEM_LIST_PARAM_ITEM_ID,
-				item.getId().toString());
-	}
 
 	public long getNbLendTransactionsCurrentPerson() {
 		if (! SecurityUtils.isLoggedIn()) {
 			throw new RuntimeException("Not logged in");
 		}
 		return lendTransactionService.countLendTransactionsForItemAndPerson(item.getId(), PersonUtils.getCurrentPersonId(), null);
-	}
-
-	public String getMyUncompletedLendTransactionsUrl() {
-		final String[] param1 = new String[]{PagesURL.MY_LEND_TRANSACTIONS_FOR_ITEM_LIST_PARAM_ITEM_ID, item.getId().toString()};
-		final String[] param2 = new String[]{AbstractLendTransactionsListController.FORCE_VIEW_PARAM_NAME,
-				AbstractLendTransactionsListController.FORCE_VIEW_UNCOMPLETED_LEND_TRANSACTIONS};
-		final String[][] params = new String[][]{param1, param2};
-		return JsfUtils.getFullUrl(
-				PagesURL.MY_LEND_TRANSACTIONS_FOR_ITEM_LIST,
-				params);
 	}
 	
 	public long getNbUncompletedLendTransactionsCurrentPerson() {

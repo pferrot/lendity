@@ -10,6 +10,7 @@ import org.springframework.security.AccessDeniedException;
 
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.image.jsf.AbstractEditPictureController;
+import com.pferrot.lendity.model.Document;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonConsts;
 import com.pferrot.lendity.person.PersonService;
@@ -17,15 +18,15 @@ import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 
 @ViewController(viewIds={"/auth/person/personEditPicture.jspx"})
-public class PersonEditPictureController  extends AbstractEditPictureController {
+public class PersonEditPictureController extends AbstractEditPictureController {
 	
 	private final static Log log = LogFactory.getLog(PersonEditPictureController.class);
 	
 	private static final int IMAGE_MAX_HEIGHT = 200;
 	private static final int IMAGE_MAX_WIDTH = 200;
 	
-	private static final int THUMBNAIL_MAX_HEIGHT = 45;
-	private static final int THUMBNAIL_MAX_WIDTH = 45;
+	private static final int THUMBNAIL_MAX_HEIGHT = 50;
+	private static final int THUMBNAIL_MAX_WIDTH = 50;
 	
 	private PersonService personService;
 	
@@ -84,6 +85,9 @@ public class PersonEditPictureController  extends AbstractEditPictureController 
 			if (getTempFileLocation() != null) {
 				getPersonService().updatePersonPicture(getPerson(), getImageDocumentFromTempFile(), getThumbnailDocumentFromTempFile());
 			}
+			else if (getTempThumbnailLocation() != null) {
+				getPersonService().updatePersonThumbnail(getPerson(), getThumbnailDocumentFromTempFile());
+			}
 			else if (Boolean.TRUE.equals(getRemoveCurrentImage())) {
 				getPersonService().updatePersonPicture(getPerson(), null, null);
 			}			
@@ -99,14 +103,20 @@ public class PersonEditPictureController  extends AbstractEditPictureController 
 	}
 
 	public String submit() {
-		Long personId = updatePerson();
+		try {
+			processThumbnailSelection();
+			Long personId = updatePerson();
+			
+			if (personId != null) {
+				JsfUtils.redirect(PagesURL.MY_PROFILE);
+			}
 		
-		if (personId != null) {
-			JsfUtils.redirect(PagesURL.MY_PROFILE);
+			// Return to the same page.
+			return "error";
 		}
-	
-		// Return to the same page.
-		return "error";
+		catch (Exception e) {
+			return "error";
+		}
 	}
 	
 	public String getImgSrc() {
@@ -161,5 +171,10 @@ public class PersonEditPictureController  extends AbstractEditPictureController 
 	@Override
 	public boolean isExistingImage() {
 		return getPerson().getImage() != null;
+	}
+
+	@Override
+	protected Document getCurrentImage() {
+		return getPerson().getImage();
 	}
 }

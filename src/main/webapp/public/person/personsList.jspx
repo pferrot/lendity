@@ -23,7 +23,8 @@
 			
 			<!-- body -->
 			<div class="gt-bd gt-cols clearfix">
-
+			<!-- main content -->
+			<div class="gt-content-intermediate">
 				
 <f:view>
 
@@ -141,13 +142,13 @@
     </h:column>
 
 	<h:column id="column3">
-		<table border="0" width="150" align="right">
+		<table border="0" class="gt-table-categories" width="150" align="right">
 			<tr>
 				<td>
 					<span onclick="requestConnectionTooltip(this, '#{person.id}', 1)">
 						<h:outputText styleClass="stylishButton" value="#{messages.connectionRequest_requestConnection}" rendered="#{!personsListController.requestConnectionDisabled}"/>
 					</span>
-					<h:outputText styleClass="small" id="requestConnectionNotAllowed" value="#{personsListController.requestConnectionDisabledLabel}" rendered="#{personsListController.requestConnectionDisabled}"/>
+					<h:outputText id="requestConnectionNotAllowed" value="#{personsListController.requestConnectionDisabledLabel}" rendered="#{personsListController.requestConnectionDisabled}"/>
 					<h:outputLink id="addFriendNotAvailableNotLoggedInLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
 						<h:outputText id="addFriendNotAvailableNotLoggedIn" value="#{messages.person_requestConnectionNotAvailableNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
 					</h:outputLink>
@@ -166,6 +167,8 @@
 
 </f:view>
 				
+			</div>
+			<!-- /main content -->
 			</div>
 			<!-- /body -->
 			

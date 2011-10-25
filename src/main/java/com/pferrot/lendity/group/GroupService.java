@@ -658,6 +658,13 @@ public class GroupService {
 		}		
 	}
 
+	/**
+	 * Updates both the image and the thumbnail.
+	 * 
+	 * @param pGroup
+	 * @param pPicture
+	 * @param pThumbnail
+	 */
 	public void updateGroupPicture(final Group pGroup, final Document pPicture, final Document pThumbnail) {
 		assertCurrentUserAuthorizedToEdit(pGroup);
 		if (pPicture != null) {
@@ -680,6 +687,30 @@ public class GroupService {
 		if (oldPic != null) {
 			documentDao.deleteDocument(oldPic);
 		}
+		if (oldThumbnail != null) {
+			documentDao.deleteDocument(oldThumbnail);
+		}
+		
+		groupDao.updateGroup(pGroup);
+ 	}
+	
+	/**
+	 * Only updates the thumbnail.
+	 * 
+	 * @param pGroup
+	 * @param pThumbnail
+	 */
+	public void updateGroupThumbnail(final Group pGroup, final Document pThumbnail) {
+		assertCurrentUserAuthorizedToEdit(pGroup);
+		if (pThumbnail != null) {
+			pThumbnail.setPublik(Boolean.TRUE);
+		}
+		final Document oldThumbnail = pGroup.getThumbnail1();		
+		if (pThumbnail != null) {
+			documentDao.createDocument(pThumbnail);
+		}
+		pGroup.setThumbnail1(pThumbnail);
+		
 		if (oldThumbnail != null) {
 			documentDao.deleteDocument(oldThumbnail);
 		}

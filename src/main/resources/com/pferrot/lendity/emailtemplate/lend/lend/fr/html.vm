@@ -6,7 +6,7 @@ Hello $borrowerFirstName,<br/><br/>
 
 <b>$itemTitle</b><br/><br/>
 
-Tu peux maintenant <a href="$lendTransactionUrl">suivre cette transaction</a>.<br/><br/>
+Tu peux maintenant <a href="$lendTransactionUrl">suivre cet emprunt</a>.<br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
 

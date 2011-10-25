@@ -2,9 +2,9 @@
 
 Hello $lenderFirstName,<br/><br/>
 
-Ceci est un rappel concernant l'objet que <b>$borrowerName</b> dois te retourner le <b>$endDateLabel</b>.<br/><br/>
+Ceci est un rappel concernant l'objet que <b>$borrowerName</b> doit te retourner le <b>$endDateLabel</b>.<br/><br/>
 
-<a href="$lendTransactionUrl">Accéder à la transaction $lendTransactionTitle</a><br/><br/>
+<a href="$lendTransactionUrl">Accéder au prêt $lendTransactionTitle</a><br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
 

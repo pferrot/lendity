@@ -36,7 +36,14 @@
 <div class="gt-form gt-content-box">
 
 
-<f:view><h:form id="lendTransactionEditForm" prependId="false">
+<f:view>
+
+	<script type="text/javascript">
+		// See menu.js
+		isTransaction = true;
+	</script>
+
+<h:form id="lendTransactionEditForm" prependId="false">
 
 
 	<div class="gt-form-row gt-width-100">
