@@ -121,9 +121,9 @@
 					<div class="gt-form-row">
 						<br/>
 						<table class="buttonsTable"><tr><td>
-						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{itemAddController.submit}" />
+						<h:commandButton styleClass="buttonLight2" value="#{messages.navigation_save}" action="#{itemAddController.submit}" />
 						</td><td>
-						<h:outputLink styleClass="stylishButton"  value="#{authenticationController.myItemsURL}">
+						<h:outputLink styleClass="buttonLight2"  value="#{authenticationController.myItemsURL}">
            					<h:outputText value="#{messages.navigation_cancel}"/>
          				</h:outputLink>
          				</td></tr></table>

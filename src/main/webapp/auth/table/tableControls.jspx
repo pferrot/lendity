@@ -28,66 +28,42 @@
 <table class="pagingTable" width="100%">
 <tr><td width="100%" align="right" >
 <div style="width: 50px; height: 35px; position: relative;">
-<div style="position: absolute; right: 105px;">
+<div style="position: absolute; right: 87px;">
 <!--	The paging buttons-->
 <h:commandLink action="#{theBean.pageFirst}"
     rendered="#{theBean.firstRow != 0}">
 	<c:if test="#{theBean.firstRow != 0}">
-		<ul class="ui-widget ui-helper-clearfix">
-			<li class="ui-state-default ui-corner-all">
-				<span class="ui-icon ui-icon-triangle-1-w pointer" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"></span>
-			</li>
-		</ul>
+		<span class="buttonLight2" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"><h:outputText value="#{messages.navigation_firstPageShort} "/></span>
 	</c:if>
 </h:commandLink>
 <c:if test="#{theBean.firstRow == 0}">
-	<ul class="ui-widget ui-helper-clearfix">
-		<li class="ui-state-disabled ui-corner-all">
-			<span class="ui-icon ui-icon-triangle-1-w" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"></span>
-		</li>
-	</ul>
+	<span class="buttonLightDisabled" alt="#{messages.navigation_firstPage}" title="#{messages.navigation_firstPage}"><h:outputText value="#{messages.navigation_firstPageShort} "/></span>
 </c:if>
 
 </div>
-<div style="position: absolute; right: 70px;">
+<div style="position: absolute; right: 62px;">
 
 <h:commandLink action="#{theBean.pagePrevious}"
     rendered="#{theBean.firstRow != 0}">
 	<c:if test="#{theBean.firstRow != 0}">
-		<ul class="ui-widget ui-helper-clearfix">
-			<li class="ui-state-default ui-corner-all">
-				<span class="ui-icon ui-icon-carat-1-w pointer" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}"></span>
-			</li>
-		</ul>
+	  <span class="buttonLight2" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}"><h:outputText value="#{messages.navigation_previousPageShort} "/></span>
 	</c:if>
 </h:commandLink>
 <c:if test="#{theBean.firstRow == 0}">
-	<ul class="ui-widget ui-helper-clearfix">
-		<li class="ui-state-disabled ui-corner-all">
-			<span class="ui-icon ui-icon-carat-1-w" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}"></span>
-		</li>
-	</ul>
+	<span class="buttonLightDisabled" alt="#{messages.navigation_previousPage}" title="#{messages.navigation_previousPage}"><h:outputText value="#{messages.navigation_previousPageShort} "/></span>
 </c:if>
 
 </div>
-<div style="position: absolute; right: 35px;">
+<div style="position: absolute; right: 37px;">
 
 <h:commandLink action="#{theBean.pageNext}"
     rendered="#{theBean.firstRow + theBean.rowsPerPage lt theBean.totalRows}">
 	<c:if test="#{theBean.firstRow + theBean.rowsPerPage lt theBean.totalRows}">
-		<ul class="ui-widget ui-helper-clearfix">
-			<li class="ui-state-default ui-corner-all">
-				<span class="ui-icon ui-icon-carat-1-e pointer" alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}"></span>
-			</li>
-		</ul>
+		<span class="buttonLight2" alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}"><h:outputText value="#{messages.navigation_nextPageShort} "/></span>
 	</c:if>
 </h:commandLink>
 <c:if test="#{theBean.firstRow + theBean.rowsPerPage >= theBean.totalRows}">
-	<ul class="ui-widget ui-helper-clearfix">
-		<li class="ui-state-disabled ui-corner-all">
-			<span class="ui-icon ui-icon-carat-1-e" alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}"></span>
-		</li>
-	</ul>
+	<span class="buttonLightDisabled" alt="#{messages.navigation_nextPage}" title="#{messages.navigation_nextPage}"><h:outputText value="#{messages.navigation_nextPageShort} "/></span>
 </c:if> 
               
 </div>
@@ -96,19 +72,11 @@
 <h:commandLink action="#{theBean.pageLast}"
     rendered="#{theBean.firstRow + theBean.rowsPerPage lt theBean.totalRows}">
 	<c:if test="#{theBean.firstRow + theBean.rowsPerPage lt theBean.totalRows}">
-		<ul class="ui-widget ui-helper-clearfix">
-			<li class="ui-state-default ui-corner-all">
-				<span class="ui-icon ui-icon-triangle-1-e pointer" alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}"></span>
-			</li>
-		</ul>
+		<span class="buttonLight2" alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}"><h:outputText value="#{messages.navigation_lastPageShort} "/></span>
 	</c:if>	
 </h:commandLink>
 <c:if test="#{theBean.firstRow + theBean.rowsPerPage >= theBean.totalRows}">
-	<ul class="ui-widget ui-helper-clearfix">
-		<li class="ui-state-disabled ui-corner-all">
-			<span class="ui-icon ui-icon-triangle-1-e" alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}"></span>
-		</li>
-	</ul>
+	<span class="buttonLightDisabled" alt="#{messages.navigation_lastPage}" title="#{messages.navigation_lastPage}"><h:outputText value="#{messages.navigation_lastPageShort} "/></span>
 </c:if>
 
 </div>

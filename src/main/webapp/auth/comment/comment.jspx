@@ -22,7 +22,7 @@
 			<table class="buttonsTable">
 				<tr>
 					<td>
-						<span id="commentSubmit" class="buttonLight" onClick="postComment('#{containerID}', '#{containerType}');"><h:outputText value="#{messages.comment_submit}"/></span>
+						<span id="commentSubmit" class="buttonLight2" onClick="postComment('#{containerID}', '#{containerType}');"><h:outputText value="#{messages.comment_submit}"/></span>
 					</td>
 					<c:if test="#{showPublicCheckbox}">
 						<td width="100%">
@@ -44,7 +44,7 @@
 			<table class="buttonsTable">
 				<tr>
 					<td>
-						<span id="childCommentSubmit" class="stylishButton" onClick="postChildComment();"><h:outputText value="#{messages.comment_submit}"/></span>
+						<span id="childCommentSubmit" class="buttonLight2" onClick="postChildComment();"><h:outputText value="#{messages.comment_submit}"/></span>
 					</td>
 				</tr>
 			</table>
@@ -66,10 +66,10 @@
 			<table class="buttonsTable">
 				<tr>
 					<td>
-						<span id="editCommentSubmit" class="stylishButton" onClick="editCommentSubmit();"><h:outputText value="#{messages.comment_editCommentSubmit}"/></span>
+						<span id="editCommentSubmit" class="buttonLight2" onClick="editCommentSubmit();"><h:outputText value="#{messages.comment_editCommentSubmit}"/></span>
 					</td>
 					<td>
-						<span id="editCommentCancel" class="stylishButton" onClick="editCommentCancel();"><h:outputText value="#{messages.navigation_cancel}"/></span>
+						<span id="editCommentCancel" class="buttonLight2" onClick="editCommentCancel();"><h:outputText value="#{messages.navigation_cancel}"/></span>
 					</td>
 					<c:if test="#{showPublicCheckbox}">
 						<td width="100%" id="editCommentPublicCommentTd">

@@ -104,7 +104,7 @@
 		<c:if test="#{itemOverviewController.recommendAvailable}">
 			<div class="buttonsDiv">
 				<span onclick="recommendTooltip(this, '#{needOverviewController.need.id}', 'need')">
-					<h:outputText styleClass="stylishButton" value="#{messages.comment_recommend}"/>
+					<h:outputText styleClass="buttonLight2" value="#{messages.comment_recommend}"/>
 				</span>
 			</div>
 			<br/><br/>
@@ -112,21 +112,21 @@
 		
 		<c:if test="#{needOverviewController.editAvailable}">
 			<div class="buttonsDiv">
-				<h:outputLink rendered="#{needOverviewController.editAvailable}" value="#{needOverviewController.needEditHref}" styleClass="stylishButton">
+				<h:outputLink rendered="#{needOverviewController.editAvailable}" value="#{needOverviewController.needEditHref}" styleClass="buttonLight2">
 		    		<h:outputText rendered="#{needOverviewController.editAvailable}" value="#{messages.navigation_edit}"/>
 		    	</h:outputLink>
 		    </div>
 	    </c:if>
 	    <c:if test="#{needOverviewController.gotItAvailable}">
 	    	<div class="buttonsDiv">
-		    	<h:outputLink rendered="#{needOverviewController.gotItAvailable}" value="#{needOverviewController.gotItHref}" styleClass="stylishButton" >
+		    	<h:outputLink rendered="#{needOverviewController.gotItAvailable}" value="#{needOverviewController.gotItHref}" styleClass="buttonLight2" >
 				    <h:outputText rendered="#{needOverviewController.gotItAvailable}" value="#{messages.need_gotIt}" />
 			    </h:outputLink>
 			</div>
 		</c:if>
 	    <c:if test="#{!authenticationController.loggedIn}">
 	    	<div class="buttonsDiv">
-			    <h:outputLink id="gotItNotAvailableLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
+			    <h:outputLink id="gotItNotAvailableLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="buttonLight2">
 					<h:outputText id="gotItNotAvailable" value="#{messages.need_gotItNotAvailableNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
 				</h:outputLink>
 			</div>
@@ -134,7 +134,7 @@
 		<c:if test="#{needOverviewController.editAvailable}">
 			<div class="buttonsDiv">
 				<span onclick="deleteNeedTooltip(this, '#{needOverviewController.need.id}', 1)">
-					<h:outputText styleClass="stylishButton" value="#{messages.item_delete}"/>
+					<h:outputText styleClass="buttonLight2" value="#{messages.item_delete}"/>
 				</span>
 			</div>
 		</c:if>

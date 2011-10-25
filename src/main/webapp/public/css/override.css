@@ -94,20 +94,6 @@ a:hover {
 	text-decoration: none!important;
 }
 
-a.stylishButton, .stylishButton {
-	color: black!important;
-	font-weight: bold!important;
-	text-decoration: none!important;
-	font-size:85%!important;
-}
-
-a.stylishButtonLarge, .stylishButtonLarge {
-	color: black!important;
-	font-weight: bold!important;
-	text-decoration: none!important;
-	font-size:100%!important;
-}
-
 .gt-table-buttons {
 	margin: 0px 0px 0px 0px;
 }

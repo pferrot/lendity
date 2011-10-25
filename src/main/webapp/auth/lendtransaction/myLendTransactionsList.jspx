@@ -104,7 +104,7 @@
 		<table border="0" class="gt-table-categories" width="120" align="right">
 			<tr>
 				<td>
-					<h:outputLink id="accessTransactionLink" value="#{myLendTransactionsListController.inProgressLendTransactionOverviewHref}" styleClass="stylishButton">
+					<h:outputLink id="accessTransactionLink" value="#{myLendTransactionsListController.inProgressLendTransactionOverviewHref}" styleClass="buttonLight2">
 						<h:outputText id="accessTransactionLinkLabel" value="#{messages.lendTransaction_accessTransactionAsLender}"/>
 					</h:outputLink>				
 				</td>
@@ -203,7 +203,7 @@
 		<table border="0" class="gt-table-categories" width="120" align="right">
 			<tr>
 				<td>
-					<h:outputLink id="accessTransactionLink" value="#{myLendTransactionsListController.futureLendTransactionOverviewHref}" styleClass="stylishButton">
+					<h:outputLink id="accessTransactionLink" value="#{myLendTransactionsListController.futureLendTransactionOverviewHref}" styleClass="buttonLight2">
 						<h:outputText id="accessTransactionLinkLabel" value="#{messages.lendTransaction_accessTransactionAsLender}"/>
 					</h:outputLink>				
 				</td>
@@ -285,7 +285,7 @@
 		<table border="0" class="gt-table-categories" width="120" align="right">
 			<tr>
 				<td>
-					<h:outputLink id="accessTransactionLink" value="#{myLendTransactionsListController.toEvaluateLendTransactionOverviewHref}" styleClass="stylishButton">
+					<h:outputLink id="accessTransactionLink" value="#{myLendTransactionsListController.toEvaluateLendTransactionOverviewHref}" styleClass="buttonLight2">
 						<h:outputText id="accessTransactionLinkLabel" value="#{messages.lendTransaction_accessTransactionAsLender}"/>
 					</h:outputLink>				
 				</td>

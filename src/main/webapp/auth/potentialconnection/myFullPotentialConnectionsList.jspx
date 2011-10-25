@@ -43,7 +43,7 @@
 
 <c:if test="#{!empty(myFullPotentialConnectionsListController.list)}">
 	<span onclick="deleteAllPotentialConnectionsTooltip(this, 1)">
-		<h:outputText styleClass="stylishButton" value="#{messages.potentialConnection_deleteAll}"/>
+		<h:outputText styleClass="buttonLight2" value="#{messages.potentialConnection_deleteAll}"/>
 	</span>
 	<br/><br/>
 </c:if>
@@ -100,14 +100,14 @@
 			<tr>
 				<td>
 					<h:form>
-						<h:commandButton styleClass="stylishButton" action="#{myFullPotentialConnectionsListController.ignorePotentialConnection}" value="#{messages.potentialConnection_ignore}" rendered="#{!myFullPotentialConnectionsListController.ignored}"/>
+						<h:commandButton styleClass="buttonLight2" action="#{myFullPotentialConnectionsListController.ignorePotentialConnection}" value="#{messages.potentialConnection_ignore}" rendered="#{!myFullPotentialConnectionsListController.ignored}"/>
 					</h:form>
 					<h:form>
-						<h:commandButton styleClass="stylishButton" action="#{myFullPotentialConnectionsListController.unignorePotentialConnection}" value="#{messages.potentialConnection_unignore}" rendered="#{myFullPotentialConnectionsListController.ignored}"/>
+						<h:commandButton styleClass="buttonLight2" action="#{myFullPotentialConnectionsListController.unignorePotentialConnection}" value="#{messages.potentialConnection_unignore}" rendered="#{myFullPotentialConnectionsListController.ignored}"/>
 					</h:form>
 					<br/>
 					<h:form>
-						<h:commandButton styleClass="stylishButton" action="#{myFullPotentialConnectionsListController.deletePotentialConnection}" value="#{messages.potentialConnection_delete}"/>
+						<h:commandButton styleClass="buttonLight2" action="#{myFullPotentialConnectionsListController.deletePotentialConnection}" value="#{messages.potentialConnection_delete}"/>
 					</h:form>			
 				</td>
 		    </tr>

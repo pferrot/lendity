@@ -90,7 +90,7 @@
 					<td>
 						
 							<span onclick="removeGroupAdminTooltip(this, '#{groupAdministratorsListController.groupId}', '#{person.id}', 1)">
-								<h:outputText id="id_01" styleClass="stylishButton" value="#{messages.group_removeGroupAdmin}"  rendered="#{groupAdministratorsListController.authorizedToRemoveAdmin}"/>
+								<h:outputText id="id_01" styleClass="buttonLight2" value="#{messages.group_removeGroupAdmin}"  rendered="#{groupAdministratorsListController.authorizedToRemoveAdmin}"/>
 							</span>
 						
 					</td>

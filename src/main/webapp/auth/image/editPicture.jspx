@@ -36,6 +36,10 @@
 				 -->
 				<c:if test="#{controllerBean.tempFileLocation != null or 
 						((not controllerBean.removeCurrentImage) and controllerBean.existingImage)}">
+						
+					<link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/css/jquery/imgareaselect/imgareaselect-default.css" type="text/css" media="screen, projection" />
+					<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/public/javascript/jquery/imgareaselect/jquery.imgareaselect.min-0.9.8.js"></script>
+						
 					<script type="text/javascript">
 					// the ImageAreaSelect member variable.
 					var mIas;
@@ -149,7 +153,7 @@
 						
 						<c:if test="#{controllerBean.tempFileLocation != null or 
 						((not controllerBean.removeCurrentImage) and controllerBean.existingImage)}">
-							<span class="stylishButton" onclick="document.getElementById('removeCurrentImage').click();"><h:outputText value="#{messages.image_removeCurrentImage}"/></span>
+							<span class="buttonLight2" onclick="document.getElementById('removeCurrentImage').click();"><h:outputText value="#{messages.image_removeCurrentImage}"/></span>
 							<h:commandButton id="removeCurrentImage" style="display: none;" value="#{messages.navigation_save}" action="#{controllerBean.removeCurrentImage}" />
 							<br/><br/>				
 						</c:if>
@@ -180,9 +184,9 @@
 							<h:commandButton id="processImageButton" style="display: none;" value="#{messages.navigation_save}" action="#{controllerBean.processImage}" />
 							<br/>
 							<table class="buttonsTable"><tr><td>
-							<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{controllerBean.submit}" />
+							<h:commandButton styleClass="buttonLight2" value="#{messages.navigation_save}" action="#{controllerBean.submit}" />
 							</td><td>
-							<h:outputLink styleClass="stylishButton"  value="#{controllerBean.cancelHref}">
+							<h:outputLink styleClass="buttonLight2"  value="#{controllerBean.cancelHref}">
 	           					<h:outputText value="#{messages.navigation_cancel}"/>
 	         				</h:outputLink>
 	         				</td></tr></table>

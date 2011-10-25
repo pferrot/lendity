@@ -201,7 +201,7 @@
 			<tr>
 				<td>
 					<span onclick="requestLendTooltip(this, '#{item.id}', 4)">
-						<h:outputText id="requestLendLabel" styleClass="stylishButton" value="#{messages.lendRequest_requestLend}" rendered="#{groupItemsListController.requestLendAvailable}"/>
+						<h:outputText id="requestLendLabel" styleClass="buttonLight2" value="#{messages.lendRequest_requestLend}" rendered="#{groupItemsListController.requestLendAvailable}"/>
 					</span>
 					<h:outputText value="#{messages.html_br}" escape="false" rendered="#{groupItemsListController.alloCineQueryUrlAvailable}"/>
 					<h:outputText value="#{messages.html_br}" escape="false" rendered="#{groupItemsListController.alloCineQueryUrlAvailable}"/>

@@ -120,9 +120,9 @@
 					<div class="gt-form-row">
 						<br/>
 						<table class="buttonsTable"><tr><td>
-						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{itemEditController.submit}" />
+						<h:commandButton styleClass="buttonLight2" value="#{messages.navigation_save}" action="#{itemEditController.submit}" />
 						</td><td>
-						<h:outputLink styleClass="stylishButton"  value="#{itemEditController.itemOverviewHref}">
+						<h:outputLink styleClass="buttonLight2"  value="#{itemEditController.itemOverviewHref}">
            					<h:outputText value="#{messages.navigation_cancel}"/>
          				</h:outputLink>
          				</td></tr></table>

@@ -205,34 +205,34 @@
 		<c:if test="#{itemOverviewController.lendAvailable}">
 			<div class="buttonsDiv">
 				<span onclick="lendItemTooltip(this, '#{itemOverviewController.item.id}', 2)">
-					<h:outputText styleClass="stylishButton" value="#{itemOverviewController.lendButtonLabel}"/>
+					<h:outputText styleClass="buttonLight2" value="#{itemOverviewController.lendButtonLabel}"/>
 				</span>
 			</div>
 		</c:if>
 		<c:if test="#{itemOverviewController.requestLendAvailable}">
 			<div class="buttonsDiv">
 				<span onclick="requestLendTooltip(this, '#{itemOverviewController.item.id}', 2)">
-					<h:outputText styleClass="stylishButton" value="#{messages.lendRequest_requestLend}"/>
+					<h:outputText styleClass="buttonLight2" value="#{messages.lendRequest_requestLend}"/>
 				</span>
 			</div>
 		</c:if>
 		<c:if test="#{itemOverviewController.lendBackAvailable}">
 			<div class="buttonsDiv">
 				<h:outputLink id="accessTransactionLink" value="#{itemOverviewController.inProgressLendTransactionUrl}">
-					<h:outputText styleClass="stylishButton" id="currentlyLentText" value="#{messages.item_currentlyLent}"/>
+					<h:outputText styleClass="buttonLight2" id="currentlyLentText" value="#{messages.item_currentlyLent}"/>
 				</h:outputLink>
 			</div>
 		</c:if>
 		<c:if test="#{itemOverviewController.recommendAvailable}">
 			<div class="buttonsDiv">
 				<span onclick="recommendTooltip(this, '#{itemOverviewController.item.id}', 'item')">
-					<h:outputText styleClass="stylishButton" value="#{messages.comment_recommend}"/>
+					<h:outputText styleClass="buttonLight2" value="#{messages.comment_recommend}"/>
 				</span>
 			</div>
 		</c:if>
 		<c:if test="#{!authenticationController.loggedIn}">
 		    <div class="buttonsDiv">    
-		    	<h:outputLink id="requestLendNotAllowedNotLoggedInLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
+		    	<h:outputLink id="requestLendNotAllowedNotLoggedInLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="buttonLight2">
 					<h:outputText id="requestLendNotAllowedNotLoggedIn" value="#{messages.lendRequest_requestNotAllowedNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
 				</h:outputLink>
 			</div>
@@ -241,14 +241,14 @@
 		<c:if test="#{itemOverviewController.editAvailable}">
 			<br/><br/>
 			<div class="buttonsDiv">    		
-				<h:outputLink rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.itemEditHref}" styleClass="stylishButton">
+				<h:outputLink rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.itemEditHref}" styleClass="buttonLight2">
 		    		<h:outputText rendered="#{itemOverviewController.editAvailable}" value="#{messages.navigation_editDetails}"/>
 		    	</h:outputLink>
 		    </div>
 	    </c:if>
 		<c:if test="#{itemOverviewController.editAvailable}">
 			<div class="buttonsDiv">    
-				<h:outputLink rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.itemEditPictureHref}" styleClass="stylishButton">
+				<h:outputLink rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.itemEditPictureHref}" styleClass="buttonLight2">
 		    		<h:outputText rendered="#{itemOverviewController.editAvailable}" value="#{itemOverviewController.imageButtonLabel}"/>
 		    	</h:outputLink>
 			</div>
@@ -256,7 +256,7 @@
 		<c:if test="#{itemOverviewController.editAvailable}">
 			<div class="buttonsDiv">			
 					<span onclick="deleteItemTooltip(this, '#{itemOverviewController.item.id}', 1)">
-						<h:outputText styleClass="stylishButton" value="#{messages.item_delete}"/>
+						<h:outputText styleClass="buttonLight2" value="#{messages.item_delete}"/>
 					</span>
 			</div>
 		</c:if>

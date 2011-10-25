@@ -21,8 +21,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<input type="button" class="fontSizeSmall stylishButton" onclick="submitRemoveAndBanGroupMember()" value="#{messages.navigation_ok}"/>
-					<input type="button" class="fontSizeSmall stylishButton" onclick="cancelRemoveAndBanGroupMember()" value="#{messages.navigation_cancel}"/>
+					<input type="button" class="fontSizeSmall buttonLight" onclick="submitRemoveAndBanGroupMember()" value="#{messages.navigation_ok}"/>
+					<input type="button" class="fontSizeSmall buttonLight" onclick="cancelRemoveAndBanGroupMember()" value="#{messages.navigation_cancel}"/>
 					<h:commandButton id="removeAndBanGroupMemberActionButton" action="#{groupBanPersonTooltipController.submit}" style="display: none" value="not_displayed"/>
 				</td>
 			</tr>

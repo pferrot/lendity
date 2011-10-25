@@ -253,19 +253,24 @@ span.linkStyleAction:hover {
 	font-size:85%!important;	
 }
 
-.categoryLink:hover {
-	color: #ffffff!important;
-	background-color: #ff9900!important;
+a.categoryLink {
+	color: #4c4847!important;
 }
 
-.categoryLinkActive {
-	background-color: #ff6600!important;
+a.categoryLink:hover {
 	color: #ffffff!important;
-	font-size:85%!important;	
+	background-color: #767270!important;
 }
 
-.categoryLinkActive:hover {
-	background-color: #ff9900!important;	
+a.categoryLinkActive {
+	background-color: #4c4847!important;
+	color: #ffffff!important;
+	font-size:85%!important;
+	text-decoration: none!important;
+}
+
+a.categoryLinkActive:hover {
+	background-color: #767270!important;	
 }
 
 div.categoriesAndContentContainer {
@@ -532,8 +537,6 @@ div.commentBox {
 	border-style: solid;
 	border-width: 0px;
 	padding: 5px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
 }
 
 div.childCommentClear {
@@ -771,9 +774,8 @@ div.lineSeparator {
 	margin-bottom: 30px;
 }
 
-.buttonLight {
+a.buttonLight, .buttonLight {
 	background-color: #d1d1d1;
-	color: black;
 	border-color: #b1b1b1;
 	border-style: solid;
 	border-width: 1px;
@@ -783,10 +785,58 @@ div.lineSeparator {
 	padding-bottom: 4px;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
-	cursor: pointer; 
-	font-size: 100%;
+	cursor: pointer;
+	color: black!important;
+	font-weight: bold!important;
+	text-decoration: none!important;
+	font-size:85%!important;
+	white-space: nowrap;
 }
 
-.buttonLight:hover {
+a.buttonLight:hover, .buttonLight:hover {
 	background-color: #f1f1f1;
+}
+
+a.buttonLight2, .buttonLight2 {
+	background-color: #767270;
+	border-color: #444444;
+	border-style: solid;
+	border-width: 1px;
+	padding-left: 7px;
+	padding-right: 7px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	cursor: pointer;
+	color: white!important;
+	font-weight: bold!important;
+	text-decoration: none!important;
+	font-size:85%!important;
+	white-space: nowrap;
+}
+
+a.buttonLight2:hover, .buttonLight2:hover {
+	background-color: #999697;
+}
+
+a.buttonLightDisabled, .buttonLightDisabled {
+	background-color: #ffffff;
+	border-color: #b1b1b1;
+	border-style: solid;
+	border-width: 1px;
+	padding-left: 7px;
+	padding-right: 7px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	color: #b1b1b1!important;
+	font-weight: bold!important;
+	text-decoration: none!important;
+	font-size:85%!important;
+	white-space: nowrap;
+}
+
+a.buttonLightDisabled:hover, .buttonLightDisabled:hover {
 }

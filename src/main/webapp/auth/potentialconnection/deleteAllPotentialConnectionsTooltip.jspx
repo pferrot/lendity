@@ -19,8 +19,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<input type="button" class="fontSizeSmall stylishButton" onclick="submitDeleteAllPotentialConnections()" value="#{messages.navigation_ok}"/>
-					<input type="button" class="fontSizeSmall stylishButton" onclick="cancelDeleteAllPotentialConnections()" value="#{messages.navigation_cancel}"/>
+					<input type="button" class="fontSizeSmall buttonLight" onclick="submitDeleteAllPotentialConnections()" value="#{messages.navigation_ok}"/>
+					<input type="button" class="fontSizeSmall buttonLight" onclick="cancelDeleteAllPotentialConnections()" value="#{messages.navigation_cancel}"/>
 					<h:commandButton id="deleteAllPotentialConnectionsActionButton" action="#{deleteAllPotentialConnectionsTooltipController.submit}" style="display: none" value="not_displayed"/>
 				</td>
 			</tr>

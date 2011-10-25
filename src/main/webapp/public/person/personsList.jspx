@@ -146,10 +146,10 @@
 			<tr>
 				<td>
 					<span onclick="requestConnectionTooltip(this, '#{person.id}', 1)">
-						<h:outputText styleClass="stylishButton" value="#{messages.connectionRequest_requestConnection}" rendered="#{!personsListController.requestConnectionDisabled}"/>
+						<h:outputText styleClass="buttonLight2" value="#{messages.connectionRequest_requestConnection}" rendered="#{!personsListController.requestConnectionDisabled}"/>
 					</span>
 					<h:outputText id="requestConnectionNotAllowed" value="#{personsListController.requestConnectionDisabledLabel}" rendered="#{personsListController.requestConnectionDisabled}"/>
-					<h:outputLink id="addFriendNotAvailableNotLoggedInLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
+					<h:outputLink id="addFriendNotAvailableNotLoggedInLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="buttonLight2">
 						<h:outputText id="addFriendNotAvailableNotLoggedIn" value="#{messages.person_requestConnectionNotAvailableNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
 					</h:outputLink>
 				</td>

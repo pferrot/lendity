@@ -184,7 +184,7 @@
 			<tr>
 			<td>
 				<span onclick="deleteNeedTooltip(this, '#{need.id}', 1)">
-					<h:outputText styleClass="stylishButton" value="#{messages.item_delete}"/>
+					<h:outputText styleClass="buttonLight2" value="#{messages.item_delete}"/>
 				</span>		
 			</td>
 			</tr>

@@ -102,7 +102,7 @@
 			<tr>
 				<td>
 					<span onclick="removeConnectionTooltip(this, '#{person.id}', 1)">
-						<h:outputText styleClass="stylishButton" value="#{messages.person_removeConnection}"/>
+						<h:outputText styleClass="buttonLight2" value="#{messages.person_removeConnection}"/>
 					</span>
 				</td>
 		    </tr>

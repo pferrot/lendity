@@ -20,8 +20,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<input type="button" class="fontSizeSmall stylishButton" onclick="submitDeleteItem()" value="#{messages.navigation_ok}"/>
-					<input type="button" class="fontSizeSmall stylishButton" onclick="cancelDeleteItem()" value="#{messages.navigation_cancel}"/>
+					<input type="button" class="fontSizeSmall buttonLight" onclick="submitDeleteItem()" value="#{messages.navigation_ok}"/>
+					<input type="button" class="fontSizeSmall buttonLight" onclick="cancelDeleteItem()" value="#{messages.navigation_cancel}"/>
 					<h:commandButton id="deleteItemActionButton" action="#{deleteItemTooltipController.submit}" style="display: none" value="not_displayed"/>
 				</td>
 			</tr>

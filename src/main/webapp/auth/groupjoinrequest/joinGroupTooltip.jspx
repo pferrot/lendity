@@ -31,8 +31,8 @@
 			</c:if>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<input type="button" class="fontSizeSmall stylishButton" onclick="submitJoinGroup()" value="#{messages.navigation_ok}"/>
-					<input type="button" class="fontSizeSmall stylishButton" onclick="cancelJoinGroup()" value="#{messages.navigation_cancel}"/>
+					<input type="button" class="fontSizeSmall buttonLight" onclick="submitJoinGroup()" value="#{messages.navigation_ok}"/>
+					<input type="button" class="fontSizeSmall buttonLight" onclick="cancelJoinGroup()" value="#{messages.navigation_cancel}"/>
 					<h:commandButton id="joinGroupActionButton" action="#{joinGroupTooltipController.submit}" style="display: none" value="not_displayed"/>
 				</td>
 			</tr>

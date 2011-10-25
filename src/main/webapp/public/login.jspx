@@ -196,7 +196,7 @@
 								<td style="vertical-align: bottom;">
 									<!-- form row -->
 									<div class="gt-form-row gt-width-66">
-										<h:commandButton styleClass="stylishButton" type="submit" id="login" action="#{loginController.doLogin}" value="#{messages.login_login}" />
+										<h:commandButton styleClass="buttonLight2" type="submit" id="login" action="#{loginController.doLogin}" value="#{messages.login_login}" />
 									</div>
 									<!-- /form row -->
 								</td>								
@@ -253,7 +253,7 @@
 											 requiredMessage="#{messages.validation_requiredMessage}"
 											 validator="#{homePublicController.validateLocation}"/>
 								
-								<span class="stylishButton" onclick="document.getElementById('homePublicForm').submit();"><h:outputText value="#{messages.geolocation_setLocation}"/></span>
+								<span class="buttonLight2" onclick="document.getElementById('homePublicForm').submit();"><h:outputText value="#{messages.geolocation_setLocation}"/></span>
 								<script type="text/javascript">
 									setupSearchField('location', '#{messages.geolocation_inputLocationExample}', false);
 								</script>
@@ -267,7 +267,7 @@
 							<br/><br/>
 							<h:commandButton value="#{messages.geolocation_resetLocation}"
 							                 action="#{homePublicController.resetLocation}"
-							                 styleClass="stylishButton" />
+							                 styleClass="buttonLight2" />
 						</c:if>
 					</div>
 					</h:form>

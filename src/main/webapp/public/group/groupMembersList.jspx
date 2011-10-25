@@ -93,7 +93,7 @@
 					<td>
 						
 							<span onclick="removeGroupMemberTooltip(this, '#{groupMembersListController.groupId}', '#{person.id}', 2)">
-								<h:outputText id="id_01" styleClass="stylishButton" value="#{messages.group_removeGroupMember}" rendered="#{groupMembersListController.authorizedToRemoveMember}"/>
+								<h:outputText id="id_01" styleClass="buttonLight2" value="#{messages.group_removeGroupMember}" rendered="#{groupMembersListController.authorizedToRemoveMember}"/>
 							</span>
 						
 					</td>
@@ -102,7 +102,7 @@
 					<td>
 						
 							<span onclick="removeAndBanGroupMemberTooltip(this, '#{groupMembersListController.groupId}', '#{person.id}', 2)">
-								<h:outputText id="id_02" styleClass="stylishButton" value="#{messages.group_removeAndBanGroupMember}" rendered="#{groupMembersListController.authorizedToBanMember}"/>
+								<h:outputText id="id_02" styleClass="buttonLight2" value="#{messages.group_removeAndBanGroupMember}" rendered="#{groupMembersListController.authorizedToBanMember}"/>
 							</span>
 						
 					</td>
@@ -111,7 +111,7 @@
 					<td>
 						
 							<span onclick="addGroupAdminTooltip(this, '#{groupMembersListController.groupId}', '#{person.id}', 2)">
-								<h:outputText id="id_03" styleClass="stylishButton" value="#{messages.group_addGroupAdmin}" rendered="#{groupMembersListController.authorizedToAddAdmin}"/>
+								<h:outputText id="id_03" styleClass="buttonLight2" value="#{messages.group_addGroupAdmin}" rendered="#{groupMembersListController.authorizedToAddAdmin}"/>
 							</span>
 						
 					</td>

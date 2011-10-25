@@ -1008,7 +1008,7 @@ function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOw
 					'<table class="buttonsTable">' +
 						'<tr>' +
 							'<td>' +
-								'<span id="childCommentSubmit' + pCommentId +'" class="buttonLight" onClick="postChildComment('+ pCommentId +');">' + mSubmitButtonText + '</span>' +
+								'<span id="childCommentSubmit' + pCommentId +'" class="buttonLight2" onClick="postChildComment('+ pCommentId +');">' + mSubmitButtonText + '</span>' +
 							'</td>' +
 						'</tr>' +
 					'</table>' +

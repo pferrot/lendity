@@ -129,7 +129,7 @@
 	<div class="gt-form-row gt-width-100">
 		<c:if test="#{lendTransactionOverviewController.acceptRequestAvailable}">
 			<div class="buttonsDiv">
-				<h:commandButton styleClass="stylishButton"
+				<h:commandButton styleClass="buttonLight2"
 					value="#{messages.lendTransaction_buttonAccept}"
 					action="#{lendTransactionOverviewController.acceptRequest}"
 					rendered="#{lendTransactionOverviewController.acceptRequestAvailable}"/>
@@ -138,7 +138,7 @@
 		
 		<c:if test="#{lendTransactionOverviewController.lendAvailable}">
 			<div class="buttonsDiv">
-				<h:commandButton styleClass="stylishButton"
+				<h:commandButton styleClass="buttonLight2"
 					value="#{messages.lendTransaction_buttonLend}"
 					action="#{lendTransactionOverviewController.lend}"
 					rendered="#{lendTransactionOverviewController.lendAvailable}"/>
@@ -147,7 +147,7 @@
 		
 		<c:if test="#{lendTransactionOverviewController.completeAvailable}">
 			<div class="buttonsDiv">
-				<h:commandButton styleClass="stylishButton"
+				<h:commandButton styleClass="buttonLight2"
 					value="#{messages.lendTransaction_buttonComplete}"
 					action="#{lendTransactionOverviewController.complete}"
 					rendered="#{lendTransactionOverviewController.completeAvailable}"/>
@@ -156,7 +156,7 @@
 		
 		<c:if test="#{lendTransactionOverviewController.evaluateAvailable}">
 			<div class="buttonsDiv">
-				<h:outputLink styleClass="stylishButton"  
+				<h:outputLink styleClass="buttonLight2"  
 				              value="#{lendTransactionOverviewController.evaluationAddHref}"
 				              rendered="#{lendTransactionOverviewController.evaluateAvailable}">
 		        	<h:outputText value="#{messages.lendTransaction_buttonEvaluate}" rendered="#{lendTransactionOverviewController.evaluateAvailable}"/>
@@ -166,7 +166,7 @@
 			
 		<c:if test="#{lendTransactionOverviewController.refuseRequestAvailable}">
 			<div class="buttonsDiv">
-				<h:commandButton styleClass="stylishButton"
+				<h:commandButton styleClass="buttonLight2"
 					value="#{messages.lendTransaction_buttonRefuse}"
 					action="#{lendTransactionOverviewController.refuseRequest}"
 					rendered="#{lendTransactionOverviewController.refuseRequestAvailable}"/>
@@ -176,14 +176,14 @@
 		<c:if test="#{lendTransactionOverviewController.giveOrSellAvailable}">
 			<div class="buttonsDiv">			
 				<span onclick="transferItemTooltip(this, '#{lendTransactionOverviewController.lendTransaction.id}')">
-					<h:outputText styleClass="stylishButton" value="#{messages.lendTransaction_buttonGiveOrSell}"/>
+					<h:outputText styleClass="buttonLight2" value="#{messages.lendTransaction_buttonGiveOrSell}"/>
 				</span>
 			</div>
 		</c:if>
 		
 		<c:if test="#{lendTransactionOverviewController.cancelAvailable}">
 			<div class="buttonsDiv">
-				<h:commandButton styleClass="stylishButton"
+				<h:commandButton styleClass="buttonLight2"
 					value="#{messages.lendTransaction_buttonCancel}"
 					action="#{lendTransactionOverviewController.cancel}"
 					rendered="#{lendTransactionOverviewController.cancelAvailable}"/>			
@@ -193,7 +193,7 @@
 		<c:if test="#{lendTransactionOverviewController.editAvailable}">
 			<br/><br/>
 			<div class="buttonsDiv">
-				<h:outputLink rendered="#{lendTransactionOverviewController.editAvailable}" value="#{lendTransactionOverviewController.lendTransactionEditHref}" styleClass="stylishButton">
+				<h:outputLink rendered="#{lendTransactionOverviewController.editAvailable}" value="#{lendTransactionOverviewController.lendTransactionEditHref}" styleClass="buttonLight2">
 		    		<h:outputText rendered="#{lendTransactionOverviewController.editAvailable}" value="#{messages.lendTransaction_edit}"/>
 		    	</h:outputLink>
 			</div>

@@ -108,10 +108,10 @@
 					<div class="gt-form-row">
 						<br/>
 						<table class="buttonsTable"><tr><td>
-						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_back}"	action="#{itemsImportStep2.back}" />
+						<h:commandButton styleClass="buttonLight2" value="#{messages.navigation_back}"	action="#{itemsImportStep2.back}" />
 						</td><td>
 						<c:if test="#{itemsImportController.nbValidItemsToImport > 0}">
-							<h:commandButton styleClass="stylishButton" value="#{messages.navigation_confirm}" action="#{itemsImportStep2.confirm}" />
+							<h:commandButton styleClass="buttonLight2" value="#{messages.navigation_confirm}" action="#{itemsImportStep2.confirm}" />
 						</c:if>
 						</td></tr></table>
 					</div>

@@ -56,7 +56,7 @@
 					<div class="gt-form-row">
 						<br/>
 						<table class="buttonsTable"><tr><td>
-							<h:commandButton styleClass="stylishButton" value="#{messages.invitation_submit}" action="#{invitationController.submit}" />
+							<h:commandButton styleClass="buttonLight2" value="#{messages.invitation_submit}" action="#{invitationController.submit}" />
 						</td></tr></table>
 					</div>
 					<!-- /form row -->

@@ -85,12 +85,12 @@
 			<tr>
 				<td>
 					<span onclick="requestConnectionTooltip(this, '#{potentialConnection.connection.id}', 3)">
-						<h:outputText styleClass="stylishButton" value="#{messages.connectionRequest_requestConnection}" rendered="#{!myPotentialConnectionsListController.requestConnectionDisabled}"/>
+						<h:outputText styleClass="buttonLight2" value="#{messages.connectionRequest_requestConnection}" rendered="#{!myPotentialConnectionsListController.requestConnectionDisabled}"/>
 					</span>
 					<h:outputText styleClass="small" id="requestConnectionNotAllowed" value="#{myPotentialConnectionsListController.requestConnectionDisabledLabel}" rendered="#{myPotentialConnectionsListController.requestConnectionDisabled}"/>
 					<br/><br/>
 					<h:form>
-						<h:commandButton styleClass="stylishButton" action="#{myPotentialConnectionsListController.ignorePotentialConnection}" value="#{messages.potentialConnection_ignore}" />
+						<h:commandButton styleClass="buttonLight2" action="#{myPotentialConnectionsListController.ignorePotentialConnection}" value="#{messages.potentialConnection_ignore}" />
 					</h:form>			
 				</td>
 		    </tr>

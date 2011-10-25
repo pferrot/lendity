@@ -119,7 +119,7 @@
 		<table border="0" class="gt-table-categories" width="120" align="right">
 			<tr>
 				<td>
-					<h:outputLink id="accessTransactionLink" value="#{myLendTransactionsOutWaitingForInputListController.lendTransactionOverviewHref}" styleClass="stylishButton">
+					<h:outputLink id="accessTransactionLink" value="#{myLendTransactionsOutWaitingForInputListController.lendTransactionOverviewHref}" styleClass="buttonLight2">
 						<h:outputText id="accessTransactionLinkLabel" value="#{messages.lendTransaction_accessTransactionAsBorrower}"/>
 					</h:outputLink>				
 				</td>

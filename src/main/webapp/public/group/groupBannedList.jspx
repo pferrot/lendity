@@ -89,7 +89,7 @@
 				<tr>
 					<td>						
 							<span onclick="unbanFromGroupTooltip(this, '#{groupBannedListController.groupId}', '#{person.id}', 3)">
-								<h:outputText id="id_01" styleClass="stylishButton" value="#{messages.group_unbanFromGroup}" rendered="#{groupBannedListController.authorizedToUnbanPerson}"/>
+								<h:outputText id="id_01" styleClass="buttonLight2" value="#{messages.group_unbanFromGroup}" rendered="#{groupBannedListController.authorizedToUnbanPerson}"/>
 							</span>
 					</td>
 			    </tr>

@@ -288,7 +288,7 @@
 					<div class="gt-form-row">
 						<br/>
 						<table class="buttonsTable"><tr><td>
-							<h:commandButton styleClass="stylishButton" value="#{messages.registration_submit}" action="#{registrationStep1.submit}" />
+							<h:commandButton styleClass="buttonLight2" value="#{messages.registration_submit}" action="#{registrationStep1.submit}" />
 						</td></tr></table>
 					</div>
 					<!-- /form row -->

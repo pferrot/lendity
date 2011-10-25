@@ -176,7 +176,7 @@
 		<table border="0" class="gt-table-categories" width="120" align="right">
 			<tr>
 			<td>
-				<h:outputLink styleClass="stylishButton" value="#{personNeedsListController.gotItHref}">
+				<h:outputLink styleClass="buttonLight2" value="#{personNeedsListController.gotItHref}">
 					<h:outputText value="#{messages.need_gotIt}" />
 				</h:outputLink>
 			</td>

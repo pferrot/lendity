@@ -212,7 +212,7 @@
 		<div class="gt-form-row gt-width-100">
 			<c:if test="#{theBean.editAvailable}">
 				<div class="buttonsDiv">
-					<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.personEditHref}" styleClass="stylishButton">
+					<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.personEditHref}" styleClass="buttonLight2">
 			    		<h:outputText rendered="#{theBean.editAvailable}" value="#{messages.navigation_editDetails}"/>
 			    	</h:outputLink>
 		    	</div>
@@ -220,34 +220,34 @@
 	    	<c:if test="#{!theBean.requestConnectionDisabled}">
 				<div class="buttonsDiv">	    	
 			    	<span onclick="requestConnectionTooltip(this, '#{theBean.person.id}', 2)">
-						<h:outputText styleClass="stylishButton" value="#{messages.connectionRequest_requestConnection}" rendered="#{!theBean.requestConnectionDisabled}"/>
+						<h:outputText styleClass="buttonLight2" value="#{messages.connectionRequest_requestConnection}" rendered="#{!theBean.requestConnectionDisabled}"/>
 					</span>
 				</div>
 	    	</c:if>
 	    	<c:if test="#{theBean.banPersonAvailable}">
 				<div class="buttonsDiv">
 					<span onclick="banConnectionTooltip(this, null, '#{theBean.person.id}', 1)">
-						<h:outputText id="id_11" styleClass="stylishButton" value="#{messages.person_ban}" rendered="#{theBean.banPersonAvailable}"/>
+						<h:outputText id="id_11" styleClass="buttonLight2" value="#{messages.person_ban}" rendered="#{theBean.banPersonAvailable}"/>
 					</span>
 				</div>
 	    	</c:if>
 	    	<c:if test="#{!authenticationController.loggedIn}">
 				<div class="buttonsDiv">
-					<h:outputLink id="addFriendNotAvailableNotLoggedInLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
+					<h:outputLink id="addFriendNotAvailableNotLoggedInLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="buttonLight2">
 						<h:outputText id="addFriendNotAvailableNotLoggedIn" value="#{messages.person_requestConnectionNotAvailableNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
 					</h:outputLink>
 		    	</div>
 	    	</c:if>
 	    	<c:if test="#{theBean.editAvailable}">
 				<div class="buttonsDiv">
-			    	<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.personEditPictureHref}" styleClass="stylishButton">
+			    	<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.personEditPictureHref}" styleClass="buttonLight2">
 			    		<h:outputText rendered="#{theBean.editAvailable}" value="#{messages.person_changeProfilePicure}"/>
 			    	</h:outputLink>
 		    	</div>
 	    	</c:if>
 	    	<c:if test="#{theBean.editAvailable}">
 				<div class="buttonsDiv">	    	
-			    	<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.changePasswordHref}" styleClass="stylishButton">
+			    	<h:outputLink rendered="#{theBean.editAvailable}" value="#{theBean.changePasswordHref}" styleClass="buttonLight2">
 			    		<h:outputText rendered="#{theBean.editAvailable}" value="#{messages.changePassword_changePassword}"/>
 			    	</h:outputLink>
 		    	</div>

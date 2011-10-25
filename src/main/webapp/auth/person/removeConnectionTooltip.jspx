@@ -20,8 +20,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<input type="button" class="fontSizeSmall stylishButton" onclick="submitRemoveConnection()" value="#{messages.navigation_ok}"/>
-					<input type="button" class="fontSizeSmall stylishButton" onclick="cancelRemoveConnection()" value="#{messages.navigation_cancel}"/>
+					<input type="button" class="fontSizeSmall buttonLight" onclick="submitRemoveConnection()" value="#{messages.navigation_ok}"/>
+					<input type="button" class="fontSizeSmall buttonLight" onclick="cancelRemoveConnection()" value="#{messages.navigation_cancel}"/>
 					<h:commandButton id="removeConnectionActionButton" action="#{removeConnectionTooltipController.submit}" style="display: none" value="not_displayed"/>
 				</td>
 			</tr>

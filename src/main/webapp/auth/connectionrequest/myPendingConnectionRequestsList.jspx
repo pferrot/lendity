@@ -88,21 +88,21 @@
 			<tr>
 				<td>
 					<span onclick="acceptConnectionTooltip(this, '#{connectionRequest.id}', 1)">
-						<h:outputText id="id_09" styleClass="stylishButton" value="#{messages.connectionRequest_responseAccept}"/>
+						<h:outputText id="id_09" styleClass="buttonLight2" value="#{messages.connectionRequest_responseAccept}"/>
 					</span>
 				</td>
 		    </tr>
 		    <tr>
 				<td>
 					<span onclick="refuseConnectionTooltip(this, '#{connectionRequest.id}', 1)">
-						<h:outputText id="id_10" styleClass="stylishButton" value="#{messages.connectionRequest_responseRefuse}"/>
+						<h:outputText id="id_10" styleClass="buttonLight2" value="#{messages.connectionRequest_responseRefuse}"/>
 					</span>
 				</td>
 		    </tr>
 		    <tr>
 				<td>
 					<span onclick="banConnectionTooltip(this, '#{connectionRequest.id}', null, 1)">
-						<h:outputText id="id_11" styleClass="stylishButton" value="#{messages.connectionRequest_responseBan}"/>
+						<h:outputText id="id_11" styleClass="buttonLight2" value="#{messages.connectionRequest_responseBan}"/>
 					</span>
 				</td>
 		    </tr>

@@ -189,10 +189,10 @@
 		<table border="0" class="gt-table-categories" width="120" align="right">
 			<tr>
 			<td>
-				<h:outputLink styleClass="stylishButton" value="#{searchNeedsListController.gotItHref}" rendered="#{searchNeedsListController.gotItAvailable}">
+				<h:outputLink styleClass="buttonLight2" value="#{searchNeedsListController.gotItHref}" rendered="#{searchNeedsListController.gotItAvailable}">
 					<h:outputText value="#{messages.need_gotIt}" rendered="#{searchNeedsListController.gotItAvailable}"/>
 				</h:outputLink>
-				<h:outputLink id="gotItNotAvailableLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
+				<h:outputLink id="gotItNotAvailableLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="buttonLight2">
 					<h:outputText id="gotItNotAvailable" value="#{messages.need_gotItNotAvailableNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
 				</h:outputLink>
 			</td>

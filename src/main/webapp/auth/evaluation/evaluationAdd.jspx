@@ -66,9 +66,9 @@
 					<div class="gt-form-row">
 						<br/>
 						<table class="buttonsTable"><tr><td>
-						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{evaluationAddController.submit}" />
+						<h:commandButton styleClass="buttonLight2" value="#{messages.navigation_save}" action="#{evaluationAddController.submit}" />
 						</td><td>
-						<h:outputLink styleClass="stylishButton"  value="#{authenticationController.myLendTransactionsWaitingForInputURL}">
+						<h:outputLink styleClass="buttonLight2"  value="#{authenticationController.myLendTransactionsWaitingForInputURL}">
            					<h:outputText value="#{messages.navigation_cancel}"/>
          				</h:outputLink>
          				</td></tr></table>

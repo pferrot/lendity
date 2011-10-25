@@ -60,15 +60,15 @@
 							<div class="gt-form-row">
 								<br/>
 								<table class="buttonsTable"><tr><td>
-								<h:commandButton styleClass="stylishButton" value="#{messages.navigation_back}"	action="#{potentialConnectionsImportStep2.back}" />
+								<h:commandButton styleClass="buttonLight2" value="#{messages.navigation_back}"	action="#{potentialConnectionsImportStep2.back}" />
 								</td>
 								<c:if test="#{potentialConnectionsImportController.nbPotential > 0}">
 									<td>
-									<h:commandButton styleClass="stylishButton" value="#{messages.potentialConnection_potentialConnectionsImportConfirmImportSelected}" action="#{potentialConnectionsImportStep2.confirm}" />
+									<h:commandButton styleClass="buttonLight2" value="#{messages.potentialConnection_potentialConnectionsImportConfirmImportSelected}" action="#{potentialConnectionsImportStep2.confirm}" />
 									</td>
 								</c:if>
 								<td>
-								<h:commandButton styleClass="stylishButton" value="#{messages.navigation_skip}" action="#{potentialConnectionsImportStep2.skip}" />
+								<h:commandButton styleClass="buttonLight2" value="#{messages.navigation_skip}" action="#{potentialConnectionsImportStep2.skip}" />
 								</td></tr></table>
 							</div>
 							<br/>
@@ -124,15 +124,15 @@
 					<div class="gt-form-row">
 						<br/>
 						<table class="buttonsTable"><tr><td>
-						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_back}"	action="#{potentialConnectionsImportStep2.back}" />
+						<h:commandButton styleClass="buttonLight2" value="#{messages.navigation_back}"	action="#{potentialConnectionsImportStep2.back}" />
 						</td>
 						<c:if test="#{potentialConnectionsImportController.nbPotential > 0}">
 							<td>
-							<h:commandButton styleClass="stylishButton" value="#{messages.potentialConnection_potentialConnectionsImportConfirmImportSelected}" action="#{potentialConnectionsImportStep2.confirm}" />
+							<h:commandButton styleClass="buttonLight2" value="#{messages.potentialConnection_potentialConnectionsImportConfirmImportSelected}" action="#{potentialConnectionsImportStep2.confirm}" />
 							</td>
 						</c:if>
 						<td>
-						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_skip}" action="#{potentialConnectionsImportStep2.skip}" />
+						<h:commandButton styleClass="buttonLight2" value="#{messages.navigation_skip}" action="#{potentialConnectionsImportStep2.skip}" />
 						</td></tr></table>
 					</div>
 					<!-- /form row -->

@@ -86,9 +86,9 @@
 					<div class="gt-form-row">
 						<br/>
 						<table class="buttonsTable"><tr><td>
-						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_save}" action="#{groupEditController.submit}" />
+						<h:commandButton styleClass="buttonLight2" value="#{messages.navigation_save}" action="#{groupEditController.submit}" />
 						</td><td>
-						<h:outputLink styleClass="stylishButton"  value="#{groupEditController.groupOverviewHref}">
+						<h:outputLink styleClass="buttonLight2"  value="#{groupEditController.groupOverviewHref}">
            					<h:outputText value="#{messages.navigation_cancel}"/>
          				</h:outputLink>
          				</td></tr></table>

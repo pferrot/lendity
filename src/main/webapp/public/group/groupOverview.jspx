@@ -187,7 +187,7 @@
 		<c:if test="#{groupOverviewController.recommendAvailable}">
 			<div class="buttonsDiv">
 				<span onclick="recommendTooltip(this, '#{groupOverviewController.group.id}', 'group')">
-					<h:outputText styleClass="stylishButton" value="#{messages.comment_recommend}"/>
+					<h:outputText styleClass="buttonLight2" value="#{messages.comment_recommend}"/>
 				</span>
 			</div>
 			<br/><br/>
@@ -196,48 +196,48 @@
 		<c:if test="#{groupOverviewController.requestJoinAvailable}">
 			<div class="buttonsDiv">
 		    	<span onclick="requestGroupJoinTooltip(this, '#{groupOverviewController.group.id}', 2)">
-					<h:outputText styleClass="stylishButton" value="#{messages.groupJoinRequest_requestGroupJoin}" rendered="#{groupOverviewController.requestJoinAvailable}"/>
+					<h:outputText styleClass="buttonLight2" value="#{messages.groupJoinRequest_requestGroupJoin}" rendered="#{groupOverviewController.requestJoinAvailable}"/>
 				</span>
 			</div>
 		</c:if>
 		<c:if test="#{groupOverviewController.joinAvailable}">
 			<div class="buttonsDiv">
 				<span onclick="joinGroupTooltip(this, '#{groupOverviewController.group.id}', 2)">
-					<h:outputText styleClass="stylishButton" value="#{messages.group_joinGroup}" rendered="#{groupOverviewController.joinAvailable}"/>
+					<h:outputText styleClass="buttonLight2" value="#{messages.group_joinGroup}" rendered="#{groupOverviewController.joinAvailable}"/>
 				</span>
 			</div>
 		</c:if>
 		<c:if test="#{groupOverviewController.leaveAvailable}">
 			<div class="buttonsDiv">
 				<span onclick="leaveGroupTooltip(this, '#{groupOverviewController.group.id}', 2)">
-					<h:outputText styleClass="stylishButton" value="#{messages.group_leaveGroup}" rendered="#{groupOverviewController.leaveAvailable}"/>
+					<h:outputText styleClass="buttonLight2" value="#{messages.group_leaveGroup}" rendered="#{groupOverviewController.leaveAvailable}"/>
 				</span>
 			</div>
 		</c:if>
 		<c:if test="#{!authenticationController.loggedIn}">
 			<div class="buttonsDiv">
-				<h:outputLink id="joinGroupNotAvailableNotLoggedInLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="stylishButton">
+				<h:outputLink id="joinGroupNotAvailableNotLoggedInLink" value="#{authenticationController.currentPageThroughLoginURL}" rendered="#{!authenticationController.loggedIn}" styleClass="buttonLight2">
 					<h:outputText id="joinGroupNotAvailableNotLoggedIn" value="#{messages.group_joinGroupNotAvailableNotLoggedIn}" rendered="#{!authenticationController.loggedIn}"/>
 				</h:outputLink>
 			</div>
 		</c:if>
 		<c:if test="#{groupOverviewController.editAvailable}">
 			<div class="buttonsDiv">
-				<h:outputLink rendered="#{groupOverviewController.editAvailable}" value="#{groupOverviewController.groupEditHref}" styleClass="stylishButton">
+				<h:outputLink rendered="#{groupOverviewController.editAvailable}" value="#{groupOverviewController.groupEditHref}" styleClass="buttonLight2">
 		    		<h:outputText rendered="#{groupOverviewController.editAvailable}" value="#{messages.navigation_editDetails}"/>
 		    	</h:outputLink>
 	    	</div>
 		</c:if>
 		<c:if test="#{groupOverviewController.shareItemsAvailable}">
 			<div class="buttonsDiv">
-				<h:outputLink rendered="#{groupOverviewController.shareItemsAvailable}" value="#{groupOverviewController.groupShareItemsHref}" styleClass="stylishButton">
+				<h:outputLink rendered="#{groupOverviewController.shareItemsAvailable}" value="#{groupOverviewController.groupShareItemsHref}" styleClass="buttonLight2">
 		    		<h:outputText rendered="#{groupOverviewController.shareItemsAvailable}" value="#{messages.group_shareItemsButton}"/>
 		    	</h:outputLink>
 			</div>
 		</c:if>
 		<c:if test="#{groupOverviewController.editAvailable}">
 			<div class="buttonsDiv">
-				<h:outputLink rendered="#{groupOverviewController.editAvailable}" value="#{groupOverviewController.groupEditPictureHref}" styleClass="stylishButton">
+				<h:outputLink rendered="#{groupOverviewController.editAvailable}" value="#{groupOverviewController.groupEditPictureHref}" styleClass="buttonLight2">
 		    		<h:outputText rendered="#{groupOverviewController.editAvailable}" value="#{messages.group_changeGroupPicture}"/>
 		    	</h:outputLink>
 			</div>
@@ -245,7 +245,7 @@
 		<c:if test="#{groupOverviewController.deleteAvailable}">
 			<div class="buttonsDiv">
 				<span onclick="deleteGroupTooltip(this, '#{groupOverviewController.group.id}', 1)">
-					<h:outputText styleClass="stylishButton" value="#{messages.group_delete}"/>
+					<h:outputText styleClass="buttonLight2" value="#{messages.group_delete}"/>
 				</span>
 			</div>
 		</c:if>		

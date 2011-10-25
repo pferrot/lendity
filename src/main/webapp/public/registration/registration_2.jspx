@@ -95,9 +95,9 @@
 					<div class="gt-form-row">
 						<br/>
 						<table class="buttonsTable"><tr><td>
-						<h:commandButton styleClass="stylishButton" value="#{messages.navigation_back}"	action="#{registrationStep2.back}" />
+						<h:commandButton styleClass="buttonLight2" value="#{messages.navigation_back}"	action="#{registrationStep2.back}" />
 						</td><td>
-						<h:commandButton styleClass="stylishButton" value="#{messages.registration_confirm}" action="#{registrationStep2.confirm}" />
+						<h:commandButton styleClass="buttonLight2" value="#{messages.registration_confirm}" action="#{registrationStep2.confirm}" />
 						</td></tr></table>
 					</div>
 					<!-- /form row -->

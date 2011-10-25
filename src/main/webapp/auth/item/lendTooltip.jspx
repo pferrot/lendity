@@ -53,8 +53,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<span onclick="submitLendItem()"><h:outputText styleClass="fontSizeSmall stylishButton" value="#{messages.navigation_ok}"/></span>
-					<span onclick="cancelLendItem()"><h:outputText styleClass="fontSizeSmall stylishButton" value="#{messages.navigation_cancel}"/></span>
+					<span onclick="submitLendItem()"><h:outputText styleClass="fontSizeSmall buttonLight" value="#{messages.navigation_ok}"/></span>
+					<span onclick="cancelLendItem()"><h:outputText styleClass="fontSizeSmall buttonLight" value="#{messages.navigation_cancel}"/></span>
 					<h:commandButton id="lendActionButton" action="#{itemLendTooltipController.submit}" style="display: none"  value="not_displayed"/>
 				</td>
 			</tr>

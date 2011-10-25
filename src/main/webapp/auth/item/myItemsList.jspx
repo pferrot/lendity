@@ -206,10 +206,10 @@
 			<tr>
 			<td>
 				<span onclick="lendItemTooltip(this, '#{item.id}', 1)">
-					<h:outputText styleClass="stylishButton" value="#{messages.item_lend}" rendered="#{not myItemsListController.borrowed}"/>				
+					<h:outputText styleClass="buttonLight2" value="#{messages.item_lend}" rendered="#{not myItemsListController.borrowed}"/>				
 				</span>
 				<span>					
-					<h:outputLink id="accessTransactionLink" value="#{myItemsListController.inProgressLendTransactionUrl}" rendered="#{myItemsListController.borrowed}">
+					<h:outputLink id="accessTransactionLink" value="#{myItemsListController.inProgressLendTransactionUrl}" rendered="#{myItemsListController.borrowed}" styleClass="buttonLight2">
 						<h:outputText id="currentlyLentText" value="#{messages.item_currentlyLent}" rendered="#{myItemsListController.borrowed}"/>
 					</h:outputLink>
 				</span>

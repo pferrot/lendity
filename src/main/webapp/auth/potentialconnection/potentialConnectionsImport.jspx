@@ -61,7 +61,7 @@
 						<div class="gt-form-row">
 							<br/>
 							<table class="buttonsTable"><tr><td>
-							<h:commandButton styleClass="stylishButton" value="#{messages.potentialConnection_potentialConnectionsImportSubmit}" action="#{potentialConnectionsImportStep1.submitFile}" />
+							<h:commandButton styleClass="buttonLight2" value="#{messages.potentialConnection_potentialConnectionsImportSubmit}" action="#{potentialConnectionsImportStep1.submitFile}" />
 							</td></tr></table>
 						</div>
 						<!-- /form row -->					
@@ -103,7 +103,7 @@
 						<div class="gt-form-row">
 							<br/>
 							<table class="buttonsTable"><tr><td>
-							<h:commandButton styleClass="stylishButton" value="#{messages.potentialConnection_potentialConnectionsImportSubmit}" action="#{potentialConnectionsImportStep1.submitBluewinFile}" />
+							<h:commandButton styleClass="buttonLight2" value="#{messages.potentialConnection_potentialConnectionsImportSubmit}" action="#{potentialConnectionsImportStep1.submitBluewinFile}" />
 							</td></tr></table>
 						</div>
 						<!-- /form row -->					
@@ -143,7 +143,7 @@
 						<div class="gt-form-row">
 							<br/>
 							<table class="buttonsTable"><tr><td>
-							<h:commandButton styleClass="stylishButton" value="#{messages.potentialConnection_potentialConnectionsImportSubmit}" action="#{potentialConnectionsImportStep1.submitTextarea}" />
+							<h:commandButton styleClass="buttonLight2" value="#{messages.potentialConnection_potentialConnectionsImportSubmit}" action="#{potentialConnectionsImportStep1.submitTextarea}" />
 							</td></tr></table>
 						</div>
 						<!-- /form row -->					
@@ -169,7 +169,7 @@
 						
 						<h:form prependId="false">
 							<h:commandButton style="display: none;" id="googleSubmitButton" value="HIDDEN_BUTTON" action="#{potentialConnectionsImportStep1.submitGoogle}" />
-							<h:outputLink styleClass="stylishButton" value="#{potentialConnectionsImportStep1.googleLink}"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromGoogle2}"/></h:outputLink>
+							<h:outputLink styleClass="buttonLight2" value="#{potentialConnectionsImportStep1.googleLink}"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromGoogle2}"/></h:outputLink>
 						</h:form>
 						
 						<br/>
