@@ -21,8 +21,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<input type="button" class="fontSizeSmall buttonLight" onclick="submitUnbanFromGroup()" value="#{messages.navigation_ok}"/>
-					<input type="button" class="fontSizeSmall buttonLight" onclick="cancelUnbanFromGroup()" value="#{messages.navigation_cancel}"/>
+					<input type="button" class="fontSizeSmall buttonLight2" onclick="submitUnbanFromGroup()" value="#{messages.navigation_ok}"/>
+					<input type="button" class="fontSizeSmall buttonLight2" onclick="cancelUnbanFromGroup()" value="#{messages.navigation_cancel}"/>
 					<h:commandButton id="unbanFromGroupActionButton" action="#{groupUnbanPersonTooltipController.submit}" style="display: none" value="not_displayed"/>
 				</td>
 			</tr>

@@ -21,8 +21,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<input type="button" class="fontSizeSmall buttonLight" onclick="submitRemoveGroupAdmin()" value="#{messages.navigation_ok}"/>
-					<input type="button" class="fontSizeSmall buttonLight" onclick="cancelRemoveGroupAdmin()" value="#{messages.navigation_cancel}"/>
+					<input type="button" class="fontSizeSmall buttonLight2" onclick="submitRemoveGroupAdmin()" value="#{messages.navigation_ok}"/>
+					<input type="button" class="fontSizeSmall buttonLight2" onclick="cancelRemoveGroupAdmin()" value="#{messages.navigation_cancel}"/>
 					<h:commandButton id="removeGroupAdminActionButton" action="#{groupRemoveAdminTooltipController.submit}" style="display: none" value="not_displayed"/>
 				</td>
 			</tr>

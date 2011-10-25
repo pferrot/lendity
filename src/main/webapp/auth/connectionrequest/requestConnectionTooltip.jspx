@@ -30,8 +30,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<input type="button" class="fontSizeSmall buttonLight" onclick="submitRequestConnection()" value="#{messages.navigation_ok}"/>
-					<input type="button" class="fontSizeSmall buttonLight" onclick="cancelRequestConnection()" value="#{messages.navigation_cancel}"/>
+					<input type="button" class="fontSizeSmall buttonLight2" onclick="submitRequestConnection()" value="#{messages.navigation_ok}"/>
+					<input type="button" class="fontSizeSmall buttonLight2" onclick="cancelRequestConnection()" value="#{messages.navigation_cancel}"/>
 					<h:commandButton id="requestConnectionActionButton" action="#{requestConnectionTooltipController.submit}" style="display: none" value="not_displayed"/>
 				</td>
 			</tr>

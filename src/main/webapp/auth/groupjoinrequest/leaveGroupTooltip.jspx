@@ -21,8 +21,8 @@
 			<tr>
 				<td colspan="2" style="text-align: center;">
 					<nobr>
-					<input type="button" class="fontSizeSmall buttonLight" onclick="submitLeaveGroup()" value="#{messages.navigation_ok}"/>
-					<input type="button" class="fontSizeSmall buttonLight" onclick="cancelLeaveGroup()" value="#{messages.navigation_cancel}"/>
+					<input type="button" class="fontSizeSmall buttonLight2" onclick="submitLeaveGroup()" value="#{messages.navigation_ok}"/>
+					<input type="button" class="fontSizeSmall buttonLight2" onclick="cancelLeaveGroup()" value="#{messages.navigation_cancel}"/>
 					</nobr>
 					<h:commandButton id="leaveGroupActionButton" action="#{leaveGroupTooltipController.submit}" style="display: none" value="not_displayed"/>
 				</td>
