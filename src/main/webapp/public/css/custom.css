@@ -545,7 +545,17 @@ div.childComment {
 	float: right;
 }
 
+div.childComment .commentBox {
+	background-color: #f1f1f1;
+	margin-bottom: 0px;
+	padding-bottom: 10px;
+}
+
 .commentBackground {
+}
+
+.commentBox label {
+	color: #999697;	
 }
 
 div.commentHighlightedBg {
@@ -559,7 +569,6 @@ div.commentHighlightedBgDark {
 }
 
 .childCommentBackground {
-	background-color: #f1f1f1;
 }
 
 div.commentContent {
