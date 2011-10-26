@@ -61,7 +61,7 @@ body {
 	display: inline;
 }
 .gt-hd .gt-logo a {
-	color: #ff6600;
+	color: #e34d16;
 	font-weight: bold;
 }
 
@@ -215,11 +215,11 @@ body {
 	margin: 0;
 }
 .gt-util-box a:link, .gt-util-box a:visited {
-	color: #ff6600;
+	color: #e34d16;
 	text-decoration: none;
 }
 .gt-util-box a:hover {
-	color: #ff9900
+	color: #ff8a00
 }
 .gt-util-box-inner {
 	padding: .35em 2em;
@@ -369,11 +369,11 @@ body {
 	border: none;
 }
 .gt-table-categories a:link, .gt-table-categories a:visited {
-	color: #ff6600;
+	color: #e34d16;
 	text-decoration: none;
 }
 .gt-table-categories a:hover {
-	color: #ff9900;
+	color: #ff8a00;
 }
 
 /* Action Links */
@@ -412,7 +412,7 @@ body {
 	margin-bottom: 10px;
 	font-size: 161.6%;
 	font-weight: bold;
-	color: #ff6600;
+	color: #e34d16;
 }
 .gt-login-box {
 	width: 350px;
@@ -602,7 +602,7 @@ body {
 /* @group Nav */
 /* Navbar */
 .gt-navbar {
-	background-color: #4c4847;
+	background-color: #4c4848;
 	margin-bottom: 0px;
 }
 
@@ -703,7 +703,7 @@ body {
 /* @group Headings */
 h1 {
 	font-size: 182%;
-	color: #ff6600;
+	color: #e34d16;
 	margin-bottom: 10px;
 }
 
@@ -719,7 +719,7 @@ h2.gt-table-head, h2.gt-form-head {
 }
 h3 {
 	font-size: 138.5%;
-	color: #ff6600;
+	color: #e34d16;
 	margin-bottom: 10px;
 	font-weight: bold;
 }
@@ -736,7 +736,7 @@ h5 {
 }
 h6 {
 	font-size: 100%;
-	color: #ff6600;
+	color: #e34d16;
 	margin-bottom: 10px;
 	font-weight: bold;
 }
@@ -805,7 +805,7 @@ tt {
 	background-color: #fff;
 }
 .gt-success {
-	background-color: #ff6600;
+	background-color: #e34d16;
 	padding: .5em 1em;
 	color: #fff;
 }
@@ -949,7 +949,7 @@ ul li {
 
 /* @group Links - link visited hover active */
 a:link, a:visited {
-	color: #ff6600;
+	color: #e34d16;
 	text-decoration: underline;
 }
 a:hover {

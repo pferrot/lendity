@@ -255,12 +255,13 @@ public class CommentController extends AbstractController {
 			// Load wall comments.
 			else if (!StringUtils.isNullOrEmpty(wall)) {	
 				final Long currentPersonId = PersonUtils.getCurrentPersonId(pRequest.getSession());
-				// Own wall.
-				if (OWN_WALL_PARAMETER_VALUE.equals(wall) ||
-					(currentPersonId != null && wall.equals(currentPersonId.toString()))) {
+				// Own wall actually corresponds to the "updates" displayed on the homepage, e.g. it also 
+				// displays admin comments and comments that connections posted.
+				if (OWN_WALL_PARAMETER_VALUE.equals(wall)) {
 					lwrc = commentService.findOwnWallCommentsForPerson(currentPersonId, firstResult, maxResults);
 				}
-				// Someone else's wall.
+				// Someone else's wall or own wall but from the "my profile" or "person overview" pages,
+				// but not from the homepage.
 				else {
 					final Long wallOwnerId = Long.valueOf(wall);
 					lwrc = commentService.findOtherWallCommentsForPerson(
@@ -365,7 +366,14 @@ public class CommentController extends AbstractController {
 		if (refWallComment != null) {
 			Long wallCommentWallOwnerId = null;
 			if (refWallComment.getWallOwner() != null) {
-				wallCommentWallOwnerId = refWallComment.getWallOwner().getId();
+				final Person wallOwner = refWallComment.getWallOwner();
+				map.put("wallOwnerName", HtmlUtils.escapeHtmlAndReplaceCr(wallOwner.getDisplayName()));		
+				map.put("wallOwnerUrl", JsfUtils.getFullUrlWithPrefix(pRequest.getContextPath(),
+                        PagesURL.PERSON_OVERVIEW,
+                        PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID,
+                        wallOwner.getId().toString()));
+				
+				wallCommentWallOwnerId = wallOwner.getId();
 			}
 			canDelete = canEdit || (currentPersonId != null && currentPersonId.equals(wallCommentWallOwnerId));
 			

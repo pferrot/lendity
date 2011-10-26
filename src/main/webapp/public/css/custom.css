@@ -187,21 +187,21 @@ table.menuTable {
 /* @group Nav */
 /* Navbar */
 .gt-subnavbar {
-	background-color: #999697;
+	background-color: #999698;
 	margin-bottom: 0px;
 }
 
 .highlightedMenu {
-	background-color: #999697;
+	background-color: #999698;
 }
 
 .highlightedMenu2:hover {
-	background-color: #c7c7c7!important;
+	background-color: #c7c7c8!important;
 }
 
 /* When mouse over the submenu. */
 .highlightedMenu3  {
-	background-color: #c7c7c7!important;
+	background-color: #c7c7c8!important;
 }
 
 .highlightedSubMenu {
@@ -209,7 +209,7 @@ table.menuTable {
 }
 
 .highlightedSubMenu2 {
-	background-color: #c7c7c7;
+	background-color: #c7c7c8;
 }
 	
 
@@ -238,7 +238,7 @@ input.listerSearchInput {
 }
 
 span.linkStyleAction {
-	color: #ff6600;
+	color: #e34d16;
 	text-decoration: none;
 	font-weight: bold;
 	font-size:100%;
@@ -246,7 +246,7 @@ span.linkStyleAction {
 }
 
 span.linkStyleAction:hover {
-	color: #ff9900;
+	color: #ff8a00;
 }
 
 .categoryLink {
@@ -283,7 +283,7 @@ div.categoriesDiv {
 	top: 25px;
 	left: 0;
 	width: 160px;
-	border-color: #ff9900;
+	border-color: #ff8a00;
 	padding: 3px;
 	border-width: 0px;
 	border-style: solid;
@@ -329,7 +329,7 @@ div.contentDivNextToCategories {
 }
 
 span.linkStyleActionSmall {
-	color: #ff6600;
+	color: #e34d16;
 	text-decoration: none;
 	font-weight: normal;
 	font-size:90%;
@@ -337,7 +337,7 @@ span.linkStyleActionSmall {
 }
 
 span.linkStyleActionSmall:hover {
-	color: #ff9900;
+	color: #ff8a00;
 }
 
 /*
@@ -449,7 +449,7 @@ table.twoColumns td {
 }
 
 span.linkColor {
-	color: #ff6600;	
+	color: #e34d16;	
 }
 
 table.thumnailOutterTable {

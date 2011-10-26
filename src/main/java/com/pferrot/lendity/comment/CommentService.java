@@ -273,7 +273,24 @@ public class CommentService {
 		return commentDao.findOwnWallComments(pPersonId, connectionsIds, Boolean.TRUE, pFirstResult, pMaxResults);
 	}
 	
+	/**
+	 * This was originally called "other wall" but can actually be called by a person visitine his own wall. Is that case he
+	 * will of course see all comments on that wall.
+	 * 
+	 * @param pVisitorId
+	 * @param pWallOwnerId
+	 * @param pFirstResult
+	 * @param pMaxResults
+	 * @return
+	 */
 	public ListWithRowCount findOtherWallCommentsForPerson(final Long pVisitorId, final Long pWallOwnerId, final int pFirstResult, final int pMaxResults) {
+		
+		// Person visiting his own wall.
+		if (SecurityUtils.isLoggedIn() &&
+			pVisitorId.equals(pWallOwnerId)) {
+			return commentDao.findOtherWallComments(pWallOwnerId, pVisitorId, Boolean.TRUE, Boolean.TRUE, pFirstResult, pMaxResults);
+		}
+		
 		final Person wallOwner = personDao.findPerson(pWallOwnerId);
 		final WallCommentsVisibility visibility = wallOwner.getWallCommentsVisibility();
 		final String visibilityLabelCode = visibility.getLabelCode();

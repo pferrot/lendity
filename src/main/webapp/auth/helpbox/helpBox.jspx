@@ -49,7 +49,7 @@ $j(document).ready(function() {
 				'font-size': '120%'
 			},
 			button: {
-				'color': '#ff6600',
+				'color': '#e34d16',
 				'background': '#4c4847',
 				'font-size': '80%'
 			}

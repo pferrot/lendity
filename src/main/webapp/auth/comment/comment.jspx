@@ -89,6 +89,12 @@
 	</div>
 	<div id="commentsContainer">
 		<script type="text/javascript">
+			
+
+			var showOtherWallCommentOwnerTmp = false;
+			<c:if test="#{showOtherWallCommentOwner}">
+				var showOtherWallCommentOwnerTmp = true;
+			</c:if>
 			initComments('#{containerID}',
 					'#{containerType}',
 					#{authorizedToReply},
@@ -98,7 +104,8 @@
 					'<h:outputText value="#{messages.comment_submit}"/>',
 					'<h:outputText value="#{messages.comment_editCommentShort}"/>',
 					'<h:outputText value="#{messages.comment_deleteCommentShort}"/>',
-					'<h:outputText value="#{messages.comment_publicComment}"/>');
+					'<h:outputText value="#{messages.comment_publicComment}"/>',
+					showOtherWallCommentOwnerTmp);
 		</script>
 	</div>
 	<div id="loadMoreCommentsContainer" style="display: none;">

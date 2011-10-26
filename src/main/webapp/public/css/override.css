@@ -66,13 +66,13 @@ Overridden for align right.
 }
 
 a:link, a:visited {
-	color: #ff6600;
+	color: #e34d16;
 	font-weight: bold;
 	text-decoration: none!important;
 }
 
 a:hover {
-	color: #ff9900;
+	color: #ff8a00;
 }
 
 .gt-content-box {

@@ -11,23 +11,34 @@
     			<!-- body -->
 			<div class="gt-bd gt-cols clearfix">		
 			
-			<!-- main content -->
-			<div class="gt-content">	
-			
 				<f:view>
 
 	<ui:include src="personOverviewInternalHeader.jspx">
 		<ui:param name="theBean" value="#{theBean}"/>
 	</ui:include>
 
+<div style="float: left; width: 455px; border-style: solid; border-width: 0 1px 0 0; border-color: #cccccc; padding-right: 25px;">
 	<ui:include src="personOverviewInternalContent.jspx">
 		<ui:param name="theBean" value="#{theBean}"/>
 	</ui:include>
+</div>
+
+<div style="float: right; width: 455px; border-style: solid; border-width: 0px; border-color: blue">
+
+	<ui:include src="../comment/comment.jspx">
+		<ui:param name="authorizedToAdd" value="#{theBean.addCommentsAvailable}"/>
+		<ui:param name="authorizedToReply" value="#{theBean.addCommentsAvailable}"/>
+		<ui:param name="containerID" value="#{theBean.person.id}"/>
+		<ui:param name="containerType" value="otherWall"/>
+		<ui:param name="addCommentDefaultText" value="#{theBean.addCommentDefaultText}"/>
+		<ui:param name="addReplyDefaultText" value="#{messages.comment_addReplyWall}"/>
+		<ui:param name="noCommentAvailableText" value="#{messages.comment_noWallCommentAvailable}"/>
+		<ui:param name="showPublicCheckbox" value="#{theBean.ownProfile}"/>
+	</ui:include>
+
+</div>	
 
 				</f:view>
-			
-			</div>
-			<!-- main content -->
 			
 			</div>
 			<!-- /body -->

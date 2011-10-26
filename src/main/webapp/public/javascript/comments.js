@@ -14,6 +14,8 @@ var mDeleteCommentLabel = "";
 var mPublicIndicatorLabel = "";
 // The ID of the parent comment when adding child comments.
 var mTargetParentCommentId;
+// Specify whether to show "destinee" of the wall comment when available.
+var mShowOtherWallCommentOwner = false;
 
 /**
  * Called when an item overview page is loaded in order to load the first comments.
@@ -21,7 +23,7 @@ var mTargetParentCommentId;
  * @param pItemId
  * @return
  */
-function initComments(pContainerId, pContainerType, pAuthorizedToReply, pContextPath, pAddCommentDefaultText, pAddChildCommentDefaultText, pSubmitButtonText, pEditCommentLabel, pDeleteCommentLabel, pPublicIndicatorLabel) {
+function initComments(pContainerId, pContainerType, pAuthorizedToReply, pContextPath, pAddCommentDefaultText, pAddChildCommentDefaultText, pSubmitButtonText, pEditCommentLabel, pDeleteCommentLabel, pPublicIndicatorLabel, pShowOtherWallCommentOwner) {
 	mContextPath = pContextPath;
 	mAddCommentDefaultText = pAddCommentDefaultText;
 	mAuthorizedToReply = pAuthorizedToReply;
@@ -30,6 +32,7 @@ function initComments(pContainerId, pContainerType, pAuthorizedToReply, pContext
 	mEditCommentLabel = pEditCommentLabel;
 	mDeleteCommentLabel = pDeleteCommentLabel;
 	mPublicIndicatorLabel = pPublicIndicatorLabel;
+	mShowOtherWallCommentOwner = pShowOtherWallCommentOwner;
 	if (pContainerType == "item") {
 		loadCommentsForItem(pContainerId);
 	}
@@ -460,7 +463,7 @@ function addCommentsFromJsonData(pJsonData) {
 	var nb = pJsonData.nb;
 	for (var i = 0; i < nb; i++) {
 		var comment = comments[i];
-		addCommentInternal(comment.commentID, comment.text, comment.textWithoutHref, comment.ownerName, comment.ownerUrl,
+		addCommentInternal(comment.commentID, comment.text, comment.textWithoutHref, comment.ownerName, comment.ownerUrl, comment.wallOwnerName, comment.wallOwnerUrl,
 				comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.canDelete, comment.systemComment, comment.adminComment, comment.publicComment, comment.otherWallComment, false);
 	}
 	var childComments = pJsonData.childComments;
@@ -585,10 +588,12 @@ function resetCommentTextArea() {
 
 function resetChildCommentTextArea(pParentCommentId) {
 	addChildCommentErrorRemove(pParentCommentId);
-	$j('#childCommentTextarea' + pParentCommentId).attr('rows', '1');
+	$j('#childCommentTextareaContainer' + pParentCommentId).hide();
+	//$j('#childCommentTextarea' + pParentCommentId).attr('rows', '1');
 	$j('#childCommentButtonContainer' + pParentCommentId).hide();
 	$j('#childCommentTextarea' + pParentCommentId).val(mAddChildCommentDefaultText);
 	$j('#childCommentTextarea' + pParentCommentId).addClass('grayColor');
+	$j('#childCommentLinkContainer' + pParentCommentId).show();
 }
 
 /**
@@ -735,6 +740,8 @@ function addCommentInDbResponse(pData, pTextStatus, pXmlHttpRequest) {
 		var textWithoutHref = pData.textWithoutHref;
 		var ownerName = pData.ownerName;
 		var ownerUrl = pData.ownerUrl;
+		var wallOwnerName = pData.wallOwnerName;
+		var wallOwnerUrl = pData.wallOwnerUrl;
 		var dateAdded = pData.dateAdded;
 		var profilePictureUrl = pData.profilePictureUrl;
 		var canEdit = pData.canEdit;
@@ -743,7 +750,7 @@ function addCommentInDbResponse(pData, pTextStatus, pXmlHttpRequest) {
 		var adminComment = pData.adminComment;
 		var publicComment = pData.publicComment;
 		var otherWallComment = pData.otherWallComment;
-		addCommentInternal(commentId, text, textWithoutHref, ownerName, ownerUrl, dateAdded, profilePictureUrl, canEdit, canDelete, systemComment, adminComment, publicComment, otherWallComment, true);
+		addCommentInternal(commentId, text, textWithoutHref, ownerName, ownerUrl, wallOwnerName, wallOwnerUrl, dateAdded, profilePictureUrl, canEdit, canDelete, systemComment, adminComment, publicComment, otherWallComment, true);
 		resetCommentTextArea();
 		mNbCommentsLoaded = mNbCommentsLoaded + 1;
 		hideNoCommentDiv();
@@ -953,6 +960,8 @@ function editCommentInDbResponse(pJsonData, pTextStatus, pXmlHttpRequest) {
  * @param pText
  * @param pOwnerName
  * @param pOwnerUrl
+ * @param pWallOwnerName
+ * @param pWallOwnerUrl
  * @param pCommentDate
  * @param pProfilePictureUrl
  * @param pEditEnabled
@@ -963,7 +972,7 @@ function editCommentInDbResponse(pJsonData, pTextStatus, pXmlHttpRequest) {
  * @param pAddFirst
  * @return
  */
-function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
+function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pWallOwnerName, pWallOwnerUrl, pCommentDate, 
 		pProfilePictureUrl, pEditEnabled, pDeleteEnabled, pSystemComment,
 		pAdminComment, pPublicComment, pOtherWallComment, pAddFirst) {
 	var containerDiv = $j('#commentsContainer');
@@ -984,7 +993,7 @@ function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOw
 		headerClass = 'otherWallCommentHighlightedBgDark';
 	}
 	
-	var html = getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
+	var html = getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pWallOwnerName, pWallOwnerUrl, pCommentDate,
 			pProfilePictureUrl, "thumbnailOutterTd", pEditEnabled, pDeleteEnabled, pSystemComment, pPublicComment,
 			commentBackgroundClass, headerClass);
 	
@@ -1001,8 +1010,11 @@ function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOw
 	if (mAuthorizedToReply && !pAdminComment) {
 		html += 
 			'<div id="addChildCommentBox' + pCommentId + '" class="childComment">' +
-				'<div class="gt-form-row gt-width-100">' +
-					'<textarea id="childCommentTextarea' + pCommentId + '" rows="1" style="width: 100%;" class="fontSizeSmall" onFocus="this.rows = 3; document.getElementById(\'childCommentButtonContainer' + pCommentId + '\').style.display = \'block\';"/>' +
+			    '<div id="childCommentLinkContainer' + pCommentId + '" class="gt-form-row gt-width-100 grayColor small pointer" onClick="this.style.display = \'none\'; document.getElementById(\'childCommentTextareaContainer' + pCommentId + '\').style.display = \'block\'; document.getElementById(\'childCommentButtonContainer' + pCommentId + '\').style.display = \'block\'; document.getElementById(\'childCommentTextarea' + pCommentId + '\').focus();">' +
+			    	mAddChildCommentDefaultText +
+			    '</div>' +
+				'<div id="childCommentTextareaContainer' + pCommentId + '" class="gt-form-row gt-width-100" style="display: none;">' +
+					'<textarea id="childCommentTextarea' + pCommentId + '" rows="3" style="width: 100%;" class="fontSizeSmall"/>' +
 				'</div>' +
 				'<div id="childCommentButtonContainer' + pCommentId + '" class="gt-form-row gt-width-100" style="display: none;">' +
 					'<table class="buttonsTable">' +
@@ -1086,7 +1098,7 @@ function addChildCommentInternal(pCommentId, pParentCommentId, pText, pTextWitho
 		headerClass = 'otherWallChildCommentHighlightedBg';
 	}
 	
-	var html = getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
+	var html = getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, null, null, pCommentDate, 
 		pProfilePictureUrl, "thumbnailOutterTdSmall",  pEditEnabled, pDeleteEnabled, pSystemComment, pPublicComment, commentBackgroundClass, headerClass);
 	
 	html = 
@@ -1106,7 +1118,7 @@ function addChildCommentInternal(pCommentId, pParentCommentId, pText, pTextWitho
 	addAllEmbeddedStuff(pCommentId, pText);
 }
 
-function getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
+function getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pWallOwnerName, pWallOwnerUrl, pCommentDate, 
 		pProfilePictureUrl, pThumbnailOutterTdClass, pEditEnabled, pDeleteEnabled, pSystemComment, pPublicComment, pCommentBackgroundClass, pHeaderClass) {
 	
 	var result = 
@@ -1138,7 +1150,13 @@ function getCommentHtml(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerU
 	if (pOwnerUrl) {
 		// Normal comment.
 		if (!pSystemComment) {
-			result += '					<label class="fontSizeNormalSmall"><a href="' + pOwnerUrl + '">' + pOwnerName + '</a>, ' + pCommentDate + '</label>';
+			result += '					<label class="fontSizeNormalSmall"><a href="' + pOwnerUrl + '">' + pOwnerName + '</a>';
+			
+			if (mShowOtherWallCommentOwner && pWallOwnerUrl) {
+				result += ' >> <a href="' + pWallOwnerUrl + '">' + pWallOwnerName + '</a>'
+			}
+			
+			result += ', ' + pCommentDate + '</label>';
 		}
 		// System comment in the name of a normal user.
 		else {

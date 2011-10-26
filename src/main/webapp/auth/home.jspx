@@ -38,6 +38,7 @@
 								<ui:param name="addReplyDefaultText" value="#{messages.comment_addReplyWall}"/>								
 								<ui:param name="noCommentAvailableText" value="#{messages.comment_noWallCommentAvailable}"/>
 								<ui:param name="showPublicCheckbox" value="true"/>
+								<ui:param name="showOtherWallCommentOwner" value="true"/>
 							</ui:include>
 						</div>
 					</div>
