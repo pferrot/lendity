@@ -186,8 +186,8 @@
 			
 		<c:if test="#{groupOverviewController.recommendAvailable}">
 			<div class="buttonsDiv">
-				<span onclick="recommendTooltip(this, '#{groupOverviewController.group.id}', 'group')">
-					<h:outputText styleClass="buttonLight2" value="#{messages.comment_recommend}"/>
+				<span onclick="recommendTooltip(this, '#{groupOverviewController.group.id}', 'group')" class="buttonLight2">
+					<h:outputText value="#{messages.comment_recommend}"/>
 				</span>
 			</div>
 			<br/><br/>
@@ -195,22 +195,22 @@
 
 		<c:if test="#{groupOverviewController.requestJoinAvailable}">
 			<div class="buttonsDiv">
-		    	<span onclick="requestGroupJoinTooltip(this, '#{groupOverviewController.group.id}', 2)">
-					<h:outputText styleClass="buttonLight2" value="#{messages.groupJoinRequest_requestGroupJoin}" rendered="#{groupOverviewController.requestJoinAvailable}"/>
+		    	<span onclick="requestGroupJoinTooltip(this, '#{groupOverviewController.group.id}', 2)" class="buttonLight2">
+					<h:outputText value="#{messages.groupJoinRequest_requestGroupJoin}" rendered="#{groupOverviewController.requestJoinAvailable}"/>
 				</span>
 			</div>
 		</c:if>
 		<c:if test="#{groupOverviewController.joinAvailable}">
 			<div class="buttonsDiv">
-				<span onclick="joinGroupTooltip(this, '#{groupOverviewController.group.id}', 2)">
-					<h:outputText styleClass="buttonLight2" value="#{messages.group_joinGroup}" rendered="#{groupOverviewController.joinAvailable}"/>
+				<span onclick="joinGroupTooltip(this, '#{groupOverviewController.group.id}', 2)" class="buttonLight2">
+					<h:outputText value="#{messages.group_joinGroup}" rendered="#{groupOverviewController.joinAvailable}"/>
 				</span>
 			</div>
 		</c:if>
 		<c:if test="#{groupOverviewController.leaveAvailable}">
 			<div class="buttonsDiv">
-				<span onclick="leaveGroupTooltip(this, '#{groupOverviewController.group.id}', 2)">
-					<h:outputText styleClass="buttonLight2" value="#{messages.group_leaveGroup}" rendered="#{groupOverviewController.leaveAvailable}"/>
+				<span onclick="leaveGroupTooltip(this, '#{groupOverviewController.group.id}', 2)" class="buttonLight2">
+					<h:outputText value="#{messages.group_leaveGroup}" rendered="#{groupOverviewController.leaveAvailable}"/>
 				</span>
 			</div>
 		</c:if>
@@ -244,8 +244,8 @@
 		</c:if>
 		<c:if test="#{groupOverviewController.deleteAvailable}">
 			<div class="buttonsDiv">
-				<span onclick="deleteGroupTooltip(this, '#{groupOverviewController.group.id}', 1)">
-					<h:outputText styleClass="buttonLight2" value="#{messages.group_delete}"/>
+				<span onclick="deleteGroupTooltip(this, '#{groupOverviewController.group.id}', 1)" class="buttonLight2">
+					<h:outputText value="#{messages.group_delete}"/>
 				</span>
 			</div>
 		</c:if>		

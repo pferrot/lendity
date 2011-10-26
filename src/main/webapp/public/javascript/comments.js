@@ -998,7 +998,7 @@ function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOw
 			commentBackgroundClass, headerClass);
 	
 	html =
-		'<div id="commentsFamily' + pCommentId + '">' +
+		'<div id="commentsFamily' + pCommentId + '"  style="margin-top: 20px;">' +
 		html +
 		'</div>';
 	
@@ -1010,7 +1010,7 @@ function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOw
 	if (mAuthorizedToReply && !pAdminComment) {
 		html += 
 			'<div id="addChildCommentBox' + pCommentId + '" class="childComment">' +
-			    '<div id="childCommentLinkContainer' + pCommentId + '" class="gt-form-row gt-width-100 grayColor small pointer" onClick="this.style.display = \'none\'; document.getElementById(\'childCommentTextareaContainer' + pCommentId + '\').style.display = \'block\'; document.getElementById(\'childCommentButtonContainer' + pCommentId + '\').style.display = \'block\'; document.getElementById(\'childCommentTextarea' + pCommentId + '\').focus();">' +
+			    '<div id="childCommentLinkContainer' + pCommentId + '" class="gt-form-row gt-width-100 small linkType2" onClick="this.style.display = \'none\'; document.getElementById(\'childCommentTextareaContainer' + pCommentId + '\').style.display = \'block\'; document.getElementById(\'childCommentButtonContainer' + pCommentId + '\').style.display = \'block\'; document.getElementById(\'childCommentTextarea' + pCommentId + '\').focus();">' +
 			    	mAddChildCommentDefaultText +
 			    '</div>' +
 				'<div id="childCommentTextareaContainer' + pCommentId + '" class="gt-form-row gt-width-100" style="display: none;">' +

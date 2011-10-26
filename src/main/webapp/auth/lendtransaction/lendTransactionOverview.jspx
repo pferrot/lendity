@@ -127,6 +127,7 @@
 	<br/>
 	
 	<div class="gt-form-row gt-width-100">
+	
 		<c:if test="#{lendTransactionOverviewController.acceptRequestAvailable}">
 			<div class="buttonsDiv">
 				<h:commandButton styleClass="buttonLight2"
@@ -175,8 +176,8 @@
 		
 		<c:if test="#{lendTransactionOverviewController.giveOrSellAvailable}">
 			<div class="buttonsDiv">			
-				<span onclick="transferItemTooltip(this, '#{lendTransactionOverviewController.lendTransaction.id}')">
-					<h:outputText styleClass="buttonLight2" value="#{messages.lendTransaction_buttonGiveOrSell}"/>
+				<span onclick="transferItemTooltip(this, '#{lendTransactionOverviewController.lendTransaction.id}')" class="buttonLight2">
+					<h:outputText value="#{messages.lendTransaction_buttonGiveOrSell}"/>
 				</span>
 			</div>
 		</c:if>
@@ -190,14 +191,16 @@
 			</div>
 		</c:if>
 		
+		
 		<c:if test="#{lendTransactionOverviewController.editAvailable}">
 			<br/><br/>
-			<div class="buttonsDiv">
+			<div class="buttonsDiv" style="padding-top: 5px;">
 				<h:outputLink rendered="#{lendTransactionOverviewController.editAvailable}" value="#{lendTransactionOverviewController.lendTransactionEditHref}" styleClass="buttonLight2">
 		    		<h:outputText rendered="#{lendTransactionOverviewController.editAvailable}" value="#{messages.lendTransaction_edit}"/>
 		    	</h:outputLink>
 			</div>
 		</c:if>
+		
 	</div>
 	
 </div>

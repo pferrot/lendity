@@ -20,17 +20,17 @@ public interface CommentDao {
 	Long createComment(Comment pComment);
 	
 	Comment findComment(Long pCommentId);
-	ItemComment findItemComment(final Long pCommentId);
-	NeedComment findNeedComment(final Long pCommentId);
-	GroupComment findGroupComment(final Long pCommentId);
-	LendTransactionComment findLendTransactionComment(final Long pCommentId);
-	WallComment findWallComment(final Long pCommentId);
+	ItemComment findItemComment(Long pCommentId);
+	NeedComment findNeedComment(Long pCommentId);
+	GroupComment findGroupComment(Long pCommentId);
+	LendTransactionComment findLendTransactionComment(Long pCommentId);
+	WallComment findWallComment(Long pCommentId);
 	
-	ChildComment findChildComment(final Long pCommentId);
+	ChildComment findChildComment(Long pCommentId);
 	
-	ListWithRowCount findOwnWallComments(Long pPersonId, final Long[] pConnectionIds, Boolean pIncludeAdminPublicComments, int pFirstResult, int pMaxResults);
-	List<WallComment> findOwnWallCommentsList(Long pPersonId, final Long[] pConnectionIds, Boolean pIncludeAdminPublicComments, int pFirstResult, int pMaxResults);
-	long countOwnWallComments(Long pPersonId, final Long[] pConnectionIds, Boolean pIncludeAdminPublicComments);
+	ListWithRowCount findOwnWallComments(Long pPersonId, Long[] pConnectionIds, Long[] pConnectionWithVisibleCommentsOnWallIds, Boolean pIncludeAdminPublicComments, int pFirstResult, int pMaxResults);
+	List<WallComment> findOwnWallCommentsList(Long pPersonId, Long[] pConnectionIds, Long[] pConnectionWithVisibleCommentsOnWallIds,  Boolean pIncludeAdminPublicComments, int pFirstResult, int pMaxResults);
+	long countOwnWallComments(Long pPersonId, Long[] pConnectionIds, Long[] pConnectionWithVisibleCommentsOnWallIds, Boolean pIncludeAdminPublicComments);
 	
 	ListWithRowCount findOtherWallComments(Long pWallOwnerId, Long pVisitorId, Boolean pIncludeWallOwnerPrivateComments, Boolean pIncludeOtherPublicCommentsWithOwner, int pFirstResult, int pMaxResults);
 	List<WallComment> findOtherWallCommentsList(Long pWallOwnerId, Long pVisitorId, Boolean pIncludeWallOwnerPrivateComments, Boolean pIncludeOtherPublicCommentsWithOwner, int pFirstResult, int pMaxResults);

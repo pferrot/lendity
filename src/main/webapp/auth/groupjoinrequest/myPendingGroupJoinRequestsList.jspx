@@ -84,21 +84,21 @@
 			<tr>
 				<td>
 					<span onclick="acceptGroupJoinTooltip(this, '#{groupJoinRequest.id}', 1)">
-						<h:outputText id="id_10" styleClass="buttonLight2" value="#{messages.groupJoinRequest_responseAccept}"/>
+						<h:outputText id="id_10" value="#{messages.groupJoinRequest_responseAccept}" styleClass="buttonLight2"/>
 					</span>
 				</td>
 		    </tr>
 		    <tr>
 				<td>
 					<span onclick="refuseGroupJoinTooltip(this, '#{groupJoinRequest.id}', 1)">
-						<h:outputText id="id_11" styleClass="buttonLight2" value="#{messages.groupJoinRequest_responseRefuse}"/>
+						<h:outputText id="id_11" value="#{messages.groupJoinRequest_responseRefuse}" styleClass="buttonLight2"/>
 					</span>
 				</td>
 		    </tr>
 		    <tr>
 				<td>
 					<span onclick="banGroupJoinTooltip(this, '#{groupJoinRequest.id}', 1)">
-						<h:outputText id="id_12" styleClass="buttonLight2" value="#{messages.groupJoinRequest_responseBan}"/>
+						<h:outputText id="id_12" value="#{messages.groupJoinRequest_responseBan}" styleClass="buttonLight2"/>
 					</span>
 				</td>
 		    </tr>

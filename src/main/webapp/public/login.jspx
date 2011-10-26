@@ -105,7 +105,7 @@
 				<!-- / logo -->
 				
 				<c:if test="#{configuration.facebookLikeEnabledNotStatic}">
-					<div style="position: absolute; top: 65px; left: 0px; height: 35px; width: 450px; border-style: solid; border-color: black; border-width: 0px;">
+					<div style="position: absolute; top: 75px; left: 0px; height: 35px; width: 450px; border-style: solid; border-color: black; border-width: 0px;">
 						<iframe src="http://www.facebook.com/plugins/like.php?app_id=205308432839095&amp;href=#{configuration.rootURLFacebookEncodedNotStatic}&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font=arial&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>
 					</div>
  				</c:if>
@@ -231,29 +231,32 @@
 					</div>
 				</div>
 				<!-- / utility box -->
-				<div style="text-align: center; vertical-align: middle; position: absolute; left: 430px; top: 120px; width: 250px; height: 90px; border-style: solid; border-width: 0px; border-color: black;">
-					<h:outputText styleClass="fontSizeLargeLarge" value="#{messages.login_lendityText}"/>
+				<div style="text-align: center; vertical-align: middle; position: absolute; left: 435px; top: 130px; width: 250px; height: 90px; border-style: solid; border-width: 0px; border-color: black;">
+					<b><h:outputText styleClass="fontSizeLarge" value="#{messages.login_lendityText}"/></b>
 				</div>
-				<div style="position: absolute; left: 380px; top: 200px; width: 350px; height: 120px; border-style: solid; border-width: 0px; border-color: black;">
+				<div style="position: absolute; left: 385px; top: 230px; width: 350px; height: 120px; border-style: solid; border-width: 0px; border-color: black;">
 					<h:form id="homePublicForm" prependId="false">
 					<div style="width: 100%; text-align: center;" class="gt-form">
 	
 	
 						<c:if test="#{not homePublicController.locationLabelCookieAvailable}">
-								<span class="fontSizeLargeLarge"><b><h:outputText value="#{messages.geolocation_inputYourLocation}" /></b></span><br/>
-								<span class="fontSizeLarge"><h:outputText value="#{messages.geolocation_findStuffNearYou}" /></span>
+								<span><h:outputText value="#{messages.geolocation_inputYourLocation}" /></span><br/>
+								<span><h:outputText value="#{messages.geolocation_findStuffNearYou}" /></span>
 								<br/><br/>
 								
 								<h:message styleClass="error" showSummary="true" showDetail="false"
-											for="location"></h:message>		
-								<h:inputText id="location"
-											 styleClass="gt-form-text gt-form-text-location"
-								             value="#{homePublicController.location}"
-											 required="true" 
-											 requiredMessage="#{messages.validation_requiredMessage}"
-											 validator="#{homePublicController.validateLocation}"/>
-								
+											for="location"></h:message>	
+								<table style="width: 100%;">
+								<tr><td style="width: 280px; text-align: right;">	
+									<h:inputText id="location"
+												 styleClass="gt-form-text gt-form-text-location"
+									             value="#{homePublicController.location}"
+												 required="true" 
+												 requiredMessage="#{messages.validation_requiredMessage}"
+												 validator="#{homePublicController.validateLocation}"/>
+									</td><td style="text-align: left; padding-left: 10px;">
 								<span class="buttonLight2" onclick="document.getElementById('homePublicForm').submit();"><h:outputText value="#{messages.geolocation_setLocation}"/></span>
+								</td></tr></table>
 								<script type="text/javascript">
 									setupSearchField('location', '#{messages.geolocation_inputLocationExample}', false);
 								</script>

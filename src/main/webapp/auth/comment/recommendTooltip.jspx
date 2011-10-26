@@ -30,8 +30,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<span onclick="submitRecommend()"><h:outputText styleClass="fontSizeSmall buttonLight2" value="#{messages.navigation_ok}"/></span>
-					<span onclick="cancelRecommend()"><h:outputText styleClass="fontSizeSmall buttonLight2" value="#{messages.navigation_cancel}"/></span>
+					<span onclick="submitRecommend()" class="buttonLight2"><h:outputText value="#{messages.navigation_ok}"/></span>
+					<span onclick="cancelRecommend()" class="buttonLight2"><h:outputText value="#{messages.navigation_cancel}"/></span>
 					<h:commandButton id="recommendActionButton" action="#{recommendTooltipController.submit}" style="display: none"  value="not_displayed"/>
 				</td>
 			</tr>

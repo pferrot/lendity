@@ -30,22 +30,15 @@
 
 				<h2 class="gt-table-head"><h:outputText value="#{messages.contact_contactTitle}"/></h2>
 				<div class="gt-form gt-content-box">
-					<table class="twoColumns">
+					<table class="twoColumns" width="80%">
 					
 					<tr>
 						<td width="50%"><h4><h:outputText value="#{messages.contact_contactInfo}"/></h4></td>
 						<td width="50%"><h4><h:outputText value="#{messages.contact_contactSupport}"/></h4></td>
 					</tr>
 					<tr>
-						<td><h:outputText value="#{messages.contact_contactInfoDescription}"/></td>
-						<td><h:outputText value="#{messages.contact_contactSupportDescription}"/></td>
-					</tr>
-					<tr>
-						<td><b><span class="linkColor"><h:outputText value="#{messages.contact_infoEmailAntiSpam}"/></span></b>*</td>
-						<td><b><span class="linkColor"><h:outputText value="#{messages.contact_supportEmailAntiSpam}"/></span></b>*</td>
-					</tr>
-					<tr>
-						<td colspan="2">*<span class="fontSizeSmall"><h:outputText value="#{messages.contact_emailAntiSpamHelp}"/></span></td>
+						<td><a href="mailto:#{messages.contact_infoEmail}"><h:outputText value="#{messages.contact_infoEmail}"/></a></td>
+						<td><a href="mailto:#{messages.contact_supportEmail}"><h:outputText value="#{messages.contact_supportEmail}"/></a></td>
 					</tr>
 										
 					</table>

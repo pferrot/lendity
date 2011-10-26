@@ -108,9 +108,9 @@
 					showOtherWallCommentOwnerTmp);
 		</script>
 	</div>
-	<div id="loadMoreCommentsContainer" style="display: none;">
+	<div id="loadMoreCommentsContainer" class="small" style="display: none;">
 		<br/>
-		<b><nobr><span id="nbExtraComments"></span><h:outputText value=" " escape="false" /><h:outputText value="#{messages.comment_nbExtra}"/></nobr></b>
+		<nobr><span id="nbExtraComments"></span><h:outputText value=" " escape="false" /><h:outputText value="#{messages.comment_nbExtra}"/></nobr>
 		<br/>
 		<span id="loadMoreComments" class="linkStyleAction" onClick="loadMoreComments('#{containerID}', '#{containerType}');">
 			<h:outputText value="#{messages.comment_loadMore}"/>

@@ -223,7 +223,7 @@
 			<tr>
 				<td>
 					<span onclick="requestLendTooltip(this, '#{item.id}', 1)">
-						<h:outputText id="requestLendLabel" styleClass="buttonLight2" value="#{messages.lendRequest_requestLend}" rendered="#{searchItemsListController.requestLendAvailable}"/>
+						<h:outputText id="requestLendLabel" value="#{messages.lendRequest_requestLend}" rendered="#{searchItemsListController.requestLendAvailable}" styleClass="buttonLight2"/>
 					</span>
 					<h:outputText id="requestLendNotAllowed1" value="#{messages.lendRequest_requestNotAllowedOwnItem}" rendered="#{searchItemsListController.requestLendNotAvailableOwnItem}"/>
 					<h:outputLink id="requestLendNotAllowed2Link" value="#{searchItemsListController.requestLendNotAvailableUncompletedTransactionUrl}" rendered="#{searchItemsListController.requestLendNotAvailableUncompletedTransaction}">

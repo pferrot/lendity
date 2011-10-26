@@ -43,7 +43,7 @@
 
 <c:if test="#{!empty(myFullPotentialConnectionsListController.list)}">
 	<span onclick="deleteAllPotentialConnectionsTooltip(this, 1)">
-		<h:outputText styleClass="buttonLight2" value="#{messages.potentialConnection_deleteAll}"/>
+		<h:outputText value="#{messages.potentialConnection_deleteAll}" styleClass="buttonLight2"/>
 	</span>
 	<br/><br/>
 </c:if>

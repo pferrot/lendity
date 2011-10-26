@@ -219,15 +219,15 @@
 	    	</c:if>
 	    	<c:if test="#{!theBean.requestConnectionDisabled}">
 				<div class="buttonsDiv">	    	
-			    	<span onclick="requestConnectionTooltip(this, '#{theBean.person.id}', 2)">
-						<h:outputText styleClass="buttonLight2" value="#{messages.connectionRequest_requestConnection}" rendered="#{!theBean.requestConnectionDisabled}"/>
+			    	<span onclick="requestConnectionTooltip(this, '#{theBean.person.id}', 2)" class="buttonLight2">
+						<h:outputText value="#{messages.connectionRequest_requestConnection}" rendered="#{!theBean.requestConnectionDisabled}"/>
 					</span>
 				</div>
 	    	</c:if>
 	    	<c:if test="#{theBean.banPersonAvailable}">
 				<div class="buttonsDiv">
-					<span onclick="banConnectionTooltip(this, null, '#{theBean.person.id}', 1)">
-						<h:outputText id="id_11" styleClass="buttonLight2" value="#{messages.person_ban}" rendered="#{theBean.banPersonAvailable}"/>
+					<span onclick="banConnectionTooltip(this, null, '#{theBean.person.id}', 1)" class="buttonLight2">
+						<h:outputText id="id_11" value="#{messages.person_ban}" rendered="#{theBean.banPersonAvailable}"/>
 					</span>
 				</div>
 	    	</c:if>

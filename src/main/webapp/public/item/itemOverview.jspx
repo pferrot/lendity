@@ -204,15 +204,15 @@
 	<div class="gt-form-row gt-width-100">
 		<c:if test="#{itemOverviewController.lendAvailable}">
 			<div class="buttonsDiv">
-				<span onclick="lendItemTooltip(this, '#{itemOverviewController.item.id}', 2)">
-					<h:outputText styleClass="buttonLight2" value="#{itemOverviewController.lendButtonLabel}"/>
+				<span onclick="lendItemTooltip(this, '#{itemOverviewController.item.id}', 2)" class="buttonLight2">
+					<h:outputText value="#{itemOverviewController.lendButtonLabel}"/>
 				</span>
 			</div>
 		</c:if>
 		<c:if test="#{itemOverviewController.requestLendAvailable}">
 			<div class="buttonsDiv">
-				<span onclick="requestLendTooltip(this, '#{itemOverviewController.item.id}', 2)">
-					<h:outputText styleClass="buttonLight2" value="#{messages.lendRequest_requestLend}"/>
+				<span onclick="requestLendTooltip(this, '#{itemOverviewController.item.id}', 2)" class="buttonLight2">
+					<h:outputText value="#{messages.lendRequest_requestLend}"/>
 				</span>
 			</div>
 		</c:if>
@@ -225,8 +225,8 @@
 		</c:if>
 		<c:if test="#{itemOverviewController.recommendAvailable}">
 			<div class="buttonsDiv">
-				<span onclick="recommendTooltip(this, '#{itemOverviewController.item.id}', 'item')">
-					<h:outputText styleClass="buttonLight2" value="#{messages.comment_recommend}"/>
+				<span onclick="recommendTooltip(this, '#{itemOverviewController.item.id}', 'item')" class="buttonLight2">
+					<h:outputText value="#{messages.comment_recommend}"/>
 				</span>
 			</div>
 		</c:if>
@@ -255,9 +255,9 @@
 		</c:if>
 		<c:if test="#{itemOverviewController.editAvailable}">
 			<div class="buttonsDiv">			
-					<span onclick="deleteItemTooltip(this, '#{itemOverviewController.item.id}', 1)">
-						<h:outputText styleClass="buttonLight2" value="#{messages.item_delete}"/>
-					</span>
+				<span onclick="deleteItemTooltip(this, '#{itemOverviewController.item.id}', 1)" class="buttonLight2">
+					<h:outputText value="#{messages.item_delete}"/>
+				</span>
 			</div>
 		</c:if>
 		

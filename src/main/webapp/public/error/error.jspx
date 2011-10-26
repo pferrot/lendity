@@ -27,18 +27,11 @@
 			<!-- main content -->
 			<div class="gt-content">
 
-				<h2 class="gt-table-head"><h:outputText value="#{messages.error_errorPageTitle}"/></h2>
+				<h2 class="gt-table-head" style="font-size: 600%!important;"><h:outputText value="#{messages.error_errorPageTitle}"/></h2>
 				<div class="gt-form gt-content-box">
 
 				<p><h:outputText value="#{messages.error_errorPageDescription}"/></p>	
-				<p>
-					<h:outputLink value="#{authenticationController.homeURL}">
-						<h:outputText value="#{messages.menu_home}" />
-					</h:outputLink>
-				</p>
-				<p><h:outputText value="#{messages.error_errorPageDescription2}"/></p>
-				<p><b><span class="linkColor"><h:outputText value="#{messages.contact_supportEmailAntiSpam}"/></span></b>*<br/>
-				*<span class="fontSizeSmall"><h:outputText value="#{messages.contact_emailAntiSpamHelp}"/></span></p>
+				<p><a href="mailto:#{messages.contact_supportEmail}"><h:outputText value="#{messages.contact_supportEmail}"/></a></p>
 				</div>
 			</div>
 			<!-- /main content -->

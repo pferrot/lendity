@@ -32,301 +32,301 @@
 				
 <c:if test="#{messages.faq_q1 != 'q'}">
 	<div><h:outputText id="q1" value="#{messages.faq_q1}" styleClass="linkStyleAction" onclick="toggleQuestion('a1Div');"/></div>
-	<div id="a1Div"  style="display: none;"><h:outputText id="a1" value="#{messages.faq_a1}" escape="false"/></div>
+	<div id="a1Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a1" value="#{messages.faq_a1}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q2 != 'q'}">
 	<div><h:outputText id="q2" value="#{messages.faq_q2}" styleClass="linkStyleAction" onclick="toggleQuestion('a2Div');"/></div>
-	<div id="a2Div"  style="display: none;"><h:outputText id="a2" value="#{messages.faq_a2}" escape="false"/></div>
+	<div id="a2Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a2" value="#{messages.faq_a2}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q3 != 'q'}">
 	<div><h:outputText id="q3" value="#{messages.faq_q3}" styleClass="linkStyleAction" onclick="toggleQuestion('a3Div');"/></div>
-	<div id="a3Div"  style="display: none;"><h:outputText id="a3" value="#{messages.faq_a3}" escape="false"/></div>
+	<div id="a3Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a3" value="#{messages.faq_a3}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q4 != 'q'}">
 	<div><h:outputText id="q4" value="#{messages.faq_q4}" styleClass="linkStyleAction" onclick="toggleQuestion('a4Div');"/></div>
-	<div id="a4Div"  style="display: none;"><h:outputText id="a4" value="#{messages.faq_a4}" escape="false"/></div>
+	<div id="a4Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a4" value="#{messages.faq_a4}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q5 != 'q'}">
 	<div><h:outputText id="q5" value="#{messages.faq_q5}" styleClass="linkStyleAction" onclick="toggleQuestion('a5Div');"/></div>
-	<div id="a5Div"  style="display: none;"><h:outputText id="a5" value="#{messages.faq_a5}" escape="false"/></div>
+	<div id="a5Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a5" value="#{messages.faq_a5}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q6 != 'q'}">
 	<div><h:outputText id="q6" value="#{messages.faq_q6}" styleClass="linkStyleAction" onclick="toggleQuestion('a6Div');"/></div>
-	<div id="a6Div"  style="display: none;"><h:outputText id="a6" value="#{messages.faq_a6}" escape="false"/></div>
+	<div id="a6Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a6" value="#{messages.faq_a6}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q7 != 'q'}">
 	<div><h:outputText id="q7" value="#{messages.faq_q7}" styleClass="linkStyleAction" onclick="toggleQuestion('a7Div');"/></div>
-	<div id="a7Div"  style="display: none;"><h:outputText id="a7" value="#{messages.faq_a7}" escape="false"/></div>
+	<div id="a7Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a7" value="#{messages.faq_a7}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q8 != 'q'}">
 	<div><h:outputText id="q8" value="#{messages.faq_q8}" styleClass="linkStyleAction" onclick="toggleQuestion('a8Div');"/></div>
-	<div id="a8Div"  style="display: none;"><h:outputText id="a8" value="#{messages.faq_a8}" escape="false"/></div>
+	<div id="a8Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a8" value="#{messages.faq_a8}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q9 != 'q'}">
 	<div><h:outputText id="q9" value="#{messages.faq_q9}" styleClass="linkStyleAction" onclick="toggleQuestion('a9Div');"/></div>
-	<div id="a9Div"  style="display: none;"><h:outputText id="a9" value="#{messages.faq_a9}" escape="false"/></div>
+	<div id="a9Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a9" value="#{messages.faq_a9}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q10 != 'q'}">
 	<div><h:outputText id="q10" value="#{messages.faq_q10}" styleClass="linkStyleAction" onclick="toggleQuestion('a10Div');"/></div>
-	<div id="a10Div"  style="display: none;"><h:outputText id="a10" value="#{messages.faq_a10}" escape="false"/></div>
+	<div id="a10Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a10" value="#{messages.faq_a10}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q11 != 'q'}">
 	<div><h:outputText id="q11" value="#{messages.faq_q11}" styleClass="linkStyleAction" onclick="toggleQuestion('a11Div');"/></div>
-	<div id="a11Div"  style="display: none;"><h:outputText id="a11" value="#{messages.faq_a11}" escape="false"/></div>
+	<div id="a11Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a11" value="#{messages.faq_a11}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q12 != 'q'}">
 	<div><h:outputText id="q12" value="#{messages.faq_q12}" styleClass="linkStyleAction" onclick="toggleQuestion('a12Div');"/></div>
-	<div id="a12Div"  style="display: none;"><h:outputText id="a12" value="#{messages.faq_a12}" escape="false"/></div>
+	<div id="a12Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a12" value="#{messages.faq_a12}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q13 != 'q'}">
 	<div><h:outputText id="q13" value="#{messages.faq_q13}" styleClass="linkStyleAction" onclick="toggleQuestion('a13Div');"/></div>
-	<div id="a13Div"  style="display: none;"><h:outputText id="a13" value="#{messages.faq_a13}" escape="false"/></div>
+	<div id="a13Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a13" value="#{messages.faq_a13}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q14 != 'q'}">
 	<div><h:outputText id="q14" value="#{messages.faq_q14}" styleClass="linkStyleAction" onclick="toggleQuestion('a14Div');"/></div>
-	<div id="a14Div"  style="display: none;"><h:outputText id="a14" value="#{messages.faq_a14}" escape="false"/></div>
+	<div id="a14Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a14" value="#{messages.faq_a14}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q15 != 'q'}">
 	<div><h:outputText id="q15" value="#{messages.faq_q15}" styleClass="linkStyleAction" onclick="toggleQuestion('a15Div');"/></div>
-	<div id="a15Div"  style="display: none;"><h:outputText id="a15" value="#{messages.faq_a15}" escape="false"/></div>
+	<div id="a15Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a15" value="#{messages.faq_a15}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q16 != 'q'}">
 	<div><h:outputText id="q16" value="#{messages.faq_q16}" styleClass="linkStyleAction" onclick="toggleQuestion('a16Div');"/></div>
-	<div id="a16Div"  style="display: none;"><h:outputText id="a16" value="#{messages.faq_a16}" escape="false"/></div>
+	<div id="a16Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a16" value="#{messages.faq_a16}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q17 != 'q'}">
 	<div><h:outputText id="q17" value="#{messages.faq_q17}" styleClass="linkStyleAction" onclick="toggleQuestion('a17Div');"/></div>
-	<div id="a17Div"  style="display: none;"><h:outputText id="a17" value="#{messages.faq_a17}" escape="false"/></div>
+	<div id="a17Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a17" value="#{messages.faq_a17}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q18 != 'q'}">
 	<div><h:outputText id="q18" value="#{messages.faq_q18}" styleClass="linkStyleAction" onclick="toggleQuestion('a18Div');"/></div>
-	<div id="a18Div"  style="display: none;"><h:outputText id="a18" value="#{messages.faq_a18}" escape="false"/></div>
+	<div id="a18Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a18" value="#{messages.faq_a18}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q19 != 'q'}">
 	<div><h:outputText id="q19" value="#{messages.faq_q19}" styleClass="linkStyleAction" onclick="toggleQuestion('a19Div');"/></div>
-	<div id="a19Div"  style="display: none;"><h:outputText id="a19" value="#{messages.faq_a19}" escape="false"/></div>
+	<div id="a19Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a19" value="#{messages.faq_a19}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q20 != 'q'}">
 	<div><h:outputText id="q20" value="#{messages.faq_q20}" styleClass="linkStyleAction" onclick="toggleQuestion('a20Div');"/></div>
-	<div id="a20Div"  style="display: none;"><h:outputText id="a20" value="#{messages.faq_a20}" escape="false"/></div>
+	<div id="a20Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a20" value="#{messages.faq_a20}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q21 != 'q'}">
 	<div><h:outputText id="q21" value="#{messages.faq_q21}" styleClass="linkStyleAction" onclick="toggleQuestion('a21Div');"/></div>
-	<div id="a21Div"  style="display: none;"><h:outputText id="a21" value="#{messages.faq_a21}" escape="false"/></div>
+	<div id="a21Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a21" value="#{messages.faq_a21}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q22 != 'q'}">
 	<div><h:outputText id="q22" value="#{messages.faq_q22}" styleClass="linkStyleAction" onclick="toggleQuestion('a22Div');"/></div>
-	<div id="a22Div"  style="display: none;"><h:outputText id="a22" value="#{messages.faq_a22}" escape="false"/></div>
+	<div id="a22Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a22" value="#{messages.faq_a22}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q23 != 'q'}">
 	<div><h:outputText id="q23" value="#{messages.faq_q23}" styleClass="linkStyleAction" onclick="toggleQuestion('a23Div');"/></div>
-	<div id="a23Div"  style="display: none;"><h:outputText id="a23" value="#{messages.faq_a23}" escape="false"/></div>
+	<div id="a23Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a23" value="#{messages.faq_a23}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q24 != 'q'}">
 	<div><h:outputText id="q24" value="#{messages.faq_q24}" styleClass="linkStyleAction" onclick="toggleQuestion('a24Div');"/></div>
-	<div id="a24Div"  style="display: none;"><h:outputText id="a24" value="#{messages.faq_a24}" escape="false"/></div>
+	<div id="a24Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a24" value="#{messages.faq_a24}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q25 != 'q'}">
 	<div><h:outputText id="q25" value="#{messages.faq_q25}" styleClass="linkStyleAction" onclick="toggleQuestion('a25Div');"/></div>
-	<div id="a25Div"  style="display: none;"><h:outputText id="a25" value="#{messages.faq_a25}" escape="false"/></div>
+	<div id="a25Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a25" value="#{messages.faq_a25}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q26 != 'q'}">
 	<div><h:outputText id="q26" value="#{messages.faq_q26}" styleClass="linkStyleAction" onclick="toggleQuestion('a26Div');"/></div>
-	<div id="a26Div"  style="display: none;"><h:outputText id="a26" value="#{messages.faq_a26}" escape="false"/></div>
+	<div id="a26Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a26" value="#{messages.faq_a26}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q27 != 'q'}">
 	<div><h:outputText id="q27" value="#{messages.faq_q27}" styleClass="linkStyleAction" onclick="toggleQuestion('a27Div');"/></div>
-	<div id="a27Div"  style="display: none;"><h:outputText id="a27" value="#{messages.faq_a27}" escape="false"/></div>
+	<div id="a27Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a27" value="#{messages.faq_a27}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q28 != 'q'}">
 	<div><h:outputText id="q28" value="#{messages.faq_q28}" styleClass="linkStyleAction" onclick="toggleQuestion('a28Div');"/></div>
-	<div id="a28Div"  style="display: none;"><h:outputText id="a28" value="#{messages.faq_a28}" escape="false"/></div>
+	<div id="a28Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a28" value="#{messages.faq_a28}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q29 != 'q'}">
 	<div><h:outputText id="q29" value="#{messages.faq_q29}" styleClass="linkStyleAction" onclick="toggleQuestion('a29Div');"/></div>
-	<div id="a29Div"  style="display: none;"><h:outputText id="a29" value="#{messages.faq_a29}" escape="false"/></div>
+	<div id="a29Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a29" value="#{messages.faq_a29}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q30 != 'q'}">
 	<div><h:outputText id="q30" value="#{messages.faq_q30}" styleClass="linkStyleAction" onclick="toggleQuestion('a30Div');"/></div>
-	<div id="a30Div"  style="display: none;"><h:outputText id="a30" value="#{messages.faq_a30}" escape="false"/></div>
+	<div id="a30Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a30" value="#{messages.faq_a30}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q31 != 'q'}">
 	<div><h:outputText id="q31" value="#{messages.faq_q31}" styleClass="linkStyleAction" onclick="toggleQuestion('a31Div');"/></div>
-	<div id="a31Div"  style="display: none;"><h:outputText id="a31" value="#{messages.faq_a31}" escape="false"/></div>
+	<div id="a31Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a31" value="#{messages.faq_a31}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q32 != 'q'}">
 	<div><h:outputText id="q32" value="#{messages.faq_q32}" styleClass="linkStyleAction" onclick="toggleQuestion('a32Div');"/></div>
-	<div id="a32Div"  style="display: none;"><h:outputText id="a32" value="#{messages.faq_a32}" escape="false"/></div>
+	<div id="a32Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a32" value="#{messages.faq_a32}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q33 != 'q'}">
 	<div><h:outputText id="q33" value="#{messages.faq_q33}" styleClass="linkStyleAction" onclick="toggleQuestion('a33Div');"/></div>
-	<div id="a33Div"  style="display: none;"><h:outputText id="a33" value="#{messages.faq_a33}" escape="false"/></div>
+	<div id="a33Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a33" value="#{messages.faq_a33}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q34 != 'q'}">
 	<div><h:outputText id="q34" value="#{messages.faq_q34}" styleClass="linkStyleAction" onclick="toggleQuestion('a34Div');"/></div>
-	<div id="a34Div"  style="display: none;"><h:outputText id="a34" value="#{messages.faq_a34}" escape="false"/></div>
+	<div id="a34Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a34" value="#{messages.faq_a34}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q35 != 'q'}">
 	<div><h:outputText id="q35" value="#{messages.faq_q35}" styleClass="linkStyleAction" onclick="toggleQuestion('a35Div');"/></div>
-	<div id="a35Div"  style="display: none;"><h:outputText id="a35" value="#{messages.faq_a35}" escape="false"/></div>
+	<div id="a35Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a35" value="#{messages.faq_a35}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q36 != 'q'}">
 	<div><h:outputText id="q36" value="#{messages.faq_q36}" styleClass="linkStyleAction" onclick="toggleQuestion('a36Div');"/></div>
-	<div id="a36Div"  style="display: none;"><h:outputText id="a36" value="#{messages.faq_a36}" escape="false"/></div>
+	<div id="a36Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a36" value="#{messages.faq_a36}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q37 != 'q'}">
 	<div><h:outputText id="q37" value="#{messages.faq_q37}" styleClass="linkStyleAction" onclick="toggleQuestion('a37Div');"/></div>
-	<div id="a37Div"  style="display: none;"><h:outputText id="a37" value="#{messages.faq_a37}" escape="false"/></div>
+	<div id="a37Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a37" value="#{messages.faq_a37}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q38 != 'q'}">
 	<div><h:outputText id="q38" value="#{messages.faq_q38}" styleClass="linkStyleAction" onclick="toggleQuestion('a38Div');"/></div>
-	<div id="a38Div"  style="display: none;"><h:outputText id="a38" value="#{messages.faq_a38}" escape="false"/></div>
+	<div id="a38Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a38" value="#{messages.faq_a38}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q39 != 'q'}">
 	<div><h:outputText id="q39" value="#{messages.faq_q39}" styleClass="linkStyleAction" onclick="toggleQuestion('a39Div');"/></div>
-	<div id="a39Div"  style="display: none;"><h:outputText id="a39" value="#{messages.faq_a39}" escape="false"/></div>
+	<div id="a39Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a39" value="#{messages.faq_a39}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q40 != 'q'}">
 	<div><h:outputText id="q40" value="#{messages.faq_q40}" styleClass="linkStyleAction" onclick="toggleQuestion('a40Div');"/></div>
-	<div id="a40Div"  style="display: none;"><h:outputText id="a40" value="#{messages.faq_a40}" escape="false"/></div>
+	<div id="a40Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a40" value="#{messages.faq_a40}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q41 != 'q'}">
 	<div><h:outputText id="q41" value="#{messages.faq_q41}" styleClass="linkStyleAction" onclick="toggleQuestion('a41Div');"/></div>
-	<div id="a41Div"  style="display: none;"><h:outputText id="a41" value="#{messages.faq_a41}" escape="false"/></div>
+	<div id="a41Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a41" value="#{messages.faq_a41}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q42 != 'q'}">
 	<div><h:outputText id="q42" value="#{messages.faq_q42}" styleClass="linkStyleAction" onclick="toggleQuestion('a42Div');"/></div>
-	<div id="a42Div"  style="display: none;"><h:outputText id="a42" value="#{messages.faq_a42}" escape="false"/></div>
+	<div id="a42Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a42" value="#{messages.faq_a42}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q43 != 'q'}">
 	<div><h:outputText id="q43" value="#{messages.faq_q43}" styleClass="linkStyleAction" onclick="toggleQuestion('a43Div');"/></div>
-	<div id="a43Div"  style="display: none;"><h:outputText id="a43" value="#{messages.faq_a43}" escape="false"/></div>
+	<div id="a43Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a43" value="#{messages.faq_a43}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q44 != 'q'}">
 	<div><h:outputText id="q44" value="#{messages.faq_q44}" styleClass="linkStyleAction" onclick="toggleQuestion('a44Div');"/></div>
-	<div id="a44Div"  style="display: none;"><h:outputText id="a44" value="#{messages.faq_a44}" escape="false"/></div>
+	<div id="a44Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a44" value="#{messages.faq_a44}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q45 != 'q'}">
 	<div><h:outputText id="q45" value="#{messages.faq_q45}" styleClass="linkStyleAction" onclick="toggleQuestion('a45Div');"/></div>
-	<div id="a45Div"  style="display: none;"><h:outputText id="a45" value="#{messages.faq_a45}" escape="false"/></div>
+	<div id="a45Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a45" value="#{messages.faq_a45}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q46 != 'q'}">
 	<div><h:outputText id="q46" value="#{messages.faq_q46}" styleClass="linkStyleAction" onclick="toggleQuestion('a46Div');"/></div>
-	<div id="a46Div"  style="display: none;"><h:outputText id="a46" value="#{messages.faq_a46}" escape="false"/></div>
+	<div id="a46Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a46" value="#{messages.faq_a46}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q47 != 'q'}">
 	<div><h:outputText id="q47" value="#{messages.faq_q47}" styleClass="linkStyleAction" onclick="toggleQuestion('a47Div');"/></div>
-	<div id="a47Div"  style="display: none;"><h:outputText id="a47" value="#{messages.faq_a47}" escape="false"/></div>
+	<div id="a47Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a47" value="#{messages.faq_a47}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q48 != 'q'}">
 	<div><h:outputText id="q48" value="#{messages.faq_q48}" styleClass="linkStyleAction" onclick="toggleQuestion('a48Div');"/></div>
-	<div id="a48Div"  style="display: none;"><h:outputText id="a48" value="#{messages.faq_a48}" escape="false"/></div>
+	<div id="a48Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a48" value="#{messages.faq_a48}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q49 != 'q'}">
 	<div><h:outputText id="q49" value="#{messages.faq_q49}" styleClass="linkStyleAction" onclick="toggleQuestion('a49Div');"/></div>
-	<div id="a49Div"  style="display: none;"><h:outputText id="a49" value="#{messages.faq_a49}" escape="false"/></div>
+	<div id="a49Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a49" value="#{messages.faq_a49}" escape="false"/></div></div>
 	<br/>
 </c:if>
 
 <c:if test="#{messages.faq_q50 != 'q'}">
 	<div><h:outputText id="q50" value="#{messages.faq_q50}" styleClass="linkStyleAction" onclick="toggleQuestion('a50Div');"/></div>
-	<div id="a50Div"  style="display: none;"><h:outputText id="a50" value="#{messages.faq_a50}" escape="false"/></div>
+	<div id="a50Div"  style="display: none;"><div class="faqAnswer"><h:outputText id="a50" value="#{messages.faq_a50}" escape="false"/></div></div>
 	<br/>
 </c:if>
 				

@@ -8,11 +8,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.orchestra.viewController.annotations.InitView;
+import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
+import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
 import com.pferrot.lendity.groupjoinrequest.GroupJoinRequestService;
 import com.pferrot.lendity.lendtransaction.LendTransactionService;
 import com.pferrot.lendity.login.jsf.AbstractHomeController;
+import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.model.PotentialConnection;
 import com.pferrot.lendity.person.PersonUtils;
@@ -21,7 +25,9 @@ import com.pferrot.lendity.personconfiguration.PersonConfigurationService;
 import com.pferrot.lendity.potentialconnection.PotentialConnectionService;
 import com.pferrot.lendity.utils.HtmlUtils;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.security.SecurityUtils;
 
+@ViewController(viewIds={"/auth/home.jspx"})
 public class HomeController extends AbstractHomeController {
 	
 	private final static Log log = LogFactory.getLog(HomeController.class);
@@ -44,6 +50,39 @@ public class HomeController extends AbstractHomeController {
 	private long nbTransactionsAsLenderWaitingForMyInput = -1;
 	private long nbTransactionsAsBorrowerWaitingForMyInput = -1;
 	
+	private Boolean showPersonalWall = Boolean.FALSE;
+	
+	@InitView
+	public void initView() {
+		final String personalWall = JsfUtils.getRequestParameter(PagesURL.HOME_PARAM_PERSONAL_WALL);
+		if ("true".equals(personalWall)) {
+			setShowPersonalWall(Boolean.TRUE);
+		}
+		else {
+			setShowPersonalWall(Boolean.FALSE);
+		}
+	}
+	
+	public String getShowPersonalWallURL() {
+		return JsfUtils.getFullUrl(PagesURL.HOME, PagesURL.HOME_PARAM_PERSONAL_WALL, "true");
+	}
+	
+	public String getShowStatusUpdatesURL() {
+		return JsfUtils.getFullUrl(PagesURL.HOME, PagesURL.HOME_PARAM_PERSONAL_WALL, "false");
+	}
+	
+	public Long getPersonId() {
+		return PersonUtils.getCurrentPersonId();
+	}
+	
+	public Boolean getShowPersonalWall() {
+		return showPersonalWall;
+	}
+	
+	public void setShowPersonalWall(Boolean showPersonalWall) {
+		this.showPersonalWall = showPersonalWall;
+	}
+
 	public PersonConfigurationService getPersonConfigurationService() {
 		return personConfigurationService;
 	}

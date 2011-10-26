@@ -2,6 +2,7 @@ package com.pferrot.lendity.person;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -445,6 +446,17 @@ public class PersonService {
 	 */
 	public Long[] getPersonConnectionIds(final Person pPerson, final Long pConnectionId) {
 		return getPersonIdsArray(pPerson, pConnectionId, pPerson.getConnections());
+	}
+	
+	public Long[] getPersonConnectionWithVisibleCommentsOnWallIds(final Person pPerson, final Long pConnectionId) {
+		final Set<Person> connections = pPerson.getConnections();
+		final Set<Person> connectionsWithVisibleCommentsOnWall = new HashSet<Person>();
+		for (Person connection: connections) {
+			if (!WallCommentsVisibility.PRIVATE.equals(connection.getWallCommentsVisibility().getLabelCode())) {
+				connectionsWithVisibleCommentsOnWall.add(connection);
+			}
+		}
+		return getPersonIdsArray(pPerson, pConnectionId, connectionsWithVisibleCommentsOnWall);
 	}
 	
 	

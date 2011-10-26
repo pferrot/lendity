@@ -103,8 +103,8 @@
 	
 		<c:if test="#{itemOverviewController.recommendAvailable}">
 			<div class="buttonsDiv">
-				<span onclick="recommendTooltip(this, '#{needOverviewController.need.id}', 'need')">
-					<h:outputText styleClass="buttonLight2" value="#{messages.comment_recommend}"/>
+				<span onclick="recommendTooltip(this, '#{needOverviewController.need.id}', 'need')" class="buttonLight2">
+					<h:outputText value="#{messages.comment_recommend}"/>
 				</span>
 			</div>
 			<br/><br/>
@@ -133,8 +133,8 @@
 		</c:if>
 		<c:if test="#{needOverviewController.editAvailable}">
 			<div class="buttonsDiv">
-				<span onclick="deleteNeedTooltip(this, '#{needOverviewController.need.id}', 1)">
-					<h:outputText styleClass="buttonLight2" value="#{messages.item_delete}"/>
+				<span onclick="deleteNeedTooltip(this, '#{needOverviewController.need.id}', 1)" class="buttonLight2">
+					<h:outputText value="#{messages.item_delete}"/>
 				</span>
 			</div>
 		</c:if>

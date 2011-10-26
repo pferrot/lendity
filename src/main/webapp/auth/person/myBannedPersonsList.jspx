@@ -96,7 +96,7 @@
 			<tr>
 				<td>
 					<span onclick="removeBannedPersonTooltip(this, '#{person.id}', 1)">
-						<h:outputText styleClass="buttonLight2" value="#{messages.person_unbanPerson}"/>
+						<h:outputText value="#{messages.person_unbanPerson}" styleClass="buttonLight2"/>
 					</span>
 				</td>
 		    </tr>

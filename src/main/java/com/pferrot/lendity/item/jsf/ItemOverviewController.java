@@ -26,7 +26,6 @@ import com.pferrot.lendity.lendrequest.LendRequestService;
 import com.pferrot.lendity.lendtransaction.LendTransactionConsts;
 import com.pferrot.lendity.lendtransaction.LendTransactionService;
 import com.pferrot.lendity.lendtransaction.exception.LendTransactionException;
-import com.pferrot.lendity.lendtransaction.jsf.AbstractLendTransactionsListController;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.ItemCategory;
 import com.pferrot.lendity.model.LendTransaction;

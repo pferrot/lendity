@@ -24,7 +24,6 @@ import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.geolocation.bean.Coordinate;
 import com.pferrot.lendity.geolocation.exception.GeolocalisationException;
 import com.pferrot.lendity.geolocation.googlemaps.GoogleMapsUtils;
-import com.pferrot.lendity.i18n.I18nConsts;
 import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.iptocountry.IpToCountryService;
 import com.pferrot.lendity.person.PersonConsts;

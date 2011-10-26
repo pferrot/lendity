@@ -270,7 +270,9 @@ public class CommentService {
 		}
 		final Person person = personDao.findPerson(pPersonId);
 		final Long[] connectionsIds = personService.getPersonConnectionIds(person, null);
-		return commentDao.findOwnWallComments(pPersonId, connectionsIds, Boolean.TRUE, pFirstResult, pMaxResults);
+		final Long[] connectionsWithVisibleCommentsOnWallIds = personService.getPersonConnectionWithVisibleCommentsOnWallIds(person, null);
+		
+		return commentDao.findOwnWallComments(pPersonId, connectionsIds, connectionsWithVisibleCommentsOnWallIds, Boolean.TRUE, pFirstResult, pMaxResults);
 	}
 	
 	/**

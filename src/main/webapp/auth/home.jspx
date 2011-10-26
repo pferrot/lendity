@@ -28,18 +28,43 @@
 					
 					
 					<div style="float: left; width: 455px; border-style: solid; border-width: 0 1px 0 0; border-color: #cccccc; padding-right: 25px;">						
-						<div >
-							<ui:include src="comment/comment.jspx">
-								<ui:param name="authorizedToAdd" value="true"/>
-								<ui:param name="authorizedToReply" value="true"/>
-								<ui:param name="containerID" value="FAKE"/>
-								<ui:param name="containerType" value="ownWall"/>
-								<ui:param name="addCommentDefaultText" value="#{messages.comment_addWallComment}"/>
-								<ui:param name="addReplyDefaultText" value="#{messages.comment_addReplyWall}"/>								
-								<ui:param name="noCommentAvailableText" value="#{messages.comment_noWallCommentAvailable}"/>
-								<ui:param name="showPublicCheckbox" value="true"/>
-								<ui:param name="showOtherWallCommentOwner" value="true"/>
-							</ui:include>
+						<div>
+							<c:if test="#{not homeController.showPersonalWall}">
+								<div class="small" style="text-align: right; width: 100%; margin-bottom: 7px;">
+									<h:outputLink value="#{homeController.showPersonalWallURL}" class="linkType2">
+										<h:outputText value="#{messages.home_viewPersonalWall}"/>
+									</h:outputLink>
+								</div>
+								<ui:include src="comment/comment.jspx">
+									<ui:param name="authorizedToAdd" value="true"/>
+									<ui:param name="authorizedToReply" value="true"/>
+									<ui:param name="containerID" value="FAKE"/>
+									<ui:param name="containerType" value="ownWall"/>
+									<ui:param name="addCommentDefaultText" value="#{messages.comment_addWallComment}"/>
+									<ui:param name="addReplyDefaultText" value="#{messages.comment_addReplyWall}"/>								
+									<ui:param name="noCommentAvailableText" value="#{messages.comment_noWallCommentAvailable}"/>
+									<ui:param name="showPublicCheckbox" value="true"/>
+									<ui:param name="showOtherWallCommentOwner" value="true"/>
+								</ui:include>
+							</c:if>
+							<c:if test="#{homeController.showPersonalWall}">
+								<div class="small" style="text-align: right; width: 100%; margin-bottom: 7px;">
+									<h:outputLink value="#{homeController.showStatusUpdatesURL}" class="linkType2">
+										<h:outputText value="#{messages.home_viewStatusUpdates}"/>
+									</h:outputLink>
+								</div>
+								<ui:include src="comment/comment.jspx">
+									<ui:param name="authorizedToAdd" value="true"/>
+									<ui:param name="authorizedToReply" value="true"/>
+									<ui:param name="containerID" value="#{homeController.personId}"/>
+									<ui:param name="containerType" value="otherWall"/>
+									<ui:param name="addCommentDefaultText" value="#{messages.comment_addWallComment}"/>
+									<ui:param name="addReplyDefaultText" value="#{messages.comment_addReplyWall}"/>								
+									<ui:param name="noCommentAvailableText" value="#{messages.comment_noWallCommentAvailable}"/>
+									<ui:param name="showPublicCheckbox" value="true"/>
+									<ui:param name="showOtherWallCommentOwner" value="false"/>
+								</ui:include>
+							</c:if>
 						</div>
 					</div>
 					

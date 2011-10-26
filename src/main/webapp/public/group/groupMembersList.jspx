@@ -90,30 +90,24 @@
 		<h:form id="form123">
 			<table border="0" class="gt-table-categories" width="150" align="right">
 				<tr>
-					<td>
-						
-							<span onclick="removeGroupMemberTooltip(this, '#{groupMembersListController.groupId}', '#{person.id}', 2)">
-								<h:outputText id="id_01" styleClass="buttonLight2" value="#{messages.group_removeGroupMember}" rendered="#{groupMembersListController.authorizedToRemoveMember}"/>
-							</span>
-						
+					<td>						
+						<span onclick="removeGroupMemberTooltip(this, '#{groupMembersListController.groupId}', '#{person.id}', 2)">
+							<h:outputText id="id_01" value="#{messages.group_removeGroupMember}" rendered="#{groupMembersListController.authorizedToRemoveMember}" styleClass="buttonLight2"/>
+						</span>						
 					</td>
 			    </tr>
 			    <tr>
-					<td>
-						
-							<span onclick="removeAndBanGroupMemberTooltip(this, '#{groupMembersListController.groupId}', '#{person.id}', 2)">
-								<h:outputText id="id_02" styleClass="buttonLight2" value="#{messages.group_removeAndBanGroupMember}" rendered="#{groupMembersListController.authorizedToBanMember}"/>
-							</span>
-						
+					<td>						
+						<span onclick="removeAndBanGroupMemberTooltip(this, '#{groupMembersListController.groupId}', '#{person.id}', 2)">
+							<h:outputText id="id_02" value="#{messages.group_removeAndBanGroupMember}" rendered="#{groupMembersListController.authorizedToBanMember}" styleClass="buttonLight2"/>
+						</span>						
 					</td>
 			    </tr>
 			    <tr>
-					<td>
-						
-							<span onclick="addGroupAdminTooltip(this, '#{groupMembersListController.groupId}', '#{person.id}', 2)">
-								<h:outputText id="id_03" styleClass="buttonLight2" value="#{messages.group_addGroupAdmin}" rendered="#{groupMembersListController.authorizedToAddAdmin}"/>
-							</span>
-						
+					<td>						
+						<span onclick="addGroupAdminTooltip(this, '#{groupMembersListController.groupId}', '#{person.id}', 2)">
+							<h:outputText id="id_03" value="#{messages.group_addGroupAdmin}" rendered="#{groupMembersListController.authorizedToAddAdmin}" styleClass="buttonLight2"/>
+						</span>						
 					</td>
 			    </tr>
 			</table>

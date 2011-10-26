@@ -98,6 +98,7 @@ public interface PagesURL {
 	// HOME - start
 	
 	String HOME = "/auth/home.faces";
+	String HOME_PARAM_PERSONAL_WALL = "personalWall";
 	
 	// HOME - end
 	/////////////////////////////////////////////////////////////////////////
