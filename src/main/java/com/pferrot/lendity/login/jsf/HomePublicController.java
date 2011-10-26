@@ -27,9 +27,9 @@ public class HomePublicController extends AbstractHomeController {
 	
 	private final static Log log = LogFactory.getLog(HomePublicController.class);
 	
-	public final static String COOKIE_LOCATION_LABEL = "locationLabel";
-	public final static String COOKIE_LOCATION_LATITUDE = "locationLatitude";
-	public final static String COOKIE_LOCATION_LONGITUDE  = "locationLongitude";
+	public final static String COOKIE_LOCATION_LABEL = "locationLabel2";
+	public final static String COOKIE_LOCATION_LATITUDE = "locationLatitude2";
+	public final static String COOKIE_LOCATION_LONGITUDE  = "locationLongitude2";
 	
 	// City, NPA,...
 	private String location;
