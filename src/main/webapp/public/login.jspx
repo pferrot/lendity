@@ -182,8 +182,11 @@
 												var usernameDivHeight = $j('#usernameDiv').height();
 												var passwordDivHeight = $j('#passwordDiv').height();
 												if (usernameDivHeight > passwordDivHeight) {
-													$j('#passwordDiv').height(usernameDivHeight);
-												}												
+													$j('#passwordDiv').height(usernameDivHeight+4);
+												}	
+												else if (passwordDivHeight > usernameDivHeight) {
+													$j('#usernameDiv').height(passwordDivHeight+4);
+												}											
 												if ($j('#usernameDiv').children("span.error")[0]) {
 													$j("#j_username").addClass('validationError');        
 												}

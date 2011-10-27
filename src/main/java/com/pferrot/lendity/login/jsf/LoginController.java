@@ -5,7 +5,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Locale;
 
-import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 
 import org.apache.myfaces.orchestra.viewController.annotations.InitView;
@@ -20,7 +19,7 @@ import com.pferrot.lendity.utils.JsfUtils;
 /**
  * See http://ocpsoft.com/java/acegi-spring-security-jsf-login-page/
  */
-@ViewController(viewIds={"/login.jspx"})
+@ViewController(viewIds={"/public/login.jspx"})
 public class LoginController {
 	
 	private String username;
