@@ -25,7 +25,7 @@
 			<!-- body -->
 			<div class="gt-bd gt-cols clearfix">
 			<!-- main content -->
-			<div class="gt-content">
+			<div class="gt-content-intermediate">
 
 				
 <f:view>
@@ -80,7 +80,7 @@
 
 	<h:column id="column4">
 	<h:form id="form123">
-		<table border="0" class="gt-table-categories" width="150" align="right">
+		<table border="0" class="gt-table-categories paddingBottomSmall" width="150" align="right">
 			<tr>
 				<td>
 					<span onclick="acceptGroupJoinTooltip(this, '#{groupJoinRequest.id}', 1)">

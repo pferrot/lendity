@@ -673,7 +673,10 @@ div.otherWallChildCommentHighlightedBg {
 div.statusInfoOverview {
 	font-size:110%;
 	font-weight: bold; 
-	padding: 0px;
+	padding-top: 0px;
+	padding-bottom: 20px;
+	padding-left: 0px;
+	padding-right: 0px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;	
 }
@@ -879,4 +882,8 @@ a.buttonLightDisabled:hover, .buttonLightDisabled:hover {
 .faqAnswer {
 	padding-top: 7px;
 	padding-bottom: 14px;
+}
+
+table.paddingBottomSmall td {
+	padding-bottom: 15px;
 }

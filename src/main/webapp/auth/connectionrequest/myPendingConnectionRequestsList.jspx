@@ -84,7 +84,7 @@
 
 	<h:column id="column3">
 	<h:form id="form123">
-		<table border="0" class="gt-table-categories" width="150" align="right">
+		<table border="0" class="gt-table-categories paddingBottomSmall" width="150" align="right">
 			<tr>
 				<td>
 					<span onclick="acceptConnectionTooltip(this, '#{connectionRequest.id}', 1)">
