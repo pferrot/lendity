@@ -270,7 +270,10 @@ public class CommentService {
 		}
 		final Person person = personDao.findPerson(pPersonId);
 		final Long[] connectionsIds = personService.getPersonConnectionIds(person, null);
-		final Long[] connectionsWithVisibleCommentsOnWallIds = personService.getPersonConnectionWithVisibleCommentsOnWallIds(person, null);
+		final Long[] connectionsWithVisibleCommentsOnWallIds = null;
+		// Uncoment if you want wall comments from one of your connection to another of your connections to appear of the
+		// main wall.
+		//final Long[] connectionsWithVisibleCommentsOnWallIds = personService.getPersonConnectionWithVisibleCommentsOnWallIds(person, null);
 		
 		return commentDao.findOwnWallComments(pPersonId, connectionsIds, connectionsWithVisibleCommentsOnWallIds, Boolean.TRUE, pFirstResult, pMaxResults);
 	}
