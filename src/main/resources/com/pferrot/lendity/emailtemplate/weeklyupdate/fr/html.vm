@@ -15,7 +15,7 @@ Bonjour $firstName,<br/><br/>
 <a href="$connectionRequestsUrl">$nbConnectionRequests demande(s) d'ami en attente de réponse</a><br/>
 #end
 
-#if( $nbTransactionsWaitingForInput || $nbTransactionsOutWaitingForInput || $nbGroupJoinRequests || $nbConnectionRequests )
+#if( $nbTransactionsAsLenderWaitingForInput || $nbTransactionsAsBorrowerWaitingForInput || $nbGroupJoinRequests || $nbConnectionRequests )
 <br/>
 #end
 
