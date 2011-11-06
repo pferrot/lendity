@@ -16,6 +16,7 @@ import com.pferrot.lendity.model.PotentialConnection;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.potentialconnection.PotentialConnectionService;
+import com.pferrot.lendity.potentialconnection.exception.PotentialConnectionException;
 import com.pferrot.lendity.registration.RegistrationService;
 import com.pferrot.lendity.utils.JsfUtils;
 
@@ -116,16 +117,21 @@ public class InvitationService {
 	 * @throws InvitationException
 	 */
 	public void updateSendInvitationAndAddPotentialConnection(final Long pPersonId, final String pEmail) throws InvitationException {
-		sendInvitation(pPersonId, pEmail);
-		final Date now = new Date();
-		final PotentialConnection pc = new PotentialConnection();
-		pc.setPerson(personService.findPerson(pPersonId));
-		pc.setEmail(pEmail);
-		pc.setInvitationSentOn(now);
-		pc.setDateAdded(now);
-		pc.setIgnored(Boolean.FALSE);
-		pc.setSource(PotentialConnection.SOURCE_INVITATION);
-		getPotentialConnectionService().createOrUpdatePotentialConnection(pc);		
+		try {
+			sendInvitation(pPersonId, pEmail);
+			final Date now = new Date();
+			final PotentialConnection pc = new PotentialConnection();
+			pc.setPerson(personService.findPerson(pPersonId));
+			pc.setEmail(pEmail);
+			pc.setInvitationSentOn(now);
+			pc.setDateAdded(now);
+			pc.setIgnored(Boolean.FALSE);
+			pc.setSource(PotentialConnection.SOURCE_INVITATION);
+			getPotentialConnectionService().createOrUpdatePotentialConnection(pc);
+		}
+		catch (PotentialConnectionException e) {
+			throw new InvitationException(e);
+		}
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.pferrot.lendity.home.jsf;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
@@ -13,10 +14,11 @@ import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
+import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
 import com.pferrot.lendity.groupjoinrequest.GroupJoinRequestService;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.lendtransaction.LendTransactionService;
 import com.pferrot.lendity.login.jsf.AbstractHomeController;
-import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.model.PotentialConnection;
 import com.pferrot.lendity.person.PersonUtils;
@@ -33,6 +35,7 @@ public class HomeController extends AbstractHomeController {
 	private final static Log log = LogFactory.getLog(HomeController.class);
 	
 	private final static String POTENTIAL_CONNECTIONS_LIST_LOADED_ATTRIBUTE_NAME = "potentialConnectionsListLoaded";
+	private final static String REQUEST_CONNECTION_ATTRIUTE_PREFIX = "REQUEST_CONNECTION_AVAILABLE_";
 
 	private List potentialConnectionsList;
 	
@@ -226,5 +229,99 @@ public class HomeController extends AbstractHomeController {
 	
 	public String getShowWallCommentHelpConfigKey() {
 		return PersonConfigurationConsts.SHOW_HELP_KEY_PREFIX + "wallComment"; 
+	}
+	
+	@Override
+	public List getNeedsList() {
+		HttpServletRequest request = JsfUtils.getRequest();
+		if (FacesContext.getCurrentInstance().getRenderResponse()
+			&& ! LIST_LOADED_ATTRIBUTE_VALUE.equals(
+					request.getAttribute(NEEDS_LIST_LOADED_ATTRIBUTE_NAME))) {
+				setNeedsList(
+					getNeedService().findLatestNeedsHomepage(
+						getLocationLatitude(),
+						getLocationLongitude()));	
+				request.setAttribute(NEEDS_LIST_LOADED_ATTRIBUTE_NAME, LIST_LOADED_ATTRIBUTE_VALUE);
+		}
+        return getNeedsListInternal();
+	}
+	
+	public boolean isRequestConnectionDisabled() {
+		try {
+			if (!SecurityUtils.isLoggedIn()) {
+				return true;
+			}
+			
+			final PotentialConnection pc = (PotentialConnection)getPotentialConnectionsTable().getRowData();			
+			
+			// Not sure why this is called 3 times per person !? Avoid hitting DB.
+			final HttpServletRequest request = JsfUtils.getRequest();
+			final Boolean requestResult = (Boolean)request.getAttribute(REQUEST_CONNECTION_ATTRIUTE_PREFIX + pc.getConnection().getId());
+			if (requestResult != null) {
+				return requestResult.booleanValue();
+			}
+			boolean result = !getConnectionRequestService().isConnectionRequestAllowedFromCurrentUser(pc.getConnection());
+			request.setAttribute(REQUEST_CONNECTION_ATTRIUTE_PREFIX + pc.getConnection().getId(), Boolean.valueOf(result));
+			return result;			
+		}
+		catch (ConnectionRequestException e) {
+			// TODO redirect to error page instead.
+			throw new RuntimeException(e);
+		}			
+	}
+	
+	public String getRequestConnectionDisabledLabel() {
+		if (isUncompletedConnectionRequestAvailable()) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString("person_pendingRequestExists", locale);	
+		}
+		else if (isBannedByPerson()) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString("person_bannedByPerson", locale);	
+		}
+		else if (isConnection()) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString("person_alreadyConnection", locale);
+		}
+		else if (isYourSelf()) {
+			final Locale locale = I18nUtils.getDefaultLocale();
+			return I18nUtils.getMessageResourceString("person_yourSelf", locale);
+		}
+		return null;		
+	}
+	
+	public boolean isUncompletedConnectionRequestAvailable() {
+		final PotentialConnection pc = (PotentialConnection)getPotentialConnectionsTable().getRowData();
+		final Person p = pc.getConnection();
+		return SecurityUtils.isLoggedIn() &&
+			   getConnectionRequestService().isUncompletedConnectionRequestAvailable(p.getId(), PersonUtils.getCurrentPersonId());
+	}
+	
+	public boolean isBannedByPerson() {
+		final PotentialConnection pc = (PotentialConnection)getPotentialConnectionsTable().getRowData();
+		final Person p = pc.getConnection();
+		return SecurityUtils.isLoggedIn() &&
+			   getPersonService().isBannedBy(p.getId(), PersonUtils.getCurrentPersonId());
+	}
+	
+	public boolean isConnection() {
+		final PotentialConnection pc = (PotentialConnection)getPotentialConnectionsTable().getRowData();
+		final Person p = pc.getConnection();
+		return SecurityUtils.isLoggedIn() &&
+			   getPersonService().isConnection(p.getId(), PersonUtils.getCurrentPersonId());
+	}
+	
+	public boolean isYourSelf() {
+		final PotentialConnection pc = (PotentialConnection)getPotentialConnectionsTable().getRowData();
+		final Person p = pc.getConnection();
+		return SecurityUtils.isLoggedIn() &&
+		       p.getId().equals(PersonUtils.getCurrentPersonId());
+	}
+	
+	public String ignorePotentialConnection() {
+		final PotentialConnection pc = (PotentialConnection)getPotentialConnectionsTable().getRowData();
+		pc.setIgnored(Boolean.TRUE);
+		getPotentialConnectionService().updatePotentialConnection(pc);
+		return "success";
 	}
 }

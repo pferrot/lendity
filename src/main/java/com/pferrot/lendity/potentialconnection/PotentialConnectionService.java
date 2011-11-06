@@ -2,8 +2,10 @@ package com.pferrot.lendity.potentialconnection;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -105,10 +107,20 @@ public class PotentialConnectionService {
 		return pPotentialConnection;
 	}
 	
-	public Long createOrUpdatePotentialConnection(final PotentialConnection pPcToCreate) {
+	public Long createOrUpdatePotentialConnection(final PotentialConnection pPcToCreate) throws PotentialConnectionException {
 		final PotentialConnection refreshedPC = refreshPotentialConnection(pPcToCreate);
 		
-		final PotentialConnection existingPC = findPotentialConnection(refreshedPC.getPerson().getId(), pPcToCreate.getEmail());
+		PotentialConnection existingPC = null;
+		if (pPcToCreate.getEmail() != null) {
+			existingPC = findPotentialConnection(refreshedPC.getPerson().getId(), pPcToCreate.getEmail());	
+		}
+		else if (pPcToCreate.getName() != null) {
+			existingPC = findPotentialConnectionByName(refreshedPC.getPerson().getId(), pPcToCreate.getName());
+		}
+		else {
+			throw new PotentialConnectionException("Both email and name are null");
+		}
+		
 		
 		if (existingPC == null) {
 			return createPotentialConnection(refreshedPC);
@@ -155,6 +167,30 @@ public class PotentialConnectionService {
 		else {
 			throw new RuntimeException("More than 1 PotentialConnecton for personId '" +
 					pPersonId.toString() + "' and email '" + pEmail + "'");
+		}
+	}
+	
+	/**
+	 * Note that there can be several potential connections with the same name. In that case, the first
+	 * match is returned.
+	 * 
+	 * @param pPersonId
+	 * @param pName
+	 * @return
+	 */
+	public PotentialConnection findPotentialConnectionByName(final Long pPersonId, final String pName) {
+		CoreUtils.assertNotNull(pPersonId);
+		CoreUtils.assertNotNullOrEmptyString(pName);
+		
+		final PotentialConnectionDaoQueryBean queryBean = new PotentialConnectionDaoQueryBean();
+		queryBean.setPersonId(pPersonId);
+		queryBean.setName(pName);
+		final List<PotentialConnection> list = potentialConnectionDao.findPotentialConnectionsList(queryBean);
+		if (list == null || list.isEmpty()) {
+			return null;
+		}
+		else {
+			return list.get(0);
 		}
 	}
 	
@@ -275,68 +311,98 @@ public class PotentialConnectionService {
 			return;
 		}
 		try {
-			final PotentialConnectionDaoQueryBean queryBean = new PotentialConnectionDaoQueryBean();
+			// In order to avoir sending 2 emails to the same person.
+			final Set<Long> recipients = new HashSet<Long>();
+			
+			// Search on email.
+			PotentialConnectionDaoQueryBean queryBean = new PotentialConnectionDaoQueryBean();
 			queryBean.setEmail(pConnection.getEmail());
 			queryBean.setConnectionExists(Boolean.FALSE);
 			queryBean.setPersonEnabled(Boolean.TRUE);
 			
-			final List<PotentialConnection> potentialConnections = findPotentialConnectionsList(queryBean);
+			List<PotentialConnection> potentialConnections = findPotentialConnectionsList(queryBean);
 			
 			for (PotentialConnection pc: potentialConnections) {
-				final Person person = pc.getPerson();
-				
-				pc.setConnection(pConnection);
-				pc.setDateFound(new Date());
-				updatePotentialConnection(pc);
-				
-				// Do not notify if person do not want to receive those notifs or potential connection is ignored.
-				if (!Boolean.TRUE.equals(person.getReceivePotentialConnectionNotif()) ||
-					Boolean.TRUE.equals(pc.getIgnored())) {
-					continue;
-				}
-				
-				// Send email (will actually create a JMS message, i.e. it is async).
-				Map<String, String> objects = new HashMap<String, String>();
-				objects.put("personFirstName", person.getFirstName());
-				objects.put("personLastName", person.getLastName());
-				objects.put("personDisplayName", person.getDisplayName());
-				
-				objects.put("connectionFirstName", pConnection.getFirstName());
-				objects.put("connectionLastName", pConnection.getLastName());
-				objects.put("connectionDisplayName", pConnection.getDisplayName());
-				objects.put("connectionEmail", pConnection.getEmail());
-				objects.put("connectionUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.PERSON_OVERVIEW, PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID, pConnection.getId().toString()));
-				
-				objects.put("profileUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.MY_PROFILE));
-				objects.put("signature", Configuration.getSiteName());
-				objects.put("siteName", Configuration.getSiteName());
-				objects.put("siteUrl", Configuration.getRootURL());
-				
-				
-				// TODO: localization
-				final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/potentialconnection/joined/fr";
-				
-				Map<String, String> to = new HashMap<String, String>();
-				to.put(person.getEmail(), person.getEmail());
-				
-				Map<String, String> inlineResources = new HashMap<String, String>();
-				inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
-				
-				getMailManager().send(Configuration.getNoReplySenderName(), 
-						         Configuration.getNoReplyEmailAddress(),
-						         to,
-						         null, 
-						         null,
-						         Configuration.getSiteName() + ": un ami potentiel a rejoint Lendity",
-						         objects, 
-						         velocityTemplateLocation,
-						         inlineResources);					
+				sendPotentialConnectionNotification(pConnection, pc, recipients);
+			}
+
+			// Search on name.
+			queryBean = new PotentialConnectionDaoQueryBean();
+			queryBean.setName(pConnection.getFirstName() + " " + pConnection.getLastName());
+			queryBean.setConnectionExists(Boolean.FALSE);
+			queryBean.setPersonEnabled(Boolean.TRUE);
+			
+			potentialConnections = findPotentialConnectionsList(queryBean);
+			
+			for (PotentialConnection pc: potentialConnections) {
+				sendPotentialConnectionNotification(pConnection, pc, recipients);
 			}
 		} 
 		catch (Exception e) {
 			throw new PotentialConnectionException(e);
 		}		
 	}
+	
+	private void sendPotentialConnectionNotification(final Person pConnection,
+			                                         final PotentialConnection pPotentialConnection,
+			                                         final Set<Long> pAlreadyRecipientsIds) {
+		final Person person = pPotentialConnection.getPerson();
+		
+		pPotentialConnection.setConnection(pConnection);
+		pPotentialConnection.setDateFound(new Date());
+		updatePotentialConnection(pPotentialConnection);
+		
+		if (pAlreadyRecipientsIds.contains(person.getId())) {
+			return;
+		}
+		else {
+			pAlreadyRecipientsIds.add(person.getId());
+		}
+		
+		// Do not notify if person do not want to receive those notifs or potential connection is ignored.
+		if (!Boolean.TRUE.equals(person.getReceivePotentialConnectionNotif()) ||
+			Boolean.TRUE.equals(pPotentialConnection.getIgnored())) {
+			return;
+		}
+		
+		// Send email (will actually create a JMS message, i.e. it is async).
+		Map<String, String> objects = new HashMap<String, String>();
+		objects.put("personFirstName", person.getFirstName());
+		objects.put("personLastName", person.getLastName());
+		objects.put("personDisplayName", person.getDisplayName());
+		
+		objects.put("connectionEmail", pPotentialConnection.getEmail());
+		objects.put("connectionName", pPotentialConnection.getName());
+		objects.put("connectionDisplayName", pConnection.getDisplayName());
+		
+		objects.put("connectionUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.PERSON_OVERVIEW, PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID, pConnection.getId().toString()));
+		
+		objects.put("profileUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.MY_PROFILE));
+		objects.put("signature", Configuration.getSiteName());
+		objects.put("siteName", Configuration.getSiteName());
+		objects.put("siteUrl", Configuration.getRootURL());
+		
+		
+		// TODO: localization
+		final String velocityTemplateLocation = "com/pferrot/lendity/emailtemplate/potentialconnection/joined/fr";
+		
+		Map<String, String> to = new HashMap<String, String>();
+		to.put(person.getEmail(), person.getEmail());
+		
+		Map<String, String> inlineResources = new HashMap<String, String>();
+		inlineResources.put("logo", "com/pferrot/lendity/emailtemplate/lendity_logo.png");
+		
+		getMailManager().send(Configuration.getNoReplySenderName(), 
+				         Configuration.getNoReplyEmailAddress(),
+				         to,
+				         null, 
+				         null,
+				         Configuration.getSiteName() + ": un ami potentiel a rejoint Lendity",
+				         objects, 
+				         velocityTemplateLocation,
+				         inlineResources);					
+	}
+	
 	
 	/**
 	 * Create potential connections based on persons who invited pConnection. Indeed, if some other user invited

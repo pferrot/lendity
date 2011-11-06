@@ -464,16 +464,18 @@ function addCommentsFromJsonData(pJsonData) {
 	for (var i = 0; i < nb; i++) {
 		var comment = comments[i];
 		addCommentInternal(comment.commentID, comment.text, comment.textWithoutHref, comment.ownerName, comment.ownerUrl, comment.wallOwnerName, comment.wallOwnerUrl,
-				comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.canDelete, comment.systemComment, comment.adminComment, comment.publicComment, comment.otherWallComment, false);
+				comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.canDelete, comment.systemComment, comment.adminComment, comment.publicComment, comment.otherWallComment, comment.childComments,
+				comment.nbChildComments, comment.nbExtraChildComments,
+				false);
 	}
-	var childComments = pJsonData.childComments;
-	if (childComments != null) {
-		for (var i = 0; i < childComments.length; i++) {
-			var comment = childComments[i];
-			addChildCommentInternal(comment.commentID, comment.parentCommentID, comment.text, comment.textWithoutHref, comment.ownerName, comment.ownerUrl,
-					comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.canDelete, comment.systemComment, comment.adminComment, comment.publicComment, comment.otherWallComment, false);
-		}
-	}
+//	var childComments = pJsonData.childComments;
+//	if (childComments != null) {
+//		for (var i = 0; i < childComments.length; i++) {
+//			var comment = childComments[i];
+//			addChildCommentInternal(comment.commentID, comment.parentCommentID, comment.text, comment.textWithoutHref, comment.ownerName, comment.ownerUrl,
+//					comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.canDelete, comment.systemComment, comment.adminComment, comment.publicComment, comment.otherWallComment, false);
+//		}
+//	}
 	mNbCommentsLoaded = mNbCommentsLoaded + nb;
 	var nbExtra = pJsonData.nbExtra;
 	if (nbExtra > 0) {
@@ -750,7 +752,10 @@ function addCommentInDbResponse(pData, pTextStatus, pXmlHttpRequest) {
 		var adminComment = pData.adminComment;
 		var publicComment = pData.publicComment;
 		var otherWallComment = pData.otherWallComment;
-		addCommentInternal(commentId, text, textWithoutHref, ownerName, ownerUrl, wallOwnerName, wallOwnerUrl, dateAdded, profilePictureUrl, canEdit, canDelete, systemComment, adminComment, publicComment, otherWallComment, true);
+		var childComments = pData.childComments;
+		var nbChildComments = pData.nbChildComments;
+		var nbExtraChildComments = pData.nbExtraChildComments;
+		addCommentInternal(commentId, text, textWithoutHref, ownerName, ownerUrl, wallOwnerName, wallOwnerUrl, dateAdded, profilePictureUrl, canEdit, canDelete, systemComment, adminComment, publicComment, otherWallComment, childComments, nbChildComments, nbExtraChildComments, true);
 		resetCommentTextArea();
 		mNbCommentsLoaded = mNbCommentsLoaded + 1;
 		hideNoCommentDiv();
@@ -974,7 +979,7 @@ function editCommentInDbResponse(pJsonData, pTextStatus, pXmlHttpRequest) {
  */
 function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pWallOwnerName, pWallOwnerUrl, pCommentDate, 
 		pProfilePictureUrl, pEditEnabled, pDeleteEnabled, pSystemComment,
-		pAdminComment, pPublicComment, pOtherWallComment, pAddFirst) {
+		pAdminComment, pPublicComment, pOtherWallComment, pChildComments, pNbChildComments, pNbExtraChildComments, pAddFirst) {
 	var containerDiv = $j('#commentsContainer');
 	
 	var commentBackgroundClass = 'commentBackground';
@@ -1052,6 +1057,14 @@ function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOw
 	
 	setupSearchField('childCommentTextarea' + pCommentId, mAddChildCommentDefaultText, true);
 	//$j("#childCommentSubmit" + pCommentId).button();
+	
+	if (pChildComments != null) {
+		for (var i = 0; i < pChildComments.length; i++) {
+			var comment = pChildComments[i];
+			addChildCommentInternal(comment.commentID, comment.parentCommentID, comment.text, comment.textWithoutHref, comment.ownerName, comment.ownerUrl,
+					comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.canDelete, comment.systemComment, comment.adminComment, comment.publicComment, comment.otherWallComment, false);
+		}
+	}
 }
 
 function showReplyTextarea(pParentCommentId) {

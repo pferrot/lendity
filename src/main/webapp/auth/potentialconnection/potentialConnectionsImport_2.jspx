@@ -90,7 +90,7 @@
 									</f:facet>					    	
 									<h:selectBooleanCheckbox styleClass="checkBoxSelectPc" value="#{potentialConnection.selected}" rendered="#{potentialConnectionsImportController.requestConnectionAvailable}" />
 							    </h:column>
-							    <h:column id="potentialColumn1">
+							    <h:column id="potentialColumn1" rendered="#{!potentialConnectionsImportController.facebookSource}">
 							    	<f:facet name="header" >
 										<h:outputText value="#{messages.person_email}"/>
 									</f:facet>
@@ -116,8 +116,10 @@
 					</c:if>
 					<c:if test="#{potentialConnectionsImportController.nbPotential == 0}">
 						<h:outputText style="font-weight: bold;" value="#{messages.potentialConnection_potentialConnectionsImportNoPotentialFound}"/>
-						<br/>
-						<h:outputText value="#{messages.potentialConnection_potentialConnectionsImportNoPotentialFoundSendInvitations}"/>
+						<c:if test="#{!potentialConnectionsImportController.facebookSource}">
+							<br/>
+							<h:outputText value="#{messages.potentialConnection_potentialConnectionsImportNoPotentialFoundSendInvitations}"/>
+						</c:if>
 					</c:if>								
 					
 					<!-- form row -->

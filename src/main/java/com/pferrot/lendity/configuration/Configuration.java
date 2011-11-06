@@ -27,6 +27,8 @@ public class Configuration {
 	private static String supportEmailAddress;
 	private static String contactEmailAddress;
 	private static boolean facebookLikeEnabled;
+	private static String facebookApplicationId;
+	private static String facebookSecret;
 	private static String googleAnalyticsId;
 	private static int nbDaysToValidateRegistration;
 	private static int minimumAge;
@@ -120,6 +122,30 @@ public class Configuration {
 
 	public void setFacebookLikeEnabled(boolean facebookLikeEnabled) {
 		this.facebookLikeEnabled = facebookLikeEnabled;
+	}
+	
+	public static String getFacebookApplicationId() {
+		return facebookApplicationId;
+	}
+	
+	public String getFacebookApplicationIdNotStatic() {
+		return facebookApplicationId;
+	}
+
+	public void setFacebookApplicationId(String facebookApplicationId) {
+		this.facebookApplicationId = facebookApplicationId;
+	}
+	
+	public static String getFacebookSecret() {
+		return facebookSecret;
+	}
+	
+	public String getFacebookSecretNotStatic() {
+		return facebookSecret;
+	}
+
+	public void setFacebookSecret(String facebookSecret) {
+		this.facebookSecret = facebookSecret;
 	}
 
 	public static String getGoogleAnalyticsId() {

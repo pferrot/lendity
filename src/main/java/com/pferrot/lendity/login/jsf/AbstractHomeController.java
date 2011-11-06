@@ -28,10 +28,10 @@ public abstract class AbstractHomeController implements Serializable {
 	
 	private final static Log log = LogFactory.getLog(AbstractHomeController.class);
 	
-	private final static String PERSONS_LIST_LOADED_ATTRIBUTE_NAME = "usersListLoaded";
-	private final static String ITEMS_LIST_LOADED_ATTRIBUTE_NAME = "itemsListLoaded";
-	private final static String NEEDS_LIST_LOADED_ATTRIBUTE_NAME = "needsListLoaded";
-	private final static String GROUPS_LIST_LOADED_ATTRIBUTE_NAME = "groupsListLoaded";
+	protected final static String PERSONS_LIST_LOADED_ATTRIBUTE_NAME = "usersListLoaded";
+	protected final static String ITEMS_LIST_LOADED_ATTRIBUTE_NAME = "itemsListLoaded";
+	protected final static String NEEDS_LIST_LOADED_ATTRIBUTE_NAME = "needsListLoaded";
+	protected final static String GROUPS_LIST_LOADED_ATTRIBUTE_NAME = "groupsListLoaded";
 	
 	protected final static String LIST_LOADED_ATTRIBUTE_VALUE = "true";
 	
@@ -166,6 +166,26 @@ public abstract class AbstractHomeController implements Serializable {
 				request.setAttribute(NEEDS_LIST_LOADED_ATTRIBUTE_NAME, LIST_LOADED_ATTRIBUTE_VALUE);
 		}
         return needsList;
+	}
+
+	public void setPersonsList(List personsList) {
+		this.personsList = personsList;
+	}
+
+	public void setItemsList(List itemsList) {
+		this.itemsList = itemsList;
+	}
+
+	public void setNeedsList(List needsList) {
+		this.needsList = needsList;
+	}
+	
+	public List getNeedsListInternal() {
+		return needsList;
+	}
+
+	public void setGroupsList(List groupsList) {
+		this.groupsList = groupsList;
 	}
 
 	public List getGroupsList() {		

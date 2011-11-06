@@ -40,7 +40,7 @@ public class GooglePotentialConnectionContactsReader implements PotentialConnect
 			
 			Set<PotentialConnectionContactBean> result = new HashSet<PotentialConnectionContactBean>();
 			// Print the results
-			if (log.isErrorEnabled()) {
+			if (log.isDebugEnabled()) {
 				log.debug(resultFeed.getTitle().getPlainText());
 			}
 			for (int i = 0; i < resultFeed.getEntries().size(); i++) {

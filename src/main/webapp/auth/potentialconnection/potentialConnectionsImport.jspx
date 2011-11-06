@@ -28,7 +28,7 @@
 			<div class="gt-content">
 				
 				<!-- Item Edit Form -->
-				<h2 class="gt-form-head"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportTitleStep1}"/></h2>
+				<div id="titleDiv" style="display: none;"><h2 class="gt-form-head"><h:outputText value="#{messages.potentialConnection_importMain}"/></h2></div>
 				<div class="gt-form gt-content-box">
 				
 				<f:view>
@@ -38,7 +38,7 @@
 	
 						<!-- form row -->
 						<div class="gt-form-row gt-width-100">
-							<label><h:outputText value="#{messages.potentialConnection_importFile}"/> *</label>
+							<label><h:outputText value="#{messages.potentialConnection_importFile}"/></label>
 							<h:outputText styleClass="small" value="#{messages.potentialConnection_importFileInfo}" escape="false"/>
 							<div id="fileErrorDiv">
 								<h:message styleClass="error" showSummary="true" showDetail="false"
@@ -68,11 +68,11 @@
 						</h:form>
 					
 						<br/><br/>
-						<span class="linkStyleAction" onclick="showBluewinFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromBluewinFile}"/></span>
+						<span class="linkType2 small" onclick="showMainDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportMain}"/></span>
 						<br/>
-						<span class="linkStyleAction" onclick="showGoogleDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromGoogle}"/></span>
-						<br/>
-						<span class="linkStyleAction" onclick="showTextareaDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromTextarea}"/></span>
+						<span class="linkType2 small" onclick="showBluewinFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromBluewinFile}"/></span>
+						<br/>						
+						<span class="linkType2 small" onclick="showTextareaDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromTextarea}"/></span>
 					</div>
 					
 					<div id="bluewinFileDiv" style="display: none;">
@@ -80,7 +80,7 @@
 	
 						<!-- form row -->
 						<div class="gt-form-row gt-width-100">
-							<label><h:outputText value="#{messages.potentialConnection_importBluewinFile}"/> *</label>
+							<label><h:outputText value="#{messages.potentialConnection_importBluewinFile}"/></label>
 							<h:outputText styleClass="small" value="#{messages.potentialConnection_importBluewinFileInfo}" escape="false"/>
 							<div id="bluewinFileErrorDiv">
 								<h:message styleClass="error" showSummary="true" showDetail="false"
@@ -110,11 +110,11 @@
 						</h:form>
 					
 						<br/><br/>
-						<span class="linkStyleAction" onclick="showGoogleDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromGoogle}"/></span>
+						<span class="linkType2 small" onclick="showMainDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportMain}"/></span>
 						<br/>
-						<span class="linkStyleAction" onclick="showTextareaDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromTextarea}"/></span>
+						<span class="linkType2 small" onclick="showTextareaDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromTextarea}"/></span>
 						<br/>
-						<span class="linkStyleAction" onclick="showFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromFile}"/></span>
+						<span class="linkType2 small" onclick="showFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromFile}"/></span>
 					</div>
 					
 					<div id="textareaDiv" style="display: none;">
@@ -123,7 +123,7 @@
 	
 						<!-- form row -->
 						<div class="gt-form-row gt-width-100">						
-							<label><h:outputText value="#{messages.potentialConnection_importTextarea}"/> *</label>
+							<label><h:outputText value="#{messages.potentialConnection_importTextarea}"/></label>
 							<h:outputText styleClass="small" value="#{messages.potentialConnection_importTextareaInfo}" escape="false"/>
 							<div id="textareaErrorDiv">
 								<h:message styleClass="error" showSummary="true" showDetail="false"
@@ -150,42 +150,44 @@
 						</h:form>
 					
 						<br/><br/>
-						<span class="linkStyleAction" onclick="showGoogleDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromGoogle}"/></span>
+						<span class="linkType2 small" onclick="showMainDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportMain}"/></span>
 						<br/>
-						<span class="linkStyleAction" onclick="showFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromFile}"/></span>
+						<span class="linkType2 small" onclick="showBluewinFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromBluewinFile}"/></span>
 						<br/>
-						<span class="linkStyleAction" onclick="showBluewinFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromBluewinFile}"/></span>
+						<span class="linkType2 small" onclick="showFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromFile}"/></span>
 					</div>
 					
-					<div id="googleDiv" style="display: none;">
-					
-						<table><tr><td style="width: 430px;">
-							<label><h:outputText value="#{messages.potentialConnection_importGoogle}"/></label>
-						</td><td>
-							<img src="#{facesContext.externalContext.requestContextPath}/public/images/google_logo_120.png"/>
-						</td></tr></table>						
+					<div id="mainDiv" style="display: none;">
 						
-						<br/>
-						
+						<div style="margin-top: 15px;">
 						<h:form prependId="false">
+							<h:commandButton style="display: none;" id="facebookSubmitButton" value="HIDDEN_BUTTON" action="#{potentialConnectionsImportStep1.submitFacebook}" />
+							<h:outputLink value="#{potentialConnectionsImportStep1.facebookLink}">
+							<div style="float: left; padding-top: 15px; height: 60px; width: 150px; text-align: center; border-style: solid; border-width: 1px; border-color: #b1b1b1"
+							     onmouseover="this.style.borderColor='#4c4847';"
+							     onmouseout="this.style.borderColor='#b1b1b1';">
+										<img src="#{facesContext.externalContext.requestContextPath}/public/images/facebook.png"/>
+							</div>
+							</h:outputLink>
+							</h:form>
+							<h:form prependId="false">
 							<h:commandButton style="display: none;" id="googleSubmitButton" value="HIDDEN_BUTTON" action="#{potentialConnectionsImportStep1.submitGoogle}" />
-							<h:outputLink styleClass="buttonLight2" value="#{potentialConnectionsImportStep1.googleLink}"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromGoogle2}"/></h:outputLink>
-						</h:form>
+							<h:outputLink value="#{potentialConnectionsImportStep1.googleLink}">
+							<div style="float: left; padding-top: 15px; margin-left: 30px; height: 60px; width: 150px; text-align: center; border-style: solid; border-width: 1px; border-color: #b1b1b1;"
+								 onmouseover="this.style.borderColor='#4c4847';"
+							     onmouseout="this.style.borderColor='#b1b1b1';">
+										<img src="#{facesContext.externalContext.requestContextPath}/public/images/googlemail.png"/>
+							</div>
+							</h:outputLink>
+							</h:form>
+						</div>
 						
+						<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+						<span class="linkType2 small" onclick="showBluewinFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromBluewinFile}"/></span>
 						<br/>
-						
-						<h:outputText styleClass="small" value="#{messages.potentialConnection_potentialConnectionsImportFromGooglePwdNotStored}"/>
-						<h:outputText styleClass="small" value=" " escape="false"/>						
-						<h:outputLink value="https://www.google.com/support/accounts/bin/answer.py?answer=41192" target="_blank">
-							<h:outputText styleClass="small" value="#{messages.potentialConnection_potentialConnectionsImportFromGooglePwdNotStoredMoreInfo}"/>
-						</h:outputLink>
-						
-						<br/><br/><br/><br/>
-						<span class="linkStyleAction" onclick="showTextareaDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromTextarea}"/></span>
+						<span class="linkType2 small" onclick="showTextareaDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromTextarea}"/></span>
 						<br/>
-						<span class="linkStyleAction" onclick="showFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromFile}"/></span>
-						<br/>
-						<span class="linkStyleAction" onclick="showBluewinFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromBluewinFile}"/></span>
+						<span class="linkType2 small" onclick="showFileDiv();"><h:outputText value="#{messages.potentialConnection_potentialConnectionsImportFromFile}"/></span>
 					</div>
 					
 					<div id="inProgressDiv">
@@ -203,6 +205,9 @@
 							if (#{potentialConnectionsImportStep1.googleTokenSet}) {
 								document.getElementById("googleSubmitButton").click();
 							}
+							else if (#{potentialConnectionsImportStep1.facebookCodeSet}) {
+								document.getElementById("facebookSubmitButton").click();
+							}
 							else if ($j('#fileErrorDiv').children("span.error")[0]) {
 								$j("#file").addClass('validationError'); 
 								showFileDiv();
@@ -218,44 +223,42 @@
 							else if ($j('#textareaContent').val() != "") {
 								showTextareaDiv();
 							}
-							else if (#{potentialConnectionsImportStep1.showGoogleImportByDefault}) {
-								showGoogleDiv();
-							}
-							else if (#{potentialConnectionsImportStep1.showBluewinFileImportByDefault}) {
-								showBluewinFileDiv();
-							}
 							else {
-								showTextareaDiv();
+								showMainDiv();
 							}
 						});
 
-						function showGoogleDiv() {
+						function showMainDiv() {
 							$j("#inProgressDiv").hide();
 							$j("#textareaDiv").hide();
 							$j("#fileDiv").hide();
 							$j("#bluewinFileDiv").hide();
-							$j("#googleDiv").show();
+							$j("#mainDiv").show();
+							$j("#titleDiv").show();
 						}
 						function showFileDiv() {
 							$j("#inProgressDiv").hide();
-							$j("#googleDiv").hide();
 							$j("#textareaDiv").hide();
 							$j("#bluewinFileDiv").hide();
+							$j("#mainDiv").hide();
 							$j("#fileDiv").show();
+							$j("#titleDiv").show();
 						}
 						function showBluewinFileDiv() {
 							$j("#inProgressDiv").hide();
-							$j("#googleDiv").hide();
 							$j("#textareaDiv").hide();
 							$j("#fileDiv").hide();
+							$j("#mainDiv").hide();
 							$j("#bluewinFileDiv").show();
+							$j("#titleDiv").show();
 						}
 						function showTextareaDiv() {
 							$j("#inProgressDiv").hide();
-							$j("#googleDiv").hide();
 							$j("#fileDiv").hide();
 							$j("#bluewinFileDiv").hide();
+							$j("#mainDiv").hide();
 							$j("#textareaDiv").show();
+							$j("#titleDiv").show();
 						}
 					</script>
 					

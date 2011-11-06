@@ -187,10 +187,10 @@ public class CommentController extends AbstractController {
 				final Comment comment = commentService.findCommentWithAC(commentId,
 						PersonUtils.getCurrentPersonId(pRequest.getSession()));
 				comments.add(getMapForOneComment(comment, pRequest));
-				final List<ChildComment> childCommentsList = commentService.findChildCommentsByCreationDateAsc(comment);
-				for (ChildComment childComment: childCommentsList) {
-					childComments.add(getMapForOneComment(childComment, pRequest));
-				}
+//				final List<ChildComment> childCommentsList = commentService.findChildCommentsByCreationDateAsc(comment);
+//				for (ChildComment childComment: childCommentsList) {
+//					childComments.add(getMapForOneComment(childComment, pRequest));
+//				}
 				result.put("nb", 1);
 			}
 			catch (ObjectNotFoundException e) {
@@ -304,17 +304,17 @@ public class CommentController extends AbstractController {
 		final List list = pLwrc.getList();
 		final Iterator ite = list.iterator();
 		final List<Map> comments = new ArrayList<Map>();
-		final List<Map> childComments = new ArrayList<Map>();
+//		final List<Map> childComments = new ArrayList<Map>();
 		while (ite.hasNext()) {
 			final Comment comment = (Comment)ite.next();
 			comments.add(getMapForOneComment(comment, pRequest));
-			final List<ChildComment> childCommentsList = commentService.findChildCommentsByCreationDateAsc(comment);
-			for (ChildComment childComment: childCommentsList) {
-				childComments.add(getMapForOneComment(childComment, pRequest));
-			}
+//			final List<ChildComment> childCommentsList = commentService.findChildCommentsByCreationDateAsc(comment);
+//			for (ChildComment childComment: childCommentsList) {
+//				childComments.add(getMapForOneComment(childComment, pRequest));
+//			}
 		}
 		pMap.put("comments", comments);
-		pMap.put("childComments", childComments);
+//		pMap.put("childComments", childComments);
 	}
 	
 	/**
@@ -329,7 +329,7 @@ public class CommentController extends AbstractController {
 	private Map<String, Object> getMapForOneComment(final Comment pComment, final HttpServletRequest pRequest) {
 		final Long currentPersonId = PersonUtils.getCurrentPersonId(pRequest.getSession());
 		
-		Map<String, Object> map= new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("commentID", pComment.getId());
 		map.put("text", getCommentService().processAllHrefWithPerson(HtmlUtils.getTextWithHrefLinks(HtmlUtils.escapeHtmlAndReplaceCr(pComment.getText())), pComment.getOwner()));
@@ -386,12 +386,26 @@ public class CommentController extends AbstractController {
 		if (pComment instanceof ChildComment) {
 			map.put("parentCommentID", ((ChildComment)pComment).getParentComment().getId());
 		}
+		else {
+			final List<ChildComment> childCommentsList = commentService.findChildCommentsByCreationDateAsc(pComment);
+			final List<Map> childComments = new ArrayList<Map>();
+			for (ChildComment childComment: childCommentsList) {
+				childComments.add(getMapForOneComment(childComment, pRequest));
+			}
+			map.put("childComments", childComments);
+			map.put("nbChildComments", childCommentsList.size());
+			map.put("nbExtraChildComments", 0);
+			
+		}
 		map.put("profilePictureUrl",
 				personService.getProfileThumbnailSrc(
 						owner, 
 						true, 
 						pRequest.getSession(),
 						pRequest.getContextPath()));
+		
+		
+		
 		
 		return map;
 	}

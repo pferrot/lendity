@@ -5,11 +5,14 @@ Bonjour $personFirstName,<br/><br/>
 Quelqu'un que tu pourrais connaître a rejoint Lendity:<br/><br/>
 
 <b><a href="$connectionUrl">$connectionDisplayName</a></b><br/>
-#if( $connectionName )
+#if( $connectionName && $connectionEmail)
 ($connectionName, $connectionEmail)
 #end
 #if( !$connectionName )
 ($connectionEmail)
+#end
+#if( !$connectionEmail )
+($connectionName)
 #end
 <br/><br/>
 

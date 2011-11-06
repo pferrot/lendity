@@ -18,12 +18,25 @@ public class PotentialConnectionsImportStep2 extends AbstractPotentialConnection
 	
 	public String confirm() {
 		getPotentialConnectionsImportController().requestConnections();
-		return "confirm";
+		if (getPotentialConnectionsImportController().isFacebookSource()) {
+			getPotentialConnectionsImportController().skipInviteConnections();
+			return "skipInvite";
+		}
+		else {
+			return "confirm";	
+		}
+		
 	}
 	
 	public String skip() {
 		getPotentialConnectionsImportController().skipRequestConnections();
-		return "confirm";
+		if (getPotentialConnectionsImportController().isFacebookSource()) {
+			getPotentialConnectionsImportController().skipInviteConnections();
+			return "skipInvite";
+		}
+		else {
+			return "confirm";	
+		}
 	}
 	
 	public String back() {

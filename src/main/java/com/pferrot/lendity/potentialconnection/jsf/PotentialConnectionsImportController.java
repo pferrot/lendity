@@ -22,6 +22,7 @@ import com.pferrot.lendity.model.PotentialConnection;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.potentialconnection.PotentialConnectionService;
+import com.pferrot.lendity.potentialconnection.exception.PotentialConnectionException;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
 import com.pferrot.security.SecurityUtils;
@@ -37,6 +38,7 @@ public class PotentialConnectionsImportController  {
 	
 	private UploadedFile uploadFile;
 	private String textareaContent;
+	private String source;
 	
 	private Boolean saveResults = Boolean.TRUE;
 	
@@ -52,6 +54,9 @@ public class PotentialConnectionsImportController  {
 	
 	private String googleToken;
 	public final static String GOOGLE_TOKEN_PARAMETER_NAME = "token";
+	
+	private String facebookCode;
+	public final static String FACEBOOK_CODE_PARAMETER_NAME = "code";
 	
 	int nbConnectionRequestsSent = 0;
 	int nbInvitationsSent = 0;
@@ -90,6 +95,18 @@ public class PotentialConnectionsImportController  {
 		this.connectionRequestService = connectionRequestService;
 	}
 
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+	
+	public boolean isFacebookSource() {
+		return PotentialConnection.SOURCE_FACEBOOK.equals(getSource());
+	}
+
 	public UploadedFile getUploadFile() {
 		return uploadFile;
 	}
@@ -112,6 +129,14 @@ public class PotentialConnectionsImportController  {
 
 	public void setGoogleToken(String googleToken) {
 		this.googleToken = googleToken;
+	}
+
+	public String getFacebookCode() {
+		return facebookCode;
+	}
+
+	public void setFacebookCode(String facebookCode) {
+		this.facebookCode = facebookCode;
 	}
 
 	public Boolean getSaveResults() {
@@ -251,11 +276,19 @@ public class PotentialConnectionsImportController  {
 		catch (ConnectionRequestException e) {
 			throw new RuntimeException(e);
 		}
+		catch (PotentialConnectionException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	public void skipRequestConnections() {
-		for (PotentialConnection pc: getPotential()) {				
-			getPotentialConnectionService().createOrUpdatePotentialConnection(pc);
+		try {
+			for (PotentialConnection pc: getPotential()) {				
+				getPotentialConnectionService().createOrUpdatePotentialConnection(pc);
+			}
+		}
+		catch (PotentialConnectionException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -276,11 +309,19 @@ public class PotentialConnectionsImportController  {
 		catch (InvitationException e) {
 			throw new RuntimeException(e);
 		}
+		catch (PotentialConnectionException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	public void skipInviteConnections() {
-		for (PotentialConnection pc: getDoNotExist()) {
-			getPotentialConnectionService().createOrUpdatePotentialConnection(pc);
+		try {
+			for (PotentialConnection pc: getDoNotExist()) {
+				getPotentialConnectionService().createOrUpdatePotentialConnection(pc);
+			}
+		}
+		catch (PotentialConnectionException e) {
+			throw new RuntimeException(e);
 		}
 	}
 	

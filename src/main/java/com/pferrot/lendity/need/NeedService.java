@@ -82,17 +82,27 @@ public class NeedService extends ObjektService {
 		}
 		return needDao.findNeedsList(needQuery);
 	}
+	
+	public List<Need> findRandomNeedsHomepage(final Double pOriginLatitude, final Double pOriginLongitude) {
+		return findNeedsHomepage(pOriginLatitude, pOriginLongitude, "random", Boolean.TRUE);
+	}
+	
+	public List<Need> findLatestNeedsHomepage(final Double pOriginLatitude, final Double pOriginLongitude) {
+		return findNeedsHomepage(pOriginLatitude, pOriginLongitude, "creationDate", Boolean.FALSE);
+	}
 
 	/**
-	 * Returns 5 random public needs in the area of pOriginLatitude/pOriginLongitude.
+	 * Returns 5 needs in the area of pOriginLatitude/pOriginLongitude.
 	 * First we look in the a distance of 2 kilometers to search for really close needs.
 	 * If there is less that 5 needs, then we look up to 20 km, then up to 100 km and finally distance.
 	 * 
 	 * @param pOriginLatitude
 	 * @param pOriginLongitude
+	 * @param pOrderBy
+	 * @param pOrderByAscending
 	 * @return
 	 */
-	public List<Need> findRandomNeedsHomepage(final Double pOriginLatitude, final Double pOriginLongitude) {
+	private List<Need> findNeedsHomepage(final Double pOriginLatitude, final Double pOriginLongitude, final String pOrderBy, final Boolean pOrderByAscending) {
 		CoreUtils.assertNotNull(pOriginLatitude);
 		CoreUtils.assertNotNull(pOriginLongitude);
 		
@@ -100,7 +110,8 @@ public class NeedService extends ObjektService {
 		
 		final NeedDaoQueryBean needQuery = new NeedDaoQueryBean();
 		needQuery.setOwnerEnabled(Boolean.TRUE);
-		needQuery.setOrderBy("random");
+		needQuery.setOrderBy(pOrderBy);
+		needQuery.setOrderByAscending(pOrderByAscending);
 		needQuery.setMaxResults(maxResults);
 		if (SecurityUtils.isLoggedIn()) {
 			// All connections.

@@ -16,7 +16,35 @@ public class PotentialConnectionEmailCaseInsensitiveComparator implements Compar
 		else if (pPc2 == null) {
 			return 1;
 		}
-		return pPc1.getEmail().toLowerCase().compareTo(pPc2.getEmail().toLowerCase());
+		else if (pPc1.getEmail() != null && pPc2.getEmail() != null) {
+			return pPc1.getEmail().toLowerCase().compareTo(pPc2.getEmail().toLowerCase());
+		}
+		else if (pPc1.getEmail() != null) {
+			return -1;
+		}
+		else if (pPc2.getEmail() != null) {
+			return 1;
+		}
+		else if (pPc1.getConnectionId() != null && pPc2.getConnectionId() != null) {
+			return pPc1.getConnectionId().compareTo(pPc2.getConnectionId());
+		}
+		else if (pPc1.getConnectionId() != null) {
+			return -1;
+		}
+		else if (pPc2.getConnectionId() != null) {
+			return 1;
+		}
+		else if (pPc1.getName() != null && pPc2.getName() != null) {
+			return pPc1.getName().toLowerCase().compareTo(pPc2.getName().toLowerCase());
+		}
+		else if (pPc1.getName() != null) {
+			return -1;
+		}
+		else if (pPc2.getName() != null) {
+			return 1;
+		}
+		// Both have no email and no name.
+		return 0;		
 	}
 
 }

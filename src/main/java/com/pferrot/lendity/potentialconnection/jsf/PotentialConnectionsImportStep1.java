@@ -1,7 +1,11 @@
 package com.pferrot.lendity.potentialconnection.jsf;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
@@ -33,11 +37,14 @@ import com.pferrot.lendity.potentialconnection.PotentialConnectionEmailCaseInsen
 import com.pferrot.lendity.potentialconnection.PotentialConnectionService;
 import com.pferrot.lendity.potentialconnection.bean.PotentialConnectionContactBean;
 import com.pferrot.lendity.potentialconnection.contactsreader.BluewinPotentialConnectionContactsReader;
+import com.pferrot.lendity.potentialconnection.contactsreader.FacebookPotentialConnectionContactsReader;
 import com.pferrot.lendity.potentialconnection.contactsreader.FilePotentialConnectionContactsReader;
 import com.pferrot.lendity.potentialconnection.contactsreader.GooglePotentialConnectionContactsReader;
 import com.pferrot.lendity.potentialconnection.contactsreader.PotentialConnectionContactsReader;
 import com.pferrot.lendity.potentialconnection.contactsreader.TextareaPotentialConnectionContactsReader;
 import com.pferrot.lendity.potentialconnection.exception.PotentialConnectionException;
+import com.pferrot.lendity.social.facebook.FacebookUtils;
+import com.pferrot.lendity.social.facebook.exception.FacebookException;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.lendity.utils.UiUtils;
 
@@ -59,7 +66,7 @@ public class PotentialConnectionsImportStep1 extends AbstractPotentialConnection
 	private String fileTooLargeErrorMessage;
 	
 	private boolean googleTokenSet;
-	
+	private boolean facebookCodeSet;	
 		
 	
 	public PotentialConnectionService getPotentialConnectionService() {
@@ -103,6 +110,11 @@ public class PotentialConnectionsImportStep1 extends AbstractPotentialConnection
 			getPotentialConnectionsImportController().setGoogleToken(gToken);
 			setGoogleTokenSet(true);
 		}
+		final String facebookCode = JsfUtils.getRequestParameter(PotentialConnectionsImportController.FACEBOOK_CODE_PARAMETER_NAME);
+		if (!StringUtils.isNullOrEmpty(facebookCode)) {
+			getPotentialConnectionsImportController().setFacebookCode(facebookCode);
+			setFacebookCodeSet(true);
+		}
 	}
 
 	@PreRenderView
@@ -120,7 +132,9 @@ public class PotentialConnectionsImportStep1 extends AbstractPotentialConnection
 		}
 	}
 
-	private String submitInternal(final Set<PotentialConnectionContactBean> pContacts, final String pSource) {
+	private String submitInternal(final Set<PotentialConnectionContactBean> pContacts, final String pSource, final boolean pAllowNullEmail) {
+		getPotentialConnectionsImportController().setSource(pSource);
+		
 		Set<PotentialConnection> potential = new TreeSet<PotentialConnection>(new PotentialConnectionEmailCaseInsensitiveComparator());
 		Set<PotentialConnection> alreadyConnected = new TreeSet<PotentialConnection>(new PotentialConnectionEmailCaseInsensitiveComparator());
 		Set<PotentialConnection> doNotExist = new TreeSet<PotentialConnection>(new PotentialConnectionEmailCaseInsensitiveComparator());
@@ -132,13 +146,14 @@ public class PotentialConnectionsImportStep1 extends AbstractPotentialConnection
 		for (PotentialConnectionContactBean contactBean: pContacts) {
 			String email = contactBean.getEmail();
 			String name = contactBean.getName();
-			if (StringUtils.isNullOrEmpty(email) ||
-				!email.contains("@") ||
-				email.equalsIgnoreCase(getPotentialConnectionsImportController().getCurrentPersonEmail())||
-				email.length() > PotentialConnectionConsts.POTENTIAL_CONNECTION_EMAIL_MAX_SIZE) {
+			if (!pAllowNullEmail && 
+				   (StringUtils.isNullOrEmpty(email) ||
+					!email.contains("@") ||
+					email.equalsIgnoreCase(getPotentialConnectionsImportController().getCurrentPersonEmail())||
+					email.length() > PotentialConnectionConsts.POTENTIAL_CONNECTION_EMAIL_MAX_SIZE)) {
 				continue;
 			}
-			else {
+			else if (email != null) {
 				email = email.trim();
 			}
 			
@@ -153,29 +168,55 @@ public class PotentialConnectionsImportStep1 extends AbstractPotentialConnection
 				name = name.substring(0, PotentialConnectionConsts.POTENTIAL_CONNECTION_NAME_MAX_SIZE);
 			}
 			
-			
-			final Person connection = getPersonService().findEnabledPersonByEmail(contactBean.getEmail());
-			final PotentialConnection pc = new PotentialConnection();
-			pc.setPerson(currentPerson);
-			pc.setPersonId(currentPerson.getId());
-			pc.setEmail(email);
-			pc.setName(name);
-			pc.setDateAdded(now);
-			pc.setIgnored(Boolean.FALSE);
-			pc.setSource(pSource);
-			if (connection == null) {
-				final Date invitationAlreadySentOn = getPotentialConnectionService().getInvitationSentOnDate(PersonUtils.getCurrentPersonId(), email);
-				// Try to not spam people and not resend invitations to the same persons.
-				if (invitationAlreadySentOn != null) {
-					pc.setSelected(false);
-					pc.setInvitationAlreadySentOn(invitationAlreadySentOn);
+			List<Person> connections = null;
+			if (email != null) {
+				connections = new ArrayList<Person>();
+				final Person p = getPersonService().findEnabledPersonByEmail(email);
+				if (p != null) {
+					connections.add(p);
 				}
-				else {
-					pc.setSelected(true);
+			}
+			else if (name != null) {
+				connections = getPersonService().findEnabledPersonByName(name);
+			}
+			else {
+				continue;
+			}
+			
+			// No connection found.
+			if (connections.isEmpty()) {
+				final PotentialConnection pc = new PotentialConnection();
+				pc.setPerson(currentPerson);
+				pc.setPersonId(currentPerson.getId());
+				pc.setEmail(email);
+				pc.setName(name);
+				pc.setDateAdded(now);
+				pc.setIgnored(Boolean.FALSE);
+				pc.setSource(pSource);
+				// Only consider if email is available. Otherwise it will not be possible to invite anyway.
+				if (email != null) {
+					final Date invitationAlreadySentOn = getPotentialConnectionService().getInvitationSentOnDate(PersonUtils.getCurrentPersonId(), email);
+					// Try to not spam people and not resend invitations to the same persons.
+					if (invitationAlreadySentOn != null) {
+						pc.setSelected(false);
+						pc.setInvitationAlreadySentOn(invitationAlreadySentOn);
+					}
+					else {
+						pc.setSelected(true);
+					}
 				}
 				doNotExist.add(pc);
 			}
-			else {
+			// For each connection (there can be several when working with name (but email is unique). 
+			for (Person connection: connections) {				
+				final PotentialConnection pc = new PotentialConnection();
+				pc.setPerson(currentPerson);
+				pc.setPersonId(currentPerson.getId());
+				pc.setEmail(email);
+				pc.setName(name);
+				pc.setDateAdded(now);
+				pc.setIgnored(Boolean.FALSE);
+				pc.setSource(pSource);
 				pc.setConnection(connection);
 				pc.setConnectionId(connection.getId());
 				pc.setDateFound(now);
@@ -191,7 +232,7 @@ public class PotentialConnectionsImportStep1 extends AbstractPotentialConnection
 				else {
 					potential.add(pc);
 				}
-			}				
+			}
 		}
 		
 		getPotentialConnectionsImportController().setPotential(potential);
@@ -221,7 +262,7 @@ public class PotentialConnectionsImportStep1 extends AbstractPotentialConnection
 		
 			final Set<PotentialConnectionContactBean> contacts = reader.getContacts(getPotentialConnectionsImportController().getUploadFile().getInputStream()); 
 			
-			return submitInternal(contacts, PotentialConnection.SOURCE_FILE);
+			return submitInternal(contacts, PotentialConnection.SOURCE_FILE, false);
 			
 		} 
 		catch (IOException e) {
@@ -258,7 +299,7 @@ public class PotentialConnectionsImportStep1 extends AbstractPotentialConnection
 		
 			final Set<PotentialConnectionContactBean> contacts = reader.getContacts(getPotentialConnectionsImportController().getUploadFile().getInputStream()); 
 			
-			return submitInternal(contacts, PotentialConnection.SOURCE_FILE);
+			return submitInternal(contacts, PotentialConnection.SOURCE_FILE, false);
 			
 		} 
 		catch (IOException e) {
@@ -285,11 +326,56 @@ public class PotentialConnectionsImportStep1 extends AbstractPotentialConnection
 			
 			final Set<PotentialConnectionContactBean> contacts = reader.getContacts(cs); 
 			
-			return submitInternal(contacts, PotentialConnection.SOURCE_GOOGLE);			
+			return submitInternal(contacts, PotentialConnection.SOURCE_GOOGLE, false);			
 		} 
 		catch (PotentialConnectionException e) {
+			if (log.isErrorEnabled()) {
+				log.error(e);
+			}
 			return "error";
 		}				
+    }
+	
+	public String submitFacebook() {
+		InputStreamReader is = null;
+		BufferedReader br = null;
+		try {	        
+	        final String next = JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.POTENTIAL_CONNECTIONS_IMPORT);
+	        final String accessToken = FacebookUtils.getFacebookAccessToken(getPotentialConnectionsImportController().getFacebookCode(), next);
+	        final String jsonFriendsList = FacebookUtils.getFacebookFriendsListJson(accessToken);	        
+	        PotentialConnectionContactsReader reader = new FacebookPotentialConnectionContactsReader();
+			final Set<PotentialConnectionContactBean> contacts = reader.getContacts(jsonFriendsList);
+			
+			return submitInternal(contacts, PotentialConnection.SOURCE_FACEBOOK, true);
+		} 
+		catch (Exception e) {
+			if (log.isErrorEnabled()) {
+				log.error(e);
+			}
+			return "error";
+		}				
+		finally {
+			if (br != null) {
+				try {
+					br.close();
+				}
+				catch (IOException e) {
+					if (log.isErrorEnabled()) {
+			        	log.error("Could not close BufferedReader");
+			        }
+				}
+			}
+			if (is != null) {
+				try {
+					is.close();
+				} 
+				catch (IOException e) {
+					if (log.isErrorEnabled()) {
+			        	log.error("Could not close InputStreamReader");
+			        }
+				}
+			}
+		}
     }
 	
 	public String submitTextarea() {
@@ -298,9 +384,12 @@ public class PotentialConnectionsImportStep1 extends AbstractPotentialConnection
 			
 			final Set<PotentialConnectionContactBean> contacts = reader.getContacts(getPotentialConnectionsImportController().getTextareaContent()); 
 			
-			return submitInternal(contacts, PotentialConnection.SOURCE_TEXTAREA);			
+			return submitInternal(contacts, PotentialConnection.SOURCE_TEXTAREA, false);			
 		} 
 		catch (PotentialConnectionException e) {
+			if (log.isErrorEnabled()) {
+				log.error(e);
+			}
 			return "error";
 		}				
 	}
@@ -374,6 +463,21 @@ public class PotentialConnectionsImportStep1 extends AbstractPotentialConnection
 		return authSubLogin;
 	}	
 	
+	/**
+	 * See https://developers.facebook.com/docs/authentication/
+	 * 
+	 * @return
+	 */
+	public String getFacebookLink() {
+		try {
+			final String next = JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.POTENTIAL_CONNECTIONS_IMPORT);
+			return FacebookUtils.getFacebookOAuthLink(next);
+		}
+		catch (FacebookException e) {
+			throw new RuntimeException(e);
+		}
+	}	
+	
 	public void setGoogleTokenSet(boolean googleTokenSet) {
 		this.googleTokenSet = googleTokenSet;
 	}
@@ -382,13 +486,11 @@ public class PotentialConnectionsImportStep1 extends AbstractPotentialConnection
 		return googleTokenSet;
 	}
 	
-	public boolean isShowGoogleImportByDefault() {
-		final String email = getPotentialConnectionsImportController().getCurrentPersonEmail().toLowerCase();
-		return email.contains("@gmail.com") || email.contains("@googlemail.com");
+	public boolean isFacebookCodeSet() {
+		return facebookCodeSet;
 	}
-	
-	public boolean isShowBluewinFileImportByDefault() {
-		final String email = getPotentialConnectionsImportController().getCurrentPersonEmail().toLowerCase();
-		return email.contains("@bluewin.ch") || email.contains("@bluemail.ch");
+
+	public void setFacebookCodeSet(boolean facebookCodeSet) {
+		this.facebookCodeSet = facebookCodeSet;
 	}
 }

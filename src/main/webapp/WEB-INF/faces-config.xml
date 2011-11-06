@@ -143,6 +143,10 @@
 			<to-view-id>/auth/potentialconnection/potentialConnectionsImport_3.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>skipInvite</from-outcome>
+			<to-view-id>/auth/potentialconnection/potentialConnectionsImport_4.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>back</from-outcome>
 			<to-view-id>/auth/potentialconnection/potentialConnectionsImport.jspx</to-view-id>
 		</navigation-case>		

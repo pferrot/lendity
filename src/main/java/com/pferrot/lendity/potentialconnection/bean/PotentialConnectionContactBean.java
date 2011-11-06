@@ -31,34 +31,37 @@ public class PotentialConnectionContactBean {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((email == null) ? 0 : email.toLowerCase().hashCode());
+		result = prime * result + ((email == null) ? 0 : email.trim().toLowerCase().hashCode());
+		result = prime * result + ((name == null) ? 0 : name.trim().toLowerCase().hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
 		PotentialConnectionContactBean other = (PotentialConnectionContactBean) obj;
-		if (email == null) {
-			if (other.email != null) {
-				return false;
-			}
+		if (email == null && other.email != null) {
+			return false;
 		} 
-		else {
-			if (other.email == null) {
-				return false;
-			}
-			else if (!email.toLowerCase().equals(other.email.toLowerCase())) {
-				return false;
-			}
+		else if (email != null && other.email == null) {
+			return false;
+		}
+		else if (email != null && other.email != null && !email.trim().toLowerCase().equalsIgnoreCase(other.email.trim().toLowerCase())) {
+			return false;
+		}
+		else if (name == null && other.name != null) {
+			return false;
+		} 
+		else if (name != null && other.name == null) {
+			return false;
+		}
+		else if (name != null && other.name != null && !name.trim().toLowerCase().equalsIgnoreCase(other.name.trim().toLowerCase())) {
+			return false;
 		}
 		return true;
 	}

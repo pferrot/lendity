@@ -1,11 +1,13 @@
 package com.pferrot.lendity.person;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -342,6 +344,33 @@ public class PersonService {
 		else {
 			throw new RuntimeException("More than one person with email: " + pEmail);
 		}
+	}
+	
+	public List<Person> findEnabledPersonByName(final String pName) {
+		CoreUtils.assertNotNullOrEmptyString(pName);
+		
+		final StringTokenizer st = new StringTokenizer(pName);
+		final int nbTokens = st.countTokens();
+		// Only search of possible to guess firstname / lastname.
+		if (nbTokens < 2) {
+			return Collections.EMPTY_LIST;
+		}
+		
+		final String firstName = st.nextToken();
+		String lastName = null;
+		// Consider lastname is the last token (there may be a
+		// middlename...)
+		while (st.hasMoreTokens()) {
+			lastName = st.nextToken();	
+		}
+		
+		
+		final PersonDaoQueryBean queryBean = new PersonDaoQueryBean();
+		queryBean.setEnabled(Boolean.TRUE);
+		queryBean.setFirstName(firstName);
+		queryBean.setLastName(lastName);
+		
+		return personDao.findPersonsList(queryBean);
 	}
 
 	public ListWithRowCount findConnections(final Long pPersonId, final String pSearchString, final int pFirstResult, final int pMaxResults) {

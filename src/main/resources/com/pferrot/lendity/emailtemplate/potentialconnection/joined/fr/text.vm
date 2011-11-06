@@ -3,11 +3,14 @@ Bonjour $personFirstName,
 Quelqu'un que tu pourrais connaître a rejoint Lendity:
 
 $connectionDisplayName
-#if( $connectionName )
+#if( $connectionName && $connectionEmail)
 ($connectionName, $connectionEmail)
 #end
 #if( !$connectionName )
 ($connectionEmail)
+#end
+#if( !$connectionEmail )
+($connectionName)
 #end
 
 Ajoute dès maintenant $connectionDisplayName comme ami afin d'étendre ton réseau et d'avoir ainsi d'avantage d'objets à emprunter: $connectionUrl

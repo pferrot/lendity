@@ -19,6 +19,7 @@ public class PotentialConnection implements Serializable {
 	public static String SOURCE_FILE = "FILE";
 	public static String SOURCE_TEXTAREA = "TEXTAREA";
 	public static String SOURCE_GOOGLE = "GOOGLE";
+	public static String SOURCE_FACEBOOK = "FACEBOOK";
 	public static String SOURCE_INVITATION = "INVITATION";
 	// If someone has been invited, he should be able to easily find
 	// who invited him.
@@ -32,7 +33,7 @@ public class PotentialConnection implements Serializable {
 	@JoinColumn(name = "PERSON_ID", nullable = false)
 	private Person person;
 	
-	@Column(name = "EMAIL", nullable = false, length = 255)
+	@Column(name = "EMAIL", nullable = true, length = 255)
 	private String email;
 	
 	@Column(name = "NAME", nullable = true, length = 255)

@@ -35,10 +35,19 @@
 
 					<h:form>
 					
-						<h:outputFormat value="#{messages.potentialConnection_potentialConnectionsImportConfirmationMessage}" escape="false">
-							<f:param value="#{potentialConnectionsImportController.nbConnectionRequestsSent}"/>
-							<f:param value="#{potentialConnectionsImportController.nbInvitationsSent}"/>
-						</h:outputFormat>
+						<c:if test="#{!potentialConnectionsImportController.facebookSource}">
+							<h:outputFormat value="#{messages.potentialConnection_potentialConnectionsImportConfirmationMessage}" escape="false">
+								<f:param value="#{potentialConnectionsImportController.nbConnectionRequestsSent}"/>
+								<f:param value="#{potentialConnectionsImportController.nbInvitationsSent}"/>
+							</h:outputFormat>
+						</c:if>
+						
+						<c:if test="#{potentialConnectionsImportController.facebookSource}">
+							<h:outputFormat value="#{messages.potentialConnection_potentialConnectionsImportConfirmationMessageFacebook}" escape="false">
+								<f:param value="#{potentialConnectionsImportController.nbConnectionRequestsSent}"/>
+								<f:param value="#{potentialConnectionsImportController.nbInvitationsSent}"/>
+							</h:outputFormat>
+						</c:if>
 					
 					</h:form>
 				</f:view>		

@@ -23,6 +23,7 @@ public class RequestConnectionTooltipController implements Serializable {
 	// 1 == persons list page
 	// 2 == person overview page
 	// 3 == my potential connections list
+	// 4 == home page
 	private Long redirectId;
 	
 	private String text;
@@ -82,6 +83,9 @@ public class RequestConnectionTooltipController implements Serializable {
 		}
 		else if (getRedirectId().longValue() == 3) {
 			JsfUtils.redirect(PagesURL.MY_POTENTIAL_CONNECTIONS_LIST);
+		}
+		else if (getRedirectId().longValue() == 4) {
+			JsfUtils.redirect(PagesURL.HOME);
 		}
 	
 		// As a redirect is used, this is actually useless.
