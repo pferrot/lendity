@@ -47,6 +47,12 @@
 								<f:param value="#{potentialConnectionsImportController.nbConnectionRequestsSent}"/>
 								<f:param value="#{potentialConnectionsImportController.nbInvitationsSent}"/>
 							</h:outputFormat>
+							<br/><br/>
+							<o:separateConversationContext>
+								<h:outputLink value="#{authenticationController.inviteFriendsURL}">
+									<h:outputText value="#{messages.invitation_inviteFriendsFromPersonSearch}"/>
+								</h:outputLink>
+							</o:separateConversationContext>
 						</c:if>
 					
 					</h:form>
