@@ -25,7 +25,7 @@ public class MyNeedsListController extends AbstractNeedsListController {
 
 	@Override
 	protected ListWithRowCount getListWithRowCount() {
-		return getNeedService().findMyNeeds(getSearchString(), getCategoryId(), getVisibilityId(),
+		return getNeedService().findMyNeeds(getSearchString(), getCategoryId(), getVisibilityId(), getFulfilledBoolean(),
 				getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
 	}
 	

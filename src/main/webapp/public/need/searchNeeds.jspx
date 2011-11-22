@@ -100,14 +100,29 @@
 	</ui:include>
 	</td>
 	
-	<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
 	</c:if>
+	
+	</tr>
+	</table>
+	
+	<br/>
+	
+	<table class="filtersTable">
+	<tr>
+	
+	<td >
+	<ui:include src="../../auth/need/filter/fulfilled.jspx">
+		<ui:param name="theBean" value="#{searchNeedsListController}"/>
+	</ui:include>
+	</td>
+	
+	<td class="separatorCell"><h:outputText value=" " escape="false" /></td>
 	
 	<td >
 	<ui:include src="../../auth/item/sort/orderBy.jspx">
 		<ui:param name="theBean" value="#{searchNeedsListController}"/>
 	</ui:include>
-	</td>
+	</td>	
 	
 	</tr>
 	

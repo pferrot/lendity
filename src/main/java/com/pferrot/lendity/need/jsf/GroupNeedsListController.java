@@ -71,7 +71,7 @@ public class GroupNeedsListController extends AbstractNeedsListController {
 
 	@Override
 	protected ListWithRowCount getListWithRowCount() {
-		return getNeedService().findGroupNeeds(getGroupId(), getSearchString(), getCategoryId(), 
+		return getNeedService().findGroupNeeds(getGroupId(), getSearchString(), getCategoryId(), getFulfilledBoolean(), 
 				getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
 	}
 

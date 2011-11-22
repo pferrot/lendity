@@ -50,8 +50,9 @@ public class SearchNeedsListController extends AbstractNeedsListController {
 	    if (getMaxDistance() != null) {
 	    	maxDistanceDouble = Double.valueOf(getMaxDistance());
 	    }
+	    
 		return getNeedService().findNeeds(getSearchString(), getCategoryId(), 
-				getOwnerType(), maxDistanceDouble, getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
+				getOwnerType(), maxDistanceDouble, getFulfilledBoolean(), getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
 	}
 	
 	@Override

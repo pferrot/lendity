@@ -1,11 +1,8 @@
 package com.pferrot.lendity.item.jsf;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.component.html.HtmlSelectOneMenu;
@@ -24,7 +21,6 @@ import com.pferrot.lendity.item.ObjektService;
 import com.pferrot.lendity.jsf.list.AbstractListController;
 import com.pferrot.lendity.model.CategoryEnabled;
 import com.pferrot.lendity.model.ItemCategory;
-import com.pferrot.lendity.model.ListValue;
 import com.pferrot.lendity.model.Objekt;
 import com.pferrot.lendity.model.Ownable;
 import com.pferrot.lendity.model.VisibilityEnabled;

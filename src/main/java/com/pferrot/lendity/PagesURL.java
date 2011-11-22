@@ -131,6 +131,8 @@ public interface PagesURL {
 	String PERSON_EDIT_PICTURE = "/auth/person/personEditPicture.faces";
 	String PERSON_EDIT_PICTURE_PARAM_PERSON_ID = PERSON_OVERVIEW_PARAM_PERSON_ID;
 	
+	String PERSON_IMPORT_FACEBOOK_PICTURE = "/auth/person/personImportFacebookPicture.faces";
+	
 	// PERSON - end
 	/////////////////////////////////////////////////////////////////////////
 	

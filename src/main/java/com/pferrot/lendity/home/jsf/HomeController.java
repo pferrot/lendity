@@ -13,6 +13,7 @@ import org.apache.myfaces.orchestra.viewController.annotations.InitView;
 import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.connectionrequest.ConnectionRequestService;
 import com.pferrot.lendity.connectionrequest.exception.ConnectionRequestException;
 import com.pferrot.lendity.groupjoinrequest.GroupJoinRequestService;
@@ -25,6 +26,8 @@ import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.personconfiguration.PersonConfigurationConsts;
 import com.pferrot.lendity.personconfiguration.PersonConfigurationService;
 import com.pferrot.lendity.potentialconnection.PotentialConnectionService;
+import com.pferrot.lendity.social.facebook.FacebookUtils;
+import com.pferrot.lendity.social.facebook.exception.FacebookException;
 import com.pferrot.lendity.utils.HtmlUtils;
 import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.security.SecurityUtils;
@@ -323,5 +326,24 @@ public class HomeController extends AbstractHomeController {
 		pc.setIgnored(Boolean.TRUE);
 		getPotentialConnectionService().updatePotentialConnection(pc);
 		return "success";
+	}
+	
+	public boolean isProfilePictureSet() {
+		final Person currentPerson = getPersonService().getCurrentPerson();
+		return currentPerson != null && currentPerson.getImage() != null;
+	}
+	
+	public String getChangeProfilePictureURL() {
+		return JsfUtils.getFullUrl(PagesURL.PERSON_EDIT_PICTURE, PagesURL.PERSON_EDIT_PICTURE_PARAM_PERSON_ID, PersonUtils.getCurrentPersonId().toString());
+	}
+	
+	public String getChangeProfilePictureFromFacebookURL() {
+		try {
+			final String next = JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.PERSON_IMPORT_FACEBOOK_PICTURE);
+			return FacebookUtils.getFacebookOAuthLink(next);
+		}
+		catch (FacebookException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

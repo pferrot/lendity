@@ -15,6 +15,7 @@ import com.pferrot.lendity.item.ObjektService;
 import com.pferrot.lendity.item.jsf.AbstractObjektOverviewController;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.Objekt;
+import com.pferrot.lendity.need.NeedConsts;
 import com.pferrot.lendity.need.NeedService;
 import com.pferrot.lendity.need.NeedUtils;
 import com.pferrot.lendity.person.PersonUtils;
@@ -113,5 +114,9 @@ public class NeedOverviewController extends AbstractObjektOverviewController {
 		return JsfUtils.getFullUrl(PagesURL.ITEM_ADD, 
 				PagesURL.ITEM_ADD_PARAM_NEED_ID,
 				getNeed().getId().toString());
+	}
+	
+	public String getFulfilledImageUrl() {
+		return JsfUtils.getFullUrlWithPrefix(JsfUtils.getContextRoot(), NeedConsts.NEED_FULFILLED_NORMAL_IMAGE_URL);
 	}
 }

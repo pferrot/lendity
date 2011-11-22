@@ -2,6 +2,7 @@ package com.pferrot.lendity.dao.hibernate;
 
 import java.util.List;
 
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -80,7 +81,13 @@ public class NeedDaoHibernateImpl extends ObjektDaoHibernateImpl implements Need
 	}
 	
 	protected DetachedCriteria getNeedsDetachedCriteria(final NeedDaoQueryBean pNeedDaoQueryBean) {
-		return getObjectsDetachedCriteria(pNeedDaoQueryBean);
+		DetachedCriteria criteria = getObjectsDetachedCriteria(pNeedDaoQueryBean);
+		
+		if (pNeedDaoQueryBean.getFulfilled() != null) {
+			criteria.add(Restrictions.eq("fulfilled", pNeedDaoQueryBean.getFulfilled()));
+		}
+		
+		return criteria;
 	}
 
 	/**

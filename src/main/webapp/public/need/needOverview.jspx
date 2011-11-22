@@ -38,7 +38,31 @@
 <h2 class="gt-table-head"><h:outputText value="#{needOverviewController.need.title}" /></h2>
 
 <!-- content box -->
-<div class="gt-form gt-content-box">
+<div id="needOverviewMainDiv" class="gt-form gt-content-box" style="position: relative;">
+	<c:if test="#{needOverviewController.need.fulfilled}">
+		<div id="needOverviewPictureDiv" class="profilePictureDiv">
+			<img src="#{needOverviewController.fulfilledImageUrl}" alt="#{messages.need_fullfilledImageTitle}" title="#{messages.need_fullfilledImageTitle}"/>
+		</div>
+		
+		<!-- 
+		This will avoid a picture that does not fit in the main div in case there is not
+		a lot of info to display.
+		 -->
+		<script type="text/javascript">
+			$j(window).load(function() {
+				var mainDivHeight = $j('#needOverviewMainDiv').height();
+				var pictureDivHeight = $j('#needOverviewPictureDiv').height();
+				if (pictureDivHeight > mainDivHeight) {
+					$j('#needOverviewMainDiv').height(pictureDivHeight + 20);
+				}
+				if ($j('#needDescriptionTextDiv')) {
+					var descWidth = $j('#needOverviewMainDiv').width() - $j('#needOverviewPictureDiv').width() - 20;
+					$j('#needDescriptionTextDiv').width(descWidth);
+				}
+			});
+		</script>
+	</c:if>	
+	
 	<c:if test="#{needOverviewController.descriptionAvailable}">
 		<div class="gt-form-row gt-width-100" id="needDescriptionDiv">
 			<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.item_description}:" /></label></div>

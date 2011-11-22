@@ -495,6 +495,7 @@ public class InitialData {
 	private void createNeeds(final Person pPerson, final int pNbNeeds) {
 		for (int i = 0; i < pNbNeeds; i++) {
 			Need need = new Need();
+			need.setFulfilled(Boolean.FALSE);
 			
 			populateObjekt(need, pPerson);
 			

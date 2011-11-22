@@ -113,6 +113,7 @@ public class NeedService extends ObjektService {
 		needQuery.setOrderBy(pOrderBy);
 		needQuery.setOrderByAscending(pOrderByAscending);
 		needQuery.setMaxResults(maxResults);
+		needQuery.setFulfilled(Boolean.FALSE);
 		if (SecurityUtils.isLoggedIn()) {
 			// All connections.
 			final Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(null);
@@ -164,13 +165,14 @@ public class NeedService extends ObjektService {
 		return lwrc.getList();
 	}
 	
-	public ListWithRowCount findMyNeeds(final String pTitle, final Long pCategoryId, final Long pVisibilityId,
+	public ListWithRowCount findMyNeeds(final String pTitle, final Long pCategoryId, final Long pVisibilityId, final Boolean pFulfilled,
 			final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
 		final Long currentPersonId = PersonUtils.getCurrentPersonId();
 		CoreUtils.assertNotNull(currentPersonId);
 		final Long[] personIds = new Long[]{currentPersonId};
 		
 		final NeedDaoQueryBean needDaoQueryBean = new NeedDaoQueryBean();
+		needDaoQueryBean.setFulfilled(pFulfilled);
 		needDaoQueryBean.setOwnerIds(personIds);
 		needDaoQueryBean.setOwnerEnabled(Boolean.TRUE);
 		needDaoQueryBean.setTitle(pTitle);
@@ -185,9 +187,10 @@ public class NeedService extends ObjektService {
 	}
 
 	public ListWithRowCount findNeeds(final String pTitle, final Long pCategoryId, final Long pOwnerType,
-			final Double pMaxDistanceInKm, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+			final Double pMaxDistanceInKm, final Boolean pFulfilled, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
 				
 		final NeedDaoQueryBean needDaoQueryBean = new NeedDaoQueryBean();
+		needDaoQueryBean.setFulfilled(pFulfilled);
 		if (SecurityUtils.isLoggedIn()) {
 			// All connections.
 			final Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(null);
@@ -226,12 +229,14 @@ public class NeedService extends ObjektService {
 		return needDao.findNeeds(needDaoQueryBean);
 	}
 
-public ListWithRowCount findPersonNeeds(final Long pOwnerId, final String pTitle, final Long pCategoryId, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+public ListWithRowCount findPersonNeeds(final Long pOwnerId, final String pTitle, final Long pCategoryId, final Boolean pFulfilled,
+			final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
 		
 		CoreUtils.assertNotNull(pOwnerId);
 		
 		final NeedDaoQueryBean needQuery = new NeedDaoQueryBean();
 		
+		needQuery.setFulfilled(pFulfilled);
 		needQuery.setOwnerIds(getIds(pOwnerId));
 		needQuery.setOwnerEnabled(Boolean.TRUE);
 		needQuery.setTitle(pTitle);
@@ -253,11 +258,13 @@ public ListWithRowCount findPersonNeeds(final Long pOwnerId, final String pTitle
 		return needDao.findNeeds(needQuery);
 	}
 
-	public ListWithRowCount findGroupNeeds(final Long pGroupId, final String pTitle, final Long pCategoryId, final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
+	public ListWithRowCount findGroupNeeds(final Long pGroupId, final String pTitle, final Long pCategoryId, final Boolean pFulfilled, 
+			final String pOrderBy, final Boolean pOrderByAscending, final int pFirstResult, final int pMaxResults) {
 		
 		CoreUtils.assertNotNull(pGroupId);
 		
 		final NeedDaoQueryBean needQuery = new NeedDaoQueryBean();
+		needQuery.setFulfilled(pFulfilled);
 		
 		needQuery.setGroupIds(getIds(pGroupId));
 		needQuery.setOwnerEnabled(Boolean.TRUE);
@@ -596,4 +603,16 @@ public ListWithRowCount findPersonNeeds(final Long pOwnerId, final String pTitle
 			HtmlUtils.escapeHtmlAndReplaceCr(pNeed.getTitle()) + 
 			"</a>";
 	}
+	
+	@Override
+	public String getThumbnail1Src(final Objekt pObjekt,
+			 final boolean pAuthorizeDocumentAccess, final HttpSession pSession, final String pUrlPrefix, final Long pPreferredCategoryId) {
+		final Need need = (Need)pObjekt;
+		if (Boolean.TRUE.equals(need.getFulfilled())) {
+			return JsfUtils.getFullUrlWithPrefix(pUrlPrefix, NeedConsts.NEED_FULFILLED_SMALL_IMAGE_URL);
+		}
+		else {
+			return super.getThumbnail1Src(pObjekt, pAuthorizeDocumentAccess, pSession, pUrlPrefix, pPreferredCategoryId);
+		}
+	}	
 }

@@ -1,7 +1,13 @@
+
 <ui:include xmlns:ui="http://java.sun.com/jsf/facelets"
             src="../image/editPicture.jspx">
 	<ui:param name="controllerBean" value="#{personEditPictureController}"/>
 	<ui:param name="pageTitle" value="#{messages.person_personEditPictureTitle}" />
+	<ui:param name="extraLinkEnabled" value="true" />
+	<ui:param name="extraLinkLabel" value="#{messages.home_setProfilePictureFromFacebook}" />
+	<ui:param name="extraLinkUrl" value="#{personEditPictureController.changeProfilePictureFromFacebookURL}" />
 </ui:include>
+
+
 
 

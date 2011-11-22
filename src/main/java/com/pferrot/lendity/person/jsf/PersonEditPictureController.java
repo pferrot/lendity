@@ -9,12 +9,15 @@ import org.apache.myfaces.orchestra.viewController.annotations.ViewController;
 import org.springframework.security.AccessDeniedException;
 
 import com.pferrot.lendity.PagesURL;
+import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.image.jsf.AbstractEditPictureController;
 import com.pferrot.lendity.model.Document;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonConsts;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
+import com.pferrot.lendity.social.facebook.FacebookUtils;
+import com.pferrot.lendity.social.facebook.exception.FacebookException;
 import com.pferrot.lendity.utils.JsfUtils;
 
 @ViewController(viewIds={"/auth/person/personEditPicture.jspx"})
@@ -176,5 +179,15 @@ public class PersonEditPictureController extends AbstractEditPictureController {
 	@Override
 	protected Document getCurrentImage() {
 		return getPerson().getImage();
+	}
+	
+	public String getChangeProfilePictureFromFacebookURL() {
+		try {
+			final String next = JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.PERSON_IMPORT_FACEBOOK_PICTURE);
+			return FacebookUtils.getFacebookOAuthLink(next);
+		}
+		catch (FacebookException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

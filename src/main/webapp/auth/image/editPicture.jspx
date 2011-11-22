@@ -192,6 +192,14 @@
 	         				</td></tr></table>
 						</div>
 						<!-- /form row -->
+						
+						
+						<c:if test="#{extraLinkEnabled}">
+							<br/>
+							<h:outputLink value="#{extraLinkUrl}">
+								<h:outputText value="#{extraLinkLabel}"/>
+							</h:outputLink>
+						</c:if>
 					
 					</div>
 					

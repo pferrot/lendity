@@ -27,7 +27,7 @@
 				<div class="gt-form">
 					
 					
-					<div style="float: left; width: 455px; border-style: solid; border-width: 0 1px 0 0; border-color: #cccccc; padding-right: 25px;">						
+					<div style="float: left; width: 405px; border-style: solid; border-width: 0 1px 0 0; border-color: #cccccc; padding-right: 25px;">						
 						<div>
 							<c:if test="#{not homeController.showPersonalWall}">
 								<div class="small" style="text-align: right; width: 100%; margin-bottom: 7px;">
@@ -68,7 +68,7 @@
 						</div>
 					</div>
 					
-					<div style="float: right; width: 455px; border-style: solid; border-width: 0px; border-color: blue">
+					<div style="float: right; width: 505px; border-style: solid; border-width: 0px; border-color: blue">
 					
 						<c:if test="#{homeController.emptyHomepage}">
 							<div style="border-width: 0px; border-style: solid; border-color: #dddddd; background-color: #dddddd; padding: 5px; border-radius: 5px;">			
@@ -263,9 +263,37 @@
 						<br/><br/>	
 						
 						
+						<c:if test="#{not homeController.profilePictureSet}">
+							<div style="margin-bottom: 0px; height: 100px;">
+								<div style="float: left;">
+									<h:outputLink value="#{homeController.changeProfilePictureURL}">
+									<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/user_not_set.gif"/>
+									</h:outputLink>
+								</div>
+								<div style="float: left; margin-left: 20px;">
+									<div>
+										<h:outputText value="#{messages.home_profilePictureNotSet}"/>
+									</div>
+									<div>
+										<h:outputLink value="#{homeController.changeProfilePictureURL}">
+											<h:outputText value="#{messages.home_setProfilePicture}"/>
+										</h:outputLink>
+									</div>
+									<div>
+										<h:outputLink value="#{homeController.changeProfilePictureFromFacebookURL}">
+											<h:outputText value="#{messages.home_setProfilePictureFromFacebook}"/>
+										</h:outputLink>
+									</div>
+								</div>
+							</div>
+							<br/><br/>
+						</c:if>
 						
 						
-						<c:if test="#{(homeController.locationAvailable)}">
+						
+						
+						<c:if test="#{homeController.locationAvailable}">
+						<c:if test="#{not empty(homeController.needsList)}">
 						
 						<div style="border-width: 4px; border-style: solid; background-color: #e4e4e4; border-color: #e4e4e4; padding: 5px; border-radius: 5px;">			
 								<b><h:outputText value="#{messages.home_latestNeeds} :"/></b>
@@ -289,7 +317,25 @@
 								</td></tr></table>
 						    </h:column>
 						    <h:column id="needColumn2">
-								<table border="0" class="gt-table-categories" width="130" align="right">
+								<table border="0" class="gt-table-categories" width="180" align="right">
+									<tr>
+										<th>
+											<h:outputText value="#{messages.need_owner}:" />
+										</th>
+										<td>
+											<h:outputLink value="#{homeController.needOwnerHref}">
+												<h:outputText value="#{homeController.needOwnerLabel}"/>
+											</h:outputLink>
+										</td>
+								    </tr>
+									<tr>
+										<th>
+											<h:outputText value="#{messages.item_creationDate}:" />
+										</th>
+										<td>					
+											<h:outputText value="#{homeController.needCreationDateLabel}" />
+										</td>
+									</tr>
 									<tr>
 										<th>
 											<h:outputText value="#{messages.geolocation_distance}:" />
@@ -297,6 +343,17 @@
 										<td>					
 											<h:outputText value="#{homeController.needDistanceLabel}" />
 										</td>
+									</tr>
+								</table>
+						    </h:column>
+						    <h:column id="column3">
+								<table border="0" class="gt-table-categories" width="70" align="right">
+									<tr>
+									<td>
+										<h:outputLink styleClass="buttonLight2" value="#{homeController.needGotItHref}">
+											<h:outputText value="#{messages.need_gotIt}"/>
+										</h:outputLink>
+									</td>
 									</tr>
 								</table>
 						    </h:column>
@@ -320,6 +377,7 @@
 						
 						</div>
 						
+						</c:if>
 						</c:if>
 						
 						

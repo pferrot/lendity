@@ -140,7 +140,7 @@
 		<br/>
 	</c:if>
 	
-	<div class="gt-form-row gt-width-100">
+	<div class="gt-form-row gt-width-100" id="groupOptionsDiv">
 		<div class="highlightedBg"><label class="small"><h:outputText value="#{messages.group_options}:" /></label></div>
 		<h:selectBooleanCheckbox id="passwordProtected" value="#{groupOverviewController.group.passwordProtected}" styleClass="gt-form-element-checkbox" disabled="true"/>
 		<h:outputText value=" " escape="false" />

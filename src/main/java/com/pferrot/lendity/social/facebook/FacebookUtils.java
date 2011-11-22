@@ -1,8 +1,12 @@
 package com.pferrot.lendity.social.facebook;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -173,6 +177,81 @@ public class FacebookUtils {
 			if (is != null) {
 				try {
 					is.close();
+				} 
+				catch (IOException e) {
+					throw new FacebookException(e);
+				}
+			}
+		}
+	}
+	
+
+	public static File getFacebookProfilePictureSquare(final String pAccessToken) throws FacebookException {
+		return getFacebookProfilePicture("square", pAccessToken);
+	}
+	
+	public static File getFacebookProfilePictureLarge(final String pAccessToken) throws FacebookException {
+		return getFacebookProfilePicture("large", pAccessToken);
+	}
+
+	private static File getFacebookProfilePicture(final String pPictureType, final String pAccessToken) throws FacebookException {
+		CoreUtils.assertNotNullOrEmptyString(pPictureType);
+		CoreUtils.assertNotNullOrEmptyString(pAccessToken);
+		InputStream is = null;
+//		InputStreamReader isr = null;
+		OutputStream out = null;
+//		BufferedReader br = null;
+		try {
+			final String friendsUrl = "https://graph.facebook.com/me/picture?type=" + pPictureType + "&access_token=" + pAccessToken;
+	        final URL url = new URL(friendsUrl);
+			final URLConnection connection  = url.openConnection();
+			is = connection.getInputStream();
+			final File result = File.createTempFile("fbpic-", ".tmp");
+			out = new FileOutputStream(result);
+			final byte buf[]=new byte[1024];
+		    int len;
+		    while((len = is.read(buf)) >0) {
+		    	out.write(buf,0,len);
+		    }
+	        if (log.isDebugEnabled()) {
+	        	log.debug("Facebook picture temp file location: " + result.getAbsolutePath());
+	        }
+	        return result;
+		}
+		catch (UnsupportedEncodingException e) {
+			throw new FacebookException(e);
+		} 
+		catch (IOException e) {
+			throw new FacebookException(e);
+		}
+		finally {
+//			if (br != null) {
+//				try {
+//					br.close();
+//				}
+//				catch (IOException e) {
+//					throw new FacebookException(e);
+//				}
+//			}
+			if (is != null) {
+				try {
+					is.close();
+				} 
+				catch (IOException e) {
+					throw new FacebookException(e);
+				}
+			}
+//			if (isr != null) {
+//				try {
+//					isr.close();
+//				} 
+//				catch (IOException e) {
+//					throw new FacebookException(e);
+//				}
+//			}
+			if (out != null) {
+				try {
+					out.close();
 				} 
 				catch (IOException e) {
 					throw new FacebookException(e);

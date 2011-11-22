@@ -659,6 +659,11 @@
 	      <property name="documentService" ref="documentService"/>
 	</bean>
 	
+	<bean id="personImportFacebookPictureController" class="com.pferrot.lendity.person.jsf.PersonImportFacebookPictureController"
+	      scope="conversation.access">
+	      <property name="personService" ref="personService"/>
+	</bean>
+	
 	<bean id="removeConnectionTooltipController" class="com.pferrot.lendity.person.jsf.RemoveConnectionTooltipController"
 	      scope="request">
 	      <property name="personService" ref="personService"/>
@@ -1334,6 +1339,7 @@
 		
 	<bean id="itemServiceTarget" class="com.pferrot.lendity.item.ItemService">
 		<property name="itemDao" ref="itemDao"/>
+		<property name="needDao" ref="needDao"/>
 		<property name="documentDao" ref="documentDao"/>
 		<property name="listValueDao" ref="listValueDao"/>
 		<property name="lendRequestDao" ref="lendRequestDao"/>

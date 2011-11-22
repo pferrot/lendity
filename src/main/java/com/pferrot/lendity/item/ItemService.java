@@ -22,6 +22,7 @@ import com.pferrot.lendity.configuration.Configuration;
 import com.pferrot.lendity.dao.ItemDao;
 import com.pferrot.lendity.dao.LendRequestDao;
 import com.pferrot.lendity.dao.LendTransactionDao;
+import com.pferrot.lendity.dao.NeedDao;
 import com.pferrot.lendity.dao.bean.ItemDaoQueryBean;
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
 import com.pferrot.lendity.i18n.I18nUtils;
@@ -48,6 +49,7 @@ public class ItemService extends ObjektService {
 	private LendRequestDao lendRequestDao;
 	private LendTransactionDao lendTransactionDao;
 	private ItemDao itemDao;
+	private NeedDao needDao;
 
 	public void setLendRequestDao(LendRequestDao lendRequestDao) {
 		this.lendRequestDao = lendRequestDao;
@@ -63,6 +65,14 @@ public class ItemService extends ObjektService {
 
 	public void setItemDao(ItemDao itemDao) {
 		this.itemDao = itemDao;
+	}
+
+	public NeedDao getNeedDao() {
+		return needDao;
+	}
+
+	public void setNeedDao(NeedDao needDao) {
+		this.needDao = needDao;
 	}
 
 	public Item findItem(final Long itemId) {
@@ -494,18 +504,18 @@ public class ItemService extends ObjektService {
 	public Long createItem(final Item pItem, final Need pNeed) {
 		try {
 			pItem.setCreationDate(new Date());
-			if (pNeed != null && 
-				pItem instanceof Item) {
-				((Item)pItem).addRelatedNeed(pNeed);
+			if (pNeed != null) {
+				pItem.addRelatedNeed(pNeed);
 			}
 			final Long result = itemDao.createItem(pItem);
 			// Send the notification after the dao is called !
-			if (pNeed != null && 
-				pItem instanceof Item) {
-				final Item item = (Item)pItem;
-				if (item.isPublicVisibility() || 
-					(item.isConnectionsVisibility() && pItem.getOwner().getConnections().contains(pNeed.getOwner()))) {
-					sendNotificationForNeed(pNeed, item);
+			if (pNeed != null) {
+				// TODO: we should also check groups!
+				if (pItem.isPublicVisibility() || 
+					(pItem.isConnectionsVisibility() && pItem.getOwner().getConnections().contains(pNeed.getOwner()))) {
+					pNeed.setFulfilled(Boolean.TRUE);
+					needDao.updateNeed(pNeed);					
+					sendNotificationForNeed(pNeed, pItem);
 				}
 			}
 			return result;

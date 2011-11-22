@@ -62,7 +62,7 @@ public class PersonNeedsListController extends AbstractNeedsListController {
 
 	@Override
 	protected ListWithRowCount getListWithRowCount() {
-		return getNeedService().findPersonNeeds(getPersonId(), getSearchString(), getCategoryId(), 
+		return getNeedService().findPersonNeeds(getPersonId(), getSearchString(), getCategoryId(), getFulfilledBoolean(),
 				getOrderByField(), getOrderByAscending(), getFirstRow(), getRowsPerPage());
 	}
 

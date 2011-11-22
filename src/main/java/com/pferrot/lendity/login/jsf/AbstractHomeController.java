@@ -13,16 +13,19 @@ import org.apache.commons.logging.LogFactory;
 import com.pferrot.lendity.PagesURL;
 import com.pferrot.lendity.geolocation.GeoLocationUtils;
 import com.pferrot.lendity.group.GroupService;
+import com.pferrot.lendity.i18n.I18nUtils;
 import com.pferrot.lendity.item.ItemService;
 import com.pferrot.lendity.model.Group;
 import com.pferrot.lendity.model.Item;
 import com.pferrot.lendity.model.Need;
 import com.pferrot.lendity.model.Objekt;
+import com.pferrot.lendity.model.Ownable;
 import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.need.NeedService;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.JsfUtils;
+import com.pferrot.lendity.utils.UiUtils;
 
 public abstract class AbstractHomeController implements Serializable {
 	
@@ -240,6 +243,28 @@ public abstract class AbstractHomeController implements Serializable {
 													PersonUtils.getCurrentPersonAddressHomeLongitude(),
 													objekt.getOwner().getAddressHomeLatitude(),
 													objekt.getOwner().getAddressHomeLongitude());
+	}
+	
+	public String getNeedOwnerHref() {
+		final Ownable ownable = (Ownable)getNeedsTable().getRowData();
+		return PersonUtils.getPersonOverviewPageUrl(ownable.getOwner().getId().toString());	
+	}
+
+	public String getNeedOwnerLabel() {
+		final Ownable ownable = (Ownable)getNeedsTable().getRowData();
+		return ownable.getOwner().getDisplayName();
+	}
+	
+	public String getNeedCreationDateLabel() {
+		final Objekt objekt = (Objekt)getNeedsTable().getRowData();
+		return UiUtils.getDateAsString(objekt.getCreationDate(), I18nUtils.getDefaultLocale());
+	}
+	
+	public String getNeedGotItHref() {
+		final Need need = (Need)getNeedsTable().getRowData();
+		return JsfUtils.getFullUrl(PagesURL.ITEM_ADD, 
+				PagesURL.ITEM_ADD_PARAM_NEED_ID,
+				need.getId().toString());
 	}
 
 	public String getPersonDistanceLabel() {

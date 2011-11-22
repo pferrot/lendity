@@ -54,6 +54,7 @@ public class NeedAddController extends AbstractNeedAddEditController {
 
 	public Long createNeed() throws CommentException {
 		Need need = new Need();
+		need.setFulfilled(Boolean.FALSE);
 		
 		need.setTitle(getTitle());
 		need.setDescription(getDescription());

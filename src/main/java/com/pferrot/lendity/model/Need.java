@@ -53,6 +53,9 @@ public class Need implements Objekt, CommentableWithOwner<NeedComment> {
 	@Column(name = "DESCRIPTION", nullable = true, length = 3999)
 	private String description;
 	
+	@Column(name = "FULFILLED", nullable = false)
+	private Boolean fulfilled;
+	
 	@ManyToMany(targetEntity = com.pferrot.lendity.model.ItemCategory.class, fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "NEEDS_CATEGORIES",
@@ -103,6 +106,8 @@ public class Need implements Objekt, CommentableWithOwner<NeedComment> {
 	)
 	private Set<Item> relatedItems = new HashSet<Item>();
 	
+	
+	
 	@Version
 	@Column(name = "OBJ_VERSION")
 	private int version;	
@@ -143,6 +148,14 @@ public class Need implements Objekt, CommentableWithOwner<NeedComment> {
 		this.description = description;
 	}
 	
+	public Boolean getFulfilled() {
+		return fulfilled;
+	}
+
+	public void setFulfilled(Boolean fulfilled) {
+		this.fulfilled = fulfilled;
+	}
+
 	public Set<ItemCategory> getCategories() {
 		return categories;
 	}
