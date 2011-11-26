@@ -1,3 +1,5 @@
+var mExtraChildCommentsText = '';
+var mExtraChildCommentsLinkText = '';
 var mAddCommentDefaultText = '';
 var mAddChildCommentDefaultText = '';
 var mSubmitButtonText = '';
@@ -23,7 +25,7 @@ var mShowOtherWallCommentOwner = false;
  * @param pItemId
  * @return
  */
-function initComments(pContainerId, pContainerType, pAuthorizedToReply, pContextPath, pAddCommentDefaultText, pAddChildCommentDefaultText, pSubmitButtonText, pEditCommentLabel, pDeleteCommentLabel, pPublicIndicatorLabel, pShowOtherWallCommentOwner) {
+function initComments(pContainerId, pContainerType, pAuthorizedToReply, pContextPath, pAddCommentDefaultText, pAddChildCommentDefaultText, pSubmitButtonText, pEditCommentLabel, pDeleteCommentLabel, pPublicIndicatorLabel, pShowOtherWallCommentOwner, pExtraChildCommentsText, pExtraChildCommentsLinkText) {
 	mContextPath = pContextPath;
 	mAddCommentDefaultText = pAddCommentDefaultText;
 	mAuthorizedToReply = pAuthorizedToReply;
@@ -33,6 +35,8 @@ function initComments(pContainerId, pContainerType, pAuthorizedToReply, pContext
 	mDeleteCommentLabel = pDeleteCommentLabel;
 	mPublicIndicatorLabel = pPublicIndicatorLabel;
 	mShowOtherWallCommentOwner = pShowOtherWallCommentOwner;
+	mExtraChildCommentsText = pExtraChildCommentsText;
+	mExtraChildCommentsLinkText = pExtraChildCommentsLinkText;
 	if (pContainerType == "item") {
 		loadCommentsForItem(pContainerId);
 	}
@@ -342,6 +346,30 @@ function addChildCommentInDb(pParentCommentId) {
 	});
 }
 
+
+
+function loadMoreChildComments(pParentCommentId, pCurrentOldestTimestamp) {
+	var loadMoreChildCommentsContainer = $j("#loadMoreChildCommentsContainer" + pParentCommentId);
+	var editCommentInProgress = $j("#editCommentInProgress");
+	editCommentInProgress.insertAfter(loadMoreChildCommentsContainer);
+	loadMoreChildCommentsContainer.hide();	
+	editCommentInProgress.show();	
+	
+	$j.ajax({
+		url: mContextPath + '/public/comment/comment.json',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: {action: 'read', parentID: pParentCommentId, currentOldestTimestamp: pCurrentOldestTimestamp},
+		success: loadMoreChildCommentsResponse,
+		cache: false
+	});	
+}
+
+function loadMoreChildCommentsResponse(pData, pTextStatus, pXmlHttpRequest) {
+	addChildComments(pData.parentCommentId, pData.childComments, pData.nbExtraChildComments, pData.oldestChildCommentTimestamp, true);
+	editCommentStopProgress();	
+}
+
 function loadMoreCommentsInternalForItem(pItemId) {
 	hideLoadExtraCommentsDiv();	
 	
@@ -465,17 +493,9 @@ function addCommentsFromJsonData(pJsonData) {
 		var comment = comments[i];
 		addCommentInternal(comment.commentID, comment.text, comment.textWithoutHref, comment.ownerName, comment.ownerUrl, comment.wallOwnerName, comment.wallOwnerUrl,
 				comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.canDelete, comment.systemComment, comment.adminComment, comment.publicComment, comment.otherWallComment, comment.childComments,
-				comment.nbChildComments, comment.nbExtraChildComments,
+				comment.nbChildComments, comment.nbExtraChildComments, comment.oldestChildCommentTimestamp,
 				false);
 	}
-//	var childComments = pJsonData.childComments;
-//	if (childComments != null) {
-//		for (var i = 0; i < childComments.length; i++) {
-//			var comment = childComments[i];
-//			addChildCommentInternal(comment.commentID, comment.parentCommentID, comment.text, comment.textWithoutHref, comment.ownerName, comment.ownerUrl,
-//					comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.canDelete, comment.systemComment, comment.adminComment, comment.publicComment, comment.otherWallComment, false);
-//		}
-//	}
 	mNbCommentsLoaded = mNbCommentsLoaded + nb;
 	var nbExtra = pJsonData.nbExtra;
 	if (nbExtra > 0) {
@@ -755,7 +775,8 @@ function addCommentInDbResponse(pData, pTextStatus, pXmlHttpRequest) {
 		var childComments = pData.childComments;
 		var nbChildComments = pData.nbChildComments;
 		var nbExtraChildComments = pData.nbExtraChildComments;
-		addCommentInternal(commentId, text, textWithoutHref, ownerName, ownerUrl, wallOwnerName, wallOwnerUrl, dateAdded, profilePictureUrl, canEdit, canDelete, systemComment, adminComment, publicComment, otherWallComment, childComments, nbChildComments, nbExtraChildComments, true);
+		var oldestChildCommentTimestamp = pData.oldestChildCommentTimestamp;
+		addCommentInternal(commentId, text, textWithoutHref, ownerName, ownerUrl, wallOwnerName, wallOwnerUrl, dateAdded, profilePictureUrl, canEdit, canDelete, systemComment, adminComment, publicComment, otherWallComment, childComments, nbChildComments, nbExtraChildComments, oldestChildCommentTimestamp, true);
 		resetCommentTextArea();
 		mNbCommentsLoaded = mNbCommentsLoaded + 1;
 		hideNoCommentDiv();
@@ -979,7 +1000,8 @@ function editCommentInDbResponse(pJsonData, pTextStatus, pXmlHttpRequest) {
  */
 function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pWallOwnerName, pWallOwnerUrl, pCommentDate, 
 		pProfilePictureUrl, pEditEnabled, pDeleteEnabled, pSystemComment,
-		pAdminComment, pPublicComment, pOtherWallComment, pChildComments, pNbChildComments, pNbExtraChildComments, pAddFirst) {
+		pAdminComment, pPublicComment, pOtherWallComment, pChildComments, pNbChildComments, pNbExtraChildComments, pOldestChildCommentTimestamp,
+		pAddFirst) {
 	var containerDiv = $j('#commentsContainer');
 	
 	var commentBackgroundClass = 'commentBackground';
@@ -1005,6 +1027,22 @@ function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOw
 	html =
 		'<div id="commentsFamily' + pCommentId + '"  style="margin-top: 20px;">' +
 		html +
+		
+		'<div id="loadMoreChildCommentsContainer' + pCommentId + '" class="small" style="display: none; width: 90%; float: right;">' +
+		'<br/>' +
+		'<nobr><span id="nbExtraChildComments' + pCommentId + '"></span> ' + mExtraChildCommentsText + '</nobr>' +
+		'<br/>' +
+		'<span id="loadMoreChildComments' + pCommentId + '" oldestTimestamp="' + pOldestChildCommentTimestamp + '" class="linkStyleAction" onClick="loadMoreChildComments(\'' + pCommentId + '\', $j(this).attr(\'oldestTimestamp\'));">' +
+			mExtraChildCommentsLinkText +
+		'</span>' +
+		'<br/>' +
+		'<br/>' +
+		'</div>' +
+		
+		'<div id="childCommentsFamily' + pCommentId + '"></div>' +
+		
+		
+		
 		'</div>';
 	
 	//html += 
@@ -1056,15 +1094,35 @@ function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOw
 	addAllEmbeddedStuff(pCommentId, pText);
 	
 	setupSearchField('childCommentTextarea' + pCommentId, mAddChildCommentDefaultText, true);
-	//$j("#childCommentSubmit" + pCommentId).button();
 	
+	addChildComments(pCommentId, pChildComments, pNbExtraChildComments, pOldestChildCommentTimestamp, false);
+}
+
+function addChildComments(pParentCommentId, pChildComments, pNbExtraChildComments, pOldestChildCommentTimestamp, pAddFirst) {
 	if (pChildComments != null) {
-		for (var i = 0; i < pChildComments.length; i++) {
-			var comment = pChildComments[i];
-			addChildCommentInternal(comment.commentID, comment.parentCommentID, comment.text, comment.textWithoutHref, comment.ownerName, comment.ownerUrl,
-					comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.canDelete, comment.systemComment, comment.adminComment, comment.publicComment, comment.otherWallComment, false);
+		if (!pAddFirst) {
+			for (var i = (pChildComments.length - 1); i >= 0; i--) {
+				var comment = pChildComments[i];
+				addChildCommentInternal(comment.commentID, comment.parentCommentID, comment.text, comment.textWithoutHref, comment.ownerName, comment.ownerUrl,
+						comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.canDelete, comment.systemComment, comment.adminComment, comment.publicComment, comment.otherWallComment, pAddFirst);
+			}
+		}
+		else {
+			for (var i = 0; i < pChildComments.length; i++) {
+				var comment = pChildComments[i];
+				addChildCommentInternal(comment.commentID, comment.parentCommentID, comment.text, comment.textWithoutHref, comment.ownerName, comment.ownerUrl,
+						comment.dateAdded, comment.profilePictureUrl, comment.canEdit, comment.canDelete, comment.systemComment, comment.adminComment, comment.publicComment, comment.otherWallComment, pAddFirst);
+			}
 		}
 	}
+	if (pNbExtraChildComments > 0) {
+		$j('#loadMoreChildCommentsContainer' + pParentCommentId).show();
+	}
+	else {
+		$j('#loadMoreChildCommentsContainer' + pParentCommentId).hide();
+	}
+	$j('#nbExtraChildComments' + pParentCommentId).html(pNbExtraChildComments);
+	$j('#loadMoreChildComments' + pParentCommentId).attr('oldestTimestamp', pOldestChildCommentTimestamp);
 }
 
 function showReplyTextarea(pParentCommentId) {
@@ -1093,7 +1151,7 @@ function showReplyTextarea(pParentCommentId) {
 function addChildCommentInternal(pCommentId, pParentCommentId, pText, pTextWithoutHref, pOwnerName, pOwnerUrl, pCommentDate, 
 		pProfilePictureUrl, pEditEnabled, pDeleteEnabled, pSystemComment, pAdminComment, pPublicComment, pOtherWallComment, pAddFirst) {
 	
-	var parentCommentDiv = $j('#commentsFamily' + pParentCommentId);
+	var childCommentsDiv = $j('#childCommentsFamily' + pParentCommentId);
 	
 	var commentBackgroundClass = 'childCommentBackground';
 	if (pAdminComment) {
@@ -1122,10 +1180,10 @@ function addChildCommentInternal(pCommentId, pParentCommentId, pText, pTextWitho
 		'<div class="childCommentClear"></div>';
 
 	if (pAddFirst) {
-		parentCommentDiv.prepend(html);
+		childCommentsDiv.prepend(html);
 	}
 	else {
-		parentCommentDiv.append(html);
+		childCommentsDiv.append(html);
 	}
 	
 	addAllEmbeddedStuff(pCommentId, pText);

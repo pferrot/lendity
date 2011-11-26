@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -579,8 +578,14 @@ public class CommentService {
 		commentDao.deleteComment(comment);
 	}
 	
-	public List<ChildComment> findChildCommentsByCreationDateAsc(final Comment pParentComment) {
-		return commentDao.findChildCommentsList(pParentComment, 0, 0);
+	public ListWithRowCount findChildCommentsByCreationDateDesc(final Comment pParentComment, final Date pMaxDate,
+			final int pFirstResult, final int pMaxResults) {
+		return commentDao.findChildComments(pParentComment, pMaxDate, pFirstResult, pMaxResults);
+	}
+	
+	public ListWithRowCount findChildCommentsByCreationDateDesc(final Long pParentCommentId, final Date pMaxDate,
+			final int pFirstResult, final int pMaxResults) {
+		return commentDao.findChildComments(pParentCommentId, pMaxDate, pFirstResult, pMaxResults);
 	}
 	
 	/**

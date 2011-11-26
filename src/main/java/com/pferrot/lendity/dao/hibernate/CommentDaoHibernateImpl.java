@@ -1,5 +1,6 @@
 package com.pferrot.lendity.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Criterion;
@@ -102,10 +103,18 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
 	}
 	
-	public List<ChildComment> findChildCommentsList(final Comment pParentComment, final int pFirstResult, final int pMaxResults) {
-		final DetachedCriteria criteria = getChildCommentsDetachedCriteria(pParentComment);
-		criteria.addOrder(Order.asc("creationDate"));		
+	public List<ChildComment> findChildCommentsList(final Long pParentCommentId, final Date pMaxDate, final int pFirstResult, final int pMaxResults) {
+		final DetachedCriteria criteria = getChildCommentsDetachedCriteria(pParentCommentId, pMaxDate);
+		criteria.addOrder(Order.desc("creationDate"));		
 		return getHibernateTemplate().findByCriteria(criteria, pFirstResult, pMaxResults);		
+	}
+	
+	public List<ChildComment> findChildCommentsList(final Comment pParentComment, final Date pMaxDate, final int pFirstResult, final int pMaxResults) {
+		Long parentCommentId = null;
+		if (pParentComment != null) {
+			parentCommentId = pParentComment.getId(); 
+		}		
+		return findChildCommentsList(parentCommentId, pMaxDate, pFirstResult, pMaxResults);		
 	}
 
 	public long countItemComments(final Item pItem) {
@@ -138,10 +147,20 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return rowCount(criteria);
 	}
 	
-	public long countChildComments(final Comment pParentComment) {
-		final DetachedCriteria criteria = getChildCommentsDetachedCriteria(pParentComment);
+	public long countChildComments(final Long pParentCommentId, final Date pMaxDate) {
+		final DetachedCriteria criteria = getChildCommentsDetachedCriteria(pParentCommentId, pMaxDate);
 		return rowCount(criteria);
 	}
+	
+	public long countChildComments(final Comment pParentComment, final Date pMaxDate) {
+		Long parentCommentId = null;
+		if (pParentComment != null) {
+			parentCommentId = pParentComment.getId(); 
+		}
+		return countChildComments(parentCommentId, pMaxDate);
+	}
+	
+	
 
 	private DetachedCriteria getItemCommentsDetachedCriteria(final Item pItem) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(ItemComment.class);
@@ -284,12 +303,15 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return criteria;	
 	}
 	
-	private DetachedCriteria getChildCommentsDetachedCriteria(final Comment pParentComment) {
+	private DetachedCriteria getChildCommentsDetachedCriteria(final Long pParentCommentId, final Date pMaxDate) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(ChildComment.class);
 	
-		if (pParentComment != null) {
-			criteria.add(Restrictions.eq("parentComment", pParentComment));
+		if (pParentCommentId != null) {
+			criteria.add(Restrictions.eq("parentComment.id", pParentCommentId));
 		}		
+		if (pMaxDate != null) {
+			criteria.add(Restrictions.lt("creationDate", pMaxDate));
+		}
 		return criteria;	
 	}
 
@@ -340,9 +362,15 @@ public class CommentDaoHibernateImpl extends HibernateDaoSupport implements Comm
 		return new ListWithRowCount(list, count);
 	}
 	
-	public ListWithRowCount findChildComments(final Comment pParentComment, final int pFirstResult, final int pMaxResults) {
-		final List list = findChildCommentsList(pParentComment, pFirstResult, pMaxResults);
-		final long count = countChildComments(pParentComment);
+	public ListWithRowCount findChildComments(final Long pParentCommentId, final Date pMaxDate, final int pFirstResult, final int pMaxResults) {
+		final List list = findChildCommentsList(pParentCommentId, pMaxDate, pFirstResult, pMaxResults);
+		final long count = countChildComments(pParentCommentId, pMaxDate);
+		return new ListWithRowCount(list, count);
+	}
+	
+	public ListWithRowCount findChildComments(final Comment pParentComment, final Date pMaxDate, final int pFirstResult, final int pMaxResults) {
+		final List list = findChildCommentsList(pParentComment, pMaxDate, pFirstResult, pMaxResults);
+		final long count = countChildComments(pParentComment, pMaxDate);
 		return new ListWithRowCount(list, count);
 	}
 }

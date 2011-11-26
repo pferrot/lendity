@@ -271,18 +271,22 @@
 									</h:outputLink>
 								</div>
 								<div style="float: left; margin-left: 20px;">
-									<div>
+									<div style="margin-bottom: 10px;">
 										<h:outputText value="#{messages.home_profilePictureNotSet}"/>
 									</div>
 									<div>
-										<h:outputLink value="#{homeController.changeProfilePictureURL}">
-											<h:outputText value="#{messages.home_setProfilePicture}"/>
-										</h:outputLink>
-									</div>
-									<div>
-										<h:outputLink value="#{homeController.changeProfilePictureFromFacebookURL}">
-											<h:outputText value="#{messages.home_setProfilePictureFromFacebook}"/>
-										</h:outputLink>
+										<ul>
+											<li>
+												<h:outputLink value="#{homeController.changeProfilePictureURL}">
+													<h:outputText value="#{messages.home_setProfilePicture}"/>
+												</h:outputLink>
+											</li>
+											<li>
+												<h:outputLink value="#{homeController.changeProfilePictureFromFacebookURL}">
+													<h:outputText value="#{messages.home_setProfilePictureFromFacebook}"/>
+												</h:outputLink>
+											</li>
+										</ul>
 									</div>
 								</div>
 							</div>

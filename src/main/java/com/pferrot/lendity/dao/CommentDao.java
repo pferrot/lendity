@@ -1,5 +1,6 @@
 package com.pferrot.lendity.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.pferrot.lendity.dao.bean.ListWithRowCount;
@@ -52,10 +53,15 @@ public interface CommentDao {
 	List<GroupComment> findGroupCommentsList(Group pGroup, int pFirstResult, int pMaxResults);
 	long countGroupComments(Group pGroup);
 	
-	ListWithRowCount findChildComments(Comment pParentComment, int pFirstResult, int pMaxResults);
-	List<ChildComment> findChildCommentsList(Comment pParentComment, int pFirstResult, int pMaxResults);
-	long countChildComments(Comment pParentComment);
-			
+	ListWithRowCount findChildComments(Comment pParentComment, Date pMaxDate, int pFirstResult, int pMaxResults);
+	List<ChildComment> findChildCommentsList(Comment pParentComment, Date pMaxDate, int pFirstResult, int pMaxResults);
+	long countChildComments(Comment pParentComment, Date pMaxDate);
+	
+	
+	ListWithRowCount findChildComments(Long pParentCommentId, Date pMaxDate, int pFirstResult, int pMaxResults);
+	List<ChildComment> findChildCommentsList(Long pParentCommentId, Date pMaxDate, int pFirstResult, int pMaxResults);
+	long countChildComments(Long pParentCommentId, Date pMaxDate);
+	
 	void updateComment(Comment pComment);
 	
 	void deleteComment(Comment pComment);

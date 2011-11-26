@@ -70,6 +70,9 @@ public class CommentController extends AbstractController {
 	
 	public final static String PUBLIC_COMMENT_PARAMETER_NAME = "publicComment";
 	
+	private final static int MAX_NB_CHILD_COMMENTS_INITIAL = 3;
+	private final static int NB_CHILD_COMMENTS_LOAD_MORE = 10;
+	
 	private CommentService commentService;
 	private PersonService personService;
 
@@ -178,6 +181,7 @@ public class CommentController extends AbstractController {
 		final Map<String, Object> result = new HashMap<String, Object>();
 		
 		final String commentIdAsString = pRequest.getParameter("commentID");
+		final String parentCommentIdAsString = pRequest.getParameter("parentID");
 		// Load a given comment.
 		if (commentIdAsString != null && commentIdAsString.trim().length() > 0) {
 			final Long commentId = Long.parseLong(commentIdAsString);
@@ -187,10 +191,6 @@ public class CommentController extends AbstractController {
 				final Comment comment = commentService.findCommentWithAC(commentId,
 						PersonUtils.getCurrentPersonId(pRequest.getSession()));
 				comments.add(getMapForOneComment(comment, pRequest));
-//				final List<ChildComment> childCommentsList = commentService.findChildCommentsByCreationDateAsc(comment);
-//				for (ChildComment childComment: childCommentsList) {
-//					childComments.add(getMapForOneComment(childComment, pRequest));
-//				}
 				result.put("nb", 1);
 			}
 			catch (ObjectNotFoundException e) {
@@ -200,6 +200,14 @@ public class CommentController extends AbstractController {
 			result.put("childComments", childComments);
 			result.put("nbExtra", 0);
 			result.put("firstResult", 0);
+		}
+		// Load more child comments.
+		else if (parentCommentIdAsString != null && parentCommentIdAsString.trim().length() > 0) {
+			final Long parentCommentId = Long.parseLong(parentCommentIdAsString);
+			final Long currentOldestTimestamp = Long.parseLong(pRequest.getParameter("currentOldestTimestamp"));
+			final ListWithRowCount lwrc = commentService.findChildCommentsByCreationDateDesc(parentCommentId, new Date(currentOldestTimestamp), 0, NB_CHILD_COMMENTS_LOAD_MORE);
+			
+			populateMultipleChildCommentsMap(result, lwrc, parentCommentId, pRequest);
 		}
 		// Load multiple comments.
 		else {
@@ -304,17 +312,35 @@ public class CommentController extends AbstractController {
 		final List list = pLwrc.getList();
 		final Iterator ite = list.iterator();
 		final List<Map> comments = new ArrayList<Map>();
-//		final List<Map> childComments = new ArrayList<Map>();
 		while (ite.hasNext()) {
 			final Comment comment = (Comment)ite.next();
 			comments.add(getMapForOneComment(comment, pRequest));
-//			final List<ChildComment> childCommentsList = commentService.findChildCommentsByCreationDateAsc(comment);
-//			for (ChildComment childComment: childCommentsList) {
-//				childComments.add(getMapForOneComment(childComment, pRequest));
-//			}
 		}
 		pMap.put("comments", comments);
-//		pMap.put("childComments", childComments);
+	}
+	
+	private void populateMultipleChildCommentsMap(final Map<String, Object> pMap,
+			final ListWithRowCount pLwrc,
+			final Long pParentCommentId,
+			final HttpServletRequest pRequest) {
+		pMap.put("parentCommentId", pParentCommentId.toString());
+		
+		final long nbExtra = pLwrc.getRowCount() > NB_CHILD_COMMENTS_LOAD_MORE?(pLwrc.getRowCount() - NB_CHILD_COMMENTS_LOAD_MORE):0;
+		pMap.put("nbExtraChildComments", nbExtra);
+		
+		final List<ChildComment> childCommentsList = pLwrc.getList();
+		long oldestTimestamp = 0;
+		if (!childCommentsList.isEmpty()) {
+			oldestTimestamp = childCommentsList.get(childCommentsList.size() - 1).getCreationDate().getTime();
+		}
+		pMap.put("oldestChildCommentTimestamp", oldestTimestamp);
+		
+		
+		final List<Map> childComments = new ArrayList<Map>();
+		for (ChildComment childComment: childCommentsList) {
+			childComments.add(getMapForOneComment(childComment, pRequest));
+		}
+		pMap.put("childComments", childComments);
 	}
 	
 	/**
@@ -387,14 +413,22 @@ public class CommentController extends AbstractController {
 			map.put("parentCommentID", ((ChildComment)pComment).getParentComment().getId());
 		}
 		else {
-			final List<ChildComment> childCommentsList = commentService.findChildCommentsByCreationDateAsc(pComment);
+			final ListWithRowCount childCommentsLwrc = commentService.findChildCommentsByCreationDateDesc(pComment, null, 0, MAX_NB_CHILD_COMMENTS_INITIAL);
+			final List<ChildComment> childCommentsList = childCommentsLwrc.getList();
 			final List<Map> childComments = new ArrayList<Map>();
+			
 			for (ChildComment childComment: childCommentsList) {
 				childComments.add(getMapForOneComment(childComment, pRequest));
 			}
 			map.put("childComments", childComments);
 			map.put("nbChildComments", childCommentsList.size());
-			map.put("nbExtraChildComments", 0);
+			final long nbExtra = childCommentsLwrc.getRowCount() > MAX_NB_CHILD_COMMENTS_INITIAL?(childCommentsLwrc.getRowCount() - MAX_NB_CHILD_COMMENTS_INITIAL):0;
+			map.put("nbExtraChildComments", nbExtra);
+			long oldestTimestamp = 0;
+			if (!childCommentsList.isEmpty()) {
+				oldestTimestamp = childCommentsList.get(childCommentsList.size() - 1).getCreationDate().getTime();
+			}
+			map.put("oldestChildCommentTimestamp", oldestTimestamp);
 			
 		}
 		map.put("profilePictureUrl",

@@ -105,7 +105,9 @@
 					'<h:outputText value="#{messages.comment_editCommentShort}"/>',
 					'<h:outputText value="#{messages.comment_deleteCommentShort}"/>',
 					'<h:outputText value="#{messages.comment_publicComment}"/>',
-					showOtherWallCommentOwnerTmp);
+					showOtherWallCommentOwnerTmp,
+					'<h:outputText value="#{messages.comment_nbExtraChildComments}"/>',
+					'<h:outputText value="#{messages.comment_loadMoreChildComments}"/>');
 		</script>
 	</div>
 	<div id="loadMoreCommentsContainer" class="small" style="display: none;">
