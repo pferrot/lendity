@@ -112,9 +112,11 @@
 	</div>
 	<div id="loadMoreCommentsContainer" class="small" style="display: none;">
 		<br/>
-		<nobr><span id="nbExtraComments"></span><h:outputText value=" " escape="false" /><h:outputText value="#{messages.comment_nbExtra}"/></nobr>
-		<br/>
-		<span id="loadMoreComments" class="linkStyleAction" onClick="loadMoreComments('#{containerID}', '#{containerType}');">
+		<span class="linkType2" onClick="loadMoreComments('#{containerID}', '#{containerType}');">
+			<nobr>
+				<span id="nbExtraComments"></span><h:outputText value=" " escape="false" /><h:outputText value="#{messages.comment_nbExtra}"/>
+			</nobr>
+			<br/>
 			<h:outputText value="#{messages.comment_loadMore}"/>
 		</span>
 		<br/>

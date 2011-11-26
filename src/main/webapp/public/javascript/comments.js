@@ -1030,9 +1030,9 @@ function addCommentInternal(pCommentId, pText, pTextWithoutHref, pOwnerName, pOw
 		
 		'<div id="loadMoreChildCommentsContainer' + pCommentId + '" class="small" style="display: none; width: 90%; float: right;">' +
 		'<br/>' +
+		'<span id="loadMoreChildComments' + pCommentId + '" oldestTimestamp="' + pOldestChildCommentTimestamp + '" class="linkType2" onClick="loadMoreChildComments(\'' + pCommentId + '\', $j(this).attr(\'oldestTimestamp\'));">' +
 		'<nobr><span id="nbExtraChildComments' + pCommentId + '"></span> ' + mExtraChildCommentsText + '</nobr>' +
-		'<br/>' +
-		'<span id="loadMoreChildComments' + pCommentId + '" oldestTimestamp="' + pOldestChildCommentTimestamp + '" class="linkStyleAction" onClick="loadMoreChildComments(\'' + pCommentId + '\', $j(this).attr(\'oldestTimestamp\'));">' +
+		'<br/>' +		
 			mExtraChildCommentsLinkText +
 		'</span>' +
 		'<br/>' +
