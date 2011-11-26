@@ -14,7 +14,8 @@ h2.gt-form-head  {
 }
 
 div.contentContent {
-	padding-bottom: 20px;	
+	padding-bottom: 20px;
+	padding-top: 0px;	
 }
 
 table.pagingTable {
@@ -187,31 +188,88 @@ table.menuTable {
 /* @group Nav */
 /* Navbar */
 .gt-subnavbar {
-	background-color: #999698;
 	margin-bottom: 0px;
 }
 
 .highlightedMenu {
-	background-color: #999698;
+	border-style: solid;
+	border-color: #ff8a00;
+	border-bottom-width: 5px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
 }
 
 .highlightedMenu2:hover {
-	background-color: #c7c7c8!important;
+	border-style: solid;
+	border-color: black;
+	border-bottom-width: 5px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
 }
 
 /* When mouse over the submenu. */
 .highlightedMenu3  {
-	background-color: #c7c7c8!important;
+	border-style: solid;
+	border-color: black!important;
+	border-bottom-width: 5px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+}
+
+.menuFakeBorder {
+	border-style: solid;
+	border-color: #f1f1f1;
+	border-bottom-width: 5px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	margin-bottom: 7px!important;	
+}
+
+.gt-subnavbar {
+	background-color: #f1f1f1; /* menu background */
+	padding-bottom: 7px;
 }
 
 .highlightedSubMenu {
-	color: #4c4847!important;
+	border-style: solid;
+	border-color: #ff8a00;
+	border-bottom-width: 3px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	color: black!important;
 }
 
-.highlightedSubMenu2 {
-	background-color: #c7c7c8;
+.notHighlightedSubMenu {
+	color: black!important;
 }
-	
+
+.notHighlightedSubMenu:hover{
+	border-style: solid;
+	border-color: black;
+	border-bottom-width: 3px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+}
+
+.highlightedSubMenu2 a {
+	color: black!important;
+}
+
+.highlightedSubMenu2 a:hover {
+	border-style: solid;
+	border-color: black;
+	border-bottom-width: 3px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	color: black!important;	
+}
 
 table.subMenuTable {
 	width: 940px;

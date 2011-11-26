@@ -27,7 +27,7 @@ function initMenu(pServletPath) {
 			return "highlightedSubMenu";
 		}
 		else {
-			return "";
+			return "notHighlightedSubMenu";
 		}
 	});
 	if (pServletPath.indexOf('login.faces') > 0) {

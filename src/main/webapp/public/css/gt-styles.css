@@ -40,9 +40,6 @@ body {
 .gt-hd-top {
 	overflow: hidden;
 	padding: 0 0 10px 0;
-	background-image: url(../images/fond_triangle.png);
-	background-repeat: repeat-y;
-	background-position: center;
 }
 
 .gt-hd-top-login {
@@ -602,8 +599,9 @@ body {
 /* @group Nav */
 /* Navbar */
 .gt-navbar {
-	background-color: #4c4848;
+	background-color: #f1f1f1; /* menu background */
 	margin-bottom: 0px;
+	padding-top: 0px;
 }
 
 /* Main Navigation */

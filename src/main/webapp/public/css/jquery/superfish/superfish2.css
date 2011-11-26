@@ -8,6 +8,7 @@
 .sf-menu2 {
 	line-height:	1.0;
 }
+
 .sf-menu2 ul {
 	position:		absolute;
 	top:			-999em;
@@ -60,7 +61,10 @@ ul.sf-menu2 li li li.sfHover ul {
 	font-size: 84%;
 }
 .sf-menu2 a {
-	padding: 		.75em 1em;
+	padding-top: 		1em;
+	padding-bottom: 	.25em;
+	padding-left: 		1em;
+	padding-right: 		1em;
 	text-decoration:none;
 }
 
@@ -93,19 +97,11 @@ ul.sf-menu2 li li li.sfHover ul {
 .sf-menu2 a:focus, .sf-menu2 a:hover, .sf-menu2 a:active {
 	outline:		0;
 	text-decoration: none!important;
-	color: #4c4847;
-	/*
-	color: #ffffff;
-	background-color: #4c4847;
-	*/
 }
-.sf-menu2 li:hover {
-	/*background-color: #4c4847;*/
-	
+.sf-menu2 li:hover {	
 }
 .sf-menu2-sub1 li li:hover, .sf-menu2-sub1 li li.sfHover,
 .sf-menu2-sub1 a:focus, .sf-menu2-sub1 a:hover, .sf-menu2-sub1 a:active {
-	/*background: url(../../../images/gt/navbar-bkg.png) repeat 0 0;*/
 }
 /*** arrows **/
 .sf-menu2 a.sf-with-ul {

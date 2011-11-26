@@ -27,8 +27,8 @@
 <ul class="sf-menu">
 	
     <c:if test="${not loggedInUser}">
-		<li class="sf-menu-first-li">
-		    <h:outputLink id="menuHomeLink" value="#{authenticationController.homeURL}">
+		<li>
+		    <h:outputLink id="menuHomeLink" styleClass="menuFakeBorder" value="#{authenticationController.homeURL}" onmouseover="menuLoginOver();" onmouseout="menuOut();">
 	        	<h:outputText id="menuHomeText" value="#{messages.menu_welcome}" />
 		    </h:outputLink>
 		</li>
@@ -86,8 +86,8 @@
 				
 			</div><!-- /navbar -->
 
-<div class="gt-subnavbar clearfix" style="height: 27px;">
 <c:if test="${loggedInUser}">
+<div class="gt-subnavbar clearfix" style="height: 27px;">
 	<!-- navbar -->
 	<div id="divSubMenuItems" class="gt-subnavbar clearfix" style="display: none;"><div class="gt-fixed-wrap clearfix"><div>
 		<table class="subMenuTable">
@@ -283,7 +283,7 @@
 		</table>
 	</div></div></div>
 
-</c:if>
 </div>
+</c:if>
 
 </ui:composition>
