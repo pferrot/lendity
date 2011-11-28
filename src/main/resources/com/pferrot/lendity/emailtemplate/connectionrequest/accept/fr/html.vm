@@ -2,7 +2,7 @@
 
 Hello $requesterFirstName,<br/><br/>
 
-$connectionDisplayName a accepté de t'ajouter comme ami.<br/><br/>
+<a href="$connectionUrl">$connectionDisplayName</a> a accepté de t'ajouter comme ami.<br/><br/>
 
 A bientôt sur <a href="$siteUrl">$siteName</a>.
 

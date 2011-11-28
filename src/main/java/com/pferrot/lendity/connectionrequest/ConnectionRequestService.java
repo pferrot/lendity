@@ -29,6 +29,7 @@ import com.pferrot.lendity.model.Person;
 import com.pferrot.lendity.person.PersonService;
 import com.pferrot.lendity.person.PersonUtils;
 import com.pferrot.lendity.utils.HtmlUtils;
+import com.pferrot.lendity.utils.JsfUtils;
 import com.pferrot.security.SecurityUtils;
 
 public class ConnectionRequestService {
@@ -647,6 +648,7 @@ public class ConnectionRequestService {
 		objects.put("connectionDisplayName", pConnectionRequest.getConnection().getDisplayName());
 		objects.put("connectionFirstName", pConnectionRequest.getConnection().getFirstName());
 		objects.put("connectionLastName", pConnectionRequest.getConnection().getLastName());
+		objects.put("connectionUrl", JsfUtils.getFullUrlWithPrefix(Configuration.getRootURL(), PagesURL.PERSON_OVERVIEW, PagesURL.PERSON_OVERVIEW_PARAM_PERSON_ID, pConnectionRequest.getConnection().getId().toString()));
 		objects.put("signature", Configuration.getSiteName());
 		objects.put("siteName", Configuration.getSiteName());
 		objects.put("siteUrl", Configuration.getRootURL());
