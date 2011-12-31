@@ -66,6 +66,7 @@ public class NeedService extends ObjektService {
 		needQuery.setOwnerEnabled(Boolean.TRUE);
 		needQuery.setOrderBy("random");
 		needQuery.setMaxResults(5);
+		needQuery.setFulfilled(Boolean.FALSE);
 		if (SecurityUtils.isLoggedIn()) {
 			// All connections.
 			final Long[] connectionsIds = getPersonService().getCurrentPersonConnectionIds(null);
