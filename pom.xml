@@ -7,21 +7,21 @@
 	<name>lendity</name>
 	<url>http://maven.apache.org</url>
 	<scm>
-		<connection>scm:svn:svn://patrice-ws/svn/lendity/trunk</connection>
-		<developerConnection>scm:svn:svn://patrice-ws/lendity/trunk</developerConnection>
-		<url>http://patrice-ws/websvn/lendity/trunk</url>
+		<connection>scm:svn:svn://diskstation/repo1/lendity/trunk</connection>
+		<developerConnection>scm:svn:svn://diskstation/repo1/lendity/trunk</developerConnection>
+		<url>http://diskstation/websvn/repo1/lendity/trunk</url>
 	</scm>
 	<distributionManagement>
 		<repository>
 	      <id>ftp-releases-repo</id>
 	      <name>ftp-releases-repo</name>
-	      <url>ftp://patrice-ws/releases</url>
+	      <url>ftp://diskstation/web/maven_repositories/releases</url>
 	      <layout>default</layout>
 	    </repository>
 	    <snapshotRepository>
 	      <id>ftp-snapshots-repo</id>
 	      <name>ftp-snapshots-repo</name>
-	      <url>ftp://patrice-ws/snapshots</url>
+	      <url>ftp://diskstation/web/maven_repositories/snapshots</url>
 	      <layout>default</layout>
 	    </snapshotRepository>
 	</distributionManagement>
@@ -465,7 +465,7 @@
 			        <artifactId>maven-release-plugin</artifactId>
 			        <version>2.0</version>
 			        <configuration>
-			          <tagBase>svn://patrice-ws/lendity/tags</tagBase>
+			          <tagBase>svn://diskstation/repo1/lendity/tags</tagBase>
 			        </configuration>
 			    </plugin>
 <!--			    <plugin>-->
