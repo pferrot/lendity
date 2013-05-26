@@ -10,7 +10,7 @@
     			
 		<!-- footer -->
 		<div id="footerMainDiv" class="gt-footer clearfix"><div class="gt-footer-inner clearfix">
-			<p>&#169; 2010-2011<h:outputText id="footerText12" value=" " escape="false" /><h:outputText id="siteNameFooter" value="#{configuration.siteNameNotStatic}"/>
+			<p>&#169; 2010-2012<h:outputText id="footerText12" value=" " escape="false" /><h:outputText id="siteNameFooter" value="#{configuration.siteNameNotStatic}"/>
 				<h:outputText id="footerText0" value=" " escape="false" />|<h:outputText id="footerText1" value=" " escape="false" />
 				<o:separateConversationContext>
 					<h:outputLink id="footerLink1" value="#{authenticationController.termsAndConditionsURL}" target="_blank">
@@ -33,6 +33,12 @@
 				<o:separateConversationContext>
 					<h:outputLink id="footerLink4" value="#{authenticationController.contactURL}" target="_blank">
 						<h:outputText id="footerText11" value="#{messages.contact_contactTitle}"/>
+					</h:outputLink>
+				</o:separateConversationContext>
+				<h:outputText id="footerText13" value=" " escape="false" />|<h:outputText id="footerText14" value=" " escape="false" />
+				<o:separateConversationContext>
+					<h:outputLink id="footerLink5" value="#{authenticationController.pressURL}" target="_blank">
+						<h:outputText id="footerText15" value="#{messages.press_pressTitle}"/>
 					</h:outputLink>
 				</o:separateConversationContext>
 			</p>

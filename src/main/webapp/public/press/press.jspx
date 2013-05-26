@@ -1,0 +1,70 @@
+<ui:composition template="/WEB-INF/jsp/inc-templates/main-template.jspx"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:o="http://myfaces.apache.org/orchestra"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<!-- params for page titles-->
+	<ui:define name="pageTitle"><h:outputText value="#{messages.press_pressTitle}" /></ui:define>
+	<ui:param name="contentHeader" value="#{messages.press_pressTitle}" />
+
+	<ui:define name="content">
+
+		<ui:decorate template="/WEB-INF/jsp/inc-templates/content-template.jspx">
+
+			<!-- header content here  -->
+<!--			<ui:define name="pageName">#{contentHeader}</ui:define>-->
+
+			<!-- insert content here -->
+			<ui:define name="pageContent">
+
+
+		<!-- body -->
+		<div class="gt-bd gt-cols clearfix">
+			
+			<!-- main content -->
+			<div class="gt-content">
+				
+
+				<h2 class="gt-table-head"><h:outputText value="#{messages.press_pressTitle}"/></h2>
+				<div class="gt-form gt-content-box">
+					<table class="twoColumns gt-table">
+					
+					<tr>
+						<td style="vertical-align: middle; width: 300px!important;">							
+							<b><h:outputText value="#{messages.press_onePageDescription}"/></b>
+						</td>
+						<td>
+							<o:separateConversationContext>
+								<h:outputLink value="#{facesContext.externalContext.requestContextPath}/public/press/download/Comm_Lendity.pdf">
+									<img src="#{facesContext.externalContext.requestContextPath}/public/images/icons/pdf.png" width="48" height="48"/>
+								</h:outputLink>
+							</o:separateConversationContext>
+						</td>
+					</tr>
+										
+					</table>
+				</div>
+				
+			</div>
+			<!-- /main content -->
+
+			<!-- sidebar -->
+			<div class="gt-sidebar">
+								
+			</div>
+			<!-- / sidebar -->
+
+		</div>
+		<!-- /body -->
+				
+						
+						
+						
+			</ui:define>
+		</ui:decorate>
+
+	</ui:define>
+</ui:composition>

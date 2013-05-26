@@ -310,13 +310,9 @@
 			
 			<f:view>
 				
-				<c:if test="#{homePublicController.locationLabelCookieAvailable}">		
 					<ui:include src="../homeInternal.jspx">
 						<ui:param name="theBean" value="#{homePublicController}"/>
-					</ui:include>				
-				</c:if>	
-			
-				
+					</ui:include>								
 			
 			</f:view>
 

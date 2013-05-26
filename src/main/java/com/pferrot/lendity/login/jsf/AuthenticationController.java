@@ -55,6 +55,10 @@ public class AuthenticationController {
 	public String getContactURL() {
 		return JsfUtils.getContextRoot() + PagesURL.CONTACT;
 	}
+	
+	public String getPressURL() {
+		return JsfUtils.getContextRoot() + PagesURL.PRESS;
+	}
 
 	public String getLoginURL() {
 		return JsfUtils.getContextRoot() + PagesURL.LOGIN;
