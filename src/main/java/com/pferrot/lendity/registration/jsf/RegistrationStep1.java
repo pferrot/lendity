@@ -48,11 +48,11 @@ public class RegistrationStep1 {
 	
 	@InitView
 	public void initView() {
-		final String ipAddress = ((HttpServletRequest)JsfUtils.getRequest()).getRemoteAddr();
-		if (!getIpToCountryService().isIpInSwitzerland(ipAddress)) {
-			JsfUtils.redirect(PagesURL.REGISTRATION_NOT_IN_YOUR_COUNTRY);
-			return;
-		}
+//		final String ipAddress = ((HttpServletRequest)JsfUtils.getRequest()).getRemoteAddr();
+//		if (!getIpToCountryService().isIpInSwitzerland(ipAddress)) {
+//			JsfUtils.redirect(PagesURL.REGISTRATION_NOT_IN_YOUR_COUNTRY);
+//			return;
+//		}
 		final String email = JsfUtils.getRequestParameter(RegistrationConsts.REGISTRATION_EMAIL_PARAM_NAME);
 		if (!StringUtils.isNullOrEmpty(email)) {
 			getRegistrationController().setEmail(email.trim());
