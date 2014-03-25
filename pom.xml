@@ -3,13 +3,13 @@
 	<groupId>com.pferrot.webapp</groupId>
 	<artifactId>lendity</artifactId>
 	<packaging>war</packaging>
-	<version>1.8.2-SNAPSHOT</version>
+	<version>1.8.2</version>
 	<name>lendity</name>
 	<url>http://maven.apache.org</url>
 	<scm>
-		<connection>scm:svn:svn://diskstation/repo1/lendity/trunk</connection>
-		<developerConnection>scm:svn:svn://diskstation/repo1/lendity/trunk</developerConnection>
-		<url>http://diskstation/websvn/repo1/lendity/trunk</url>
+		<connection>scm:svn:svn://diskstation/repo1/lendity/tags/lendity-1.8.2</connection>
+		<developerConnection>scm:svn:svn://diskstation/repo1/lendity/tags/lendity-1.8.2</developerConnection>
+		<url>http://diskstation/websvn/repo1/lendity/tags/lendity-1.8.2</url>
 	</scm>
 	<distributionManagement>
 		<repository>
