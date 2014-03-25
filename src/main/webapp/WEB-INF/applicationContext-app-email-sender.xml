@@ -7,32 +7,31 @@
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		
 		<property name="host">
-        	<value>localhost</value>
-        </property>
+			<value>mail.gandi.net</value>
+		</property>
 		<property name="port">
-        	<value>25</value>
-        </property>
-        
-<!--		<property name="host">-->
-<!--			<value>smtp.gmail.com</value>-->
-<!--		</property>-->
-<!--		<property name="port">-->
-<!--			<value>25</value>-->
-<!--		</property>-->
-<!--		<property name="username">-->
-<!--			<value>stupid.illusion</value>-->
-<!--		</property>-->
-<!--		<property name="password">-->
-<!--			<value>stupidone</value>-->
-<!--		</property>-->
-<!--		 -->
-<!--		<property name="javaMailProperties">-->
-<!--			<props>-->
-<!--				<prop key="mail.smtp.auth">true</prop>-->
-<!--				<prop key="mail.smtp.timeout">25000</prop>-->
-<!--				<prop key="mail.transport.protocol">smtp</prop>-->
-<!--			</props>-->
-<!--		</property>-->
+			<value>465</value>
+		</property>
+		<property name="protocol">
+			<value>smtps</value>
+		</property>
+		<property name="username">
+			<value>patrice@lendity.ch</value>
+		</property>
+		<property name="password">
+			<value>12@@klopklio</value>
+		</property>
+		 
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.timeout">60000</prop>
+				<prop key="mail.transport.protocol">smtps</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtp.port">465</prop>
+			</props>
+		</property>
+		
 	</bean>	
 		
 </beans>
